@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-sm col-md-4 form-group">
+        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+
+    </div>
+    <div class="col-sm">
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
+    </div>
+    <div class="col-sm">
+
+    </div>
+    <div class="col-sm">
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
+    </div>
+</div>
+<br>
+
+<div class="card">
+    <p-table id="exportexcel" [value]="compListWithClassification">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="PS1">PS1
+                    <p-sortIcon field="PS1"></p-sortIcon>
+                </th>
+                <th pSortableColumn="PD1">PD1
+                    <p-sortIcon field="PD1"></p-sortIcon>
+                </th>
+                <th pSortableColumn="PS2">PS2
+                    <p-sortIcon field="PS2"></p-sortIcon>
+                </th>
+                <th pSortableColumn="PD2">PD2
+                    <p-sortIcon field="PD2"></p-sortIcon>
+                </th>
+                <th pSortableColumn="TS1">TS1
+                    <p-sortIcon field="TS1"></p-sortIcon>
+                </th>
+                <th pSortableColumn="TD2">TD1
+                    <p-sortIcon field="TD2"></p-sortIcon>
+                </th>
+                <th pSortableColumn="TS2">TS2
+                    <p-sortIcon field="TS2"></p-sortIcon>
+                </th>
+                <th pSortableColumn="TD2">TD2
+                    <p-sortIcon field="TD2"></p-sortIcon>
+                </th>
+                <th pSortableColumn="CLASSIFICATION">CLASSIFICATION</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-compListWithClassification>
+            <tr>
+
+                <td>{{compListWithClassification.PS1}}</td>
+                <td>{{compListWithClassification.PD1}}</td>
+                <td>{{compListWithClassification.PS2}}</td>
+                <td>{{compListWithClassification.PD2}}</td>
+                <td>{{compListWithClassification.TS1}}</td>
+                <td>{{compListWithClassification.TD1}}</td>
+                <td>{{compListWithClassification.TS2}}</td>
+                <td>{{compListWithClassification.TD2}}</td>
+                <td>{{compListWithClassification.Classification}}</td>
+
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -1,0 +1,136 @@
+<div class="shadow p-3 mb-5 bg-white rounded">
+    <div class="card">
+        <h5 style="background-color: #585570;padding: 10px; ; border-color:#585570" class="card-header">Report</h5>
+
+        <div *ngIf="reportHide" style="margin: 100px;">
+            <div class="card" style="width: 18rem;">
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">To Generate Report Please input some data.</li>
+                    <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <label>Equipment Type</label>
+
+                            <select [(ngModel)]="EquipmentType" class="form-control">
+                              <option value="">Select Type</option>
+               <option value="Compressor">Compressor</option>
+                <option value="Pump">Pump</option>
+              
+         </select>
+
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <input type="text" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <button (click)="Select()" class="btn btn-dark">Done</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div *ngIf="reportVisible">
+            <div class="row">
+                <div class="col-sm-6" style="padding:30px;">
+                    <input type="button" class="btn btn-dark" value="Download Report" (click)="DownloadPDF()" />
+                </div>
+                <div class="col-sm-6" style="padding:30px;">
+                    <input type="button" class="btn btn-dark" value="Generate Report" (click)="GenerateReport()" />
+                </div>
+            </div>
+            <div class="card-body" id="contentToConvert">
+                <div class="row" style="padding:30px; color: black;">
+                    <div class="sidebar-brand-icon col-sm-2">
+                        <style>
+                            img {
+                                width: 100%;
+                                height: 100%;
+                            }
+                        </style>
+
+                        <div class="image-container">
+                            <img src="DPM/dist/DPM/assets/img/Logo_final.jpg" alt="">
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-10">
+                        <span>
+            <h5>Based on data Inputs and Model analysis, please find below Initial<br>
+                 Assessment report and recommended advise for further study of the Asset:</h5>
+        </span>
+                    </div>
+                </div>
+                <div style="padding:30px; color: black;">
+                    <span> <br><br>
+            <h5>Customer Data:</h5>
+        </span>
+
+                    <table>
+                        <tr>
+                            <th>Company Name</th>
+                            <td>{{Company}}</td>
+                        </tr>
+                        <tr>
+                            <th>Focal Person Name</th>
+                            <td>{{FocalPersonName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Email Address</th>
+                            <td>{{Email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact Details</th>
+                            <td>{{Contact}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tag Number</th>
+                            <td>{{TagNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th>Equipment Type</th>
+                            <td>{{EquipmentType}}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of receipt Customer data</th>
+                            <td>{{Date}}</td>
+                        </tr>
+
+                    </table>
+                    <br><br>
+                    <h5>D.P.M. Output:</h5>
+
+                    <table>
+                        <tr>
+                            <th>Date of Analysis</th>
+                            <td>{{DOA}}</td>
+                        </tr>
+                        <tr>
+                            <th>Asset Current Condition</th>
+                            <td>Normal={{normalpercentage}}%, Incipient={{incipientPerentage}}%, Degrade={{degradePercentage}}%</td>
+                        </tr>
+                        <tr>
+                            <th>Asset Forecast Performance</th>
+                            <td>Normal={{normalpercentage}}%, Incipient={{incipientPerentage}}%, Degrade={{degradePercentage}}%</td>
+                        </tr>
+                        <tr>
+                            <th>Risk ranking</th>
+                            <td>{{RK}}</td>
+                        </tr>
+                        <tr>
+                            <th>DPM Analysis Beneficial Y/N</th>
+                            <td>{{DAB}} | Performance Number : {{PerformanceNumber}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <span>
+          Note: Any Further technical assistance please email dprescripti@gmail.com
+        </span>
+            </div>
+        </div>
+    </div>
+</div>
