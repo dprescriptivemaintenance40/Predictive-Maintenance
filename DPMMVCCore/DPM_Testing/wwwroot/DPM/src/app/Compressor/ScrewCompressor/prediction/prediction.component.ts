@@ -152,7 +152,7 @@ export class PredictionComponent implements OnInit {
         this.screwWithPrediction = res;
         this.showNotification(res[0].Prediction);
         this.loading = false;
-        this.configurationObj = new ScrewCompressorPredictionModel();
+        //this.configurationObj = new ScrewCompressorPredictionModel();
       }, err => {
         this.loading = false;
         console.log(err.error);
