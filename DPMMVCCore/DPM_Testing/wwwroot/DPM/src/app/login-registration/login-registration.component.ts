@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../Shared/user.services';
+import { UserService } from '../Services/user.services';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
+ import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-login-registration',
@@ -15,34 +18,33 @@ export class LoginRegistrationComponent {
   }
 
   constructor(public service: UserService,
-              private router: Router
+              private router: Router,
+             private toastr: ToastrService,
+              private title: Title
     //   , private toastr: ToastrService
        ) { }
    
      ngOnInit() {
+
+      this.title.setTitle('DPM | Login');
       this.service.formModel.reset();
 
-       this.isLogin=true;
-       this.isRegister=false;
        if (localStorage.getItem('token') != null){
       this.router.navigateByUrl('/Dashboard');       }
      }
    
 
-  isLogin:boolean
-  isRegister:boolean
-
-
-
-
-  goToRegister(){
-    this.isLogin=false;
-    this.isRegister=true;
+  
+   signUpBtn(){
+    var container = document.querySelector(".container");
+    container.classList.add("sign-up-mode");
   }
-  goToLogin(){
-    this.isLogin=true;
-    this.isRegister=false;
-  }
+   signInBtn(){
+   var container = document.querySelector(".container");
+    container.classList.remove("sign-up-mode");
+   }
+   
+
 
  
    onSubmit() {
@@ -50,17 +52,18 @@ export class LoginRegistrationComponent {
       (res: any) => {
         if (res.Succeeded) {
           this.service.formModel.reset();
-          alert('New user created! Registration successful.')
-         // this.toastr.success('New user created!', 'Registration successful.');
+          alert('New user created! Registration successful.') 
+         this.signInBtn();
+          this.toastr.success('New user created!', 'Registration successful.');
         } else {
           res.errors.forEach(element => {
             switch (element.code) {
               case 'DuplicateUserName':
-            //    this.toastr.error('Username is already taken','Registration failed.');
+                this.toastr.error('Username is already taken','Registration failed.');
                 break;
 
               default:
-            //  this.toastr.error(element.description,'Registration failed.');
+              this.toastr.error(element.description,'Registration failed.');
                 break;
             }
           });

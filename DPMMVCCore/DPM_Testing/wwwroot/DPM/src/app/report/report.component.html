@@ -11,22 +11,22 @@
                         <div class="input-group mb-3">
                             <label>Equipment Type</label>
 
-                            <select [(ngModel)]="EquipmentType" class="form-control">
+                            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="EquipmentType" class="form-select" class="form-control">
                               <option value="">Select Type</option>
-               <option value="Compressor">Compressor</option>
-                <option value="Pump">Pump</option>
-              
-         </select>
+                                <option value="Compressor">Compressor</option>
+                                    <option value="Pump" disabled>Pump</option>
+                                
+                            </select>
 
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="input-group mb-3">
-                            <input type="text" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
+                            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
                         </div>
                     </li>
                     <li class="list-group-item">
-                        <button (click)="Select()" class="btn btn-dark">Done</button>
+                        <button (click)="GenerateReport()" class="btn btn-dark">Done</button>
                     </li>
                 </ul>
             </div>
@@ -37,9 +37,6 @@
             <div class="row">
                 <div class="col-sm-6" style="padding:30px;">
                     <input type="button" class="btn btn-dark" value="Download Report" (click)="DownloadPDF()" />
-                </div>
-                <div class="col-sm-6" style="padding:30px;">
-                    <input type="button" class="btn btn-dark" value="Generate Report" (click)="GenerateReport()" />
                 </div>
             </div>
             <div class="card-body" id="contentToConvert">
@@ -69,38 +66,38 @@
                     <span> <br><br>
             <h5>Customer Data:</h5>
         </span>
-
-                    <table>
-                        <tr>
-                            <th>Company Name</th>
-                            <td>{{Company}}</td>
-                        </tr>
-                        <tr>
-                            <th>Focal Person Name</th>
-                            <td>{{FocalPersonName}}</td>
-                        </tr>
-                        <tr>
-                            <th>Email Address</th>
-                            <td>{{Email}}</td>
-                        </tr>
-                        <tr>
-                            <th>Contact Details</th>
-                            <td>{{Contact}}</td>
-                        </tr>
-                        <tr>
-                            <th>Tag Number</th>
-                            <td>{{TagNumber}}</td>
-                        </tr>
-                        <tr>
-                            <th>Equipment Type</th>
-                            <td>{{EquipmentType}}</td>
-                        </tr>
-                        <tr>
-                            <th>Date of receipt Customer data</th>
-                            <td>{{Date}}</td>
-                        </tr>
-
-                    </table>
+           
+            <table>  
+                <tr>
+                    <th>Company Name</th>
+                    <td>{{user.Company}}</td>
+                </tr>
+                <tr>
+                    <th>Focal Person Name</th>
+                    <td>{{user.Firstname}} {{user.Lastname}}</td>
+                </tr>
+                <tr>
+                    <th>Email Address</th>
+                    <td>{{user.Email}}</td>
+                </tr>
+                <tr>
+                    <th>Contact Details</th>
+                    <td>{{user.PhoneNumber}}</td>
+                </tr>
+                <tr>
+                    <th>Tag Number</th>
+                    <td>{{TagNumber}}</td>
+                </tr>
+                <tr>
+                    <th>Equipment Type</th>
+                    <td>{{EquipmentType}}</td>
+                </tr>
+                <tr>
+                    <th>Date of receipt Customer data</th>
+                    <td>{{Date}}</td>
+                </tr>
+                
+                </table>  
                     <br><br>
                     <h5>D.P.M. Output:</h5>
 
@@ -111,11 +108,11 @@
                         </tr>
                         <tr>
                             <th>Asset Current Condition</th>
-                            <td>Normal={{normalpercentage}}%, Incipient={{incipientPerentage}}%, Degrade={{degradePercentage}}%</td>
+                            <td>Normal={{normalpercentage |  number:'1.0-0' }}%, Incipient={{incipientPerentage | number:'1.0-0'}}%, Degrade={{degradePercentage| number:'1.0-0' }}%</td>
                         </tr>
                         <tr>
                             <th>Asset Forecast Performance</th>
-                            <td>Normal={{normalpercentage}}%, Incipient={{incipientPerentage}}%, Degrade={{degradePercentage}}%</td>
+                            <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
                         </tr>
                         <tr>
                             <th>Risk ranking</th>
@@ -123,7 +120,7 @@
                         </tr>
                         <tr>
                             <th>DPM Analysis Beneficial Y/N</th>
-                            <td>{{DAB}} | Performance Number : {{PerformanceNumber}}</td>
+                            <td>{{DAB}} | Performance Number : {{finalPerformanceNumber | number:'1.0-0'}}</td>
                         </tr>
                     </table>
                 </div>

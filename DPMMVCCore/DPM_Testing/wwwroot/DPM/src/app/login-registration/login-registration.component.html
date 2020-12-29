@@ -1,153 +1,146 @@
-<div class="split left">
 
-    <div class="centered">
-        <style>
-            img {
-                width: 80%;
-                height: 80%;
-            }
-        </style>
-        <div class="image-container">
-            <img src="DPM/dist/DPM/assets/img/Logo_final.jpg" alt="">
-
-        </div>
-        <p>Dynamic Prescriptive Maintenance .</p>
-    </div>
-</div>
-
-<div class="split right">
-    <div *ngIf="isLogin" class="centered">
-        <form #form='ngForm' class="mb-4" autocomplete="off" (submit)="onLogin(form)">
-            <h2>Sign In</h2>
-            <div class="p-field p-grid form-group">
-                <span class="p-inputgroup-addon"><i class="pi pi-user"></i>
-              </span>
-                <span class="p-float-label">
-                  <input class="form-control" #UserName="ngModel" name="UserName" [(ngModel)]="formModel.UserName" required id="float-input" type="text" pInputText> 
-                <label for="float-input">Username</label>
-              </span>
-            </div><br /><br/>
-
-            <div class="p-field p-grid form-group">
-                <span class="p-inputgroup-addon"><i class="pi pi-key"></i>
-              </span>
-                <span class="p-float-label">
-                <input class="form-control" #Password="ngModel" name="Password" [(ngModel)]="formModel.Password" required id="float-input" type="password" pInputText pPassword /> 
-                <label for="float-input">Password</label>
-              </span>
-            </div><br /> <br />
-
-            <div>
-                <p-button type="submit" class="btn btn-lg btn-block" [disabled]="form.invalid" label="Sign In" icon="pi pi-check" iconPos="left"></p-button>
-            </div><br /><br /><br />
-
-
-            <div>
-
-                <button pButton type="button" label="If not Register" class="p-button-text"></button>
-                <div>
-                    <button pButton type="button" label="Click Here" class="p-button-raised p-button-rounded" (click)="goToRegister()">
-                    </button>
-
-                </div>
-            </div>
+ <div class="full">
+  <div class="container">
+    <div class="forms-container">
+      <div class="signin-signup">
+        <form #form='ngForm' class="sign-in-form" autocomplete="off" (submit)="onLogin(form)">
+          <h2 class="title">Sign in</h2>
+          <div class="input-field form-group required">
+            <i class="fas fa-user"></i>
+            <input #UserName="ngModel" name="UserName" [(ngModel)]="formModel.UserName" required type="text" placeholder="Username" />
+          </div>
+          <div class="input-field form-group required">
+            <i class="fas fa-lock"></i>
+            <input #Password="ngModel" name="Password" [(ngModel)]="formModel.Password" required type="password" placeholder="Password" />
+          </div>
+          <input type="submit" [disabled]="form.invalid" value="Login" class="btn solid" />
+          <!-- <p><a [routerLink]="['/ForgotPassword']" >Forgot Password</a></p> -->
+          <p class="social-text">Connect us with social platforms</p>
+          <div class="social-media">
+            <!-- <a href="#" class="social-icon">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon">
+              <i class="fab fa-twitter"></i>
+            </a> -->
+            <a data-bs-toggle="tooltip" data-bs-placement="top" title="LinkedIn" href="https://linkedin.com/in/dynamic-prescriptive-maintenance-08bb101b8" class="social-icon">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
         </form>
 
-    </div>
+        <form [formGroup]="service.formModel"  class="sign-up-form" autocomplete="off" (submit)="onSubmit()" > 
+       
+          <h2 class="title">Sign up</h2>
+      
+          <div class="row">
+          <div class="col form-group required">
+            <i class="fas fa-user"></i>
+            
+              <label style="margin-left: 0px;" class="text-danger" *ngIf="service.formModel.get('UserName').touched && service.formModel.get('UserName').errors?.required">
+                Mandatory</label>
+              
+            <input type="text" class="form-control"formControlName="UserName" placeholder="Username" >
+            
+          </div>
+         
+          <div class="col form-group required">
+            <i class="fas fa-user"></i>
+            <input type="text" class="form-control" formControlName="Company" placeholder="Company Name">
+          </div>
+      </div> <br>
 
-
-    <form [formGroup]="service.formModel" autocomplete="off" (submit)="onSubmit()">
-        <div *ngIf="isRegister" class="centered">
-            <h2>Sign Up</h2><br />
-            <div class="p-field p-grid form-group required">
-                <span class="p-inputgroup-addon"><i class="pi pi-user"></i>
-                </span>
-                <span class="p-float-label">
-                  <input id="float-input"  class="form-control" formControlName="UserName" type="text" pInputText> 
-                  <label for="float-input">Username</label>
-                  <label class="text-danger" *ngIf="service.formModel.get('UserName').touched && service.formModel.get('UserName').errors?.required">This
-                    field is mandatory.</label>
-                </span>
-            </div>
-
-            <div class="p-field p-grid form-group required">
-                <span class="p-inputgroup-addon"><i class="pi pi-user"></i>
-              </span>
-                <span class="p-float-label">
-                <input id="float-input"  class="form-control" formControlName="FullName" type="text" pInputText> 
-                <label for="float-input">Full Name</label>
-               </span>
-            </div>
-            <div class="p-field p-grid form-group required">
-                <span class="p-inputgroup-addon"><i class="pi pi-user"></i>
-              </span>
-                <span class="p-float-label">
-                <input id="float-input"  class="form-control" formControlName="Company" type="text" pInputText> 
-                <label for="float-input">Company Name</label>
-               </span>
-            </div>
-
-            <div class="p-field p-grid form-group required">
-                <span class="p-inputgroup-addon"><i class="pi pi-mobile"></i>
-              </span>
-                <span class="p-float-label">
-                <input id="float-input"  class="form-control" formControlName="PhoneNumber" type="text" pInputText> 
-                <label for="float-input">Contact</label>
-              </span>
-            </div>
-
-            <div class="p-field p-grid form-group required">
-                <span class="p-inputgroup-addon"><i class="pi pi-mail"></i>
-              </span>
-                <span class="p-float-label">
-                <input id="float-input"  class="form-control" formControlName="Email" type="text" pInputText> 
-                <label for="float-input">Mail</label>
-                <label class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.email">Invalid
-                  email address.</label>
-              </span>
-            </div>
-            <div formGroupName="Passwords">
-                <div class="p-field p-grid form-group required">
-                    <span class="p-inputgroup-addon"><i class="pi pi-key"></i>
-              </span>
-                    <span class="p-float-label">
-                <input id="float-input" class="form-control" formControlName="Password" type="password" pInputText pPassword /> 
-                <label for="float-input">Password</label>
-                <label class="text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.required">This
-                  field is mandatory.</label>
-                <label class="text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.minlength">Minimum
-                  8 characters required.</label>
-              </span>
-                </div>
-                <div class="p-field p-grid form-group required">
-                    <span class="p-inputgroup-addon"><i class="pi pi-key"></i>
-            </span>
-                    <span class="p-float-label">
-              <input id="float-input" class="form-control" formControlName="ConfirmPassword" type="password" pInputText pPassword /> 
-              <label for="float-input">Confirm Password</label>
-              <label class="text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.required">This
-                field is mandatory.</label>
-              <label class="text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.passwordMismatch">Confirm
-                Password does not match.</label>
-            </span>
-                </div>
-            </div>
-
-            <div>
-                <p-button type="submit" class="btn btn-lg btn-block" [disabled]="!service.formModel.valid" label="Sign Up" icon="pi pi-check" iconPos="left"></p-button>
-            </div><br />
-
-            <div><br />
-
-                <button pButton type="button" label="Are you Registerd" class="p-button-text"></button>
-                <div>
-                    <button pButton type="button" label="Click Here" class="p-button-raised p-button-rounded" (click)="goToLogin()">
-                      </button>
-                </div>
-            </div>
-
-
+        
+      <div class="row">
+          <div class="col form-group required">
+            <i class="fas fa-user"></i>
+            <input type="text" class="form-control" formControlName="Firstname" placeholder="First name" >
+          </div>
+          <div class="col form-group required">
+            <i class="fas fa-user"></i>
+            <input type="text" class="form-control" formControlName="Lastname" placeholder="Last name">
+          </div>
+      </div> <br>
+      <div class="row">
+        <div class="col form-group required">
+          <i class="fas fa-mobile" ></i>
+          <input type="text" class="form-control" formControlName="PhoneNumber"  placeholder="Contact">
         </div>
-    </form>
+        <div class="col form-group required">
+          <i class="fas fa-envelope"></i>
+          <label style="margin-left: 0px;" class="text-danger" *ngIf="service.formModel.get('Email').touched && service.formModel.get('Email').errors?.email">Invalid
+            </label>
+          <input type="email" class="form-control"  formControlName="Email" placeholder="Email" >
+          
+        </div>
+     </div> <br>
+        <div formGroupName="Passwords" class="row">
+          <div class="col form-group required">
+            <i class="fas fa-lock"></i>
+            <label style="margin-left: 0px;"  class="text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.required">
+              Mandatory.</label>
+            <label style="margin-left: 0px;" class="text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && service.formModel.get('Passwords.Password').errors?.minlength">
+              8 characters req.</label>
+            <input type="password" class="form-control"  formControlName="Password" placeholder="Password" >
+            
+          </div>
+          <div class="col form-group required">
+            <i class="fas fa-lock"></i>
+            <label style="margin-left: 0px;" class="text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.required">
+              Mandatory.</label>
+            <label style="margin-left: 0px;" class="text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && service.formModel.get('Passwords.ConfirmPassword').errors?.passwordMismatch">
+              Does not match.</label>
+          
+            <input type="password" class="form-control"  formControlName="ConfirmPassword" placeholder="Confirm Password" >
+            </div>
+       </div>
 
+   
+          <input type="submit" [disabled]="!service.formModel.valid" class="btn" value="Sign up" />
+
+          <p class="social-text">Connect with us on</p>
+          <div class="social-media">
+            <!-- <a href="#" class="social-icon">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-icon">
+              <i class="fab fa-google"></i>
+            </a> -->
+            <a data-bs-toggle="tooltip" data-bs-placement="top" title="LinkedIn" href="https://linkedin.com/in/dynamic-prescriptive-maintenance-08bb101b8" class="social-icon">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+<div class="panels-container">
+      <div class="panel left-panel">
+        <div class="content">
+          <h3>New here ?</h3>
+          <p>
+            Contact us to get more detail
+          </p>
+          <button (click)="signUpBtn()" class="btn transparent" id="sign-up-btn">
+            Sign up
+          </button>
+        </div>
+        <img src="DPM/dist/DPM/assets/img/log.svg" class="image" alt="" />
+      </div>
+      <div class="panel right-panel">
+        <div class="content">
+          <h3>One of us ?</h3>
+          <p>
+            Then what are you waiting for 
+          </p>
+          <button (click)="signInBtn()" class="btn transparent" id="sign-in-btn">
+            Sign in
+          </button>
+        </div>
+        <img src="DPM/dist/DPM/assets/img/register.svg" class="image" alt="" />
+      </div>
+    </div>
+  </div>
 </div>

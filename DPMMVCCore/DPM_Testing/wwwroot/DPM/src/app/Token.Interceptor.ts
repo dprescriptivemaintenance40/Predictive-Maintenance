@@ -10,21 +10,28 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router) {
 
     }
-    
+
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-       
+
         if (localStorage.getItem('token') != null) {
-           var clonedReq = req.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}` ,
-                }
-            });
+            var clonedReq
+            if (req.url.includes("127.0.0.1:8000")) {
+                clonedReq = req;
+            } else {
+                clonedReq = req.clone({
+                    setHeaders: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+
+                    }
+
+                });
+            }
             return next.handle(clonedReq).pipe(
                 tap(
                     succ => { },
                     err => {
-                        if (err.status == 401){
+                        if (err.status == 401) {
                             localStorage.removeItem('token');
                             this.router.navigateByUrl('Login');
                         }
@@ -38,7 +45,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     // intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     //     const token = localStorage.getItem('token')
-    
+
     //     if (token) {
     //         request = request.clone({
     //         setHeaders: {
@@ -46,7 +53,7 @@ export class AuthInterceptor implements HttpInterceptor {
     //         }
     //       });
     //     }
-    
+
     //     return next.handle(request);
     //   }
 

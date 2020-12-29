@@ -2,14 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
-
-interface ProfileData {
-  ProfileID: Number;
-  Company: String;
-  Email: String;
-  Contact: String;
-  FocalPersonName: String;
-}
+import { UserService } from '../Services/user.services';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-report',
@@ -20,14 +14,26 @@ interface ProfileData {
 export class ReportComponent implements OnInit {
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private service: UserService,
+    private title: Title) {
 
   }
 
   ngOnInit() {
+    this.title.setTitle('DPM/Report');
 
-    this.http.get<any>("api/CompressureDetailsAPI").subscribe(
+    this.http.get<any>("api/ScrewCompressureAPI").subscribe(
       res => { this.classificationDetails = res }, error => console.log(error)
+    );
+
+    this.service.getUserProfile().subscribe(
+      res => {
+        this.user = res;
+      },
+      err => {
+        console.log(err);
+      },
     );
 
 
@@ -36,55 +42,37 @@ export class ReportComponent implements OnInit {
 
 
   reportVisible = false;
-  reportHide = true
-  Select() {
-    this.reportVisible = true;
-    this.reportHide = false;
-    console.log(this.TagNumber)
-    console.log(this.EquipmentType)
-  }
+  reportHide = true;
 
   classificationDetails: any = []
+  user: any = [];
   companyDetail: any = []
-  Company: string = " COMPANY ABC";
-  FocalPersonName: string = "XYZ"
-  Email: string = "abc@example.com"
-  Contact: string = "9011335781"
   TagNumber: string;
   EquipmentType: string = "";
-  Date: string = "16-Dec-2020";
-  DOA: string = "16-Dec-2020";
+  Date = new Date();
+  DOA = new Date();
   ACC: string;
   AFP: string;
   RK: any = "L/M/H= M | HSECES= Y | CRIT= II";
   DAB: any;
 
-  incipient;
-  degrade;
-  normal;
-  totalCount;
-  incipientPerentage;
-  degradePercentage;
-  normalpercentage;
-  PerformanceNumber: any;
+  private incipient = 0;
+  private degrade = 0;
+  private normal = 0;
+  private totalCount = 0;
+  private incipientPerentage = 0
+  private degradePercentage = 0
+  private normalpercentage = 0
+  private PerformanceNumber: any = 0
+  private finalPerformanceNumber = 0
 
 
 
   public GenerateReport() {
-    ///**************************Start of Input report***************** */
-    // this.http.get<any>('api/ProfileAPI').subscribe(
-    //     res=>{ var companyDetail:any=res} ,error => console.log(error)
-
-    //   );
-
-    // var companyDetail:ProfileData[]
-    // this.Company = companyDetail.Company
-    // this.FocalPersonName= this.companyDetail.FocalPersonName;
-    // this.Email=this.companyDetail.Email;
-    // this.Contact=this.companyDetail.Contact;
-
-
-    ///****************************End of INPUT REPORT*********************** */
+    this.reportVisible = true;
+    this.reportHide = false;
+    console.log(this.TagNumber)
+    console.log(this.EquipmentType)
 
     /// ************************************OUTPUT OF REPORT************************************************
     var countKey = Object.keys(this.classificationDetails).length;
@@ -116,8 +104,17 @@ export class ReportComponent implements OnInit {
       });
     });
     this.incipient = result.Classification.incipient;
+    if (this.incipient == undefined) {
+      this.incipient = 0;
+    }
     this.degrade = result.Classification.degrade;
+    if (this.degrade == undefined) {
+      this.degrade = 0;
+    }
     this.normal = result.Classification.normal;
+    if (this.normal == undefined) {
+      this.normal = 0;
+    }
     console.log('Normal Count :', this.normal)
     console.log('Incipient Count', this.incipient)
     console.log('Degrade Count :', this.degrade)
@@ -148,6 +145,8 @@ export class ReportComponent implements OnInit {
     this.PerformanceNumber = [parseFloat(a) + parseFloat(b) +
       parseFloat(LMH) + parseFloat(HSECES)
       + parseFloat(CRIT)];
+
+    this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
 
     console.log(this.PerformanceNumber);
     if (this.PerformanceNumber > 50) {

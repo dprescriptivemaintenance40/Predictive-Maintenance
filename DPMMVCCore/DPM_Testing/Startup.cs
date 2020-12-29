@@ -1,6 +1,6 @@
-using DPM_Testing.DAL;
-using DPM_Testing.Helpers;
+using DPM_ServerSide.DAL;
 using DPM_Testing.Models;
+using EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,13 +34,35 @@ namespace DPM_Testing
         {
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
-            services.AddDefaultIdentity<RegisterUser>().AddEntityFrameworkStores<DPMDal>();
+            //    services.AddDefaultIdentity<RegisterUser>().AddEntityFrameworkStores<DPMDal>();
+
+            services.AddIdentity<RegisterUser, IdentityRole>(opt =>
+            {
+                opt.Password.RequiredLength = 7;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequireUppercase = false;
+
+                opt.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<DPMDal>()
+            .AddDefaultTokenProviders();
+
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
+               opt.TokenLifespan = TimeSpan.FromHours(2));
 
             services.AddControllersWithViews();
             services.AddRazorPages();
 
 
-            services.AddTransient<EmailHelper>();
+
+            var emailConfig = Configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailSender, EmailSender>();
+            
+         //   services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers()
                     .AddJsonOptions(options =>
                     {

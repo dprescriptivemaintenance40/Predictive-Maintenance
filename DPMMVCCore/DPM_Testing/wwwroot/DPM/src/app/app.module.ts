@@ -1,16 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginRegistrationComponent } from './login-registration/login-registration.component';
 import { HomeComponent } from './home/home.component';
-import { ChartComponent } from './chart/chart.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { CompressorDetailComponent } from './compressor-detail/compressor-detail.component';
-import { AddRuleComponent } from './add-rule/add-rule.component';
 
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
@@ -24,22 +21,32 @@ import {  HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EducationComponent } from './education/education.component';
 import { ProfileComponent} from './profile/profile.component';
 import { ReportComponent } from './report/report.component';
-import { UserService } from './Shared/user.services';
+import { UserService } from './Services/user.services';
 import { AuthInterceptor } from './Token.Interceptor';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { PredictionComponent } from './Compressor/ScrewCompressor/prediction/prediction.component';
+import { ConfigurationComponent } from './Compressor/ScrewCompressor/configuration/configuration.component';
+import { TrainComponent } from './Compressor/ScrewCompressor/train/train.component';
+import { ToastrModule } from 'ngx-toastr';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginRegistrationComponent,
     HomeComponent,
-    AddRuleComponent,
-    ChartComponent,
     DashboardComponent,
-    CompressorDetailComponent,
     EducationComponent,
     ProfileComponent,
     ReportComponent,
+    PredictionComponent,
+    ConfigurationComponent,
+    TrainComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
    
   
     
@@ -49,12 +56,14 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     AppRoutingModule,
     RouterModule,
     FormsModule,
-   
+    ToastrModule.forRoot({
+      progressBar: true
+    }),
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
-
+    BrowserAnimationsModule,
     ChartModule,
     ButtonModule,
     InputTextModule,

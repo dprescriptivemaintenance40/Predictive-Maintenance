@@ -1,6 +1,6 @@
-﻿using DPM_Testing.DAL;
-using DPM_Testing.Helpers;
+﻿using DPM_ServerSide.DAL;
 using DPM_Testing.Models;
+using EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +20,15 @@ namespace DPM_Testing.Controllers
     public class ContactUsAPIController : ControllerBase
     {
         private readonly DPMDal _context;
+        private readonly IEmailSender _emailSender;
 
-        public ContactUsAPIController(DPMDal context, EmailHelper emailHelper)
+        public ContactUsAPIController(IEmailSender emailSender, DPMDal context)
         {
             _context = context;
-            _emailHelper = emailHelper;
+            _emailSender = emailSender;
         }
 
-        private EmailHelper _emailHelper;
+       
         //public ContactUsAPIController(EmailHelper emailHelper)
         //{
         //    _emailHelper = emailHelper;
@@ -48,6 +49,7 @@ namespace DPM_Testing.Controllers
 
         // POST api/<ContactUsAPIController>
         [HttpPost]
+        [Route("ContactUs")]
         //public void Post([FromBody] string value)
         //{
         //}
@@ -59,7 +61,14 @@ namespace DPM_Testing.Controllers
                 //   _context.contactUs.Add(contactUs);
                 //  await _context.SaveChangesAsync();
 
-                _emailHelper.SendEmail(contactUs);
+                //  _emailHelper.SendEmail(contactUs);
+                var subject = contactUs.Subject;
+                var body = contactUs.Comment;
+                var message = new Message(new string[] { contactUs.To }, subject, body, null);
+
+                await _emailSender.SendEmailAsync(message);
+                _context.contactUs.Add(contactUs);
+              //  await _context.SaveChangesAsync();
                 return Ok("Message Sent");
 
 

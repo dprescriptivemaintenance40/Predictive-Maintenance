@@ -11,11 +11,12 @@ namespace DPM_Testing.Models
     {
         [Key]
         public int ContactUsId { get; set; }
+        public string Comment { get; set; }
         public string Email { get; set; }
-        public string To = "aminsohailmanna324@gmail.com";
+        public string To = "aminsohailmanna324@outlook.com";
        
         public string Subject { get; set; }
-        public string Comment { get;}
+        
       //  public bool IsBodyHtml { get; set;}
     }
 }

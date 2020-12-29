@@ -74,7 +74,7 @@ namespace RuleEngine
                 try
                 {
                     DataTable t = new DataTable();
-                    IQueryable<CompressureDetailsModel> compressDetail = context.compressDetail.Where(a=> a.ProcessingStage == null).AsQueryable();
+                    IQueryable<CompressureDetailsModel> compressDetail = context.compressDetail.Where(a => string.IsNullOrEmpty(a.ProcessingStage)).AsQueryable();
                     DataTable dt = ToDataTable<CompressureDetailsModel>(compressDetail.ToList());
                     DataColumn dc = new DataColumn("ClassificationId");
                     DataColumn dc1 = new DataColumn("Classification", typeof(string));
@@ -84,7 +84,7 @@ namespace RuleEngine
                     dc2.AllowDBNull = true;
                     t.Columns.Add(dc2);
 
-                    IQueryable<AddRuleModel> ruleDetails = context.AddRuleModels.AsQueryable();
+                    IQueryable<AddRuleModel> ruleDetails = context.AddRuleModels.OrderBy(a => a.AddRuleId).AsQueryable();
                     DataTable dtRules = ToDataTable<AddRuleModel>(ruleDetails.ToList());
 
 
@@ -106,12 +106,13 @@ namespace RuleEngine
                             var TS2 = Convert.ToDecimal(row["TS2"]);
                             var TD2 = Convert.ToDecimal(row["TD2"]);
                             if (TS1 >= Convert.ToDecimal(dtRules.Rows[4]["Trigger"])
-                                && (TD1 >= Convert.ToDecimal(dtRules.Rows[5]["Trigger"]) && TD1 <= Convert.ToDecimal(dtRules.Rows[5]["Alarm"]))
-                                && (TS2 >= Convert.ToDecimal(dtRules.Rows[6]["Trigger"]) && TS2 <= Convert.ToDecimal(dtRules.Rows[6]["Alarm"]))
-                                && (TD2 >= Convert.ToDecimal(dtRules.Rows[7]["Trigger"]) && TD2 <= Convert.ToDecimal(dtRules.Rows[7]["Alarm"]))
-                                && Convert.ToDecimal(TD1 - TS1) >= Convert.ToDecimal(dtRules.Rows[8]["Trigger"]) && Convert.ToDecimal(TD2 - TS2) >= Convert.ToDecimal(dtRules.Rows[9]["Trigger"])
-                                && Convert.ToDecimal(((PD1 + 1) / (PS1 + 1)) - 1) <= Convert.ToDecimal(dtRules.Rows[10]["Trigger"])
-                                && Convert.ToDecimal(((PD2 + 1) / (PS2 + 1)) - 1) <= Convert.ToDecimal(dtRules.Rows[11]["Trigger"]))
+                                || (TD1 >= Convert.ToDecimal(dtRules.Rows[5]["Trigger"]) || TD1 <= Convert.ToDecimal(dtRules.Rows[5]["Alarm"]))
+                                 || (TS2 >= Convert.ToDecimal(dtRules.Rows[6]["Trigger"]) || TS2 <= Convert.ToDecimal(dtRules.Rows[6]["Alarm"]))
+                                 || (TD2 >= Convert.ToDecimal(dtRules.Rows[7]["Trigger"]) || TD2 <= Convert.ToDecimal(dtRules.Rows[7]["Alarm"]))
+                                 || Convert.ToDecimal(TD1 - TS1) >= Convert.ToDecimal(dtRules.Rows[8]["Trigger"])
+                                 || Convert.ToDecimal(TD2 - TS2) >= Convert.ToDecimal(dtRules.Rows[9]["Trigger"])
+                                 || Convert.ToDecimal(((PD1 + 1) / (PS1 + 1)) - 1) <= Convert.ToDecimal(dtRules.Rows[10]["Trigger"])
+                                 || Convert.ToDecimal(((PD2 + 1) / (PS2 + 1)) - 1) <= Convert.ToDecimal(dtRules.Rows[11]["Trigger"]))
                             {
                                 row["ClassificationId"] = 1;
                                 row["Classification"] = "incipient";
@@ -119,8 +120,8 @@ namespace RuleEngine
                             }
 
                             else if (TD1 >= Convert.ToDecimal(dtRules.Rows[5]["Alarm"])
-                                && TS2 >= Convert.ToDecimal(dtRules.Rows[6]["Alarm"])
-                                && TD2 >= Convert.ToDecimal(dtRules.Rows[7]["Alarm"]))
+                                 || TS2 >= Convert.ToDecimal(dtRules.Rows[6]["Alarm"])
+                                 || TD2 >= Convert.ToDecimal(dtRules.Rows[7]["Alarm"]))
                             {
                                 row["ClassificationId"] = 2;
                                 row["Classification"] = "degrade";
@@ -169,13 +170,14 @@ namespace RuleEngine
 
                             context.SaveChanges();
 
-                            Console.WriteLine("Processing Stage BatchId {0}", compressuredetails.BatchId ,": Done");
+                            Console.WriteLine("Processing Stage BatchId {0}", compressuredetails.BatchId, ": Done");
 
                             continue;
                         }
                     }
 
                     Console.WriteLine("=================== Processing Stage is end ===========================");
+                    Console.ReadLine();
                 }
                 catch (Exception ex)
                 {

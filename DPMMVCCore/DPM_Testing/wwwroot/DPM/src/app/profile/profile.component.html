@@ -25,24 +25,37 @@
                 <label for="username">
                   <h4>Username</h4>
                 </label>
-                <input [(ngModel)]="user.UserName"
+                <input  [(ngModel)]="user.UserName"
                        type="text" class="form-control"
                        name="username" id="username"
-                       placeholder="Username"
-                      >
+                       placeholder="Username" 
+                       disabled >
               </div>
             </div>
             <div class="form-group">
               <div class="col-xs-6">
                 <label for="email">
-                  <h4>Fullname</h4>
+                  <h4>Firstname</h4>
                 </label>
-                <input [(ngModel)]="user.FullName"
-                       type="email"
+                <input [(ngModel)]="user.Firstname"
+                       type="text"
                        class="form-control"
-                       name="Fullname"
-                       id="Fullname"
-                       placeholder="Fullname">
+                       name="Firstname"
+                       id="Firstname"
+                       placeholder="Firstname">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-6">
+                <label for="email">
+                  <h4>Firstname</h4>
+                </label>
+                <input [(ngModel)]="user.Lastname"
+                       type="text"
+                       class="form-control"
+                       name="Lastname"
+                       id="Lastname"
+                       placeholder="Lastname">
               </div>
             </div>
             <div class="form-group">
@@ -74,7 +87,7 @@
             <div class="form-group">
               <div class="col-xs-12">
                 <br>
-                <!-- <button class="btn btn-dark" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Update</button> -->
+                <button class="btn btn-dark" type="submit" (click)="Update()"> Update</button>
                
               </div>
             </div>

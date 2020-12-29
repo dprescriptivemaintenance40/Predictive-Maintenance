@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-education',
@@ -6,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./education.component.scss']
 })
 export class EducationComponent {
+  constructor( private title: Title){}
+  ngOnInit(){
+    this.title.setTitle('DPM/Education');
+  }
 
   article1(){
     let link = document.createElement("a");

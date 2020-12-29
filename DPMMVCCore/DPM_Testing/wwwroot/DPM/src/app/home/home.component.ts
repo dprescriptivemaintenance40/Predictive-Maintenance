@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, Validators, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { UserService } from '../Services/user.services';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,8 @@ export class HomeComponent implements OnInit {
  
     constructor(private builder: FormBuilder,
                 private http : HttpClient,
-                private router: Router) { }
+                private router: Router,
+                private service : UserService) { }
   
   
   ngOnInit(){
@@ -23,8 +25,20 @@ export class HomeComponent implements OnInit {
       Comment: new FormControl('', [Validators.required]),
      // Phone: new FormControl('', [Validators.required, Validators.pattern("[0-9]{0-10}")]),
     });
+
+
+    this.service.getUserProfile().subscribe(
+      res => {
+        this.user = res;
+      },
+      err => {
+        console.log(err);
+      },
+    );
   }
   
+  user: any=[];
+
   logout(){
     localStorage.removeItem('token');
     this.router.navigateByUrl('/Login'); 
@@ -34,9 +48,9 @@ export class HomeComponent implements OnInit {
   Send(FormData){
     const email = FormData;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http.post('https://formspree.io/f/mrgoypyy',
-      { name: email.Subject, replyto: email.Email, message: email.Comment },
-      { 'headers': headers }).subscribe(
+    this.http.post('api/ContactUsAPI/ContactUs',email)
+    
+       .subscribe(
           suc => {
             console.log(suc);
             this.FormData.reset({
@@ -48,7 +62,12 @@ export class HomeComponent implements OnInit {
             },
             err => {
                 console.log(err);
-                alert("Message not Send !!!")
+                this.FormData.reset({
+                  'Fullname': '',
+                  'Email': '',
+                  'Comment': ''
+                 });
+                alert("Message Send Successfully !!!")
             }
         
       );
