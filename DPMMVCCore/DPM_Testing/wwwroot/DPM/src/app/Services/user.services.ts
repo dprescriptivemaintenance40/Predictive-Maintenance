@@ -20,14 +20,16 @@ export class UserService {
     Firstname: ['', Validators.required],
     Lastname: ['', Validators.required],
     Passwords: this.fb.group({
-     Password: ['', [Validators.required, Validators.minLength(8)]],
-     ConfirmPassword: ['', Validators.required]
+      Password: ['', [Validators.required, Validators.minLength(8)]],
+      ConfirmPassword: ['', Validators.required]
     }, { validator: this.comparePasswords })
 
   });
 
   comparePasswords(fb: FormGroup) {
     let confirmPswrdCtrl = fb.get('ConfirmPassword');
+    //passwordMismatch
+    //confirmPswrdCtrl.errors={passwordMismatch:true}
     if (confirmPswrdCtrl.errors == null || 'passwordMismatch' in confirmPswrdCtrl.errors) {
       if (fb.get('Password').value != confirmPswrdCtrl.value)
         confirmPswrdCtrl.setErrors({ passwordMismatch: true });
@@ -46,8 +48,7 @@ export class UserService {
       Company: this.formModel.value.Company,
       Password: this.formModel.value.Passwords.Password
     };
-      return this.http.post('api/RegistrationAPI/Register', body);
-
+    return this.http.post('api/RegistrationAPI/Register', body);
   }
 
   login(formData) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../Services/user.services';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
  import { ToastrService } from 'ngx-toastr';
 
@@ -16,13 +16,12 @@ export class LoginRegistrationComponent {
     UserName: '',
     Password: ''
   }
-private loginForm: FormGroup=null;
 
   constructor(public service: UserService,
               private router: Router,
              private toastr: ToastrService,
-              private title: Title,
-              private FormBuilder: FormBuilder
+              private title: Title
+    //   , private toastr: ToastrService
        ) { }
    
      ngOnInit() {
@@ -31,15 +30,11 @@ private loginForm: FormGroup=null;
       this.service.formModel.reset();
 
        if (localStorage.getItem('token') != null){
-      this.router.navigateByUrl('/Dashboard'); 
-          }
-          this.loginForm = this.FormBuilder.group({
-            userName: ['', Validators.required],
-            password: ['', Validators.required],
-            
-          });
+      this.router.navigateByUrl('/Dashboard');       }
      }
    
+
+  
    signUpBtn(){
     var container = document.querySelector(".container");
     container.classList.add("sign-up-mode");
@@ -48,6 +43,9 @@ private loginForm: FormGroup=null;
    var container = document.querySelector(".container");
     container.classList.remove("sign-up-mode");
    }
+   
+
+
  
    onSubmit() {
     this.service.register().subscribe(
@@ -58,50 +56,45 @@ private loginForm: FormGroup=null;
          this.signInBtn();
           this.toastr.success('New user created!', 'Registration successful.');
         } else {
-          res.Errors.forEach(element => {
-            switch (element.Code) {
+          res.errors.forEach(element => {
+            switch (element.code) {
               case 'DuplicateUserName':
-                alert( 'Username is already taken');
+                this.toastr.error('Username is already taken','Registration failed.');
                 break;
 
               default:
-                alert('Registration failed.');
+              this.toastr.error(element.description,'Registration failed.');
                 break;
             }
           });
         }
       },
       err => {
-        //console.log(err);
-       alert('Please Fill All Mandatory Fields.')
+        console.log(err);
       }
     );
   }
-  onLogin() {
-    var checkIsValid = true;
-    for (var b in this.loginForm.controls) {
-      this.loginForm.controls[b].markAsDirty();
-      this.loginForm.controls[b].updateValueAndValidity();
-    }
-    if (checkIsValid) {
-      this.service.login(this.loginForm.value)
-        .subscribe(
-          (res: any) => {
-           
-            localStorage.setItem('token', res.SecurityToken);
-            this.router.navigateByUrl('/Dashboard');
-          },
-          err => {
-            if (err.status == 400)
-               alert('Incorrect username or password.')
-         
-            else
-              console.log(err);
-          }
-        );
-    }else{
-      alert('Please fill mandatory fields.')
-    }
+
+
+
+
+  onLogin(form: NgForm) {
+    this.service.login(form.value).subscribe(
+      (res: any) => {
+        localStorage.setItem('token', res.SecurityToken);
+        this.router.navigateByUrl('/Dashboard'); 
+      },
+      err => {
+        if (err.status == 400)
+         // this.toastr.error('Incorrect username or password.', 'Authentication failed.');
+            alert('Incorrect username or password.')
+        else
+          console.log(err);
+      }
+    );
   }
+
+
+
 
 }

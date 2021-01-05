@@ -23,7 +23,5 @@ namespace DPM_Testing.Controllers
         {
             return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/DPM/dist/DPM", "index.html"), "text/HTML");
         }
-
-        
     }
 }
