@@ -10,11 +10,8 @@ import * as moment from 'moment';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+  
      
-
-  time_data:Array<any>;
-  water_data:Array<any>;
- 
   constructor( private title: Title){
   }
  
@@ -29,9 +26,8 @@ export class DashboardComponent {
       var i:any;
       var options = {
       type: 'line',
-  
-      
-        
+     
+ 
       data: {
                  labels:items, 
         
@@ -88,8 +84,10 @@ export class DashboardComponent {
       data: [30, 20, 50]
     }]
   }
-});
-    
-    
+}); 
     }
+     getData() {
+      return Math.random();
+}
+ 
 }

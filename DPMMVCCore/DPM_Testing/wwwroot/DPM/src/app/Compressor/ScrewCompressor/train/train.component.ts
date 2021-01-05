@@ -148,4 +148,11 @@ export class TrainComponent implements OnInit {
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
   }
+
+  ChangeInConfiguration(){
+    var Data = 123
+    this.http.post("api/ScrewCompressureAPI/ConfigurationChange",Data).subscribe(
+      res=>console.log(res)
+    )
+  }
 }

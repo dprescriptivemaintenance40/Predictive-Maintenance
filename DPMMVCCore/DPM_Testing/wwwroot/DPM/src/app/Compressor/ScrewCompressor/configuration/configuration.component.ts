@@ -132,9 +132,6 @@ export class ConfigurationComponent {
       this.notification = null;
     }, 3000);
 
-
-  
-
   }
 
 
