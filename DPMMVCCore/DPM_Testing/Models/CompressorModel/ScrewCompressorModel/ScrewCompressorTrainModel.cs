@@ -10,6 +10,7 @@ namespace DPM_Testing.Models
     {
         [Key]
         public int BatchId { get; set; }
+        public string UserId { get; set; }
         public int TenantId { get; set; }
         public decimal PS1 { get; set; }
         public decimal PD1 { get; set; }

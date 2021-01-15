@@ -8,19 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForgotPasswordComponent implements OnInit {
 
+  private Email;
+  private res1:any;
+  private res2:any;
+
+  private enablePasswordField:boolean=false;
+  private disableEnter:boolean= true;
+  private hideForm:boolean=true
+  
+  
+  
   constructor( private http : HttpClient ) { }
 
   ngOnInit() {
 
   }
 
-  Email;
-  res1:any;
-  res2:any;
-
-  enablePasswordField:boolean=false;
-  disableEnter:boolean= true;
-  hideForm:boolean=true
+ 
 
   Validate(){
     let data ={

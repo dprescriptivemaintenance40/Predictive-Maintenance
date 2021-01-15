@@ -50,7 +50,7 @@
                         </style>
 
                         <div class="image-container">
-                            <img src="DPM/dist/DPM/assets/img/Logo_final.jpg" alt="">
+                            <img src="dist/DPM/assets/img/Logo_final.jpg" alt="">
 
                         </div>
 
@@ -58,7 +58,7 @@
                     <div class="col-sm-10">
                         <span>
             <h5>Based on data Inputs and Model analysis, please find below Initial<br>
-                 Assessment report and recommended advise for further study of the Asset:</h5>
+                 Assessment report and recommendation for further study of the Asset</h5>
         </span>
                     </div>
                 </div>
@@ -66,54 +66,54 @@
                     <span> <br><br>
             <h5>Customer Data:</h5>
         </span>
-           
-            <table>  
-                <tr>
-                    <th>Company Name</th>
-                    <td>{{user.Company}}</td>
-                </tr>
-                <tr>
-                    <th>Focal Person Name</th>
-                    <td>{{user.Firstname}} {{user.Lastname}}</td>
-                </tr>
-                <tr>
-                    <th>Email Address</th>
-                    <td>{{user.Email}}</td>
-                </tr>
-                <tr>
-                    <th>Contact Details</th>
-                    <td>{{user.PhoneNumber}}</td>
-                </tr>
-                <tr>
-                    <th>Tag Number</th>
-                    <td>{{TagNumber}}</td>
-                </tr>
-                <tr>
-                    <th>Equipment Type</th>
-                    <td>{{EquipmentType}}</td>
-                </tr>
-                <tr>
-                    <th>Date of receipt Customer data</th>
-                    <td>{{Date}}</td>
-                </tr>
-                
-                </table>  
+
+                    <table>
+                        <tr>
+                            <th>Company Name</th>
+                            <td>{{user.Company}}</td>
+                        </tr>
+                        <tr>
+                            <th>Focal Person Name</th>
+                            <td>{{user.Firstname}} {{user.Lastname}}</td>
+                        </tr>
+                        <tr>
+                            <th>Email Address</th>
+                            <td>{{user.Email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Contact Details</th>
+                            <td>{{user.PhoneNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tag Number</th>
+                            <td>{{TagNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th>Equipment Type</th>
+                            <td>{{EquipmentType}}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of receipt Customer data</th>
+                            <td>{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                        </tr>
+
+                    </table>
                     <br><br>
                     <h5>D.P.M. Output:</h5>
 
                     <table>
                         <tr>
                             <th>Date of Analysis</th>
-                            <td>{{DOA}}</td>
+                            <td>{{DOA | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
                         </tr>
                         <tr>
                             <th>Asset Current Condition</th>
-                            <td>Normal={{normalpercentage |  number:'1.0-0' }}%, Incipient={{incipientPerentage | number:'1.0-0'}}%, Degrade={{degradePercentage| number:'1.0-0' }}%</td>
+                            <td>Normal={{normalpercentage | number:'1.0-0' }}%, Incipient={{incipientPerentage | number:'1.0-0'}}%, Degrade={{degradePercentage| number:'1.0-0' }}%</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <th>Asset Forecast Performance</th>
                             <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <th>Risk ranking</th>
                             <td>{{RK}}</td>
@@ -121,6 +121,22 @@
                         <tr>
                             <th>DPM Analysis Beneficial Y/N</th>
                             <td>{{DAB}} | Performance Number : {{finalPerformanceNumber | number:'1.0-0'}}</td>
+                        </tr>
+                        <tr *ngIf="AFPVisible">
+                            <th>Asset Forecast Performance</th>
+
+                            <td>Normal={{AFPnormalpercentage | number:'1.0-0'}}%, Incipient={{AFPincipientPerentage | number:'1.0-0' }}%, Degrade={{AFPdegradePercentage | number:'1.0-0'}}%</td>
+
+                        </tr>
+                        <tr *ngIf="AFPNotVisible">
+                            <th>Asset Forecast Performance</th>
+                            <!--          
+                            <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
+                            -->
+                            <td>No Data to show. Please do Prediction</td>
+                            <td>
+                                <button class="btn btn-dark" [routerLink]="[ '/ScrewPrediction']" (click)="open(mymodal)">Do Prediction</button>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -131,3 +147,21 @@
         </div>
     </div>
 </div>
+<p-toast position="top-center"></p-toast>
+
+<!-- <ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Title</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">�</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    
+  message
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+  </div>
+</ng-template> -->

@@ -27,10 +27,12 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { PredictionComponent } from './Compressor/ScrewCompressor/prediction/prediction.component';
 import { ConfigurationComponent } from './Compressor/ScrewCompressor/configuration/configuration.component';
 import { TrainComponent } from './Compressor/ScrewCompressor/train/train.component';
-import { ToastrModule } from 'ngx-toastr';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-
+import {CommonLoadingComponent} from '../app/shared/Loading/common-loading.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastModule } from 'primeng/toast';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -47,7 +49,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     TrainComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-   
+    CommonLoadingComponent
   
     
   ],
@@ -56,9 +58,6 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     AppRoutingModule,
     RouterModule,
     FormsModule,
-    ToastrModule.forRoot({
-      progressBar: true
-    }),
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
@@ -70,7 +69,11 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     PasswordModule,
     MessagesModule,
     MessageModule,
-    TableModule
+    TableModule,
+    NgxSpinnerModule,
+    ToastModule,
+    ChartsModule
+   
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy },
     UserService, {

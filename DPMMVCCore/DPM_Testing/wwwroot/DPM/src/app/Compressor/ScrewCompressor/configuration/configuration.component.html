@@ -1,21 +1,21 @@
-<div style="padding-left: 10px;" class="row col-md-12">
+<!-- <div style="padding-left: 10px;" class="row col-md-12">
     <div class="alert alert-dark" role="alert">
         To know about Taxonomy of Compressor
         <button *ngIf="enableImage" class="btn btn-outline-dark" (click)="compressorImage()">Click Here</button>
         <button *ngIf="CancelImage" class="btn btn-outline-dark" (click)="compressorImageCancel()">Cancel</button>
     </div>
-</div>
+</div> 
 <div *ngIf="Image" class="col-md-6">
 
     <div class="card shadow mb-4">
         <div class="card-body">
 
             <span><img (click)="imgDowd()" class="img-fluid px-3 px-sm-4 mt-3 mb-2" style="width: 50rem;"
-                    src="DPM/dist/DPM/assets/img/compressor.PNG" alt=""></span>
+                    src="assets/img/compressor.PNG" alt=""></span>
 
         </div>
     </div>
-</div>
+</div>  -->
 
 <div style="padding:10px;">
     <div class="container">
@@ -39,8 +39,7 @@
         </div>
     </div>
     <div class="tbody">
-        <!-- | slice:0:8 -->
-        <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls | slice :0:8 ; let i=index;" (submit)="recordSubmit(fg)">
+        <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;" (submit)="recordSubmit(fg)">
             <div class="td">
                 <input class="form-control" data-toggle="tooltip" data-placement="right" title="{{addRuleResponse[i]}}" formControlName="columns">
             </div>

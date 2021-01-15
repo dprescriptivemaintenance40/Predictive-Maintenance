@@ -17,13 +17,13 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/DPM",
+                        "outputPath": "../dist/DPM",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.app.json",
                         "aot": false,
-                        "deployUrl": "/DPM/dist/DPM/",
+                        "deployUrl": "dist/DPM/",
                         "assets": [
                             "src/favicon.ico",
                             "src/assets"
@@ -35,8 +35,7 @@
                             "node_modules/primeng/resources/primeng.min.css",
                             "node_modules/ngx-toastr/toastr.css"
                         ],
-                        "scripts": [
-                        ]
+                        "scripts": []
                     },
                     "configurations": {
                         "production": {

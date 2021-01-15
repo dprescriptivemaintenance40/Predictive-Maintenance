@@ -3,27 +3,34 @@ import { FormBuilder, FormArray, Validators, FormGroup, FormControl } from '@ang
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { UserService } from '../Services/user.services';
+import { MessageService } from 'primeng/api';
+import { CommonLoadingDirective } from '../shared/Loading/common-loading.directive';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  providers: [MessageService]
 })
 export class HomeComponent implements OnInit {
-    FormData: FormGroup;
- 
-    constructor(private builder: FormBuilder,
-                private http : HttpClient,
-                private router: Router,
-                private service : UserService) { }
-  
-  
-  ngOnInit(){
+  FormData: FormGroup;
+
+  private user: any = [];
+
+  constructor(private builder: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
+    private service: UserService,
+    private messageService: MessageService,
+    private commonLoadingDirective: CommonLoadingDirective) { }
+
+
+  ngOnInit() {
     this.FormData = this.builder.group({
       Subject: new FormControl('', [Validators.required]),
       Email: new FormControl('', [Validators.compose([Validators.required, Validators.email])]),
       Comment: new FormControl('', [Validators.required]),
-     // Phone: new FormControl('', [Validators.required, Validators.pattern("[0-9]{0-10}")]),
+      // Phone: new FormControl('', [Validators.required, Validators.pattern("[0-9]{0-10}")]),
     });
 
 
@@ -36,42 +43,66 @@ export class HomeComponent implements OnInit {
       },
     );
   }
-  
-  user: any=[];
 
-  logout(){
+
+
+  logout() {
     localStorage.removeItem('token');
-    this.router.navigateByUrl('/Login'); 
+    this.router.navigateByUrl('/Login');
   }
 
 
-  Send(FormData){
+  Send(FormData) {
     const email = FormData;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http.post('api/ContactUsAPI/ContactUs',email)
-    
-       .subscribe(
-          suc => {
-            console.log(suc);
-            this.FormData.reset({
-              'Fullname': '',
-              'Email': '',
-              'Comment': ''
-             });
-             alert("Message Send Successfully ")
-            },
-            err => {
-                console.log(err);
-                this.FormData.reset({
-                  'Fullname': '',
-                  'Email': '',
-                  'Comment': ''
-                 });
-                alert("Message Send Successfully !!!")
-            }
-        
-      );
+    // this.http.post('api/ContactUsAPI/ContactUs',email)
 
+    //    .subscribe(
+    //       suc => {
+    //         console.log(suc);
+    //         this.FormData.reset({
+    //           'Fullname': '',
+    //           'Email': '',
+    //           'Comment': ''
+    //          });
+    //          alert("Message Send Successfully ")
+    //         },
+    //         err => {
+    //             console.log(err);
+    //             this.FormData.reset({
+    //               'Fullname': '',
+    //               'Email': '',
+    //               'Comment': ''
+    //              });
+    //             alert("Message Send Successfully !!!")
+    //         }
+
+    //   );
+      this.commonLoadingDirective.showLoading(true,"Sending message please wait.");
+    this.http.post('https://formspree.io/f/meqpvnej',
+      { name: email.Subject, replyto: email.email, message: "Sender Email : " + email.Email + "  " + " Message : " + email.Comment },
+      { 'headers': headers }).subscribe(
+        suc => {
+          console.log(suc);
+          this.FormData.reset({
+            'Fullname': '',
+            'Email': '',
+            'Comment': ''
+          });
+          this.messageService.add({ severity: 'success', detail: 'Message Sent Successfully'});
+          this.commonLoadingDirective.showLoading(false,"");
+        },
+        err => {
+          console.log(err);
+          this.FormData.reset({
+            'Fullname': '',
+            'Email': '',
+            'Comment': ''
+          });
+          this.messageService.add({ severity: 'error', detail: 'Something went Wrong !!!'});
+          this.commonLoadingDirective.showLoading(false,"");
+        }
+      );
   }
 
 

@@ -87,8 +87,6 @@ namespace RuleEngine
                     IQueryable<AddRuleModel> ruleDetails = context.AddRuleModels.OrderBy(a => a.AddRuleId).AsQueryable();
                     DataTable dtRules = ToDataTable<AddRuleModel>(ruleDetails.ToList());
 
-
-
                     foreach (DataRow row in dt.Rows)
                     {
                         var ProcessingStage = Convert.ToString(row["ProcessingStage"]);
@@ -105,35 +103,50 @@ namespace RuleEngine
                             var TD1 = Convert.ToDecimal(row["TD1"]);
                             var TS2 = Convert.ToDecimal(row["TS2"]);
                             var TD2 = Convert.ToDecimal(row["TD2"]);
-                            if (TS1 >= Convert.ToDecimal(dtRules.Rows[4]["Trigger"])
-                                || (TD1 >= Convert.ToDecimal(dtRules.Rows[5]["Trigger"]) || TD1 <= Convert.ToDecimal(dtRules.Rows[5]["Alarm"]))
-                                 || (TS2 >= Convert.ToDecimal(dtRules.Rows[6]["Trigger"]) || TS2 <= Convert.ToDecimal(dtRules.Rows[6]["Alarm"]))
-                                 || (TD2 >= Convert.ToDecimal(dtRules.Rows[7]["Trigger"]) || TD2 <= Convert.ToDecimal(dtRules.Rows[7]["Alarm"]))
-                                 || Convert.ToDecimal(TD1 - TS1) >= Convert.ToDecimal(dtRules.Rows[8]["Trigger"])
-                                 || Convert.ToDecimal(TD2 - TS2) >= Convert.ToDecimal(dtRules.Rows[9]["Trigger"])
-                                 || Convert.ToDecimal(((PD1 + 1) / (PS1 + 1)) - 1) <= Convert.ToDecimal(dtRules.Rows[10]["Trigger"])
-                                 || Convert.ToDecimal(((PD2 + 1) / (PS2 + 1)) - 1) <= Convert.ToDecimal(dtRules.Rows[11]["Trigger"]))
-                            {
-                                row["ClassificationId"] = 1;
-                                row["Classification"] = "incipient";
-                                row["ProcessingStage"] = "Done";
-                            }
 
-                            else if (TD1 >= Convert.ToDecimal(dtRules.Rows[5]["Alarm"])
-                                 || TS2 >= Convert.ToDecimal(dtRules.Rows[6]["Alarm"])
-                                 || TD2 >= Convert.ToDecimal(dtRules.Rows[7]["Alarm"]))
+                            var T = Convert.ToDecimal(TD1 - TS1);
+                            var T2 = Convert.ToDecimal(TD2 - TS2);
+                            var T3 = Convert.ToDecimal((((PD1 + 1) / (PS1 + 1)) - 1));
+                            var T4 = Convert.ToDecimal((((PD2 + 1) / (PS2 + 1)) - 1));
+                            var data = dtRules.Rows[1]["Trigger"];
+                            if (((PD1 >= Convert.ToDecimal(dtRules.Rows[1]["Trigger"])))
+                                 && (T >= Convert.ToDecimal(dtRules.Rows[8]["Trigger"]))
+                                 && (T2 >= Convert.ToDecimal(dtRules.Rows[9]["Trigger"]))
+                                 && (T3 >= Convert.ToDecimal(dtRules.Rows[10]["Trigger"]))
+                                 && (T4 <= Convert.ToDecimal(dtRules.Rows[11]["Trigger"])))
                             {
                                 row["ClassificationId"] = 2;
                                 row["Classification"] = "degrade";
                                 row["ProcessingStage"] = "Done";
                             }
-                            else
+
+                            else if ((PD1 <= Convert.ToDecimal(dtRules.Rows[1]["Alarm"]))
+                                  || (PS2 <= Convert.ToDecimal(dtRules.Rows[2]["Alarm"]))
+                                  || (PD2 <= Convert.ToDecimal(dtRules.Rows[3]["Alarm"])) 
+                                  || (TD1 <= Convert.ToDecimal(dtRules.Rows[5]["Alarm"]))
+                                  || (TD2 <= Convert.ToDecimal(dtRules.Rows[7]["Alarm"])))
                             {
                                 row["ClassificationId"] = 0;
-                                row["Classification"] = "normal";
+                                row["Classification"] = "bad";
                                 row["ProcessingStage"] = "Done";
                             }
 
+                            else if (((PD1 >= Convert.ToDecimal(dtRules.Rows[1]["Trigger"])))
+                                 || (T >= Convert.ToDecimal(dtRules.Rows[8]["Trigger"]))
+                                 || (T2 >= Convert.ToDecimal(dtRules.Rows[9]["Trigger"]))
+                                 || (T3 >= Convert.ToDecimal(dtRules.Rows[10]["Trigger"]))
+                                 || (T4 <= Convert.ToDecimal(dtRules.Rows[11]["Trigger"])))
+                            {
+                                row["ClassificationId"] = 1;
+                                row["Classification"] = "incipient";
+                                row["ProcessingStage"] = "Done";
+                            }
+                            else
+                            {
+                                row["ClassificationId"] = 3;
+                                row["Classification"] = "normal";
+                                row["ProcessingStage"] = "Done";
+                            }
 
                             CompressureWithClassificationModel compressurewithclassification = new CompressureWithClassificationModel();
                             compressurewithclassification.BatchId = Convert.ToInt32(row["BatchId"]);

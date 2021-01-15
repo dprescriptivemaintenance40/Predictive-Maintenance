@@ -14,8 +14,8 @@ export class UserService {
 
   formModel = this.fb.group({
     UserName: ['', Validators.required],
-    Email: ['', Validators.email],
-    PhoneNumber: ['', Validators.required],
+    Email: ['', [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+    PhoneNumber:  ['', [Validators.required, Validators.pattern(("^((\\+91-?)|0)?[0-9]{10}$"))]],
     Company: ['', Validators.required],
     Firstname: ['', Validators.required],
     Lastname: ['', Validators.required],

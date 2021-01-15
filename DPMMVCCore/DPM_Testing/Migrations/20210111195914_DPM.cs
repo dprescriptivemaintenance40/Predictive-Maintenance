@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DPM.Migrations
 {
-    public partial class DPM_TestingDB : Migration
+    public partial class DPM : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,6 +30,7 @@ namespace DPM.Migrations
                 {
                     BatchId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
                     PS1 = table.Column<decimal>(type: "numeric", nullable: false),
                     PD1 = table.Column<decimal>(type: "numeric", nullable: false),
@@ -53,6 +54,7 @@ namespace DPM.Migrations
                 {
                     CompClassID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
                     BatchId = table.Column<int>(type: "integer", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
                     ClassificationId = table.Column<int>(type: "integer", nullable: false),
@@ -80,6 +82,7 @@ namespace DPM.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Comment = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
+                    To = table.Column<string>(type: "text", nullable: true),
                     Subject = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -140,6 +143,7 @@ namespace DPM.Migrations
                 {
                     PredictionId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
                     BatchId = table.Column<int>(type: "integer", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
                     PS1 = table.Column<decimal>(type: "numeric", nullable: false),
@@ -150,7 +154,7 @@ namespace DPM.Migrations
                     TD1 = table.Column<decimal>(type: "numeric", nullable: false),
                     TS2 = table.Column<decimal>(type: "numeric", nullable: false),
                     TD2 = table.Column<decimal>(type: "numeric", nullable: false),
-                    InsertedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    InsertedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Prediction = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

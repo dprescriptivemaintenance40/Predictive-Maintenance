@@ -9,13 +9,13 @@ import { Title } from '@angular/platform-browser';
 export class EducationComponent {
   constructor( private title: Title){}
   ngOnInit(){
-    this.title.setTitle('DPM/Education');
+    this.title.setTitle('DPM | Education');
   }
 
   article1(){
     let link = document.createElement("a");
     link.download = "DPM Article 1.1-v0.2";
-    link.href = "DPM/dist/DPM/assets/DPM Article 1.1-v0.2.pdf";
+    link.href = "dist/DPM/assets/DPM Article 1.1-v0.2.pdf";
     link.click();
   }
   

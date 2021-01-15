@@ -247,23 +247,25 @@ form.sign-in-form {
 }
 
 .panel {
+  
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-around;
+   /* justify-content: space-around;  */
   text-align: center;
   z-index: 6;
 }
 
 .left-panel {
   pointer-events: all;
-  padding: 3rem 17% 2rem 12%;
+  /* padding: 3rem 17% 2rem 12%; */
+  padding: 10rem 17% 2rem 12%;
 }
 
 
 .right-panel {
   pointer-events: none;
-  padding: 3rem 12% 2rem 17%;
+  padding: 10rem 12% 2rem 17%;
 }
 
 .panel .content {
@@ -464,4 +466,10 @@ form.sign-in-form {
     bottom: 28%;
     left: 50%;
   }
+ 
 }
+
+
+  
+
+    

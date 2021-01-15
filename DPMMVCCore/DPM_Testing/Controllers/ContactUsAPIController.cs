@@ -4,6 +4,7 @@ using EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,62 +22,46 @@ namespace DPM_Testing.Controllers
     {
         private readonly DPMDal _context;
         private readonly IEmailSender _emailSender;
+        private readonly IConfiguration configuration;
 
-        public ContactUsAPIController(IEmailSender emailSender, DPMDal context)
+        public ContactUsAPIController(IEmailSender emailSender, DPMDal context,
+            IConfiguration configuration)
         {
             _context = context;
             _emailSender = emailSender;
+            this.configuration = configuration;
         }
 
-       
-        //public ContactUsAPIController(EmailHelper emailHelper)
-        //{
-        //    _emailHelper = emailHelper;
-        //}
-        // GET: api/<ContactUsAPIController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<ContactUsAPIController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<ContactUsAPIController>
         [HttpPost]
         [Route("ContactUs")]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
         public async Task<ActionResult<ContactUs>> PostContactUs(ContactUs contactUs)
         {
             try
             {
-                //   _context.contactUs.Add(contactUs);
-                //  await _context.SaveChangesAsync();
-
-                //  _emailHelper.SendEmail(contactUs);
+                contactUs.To = "dprescripti@gmail.com";
                 var subject = contactUs.Subject;
-                var body = contactUs.Comment;
+                var body = " From : " + contactUs.Email +"   " + " Message: " + contactUs.Comment;
                 var message = new Message(new string[] { contactUs.To }, subject, body, null);
-
                 await _emailSender.SendEmailAsync(message);
                 _context.contactUs.Add(contactUs);
-              //  await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return Ok("Message Sent");
-
-
             }
-            catch (Exception)
+            catch (Exception exe)
             {
-
-                throw;
+                return BadRequest(exe.Message);
             }
            
         }

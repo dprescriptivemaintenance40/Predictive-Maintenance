@@ -29,7 +29,7 @@ namespace DPM.Migrations
                     b.Property<int>("BatchId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("InsertedDate")
+                    b.Property<DateTime?>("InsertedDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<decimal>("PD1")
@@ -62,6 +62,9 @@ namespace DPM.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
                     b.HasKey("PredictionId");
 
                     b.ToTable("screwcompressorpredictiontable");
@@ -81,6 +84,9 @@ namespace DPM.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Subject")
+                        .HasColumnType("text");
+
+                    b.Property<string>("To")
                         .HasColumnType("text");
 
                     b.HasKey("ContactUsId");
@@ -252,6 +258,9 @@ namespace DPM.Migrations
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
                     b.HasKey("CompClassID");
 
                     b.ToTable("compressurewithclassification");
@@ -296,6 +305,9 @@ namespace DPM.Migrations
 
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
                     b.HasKey("BatchId");
 

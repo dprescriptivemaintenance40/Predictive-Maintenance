@@ -3,13 +3,14 @@ import { UserService } from '../Services/user.services';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { ToastrService } from 'ngx-toastr';
+import {MessageService} from 'primeng/api';
 
 
 @Component({
   selector: 'app-login-registration',
   templateUrl: './login-registration.component.html',
-  styleUrls: ['./login-registration.component.css']
+  styleUrls: ['./login-registration.component.css'],
+  providers: [MessageService],
 })
 export class LoginRegistrationComponent {
   formModel = {
@@ -21,14 +22,15 @@ export class LoginRegistrationComponent {
 
   constructor(public service: UserService,
     private router: Router,
-    private toastr: ToastrService,
+    private messageService: MessageService,
     private title: Title,
-    private formBuilder: FormBuilder
-    //   , private toastr: ToastrService
+    private formBuilder: FormBuilder,
+   
+  
   ) { }
 
   ngOnInit() {
-
+   
     this.title.setTitle('DPM | Login');
     this.service.formModel.reset();
 
@@ -37,11 +39,10 @@ export class LoginRegistrationComponent {
     }
 
     this.loginForm = this.formBuilder.group({
-      userName: ['', Validators.required],
+      UserName: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
-
 
 
   signUpBtn() {
@@ -55,36 +56,36 @@ export class LoginRegistrationComponent {
 
 
 
-
   onSubmit() {
     this.service.register().subscribe(
       (res: any) => {
         if (res.Succeeded) {
           this.service.formModel.reset();
-          alert('New user created! Registration successful.')
+         this.messageService.add({severity:'success', summary: 'Success',  detail: 'New user created! Registration successful', sticky: true});
           this.signInBtn();
-          this.toastr.success('New user created!', 'Registration successful.');
+          this.messageService.add({severity:'info', summary: 'info', detail: 'Enter Login Credentials', sticky: true});
         } else {
           res.errors.forEach(element => {
             switch (element.code) {
               case 'DuplicateUserName':
-                this.toastr.error('Username is already taken', 'Registration failed.');
-                break;
+              this.messageService.add({severity:'error', summary: 'Error',detail:  'Registration failed',sticky: true});
+              break;
 
               default:
-                this.toastr.error(element.description, 'Registration failed.');
-                break;
+              this.messageService.add({severity:'error', summary: 'Error', detail: 'Registration failed', sticky: true});
+              break;
             }
+            
           });
         }
       },
+      
       err => {
         console.log(err);
-        alert('Please Fill All Mandatory Fields.')
+         this.messageService.add({severity:'warn', summary: 'Warn', detail: 'Please Fill All Mandatory Fields',sticky: true});
       }
     );
   }
-
 
 
 
@@ -103,14 +104,15 @@ export class LoginRegistrationComponent {
           },
           err => {
             if (err.status == 400)
-              // this.toastr.error('Incorrect username or password.', 'Authentication failed.');
-              alert('Incorrect username or password.')
+  
+             this.messageService.add ({severity:'error', summary: 'Error', detail: 'Incorrect username or password',sticky: true});
             else
               console.log(err);
           }
         );
     }else{
-      alert("Please fill mandatory fields")
+    
+      this.messageService.add({severity:'warn',  summary: 'warn', detail: 'Please Fill All Mandatory Fields', sticky: true});
     }
   }
 

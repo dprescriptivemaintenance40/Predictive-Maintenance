@@ -10,6 +10,7 @@ namespace DPM_Testing.Models
     {
         [Key]
         public int CompClassID { get; set; }
+        public string UserId { get; set; }
         public int BatchId { get; set; }
         public int TenantId { get; set; }
         public int ClassificationId { get; set; }

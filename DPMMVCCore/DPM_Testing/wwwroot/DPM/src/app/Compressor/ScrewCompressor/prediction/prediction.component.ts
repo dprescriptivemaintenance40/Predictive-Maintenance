@@ -1,13 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import * as moment from 'moment';
+import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import * as XLSX from 'xlsx';
 import { ScrewCompressorPredictionModel } from '../configuration/screw-compressor-prediction.model';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-prediction',
   templateUrl: './prediction.component.html',
-  styleUrls: ['./prediction.component.scss']
+  styleUrls: ['./prediction.component.scss'],
+  providers: [MessageService]
 })
 export class PredictionComponent implements OnInit {
 
@@ -15,21 +19,66 @@ export class PredictionComponent implements OnInit {
   public file: any;
   public configurationObj: ScrewCompressorPredictionModel = new ScrewCompressorPredictionModel();
   public configurationObjList: any = [];
+
+  private notification = null
+  private fileName = 'ExcelSheet.xlsx'
+  private testingList: any;
+  private screwWithPrediction: any = [];
+  private customer: any = [];
+  // private file: File
+  private filelist: any
+  private arrayBuffer: any
+  private compDetail: any
+  private loading: boolean = false;
+  private first = 0;
+  private rows = 10000;
+  private PridictedId: number = 0;
+  private Image = false;
+  private enableImage = true;
+  private CancelImage = false;
+  headers = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+
+
   constructor(private title: Title,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private messageService: MessageService,
+    private commonLoadingDirective: CommonLoadingDirective) { }
 
-
-
-  first = 0;
-
-  rows = 10000;
 
   ngOnInit() {
     this.title.setTitle('DPM | Screw Prediction');
     this.showNotification('');
     setInterval(() => {
-      this.getPredictedList();
-    }, 5000);
+      if (this.showBulkPrediction) {
+        this.getPredictedList();
+      } else {
+        if (this.PridictedId != 0) {
+          this.getPredictedById(this.PridictedId);
+        }
+      }
+    }, 10000);
+  }
+  imgDowd() {
+    let link = document.createElement("a");
+    link.download = "Compressor Image";
+    link.href = "src/assets/img/compressor.PNG";
+    link.click();
+  }
+
+  compressorImage() {
+    this.enableImage = false;
+    this.CancelImage = true;
+    this.Image = true;
+  }
+  compressorImageCancel() {
+    this.enableImage = true;
+    this.Image = false;
+    this.CancelImage = false;
+
   }
 
   next() {
@@ -54,31 +103,37 @@ export class PredictionComponent implements OnInit {
 
   }
 
-  notification = null
-  fileName = 'ExcelSheet.xlsx'
-  testingList: any;
-  screwWithPrediction: any = [];
-  customer: any = [];
-  //file: File
-  filelist: any
-  arrayBuffer: any
-  compDetail: any
-  private loading: boolean = false;
-  headers = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  }
+
 
   getPredictedList() {
-    this.loading = true;
+    this.screwWithPrediction = [];
     this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
       .subscribe(res => {
-        this.screwWithPrediction = res;
-        this.showNotification(res[0].Prediction)
-        this.loading = false;
+        if (res.length > 0) {
+          if (res[0].Prediction != null) {
+            this.screwWithPrediction = res;
+            this.commonLoadingDirective.showLoading(false, "");
+          }
+        }
       }, err => {
-        this.loading = false;
+        this.commonLoadingDirective.showLoading(false, "");
+        console.log(err.error);
+      });
+  }
+
+
+  getPredictedById(PredictedId) {
+    // this.configurationObj = new ScrewCompressorPredictionModel();
+    this.showNotification("")
+    this.http.get<any>('api/ScrewCompressureAPI/GetPredictionById?PredictedId=' + PredictedId, this.headers)
+      .subscribe(res => {
+        //this.configurationObj = res;
+        if (res.Prediction != "") {
+          this.showNotification(res.Prediction)
+          this.commonLoadingDirective.showLoading(false, "");
+        }
+      }, err => {
+        this.commonLoadingDirective.showLoading(false, "");
         console.log(err.error);
       });
   }
@@ -102,13 +157,12 @@ export class PredictionComponent implements OnInit {
       var workbook = XLSX.read(bstr, { type: "binary" });
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
-      this.loading = true;
+      this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
       this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
         .subscribe(res => {
-          //this.screwWithPrediction = res;
-          this.loading = false;
         }, err => {
-          this.loading = false;
+          // this.loading = false;
+          //this.commonLoadingDirective.showLoading(false, "");
           console.log(err.error);
         });
     }
@@ -119,10 +173,13 @@ export class PredictionComponent implements OnInit {
   showNotification(category) {
     switch (category) {
       case '':
-        this.notification = { class: 'text-dark', message: 'Prediction' };
+        this.notification = { class: '', message: '' };
+        break;
+      case 'bad':
+        this.notification = { class: 'text-success', message: 'Bad' };
         break;
       case 'normal':
-        this.notification = { class: 'text-success', message: 'Normal' };
+        this.notification = { class: 'text-success', message: 'normal' };
         break;
       case 'incipient':
         this.notification = { class: 'text-primary', message: 'Incipient!' };
@@ -138,38 +195,97 @@ export class PredictionComponent implements OnInit {
   }
 
   ChangeToBulkPrediction() {
-    if (!this.showBulkPrediction)
+    if (!this.showBulkPrediction) {
+      this.configurationObj = new ScrewCompressorPredictionModel();
+      this.showNotification("")
       this.showBulkPrediction = true;
-    else
+      this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
+      this.PridictedId = 0;
+    } else {
+      this.configurationObj = new ScrewCompressorPredictionModel();
+      this.showNotification("")
       this.showBulkPrediction = false;
+      this.PridictedId = 0;
+    }
   }
 
   Prediction() {
-    this.configurationObjList.push(this.configurationObj);
-    this.loading = true;
-    this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(this.configurationObjList), this.headers)
+    //  if (this.configurationObj) {
+    this.configurationObj.Prediction = "";
+    this.configurationObj.PredictionId = 0;
+    this.configurationObj.UserId = "";
+    this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
+    this.configurationObj.InsertedDate = moment().format("YYYY-MM-DD");
+    this.http.post<any>('api/ScrewCompressureAPI/PredictionObj', this.configurationObj, this.headers)
       .subscribe(res => {
-        this.screwWithPrediction = res;
-        this.showNotification(res[0].Prediction);
-        this.loading = false;
-        //this.configurationObj = new ScrewCompressorPredictionModel();
+        this.configurationObj = res;
+        this.PridictedId = res.PredictionId;
       }, err => {
-        this.loading = false;
+        this.commonLoadingDirective.showLoading(false, "");
         console.log(err.error);
       });
-    // let formData = new FormData();
-    // formData.append('bulkFile', this.file);
-    // this.http.post('http://127.0.0.1:8000/CompressorPrediction?BulkPredict=' + this.showBulkPrediction + "&PS1=" + this.configurationObj.PS1
-    //   + "&PD1=" + this.configurationObj.PD1 + "&PS2=" + this.configurationObj.PS2 + "&PD2=" + this.configurationObj.PD2
-    //   + "&TS1=" + this.configurationObj.TS1 + "&TD1=" + this.configurationObj.TD1 + "&TS2=" + this.configurationObj.TS2
-    //   + "&TD2=" + this.configurationObj.TD2, formData, { responseType: 'text' })
-    //   .subscribe((res: any) => {
-    //     this.screwWithPrediction = res[0];
-    //     this.showNotification(res[0][0].Predicted)
-    //     console.log(res[1]);
-    //   }, err => {
-    //     alert("Please try later.")
-    //   })
+
   }
+
+  exportToExcel() {
+    const dataArray = this.screwWithPrediction
+    if (dataArray != 0) {
+      const dataArrayList = dataArray.map(obj => {
+        const { PredictionId, BatchId, TenantId, InsertedDate, ...rest } = obj;
+        return rest;
+      })
+
+      var csvData = this.ConvertToCSV(dataArrayList);
+      var a = document.createElement("a");
+      a.setAttribute('style', 'display:none;');
+      document.body.appendChild(a);
+      var blob = new Blob([csvData], { type: 'text/csv' });
+      var url = window.URL.createObjectURL(blob);
+      a.href = url;
+      // var x = new Date();
+      var link: string = "DPMPrediction" + '.csv';
+      a.download = link.toLocaleLowerCase();
+      a.click();
+      this.messageService.add({ severity: 'info', detail: 'Excel Downloaded Successfully', sticky: true });
+
+    } else {
+      this.messageService.add({ severity: 'warn', detail: 'No Records are Found to Download in Excel', sticky: true });
+    }
+
+  }
+
+
+  // convert Json to CSV data in Angular2
+  ConvertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    var row = "";
+
+    for (var index in objArray[0]) {
+      //Now convert each value to string and comma-separated
+      row += index + ',';
+    }
+    row = row.slice(0, -1);
+    //append Label row with line break
+    str += row + '\r\n';
+
+    for (var i = 0; i < array.length; i++) {
+      var line = '';
+      for (var index in array[i]) {
+        if (line != '') line += ','
+
+        line += array[i][index];
+      }
+      str += line + '\r\n';
+    }
+    return str;
+  }
+
+
+
+
+
+
+
 
 }

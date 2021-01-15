@@ -10,6 +10,7 @@ namespace DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel
     {
         [Key]
         public int PredictionId { get; set; }
+        public string UserId { get; set; }
         public int BatchId { get; set; }
         public int TenantId { get; set; }
         public decimal PS1 { get; set; }
@@ -20,7 +21,7 @@ namespace DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel
         public decimal TD1 { get; set; }
         public decimal TS2 { get; set; }
         public decimal TD2 { get; set; }
-        public DateTime InsertedDate { get; set; }
+        public DateTime? InsertedDate { get; set; }
         public string Prediction { get; set; }
     }
 }

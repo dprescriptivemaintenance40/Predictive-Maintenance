@@ -1,4 +1,21 @@
-<button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="ChangeToBulkPrediction()" class="btn btn-primary">Bulk Prediction</button>
+<p-toast position="top-center">
+</p-toast>
+<div style="padding-left: 10px;" class="row col-md-12">
+    <div class="alert alert-dark" role="alert">
+        To know about Taxonomy of Compressor
+        <button *ngIf="enableImage" class="btn btn-outline-dark" (click)="compressorImage()">Click Here</button>
+        <button *ngIf="CancelImage" class="btn btn-outline-dark" (click)="compressorImageCancel()">Cancel</button>
+    </div>
+</div>
+<div *ngIf="Image" class="col-md-6">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <span><img (click)="imgDowd()" class="img-fluid px-3 px-sm-4 mt-3 mb-2" style="width: 50rem;"
+                    src="/dist/DPM/assets/img/compressor.PNG "alt=""></span>
+        </div>
+    </div>
+</div>
+<button type="button" style="background-color:#585570 ; border-color:#585570 ;    margin: 0.3em;" (click)="ChangeToBulkPrediction()" class="btn btn-primary">Bulk Prediction</button>
 
 <div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
     <div class="col-sm col-md-4 form-group">
@@ -57,9 +74,22 @@
 
 </div>
 
-<div style="padding: 5px;">
+<div style="padding: 5px;" *ngIf="showBulkPrediction">
     <div class="card">
         <p-table id="exportexcel" [value]="screwWithPrediction" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:12em;">
+                </colgroup>
+            </ng-template>
             <ng-template pTemplate="header">
                 <tr>
                     <!-- <th pSortableColumn="PS1">PS1 </th> -->

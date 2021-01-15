@@ -21,7 +21,7 @@ namespace DPM_Testing.Controllers
 
         public IActionResult Index()
         {
-            return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/DPM/dist/DPM", "index.html"), "text/HTML");
+            return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/dist/DPM", "index.html"), "text/HTML");
         }
     }
 }

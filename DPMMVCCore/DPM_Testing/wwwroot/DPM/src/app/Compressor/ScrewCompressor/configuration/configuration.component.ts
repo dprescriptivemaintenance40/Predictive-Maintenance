@@ -21,11 +21,18 @@ export class ConfigurationComponent {
      "Temperature Suction stage 2",
     "Temperature Discharge stage 2"];
   addRuleForms: FormArray = this.fb.array([]);
-  notification = null;
+  
+  private notification = null;
+
+  private Image=false;
+  private enableImage =true;  
+  private CancelImage=false;
+
+
 
   constructor(private fb: FormBuilder,
-    private addRulseService: ScrewCompressorService,
-    private title: Title) {
+              private addRulseService: ScrewCompressorService,
+              private title: Title) {
      
      }
 
@@ -53,10 +60,7 @@ export class ConfigurationComponent {
     );
   }
 
-  Image=false;
-  enableImage =true;
-  // DisableImage=false;
-  CancelImage=false;
+
   compressorImage(){
     this.enableImage=false;
     this.CancelImage=true;
@@ -72,7 +76,7 @@ export class ConfigurationComponent {
   imgDowd(){
     let link = document.createElement("a");
     link.download = "Compressor Image";
-    link.href = "DPM/dist/DPM/assets/img/compressor.JPG";
+    link.href = "/dist/DPM/assets/img/compressor.JPG";
     link.click();
   }
 
