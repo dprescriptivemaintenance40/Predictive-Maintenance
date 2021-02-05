@@ -8,17 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForgotPasswordComponent implements OnInit {
 
-  private Email;
-  private res1:any;
-  private res2:any;
-
-  private enablePasswordField:boolean=false;
-  private disableEnter:boolean= true;
-  private hideForm:boolean=true
+  public Email;
+  public res1:any;
+  public res2:any;
+  public disableEnter:boolean= true;
+  public hideForm:boolean=true
   
   
   
-  constructor( private http : HttpClient ) { }
+  constructor( public http : HttpClient ) { }
 
   ngOnInit() {
 
@@ -41,7 +39,6 @@ export class ForgotPasswordComponent implements OnInit {
       }
     )
 
-    this.enablePasswordField=true;
     this.disableEnter=false
     this.hideForm=false
     

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators, FormGroup,FormArray, FormControl } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import { UserService } from '../Services/user.services';
 import { Title } from '@angular/platform-browser';
 import {MessageService} from 'primeng/api';
+import { HttpEventType } from '@angular/common/http';
 
 
 @Component({
@@ -13,15 +14,23 @@ import {MessageService} from 'primeng/api';
   providers: [MessageService],
 })
 export class ProfileComponent implements OnInit {
- 
   profileForms: FormArray = this.fb.array([]);
-  private user :any=[]; 
-
+  public user :any=[]; 
+  public abc :any=[];
+  url = 'api/UserProfile/';
+  public imagePath;
+  fileToUpload: any;
+  public progress: number;
+  public message: string;
+  public userProfile :any =[];
+  @Output() public onUploadFinished = new EventEmitter();
+  public response: {dbPath: ''};
   constructor(private fb: FormBuilder,
               private http : HttpClient,
               private service : UserService,
               private messageService: MessageService,
-              private title: Title) { }
+              private title: Title,
+               ) { }
 
 
   ngOnInit() {
@@ -29,6 +38,7 @@ export class ProfileComponent implements OnInit {
    this.service.getUserProfile().subscribe(
       res => {
         this.user = res;
+        this.user.ImageUrl = this.user.ImageUrl == null?"dist/DPM/assets/img/undraw_profile.svg":this.user.ImageUrl;
       },
       err => {
         console.log(err);
@@ -36,8 +46,6 @@ export class ProfileComponent implements OnInit {
     );
     
   }
-  
- 
   
   profileForm() {
     this.profileForms.push(this.fb.group({
@@ -54,13 +62,11 @@ export class ProfileComponent implements OnInit {
     onUpdate(fg: FormGroup){
       this.http.put('api/UserProfile/' + fg.value.Id, fg.value).subscribe(
         (res: any) => {
-       // alert("Done")
         this.messageService.add({severity:'info',  detail: 'Wait for some time ', sticky: true});
         });
       
     }
-
-
+ 
     Update(){
       let data={
         Id:this.user.Id,
@@ -70,6 +76,7 @@ export class ProfileComponent implements OnInit {
         Company:this.user.Company,
         Email:this.user.Email,
         PhoneNumber:this.user.PhoneNumber
+        
     }
     this.http.put('api/UserProfileAPI/' + data.Id, data).subscribe(
       res=>{
@@ -77,5 +84,29 @@ export class ProfileComponent implements OnInit {
       }
     )
     }
+   
+  
+  public uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    
+    formData.append('file', fileToUpload, fileToUpload.name);
+    this.http.post('api/UserProfileAPI/UploadImage', formData, {reportProgress: true, observe: 'events'})
+      .subscribe(res => {
+        if (res.type === HttpEventType.UploadProgress){
+          this.progress = Math.round(100 * res.loaded / res.total);
+          this.userProfile = res;
+        }
+        else if (res.type === HttpEventType.Response) {
+          this.messageService.add({severity:'success',  detail: 'Image Upload successfully ', sticky: true});
+          this.onUploadFinished.emit(res.body);
+        }
+      });
+ 
+  }
 
+ 
 }

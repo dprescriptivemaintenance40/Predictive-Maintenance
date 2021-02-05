@@ -15,14 +15,14 @@ import { CommonLoadingDirective } from '../shared/Loading/common-loading.directi
 export class HomeComponent implements OnInit {
   FormData: FormGroup;
 
-  private user: any = [];
+  public user: any = [];
 
-  constructor(private builder: FormBuilder,
-    private http: HttpClient,
-    private router: Router,
-    private service: UserService,
-    private messageService: MessageService,
-    private commonLoadingDirective: CommonLoadingDirective) { }
+  constructor(public builder: FormBuilder,
+    public http: HttpClient,
+    public router: Router,
+    public service: UserService,
+    public messageService: MessageService,
+    public commonLoadingDirective: CommonLoadingDirective) { }
 
 
   ngOnInit() {

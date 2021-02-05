@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NgForm } from '@angular/forms';
 
 interface resetData{
   token:any;
@@ -19,13 +18,13 @@ interface resetData{
 
 export class ResetPasswordComponent implements OnInit {
 
-  private token:any;
-private email:any;
-private userId:any;
+  public token:any;
+public email:any;
+public userId:any;
 
-  constructor( private activateroute: ActivatedRoute,
-               private fb: FormBuilder, 
-               private http: HttpClient) {
+  constructor( public activateroute: ActivatedRoute,
+               public fb: FormBuilder, 
+               public http: HttpClient) {
      this.token= this.activateroute.snapshot.queryParamMap.get('token');
      
      this.email = this.activateroute.snapshot.queryParamMap.get('email');

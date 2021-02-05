@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import * as moment from 'moment';
@@ -6,12 +6,14 @@ import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.di
 import * as XLSX from 'xlsx';
 import { ScrewCompressorPredictionModel } from '../configuration/screw-compressor-prediction.model';
 import { MessageService } from 'primeng/api';
+import { environment } from 'src/environments/environment.prod';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-prediction',
   templateUrl: './prediction.component.html',
   styleUrls: ['./prediction.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, DatePipe]
 })
 export class PredictionComponent implements OnInit {
 
@@ -19,23 +21,30 @@ export class PredictionComponent implements OnInit {
   public file: any;
   public configurationObj: ScrewCompressorPredictionModel = new ScrewCompressorPredictionModel();
   public configurationObjList: any = [];
-
-  private notification = null
-  private fileName = 'ExcelSheet.xlsx'
-  private testingList: any;
-  private screwWithPrediction: any = [];
-  private customer: any = [];
-  // private file: File
-  private filelist: any
-  private arrayBuffer: any
-  private compDetail: any
-  private loading: boolean = false;
-  private first = 0;
-  private rows = 10000;
-  private PridictedId: number = 0;
-  private Image = false;
-  private enableImage = true;
-  private CancelImage = false;
+  public futurePrediction: string = "Pending";
+  public dofuturePredictionDisabled: boolean = true;
+  public futurePredictionList: any = [];
+  public futurePredictionDatesList: any = [];
+  public SelectedDateFromList: any = [];
+  public futurePredictionDate: any = [];
+  public futurePredictionDataTableList: any = [];
+  public futurePredictionDatesToShow: any = ["After One Day", "After a week", "After 15 Days", "After 30 Days"];
+  public notification = null
+  public fileName = 'ExcelSheet.xlsx'
+  public testingList: any;
+  public screwWithPrediction: any = [];
+  public customer: any = [];
+  // public file: File
+  public filelist: any
+  public arrayBuffer: any
+  public compDetail: any
+  public loading: boolean = false;
+  public first = 0;
+  public rows = 10000;
+  public PridictedId: number = 0;
+  public Image = false;
+  public enableImage = true;
+  public CancelImage = false;
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -43,24 +52,19 @@ export class PredictionComponent implements OnInit {
   }
 
 
-  constructor(private title: Title,
-    private http: HttpClient,
-    private messageService: MessageService,
-    private commonLoadingDirective: CommonLoadingDirective) { }
+  constructor(public title: Title,
+    public http: HttpClient,
+    public messageService: MessageService,
+    public commonLoadingDirective: CommonLoadingDirective,
+    public datepipe: DatePipe) { }
 
 
   ngOnInit() {
     this.title.setTitle('DPM | Screw Prediction');
+    this.ChangeToBulkPrediction();
+    this.getFuturePredictionRecords();
     this.showNotification('');
-    setInterval(() => {
-      if (this.showBulkPrediction) {
-        this.getPredictedList();
-      } else {
-        if (this.PridictedId != 0) {
-          this.getPredictedById(this.PridictedId);
-        }
-      }
-    }, 10000);
+    this.getPredictedList();
   }
   imgDowd() {
     let link = document.createElement("a");
@@ -103,35 +107,25 @@ export class PredictionComponent implements OnInit {
 
   }
 
-
-
   getPredictedList() {
     this.screwWithPrediction = [];
+    this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
     this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
       .subscribe(res => {
-        if (res.length > 0) {
-          if (res[0].Prediction != null) {
-            this.screwWithPrediction = res;
-            this.commonLoadingDirective.showLoading(false, "");
-          }
-        }
+        this.screwWithPrediction = res;
+        this.commonLoadingDirective.showLoading(false, "");
       }, err => {
         this.commonLoadingDirective.showLoading(false, "");
         console.log(err.error);
       });
   }
 
-
   getPredictedById(PredictedId) {
-    // this.configurationObj = new ScrewCompressorPredictionModel();
     this.showNotification("")
     this.http.get<any>('api/ScrewCompressureAPI/GetPredictionById?PredictedId=' + PredictedId, this.headers)
       .subscribe(res => {
-        //this.configurationObj = res;
-        if (res.Prediction != "") {
-          this.showNotification(res.Prediction)
-          this.commonLoadingDirective.showLoading(false, "");
-        }
+        this.showNotification(res.Prediction)
+        this.commonLoadingDirective.showLoading(false, "");
       }, err => {
         this.commonLoadingDirective.showLoading(false, "");
         console.log(err.error);
@@ -154,12 +148,20 @@ export class PredictionComponent implements OnInit {
       var arr = new Array();
       for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
       var bstr = arr.join("");
-      var workbook = XLSX.read(bstr, { type: "binary" });
+      var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
       this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
       this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
-        .subscribe(res => {
+        .subscribe(async res => {
+          await this.http.get(`${environment.prediction}name=prediction`, { responseType: 'text' })
+            .subscribe(res => {
+              this.getPredictedList();
+              this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+            }, err => {
+              console.log(err.error);
+              this.commonLoadingDirective.showLoading(false, "");
+            })
         }, err => {
           // this.loading = false;
           //this.commonLoadingDirective.showLoading(false, "");
@@ -199,7 +201,7 @@ export class PredictionComponent implements OnInit {
       this.configurationObj = new ScrewCompressorPredictionModel();
       this.showNotification("")
       this.showBulkPrediction = true;
-      this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
+      this.getPredictedList();
       this.PridictedId = 0;
     } else {
       this.configurationObj = new ScrewCompressorPredictionModel();
@@ -217,9 +219,17 @@ export class PredictionComponent implements OnInit {
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
     this.configurationObj.InsertedDate = moment().format("YYYY-MM-DD");
     this.http.post<any>('api/ScrewCompressureAPI/PredictionObj', this.configurationObj, this.headers)
-      .subscribe(res => {
+      .subscribe(async res => {
         this.configurationObj = res;
         this.PridictedId = res.PredictionId;
+        await this.http.get(`${environment.prediction}name=prediction`, { responseType: 'text' })
+          .subscribe(res => {
+            this.getPredictedById(this.PridictedId);
+            this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+          }, err => {
+            console.log(err.error);
+            this.commonLoadingDirective.showLoading(false, "");
+          })
       }, err => {
         this.commonLoadingDirective.showLoading(false, "");
         console.log(err.error);
@@ -281,10 +291,149 @@ export class PredictionComponent implements OnInit {
     return str;
   }
 
+  FuturePrediction() {
+    this.commonLoadingDirective.showLoading(true, "Please wait until future prediction to be done...");
+    this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage')
+      .subscribe(async res => {
+        if (res === 1) {
+          await this.http.get(`${environment.prediction}name=futureprediction`, { responseType: 'text' })
+            .subscribe(res => {
+              this.getFuturePredictionRecords();
+              this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+            }, err => {
+              console.log(err.error);
+              this.commonLoadingDirective.showLoading(false, "");
+            })
+        } else {
+          this.commonLoadingDirective.showLoading(false, "");
+        }
+      });
+  }
 
 
+  getFuturePredictionRecords() {
+    this.commonLoadingDirective.showLoading(true, "Fetching Records...");
+    this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/GetFuturePredictionRecords').subscribe(
+      res => {
+        this.futurePredictionList = res;
+        var Dates: any = [];
+        if (res.length > 0) {
+          this.futurePredictionList.forEach(element => {
+            this.futurePredictionDatesList.push(this.datepipe.transform(element.PredictedDate, 'dd/MM/YYYY'));
 
+          });
+        }
+        var abc = this.futurePredictionDatesList[20];
+        var pqr = moment(abc, 'dd MM YYYY').add(5, 'days')
+        console.log(pqr);
 
+        this.commonLoadingDirective.showLoading(false, " ");
+      }, err => {
+        this.commonLoadingDirective.showLoading(false, " ");
+      }
+    )
+  }
+
+  FuturePredictionDates() {
+
+    if (this.futurePredictionDate == 'After One Day') {
+      this.dofuturePredictionDisabled = true;
+      this.commonLoadingDirective.showLoading(true, "Fetching Records...");
+      var AfterDays = this.futurePredictionDatesList[0];
+      const params = new HttpParams()
+        .set('FromDate', this.futurePredictionDatesList[0])
+        .set('ToDate', this.futurePredictionDatesList[0]);
+      this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
+        .subscribe(
+          res => {
+            this.futurePredictionDataTableList = null;
+            this.futurePredictionDataTableList = res;
+            if (this.futurePredictionDataTableList[0].length > 0) {
+              this.dofuturePredictionDisabled = true;
+            } else {
+              this.dofuturePredictionDisabled = false;
+            }
+            this.commonLoadingDirective.showLoading(false, "");
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'Something went wrong please try again later', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, "");
+          }
+        )
+    } else if (this.futurePredictionDate == 'After a week') {
+
+      this.commonLoadingDirective.showLoading(true, "Fetching Records...");
+      var ToDate = this.futurePredictionDatesList[6]
+      const params = new HttpParams()
+        .set('FromDate', this.futurePredictionDatesList[0])
+        .set('ToDate', ToDate);
+      this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
+        .subscribe(
+          res => {
+            this.futurePredictionDataTableList = null;
+            this.futurePredictionDataTableList = res;
+            if (this.futurePredictionDataTableList[0].length > 0) {
+              this.dofuturePredictionDisabled = true;
+            } else {
+              this.dofuturePredictionDisabled = false;
+            }
+            this.commonLoadingDirective.showLoading(false, " ");
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'Something went wrong please try again later', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
+        )
+    } else if (this.futurePredictionDate == 'After 15 Days') {
+
+      this.commonLoadingDirective.showLoading(true, "Fetching Records...");
+      const params = new HttpParams()
+        .set('FromDate', this.futurePredictionDatesList[0])
+        .set('ToDate', this.futurePredictionDatesList[14]);
+      this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
+        .subscribe(
+          res => {
+            this.futurePredictionDataTableList = null;
+            this.futurePredictionDataTableList = res;
+            if (this.futurePredictionDataTableList[0].length > 0) {
+              this.dofuturePredictionDisabled = true;
+            } else {
+              this.dofuturePredictionDisabled = false;
+            }
+            this.commonLoadingDirective.showLoading(false, " ");
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'Something went wrong please try again later', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
+        )
+
+    } else {
+
+      this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
+      var indexOfLastDate = this.futurePredictionDatesList.length - 1;
+      const params = new HttpParams()
+        .set('FromDate', this.futurePredictionDatesList[0])
+        .set('ToDate', this.futurePredictionDatesList[indexOfLastDate]);
+      this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
+        .subscribe(
+          res => {
+            this.futurePredictionDataTableList = null;
+            this.futurePredictionDataTableList = res;
+            if (this.futurePredictionDataTableList[0].length > 0) {
+              this.dofuturePredictionDisabled = true;
+            } else {
+              this.dofuturePredictionDisabled = false;
+            }
+            this.commonLoadingDirective.showLoading(false, " ");
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'Something went wrong please try again later', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
+        )
+    }
+  }
 
 
 

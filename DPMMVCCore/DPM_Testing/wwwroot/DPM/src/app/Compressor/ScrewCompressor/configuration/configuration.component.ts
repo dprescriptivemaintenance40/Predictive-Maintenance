@@ -22,17 +22,17 @@ export class ConfigurationComponent {
     "Temperature Discharge stage 2"];
   addRuleForms: FormArray = this.fb.array([]);
   
-  private notification = null;
+  public notification = null;
 
-  private Image=false;
-  private enableImage =true;  
-  private CancelImage=false;
+  public Image=false;
+  public enableImage =true;  
+  public CancelImage=false;
 
 
 
-  constructor(private fb: FormBuilder,
-              private addRulseService: ScrewCompressorService,
-              private title: Title) {
+  constructor(public fb: FormBuilder,
+              public addRulseService: ScrewCompressorService,
+              public title: Title) {
      
      }
 

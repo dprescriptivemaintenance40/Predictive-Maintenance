@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { HttpClient, HttpRequest, HttpHeaders, HttpEventType, HttpResponse } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { MessageService } from 'primeng/api';
+import { environment } from '../../../../environments/environment.prod'
+import * as moment from 'moment';
 @Component({
   selector: 'app-train',
   templateUrl: './train.component.html',
@@ -12,22 +14,22 @@ import { MessageService } from 'primeng/api';
 })
 export class TrainComponent implements OnInit {
 
-  private fileName = 'ExcelSheet.xlsx'
-  private CompDetailList: any;
-  private compListWithClassification: any = [];
-  private customer: any = [];
-  private file: File
-  private filelist: any
-  private arrayBuffer: any
-  private compDetail: any
-  private loading: boolean = false;
-  private first = 0;
-  private rows = 10000;
+  public fileName = 'ExcelSheet.xlsx'
+  public CompDetailList: any;
+  public compListWithClassification: any = [];
+  public customer: any = [];
+  public file: File
+  public filelist: any
+  public arrayBuffer: any
+  public compDetail: any
+  public loading: boolean = false;
+  public first = 0;
+  public rows = 10000;
   public progress: number;
   public message: string;
-  private Image=false;
-  private enableImage =true;
-  private CancelImage=false;
+  public Image = false;
+  public enableImage = true;
+  public CancelImage = false;
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -35,32 +37,35 @@ export class TrainComponent implements OnInit {
   }
 
 
-  constructor(private http: HttpClient,
-    private title: Title,
-    private messageService: MessageService,
-    private commonLoadingDirective: CommonLoadingDirective) { }
+  constructor(public http: HttpClient,
+    public title: Title,
+    public messageService: MessageService,
+    public commonLoadingDirective: CommonLoadingDirective) { }
 
 
   ngOnInit() {
     this.title.setTitle('DPM | Screw Train');
-
-    setInterval(() => {
-      this.getScrewCompressureList();
-    }, 10000);
+    this.getScrewCompressureList();
+    // setInterval(() => {
+    //   this.getScrewCompressureList();
+    // }, 10000);
   }
   getScrewCompressureList() {
     this.compListWithClassification = [];
+    this.loading = true;
     this.http.get<any>("api/ScrewCompressureAPI")
       .subscribe(res => {
         if (res.length > 0) {
           this.compListWithClassification = res;
           console.log(this.compListWithClassification);
           this.commonLoadingDirective.showLoading(false, "");
+
         }
+        this.loading = false;
       }, err => {
         console.log(err.error);
         this.commonLoadingDirective.showLoading(false, "");
-        // this.loading = false;
+        this.loading = false;
       }
       )
   }
@@ -109,17 +114,23 @@ export class TrainComponent implements OnInit {
       var arr = new Array();
       for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
       var bstr = arr.join("");
-      var workbook = XLSX.read(bstr, { type: "binary" });
+      var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
       console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
       this.CompDetailList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      console.log(this.filelist);
       this.loading = true;
-      this.commonLoadingDirective.showLoading(true, "Please wait to get the configured rules....");
+      this.commonLoadingDirective.showLoading(true, "Please wait to get the uploaded rules....");
       this.http.post<any>('api/ScrewCompressureAPI/Configuration', JSON.stringify(this.CompDetailList), this.headers)
-        .subscribe(res => {
-          //this.compListWithClassification = res;
+        .subscribe(async res => {
+          await this.http.get(`${environment.ruleengineurl}name=dpm`, { responseType: 'text' })
+            .subscribe(res => {
+              this.getScrewCompressureList();
+              this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+            }, err => {
+              console.log(err.error);
+              this.commonLoadingDirective.showLoading(false, "");
+            })
           this.loading = false;
         }, err => {
           this.loading = false;
@@ -130,17 +141,29 @@ export class TrainComponent implements OnInit {
   }
 
 
+
   ChangeInConfiguration() {
 
     if (this.compListWithClassification.length > 0) {
       var Data = 123;
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Wait for some time ', sticky: true });
+      //this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Wait for some time ', sticky: true });
       this.commonLoadingDirective.showLoading(true, "Please wait to get the configured rules....");
-      this.http.post("api/ScrewCompressureAPI/ConfigurationChange", Data).subscribe(
-        res => console.log(res)
-
-      )
-
+      this.loading = true;
+      this.http.post("api/ScrewCompressureAPI/ConfigurationChange", Data)
+        .subscribe(async res => {
+          await this.http.get(`${environment.ruleengineurl}name=dpm`, { responseType: 'text' })
+            .subscribe(res => {
+              this.getScrewCompressureList();
+              this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+            }, err => {
+              console.log(err.error);
+              this.commonLoadingDirective.showLoading(false, "");
+            })
+          this.loading = false;
+        }, err => {
+          this.loading = false;
+          console.log(err.error);
+        });
     } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'No values are present to revaluate, upload the file first !!!', sticky: true });
     }
@@ -222,23 +245,23 @@ export class TrainComponent implements OnInit {
     }
     return str;
   }
-  imgDowd(){
+  imgDowd() {
     let link = document.createElement("a");
     link.download = "Compressor Image";
     link.href = "src/assets/img/compressor.PNG";
     link.click();
   }
 
-  compressorImage(){
-    this.enableImage=false;
-    this.CancelImage=true;
-    this.Image=true;
+  compressorImage() {
+    this.enableImage = false;
+    this.CancelImage = true;
+    this.Image = true;
   }
-  compressorImageCancel(){
-    this.enableImage=true;
-    this.Image=false;
-    this.CancelImage=false;
-    
+  compressorImageCancel() {
+    this.enableImage = true;
+    this.Image = false;
+    this.CancelImage = false;
+
   }
 
 }

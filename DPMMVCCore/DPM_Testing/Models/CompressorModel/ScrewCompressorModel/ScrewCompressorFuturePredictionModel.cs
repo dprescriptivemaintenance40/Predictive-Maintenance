@@ -4,15 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel
+namespace DPM.Models.CompressorModel.ScrewCompressorModel
 {
-    public class ScrewCompressorPredictionModel
+    public class ScrewCompressorFuturePredictionModel
     {
         [Key]
-        public int PredictionId { get; set; }
+        public int SCFPId { get; set; }
         public string UserId { get; set; }
-        public int BatchId { get; set; }
         public int TenantId { get; set; }
+        public int BatchId { get; set; }
         public decimal PS1 { get; set; }
         public decimal PD1 { get; set; }
         public decimal PS2 { get; set; }
@@ -21,8 +21,8 @@ namespace DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel
         public decimal TD1 { get; set; }
         public decimal TS2 { get; set; }
         public decimal TD2 { get; set; }
-        public DateTime InsertedDate { get; set; }
+        public DateTime PredictedDate { get; set; }
         public string Prediction { get; set; }
-		 public string FuturePrediction { get; set; }
     }
+
 }

@@ -24,7 +24,5 @@ namespace DPM_Testing.Models
         public decimal TD2 { get; set; }
         public DateTime InsertedDate { get; set; }
         public string Classification { get; set; }
-
-        // public string Classification { get; set; }
     }
 }

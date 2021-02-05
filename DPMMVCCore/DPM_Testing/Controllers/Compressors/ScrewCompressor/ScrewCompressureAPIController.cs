@@ -10,6 +10,7 @@ using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -72,15 +73,22 @@ namespace DPM_Testing.Controllers
         [Route("Configuration")]
         public IActionResult PostConfiguration([FromBody] List<ScrewCompressorTrainModel> compressuredetails)
         {
-            // var CompresureList = JsonConvert.DeserializeObject<compresureList>(json);
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+             string userId = User.Claims.First(c => c.Type == "UserID").Value;
+
             try
             {
                 foreach (var item in compressuredetails)
                 {
+                    DateTime datetime = item.InsertedDate;
+                    if (datetime == DateTime.MinValue)
+                    {
+                        item.InsertedDate = DateTime.Now;
+                    }
+                    DateTime dt = item.InsertedDate;
+                    DateTime dateOnly = dt.Date;
+                    item.InsertedDate = dateOnly;
                     item.UserId = userId;
                     item.TenantId = 1;
-                    item.InsertedDate = DateTime.Now;
                     _context.ScrewCompressureTrainData.Add(item);
                     _context.SaveChanges();
 
@@ -139,10 +147,16 @@ namespace DPM_Testing.Controllers
             {
                 foreach (var item in predictionDetails)
                 {
+                    DateTime datetime = item.InsertedDate;
+                    if (datetime == DateTime.MinValue)
+                    {
+                        item.InsertedDate = DateTime.Now;
+                    }
+                    DateTime dt = item.InsertedDate;
+                    DateTime dateOnly = dt.Date;
+                    item.InsertedDate = dateOnly;
                     item.UserId = userId;
                     item.TenantId = 1;
-                    item.InsertedDate = DateTime.Now;
-                    //  item.Prediction = "Calulating";
                     _context.ScrewCompressurePredictionData.Add(item);
                     _context.SaveChanges();
 
@@ -165,10 +179,17 @@ namespace DPM_Testing.Controllers
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
+                DateTime datetime = predictionDetails.InsertedDate;
+                if (datetime == DateTime.MinValue)
+                {
+                    predictionDetails.InsertedDate = DateTime.Now;
+                }
+                DateTime dt = predictionDetails.InsertedDate;
+                DateTime dateOnly = dt.Date;
+                predictionDetails.InsertedDate = dateOnly;
                 predictionDetails.TenantId = 1;
                 predictionDetails.UserId = userId;
                 predictionDetails.Prediction = "pending";
-                predictionDetails.InsertedDate = DateTime.Now;
                 _context.ScrewCompressurePredictionData.Add(predictionDetails);
                 _context.SaveChanges();
                 return Ok(predictionDetails);
@@ -296,7 +317,7 @@ namespace DPM_Testing.Controllers
                             var TD2 = row.GetCell(7).ToString();
 
                             obj.TenantId = 1;
-                            obj.InsertedDate = DateTime.Now;
+                           // obj.InsertedDate = DateTime.Now;
                             obj.PS1 = Convert.ToDecimal(PS1);
                             obj.PD1 = Convert.ToDecimal(PD1);
                             obj.PS2 = Convert.ToDecimal(PS2);

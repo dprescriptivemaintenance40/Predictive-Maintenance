@@ -16,7 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
         if (localStorage.getItem('token') != null) {
             var clonedReq
-            if (req.url.includes("127.0.0.1:8000")) {
+            if (req.url.includes("functionappruleengine")) {
                 clonedReq = req;
             } else {
                 clonedReq = req.clone({

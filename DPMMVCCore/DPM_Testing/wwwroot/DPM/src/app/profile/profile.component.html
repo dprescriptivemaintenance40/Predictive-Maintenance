@@ -1,19 +1,36 @@
 <div *ngIf="user" class="container bootstrap snippet">
-
     <div class="row">
         <div class="col-sm-3">
-            <!--left col-->
+           
             <div class="text-center">
-                <img src="dist/DPM/assets/img/undraw_profile.svg" class="avatar img-circle img-thumbnail" alt="avatar">
-                <label>{{user.Company}}</label>
+                 <img [src]="user.ImageUrl" height="150"> 
             </div>
+           <div class="text-center">
+           <div class="col-sm">
+            <input type="file"  #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+            <button type="button" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;"class="btn btn-success" (click)="file.click()">Upload Image</button>
+           <!-- <button type="button" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;"class="btn btn-success" (click)="file.click()">Delete Image</button> -->
+          </div>
+           </div>
+           
+          <div class="col-md-4">
+            <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+                {{progress}}%
+              </span>
+            <span class="upload" *ngIf="message">
+              {{message}}
+            </span>
+          </div>
 
+          
+            
         </div>
         <!--/col-3-->
         <div class="col-sm-9">
             <ul class="nav nav-tabs">
-                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Home</a></li>
-
+             
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Profile</a></li>
+              
             </ul>
 
             <div class="tab-content">
@@ -39,7 +56,7 @@
                         <div class="form-group">
                             <div class="col-xs-6">
                                 <label for="email">
-                  <h4>Firstname</h4>
+                  <h4>Lastname</h4>
                 </label>
                                 <input [(ngModel)]="user.Lastname" type="text" class="form-control" name="Lastname" id="Lastname" placeholder="Lastname">
                             </div>
@@ -60,9 +77,12 @@
                                 <input [(ngModel)]="user.Email" type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
                             </div>
                         </div>
+                        
                         <div class="form-group">
+                            
                             <div class="col-xs-12">
                                 <br>
+                                
                                 <button class="btn btn-dark" type="submit" (click)="Update()"> Update</button>
 
                             </div>

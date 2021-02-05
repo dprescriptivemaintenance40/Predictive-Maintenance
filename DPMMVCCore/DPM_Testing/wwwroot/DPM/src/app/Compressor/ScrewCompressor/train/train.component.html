@@ -20,21 +20,7 @@
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
     </div>
-    <!-- <div class="col-sm col-md-4 form-group">
-        <input type="file" accept=".xlsx,.csv" 
-                           class="form-control-file btn btn-secondary" 
-                           (change)="upload($event)" 
-                           placeholder="Upload file" 
-                           accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-        <span style="font-weight:bold;color:green;" 
-             *ngIf="progress > 0 && progress < 100">
-            {{progress}}%
-          </span>
-          
-          <span style="font-weight:bold;color:green;" *ngIf="message">
-            {{message}}
-          </span>
-    </div> -->
+
     <div class="col-sm">
         <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
     </div>

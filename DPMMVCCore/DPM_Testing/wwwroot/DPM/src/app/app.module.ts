@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { LoginRegistrationComponent } from './login-registration/login-registration.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {PasswordModule} from 'primeng/password';
@@ -71,6 +71,7 @@ import { ChartsModule } from 'ng2-charts';
     MessageModule,
     TableModule,
     NgxSpinnerModule,
+     NgxChartsModule,
     ToastModule,
     ChartsModule
    

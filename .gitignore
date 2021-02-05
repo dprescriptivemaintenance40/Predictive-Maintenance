@@ -1,0 +1,5 @@
+
+*.pubxml
+DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - FTP.pubxml.user
+DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - ReadOnly - FTP.pubxml.user
+DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - Web Deploy.pubxml.user
