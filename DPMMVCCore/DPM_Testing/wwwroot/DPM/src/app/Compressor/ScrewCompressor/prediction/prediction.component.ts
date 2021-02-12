@@ -292,6 +292,8 @@ export class PredictionComponent implements OnInit {
   }
 
   FuturePrediction() {
+    this.futurePredictionDate = "";
+    this.futurePredictionDataTableList = [];
     this.commonLoadingDirective.showLoading(true, "Please wait until future prediction to be done...");
     this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage')
       .subscribe(async res => {
@@ -341,8 +343,8 @@ export class PredictionComponent implements OnInit {
       this.commonLoadingDirective.showLoading(true, "Fetching Records...");
       var AfterDays = this.futurePredictionDatesList[0];
       const params = new HttpParams()
-        .set('FromDate', this.futurePredictionDatesList[0])
-        .set('ToDate', this.futurePredictionDatesList[0]);
+        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'));
       this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
         .subscribe(
           res => {
@@ -363,10 +365,9 @@ export class PredictionComponent implements OnInit {
     } else if (this.futurePredictionDate == 'After a week') {
 
       this.commonLoadingDirective.showLoading(true, "Fetching Records...");
-      var ToDate = this.futurePredictionDatesList[6]
       const params = new HttpParams()
-        .set('FromDate', this.futurePredictionDatesList[0])
-        .set('ToDate', ToDate);
+        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.futurePredictionDatesList[6], 'DD/MM/YYYY').format('YYYY-MM-DD'));
       this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
         .subscribe(
           res => {
@@ -388,8 +389,8 @@ export class PredictionComponent implements OnInit {
 
       this.commonLoadingDirective.showLoading(true, "Fetching Records...");
       const params = new HttpParams()
-        .set('FromDate', this.futurePredictionDatesList[0])
-        .set('ToDate', this.futurePredictionDatesList[14]);
+        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.futurePredictionDatesList[14], 'DD/MM/YYYY').format('YYYY-MM-DD'));
       this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
         .subscribe(
           res => {
@@ -408,13 +409,11 @@ export class PredictionComponent implements OnInit {
           }
         )
 
-    } else {
-
+    } else if (this.futurePredictionDate == 'After 30 Days') {
       this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
-      var indexOfLastDate = this.futurePredictionDatesList.length - 1;
       const params = new HttpParams()
-        .set('FromDate', this.futurePredictionDatesList[0])
-        .set('ToDate', this.futurePredictionDatesList[indexOfLastDate]);
+        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.futurePredictionDatesList[this.futurePredictionDatesList.length - 1], 'DD/MM/YYYY').format('YYYY-MM-DD'));
       this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
         .subscribe(
           res => {
@@ -432,6 +431,10 @@ export class PredictionComponent implements OnInit {
             this.commonLoadingDirective.showLoading(false, " ");
           }
         )
+    }
+    else {
+      this.futurePredictionDataTableList = [];
+
     }
   }
 
