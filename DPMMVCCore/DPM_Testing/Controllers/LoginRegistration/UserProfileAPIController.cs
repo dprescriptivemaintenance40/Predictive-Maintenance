@@ -1,25 +1,18 @@
 ﻿using DPM_ServerSide.DAL;
 using DPM_Testing.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace DPM_Testing.Controllers
 {
     [Authorize]
-   // [EnableCors("MyAllowSpecificOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserProfileAPIController : ControllerBase
@@ -32,9 +25,7 @@ namespace DPM_Testing.Controllers
             _context = context;
         }
 
-        // GET: api/<UserProfileAPIController>
         [HttpGet]
-        
         public async Task<Object> GetUserProfile()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -48,22 +39,11 @@ namespace DPM_Testing.Controllers
                 user.PhoneNumber,
                 user.UserName,
                 user.Company,
-                user.ImageUrl
-               
+                user.ImageUrl,
+                user.UserType
             };
         }
 
-
-
-        // GET api/<UserProfileAPIController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<UserProfileAPIController>
-       
         [HttpPost]
         [Route("UploadImage")]
         public async Task<Object> PostUploadImage()
@@ -92,10 +72,10 @@ namespace DPM_Testing.Controllers
                     }
                 }
 
-                if ( file.Length > 0)
+                if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName );
+                    var fullPath = Path.Combine(pathToSave, fileName);
                     string dbPath = string.Format("DPM_Profile_Images/{0}/{1}", UserId, fileName);
                     var user = await _userManager.FindByIdAsync(UserId);
                     user.ImageUrl = dbPath;
@@ -107,11 +87,8 @@ namespace DPM_Testing.Controllers
                         stream.Position = 0;
                     }
 
-                   
-
                     return Ok(new { dbPath });
                 }
-               
                 else
                 {
                     return BadRequest();
@@ -121,41 +98,19 @@ namespace DPM_Testing.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
-
-
-
         }
-      
-
-            // PUT api/<UserProfileAPIController>/5
-            [HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutAddRuleModel(String Id, RegisterUser model)
         {
-          //  string userId = User.Claims.First(c => c.Type == "UserID").Value;
             var user = await _userManager.FindByIdAsync(Id);
-
-
             user.UserName = model.UserName;
             user.Lastname = model.Lastname;
             user.Firstname = model.Firstname;
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
             user.Company = model.Company;
-
-            // Apply the changes if any to the db
             await _userManager.UpdateAsync(user);
-
             return Ok(user);
-        }
-
-        // DELETE api/<UserProfileAPIController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

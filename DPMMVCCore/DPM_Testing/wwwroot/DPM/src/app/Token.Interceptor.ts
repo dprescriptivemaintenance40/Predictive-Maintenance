@@ -10,23 +10,15 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router) {
 
     }
-
-
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         if (localStorage.getItem('token') != null) {
-            var clonedReq
-            if (req.url.includes("functionappruleengine")) {
-                clonedReq = req;
-            } else {
-                clonedReq = req.clone({
-                    setHeaders: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+            var clonedReq = req.clone({
+                setHeaders: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                }
 
-                    }
-
-                });
-            }
+            });
             return next.handle(clonedReq).pipe(
                 tap(
                     succ => { },
@@ -42,20 +34,4 @@ export class AuthInterceptor implements HttpInterceptor {
         else
             return next.handle(req.clone());
     }
-
-    // intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    //     const token = localStorage.getItem('token')
-
-    //     if (token) {
-    //         request = request.clone({
-    //         setHeaders: {
-    //           Authorization: 'Bearer ' +  token
-    //         }
-    //       });
-    //     }
-
-    //     return next.handle(request);
-    //   }
-
-
 }

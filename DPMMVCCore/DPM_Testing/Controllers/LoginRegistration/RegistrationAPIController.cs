@@ -71,9 +71,8 @@ namespace DPM_Testing.Controllers
                 PhoneNumber = model.PhoneNumber,
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
-                Company = model.Company
-
-
+                Company = model.Company,
+                UserType = 2 // UserType 2 is for customer
             };
 
             try
@@ -94,8 +93,6 @@ namespace DPM_Testing.Controllers
         {
             try
             {
-
-
                 var user = await _userManager.FindByNameAsync(model.UserName);
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
                 {
@@ -111,7 +108,7 @@ namespace DPM_Testing.Controllers
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                     var SecurityToken = tokenHandler.WriteToken(securityToken);
-                    return Ok(new { SecurityToken });
+					return Ok(new { SecurityToken , user});
                 }
                 else
                     return BadRequest(new { message = "Username or password is incorrect." });

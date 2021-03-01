@@ -14,6 +14,7 @@ namespace DPM_Testing.Models
         public string Company { get; set; }
         [NotMapped]
         public string ImageUrl { get; set; }
-        
+        public int UserType { get; set; }
+
     }
 }

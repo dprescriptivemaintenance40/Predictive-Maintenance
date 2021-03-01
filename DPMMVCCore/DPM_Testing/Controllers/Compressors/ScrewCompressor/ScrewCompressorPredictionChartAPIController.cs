@@ -1,14 +1,9 @@
 ﻿using DPM_ServerSide.DAL;
 using DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel;
-using DPM_Testing.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DPM.Controllers.Compressors.ScrewCompressor
 {
@@ -24,8 +19,6 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
             _context = context;
         }
 
-
-        // GET: api/<ScrewCompressorPredictionChartAPIController>
         [HttpGet]
         [Route("GetPredictionPreviousWeek")]
         public IActionResult GetPreviousWeek()
@@ -47,7 +40,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                                                                   .Where(a => a.UserId == userId
                                                                       && (a.InsertedDate >= previousMonday
                                                                       && a.InsertedDate <= previousSunday)
-                                                                      && a.Prediction != null )
+                                                                      && a.Prediction != null)
                                                                       .AsQueryable();
                 var predictionData = screwCompressorPrediction.ToList();
                 return Ok(predictionData);
@@ -99,9 +92,9 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 IQueryable<ScrewCompressorPredictionModel> screwCompressorPrediction =
                                                      _context.ScrewCompressurePredictionData
                                                              .Where(a => a.UserId == userId
-                                                                 && ( a.InsertedDate.Date.Year == Year
-                                                                 &&   a.InsertedDate.Date.Month == Month )
-                                                                 &&   a.Prediction != null)
+                                                                 && (a.InsertedDate.Date.Year == Year
+                                                                 && a.InsertedDate.Date.Month == Month)
+                                                                 && a.Prediction != null)
                                                                 .AsQueryable();
                 var predictionData = screwCompressorPrediction.ToList();
                 return Ok(predictionData);
@@ -110,25 +103,6 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
             {
                 return BadRequest(exe.Message);
             }
-        }
-
-
-        // POST api/<ScrewCompressorPredictionChartAPIController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ScrewCompressorPredictionChartAPIController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ScrewCompressorPredictionChartAPIController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

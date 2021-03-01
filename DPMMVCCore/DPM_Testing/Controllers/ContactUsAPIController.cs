@@ -2,20 +2,14 @@
 using DPM_Testing.Models;
 using EmailService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DPM_Testing.Controllers
 {
     [Authorize]
-   // [EnableCors("MyAllowSpecificOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class ContactUsAPIController : ControllerBase
@@ -32,18 +26,6 @@ namespace DPM_Testing.Controllers
             this.configuration = configuration;
         }
 
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         [HttpPost]
         [Route("ContactUs")]
         public async Task<ActionResult<ContactUs>> PostContactUs(ContactUs contactUs)
@@ -52,7 +34,7 @@ namespace DPM_Testing.Controllers
             {
                 contactUs.To = "dprescripti@gmail.com";
                 var subject = contactUs.Subject;
-                var body = " From : " + contactUs.Email +"   " + " Message: " + contactUs.Comment;
+                var body = " From : " + contactUs.Email + "   " + " Message: " + contactUs.Comment;
                 var message = new Message(new string[] { contactUs.To }, subject, body, null);
                 await _emailSender.SendEmailAsync(message);
                 _context.contactUs.Add(contactUs);
@@ -63,19 +45,7 @@ namespace DPM_Testing.Controllers
             {
                 return BadRequest(exe.Message);
             }
-           
-        }
 
-        // PUT api/<ContactUsAPIController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ContactUsAPIController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

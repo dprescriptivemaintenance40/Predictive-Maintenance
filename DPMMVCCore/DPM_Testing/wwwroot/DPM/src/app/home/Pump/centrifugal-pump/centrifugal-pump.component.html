@@ -1,0 +1,43 @@
+<div style="padding: 5px;" class="row" *ngIf="!(user.UserType == 1 || user.UserType == 2)">
+    <div class="col-sm col-md-4 form-group">
+        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+
+    </div>
+    <div class="col-sm">
+        <button type="button" style="background-color:#585570 ; border-color:#585570;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
+    </div>
+    <div class="col-sm">
+        <button type="button" style="background-color:#585570 ; border-color:#585570;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
+    </div>
+</div>
+<br>
+<div style="padding: 5px;">
+    <div class="card">
+        <p-table id="exportexcel" [value]="centrifugalPump" [columns]="centrifugalPumpColumns" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
+            [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
+            <ng-template pTemplate="colgroup">
+                <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                        <col *ngFor="let col of columns" [style]="{width: col.width}">
+                    </colgroup>
+                </ng-template>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" pSortableColumn="{{col.field}}">
+                        {{col.header}}
+                        <p-sortIcon field="{{col.field}}"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns;">
+                        {{rowData[col.field]}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<p-toast position="top-center"></p-toast>

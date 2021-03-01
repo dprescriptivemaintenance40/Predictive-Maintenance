@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../Services/user.services';
+import { UserService } from '../home/Services/user.services';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
+import { EventEmitterService } from '../home/Services/event-emitter.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class LoginRegistrationComponent {
     public messageService: MessageService,
     public title: Title,
     public formBuilder: FormBuilder,
+    public eventEmitterService : EventEmitterService,
 
 
   ) { }
@@ -35,7 +37,7 @@ export class LoginRegistrationComponent {
     this.service.formModel.reset();
 
     if (localStorage.getItem('token') != null) {
-      this.router.navigateByUrl('/Dashboard');
+      this.router.navigateByUrl('/Home/Dashboard');
     }
 
     this.loginForm = this.formBuilder.group({
@@ -101,7 +103,10 @@ export class LoginRegistrationComponent {
         .subscribe(
           (res: any) => {
             localStorage.setItem('token', res.SecurityToken);
-            this.router.navigateByUrl('/Dashboard');
+           localStorage.setItem('userObject', JSON.stringify(res.user));
+           var data = JSON.parse(localStorage.getItem('userObject'))
+           this.eventEmitterService.SendDataToHomeComponent(data); 
+            this.router.navigateByUrl('/Home/Dashboard');
           },
           err => {
             if (err.status == 400)

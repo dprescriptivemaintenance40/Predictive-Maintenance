@@ -10,17 +10,13 @@ using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace DPM_Testing.Controllers
 {
     [Authorize]
-    //  [EnableCors("MyAllowSpecificOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class ScrewCompressureAPIController : ControllerBase
@@ -32,17 +28,6 @@ namespace DPM_Testing.Controllers
         {
             _context = context;
         }
-        // GET: api/<ScrewCompressureAPIController>
-        [HttpGet]
-        //  public IEnumerable<string> Get()
-        //  {
-        //      return new string[] { "value1", "value2" };
-        //  }
-
-        //public async Task<ActionResult<IEnumerable<ScrewCompressorTrainClassificationModel>>> GetcompressureWithClassifications()
-        //{
-        //    return await _context.ScrewCompressureTrainClassifications.ToListAsync();
-        //}
 
         public IActionResult GetClassification()
         {
@@ -60,15 +45,6 @@ namespace DPM_Testing.Controllers
 
         }
 
-
-        // GET api/<CompressureDetailsAPIController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<ScrewCompressureAPIController>
         [HttpPost]
         [Route("Configuration")]
         public IActionResult PostConfiguration([FromBody] List<ScrewCompressorTrainModel> compressuredetails)
@@ -141,7 +117,6 @@ namespace DPM_Testing.Controllers
         [Route("Prediction")]
         public IActionResult PostPrediction([FromBody] List<ScrewCompressorPredictionModel> predictionDetails)
         {
-            // var CompresureList = JsonConvert.DeserializeObject<compresureList>(json);
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
@@ -159,14 +134,11 @@ namespace DPM_Testing.Controllers
                     item.TenantId = 1;
                     _context.ScrewCompressurePredictionData.Add(item);
                     _context.SaveChanges();
-
                 }
                 return Ok(predictionDetails);
             }
             catch (Exception exe)
             {
-
-
                 return BadRequest(exe.Message);
             }
 
@@ -317,7 +289,6 @@ namespace DPM_Testing.Controllers
                             var TD2 = row.GetCell(7).ToString();
 
                             obj.TenantId = 1;
-                           // obj.InsertedDate = DateTime.Now;
                             obj.PS1 = Convert.ToDecimal(PS1);
                             obj.PD1 = Convert.ToDecimal(PD1);
                             obj.PS2 = Convert.ToDecimal(PS2);
@@ -333,46 +304,18 @@ namespace DPM_Testing.Controllers
                             _context.SaveChangesAsync();
 
                         }
-
                         transaction.Commit();
                         _context.Database.CloseConnection();
                     }
-
-
                 }
-
-                // System.IO.File.Delete(newPath);
                 return Ok("Done");
-
             }
             catch (Exception exe)
             {
-
-
                 transaction.RollbackToSavepoint("amin");
                 _context.Database.CloseConnection();
                 return BadRequest(exe.Message);
-
             }
-
         }
-
-
-
-
-
-        // PUT api/<ScrewCompressureAPIController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ScrewCompressureAPIController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-
     }
 }
