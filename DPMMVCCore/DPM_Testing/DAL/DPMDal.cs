@@ -1,14 +1,10 @@
 ﻿using DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel;
-using DPM_ServerSide.Models.CompressorModel;
 using DPM_Testing.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DPM.Models.CompressorModel.ScrewCompressorModel;
 using DPM.Models.Prescriptive;
 using DPM.Models.PumpModel;
+
 
 namespace DPM_ServerSide.DAL
 {
@@ -23,11 +19,14 @@ namespace DPM_ServerSide.DAL
         public DbSet<ScrewCompressorPredictionModel> ScrewCompressurePredictionData { get; set; }
         public DbSet<ScrewCompressorTrainClassificationModel> ScrewCompressureTrainClassifications { get; set; }
         public DbSet<ScrewCompressorFuturePredictionModel> ScrewCompressureFuturePrediction { get; set; }
-        public DbSet<PrescriptiveModel> PrescriptiveModelData { get; set; }
+        public DbSet<CentrifugalPumpPrescriptiveModel> PrescriptiveModelData { get; set; }
         public DbSet<PrescriptiveLookupMasterModel> PrescriptiveLookupMassterModelData { get; set; }
         public DbSet<ContactUs> contactUs { get; set; }
         public DbSet<RegisterUser> RegisterUsers { get; set; }
         public DbSet<CentrifugalPumpModel> CentrifugalPumpModelData { get; set; }
+       public DbSet<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
+
+        public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,10 +37,15 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<ScrewCompressorFuturePredictionModel>().ToTable("screwcompressorfutureprediction");
             modelBuilder.Entity<ContactUs>().ToTable("contactus").HasKey(p => p.ContactUsId);
             modelBuilder.Entity<RegistrationModel>().ToTable("registeruser");
-            modelBuilder.Entity<PrescriptiveModel>().ToTable("dpmprescriptive");
             modelBuilder.Entity<PrescriptiveLookupMasterModel>().ToTable("prescriptive_lookupmaster");
             modelBuilder.Entity<CentrifugalPumpModel>().ToTable("centrifugalpump");
-
+            modelBuilder.Entity<CentrifugalPumpWeekDataModel>().ToTable("centrifugalpumpweekdata");
+            modelBuilder.Entity<CentrifugalPumpPrescriptiveModel>().ToTable("dpmprescriptive");
+            modelBuilder.Entity<CentrifugalPumpPrescriptiveFailureMode>().ToTable("centrifugalpumpfailuremodes");
+            modelBuilder.Entity<CentrifugalPumpPrescriptiveFailureMode>()
+                        .HasOne(p => p.CentrifugalPumpPrescriptiveModel)
+                        .WithMany(b => b.centrifugalPumpPrescriptiveFailureModes)
+                        .HasForeignKey(a => a.CFPPrescriptiveId);
         }
 
     }

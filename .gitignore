@@ -3,6 +3,7 @@
 DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - FTP.pubxml.user
 DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - ReadOnly - FTP.pubxml.user
 DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - Web Deploy.pubxml.user
+DPMMVCCore/DPM_Testing/wwwroot/dist
 *.cache
 
 *.swp
@@ -35,5 +36,5 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-# Visual Studio 2015
+# Visual Studio 2019
 .vs/

@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder} from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, TreeNode } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
+import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescriptive-model';
 
 @Component({
   selector: 'app-prescriptive-consequences',
@@ -33,6 +34,7 @@ export class PrescriptiveConsequencesComponent implements OnInit {
    public Consequences3 : boolean = false;
    public Consequences4 : boolean = false;
    public ConsequencesTree : boolean = false;
+   public prescriptiveTree : boolean = false;
    public ConsequencesAnswer: any = [];
    private consequenceTreeColorNodeA = 'p-person1'
    private consequenceTreeColorNodeB = 'p-person'
@@ -45,9 +47,17 @@ export class PrescriptiveConsequencesComponent implements OnInit {
    private consequenceE = 'p-person' ;
    private finalConsequence;
    private ConsequencesData;
-   
-  
 
+   public prescriptiveTreeNextEnable : boolean = false;
+   public SaveConcequencesEnable : boolean = false;
+   public FMLSConsequenceName : string = ""
+   public data1: any;
+   public selectedNode: TreeNode;
+   private FMCount : number = 0;
+   private FMTree : any;
+
+   centrifugalPumpPrescriptiveOBJ : CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+   
   constructor( public messageService: MessageService,
               public formBuilder: FormBuilder,
               public title: Title,
@@ -58,37 +68,13 @@ export class PrescriptiveConsequencesComponent implements OnInit {
   ngOnInit(){
     this.title.setTitle('DPM | Consequence Update');
     this.ConsequencesData = JSON.parse(localStorage.getItem('PrescriptiveUpdateObject'))
-
-  if(this.ConsequencesData.Consequence != null){
-    this.ConsequencesTree = true 
-    if(this.ConsequencesData.Consequence == 'B'){
-      this.consequenceTreeColorNodeB = 'p-person1'
-      this.consequenceB = 'p-person1'
-    }else if(this.ConsequencesData.Consequence == 'C' ){
-      this.consequenceTreeColorNodeB = 'p-person1'
-      this.consequenceTreeColorNodeD = 'p-person1'
-      this.consequenceC = 'p-person1'
-    }else if(this.ConsequencesData.Consequence == 'D'){
-      this.consequenceTreeColorNodeB = 'p-person1'
-      this.consequenceTreeColorNodeD = 'p-person1'
-      this.consequenceD = 'p-person1'
-    }else if(this.ConsequencesData.Consequence == 'E'){
-      this.consequenceTreeColorNodeC = 'p-person1'
-      this.consequenceE = 'p-person1'
-    }else if(this.ConsequencesData.Consequence == 'A'){
-      this.consequenceTreeColorNodeC = 'p-person1'
-      this.consequenceA = 'p-person1'
-    }
-    this.ConsequenceTreeGeneration()
-
-    }else {
-      this.Consequences1 = true;
-      
-    }
+    var FailureModeWithLSETree = JSON.parse(this.ConsequencesData.FailureModeWithLSETree)
+    this.data1 = FailureModeWithLSETree
+    this.prescriptiveTreeNextEnable = true
+    this.prescriptiveTree = true
+    this.FMTree = this.data1[0].children[0].children[0].children
 
   }
-
- 
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveUpdateObject');
   }
@@ -156,7 +142,48 @@ export class PrescriptiveConsequencesComponent implements OnInit {
     }
   }
 
+  treeNext(){
+    this.prescriptiveTree = false;
+    this.Consequences1 = true;
+    this.FMLSConsequenceName = this.FMTree[this.FMCount].data.name
+  }
 
+  ADDConsequence(){ 
+    this.FMTree[this.FMCount].children.push(
+      {
+        label: "Consequence",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.finalConsequence
+      }  
+    }
+    )
+    this.FMCount += 1;
+    if(this.FMCount <= this.FMTree.length-1){
+      this.FMLSConsequenceName = this.FMTree[this.FMCount].data.name
+    }
+    if(this.FMCount == this.FMTree.length){
+      this.prescriptiveTreeNextEnable = false;
+      this.SaveConcequencesEnable = true;
+    }
+   
+    this.prescriptiveTree = true;
+    this.Consequences1 = false;
+    this.ConsequencesTree = false;
+    this.dropedConsequenceEffectFailureMode = []
+    this.dropedConsequenceFailureMode= []
+    this.dropedConsequenceCombinationFailureMode= []
+    this.dropedConsequenceAffectFailureMode= []
+    this.ConsequenceNode=[]
+    this.consequenceA = 'p-person1'
+    this.consequenceB = 'p-person'
+    this.consequenceC = 'p-person'
+    this.consequenceD = 'p-person'
+    this.consequenceE = 'p-person'
+  
+}
 
   onNodeSelect(event) {
     this.messageService.add({
@@ -187,7 +214,7 @@ export class PrescriptiveConsequencesComponent implements OnInit {
       }
     }else{
     
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field', sticky: true });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
     }
     
     
@@ -207,8 +234,8 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
 
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'B', sticky: true });
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please click Update to Save changes', sticky: true });
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'B'});
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please click Update to Save changes' });
         this.finalConsequence = ""
         this.finalConsequence ="B"
         console.log( this.ConsequencesAnswer)
@@ -227,8 +254,7 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         this.Consequences4 = true;
       }
     }else{
-     
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field', sticky: true });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
     }
 
   }
@@ -240,8 +266,7 @@ export class PrescriptiveConsequencesComponent implements OnInit {
     if(this.dropedConsequenceCombinationFailureMode.length ==1){
       if(this.dropedConsequenceCombinationFailureMode[0] == 'YES'){
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-       
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'A', sticky: true });
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'A'});
         this.finalConsequence = ""
         this.finalConsequence ="A"
         this.consequenceA = 'p-person1'
@@ -259,7 +284,7 @@ export class PrescriptiveConsequencesComponent implements OnInit {
       }else{
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
       
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'E', sticky: true });
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'E'});
         this.finalConsequence = ""
         this.finalConsequence ="E"
         this.consequenceA = 'p-person'
@@ -277,20 +302,16 @@ export class PrescriptiveConsequencesComponent implements OnInit {
       }
    }else{
     
-     this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field', sticky: true });
+     this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
    }
     
   }
-  Consequence4Back(){
-    this.Consequences2 = true
-    this.Consequences4 = false;
-  }
+  
   Consequence4Next(){
     if(this.dropedConsequenceAffectFailureMode.length ==1){
       if(this.dropedConsequenceAffectFailureMode[0] == 'YES'){
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-       
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'C', sticky: true });
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'C'});
         this.finalConsequence = ""
         this.finalConsequence ="C"
         this.consequenceA = 'p-person'
@@ -307,8 +328,7 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         this.colorConsequenceTree()
       }else{
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'D', sticky: true });
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'D'});
         this.finalConsequence = ""
         this.finalConsequence ="D"
         this.consequenceA = 'p-person'
@@ -325,7 +345,7 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         this.colorConsequenceTree()
       }
    }else{
-     this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field', sticky: true });
+     this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
    }
     
   }
@@ -359,77 +379,6 @@ export class PrescriptiveConsequencesComponent implements OnInit {
   }
   this.ConsequenceTreeGeneration();
   this.ConsequencesAnswer = []
-
-  }
-
-
-  ConsequenceTreeUpdate(){
-    var conse;
-    if(this.finalConsequence != null){
-        conse = this.finalConsequence
-    }else{
-       conse = this.ConsequencesData.Consequence
-    }
-    let Data = {
-      PrescriptiveId : this.ConsequencesData.PrescriptiveId,
-      UserId : this.ConsequencesData.UserId,
-      EquipmentType: this.ConsequencesData.EquipmentType,
-      MachineType: this.ConsequencesData.MachineType,
-      TagNumber : this.ConsequencesData.TagNumber,
-      FunctionFluidType : this.ConsequencesData.FunctionFluidType,
-      FunctionRatedHead : this.ConsequencesData.FunctionRatedHead,
-      FunctionPeriodType : this.ConsequencesData.FunctionPeriodType,
-      FunctionFailure : this.ConsequencesData.FunctionFailure,
-      FunctionMode :this.ConsequencesData.FunctionMode,
-      LocalEffect : this.ConsequencesData.LocalEffect,
-      SystemEffect : this.ConsequencesData.SystemEffect,
-      Date : this.ConsequencesData.Date,
-      Consequence : conse
-    }
-    this.http.put('api/PrescriptiveAPI/'+ Data.PrescriptiveId, Data).subscribe(
-      res =>{ console.log(res);
-       
-        
-         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Succesfully Done', sticky: true });
-        }, 
-      err =>{ console.log(err.Message); alert(err.Nessage)}
-    )
-    this.router.navigateByUrl('/Home/Dashboard');
-  }
-
-
-  SubmitConsequenceTree(){
-    var conse;
-    if(this.finalConsequence != null){
-        conse = this.finalConsequence
-    }else{
-       conse = this.ConsequencesData.Consequence
-    }
-    let Data = {
-      PrescriptiveId : this.ConsequencesData.PrescriptiveId,
-      UserId : this.ConsequencesData.UserId,
-      EquipmentType: this.ConsequencesData.EquipmentType,
-      MachineType: this.ConsequencesData.MachineType,
-      TagNumber : this.ConsequencesData.TagNumber,
-      FunctionFluidType : this.ConsequencesData.FunctionFluidType,
-      FunctionRatedHead : this.ConsequencesData.FunctionRatedHead,
-      FunctionPeriodType : this.ConsequencesData.FunctionPeriodType,
-      FunctionFailure : this.ConsequencesData.FunctionFailure,
-      FunctionMode :this.ConsequencesData.FunctionMode,
-      LocalEffect : this.ConsequencesData.LocalEffect,
-      SystemEffect : this.ConsequencesData.SystemEffect,
-      Date : this.ConsequencesData.Date,
-      Consequence : conse
-    }
-    this.http.put('api/PrescriptiveAPI/'+ Data.PrescriptiveId, Data).subscribe(
-      res =>{ console.log(res);
-       
-        
-         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Succesfully Done', sticky: true });
-        }, 
-      err =>{ console.log(err.Message); alert(err.Nessage)}
-    )
-    this.router.navigateByUrl('/Home/Dashboard');
 
   }
 
@@ -536,6 +485,43 @@ export class PrescriptiveConsequencesComponent implements OnInit {
 
  }
 
+ SubmitConsequenceTree(){
+  this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
+  this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.ConsequencesData.CFPPrescriptiveId;
+  this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
+  for (let index = 0; index < this.FMTree.length; index++) {
+    let obj = {};
+        obj['CPPFMId'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
+        obj['CFPPrescriptiveId'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
+        obj['FunctionMode'] = this.FMTree[index].data.name;
+        obj['LocalEffect'] = this.FMTree[index].children[0].data.name;
+        obj['SystemEffect'] = this.FMTree[index].children[1].data.name;
+        obj['Consequence'] = this.FMTree[index].children[2].data.name;
+        obj['DownTimeFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].DownTimeFactor;
+        obj['ScrapeFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ScrapeFactor;
+        obj['SafetyFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].SafetyFactor;
+        obj['ProtectionFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ProtectionFactor;
+        obj['FrequencyFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyFactor;
+        obj['CriticalityFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor;
+        obj['Rating'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].Rating;
+        obj['MaintainenancePractice'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
+        obj['FrequencyMaintainenance'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
+        obj['ConditionMonitoring'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
+    
+    this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+    
+  }
+
+  this.http.put('api/PrescriptiveAPI/CFPrescriptiveAdd',this.centrifugalPumpPrescriptiveOBJ).subscribe(
+    res => { 
+      console.log(res);
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Successfully Done'});
+      this.router.navigateByUrl('/Home/Dashboard');
+    }, err =>{ console.log(err.err) }
+    )
+  
+
+ }
 
 
 }

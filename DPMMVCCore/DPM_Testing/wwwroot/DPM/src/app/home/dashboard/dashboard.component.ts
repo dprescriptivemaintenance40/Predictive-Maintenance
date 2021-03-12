@@ -98,6 +98,11 @@ export class DashboardComponent {
     }
   }
 
+  public prescriptiveRecords: any = [];
+  public Table1 : boolean = true;
+  public Table2 : boolean = false;
+  public FailureModeDataTabe2 : any;
+
   name = "Angular";
 
   ngOnInit() {
@@ -126,29 +131,29 @@ export class DashboardComponent {
       if ((this.TrainPredictType == 'Prediction' && this.CompressorType == 'ScrewCompressor')) {
         this.getScrewPredictionTillFirstUploadList();
       } else if ((this.TrainPredictType == 'Train' && this.CompressorType == 'ScrewCompressor' && this.SelectDateType == 'TillFirstUpload')) {
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Train with TillFirstUpload has been Selected', sticky: true });
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Train with TillFirstUpload has been Selected' });
         this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
         this.getScrewTrainTillFirstUploadList()
       } else if ((this.TrainPredictType == 'Train' && this.CompressorType == 'ScrewCompressor' && this.SelectDateType == 'LastUpload')) {
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Train with LastUpload has been Selected', sticky: true });
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Train with LastUpload has been Selected'});
         this.getScrewTrainUniqueDateOfUploadFromDB();
       } else if ((this.TrainPredictType == 'Train' && this.CompressorType == 'ScrewCompressor' && this.SelectDateType == 'PreviousWeek')) {
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Train with PreviousWeek has been Selected', sticky: true });
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Train with PreviousWeek has been Selected'});
         this.getScrewTrainPreviousWeek();
       } else if ((this.TrainPredictType == 'Train' && this.CompressorType == 'ScrewCompressor' && this.SelectDateType == 'PreviousMonth')) {
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Train with PreviousMonth has been Selected', sticky: true });
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Train with PreviousMonth has been Selected'});
         this.getScrewTrainPreviousMonthList();
       } else if ((this.TrainPredictType == 'Prediction' && this.CompressorType == 'ScrewCompressor' && this.SelectDateType == 'TillFirstUpload')) {
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Prediction with TillFirstUpload has been Selected', sticky: true });
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Prediction with TillFirstUpload has been Selected' });
         this.getScrewPredictionTillFirstUploadList();
       } else if ((this.TrainPredictType == 'Prediction' && this.CompressorType == 'ScrewCompressor' && this.SelectDateType == 'LastUpload')) {
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Prediction with LastUpload has been Selected', sticky: true });
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Prediction with LastUpload has been Selected'});
         this.getScrewPredictionUniqueDateOfUploadFromDB();
       } else if ((this.TrainPredictType == 'Prediction' && this.CompressorType == 'ScrewCompressor' && this.SelectDateType == 'PreviousWeek')) {
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Prediction with PreviousWeek has been Selected', sticky: true });
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Prediction with PreviousWeek has been Selected' });
         this.getScrewPredictionPreviousWeek();
       } else if ((this.TrainPredictType == 'Prediction' && this.CompressorType == 'ScrewCompressor' && this.SelectDateType == 'PreviousMonth')) {
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Prediction with PreviousMonth has been Selected', sticky: true });
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Screw Compressor Prediction with PreviousMonth has been Selected'});
         this.getScrewPredictionPreviousMonthList();
       } else if ((this.TrainPredictType == 'Prediction' && this.CompressorType == 'ScrewCompressor2')) {
         console.log('ScrewCompressor2 Prediction Selected')
@@ -170,7 +175,7 @@ export class DashboardComponent {
           this.commonLoadingDirective.showLoading(false, "ready....");
         } else {
           this.commonLoadingDirective.showLoading(false, "No records to plot graph....");
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph', sticky: true });
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph'});
 
         }
 
@@ -218,7 +223,7 @@ export class DashboardComponent {
           this.commonLoadingDirective.showLoading(false, "ready....");
         } else {
           this.commonLoadingDirective.showLoading(false, "No records to plot graph....");
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph', sticky: true });
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph' });
 
         }
 
@@ -294,7 +299,7 @@ export class DashboardComponent {
           }
         } else {
           this.commonLoadingDirective.showLoading(false, "No records to plot graph....");
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph', sticky: true });
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph' });
 
         }
 
@@ -321,7 +326,7 @@ export class DashboardComponent {
           this.ScrewTrainRealTimeDegrade()
           this.commonLoadingDirective.showLoading(false, "Graph is ready");
         } else {
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph ', sticky: true });
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph ' });
 
           this.commonLoadingDirective.showLoading(false, "No records to plot graph....");
         }
@@ -350,7 +355,7 @@ export class DashboardComponent {
 
         } else {
           this.commonLoadingDirective.showLoading(false, "No records to plot graph....");
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph', sticky: true });
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph'});
 
         }
 
@@ -376,7 +381,7 @@ export class DashboardComponent {
 
         } else {
           this.commonLoadingDirective.showLoading(false, "No records to plot graph....");
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph', sticky: true });
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph'});
 
         }
 
@@ -402,7 +407,7 @@ export class DashboardComponent {
 
         } else {
           this.commonLoadingDirective.showLoading(false, "No records to plot graph....");
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph', sticky: true });
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph'});
 
 
         }
@@ -432,7 +437,7 @@ export class DashboardComponent {
           }
         } else {
           this.commonLoadingDirective.showLoading(false, "No records to plot graph....");
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph', sticky: true });
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'No records to plot graph' });
 
         }
       }, err => {
@@ -571,10 +576,6 @@ export class DashboardComponent {
       if (this.TrainNormalCount == undefined) {
         this.TrainNormalCount = 0;
       }
-      //  console.log('Train Normal Count :', this.TrainNormalCount)
-      //  console.log('Train Incipient Count', this.TrainIncipientCount)
-      //  console.log('Train Degrade Count :', this.TrainDegradeCount)
-
       this.TrainNormalPercentage = this.TrainNormalCount / this.screwTrainTotalCount * 100
       //   console.log('Screw Train Normal Percentage : ', this.TrainNormalPercentage);
 
@@ -584,16 +585,8 @@ export class DashboardComponent {
       this.TrainDegradePercentage = this.TrainDegradeCount / this.screwTrainTotalCount * 100
       //   console.log('Screw Train Degrade Percentage : ', this.TrainDegradePercentage)
 
-
     }
-
-
   }
-
-
-
-
-
 
   ScrewPredictionCountCalculations(Data) {
     this.PredictionCountCalculations = null;
@@ -601,9 +594,6 @@ export class DashboardComponent {
 
     var countKey = Object.keys(this.PredictionCountCalculations).length;
     this.screwPredictionTotalCount = countKey
-    //   console.log('total count', this.screwPredictionTotalCount)
-
-
     var result: any = [];
 
     if (this.PredictionCountCalculations != 0) {
@@ -626,9 +616,6 @@ export class DashboardComponent {
       if (this.screwPredictionNormalCount == undefined) {
         this.screwPredictionNormalCount = 0;
       }
-      //  console.log('Screw Prediction Normal Count :', this.screwPredictionNormalCount)
-      //  console.log('Screw Prediction Incipient Count', this.screwPredictionIncipientCount)
-      //  console.log('Screw Prediction Degrade Count :', this.screwPredictionDegradeCount)
 
       this.screwPredictionNormalPercentage = this.screwPredictionNormalCount / this.screwPredictionTotalCount * 100
       //    console.log('Screw Prediction Normal Percentage : ', this.screwPredictionNormalPercentage);
@@ -830,11 +817,7 @@ export class DashboardComponent {
     if (this.RealTimeLine != undefined) {
       this.RealTimeLine.update();
     }
-
-
   }
-
-
 
   ScrewTrainRealTimeIncipient() {
     var incipient: any = [];
@@ -914,10 +897,7 @@ export class DashboardComponent {
       this.RealTimeLine.update();
     }
 
-
   }
-
-
 
   ScrewPredictRealTimeIncipient() {
     var incipient: any = [];
@@ -945,7 +925,6 @@ export class DashboardComponent {
   }
 
   ScrewPredictRealTimeDegrade() {
-
     var degrade: any = [];
     this.dynamicNormalData = null;
     var interval = 500;
@@ -1038,12 +1017,12 @@ export class DashboardComponent {
 
   }
 
-  public prescriptiveRecords: any = [];
-
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI').subscribe(
       res => {
         this.prescriptiveRecords = res
+      }, err => {
+       console.log(err.err);
       }
     )
   }
@@ -1058,19 +1037,8 @@ export class DashboardComponent {
     }
   }
 
-  UpdateConsequenceRecords(p) {
-    if (localStorage.getItem('PrescriptiveUpdateObject') != null) {
-      localStorage.removeItem('PrescriptiveUpdateObject');
-    }
-    localStorage.setItem('PrescriptiveUpdateObject', JSON.stringify(p));
-    if (localStorage.getItem('PrescriptiveUpdateObject') != null) {
-      this.router.navigateByUrl('/Home/Prescriptive/Consequences');
-    }
-
-  }
-
   DeletePrescriptiveRecords(p) {
-    this.http.delete('api/PrescriptiveAPI/' + p.PrescriptiveId)
+    this.http.delete('api/PrescriptiveAPI/' + p.CFPPrescriptiveId)
       .subscribe(res => {
         this.getPrescriptiveRecords();
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted Successfully' });
@@ -1089,5 +1057,16 @@ export class DashboardComponent {
       this.getPrescriptiveRecords();
     }
 
+  }
+  
+  FailureModeTable(p){
+  this.Table1 = false
+  this.Table2 = true
+  this.FailureModeDataTabe2 = p.centrifugalPumpPrescriptiveFailureModes
+  }
+
+  BackToTable1(){
+    this.Table1 = true
+    this.Table2 = false
   }
 }

@@ -15,9 +15,13 @@ import { PasswordModule } from "primeng/password";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { StepsModule } from "primeng/steps";
 import { TableModule } from "primeng/table";
-import { TreeModule } from "primeng/tree";
+import { TreeModule } from "./P-Tree/p-tree";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastModule } from "primeng/toast";
+import {SliderModule} from 'primeng/slider';
+import {DialogModule} from 'primeng/dialog';
+
+
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
 
 @NgModule({
@@ -41,7 +45,9 @@ import { CommonLoadingComponent } from "./Loading/common-loading.component";
         StepsModule,
         RadioButtonModule,
         DragDropModule,
-        TreeModule,],
+        SliderModule,
+        DialogModule,
+        TreeModule],
     exports: [CommonModule,
         CommonLoadingComponent,
         NgxSpinnerModule,
@@ -62,7 +68,9 @@ import { CommonLoadingComponent } from "./Loading/common-loading.component";
         StepsModule,
         RadioButtonModule,
         DragDropModule,
-        TreeModule,]
+        SliderModule,
+        TreeModule,
+        DialogModule]
 })
 export class SharedModule {
 

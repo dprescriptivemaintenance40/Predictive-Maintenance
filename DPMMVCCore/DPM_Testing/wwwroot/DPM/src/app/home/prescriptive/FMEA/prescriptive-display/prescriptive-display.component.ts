@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import {Component,OnInit} from '@angular/core';
 import {TreeNode} from 'primeng/api';
+import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 
 @Component({
   selector: 'app-prescriptive-display',
@@ -13,28 +14,184 @@ export class PrescriptiveDisplayComponent implements OnInit {
   public PrescriptiveRecords : any =[];
   public abc : any = [];
   public xyz : any = [];
- 
+  public InnerTree : any = []
+  public data : any = []
+  public FMTree : any = []
+  public counter : number = 0
 
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              public commonLoadingDirective: CommonLoadingDirective) {}
 
   ngOnInit() {
+    this.commonLoadingDirective.showLoading(true, "Please wait...");  
     this.http.get('api/PrescriptiveAPI').subscribe(
       res =>{
           this.PrescriptiveRecords = res;
-          this.PushRecordsInFiles();
-      }
-    )
-    
+          if(this.PrescriptiveRecords.length > 0){
+            this. getReadyInnerTree();
+          }
+          this.commonLoadingDirective.showLoading(false, '');   
+      } 
+    ) 
+  }
+  
 
+  getReadyInnerTree(){
+    this.InnerTree=[]
+    var data1
+    if(this.PrescriptiveRecords[this.counter].FMWithConsequenceTree == ""){
+       data1 =  this.PrescriptiveRecords[this.counter].FailureModeWithLSETree
+          this.data = JSON.parse(data1)
+          this.FMTree = this.data[0].children[0].children[0].children
+          for (let index = 0; index < this.FMTree.length; index++) {
+            var l : string = ""
+            l = this.FMTree[index].children[0].data.name
+            var s : string = ""
+            s = this.FMTree[index].children[1].data.name
+            this.InnerTree.push(
+              {
+                "label":  this.FMTree[index].data.name,
+                "data": "Home Folder",
+                "expandedIcon": "pi pi-folder-open",
+                "collapsedIcon": "pi pi-folder",
+                "children": [
+                  {
+                    "label": "Local Effect", 
+                    "expandedIcon": "pi pi-folder-open",
+                    "collapsedIcon": "pi pi-folder",
+                    "children": [
+                       {"label": this.FMTree[index].children[0].data.name , "icon": "pi pi-file"}
+                                ]
+                  },
+                  {"label": "System Effect",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.FMTree[index].children[1].data.name, "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Criticality Factor",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor , "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Rating",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].Rating , "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Maintenance Practice",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label":this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice  , "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Frequency of Maintenance",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance  , "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Condition Monitoring",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring  , "icon": "pi pi-file"}
+                              ]
+                   }
+            
+                                ] 
+              }
+      
+            )
+          }
+    }else if(this.PrescriptiveRecords[this.counter].FMWithConsequenceTree != ""){
+       data1 =  this.PrescriptiveRecords[this.counter].FMWithConsequenceTree
+          this.data = JSON.parse(data1)
+          this.FMTree = this.data[0].children[0].children[0].children
+    
+        for (let index = 0; index < this.FMTree.length; index++) {
+          
+          var l : string = ""
+          l = this.FMTree[index].children[0].data.name
+          var s : string = ""
+          s = this.FMTree[index].children[1].data.name
+          var c : string =""
+          c = this.FMTree[index].children[2].data.name
+          this.InnerTree.push(
+
+            {
+              "label":  this.FMTree[index].data.name,
+              "data": "Home Folder",
+              "expandedIcon": "pi pi-folder-open",
+              "collapsedIcon": "pi pi-folder",
+              "children": [
+                {
+                  "label": "Local Effect", 
+                  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                    {"label": this.FMTree[index].children[0].data.name , "icon": "pi pi-file"}
+                              ]
+                },
+                {"label": "System Effect",  "expandedIcon": "pi pi-folder-open",
+                "collapsedIcon": "pi pi-folder",
+                "children": [
+                    {"label": this.FMTree[index].children[1].data.name, "icon": "pi pi-file"}
+                            ]
+                },
+                {"label": "Consequence",  "expandedIcon": "pi pi-folder-open",
+                "collapsedIcon": "pi pi-folder",
+                "children": [
+                    {"label": this.FMTree[index].children[2].data.name , "icon": "pi pi-file"}
+                            ] 
+                },
+                {"label": "Criticality Factor",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor , "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Rating",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].Rating , "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Maintenance Practice",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label":this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice  , "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Frequency of Maintenance",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance  , "icon": "pi pi-file"}
+                              ]
+                   },
+                   {"label": "Condition Monitoring",  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "children": [
+                       {"label": this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring  , "icon": "pi pi-file"}
+                              ]
+                   }
+          
+                              ] 
+            }
+          )
+        }
+  }
+
+    this.PushRecordsInFiles()
+    
   }
 
   PushRecordsInFiles(){
-    for (let index = 0; index < this.PrescriptiveRecords.length; index++) {
-      const element = this.PrescriptiveRecords[index];
       this.abc =  {
-        "label":"Equipment Type : " + this.PrescriptiveRecords[index].EquipmentType +",  " +"  "+ "Tag Number : "+ this.PrescriptiveRecords[index].TagNumber,
+        "label":"Equipment Type : " + this.PrescriptiveRecords[this.counter].EquipmentType +",  " +"  "+ "Tag Number : "+ this.PrescriptiveRecords[this.counter].TagNumber,
         "data": "Documents Folder",
+        "edit" : true,
         "expandedIcon": "pi pi-folder-open",
         "collapsedIcon": "pi pi-folder",
         "children": [{
@@ -42,29 +199,65 @@ export class PrescriptiveDisplayComponent implements OnInit {
                 "data": "Work Folder",
                 "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
-                "children": [ {"label": "Fluid Type : " + this.PrescriptiveRecords[index].FunctionFluidType + ", "+"Rated Head : "+ this.PrescriptiveRecords[index].FunctionRatedHead+" m "+ ", "+"Duration Of : "+ this.PrescriptiveRecords[index].FunctionPeriodType+ " days"}, {
+                "children": [ {"label": "Fluid Type : " + this.PrescriptiveRecords[this.counter].FunctionFluidType + ", "+"Rated Head : "+ this.PrescriptiveRecords[this.counter].FunctionRatedHead+" m "+ ", "+"Duration Of : "+ this.PrescriptiveRecords[this.counter].FunctionPeriodType+ " days"}, {
                 "label": "Function Failure",
                 "data": "Home Folder",
                 "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
-                "children": [{"label": this.PrescriptiveRecords[index].FunctionFailure, "icon": "pi pi-file"},
+                "children": [{"label": this.PrescriptiveRecords[this.counter].FunctionFailure, "icon": "pi pi-file"},
                  {
                 "label": "Failure Mode",
                 "data": "Home Folder",
                 "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
-                "children": [{"label": this.PrescriptiveRecords[index].FunctionMode, "icon": "pi pi-file"},
-                {"label": "Local Effect", 
-                 "expandedIcon": "pi pi-folder-open",
+                "children": this.InnerTree
+              },
+              {
+                "label": "Component Criticality Factor",
+                "data": "Home Folder",
+                "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
-                "children": [{"label": this.PrescriptiveRecords[index].LocalEffect, "icon": "pi pi-file"}]},
-                {"label": "System Effect",  "expandedIcon": "pi pi-folder-open",
+                "children": [
+                  {"label": this.PrescriptiveRecords[this.counter].ComponentCriticalityFactor, "icon": "pi pi-file"}
+                         ]
+              },
+              {
+                "label": "Component Rating",
+                "data": "Home Folder",
+                "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
-                "children": [{"label": this.PrescriptiveRecords[index].SystemEffect, "icon": "pi pi-file"}]},
-                {"label": "Consequence",  "expandedIcon": "pi pi-folder-open",
+                "children": [
+                  {"label": this.PrescriptiveRecords[this.counter].ComponentRating  , "icon": "pi pi-file"}
+                         ]
+              },
+              {
+                "label": "Component Maintenance Practice",
+                "data": "Home Folder",
+                "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
-                "children": [{"label": "Consequence : "+ this.PrescriptiveRecords[index].Consequence, "icon": "pi pi-file"}]}]
-            }]
+                "children": [
+                  {"label": this.PrescriptiveRecords[this.counter].CMaintainenancePractice  , "icon": "pi pi-file"}
+                         ]
+              },
+              {
+                "label": "Component Frequency Maintenance",
+                "data": "Home Folder",
+                "expandedIcon": "pi pi-folder-open",
+                "collapsedIcon": "pi pi-folder",
+                "children": [
+                  {"label": this.PrescriptiveRecords[this.counter].CFrequencyMaintainenance  , "icon": "pi pi-file"}
+                         ]
+              },
+              {
+                "label": "Component Condition Monitoring",
+                "data": "Home Folder",
+                "expandedIcon": "pi pi-folder-open",
+                "collapsedIcon": "pi pi-folder",
+                "children": [
+                  {"label": this.PrescriptiveRecords[this.counter].CConditionMonitoring  , "icon": "pi pi-file"}
+                         ]
+              }
+          ]
             }]
                 
             }
@@ -74,8 +267,15 @@ export class PrescriptiveDisplayComponent implements OnInit {
     }
     this.xyz.push(this.abc)
     
+
+    if(this.counter < this.PrescriptiveRecords.length-1){
+      this.counter += 1;
+      this.getReadyInnerTree()
     }
-    this.files1 = this.xyz
+    if(this.counter == this.PrescriptiveRecords.length-1){
+      this.files1 = this.xyz
+      this.commonLoadingDirective.showLoading(false, "");
+    }
 
   }
 

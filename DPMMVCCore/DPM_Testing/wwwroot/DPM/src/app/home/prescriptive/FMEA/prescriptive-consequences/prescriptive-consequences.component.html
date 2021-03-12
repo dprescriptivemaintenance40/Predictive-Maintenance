@@ -1,214 +1,198 @@
 <!-- <p-toast position="top-center"></p-toast> -->
+<div *ngIf="prescriptiveTree" class="col-md-12">
+    <p-card>
+        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()">Next</button> <br><br>
+        <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#ConsequenceSubmitModal">Save Consequences</button><br><br>
+
+        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div class="a">{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+</div>
 
 <!--    Consequences -->
-
 <div *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
-    <ng-template pTemplate="title">
-        Consequences
-    </ng-template>
-    <ng-template pTemplate="subtitle">
-        Choose your Consequences
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="p-fluid p-formgrid p-grid">
-            <div style="margin-left: 20px;" class="p-fluid">
-                <p> Will the Occurrence of the failure mode ( on its own) be evident to  operational staff during normal operation of the plant?</p>           
-            </div>
+        <ng-template pTemplate="title">
+            Consequences for {{FMLSConsequenceName}}
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Choose your Consequences
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal operation of the plant?</p>
+                </div>
                 <div class="container">
-                    <div *ngFor="let con1 of draggedConsequencesYesNO" class="border" pDraggable="con1" (onDragStart)="dragStartC1($event,con1)"
-                    (onDragEnd)="dragEndC1($event)">
-                    {{con1}}
-                </div>
-                <div class="drop" pDroppable="con1" (onDrop)="dropC1($event)">
-                    <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}</div>
-            
-                </div>
-                <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
+                    <div *ngFor="let con1 of draggedConsequencesYesNO" class="border" pDraggable="con1" (onDragStart)="dragStartC1($event,con1)" (onDragEnd)="dragEndC1($event)">
+                        {{con1}}
+                    </div>
+                    <div class="drop" pDroppable="con1" (onDrop)="dropC1($event)">
+                        <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
 
                 </div>
-            
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button label="Next" type="button" class="btn btn-dark" (click)="Consequence1Next()">Next</button>
 
-</ng-template>
-</p-card>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button label="Next" type="button" class="btn btn-dark" (click)="Consequence1Next()">Next</button>
+
+        </ng-template>
+    </p-card>
 </div>
 
 
 
 <div *ngIf="Consequences2" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
-    <ng-template pTemplate="title">
-        Consequences
-    </ng-template>
-    <ng-template pTemplate="subtitle">
-        Choose your Consequences
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="p-fluid p-formgrid p-grid">
-            <div style="margin-left: 20px;" class="p-fluid">
-                <p> Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct adverse effect on operational safety or the environment?</p>           
-            </div>
+        <ng-template pTemplate="title">
+            Consequences for {{FMLSConsequenceName}}
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Choose your Consequences
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p> Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct adverse effect on operational safety or the environment?</p>
+                </div>
                 <div class="container">
-                    <div *ngFor="let con2 of draggedConsequencesYesNO" class="border" pDraggable="con2" (onDragStart)="dragStartC2($event,con2)"
-                    (onDragEnd)="dragEndC2($event)">
-                    {{con2}}
-                </div>
-                <div class="drop" pDroppable="con2" (onDrop)="dropC2($event)">
-                    <div *ngFor="let c of dropedConsequenceEffectFailureMode">{{c}}</div>
-            
-                </div>
-                <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
+                    <div *ngFor="let con2 of draggedConsequencesYesNO" class="border" pDraggable="con2" (onDragStart)="dragStartC2($event,con2)" (onDragEnd)="dragEndC2($event)">
+                        {{con2}}
+                    </div>
+                    <div class="drop" pDroppable="con2" (onDrop)="dropC2($event)">
+                        <div *ngFor="let c of dropedConsequenceEffectFailureMode">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
 
                 </div>
-            
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button label="Back" type="button" class="btn btn-dark"style="margin-left: 70px" (click)="Consequence2Back()">Back</button>
-        <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence2Next()"  >Next</button>
 
-</ng-template>
-</p-card>
-</div>
-
-<div  *ngIf="Consequences3" style="margin: 40px;" class="stepsdemo-content shadow">
-    <p-card>
-    <ng-template pTemplate="title">
-        Consequences
-    </ng-template>
-    <ng-template pTemplate="subtitle">
-        Choose your Consequences
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="p-fluid p-formgrid p-grid">
-            <div style="margin-left: 20px;" class="p-fluid">
-                <p>Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment? </p>           
             </div>
-                <div class="container">
-                    <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con3" (onDragStart)="dragStartC3($event,con3)"
-                    (onDragEnd)="dragEndC3($event)">
-                    {{con3}}
-                </div>
-                <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
-                    <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}</div>
-            
-                </div>
-                <small class="form-text text-muted">Drag and Drop here, from above List </small> <br>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence2Back()">Back</button>
+            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence2Next()">Next</button>
 
-                </div>
-            
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button label="Back" type="button" class="btn btn-dark"style="margin-left: 70px" (click)="Consequence3Back()">Back</button>
-        <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence3Next()" >Next</button>
-
-</ng-template>
-</p-card>
-</div>
-
-<div  *ngIf="Consequences4" style="margin: 40px;" class="stepsdemo-content shadow">
-    <p-card>
-    <ng-template pTemplate="title">
-        Consequences
-    </ng-template>
-    <ng-template pTemplate="subtitle">
-        Choose your Consequences
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="p-fluid p-formgrid p-grid">
-            <div style="margin-left: 20px;" class="p-fluid">
-                <p>Does the Failure mode adversily affect operational capabilities of the plant? </p>           
-            </div>
-                <div class="container">
-                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con4" (onDragStart)="dragStartC4($event,con4)"
-                    (onDragEnd)="dragEndC4($event)">
-                    {{con4}}
-                </div>
-                <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
-                    <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}</div>
-            
-                </div>
-                <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
-
-                </div>
-            
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button label="Back" type="button" class="btn btn-dark"style="margin-left: 70px" (click)="Consequence4Back()" >Back</button>
-        <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence4Next()" >Next</button>
-
-</ng-template>
-</p-card>
-</div>
-
-<div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">   
-    <p-card>
-        <button label="Back" type="button" class="btn btn-dark"style="margin-left: 70px" (click)="ConsequenceTreeBack()" >Back</button>  
-        <button *ngIf="!(ConsequencesData.Consequence != null)" label="Back" type="button" class="btn btn-dark"style="margin-left: 70px" data-toggle="modal" data-target="#ConsequenceSubmitModal" >Save</button>  
-        <button *ngIf="!(ConsequencesData.Consequence == null)" label="Back" type="button" class="btn btn-dark"style="margin-left: 70px"  data-toggle="modal" data-target="#ConsequenceModal" >Update</button> <br><br> 
-        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode"
-	(onNodeSelect)="onNodeSelect($event)" styleClass="company">
-	<ng-template let-node pTemplate="person">
-		<div class="node-header p-corner-top">{{node.label}}</div>
-		<div class="node-content">
-			<div>{{node.data.name}}</div>
-		</div>
-	</ng-template>
-	<ng-template let-node pTemplate="department">
-		{{node.label}}
-	</ng-template>
-</p-organizationChart>
+        </ng-template>
     </p-card>
 </div>
 
-<div class="modal fade" id="ConsequenceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div *ngIf="Consequences3" style="margin: 40px;" class="stepsdemo-content shadow">
+    <p-card>
+        <ng-template pTemplate="title">
+            Consequences for {{FMLSConsequenceName}}
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Choose your Consequences
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p>Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment? </p>
+                </div>
+                <div class="container">
+                    <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con3" (onDragStart)="dragStartC3($event,con3)" (onDragEnd)="dragEndC3($event)">
+                        {{con3}}
+                    </div>
+                    <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
+                        <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List </small> <br>
+
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence3Back()">Back</button>
+            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence3Next()">Next</button>
+
+        </ng-template>
+    </p-card>
+</div>
+
+<div *ngIf="Consequences4" style="margin: 40px;" class="stepsdemo-content shadow">
+    <p-card>
+        <ng-template pTemplate="title">
+            Consequences for {{FMLSConsequenceName}}
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Choose your Consequences
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p>Does the Failure mode adversily affect operational capabilities of the plant? </p>
+                </div>
+                <div class="container">
+                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con4" (onDragStart)="dragStartC4($event,con4)" (onDragEnd)="dragEndC4($event)">
+                        {{con4}}
+                    </div>
+                    <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
+                        <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
+
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence4Next()">Next</button>
+
+        </ng-template>
+    </p-card>
+</div>
+
+<div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">
+    <p-card>
+        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
+        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequence()">ADD Consequence</button> <br><br>
+        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+</div>
+<div class="modal fade" id="ConsequenceSubmitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Consequence Update</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Consequence</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to save the Consequence
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SubmitConsequenceTree()">Save changes</button>
+            </div>
+
         </div>
-        <div class="modal-body">
-          Are you sure you want to Update the Consequence
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ConsequenceTreeUpdate()">Save changes</button>
-          </div>
-        
-      </div>
     </div>
-  </div>
-
-
-
-
-
-  <div class="modal fade" id="ConsequenceSubmitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Save Consequence</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to save the Consequence
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SubmitConsequenceTree()">Save changes</button>
-          </div>
-        
-      </div>
-    </div>
-  </div>
+</div>

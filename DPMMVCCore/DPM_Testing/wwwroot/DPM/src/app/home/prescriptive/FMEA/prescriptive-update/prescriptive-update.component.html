@@ -1,188 +1,481 @@
-<p-toast position="top-center"></p-toast>
+<p-toast position="top-right"></p-toast>
+<p-card>
+    <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
+        <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
+        <!-- <button *ngIf="FinalDelete" label="delete" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#deleteModal">Delete</button> <br><br> -->
+        <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()">ADD Failure Mode</button>
+        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}
+                    <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)"><i class="pi pi-pencil"></i></a>
+                   <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)"><i class="pi pi-times"></i></a> 
+                </div>
+                <div class="node-content">
+                    <div class="a">{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </div>
+</p-card>
 
-<div *ngIf="prescriptiveSteps"  style="margin: 40px;" class="card shadow">
-<p-toast></p-toast>
-<div style="margin: 20px;">   
-<p-steps [model]="items" [(activeIndex)]="activeIndex"></p-steps>
+<div class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tree Update</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Update the tree
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="UpdateChanges()">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="modal update" id="FunctionUpdate" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Function</h5>
+                <button type="button" class="close" data-dismiss="update" aria-label="Close" (click)="closeFunctionmodal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Fluid Type:</label>
+                            <input type="text" name='FluidType' [(ngModel)]="FluidType" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Rated Head : </label>
+                            <input type="text" name='RatedHead' [(ngModel)]="RatedHead" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Days: </label>
+                            <input type="text" name='PeriodType' [(ngModel)]="PeriodType" class="form-control">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="update" (click)="closeFunctionmodal()">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="update" (click)="SaveFunction()">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
-<div *ngIf="prescriptiveFuntion" style="margin: 40px;" class="stepsdemo-content shadow">
+
+
+
+<div class="FailureModeUpdate modal" id="FailureModeUpdate" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title row" style="margin-left: 5px;">Add Failure Mode Tree </h5><br>
+                <small class="form-text text-muted row" style="margin-top: 25px; float: left;">Note : Add Single Failure Mode at a time</small>
+                <button type="button" class="close" data-dismiss="FailureModeUpdate" aria-label="Close" (click)="closeFMmodal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="FailureModeUpdate modal-body">
+                <div class="container-fluid">
+                    <div class="container">
+                        <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
+                            {{func.Description}}
+                        </div>
+                        <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
+                            <div *ngFor="let c of dropedMode">
+                                <span>{{c?.Description}}</span>
+                                <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Drag and Drop here, from above List </small>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="FailureModeUpdate" (click)="closeFMmodal()">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="FailureModeUpdate" (click)="ADDSingleFailureModeToTree()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="LSEffectUpdate modal" id="LSEffectUpdate" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title row">Add Local and System Effect for {{LSFailureMode}} </h6><br>
+                <button type="button" class="close" data-dismiss="LSEffectUpdate" aria-label="Close" (click)="closeLSmodal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="LSEffectUpdate modal-body">
+                <div class="container-fluid">
+                    <div class="container">
+                        <div class="p-fluid">
+                            <div>
+                                <label>Local Effect</label>
+                                <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects" placeholder="Type Local Effect" required>
+                            </div>
+                            <div>
+                                <label>System Effect</label>
+                                <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect" required>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="container">
+                        <div class="row">   
+                             <div class="col-md-8">
+                               <h6> Down Time Factor (Range 1 - 10): {{ADDDownTimeFactor}}</h6>
+                             </div>
+                             <div Style="margin-top:8px;" class="col-md-3">
+                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDDownTimeFactor" [min]="1" [max]="10"></p-slider>
+                             </div>
+                        </div>
+                        <br>
+                        <div class="row">   
+                            <div class="col-md-8">
+                              <h6> Scrape Factor (Range 1 - 5): {{ADDScrapeFactor}}</h6>
+                            </div>
+                            <div Style="margin-top:8px;" class="col-md-3">
+                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDScrapeFactor" [min]="1" [max]="5"></p-slider>
+                            </div>
+                       </div>
+                        
+                        <br>
+        
+                        <div class="row">   
+                            <div class="col-md-8">
+                              <h6> Safety Factor (Range 1 - 20): {{ADDSafetyFactor}}</h6>
+                            </div>
+                            <div Style="margin-top:8px;" class="col-md-3">
+                                <p-slider  [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDSafetyFactor" [min]="1" [max]="20"></p-slider>
+                            </div>
+                       </div>
+                        
+                        <br>
+                        <div class="row">   
+                            <div class="col-md-8">
+                              <h6>Protection Factor (Range 1 - 10): {{ADDProtectionFactor}}</h6>
+                            </div>
+                            <div Style="margin-top:8px;" class="col-md-3">
+                                <p-slider [ngModelOptions]="{standalone: true}"  [(ngModel)]="ADDProtectionFactor" [min]="1" [max]="10"></p-slider>
+                            </div>
+                       </div>
+                        
+                        <br>
+                        
+                        <div class="row">   
+                            <div class="col-md-8">
+                              <h6>Frequency Factor (Range 1 - 15): {{ADDFrequencyFactor}}</h6>
+                            </div>
+                            <div Style="margin-top:8px;" class="col-md-3">
+                                <p-slider [ngModelOptions]="{standalone: true}"  [(ngModel)]="ADDFrequencyFactor" [min]="1" [max]="15"></p-slider>
+                            </div>
+                       </div>  
+                        <br>   
+                    </div> 
+                </div>
+            </div>
+            <div class="LSEffectUpdate modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="LSEffectUpdate" (click)="closeLSmodal()">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="LSEffectUpdate" (click)="LSEffectToTree()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="Consequences1" class="col-md-12 stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
-            Function
+            Consequences for {{LSFailureMode}}
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Enter Function information
+            Choose your Consequences
         </ng-template>
-    <ng-template pTemplate="content">
-        <div class="p-fluid">
-        <p>
-            To supply  &ensp;
-            <input type="text" style="border-width: none;" [ngModelOptions]="{standalone: true}" [(ngModel)]="FunctionFluidType" placeholder="e.g thermal fluid" >m<sup>3</sup>/h flow with rated head
-            &ensp;
-            <input type="text" style="border-width: none;" [ngModelOptions]="{standalone: true}" [(ngModel)]="FunctionRatedHead"placeholder="e.g xxx" >
-            m (within -10% variation) continuously for a period of &ensp;<br>
-            &ensp;<br >
-            <input type="text" style="border-width: none;"[ngModelOptions]="{standalone: true}" [(ngModel)]="FunctionPeriodType" placeholder="e.g  60 days" > at a stretch, with equipemt operating within recommended parameters. 
-        </p>           
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <div>
-        <button label="Next" type="button" class="btn btn-dark" (click)="FunctionNext()" >Next</button>
-        </div>
-    </ng-template>
-    </p-card>
-</div>
-
-
-<div *ngIf="prescriptiveFunctionFailure" style="margin: 40px;" class="stepsdemo-content shadow">
-    <p-card>
-    <ng-template pTemplate="title">
-        Function Failure
-    </ng-template>
-    <ng-template pTemplate="subtitle">
-        Choose your Function Failure
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="p-fluid p-formgrid p-grid">
-                <div class="container">
-                    <div *ngFor="let fun of functionfailure" class="border" pDraggable="fun" (onDragStart)="dragStart($event,fun)"
-                    (onDragEnd)="dragEnd($event)">
-                    {{fun.Description}}
-                </div>
-                <div class="drop" pDroppable="fun" (onDrop)="drop($event)">
-                    <div *ngFor="let c of dropedFailure">{{c?.Description}}</div>
-            
-                </div>
-                <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
-
-                <div> 
-                    <input type="text" class="form-control" [(ngModel)]="functionFailuerInput" (change)="FunctionFailuerInput($event)" placeholder="Type Function Failure">
-                </div>
-                </div>
-            
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button label="Back" type="button" class="btn btn-dark"style="margin-left: 70px" (click)="FunctionFailureBack()">Back</button>
-        <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FunctionFailureNext()" >Next</button>
-
-</ng-template>
-</p-card>
-</div>
-
-    <div *ngIf="prescriptiveFailureMode" style="margin: 40px;" class="stepsdemo-content shadow">
-    <p-card>
-    <ng-template pTemplate="title">
-        Failure Mode
-    </ng-template>
-    <ng-template pTemplate="subtitle">
-        Choose your Failure Mode
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="p-fluid p-formgrid p-grid">
-                <div class="container">
-                    <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)"
-                    (onDragEnd)="dragEnd1($event)">
-                    {{func.Description}}
-                </div>
-                <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
-                    <div *ngFor="let c of dropedMode" > {{c?.Description}} 
-                     </div>
-                    
-                   <!-- / <button style="float: right;" type="button" class="btn btn-dark btn-sm" style="margin-left: 700px" (click)="FailureModeDropped(c?.id)">Clear</button> -->
-             
-                </div>
-                <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small><br><br>
-
-                <div> 
-                    <input type="text" class="form-control" [(ngModel)]="failuerModeInput" (change)="FailuerModeInput($event)" placeholder="Type Failure Mode">
-                  </div>
-           
-                </div>
-        </div>
-    </ng-template> 
-            
-    <ng-template pTemplate="footer">
-    
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailureModeBack()">Back</button>
-        <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureModeNext()">Next</button>
-    </ng-template>
-    </p-card>
-    </div>
-
-    <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
-        <p-card>
-            <ng-template pTemplate="title">
-                Failure Mode Effects
-            </ng-template>
-            <ng-template pTemplate="subtitle">
-                Enter Failure Mode Effects
-            </ng-template>
         <ng-template pTemplate="content">
-            <div class="p-fluid">
-            <div> 
-                <label>Local Effect</label>
-                <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects"  placeholder="Type Local Effect">
-              </div>
-              <div> 
-                <label>System Effect</label>
-                <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect">
-              </div>
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal operation of the plant?</p>
+                </div>
+                <div class="container">
+                    <div *ngFor="let con1 of draggedConsequencesYesNO" class="border" pDraggable="con1" (onDragStart)="dragStartC1($event,con1)" (onDragEnd)="dragEndC1($event)">
+                        {{con1}}
+                    </div>
+                    <div class="drop" pDroppable="con1" (onDrop)="dropC1($event)">
+                        <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
+
+                </div>
+
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            
-            <button label="Next" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailuerEffectBack()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
-    
+            <button label="Next" type="button" class="btn btn-dark" (click)="Consequence1Next()">Next</button>
+
         </ng-template>
-        </p-card>
-    </div>
-
-
-
-    <div *ngIf="prescriptiveTree" style="margin: 20px;"class="row" >
-   <p-card>   
-    <button  label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="treeBack()">Back</button>   
-      
-    <button  *ngIf="prescriptiveTreeUpdateEnable" label="Back"  type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal"  >Update</button> <br><br> 
-    
-    <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)"
-    styleClass="company"> 
-    <ng-template let-node pTemplate="person">
-        <div class="node-header p-corner-top"  >{{node.label}}</div>
-        <div class="node-content">
-            <div class = "a">{{node.data.name}}</div>
-        </div>
-    </ng-template>
-        <ng-template let-node pTemplate="department">
-        {{node.label}}
-        </ng-template>
-    </p-organizationChart> 
     </p-card>
+</div>
+
+
+
+<div *ngIf="Consequences2" class="col-md-12 stepsdemo-content shadow">
+    <p-card>
+        <ng-template pTemplate="title">
+            Consequences for {{LSFailureMode}}
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Choose your Consequences
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p> Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct adverse effect on operational safety or the environment?</p>
+                </div>
+                <div class="container">
+                    <div *ngFor="let con2 of draggedConsequencesYesNO" class="border" pDraggable="con2" (onDragStart)="dragStartC2($event,con2)" (onDragEnd)="dragEndC2($event)">
+                        {{con2}}
+                    </div>
+                    <div class="drop" pDroppable="con2" (onDrop)="dropC2($event)">
+                        <div *ngFor="let c of dropedConsequenceEffectFailureMode">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
+
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence2Back()">Back</button>
+            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence2Next()">Next</button>
+
+        </ng-template>
+    </p-card>
+</div>
+
+<div *ngIf="Consequences3" class="col-md-12 stepsdemo-content shadow">
+    <p-card>
+        <ng-template pTemplate="title">
+            Consequences for {{LSFailureMode}}
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Choose your Consequences
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p>Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment? </p>
+                </div>
+                <div class="container">
+                    <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con3" (onDragStart)="dragStartC3($event,con3)" (onDragEnd)="dragEndC3($event)">
+                        {{con3}}
+                    </div>
+                    <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
+                        <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List </small> <br>
+
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence3Back()">Back</button>
+            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence3Next()">Next</button>
+
+        </ng-template>
+    </p-card>
+</div>
+
+<div *ngIf="Consequences4" class="col-md-12 stepsdemo-content shadow">
+    <p-card>
+        <ng-template pTemplate="title">
+            Consequences for {{LSFailureMode}}
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Choose your Consequences
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p>Does the Failure mode adversily affect operational capabilities of the plant? </p>
+                </div>
+                <div class="container">
+                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con4" (onDragStart)="dragStartC4($event,con4)" (onDragEnd)="dragEndC4($event)">
+                        {{con4}}
+                    </div>
+                    <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
+                        <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
+
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence4Back()">Back</button>
+            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence4Next()">Next</button>
+
+        </ng-template>
+    </p-card>
+</div>
+
+<div *ngIf="ConsequencesTree" class="col-md-12 stepsdemo-content shadow">
+    <p-card>
+        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
+        <button *ngIf="ConsequenceTreeADDConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()">Add Consequences</button><br><br>
+        <button *ngIf="ConsequenceTreeEditConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="EditConsequenceToTree()">Edit Consequences</button><br><br>
+       
+        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+</div>
+
+
+
+<div style="overflow:scroll;" class="modal FailureModeUpdate2" id="FailureModeUpdate2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" (click)="UpdateFM()">Update Failure Mode</h5>
+                <button type="button" class="close" data-dismiss="FailureModeUpdate2" aria-label="Close" (click)="CloseFailureModeUpdate()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body" >
+                <div class="container-fluid" >
+                    <form>
+                        <div class="form-group">
+                          <label for="exampleFormControlInput1">Failure Mode</label>
+                          <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureMode" id="exampleFormControlInput1"  disabled>
+                          <button type="button" class="btn btn-secondary btn-sm" (click)="UpdateFM()">Update Failure Mode</button>
+                        
+                        </div>
+                        <div *ngIf="EditFM" class="form-group">
+                            <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
+                                {{func.Description}}
+                            </div>
+                            <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
+                                <div *ngFor="let c of dropedMode">
+                                    <span>{{c?.Description}}</span>
+                                    <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span>
+                                </div>
+                            </div>
+                            <small class="form-text text-muted">Drag and Drop here, from above List </small>
+    
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="CancelFM()">Close</button>
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="SaveFMToTreee()">Save</button>
+                        
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="exampleFormControlTextarea1">Local Effect</label>
+                          <textarea class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeLocalEffect"  id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea2">System Effect</label>
+                            <textarea class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="UpdateFailureModeSystemEffect"  id="exampleFormControlTextarea2" rows="3"></textarea>
+                          </div>
+                          <div class="form-group">
+                            <div class="container">
+                                <div class="row">   
+                                     <div class="col-md-8">
+                                       <h6> Down Time Factor (Range 1 - 10): {{EditDownTimeFactor}}</h6>
+                                     </div>
+                                     <div Style="margin-top:8px;" class="col-md-3">
+                                        <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditDownTimeFactor" [min]="1" [max]="10"></p-slider>
+                                     </div>
+                                </div>
+                                <br>
+                                <div class="row">   
+                                    <div class="col-md-8">
+                                      <h6> Scrape Factor (Range 1 - 5): {{EditScrapeFactor}}</h6>
+                                    </div>
+                                    <div Style="margin-top:8px;" class="col-md-3">
+                                        <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditScrapeFactor" [min]="1" [max]="5"></p-slider>
+                                    </div>
+                               </div>
+                                
+                                <br>
+                
+                                <div class="row">   
+                                    <div class="col-md-8">
+                                      <h6> Safety Factor (Range 1 - 20): {{EditSafetyFactor}}</h6>
+                                    </div>
+                                    <div Style="margin-top:8px;" class="col-md-3">
+                                        <p-slider  [ngModelOptions]="{standalone: true}" [(ngModel)]="EditSafetyFactor" [min]="1" [max]="20"></p-slider>
+                                    </div>
+                               </div>
+                                
+                                <br>
+                                <div class="row">   
+                                    <div class="col-md-8">
+                                      <h6>Protection Factor (Range 1 - 10): {{EditProtectionFactor}}</h6>
+                                    </div>
+                                    <div Style="margin-top:8px;" class="col-md-3">
+                                        <p-slider [ngModelOptions]="{standalone: true}"  [(ngModel)]="EditProtectionFactor" [min]="1" [max]="10"></p-slider>
+                                    </div>
+                               </div>
+                                
+                                <br>
+                                
+                                <div class="row">   
+                                    <div class="col-md-8">
+                                      <h6>Frequency Factor (Range 1 - 15): {{EditFrequencyFactor}}</h6>
+                                    </div>
+                                    <div Style="margin-top:8px;" class="col-md-3">
+                                        <p-slider [ngModelOptions]="{standalone: true}"  [(ngModel)]="EditFrequencyFactor" [min]="1" [max]="15"></p-slider>
+                                    </div>
+                               </div>
+                                
+                                <br>
+                                
+                            </div>  
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleFormControlInput2">Consequence</label>
+                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="UpdateFailureModeConsequence"  id="exampleFormControlInput2" disabled>
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()" >Update Consequence</button>
+                       
+                        </div>
+                        
+                      </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="FailureModeUpdate2" (click)="CloseFailureModeUpdate()">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="FailureModeUpdate2" (click)="SaveFailureModeUpdate()">Save changes</button>
+            </div>
+        </div>
     </div>
-
-
-
-    <div class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tree Update</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to Update the tree 
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="TreeUpdate()">Save changes</button>
-      </div>
-    </div>
-  </div>
 </div>

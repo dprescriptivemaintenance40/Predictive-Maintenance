@@ -108,7 +108,7 @@ namespace DPM_Testing.Controllers
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                     var SecurityToken = tokenHandler.WriteToken(securityToken);
-					return Ok(new { SecurityToken , user});
+                    return Ok(new { SecurityToken , user });
                 }
                 else
                     return BadRequest(new { message = "Username or password is incorrect." });

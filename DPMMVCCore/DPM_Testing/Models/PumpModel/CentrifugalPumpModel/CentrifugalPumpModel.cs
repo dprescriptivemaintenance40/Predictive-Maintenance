@@ -6,10 +6,10 @@ namespace DPM.Models.PumpModel
     public class CentrifugalPumpModel
     {
         [Key]
-        public int  CentrifugalPumpId { get; set; }
+        public int CentrifugalPumpId { get; set; }
         public string UserId { get; set; }
         public string TagNumber { get; set; }
-        public DateTime? InsertedDate { get; set; }        
+        public DateTime? InsertedDate { get; set; }
         public DateTime? Date { get; set; }
         public decimal PI025 { get; set; }
         public decimal PI022 { get; set; }
@@ -19,6 +19,5 @@ namespace DPM.Models.PumpModel
         public decimal TI061 { get; set; }
         public decimal TI062 { get; set; }
         public decimal TI263 { get; set; }
-
     }
 }

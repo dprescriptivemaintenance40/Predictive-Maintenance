@@ -11,10 +11,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DPM_Testing
@@ -62,13 +65,20 @@ namespace DPM_Testing
             services.AddScoped<IEmailSender, EmailSender>();
             
          //   services.AddAutoMapper(typeof(Startup));
+         services.AddControllersWithViews().AddNewtonsoftJson(
+            options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            });
 
-            services.AddControllers()
-                    .AddJsonOptions(options =>
+            services.AddControllers().AddJsonOptions(options =>
                     {
                         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                         options.JsonSerializerOptions.PropertyNamingPolicy = null;
+
                     });
+
 
             //services.AddCors(options =>
             //             options.AddPolicy("MyAllowSpecificOrigins",
@@ -80,9 +90,7 @@ namespace DPM_Testing
             //               }));
 
             services.AddControllersWithViews();
-
-
-            ;
+            
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;

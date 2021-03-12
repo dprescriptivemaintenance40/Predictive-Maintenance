@@ -12,6 +12,7 @@ import { UserService } from "./Services/user.services";
 import { ProfileService } from "./Services/ProfileService";
 import { ScrewCompressorService } from "./Services/ScrewCompressorService";
 import { EventEmitterService } from "./Services/event-emitter.service";
+import { ExcelFormatService } from "./Services/excel-format.service";
 
 @NgModule({
     declarations: [
@@ -26,7 +27,7 @@ import { EventEmitterService } from "./Services/event-emitter.service";
         HomeRoutingModule,       
         SharedModule
     ],
-    providers: [UserService,ProfileService,ScrewCompressorService,EventEmitterService],
+    providers: [UserService,ProfileService,ScrewCompressorService,EventEmitterService,ExcelFormatService],
     bootstrap: [HomeComponent]
 })
 export class HomeModule {

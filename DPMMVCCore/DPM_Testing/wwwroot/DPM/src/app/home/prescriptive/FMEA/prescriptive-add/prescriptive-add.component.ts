@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -7,6 +7,7 @@ import { MenuItem } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { Router } from '@angular/router';
+import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
 
 @Component({
   selector: 'app-prescriptive-add',
@@ -16,7 +17,11 @@ import { Router } from '@angular/router';
 })
 export class PrescriptiveAddComponent implements OnInit {
   public MachineType: string = "";
+  private FMCount: number = 0;
+  private FMCount1: number = 0;
+  private FMLSConsequenceName: string = "";
   private activeIndex: number;
+  public InsertLSEffect: any;
   public failureModeDataBind: any;
   public val: any;
   public failureModeData: any = []
@@ -27,8 +32,8 @@ export class PrescriptiveAddComponent implements OnInit {
   public items: MenuItem[];
   public functionFailuerInput: any = [];
   public failuerModeInput: any = [];
-  public failuerModeLocalEffects: any = [];
-  public failuerModeSystemEffects: any = [];
+  public failuerModeLocalEffects: string = "";
+  public failuerModeSystemEffects: string = "";
   public prescriptiveTreeSubmitEnable: boolean = false;
   public prescriptiveSelect: boolean = true;
   public prescriptiveFuntion: boolean = false;
@@ -80,6 +85,7 @@ export class PrescriptiveAddComponent implements OnInit {
   public treeData: any = [];
   public prescriptiveTreeUpdateEnable: boolean = false;
   public prescriptiveTreeNextEnable: boolean = false;
+  public prescriptiveTreeBackEnable: boolean = false;
 
   public draggedConsequencesYesNO: any = ['YES', 'NO']
   public droppedYesNo = null;
@@ -93,31 +99,41 @@ export class PrescriptiveAddComponent implements OnInit {
 
   public droppedYesNo3 = null;
   public dropedConsequenceAffectFailureMode = []
+  public ADDFailureLSEDiasble: boolean = false;
+  public NextFailureLSEDiasble: boolean = false;
 
   public Consequences1: boolean = false;
   public Consequences2: boolean = false;
   public Consequences3: boolean = false;
   public Consequences4: boolean = false;
   public ConsequencesTree: boolean = false;
+  public SaveConcequencesEnable: boolean = false;
   public ConsequencesAnswer: any = [];
+  public FMChild = []
+  public FMLSEffectModeName: string = ""
 
+  public DownTimeFactor: number;
+  public ScrapeFactor: number;
+  public SafetyFactor: number;
+  public ProtectionFactor: number; 
+  public FrequencyFactor: number;
+  private FactoryToAddInFM : any = []
+
+  centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.title.setTitle('DPM | Prescriptive ');
-    //   this.getDropDownLookMasterData();
     setInterval(() => {
       this.dynamicDroppedPopup();
     }, 2000);
-
-
-
 
     this.items = [{
       label: 'Function',
@@ -165,6 +181,9 @@ export class PrescriptiveAddComponent implements OnInit {
     ];
   }
 
+  async ngOnDestroy() {
+    await localStorage.removeItem('PrescriptiveObject');
+  }
 
 
   dynamicDroppedPopup() {
@@ -173,15 +192,6 @@ export class PrescriptiveAddComponent implements OnInit {
       for (let index = 0; index < this.dropedFailure.length - 1; index++) {
         var elementIndex = this.dropedFailure[this.dropedFailure.length];
         this.dropedFailure.splice(elementIndex, 1)
-
-      }
-
-    }
-    // failure mode popup
-    if (this.dropedMode.length > 1) {
-      for (let index = 0; index < this.dropedMode.length - 1; index++) {
-        var elementIndex = this.dropedMode[this.dropedMode.length];
-        this.dropedMode.splice(elementIndex, 1)
 
       }
 
@@ -223,9 +233,6 @@ export class PrescriptiveAddComponent implements OnInit {
 
   }
 
-
-
-
   MachineEquipmentSelect(event) {
     if (this.MachineType == "Pump") {
       this.EquipmentList = null
@@ -263,9 +270,6 @@ export class PrescriptiveAddComponent implements OnInit {
         this.functionfailure = this.functionFailureData;
         this.failuerMode = this.functionModeData;
       })
-
-
-
   }
 
 
@@ -282,10 +286,10 @@ export class PrescriptiveAddComponent implements OnInit {
       this.prescriptiveTree = false;
       this.activeIndex = 0;
     } else if (this.EquipmentType.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing', sticky: true });
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing' });
 
     } else if (this.TagNumber.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'TagNumber is missing', sticky: true });
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'TagNumber is missing'});
     }
   }
 
@@ -296,13 +300,13 @@ export class PrescriptiveAddComponent implements OnInit {
       this.activeIndex = 1;
 
     } else if (this.FunctionFluidType.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'FluidType is missing', sticky: true });
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'FluidType is missing' });
 
     } else if (this.FunctionRatedHead.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'RatedHead is missing', sticky: true });
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'RatedHead is missing' });
 
     } else if (this.FunctionPeriodType.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'PeriodType is missing', sticky: true });
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'PeriodType is missing' });
 
     }
   }
@@ -322,7 +326,7 @@ export class PrescriptiveAddComponent implements OnInit {
       this.functionFailuerInput = []
     }
     if (this.dropedFailure.length > 0 && this.functionFailuerInput.length > 1) {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Data overloaded on both fields, please select any one option', sticky: true });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Data overloaded on both fields, please select any one option'});
     } else if (this.dropedFailure.length == 0 && this.functionFailuerInput.length > 0) {
       this.prescriptiveFunctionFailure = false;
       this.prescriptiveFailureMode = true;
@@ -334,7 +338,7 @@ export class PrescriptiveAddComponent implements OnInit {
       this.activeIndex = 2;
 
     } else if (this.dropedFailure.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Function failure', sticky: true });
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Function failure' });
     } else if (this.dropedFailure.length == 1) {
       this.prescriptiveFunctionFailure = false;
       this.prescriptiveFailureMode = true;
@@ -356,166 +360,6 @@ export class PrescriptiveAddComponent implements OnInit {
 
 
   GenrationTree() {
-    this.FM1 = [
-      {
-        label: "Local Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeLocalEffects
-        }
-      },
-      {
-        label: "System Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeSystemEffects
-        }
-      }
-    ];
-    this.FM2 = [
-      {
-        label: "Local Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeLocalEffects
-        }
-      },
-      {
-        label: "System Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeSystemEffects,
-        }
-      }
-    ];
-    this.FM3 = [
-      {
-        label: "Local Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeLocalEffects,
-        }
-      },
-      {
-        label: "System Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeSystemEffects,
-        }
-      }
-    ];
-    this.FM4 = [
-      {
-        label: "Local Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeLocalEffects
-        }
-      },
-      {
-        label: "System Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeSystemEffects
-        }
-      }
-    ];
-    this.FM5 = [
-      {
-        label: "Local Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeLocalEffects
-        }
-      },
-      {
-        label: "System Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeSystemEffects
-        }
-      }
-    ];
-    this.FM6 = [
-      {
-        label: "Local Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeLocalEffects
-        }
-      },
-      {
-        label: "System Effect",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.failuerModeSystemEffects
-        }
-      }
-    ];
-    if (this.dropedMode[0].Description == "Bearing damaged") {
-      this.FM2 = null;
-      this.FM3 = null;
-      this.FM4 = null;
-      this.FM5 = null;
-      this.FM6 = null;
-    } else if (this.dropedMode[0].Description == " Flow beyond accepted range at corresponding head, possibly due to high wear ring clerance") {
-      this.FM1 = null;
-      this.FM3 = null;
-      this.FM4 = null;
-      this.FM5 = null;
-      this.FM6 = null;
-    } else if (this.dropedMode[0].Description == "Mech seal leakage") {
-      this.FM1 = null;
-      this.FM2 = null;
-      this.FM4 = null;
-      this.FM5 = null;
-      this.FM6 = null;
-    } else if (this.dropedMode[0].Description == "Coupling failure") {
-      this.FM1 = null;
-      this.FM2 = null;
-      this.FM3 = null;
-      this.FM5 = null;
-      this.FM6 = null;
-    } else if (this.dropedMode[0].Description == "Impeller damage / Shaft damage") {
-      this.FM1 = null;
-      this.FM2 = null;
-      this.FM3 = null;
-      this.FM4 = null;
-      this.FM6 = null;
-    } else {
-      this.FM1 = null;
-      this.FM2 = null;
-      this.FM3 = null;
-      this.FM4 = null;
-      this.FM5 = null;
-
-    }
-
-
     var funFailure;
     if (this.dropedFailure[0].Description == undefined) {
       funFailure = this.dropedFailure[0]
@@ -538,67 +382,7 @@ export class PrescriptiveAddComponent implements OnInit {
             styleClass: "p-person",
             expanded: true,
             data: { name: funFailure },
-            children: [
-              {
-                label: "Failure Mode",
-                styleClass: "department-cto",
-                expanded: true,
-                children: [
-                  {
-                    label: "1",
-                    type: "person",
-                    styleClass: "p-person",
-                    expanded: true,
-                    data: { name: "Bearing damaged" },
-                    children: this.FM1
-                  },
-                  {
-                    label: "2",
-                    type: "person",
-                    styleClass: "p-person",
-                    expanded: true,
-                    data: {
-                      name:
-                        "Flow beyond accepted range at corresponding head, possibly due to high wear ring clerance"
-                    },
-                    children: this.FM2
-                  },
-                  {
-                    label: "3",
-                    type: "person",
-                    styleClass: "p-person",
-                    expanded: true,
-                    data: { name: "Mech seal leakage" },
-                    children: this.FM3
-                  },
-                  {
-                    label: "4",
-                    type: "person",
-                    styleClass: "p-person",
-                    expanded: true,
-                    data: { name: "Coupling failure" },
-                    children: this.FM4
-                  },
-                  {
-                    label: "5",
-                    type: "person",
-                    styleClass: "p-person",
-                    expanded: true,
-                    data: { name: "Impeller damage / Shaft damage" },
-                    children: this.FM5
-                  },
-                  {
-                    label: "6",
-                    type: "person",
-                    styleClass: "p-person",
-                    expanded: true,
-                    data: { name: "Other" },
-                    children: this.FM6
-                  },
-
-                ]
-              }
-            ]
+            children: this.InsertLSEffect
           }
         ]
       }
@@ -607,41 +391,195 @@ export class PrescriptiveAddComponent implements OnInit {
   }
 
 
+
+  FailureModeDropped(c) {
+    var findIndexOF = c.PrescriptiveLookupMasterId
+
+    var index = -1;
+    var filteredObj = this.dropedMode.find(function (item, i) {
+      if (item.PrescriptiveLookupMasterId === findIndexOF) {
+        index = i;
+        return i;
+      }
+    });
+
+    this.dropedMode.splice(index, 1)
+  }
+
+  FailureModeNext() {
+    if(this.dropedMode.length >0){
+    this.FMChild = []
+    this.FactoryToAddInFM = []
+    this.NextFailureLSEDiasble = false
+    var Data = [], FMName
+    this.dropedMode.forEach(element => {
+      Data.push(element.Description)
+    });
+    for (let index = 0; index < Data.length; index++) {
+      FMName = Data[index]
+      this.FMChild.push(
+        {
+          label: index + 1,
+          type: "person",
+          styleClass: "p-person",
+          expanded: true,
+          data: { name: FMName },
+          children: []
+        }
+      )
+    } 
+ 
+    this.prescriptiveEffect = true
+    this.prescriptiveFailureMode = false;
+    this.activeIndex = 3
+    this.FMCount = 0;
+
+    this.InsertLSEffect = [
+      {
+        label: "Failure Mode",
+        styleClass: "department-cto",
+        expanded: true,
+        children: this.FMChild
+      }
+    ]
+   this.ADDFailureLSEDiasble = true
+    this.messageService.add({ severity: 'info', summary: 'info', detail: ' Please type Local Effect and System Effect for each Failure Mode'});
+    this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
+  }else{
+    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Failure Modes' });
+  }
+  }
+
+  ADDFailuerEffect() {
+    if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
+    this.FMChild[this.FMCount].children.push(
+      {
+        label: "Local Effect",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.failuerModeLocalEffects
+        }
+      },
+      {
+        label: "System Effect",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.failuerModeSystemEffects
+        }
+      }
+    )
+    let obj = {}
+    obj['DownTimeFactor'] = this.DownTimeFactor;
+    obj['ScrapeFactor'] = this.ScrapeFactor
+    obj['SafetyFactor'] = this.SafetyFactor
+    obj['ProtectionFactor'] = this.ProtectionFactor
+    obj['FrequencyFactor'] = this.FrequencyFactor
+    this.FactoryToAddInFM.push(obj)
+    if (this.FMCount == this.FMChild.length - 1) {
+      this.ADDFailureLSEDiasble = false;
+      this.FMLSEffectModeName = ""
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'All Local and System Effect is added to all Failure Mode, Now please click Next', });
+      this.NextFailureLSEDiasble = true;
+      this.ADDFailureLSEDiasble = false; 
+      this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
+    }
+    this.onLSEffectAddedMessage(this.FMChild[this.FMCount]);
+    this.failuerModeLocalEffects = ""
+    this.failuerModeSystemEffects = ""
+    this.DownTimeFactor = 0
+    this.ScrapeFactor = 0
+    this.SafetyFactor = 0
+    this.ProtectionFactor = 0
+    this.FrequencyFactor = 0
+     this.FMCount += 1;
+    if (this.FMCount <= this.FMChild.length - 1) {
+      this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
+    }   
+
+  }else {
+    this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields'});
+  }
+  }
+
+  SaveConsequences() {
+    this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
+    this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
+    this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
+    for (let index = 0; index < this.FMChild.length; index++) {
+      let obj = {};
+      obj['CPPFMId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
+      obj['CFPPrescriptiveId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
+      obj['FunctionMode'] = this.FMChild[index].data.name;
+      obj['LocalEffect'] = this.FMChild[index].children[0].data.name;
+      obj['SystemEffect'] = this.FMChild[index].children[1].data.name;
+      obj['Consequence'] = this.FMChild[index].children[2].data.name;
+      obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
+      obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
+      obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
+      obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
+      obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
+      obj['CriticalityFactor'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor;
+      obj['Rating'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].Rating;
+      obj['MaintainenancePractice'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
+      obj['FrequencyMaintainenance'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
+      obj['ConditionMonitoring'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
+  
+      this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+    }
+
+    this.http.put('api/PrescriptiveAPI/CFPrescriptiveAdd', this.centrifugalPumpPrescriptiveOBJ).subscribe(
+      res => {
+        console.log(res);
+        this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done'});
+        this.router.navigateByUrl('/Home/Dashboard');
+      }, err => { console.log(err.err) }
+    )
+
+  }
+
   treeSave() {
+    this.prescriptiveTreeBackEnable = false
+    this.centrifugalPumpPrescriptiveOBJ.MachineType = this.MachineType
+    this.centrifugalPumpPrescriptiveOBJ.EquipmentType = this.EquipmentType
+    this.centrifugalPumpPrescriptiveOBJ.TagNumber = this.TagNumber
+    this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FunctionFluidType
+    this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.FunctionRatedHead
+    this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType
+    this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.dropedFailure[0].Description
+    this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
 
+    for (let index = 0; index < this.FMChild.length; index++) {
+      let obj = {};
+      obj['CPPFMId'] = 0;
+      obj['CFPPrescriptiveId'] = 0;
+      obj['FunctionMode'] = this.FMChild[index].data.name;
+      obj['LocalEffect'] = this.FMChild[index].children[0].data.name;
+      obj['SystemEffect'] = this.FMChild[index].children[1].data.name;
+      obj['Consequence'] = "";
+      obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
+      obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
+      obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
+      obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
+      obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
+      this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
 
-    var funFailure, funMode;
-    if (this.dropedFailure[0].Description == undefined) {
-      funFailure = this.dropedFailure[0]
-    } else {
-      funFailure = this.dropedFailure[0].Description
     }
 
-    if (this.dropedMode[0].Description == undefined) {
-      funMode = this.dropedMode[0]
-    } else {
-      funMode = this.dropedMode[0].Description
-    }
-    let PrescriptiveModel = {
-      MachineType: this.MachineType,
-      EquipmentType: this.EquipmentType,
-      TagNumber: this.TagNumber,
-      FunctionFluidType: this.FunctionFluidType,
-      FunctionRatedHead: this.FunctionRatedHead,
-      FunctionPeriodType: this.FunctionPeriodType,
-      FunctionFailure: funFailure,
-      FunctionMode: funMode,
-      LocalEffect: this.failuerModeLocalEffects,
-      SystemEffect: this.failuerModeSystemEffects
-    }
-    this.http.post('api/PrescriptiveAPI', PrescriptiveModel).subscribe(
+
+    this.http.post('api/PrescriptiveAPI/PostCentrifugalPumpPrescriptiveData', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {
         console.log(res);
         this.treeResponseData = res;
+        localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
         this.prescriptiveTreeNextEnable = true
-        this.prescriptiveTreeUpdateEnable = true;
+        this.prescriptiveTreeUpdateEnable = false;
         this.prescriptiveTreeSubmitEnable = false;
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please click Next button to add consequence', sticky: true });
+        this.prescriptiveTreeBackEnable = false
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please click Next button to add consequence'});
 
       },
       err => { console.log(err.Message) }
@@ -650,84 +588,58 @@ export class PrescriptiveAddComponent implements OnInit {
 
   }
 
-  TreeUpdate() {
-
-
-    var funFailure, funMode
-    if (this.dropedFailure.length > 0) {
-      funFailure = this.dropedFailure[0].Description
+  PushConcequences() {
+    this.FMChild[this.FMCount1].children.push(
+      {
+        label: "Consequence",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.finalConsequence
+        }
+      }
+    )
+    this.FMCount1 += 1;
+    if (this.FMCount1 <= this.FMChild.length - 1) {
+      this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
+    }
+    if (this.FMCount1 == this.FMChild.length) {
+      this.prescriptiveTreeNextEnable = false;
+      this.SaveConcequencesEnable = true;
     }
 
-    if (this.functionFailuerInput.length > 0) {
-      funFailure = null;
-      funFailure = this.functionFailuerInput
-    }
-    if (this.dropedMode.length > 0) {
-      funMode = this.dropedMode[0].Description
-    }
-
-    if (this.failuerModeInput.length > 0) {
-      funMode = null;
-      funMode = this.failuerModeInput
-    }
-    let PrescriptiveModel = {
-      PrescriptiveId: this.treeResponseData.PrescriptiveId,
-      UserId: this.treeResponseData.UserId,
-      EquipmentType: this.treeResponseData.EquipmentType,
-      MachineType: this.treeResponseData.MachineType,
-      TagNumber: this.treeResponseData.TagNumber,
-      FunctionFluidType: this.FunctionFluidType,
-      FunctionRatedHead: this.FunctionRatedHead,
-      FunctionPeriodType: this.FunctionPeriodType,
-      FunctionFailure: funFailure,
-      FunctionMode: funMode,
-      LocalEffect: this.failuerModeLocalEffects,
-      SystemEffect: this.failuerModeSystemEffects,
-      Date: this.treeResponseData.Date,
-    }
-    this.http.put('api/PrescriptiveAPI/' + PrescriptiveModel.PrescriptiveId, PrescriptiveModel).subscribe()
+    this.activeIndex = 4
+    this.prescriptiveTree = true;
+    this.Consequences1 = false;
+    this.ConsequencesTree = false;
+    this.dropedConsequenceEffectFailureMode = []
+    this.dropedConsequenceFailureMode = []
+    this.dropedConsequenceCombinationFailureMode = []
+    this.dropedConsequenceAffectFailureMode = []
+    this.ConsequenceNode = []
+    this.consequenceA = 'p-person1'
+    this.consequenceB = 'p-person'
+    this.consequenceC = 'p-person'
+    this.consequenceD = 'p-person'
+    this.consequenceE = 'p-person'
   }
+
+
 
   FailureEffectNext() {
-
-
-    if (this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0) {
-
-      this.GenrationTree();
-      if (this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0) {
-        this.prescriptiveFailureMode = false;
-        this.prescriptiveEffect = false;
-        this.prescriptiveTree = true;
-        this.activeIndex = 4;
-        this.prescriptiveTreeSubmitEnable = true;
-      } else if (this.failuerModeLocalEffects.length == 0) {
-        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: ' Please type Local Effect', sticky: true });
-
-      } else if (this.failuerModeSystemEffects.length == 0) {
-        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: ' Please type System Effect', sticky: true });
-      }
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please fill data in all fields', sticky: true });
+    this.prescriptiveFailureMode = false;
+    this.prescriptiveEffect = false;
+    this.prescriptiveTree = true;
+    this.prescriptiveTreeBackEnable = true
+    this.activeIndex = 4;
+    var SubmitedTree = JSON.parse(localStorage.getItem('PrescriptiveObject'))
+    if (SubmitedTree == null) {
+      this.prescriptiveTreeSubmitEnable = true;
     }
-  }
 
-  FailureModeNext() {
-    if (this.dropedMode.length == 1) {
-      this.failuerModeInput = []
-    }
-    if (this.dropedMode.length > 1) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please enter only one mode', sticky: true });
-    } else if (this.failuerModeInput.length > 1 && this.dropedMode.length > 1) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Data overloaded on both field, please choose any one option', sticky: true });
+    this.GenrationTree()
 
-    } else if (this.dropedMode.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please selct any mode', sticky: true });
-    }
-    else if (this.dropedMode.length == 1) {
-      this.prescriptiveEffect = true
-      this.prescriptiveFailureMode = false;
-      this.activeIndex = 3
-    }
   }
   FailuerEffectBack() {
     this.prescriptiveEffect = false;
@@ -771,7 +683,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.Consequences4 = false;
       }
     } else {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field', sticky: true });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
     }
 
 
@@ -790,9 +702,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.consequenceC = 'p-person'
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
-        // alert("B")
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence B', sticky: true });
-
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence B'});
         this.finalConsequence = ""
         this.finalConsequence = "B"
         console.log(this.ConsequencesAnswer)
@@ -811,7 +721,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.Consequences4 = true;
       }
     } else {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field', sticky: true });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
     }
 
   }
@@ -823,9 +733,7 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.dropedConsequenceCombinationFailureMode.length == 1) {
       if (this.dropedConsequenceCombinationFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-        // alert("A") 
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence A', sticky: true });
-
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence A' });
         this.finalConsequence = ""
         this.finalConsequence = "A"
         this.consequenceA = 'p-person1'
@@ -842,9 +750,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-        // alert("E")
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence E', sticky: true });
-
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence E' });
         this.finalConsequence = ""
         this.finalConsequence = "E"
         this.consequenceA = 'p-person'
@@ -861,7 +767,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.colorConsequenceTree()
       }
     } else {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field', sticky: true });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
     }
 
   }
@@ -873,9 +779,7 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.dropedConsequenceAffectFailureMode.length == 1) {
       if (this.dropedConsequenceAffectFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-        // alert("C")
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence C', sticky: true });
-
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence C' });
         this.finalConsequence = ""
         this.finalConsequence = "C"
         this.consequenceA = 'p-person'
@@ -892,9 +796,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-        // alert("D")
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence D', sticky: true });
-
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence D' });
         this.finalConsequence = ""
         this.finalConsequence = "D"
         this.consequenceA = 'p-person'
@@ -911,8 +813,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.colorConsequenceTree()
       }
     } else {
-
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field', sticky: true });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
     }
 
   }
@@ -945,52 +846,19 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.ConsequencesAnswer[0] == 'YES' && this.ConsequencesAnswer[1] == 'NO') {
       this.consequenceTreeColorNodeD = 'p-person1'
     }
+
     this.ConsequenceTreeGeneration();
-    this.ConsequencesAnswer = []
-
+    this.ConsequencesAnswer = null;
+    this.ConsequencesAnswer = [];
+    this.changeDetectorRef.detectChanges();
   }
-
-
-  UpdateTree() { }
-
-
-  ConsequenceTreeUpdate() {
-    let Data = {
-      PrescriptiveId: this.treeResponseData.PrescriptiveId,
-      UserId: this.treeResponseData.UserId,
-      EquipmentType: this.treeResponseData.EquipmentType,
-      MachineType: this.treeResponseData.MachineType,
-      TagNumber: this.treeResponseData.TagNumber,
-      FunctionFluidType: this.treeResponseData.FunctionFluidType,
-      FunctionRatedHead: this.treeResponseData.FunctionRatedHead,
-      FunctionPeriodType: this.treeResponseData.FunctionPeriodType,
-      FunctionFailure: this.treeResponseData.FunctionFailure,
-      FunctionMode: this.treeResponseData.FunctionMode,
-      LocalEffect: this.treeResponseData.LocalEffect,
-      SystemEffect: this.treeResponseData.SystemEffect,
-      Date: this.treeResponseData.Date,
-      Consequence: this.finalConsequence
-    }
-    this.http.put('api/PrescriptiveAPI/' + Data.PrescriptiveId, Data).subscribe(
-      res => {
-        console.log(res);
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Succesfully Done', sticky: true });
-
-      },
-      err => { console.log(err.Message); alert(err.Nessage) }
-    )
-    this.router.navigateByUrl('/Home/Dashboard');
-  }
-
 
 
   ConsequenceTreeGeneration() {
-
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: ' To save consequences please click save button', sticky: true });
-
+    this.messageService.add({ severity: 'info', summary: 'Info', detail: ' To save consequences please click save button'});
     this.ConsequenceNode = [
       {
-        label: "Concequences",
+        label: "Consequences",
         type: "person",
         styleClass: this.consequenceTreeColorNodeA,
         expanded: true,
@@ -1089,29 +957,20 @@ export class PrescriptiveAddComponent implements OnInit {
 
   }
 
-
-
-
   dragStart(e, f) {
-
     this.dragedFunctionfailure = f;
-
   }
   dragStart1(e, c) {
     this.dragedFunctionMode = c;
   }
-
   dragEnd(e) { }
   dragEnd1(e) { }
-
-
   drop(e) {
     if (this.dragedFunctionfailure) {
       this.dropedFailure.push(this.dragedFunctionfailure);
       this.dragedFunctionfailure = null;
     }
   }
-
   drop1(e) {
     if (this.dragedFunctionMode) {
       this.dropedMode.push(this.dragedFunctionMode);
@@ -1125,23 +984,17 @@ export class PrescriptiveAddComponent implements OnInit {
   }
 
   dragEndC1(e) { }
-
-
   dropC1(e) {
     if (this.droppedYesNo) {
       this.dropedConsequenceFailureMode.push(this.droppedYesNo);
       this.droppedYesNo = null;
     }
   }
-
-
   dragStartC2(e, con2) {
     this.droppedYesNo1 = con2;
   }
 
   dragEndC2(e) { }
-
-
   dropC2(e) {
     if (this.droppedYesNo1) {
       this.dropedConsequenceEffectFailureMode.push(this.droppedYesNo1);
@@ -1149,15 +1002,11 @@ export class PrescriptiveAddComponent implements OnInit {
     }
   }
 
-
-
   dragStartC3(e, con3) {
     this.droppedYesNo2 = con3;
   }
 
   dragEndC3(e) { }
-
-
   dropC3(e) {
     if (this.droppedYesNo2) {
       this.dropedConsequenceCombinationFailureMode.push(this.droppedYesNo2);
@@ -1165,13 +1014,11 @@ export class PrescriptiveAddComponent implements OnInit {
     }
   }
 
-
   dragStartC4(e, con4) {
     this.droppedYesNo3 = con4;
   }
 
   dragEndC4(e) { }
-
 
   dropC4(e) {
     if (this.droppedYesNo3) {
@@ -1180,13 +1027,11 @@ export class PrescriptiveAddComponent implements OnInit {
     }
   }
 
-
-
-  onNodeSelect(event) {
+  onLSEffectAddedMessage(event) {
     this.messageService.add({
       severity: "success",
-      summary: "Selected data",
-      detail: event.node.data.name
+      summary: "Successfully added Local and System Effect to",
+      detail: event.data.name
     });
   }
 }

@@ -4,17 +4,26 @@ import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.di
 import { MessageService } from 'primeng/api';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as XLSX from 'xlsx';
+import { ExcelFormatService } from '../../Services/excel-format.service';
+import { HttpParams } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-centrifugal-pump',
   templateUrl: './centrifugal-pump.component.html',
   styleUrls: ['./centrifugal-pump.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, DatePipe]
 })
 export class CentrifugalPumpComponent implements OnInit {
+  public FromDate: string = "";
+  public uniqueDates: any = [];
+  public ToDate: string = "";
+  public dropDownData: any = [];
   public fileName = 'ExcelSheet.xlsx';
   public centrifugalPump: any = [];
   public centrifugalPumpList: any = [];
+  public centrifugalPumpWeekdata: any = [];
+  public centrifugalPumpWeekList: any = [];
   public loading: boolean = false;
   public first = 0;
   public rows = 10000;
@@ -22,6 +31,9 @@ export class CentrifugalPumpComponent implements OnInit {
   public filelist: any;
   public arrayBuffer: any;
   public user: any = [];
+  public DailyWeekMode : string;
+  public CentrifugalPumpDailyData : boolean = true;
+  public CentrifugalPumpWeekData : boolean = false;
   private pumpcolumns: any = [
     'TagNumber',
     'PI025',
@@ -34,6 +46,7 @@ export class CentrifugalPumpComponent implements OnInit {
     'TI263',
     'Date'
   ]
+
   public centrifugalPumpColumns: any = [
     { field: 'TagNumber', header: 'Tag Number', width: '8em' },
     { field: 'PI025', header: 'PI025', width: '7em' },
@@ -47,6 +60,45 @@ export class CentrifugalPumpComponent implements OnInit {
     { field: 'Date', header: 'Date', width: '10em' },
   ]
 
+  private pumpWeekDatacolumns: any = [
+    'TagNumber',
+    'OneH',
+    'OneV',
+    'TwoH',
+    'TwoV',
+    'TwoA',
+    'ThreeH',
+    'ThreeV',
+    'ThreeA',
+    'FourH',
+    'FourV',
+    'OneT',
+    'TwoT',
+    'ThreeT',
+    'FourT',
+    'AMP',
+    'Date'
+  ]
+  public centrifugalPumpColumnsWeekData: any = [
+    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
+    { field: 'OneH', header: 'OneH', width: '7em' },
+    { field: 'OneV', header: 'OneV', width: '7em' },
+    { field: 'TwoH', header: 'TwoH', width: '7em' },
+    { field: 'TwoV', header: 'TwoV', width: '7em' },
+    { field: 'TwoA', header: 'TwoA', width: '7em' },
+    { field: 'ThreeH', header: 'ThreeH', width: '7em' },
+    { field: 'ThreeV', header: 'ThreeV', width: '7em' },
+    { field: 'ThreeA', header: 'ThreeA', width: '7em' },
+    { field: 'FourH', header: 'FourH', width: '7em' },
+    { field: 'FourV', header: 'FourV', width: '7em' },
+    { field: 'OneT', header: 'OneT', width: '7em' },
+    { field: 'TwoT', header: 'TwoT', width: '7em' },
+    { field: 'ThreeT', header: 'ThreeT', width: '7em' },
+    { field: 'FourT', header: 'FourT', width: '7em' },
+    { field: 'AMP', header: 'AMP', width: '7em' },
+    { field: 'Date', header: 'Date', width: '10em' },
+  ]
+
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -56,6 +108,8 @@ export class CentrifugalPumpComponent implements OnInit {
   constructor(public http: HttpClient,
     public title: Title,
     public messageService: MessageService,
+    public datepipe: DatePipe,
+    private excelFormatService : ExcelFormatService,
     public commonLoadingDirective: CommonLoadingDirective) {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
@@ -64,29 +118,64 @@ export class CentrifugalPumpComponent implements OnInit {
 
   ngOnInit() {
     this.title.setTitle('DPM | Centrifugal Pump');
-    this.http.get<any>('api/CenterifugalPumpAPI').subscribe(res => {
-      this.centrifugalPump = res
+   this.GetDailyData()
+  }
+GetDailyData(){
+  this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpDailyData').subscribe(res => {
+    this.centrifugalPump = res
+   this.UniqueDate( this.centrifugalPump)
 
+  })
+}
+
+  PostCentrifugalPumpDailydata(obj){
+    this.commonLoadingDirective.showLoading(true, "Please wait....");
+    this.loading = true;
+    this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpDailyData', JSON.stringify(obj), this.headers)
+    .subscribe(res => {
+      this.centrifugalPump = res
+      this.commonLoadingDirective.showLoading(false, "");
+      this.loading = false;
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+    }, err => {
+      console.log(err.error);
+      this.loading = false;
+      this.commonLoadingDirective.showLoading(false, "");
     })
   }
 
-  Downloadfile() {
-    var content = '';
-    content +=
-      '<tr>'
-    this.pumpcolumns.forEach(header => {
-      content += '<th style="font-weight:bold;">' + header + '</th>'
-    });
-    content += '</tr>';
 
-    var s = document.createElement("table");
-    s.innerHTML = content;
+  PostCentrifugalPumpWeekdata(obj){
+    this.commonLoadingDirective.showLoading(true, "Please wait....");
+    this.loading = true;
+    this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpWeekData', JSON.stringify(obj),this.headers).subscribe(
+      res =>{ 
+        this.centrifugalPumpWeekList = res
+        this.loading = false;
+        this.commonLoadingDirective.showLoading(false, "");
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+      }
+    )
+  }
 
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(s);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(wb, ws, 'Pump_data');
-    XLSX.writeFile(wb, 'Pump_data' + '.xlsx');
+  GetCentrifugalPumpWeekdata(){
+    this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpWeekData').subscribe(
+      res =>{ 
+        this.centrifugalPumpWeekList = res
+       var weekDate = this.UniqueDate(this.centrifugalPumpWeekList)
+      }
+    )
+  }
+  Downloadfile() {  
+    if(this.DailyWeekMode.length == 0){
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please Select Daily or week mode' });
+    }else if(this.DailyWeekMode =='daily'){
+      var Name = 'PumpDaily_data'
+      this.excelFormatService.GetExcelFormat(this.pumpcolumns , Name)
+  }else if(this.DailyWeekMode == 'week'){
+    var Name = 'PumpWeek_data'
+    this.excelFormatService.GetExcelFormat(this.pumpWeekDatacolumns , Name) 
+  } 
   }
 
   addfile(event) {
@@ -104,32 +193,31 @@ export class CentrifugalPumpComponent implements OnInit {
       var worksheet = workbook.Sheets[first_sheet_name];
       console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
       this.centrifugalPumpList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      this.loading = true;
-      this.commonLoadingDirective.showLoading(true, "Please wait to get the uploaded rules....");
-      this.http.post<any>('api/CenterifugalPumpAPI', JSON.stringify(this.centrifugalPumpList), this.headers)
-        .subscribe(res => {
-          this.centrifugalPump = res
-          this.commonLoadingDirective.showLoading(false, "");
-          this.loading = false;
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-        }, err => {
-          console.log(err.error);
-          this.loading = false;
-          this.commonLoadingDirective.showLoading(false, "");
-        })
+      if(this.DailyWeekMode.length == 0){
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please Select Daily or week mode', sticky: true });
+      }else if(this.DailyWeekMode == 'daily'){
+        this.PostCentrifugalPumpDailydata(this.centrifugalPumpList )
+      }else if(this.DailyWeekMode == 'week'){
+        this.PostCentrifugalPumpWeekdata(this.centrifugalPumpList )
+      }
     }
   }
 
-
-
   exportToExcel() {
-    const dataArray = this.centrifugalPump
+    var dataArray
+    var Name
+    if(this.DailyWeekMode == 'daily'){
+      dataArray = this.centrifugalPump
+      Name = "DPMCentrifugalPumpDailyData"
+    }else if(this.DailyWeekMode == 'week'){
+      dataArray = this.centrifugalPumpWeekList
+      Name = "DPMCentrifugalPumpWeekData"
+    }
     if (dataArray != 0) {
       const dataArrayList = dataArray.map(obj => {
-        const { CentrifugalPumpId, UserId, InsertedDate, ...rest } = obj;
+        const { CentrifugalPumpId, UserId, InsertedDate,CPWId,...rest } = obj;
         return rest;
       })
-
       var csvData = this.ConvertToCSV(dataArrayList);
       var a = document.createElement("a");
       a.setAttribute('style', 'display:none;');
@@ -137,23 +225,20 @@ export class CentrifugalPumpComponent implements OnInit {
       var blob = new Blob([csvData], { type: 'text/csv' });
       var url = window.URL.createObjectURL(blob);
       a.href = url;
-      var link: string = "DPMCentrifugalPump" + '.csv';
+      var link: string = Name + '.csv';
       a.download = link.toLocaleLowerCase();
       a.click();
       this.messageService.add({ severity: 'info', detail: 'Excel Downloaded Successfully' });
-
     } else {
       this.messageService.add({ severity: 'warn', detail: 'No Records are Found to Download in Excel' });
     }
   }
-
 
   // convert Json to CSV data in Angular2
   ConvertToCSV(objArray) {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     var str = '';
     var row = "";
-
     for (var index in objArray[0]) {
       //Now convert each value to string and comma-separated
       row += index + ',';
@@ -161,16 +246,61 @@ export class CentrifugalPumpComponent implements OnInit {
     row = row.slice(0, -1);
     //append Label row with line break
     str += row + '\r\n';
-
     for (var i = 0; i < array.length; i++) {
       var line = '';
       for (var index in array[i]) {
         if (line != '') line += ','
-
         line += array[i][index];
       }
       str += line + '\r\n';
     }
     return str;
+  }
+
+  ChooseData(d){ 
+    if(this.DailyWeekMode == 'daily'){
+      this.CentrifugalPumpDailyData =true;
+      this.CentrifugalPumpWeekData =false;
+      this.GetDailyData();
+     console.log("daily");   
+    }else if(this.DailyWeekMode == 'week'){
+      this.CentrifugalPumpDailyData =false;
+      this.CentrifugalPumpWeekData =true;
+      this.GetCentrifugalPumpWeekdata();
+      console.log("week");
+    }
+  }
+  
+
+  UniqueDate(a){
+    this.uniqueDates = null;
+    this.uniqueDates = []
+    for (var i = 0; i < a.length; i++) {
+      if (this.uniqueDates.indexOf(a[i].Date) === -1) {
+       var date = this.datepipe.transform(a[i].Date, 'dd-MM-yyyy')
+        this.uniqueDates.push(date);
+      }
+    }
+  }
+ 
+  GetCentrifugapPumpUniqueDate(e) {
+    if(this.DailyWeekMode == 'daily'){
+      const params = new HttpParams()
+      .set("FromDate",this.FromDate )
+      .set("ToDate",this.ToDate)
+      this.http.get('api/CenterifugalPumpAPI/GetDailyDates',{params}).subscribe(res =>{
+          console.log(res)
+          this.centrifugalPump = res
+         
+      })
+    }else if (this.DailyWeekMode == 'week'){
+      const params = new HttpParams()
+      .set( "FromDate",this.FromDate )
+      .set(  "ToDate",this.ToDate)
+      this.http.get('api/CenterifugalPumpAPI/GetWeekDates',{params}).subscribe(res =>{
+          console.log(res)
+          this.centrifugalPumpWeekList =res  
+      })
+    }
   }
 }

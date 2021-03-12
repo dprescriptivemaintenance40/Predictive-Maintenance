@@ -18,9 +18,15 @@
         padding: 0;
         border: 0 none;
     }
-
-    .node-header, .node-content {
-        padding: .5em .7rem; ;
+    .p-person1 {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(123, 201, 123)
+    }
+    .node-header,
+    .node-content {
+        padding: .5em .7rem;
+        ;
         // display: inline-block;
         // border: 1px solid #000000;
         // width: 100px;
@@ -31,58 +37,57 @@
         // -webkit-box-orient: horizontal;
         // overflow: hidden;
         // text-overflow: ellipsis;
-        
-       
-      
-        
     }
-    .node-content:hover{
+    .node-content:hover {
         overflow: visible;
     }
-   
     .node-header {
         background-color: #495ebb;
         color: #ffffff;
-     
     }
-
     .node-content {
         text-align: center;
         border: 1px solid #495ebb;
-       
-      
-        
     }
-
     .node-content img {
         border-radius: 50%;
     }
-
     .department-cfo {
         background-color: #7247bc;
         color: #ffffff;
-
     }
-
     .department-coo {
         background-color: #a534b6;
         color: #ffffff;
     }
-
     .department-cto {
         background-color: #e9286f;
         color: #ffffff;
     }
-    // .a{
-    //     white-space: nowrap; 
-    //     width: 100px; 
-    //     overflow: hidden;
-    //     text-overflow: ellipsis;
-    // }
-    // .a:hover{
-    //     overflow: visible;
-    // }
-  
-
 }
 
+.delete-org-bttn {
+    color: red;
+    background: rebeccapurple;
+    cursor: pointer;
+    position: absolute;
+    right: -9px;
+    top: -11px;
+    border-radius: 100%;
+    border: 1px solid red;
+    font-size: 1px;
+    padding: 3px;
+}
+
+.edit-org-bttn {
+    color: #fff;
+    background: green;
+    cursor: pointer;
+    position: absolute;
+    right: 18px;
+    top: -11px;
+    border-radius: 100%;
+    border: 1px solid #fff;
+    font-size: 1px;
+    padding: 3px;
+}

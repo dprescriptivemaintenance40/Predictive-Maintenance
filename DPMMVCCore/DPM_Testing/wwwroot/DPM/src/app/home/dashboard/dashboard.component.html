@@ -21,9 +21,8 @@
                 </div>
             </div>
         </div>
-        <!-- pie Chart -->
+
         <div class="col-xl-4 col-lg-5">
-            <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 style="color: #585570;" class="m-0 font-weight-bold">DPM (Product Development Progress)</h6>
@@ -46,42 +45,83 @@
     <div class="row">
         <div class="col-xl-12 col-lg-11">
             <div class="card prescriptive shadow mb-4 con" *ngIf="!(user.UserType == 3)">
-                <div class="card-header ">
+                <div class="card-header">
                     <h6 style="color: #585570;" class="m-0 font-weight-bold " class="card-header-title font-size-lg text-capitalize font-weight-normal"><i class="fa fa-tasks"></i>&nbsp;Prescriptive Equipment List</h6>
+                    <div class="col" *ngIf="Table2">
+                        <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable1()">Back</button>
+                                     
+                    </div>
                 </div>
                 <div class="card-body">
-                    <table class="table">
+                    <table style="text-align:center;" *ngIf="Table1" class="table">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Machine</th>
-                                <th scope="col">Equipment</th>
+                                <th scope="col">Assets</th>
+                                <th scope="col">Sub Units</th>
                                 <th scope="col">Tag No.</th>
                                 <th scope="col">Tree Update</th>
-                                <th scope="col">Consequence</th>
                                 <th scope="col">Consequence Update</th>
+                                <th scope="col">Component Criticality Factor</th>
+                                <th scope="col">Component Rating</th>
+                                <th scope="col">Maintainenance Practice</th>
                                 <th scope="col">Delete</th>
                             </tr>
                         </thead>
                         <tbody style="margin-right: 10px;">
+                            <tr *ngIf="prescriptiveRecords.length == 0" >
+                                <td style="text-align:center; margin-top: 20px;" colspan="10" >No Records to show</td>
+                            </tr>
+
                             <tr *ngFor="let p of prescriptiveRecords; let i=index;">
                                 <th scope="row">{{i+1}}</th>
-                                <td>{{p.MachineType}}</td>
-                                <td>{{p.EquipmentType}}</td>
-                                <td>{{p.TagNumber}}</td>
+                                <td (click)="FailureModeTable(p)" >{{p.MachineType}}</td>
+                                <td (click)="FailureModeTable(p)">{{p.EquipmentType}}</td>
+                                <td (click)="FailureModeTable(p)">{{p.TagNumber}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-secondary btn-sm" (click)="UpdatePrescriptiveRecords(p)">Update</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" (click)="UpdatePrescriptiveRecords(p)" [disabled]="p.FMWithConsequenceTree.length == 0" >Update</button>
+                                </td>       
+                                <td>
+                                    <button type="button" class="btn btn-secondary btn-sm" (click)="ADDConsequenceRecords(p)" [disabled]="p.FMWithConsequenceTree.length > 0" >ADD Cons.</button>
                                 </td>
-                                <td>{{p.Consequence}}</td>
-                                <td *ngIf="!(p.Consequence == null)">
-                                    <button type="button" class="btn btn-secondary btn-sm" (click)="UpdateConsequenceRecords(p)">Update</button>
-                                </td>
-                                <td *ngIf="!(p.Consequence !=null)">
-                                    <button type="button" class="btn btn-secondary btn-sm" (click)="ADDConsequenceRecords(p)">ADD Cons.</button>
-                                </td>
+                                <td (click)="FailureModeTable(p)" >{{p.ComponentCriticalityFactor}}</td>
+                                <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
+                                <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                                 <td>
                                     <button type="button" class="btn btn-secondary btn-sm" (click)="DeletePrescriptiveRecords(p)">Delete</button>
                                 </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table *ngIf="Table2" class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Failure Mode</th>
+                                <th scope="col">Local Effect</th>
+                                <th scope="col">System Effect</th>
+                                <th scope="col">Criticality Factor</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Maintainenance Practice</th>
+                                <th scope="col">Frequency Maintainenance</th>
+                                <th scope="col">Condition Monitoring</th>
+                                <th scope="col">Consequence</th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody style="margin-right: 10px;" (click)="BackToTable1()">
+                            <tr *ngFor="let p of FailureModeDataTabe2; let i=index;">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{p.FunctionMode}}</td>
+                                <td>{{p.LocalEffect}}</td>
+                                <td>{{p.SystemEffect}}</td>
+                                <td>{{p.CriticalityFactor}}</td>
+                                <td>{{p.Rating}}</td>
+                                <td>{{p.MaintainenancePractice}}</td>
+                                <td>{{p.FrequencyMaintainenance}}</td>
+                                <td>{{p.ConditionMonitoring}}</td>
+                                <td>{{p.Consequence}}</td>
+                                
                             </tr>
                         </tbody>
                     </table>

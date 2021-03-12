@@ -34,7 +34,6 @@ export class PredictionComponent implements OnInit {
   public testingList: any;
   public screwWithPrediction: any = [];
   public customer: any = [];
-  // public file: File
   public filelist: any
   public arrayBuffer: any
   public compDetail: any

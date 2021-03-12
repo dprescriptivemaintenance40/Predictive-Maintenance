@@ -10,8 +10,6 @@ import { ScrewCompressorService } from 'src/app/home/Services/ScrewCompressorSer
   styleUrls: ['./configuration.component.scss']
 })
 export class ConfigurationComponent {
-
-  
   addRuleResponse:any=["Presssure Suction stage 1",
      "Presssure Discharge stage 1",
      "Presssure Suction stage 2",
@@ -23,13 +21,9 @@ export class ConfigurationComponent {
   addRuleForms: FormArray = this.fb.array([]);
   
   public notification = null;
-
   public Image=false;
   public enableImage =true;  
   public CancelImage=false;
-
-
-
   constructor(public fb: FormBuilder,
               public addRulseService: ScrewCompressorService,
               public title: Title) {
@@ -40,13 +34,10 @@ export class ConfigurationComponent {
     this.title.setTitle('DPM | Screw Configuration');
     this.addRulseService.getAddRuleList().subscribe(
       res => {
-        // res= this.addRuleResponse;
         if (res == [])
           this.addRuleForm();
-        else {
-          
-          (res as []).forEach((addRuleModel: any) => {
-            
+        else { 
+          (res as []).forEach((addRuleModel: any) => { 
             this.addRuleForms.push(this.fb.group({
               addRuleId: [addRuleModel.AddRuleId],
               columns: [addRuleModel.Columns, Validators.required],
@@ -130,16 +121,8 @@ export class ConfigurationComponent {
       default:
         break;
     }
-
-    
     setTimeout(() => {
       this.notification = null;
     }, 3000);
-
-
-  
-
   }
-
-
 }
