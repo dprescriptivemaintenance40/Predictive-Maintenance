@@ -425,7 +425,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.FinalDelete = true
     this.ConsequenceTreeADDConsequenceEnable = false
     this.AddFailureMode = false;
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Successfully updated'});
   }
 
 
@@ -717,9 +716,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
 
 
   ConsequenceTreeGeneration() {
-
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: ' To save consequences please click save button'});
-
     this.ConsequenceNode = [
       {
         label: "Consequences",
@@ -906,15 +902,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
       this.dropedConsequenceAffectFailureMode.push(this.droppedYesNo3);
       this.droppedYesNo3 = null;
     }
-  }
-
-
-  onNodeSelect(event) {
-    this.messageService.add({
-      severity: "success",
-      summary: "Selected data",
-      detail: event.node.data.name
-    });
   }
 
   drop1(e) {

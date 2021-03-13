@@ -1,5 +1,4 @@
 ﻿using DPM.Models.PumpModel;
-using DPM.Models.PumpModel.CentrifugalPumpModel;
 using DPM_ServerSide.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
