@@ -443,7 +443,6 @@ export class PrescriptiveAddComponent implements OnInit {
       }
     ]
    this.ADDFailureLSEDiasble = true
-    this.messageService.add({ severity: 'info', summary: 'info', detail: ' Please type Local Effect and System Effect for each Failure Mode'});
     this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
   }else{
     this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Failure Modes' });
@@ -482,7 +481,6 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.FMCount == this.FMChild.length - 1) {
       this.ADDFailureLSEDiasble = false;
       this.FMLSEffectModeName = ""
-      this.messageService.add({ severity: 'info', summary: 'info', detail: 'All Local and System Effect is added to all Failure Mode, Now please click Next', });
       this.NextFailureLSEDiasble = true;
       this.ADDFailureLSEDiasble = false; 
       this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
@@ -579,7 +577,6 @@ export class PrescriptiveAddComponent implements OnInit {
         this.prescriptiveTreeUpdateEnable = false;
         this.prescriptiveTreeSubmitEnable = false;
         this.prescriptiveTreeBackEnable = false
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please click Next button to add consequence'});
 
       },
       err => { console.log(err.Message) }
@@ -702,7 +699,6 @@ export class PrescriptiveAddComponent implements OnInit {
         this.consequenceC = 'p-person'
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence B'});
         this.finalConsequence = ""
         this.finalConsequence = "B"
         console.log(this.ConsequencesAnswer)
@@ -733,7 +729,6 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.dropedConsequenceCombinationFailureMode.length == 1) {
       if (this.dropedConsequenceCombinationFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence A' });
         this.finalConsequence = ""
         this.finalConsequence = "A"
         this.consequenceA = 'p-person1'
@@ -750,7 +745,6 @@ export class PrescriptiveAddComponent implements OnInit {
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence E' });
         this.finalConsequence = ""
         this.finalConsequence = "E"
         this.consequenceA = 'p-person'
@@ -779,7 +773,6 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.dropedConsequenceAffectFailureMode.length == 1) {
       if (this.dropedConsequenceAffectFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence C' });
         this.finalConsequence = ""
         this.finalConsequence = "C"
         this.consequenceA = 'p-person'
@@ -796,7 +789,6 @@ export class PrescriptiveAddComponent implements OnInit {
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence D' });
         this.finalConsequence = ""
         this.finalConsequence = "D"
         this.consequenceA = 'p-person'
@@ -855,7 +847,6 @@ export class PrescriptiveAddComponent implements OnInit {
 
 
   ConsequenceTreeGeneration() {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: ' To save consequences please click save button'});
     this.ConsequenceNode = [
       {
         label: "Consequences",

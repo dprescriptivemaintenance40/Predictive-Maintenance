@@ -531,8 +531,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
         this.consequenceC = 'p-person'
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence B' });
-
         this.finalConsequence = ""
         this.finalConsequence = "B"
         console.log(this.ConsequencesAnswer)
@@ -570,8 +568,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     if (this.dropedConsequenceCombinationFailureMode.length == 1) {
       if (this.dropedConsequenceCombinationFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence A'});
-
         this.finalConsequence = ""
         this.finalConsequence = "A"
         this.consequenceA = 'p-person1'
@@ -595,8 +591,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence E'});
-
         this.finalConsequence = ""
         this.finalConsequence = "E"
         this.consequenceA = 'p-person'
@@ -632,8 +626,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     if (this.dropedConsequenceAffectFailureMode.length == 1) {
       if (this.dropedConsequenceAffectFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence C'});
-
         this.finalConsequence = ""
         this.finalConsequence = "C"
         this.consequenceA = 'p-person'
@@ -657,8 +649,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Consequence D'});
-
         this.finalConsequence = ""
         this.finalConsequence = "D"
         this.consequenceA = 'p-person'

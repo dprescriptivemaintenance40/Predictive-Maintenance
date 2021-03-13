@@ -233,9 +233,6 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         this.consequenceC = 'p-person'
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
-
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'B'});
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please click Update to Save changes' });
         this.finalConsequence = ""
         this.finalConsequence ="B"
         console.log( this.ConsequencesAnswer)
@@ -266,7 +263,6 @@ export class PrescriptiveConsequencesComponent implements OnInit {
     if(this.dropedConsequenceCombinationFailureMode.length ==1){
       if(this.dropedConsequenceCombinationFailureMode[0] == 'YES'){
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'A'});
         this.finalConsequence = ""
         this.finalConsequence ="A"
         this.consequenceA = 'p-person1'
@@ -283,8 +279,6 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         this.colorConsequenceTree()
       }else{
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
-      
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'E'});
         this.finalConsequence = ""
         this.finalConsequence ="E"
         this.consequenceA = 'p-person'
@@ -311,7 +305,6 @@ export class PrescriptiveConsequencesComponent implements OnInit {
     if(this.dropedConsequenceAffectFailureMode.length ==1){
       if(this.dropedConsequenceAffectFailureMode[0] == 'YES'){
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'C'});
         this.finalConsequence = ""
         this.finalConsequence ="C"
         this.consequenceA = 'p-person'
@@ -328,7 +321,6 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         this.colorConsequenceTree()
       }else{
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'D'});
         this.finalConsequence = ""
         this.finalConsequence ="D"
         this.consequenceA = 'p-person'
