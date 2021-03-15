@@ -65,14 +65,6 @@ export class PrescriptiveAddComponent implements OnInit {
   private consequenceD;
   private consequenceE;
   private finalConsequence;
-
-  private FM1: any;
-  private FM2: any;
-  private FM3: any;
-  private FM4: any;
-  private FM5: any;
-  private FM6: any;
-
   public functionfailure: any = [];
   public failuerMode: any = [];
 
@@ -96,12 +88,10 @@ export class PrescriptiveAddComponent implements OnInit {
 
   public droppedYesNo2 = null;
   public dropedConsequenceCombinationFailureMode = []
-
   public droppedYesNo3 = null;
   public dropedConsequenceAffectFailureMode = []
   public ADDFailureLSEDiasble: boolean = false;
   public NextFailureLSEDiasble: boolean = false;
-
   public Consequences1: boolean = false;
   public Consequences2: boolean = false;
   public Consequences3: boolean = false;
@@ -186,9 +176,7 @@ export class PrescriptiveAddComponent implements OnInit {
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveObject');
   }
-
   public fileUpload;
-  
   public uploadFile = (files) => {
     if (files.length === 0) {
       return;
@@ -208,9 +196,6 @@ export class PrescriptiveAddComponent implements OnInit {
     )
 
   }
-
-
-
 
   dynamicDroppedPopup() {
     //faliure droped popup
@@ -864,9 +849,7 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.ConsequencesAnswer[0] == 'YES' && this.ConsequencesAnswer[1] == 'NO') {
       this.consequenceTreeColorNodeD = 'p-person1'
     }
-
     this.ConsequenceTreeGeneration();
-    this.ConsequencesAnswer = null;
     this.ConsequencesAnswer = [];
     this.changeDetectorRef.detectChanges();
   }

@@ -42,13 +42,10 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public FMdiv: any;
   public LSEdiv: any;
   public finalConsequence: string = "";
-
   public UpdatedFailureModeWithLSETree: string = ""
-
   public FinalUpdate: boolean = false;
   public FinalDelete: boolean = false;
   public AddFailureMode: boolean = true;
-
   public Consequences1: boolean = false;
   public Consequences2: boolean = false;
   public Consequences3: boolean = false;
@@ -67,23 +64,16 @@ export class PrescriptiveUpdateComponent implements OnInit {
   private consequenceC;
   private consequenceD;
   private consequenceE;
-
   public ConsequenceNode: any = []
-
-
   public draggedConsequencesYesNO: any = ['YES', 'NO']
   public droppedYesNo = null;
   public dropedConsequenceFailureMode = []
-
   public droppedYesNo1 = null;
   public dropedConsequenceEffectFailureMode = []
-
   public droppedYesNo2 = null;
   public dropedConsequenceCombinationFailureMode = []
-
   public droppedYesNo3 = null;
   public dropedConsequenceAffectFailureMode = []
-
   public UpdateFailureMode : string = ""
   public UpdateFailureModeLocalEffect : string = "";
   public UpdateFailureModeSystemEffect : string = ""
@@ -102,7 +92,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public ADDFrequencyFactor : number = 0;
   private IndexCount : number = 0;
 
-
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -115,7 +104,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
   ngOnInit() {
     this.CPPrescriptiveUpdateData = JSON.parse(localStorage.getItem('PrescriptiveUpdateObject'))
     this.data1 = JSON.parse(this.CPPrescriptiveUpdateData.FMWithConsequenceTree)
-
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
     this.data2 = FailureModeWithLSETree
     this.data1[0].edit = true;
@@ -141,9 +129,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
       for (let index = 0; index < this.dropedMode.length - 1; index++) {
         var elementIndex = this.dropedMode[this.dropedMode.length];
         this.dropedMode.splice(elementIndex, 1)
-
       }
-
     }
   }
   SelectNodeToUpdate(p) {
@@ -159,9 +145,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
     } else if(p.label == 'Function Failure'){
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'No Update For Function Failure'});
     } else if(p.label == "Local Effect" || p.label == "System Effect" || p.label == "Consequence"){
-
     } else { this.EditFailureMode(p) }
-
   }
 
   CloseFailureModeUpdate(){
@@ -173,7 +157,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     return (item, i) => item[key] === value
 
   }
-  
   EditFailureMode(p){
     this.FailureModediv = document.getElementById("FailureModeUpdate2")
     this.FailureModediv.style.display = 'block'
@@ -186,7 +169,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.UpdateFailureModeSystemEffect = p.children[1].data.name
     this.UpdateFailureModeConsequence = p.children[2].data.name
     this.EditFailureModeInsideTree = this.UpdateFailureMode
-
     this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.forEach(element => {
        if( element.FunctionMode == FM && element.LocalEffect == LE && element.SystemEffect == SE ){
           this.EditDownTimeFactor = element.DownTimeFactor
@@ -427,7 +409,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.AddFailureMode = false;
   }
 
-
   UpdateChanges() {
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = this.UpdatedFailureModeWithLSETree
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
@@ -443,7 +424,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     Data['SafetyFactor'] = this.ADDSafetyFactor
     Data['ProtectionFactor'] =  this.ADDProtectionFactor
     Data['FrequencyFactor'] = this.ADDFrequencyFactor
-
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
   
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
@@ -513,7 +493,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     } else {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
     }
-
 
   }
   Consequence2Back() {
@@ -687,15 +666,15 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.Consequences2 = false;
     this.Consequences3 = false;
     this.Consequences4 = false;
+    this.consequenceTreeColorNodeA = 'p-person1'
+    this.consequenceTreeColorNodeB = 'p-person'
+    this.consequenceTreeColorNodeC = 'p-person'
+    this.consequenceTreeColorNodeD = 'p-person'
     this.consequenceA = 'p-person'
     this.consequenceB = 'p-person'
     this.consequenceC = 'p-person'
     this.consequenceD = 'p-person'
     this.consequenceE = 'p-person'
-    this.consequenceTreeColorNodeA = 'p-person1'
-    this.consequenceTreeColorNodeB = 'p-person'
-    this.consequenceTreeColorNodeC = 'p-person'
-    this.consequenceTreeColorNodeD = 'p-person'
   }
 
   colorConsequenceTree() {
@@ -712,8 +691,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.ConsequencesAnswer = []
 
   }
-
-
 
   ConsequenceTreeGeneration() {
     this.ConsequenceNode = [
