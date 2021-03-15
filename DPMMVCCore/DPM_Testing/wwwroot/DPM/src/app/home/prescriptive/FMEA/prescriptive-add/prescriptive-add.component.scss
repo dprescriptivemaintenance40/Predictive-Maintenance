@@ -84,3 +84,35 @@
 
 }
 
+
+
+.email-app .inbox .toolbar {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e1e6ef;
+}
+
+
+
+
+.email-app .message .toolbar {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e1e6ef;
+}
+
+
+
+.email-app .message .details .attachments {
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-top: 3px solid #f9f9fa;
+    border-bottom: 3px solid #f9f9fa;
+}
+
+.email-app .message .details .attachments .attachment {
+    display: flex;
+    margin: 0.5rem 0;
+    font-size: 12px;
+    align-self: center;
+}
+
+

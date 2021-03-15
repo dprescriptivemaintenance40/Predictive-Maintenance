@@ -153,6 +153,7 @@
     </p-card>
 </div>
 
+
 <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
@@ -185,12 +186,91 @@
                     <label>System Effect</label>
                     <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect">
                 </div>
+                <div style="margin-top: 20px">  
+                   <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal" > <i class="fa fa-paperclip" aria-hidden="true"></i></button>
+                   <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button>
+                    
+                </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
         </ng-template>
     </p-card>
 </div>
+<div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                    Add Attachment for {{FMLSEffectModeName}}
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+             
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="toolbar" role="toolbar">
+                            <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                    
+                            <button type="button" (click)="file.click()" class="btn btn-light">
+                                <span class="fa fa-paperclip"></span>
+                            </button>
+                            
+                        </div>
+                        <div class="form-group mt-4">
+                            <textarea class="form-control" id="message" name="body" rows="12" placeholder="Add Some Text">{{fileUpload}}</textarea>
+                        </div>
+        
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Done</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                    Add Remark for {{FMLSEffectModeName}}
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+             
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="form-group mt-4">
+                            <textarea class="form-control" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
+                        </div>
+        
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Done</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 
  <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>

@@ -119,6 +119,8 @@ export class PrescriptiveAddComponent implements OnInit {
   public FrequencyFactor: number;
   private FactoryToAddInFM : any = []
 
+  private UploadFileDataResponse : any = []
+
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -184,6 +186,30 @@ export class PrescriptiveAddComponent implements OnInit {
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveObject');
   }
+
+  public fileUpload;
+  
+  public uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    
+    formData.append('file', fileToUpload, fileToUpload.name);
+    this.fileUpload = fileToUpload.name;
+   
+    this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
+      res => {
+        this.UploadFileDataResponse = res;
+        var dbPath = this.UploadFileDataResponse.dbPath;
+        var fullPath = this.UploadFileDataResponse.fullPath;
+      } , err => {console.log(err.err)}
+    )
+
+  }
+
+
 
 
   dynamicDroppedPopup() {

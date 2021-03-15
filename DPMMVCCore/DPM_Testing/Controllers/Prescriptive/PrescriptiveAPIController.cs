@@ -699,7 +699,6 @@ namespace DPM.Controllers.Prescriptive
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    fileName = UserId  + "_" + fileName;
                     var fullPath = Path.Combine(pathToSave, fileName);
                     string dbPath = "";
                     if (file.ContentType == "application/pdf")
@@ -720,7 +719,7 @@ namespace DPM.Controllers.Prescriptive
                         stream.Position = 0;
                     }
 
-                    return Ok(new { dbPath });
+                    return Ok(new { dbPath, fullPath });
                 }
                 else
                 {
@@ -728,6 +727,28 @@ namespace DPM.Controllers.Prescriptive
                 }
             }
             
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+
+        [HttpPut]
+        [Route("UpdateFileUpload")]
+        public IActionResult PutUpdateFileUpload(string fullPath)
+        {
+            try
+            {
+                string _fileToBeDeleted = fullPath;
+                if (System.IO.File.Exists(_fileToBeDeleted))
+                {
+                    System.IO.File.Delete(_fileToBeDeleted);
+                }
+
+                return Ok();
+            }
             catch (Exception exe)
             {
 
