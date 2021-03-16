@@ -217,8 +217,16 @@
                                 <span class="fa fa-paperclip"></span>
                             </button> 
                         </div>
+                      
                         <div class="form-group mt-4">
-                            <textarea class="form-control" id="message" name="body" rows="12" placeholder="Add Some Text">{{fileUpload}}</textarea>
+                        <div style="border-color: black;height: 300px;width: 400px;" class="card">
+                            <div class="card-body">
+                                <i style="float: left;" class="fas fa-file"></i>
+                                <span *ngIf= "filehide != false">
+                                  {{fileUpload}} </span> 
+                                <button type="button" style="float: right;" (click)="close()" class="btn btn-light"> <i class="fa fa-times-circle"></i></button>  
+                            </div>
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -226,7 +234,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
             </div>
-
         </div>
     </div>
 </div>
