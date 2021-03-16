@@ -561,7 +561,9 @@ export class PrescriptiveAddComponent implements OnInit {
       obj['MaintainenancePractice'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
       obj['FrequencyMaintainenance'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
       obj['ConditionMonitoring'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
-  
+      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
+      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
+      obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
@@ -599,6 +601,9 @@ export class PrescriptiveAddComponent implements OnInit {
       obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
       obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
       obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
+      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
+      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
+      obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
 
     }

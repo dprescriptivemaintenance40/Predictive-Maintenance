@@ -499,7 +499,9 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         obj['MaintainenancePractice'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
         obj['FrequencyMaintainenance'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
         obj['ConditionMonitoring'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
-    
+        obj['AttachmentDBPath'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+        obj['AttachmentFullPath'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath
+        obj['Remark'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].Remark
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     
   }
