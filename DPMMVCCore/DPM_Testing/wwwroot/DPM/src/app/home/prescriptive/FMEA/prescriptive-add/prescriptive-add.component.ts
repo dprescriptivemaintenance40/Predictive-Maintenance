@@ -113,7 +113,7 @@ export class PrescriptiveAddComponent implements OnInit {
   public fileUpload;
   public dbPath : string = "";
   public Remark : string = "";
-  public filehide: boolean = true;
+  public filehide: boolean = false;
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -198,7 +198,6 @@ export class PrescriptiveAddComponent implements OnInit {
         this.fullPath = this.UploadFileDataResponse.fullPath;
       } , err => {console.log(err.err)}
     )
-
   }
   close(){
     this.changeDetectorRef.detectChanges();

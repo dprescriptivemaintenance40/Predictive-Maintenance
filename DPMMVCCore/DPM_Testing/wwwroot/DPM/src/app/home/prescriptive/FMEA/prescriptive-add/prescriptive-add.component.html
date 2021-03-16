@@ -153,8 +153,8 @@
     </p-card>
 </div>
 
-
-<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
+<!-- *ngIf="prescriptiveEffect" -->
+<div style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -217,14 +217,13 @@
                                 <span class="fa fa-paperclip"></span>
                             </button> 
                         </div>
-                      
                         <div class="form-group mt-4">
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="container"><br>
-                                <i class="fas fa-file"></i>
-                                <span *ngIf= "filehide != false">
-                                    {{fileUpload}}
-                                <button type="button" style="float:right;" (click)="close()" class="btn btn-light"><i class="fa fa-times-circle"></i></button>  
+                                <span *ngIf= "filehide">
+                                    <i class="fas fa-file fa-5x"></i>
+                                    {{fileUpload}}  
+                                <button type="button"style="float:right;" (click)="close()" class="btn btn-light"><i class="fa fa-times-circle"></i></button>  
                             </span> 
                             </div>
                           </div>
