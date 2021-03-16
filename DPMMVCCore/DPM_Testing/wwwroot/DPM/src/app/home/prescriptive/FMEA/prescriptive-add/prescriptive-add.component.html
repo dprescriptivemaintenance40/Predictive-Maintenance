@@ -153,8 +153,8 @@
     </p-card>
 </div>
 
-<!-- *ngIf="prescriptiveEffect" -->
-<div  style="margin: 40px;" class="stepsdemo-content shadow">
+
+<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -204,9 +204,9 @@
                 <span>
                     Add Attachment for {{FMLSEffectModeName}}
                 </span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
             </div>  
             <div class="modal-body">
                 <div class="row">
@@ -223,7 +223,7 @@
                                 <span *ngIf= "filehide">
                                     <i class="fas fa-file fa-5x"></i>
                                     {{fileUpload}}  
-                                <a class="delete-org-bttn" (click)="close()"><i class="pi pi-times"></i></a>  
+                                <a class="delete-org-bttn" (click)="CloseAttachmentModal()"><i class="pi pi-times"></i></a>  
                             </span> 
                             </div>
                           </div>

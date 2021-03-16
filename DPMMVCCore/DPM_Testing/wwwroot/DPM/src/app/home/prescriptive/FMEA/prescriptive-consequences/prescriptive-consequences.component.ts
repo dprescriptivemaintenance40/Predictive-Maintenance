@@ -1,3 +1,6 @@
+
+
+
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder} from '@angular/forms';
@@ -499,7 +502,9 @@ export class PrescriptiveConsequencesComponent implements OnInit {
         obj['MaintainenancePractice'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
         obj['FrequencyMaintainenance'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
         obj['ConditionMonitoring'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
-    
+        obj['AttachmentDBPath'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+        obj['AttachmentFullPath'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath
+        obj['Remark'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].Remark
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     
   }
@@ -511,9 +516,5 @@ export class PrescriptiveConsequencesComponent implements OnInit {
       this.router.navigateByUrl('/Home/Dashboard');
     }, err =>{ console.log(err.err) }
     )
-  
-
  }
-
-
 }

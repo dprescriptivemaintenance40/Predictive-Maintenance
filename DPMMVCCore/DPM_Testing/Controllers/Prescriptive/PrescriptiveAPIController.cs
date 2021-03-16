@@ -30,10 +30,10 @@ namespace DPM.Controllers.Prescriptive
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
                 return await _context.PrescriptiveModelData.Where(a => a.UserId == userId)
-                                                           .Include( a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                           .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                            .OrderBy(a => a.CFPPrescriptiveId)
                                                            .ToListAsync();
-                 
+
             }
             catch (Exception exe)
             {
@@ -74,7 +74,7 @@ namespace DPM.Controllers.Prescriptive
                 List<int> Calculation = new List<int>();
 
                 var CentrifugalPumpPrescriptiveFailureModeData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
-                prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>() ;
+                prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
 
                 foreach (var item in CentrifugalPumpPrescriptiveFailureModeData)
                 {
@@ -139,7 +139,7 @@ namespace DPM.Controllers.Prescriptive
                     prescriptiveModel.CFrequencyMaintainenance = "Daily Condition Monitoring, or Online Monitoring";
                     prescriptiveModel.CConditionMonitoring = "Vibration Monitoring";
                 }
-                else if ( ( 500 < CF )  && ( CF < 1000 ) )
+                else if ((500 < CF) && (CF < 1000))
                 {
                     prescriptiveModel.ComponentRating = "B";
                     prescriptiveModel.CMaintainenancePractice = "OBM";
@@ -152,7 +152,7 @@ namespace DPM.Controllers.Prescriptive
                     prescriptiveModel.CMaintainenancePractice = "PM";
                     prescriptiveModel.CFrequencyMaintainenance = "Weekly Condition Monitoring";
                     prescriptiveModel.CConditionMonitoring = "Vibration Monitoring";
-                } 
+                }
                 else if ((100 < CF) && (CF <= 200))
                 {
                     prescriptiveModel.ComponentRating = "D";
@@ -184,18 +184,18 @@ namespace DPM.Controllers.Prescriptive
             }
         }
 
-        
+
 
         [HttpPut]
         [Route("CFPrescriptiveAdd")]
         public async Task<IActionResult> PutPrespective(CentrifugalPumpPrescriptiveModel prescriptiveModel)
         {
-            
+
             CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
             centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.FindAsync(prescriptiveModel.CFPPrescriptiveId);
             centrifugalPumpPrescriptiveModel.centrifugalPumpPrescriptiveFailureModes = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
             centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
-      
+
             _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
 
             try
@@ -326,7 +326,7 @@ namespace DPM.Controllers.Prescriptive
 
                 }
 
-               
+
 
                 var CF = Calculation.Sum();
 
@@ -370,28 +370,28 @@ namespace DPM.Controllers.Prescriptive
                 }
 
 
-                    CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModelData = await _context.PrescriptiveModelData.FindAsync(prescriptiveModel.CFPPrescriptiveId);
-                    centrifugalPumpPrescriptiveModelData.centrifugalPumpPrescriptiveFailureModes = null;
-                    centrifugalPumpPrescriptiveModelData.FailureModeWithLSETree = prescriptiveModel.FailureModeWithLSETree;
-                    centrifugalPumpPrescriptiveModelData.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
-                    centrifugalPumpPrescriptiveModelData.ComponentCriticalityFactor = prescriptiveModel.ComponentCriticalityFactor;
-                    centrifugalPumpPrescriptiveModelData.ComponentRating = prescriptiveModel.ComponentRating;
-                    centrifugalPumpPrescriptiveModelData.CMaintainenancePractice = prescriptiveModel.CMaintainenancePractice;
-                    centrifugalPumpPrescriptiveModelData.CFrequencyMaintainenance = prescriptiveModel.CFrequencyMaintainenance;
-                    centrifugalPumpPrescriptiveModelData.CConditionMonitoring = prescriptiveModel.CConditionMonitoring;
-                    _context.Entry(centrifugalPumpPrescriptiveModelData).State = EntityState.Modified;
-                  
+                CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModelData = await _context.PrescriptiveModelData.FindAsync(prescriptiveModel.CFPPrescriptiveId);
+                centrifugalPumpPrescriptiveModelData.centrifugalPumpPrescriptiveFailureModes = null;
+                centrifugalPumpPrescriptiveModelData.FailureModeWithLSETree = prescriptiveModel.FailureModeWithLSETree;
+                centrifugalPumpPrescriptiveModelData.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+                centrifugalPumpPrescriptiveModelData.ComponentCriticalityFactor = prescriptiveModel.ComponentCriticalityFactor;
+                centrifugalPumpPrescriptiveModelData.ComponentRating = prescriptiveModel.ComponentRating;
+                centrifugalPumpPrescriptiveModelData.CMaintainenancePractice = prescriptiveModel.CMaintainenancePractice;
+                centrifugalPumpPrescriptiveModelData.CFrequencyMaintainenance = prescriptiveModel.CFrequencyMaintainenance;
+                centrifugalPumpPrescriptiveModelData.CConditionMonitoring = prescriptiveModel.CConditionMonitoring;
+                _context.Entry(centrifugalPumpPrescriptiveModelData).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+
+
+                var ToAddFM = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
+
+                foreach (var item in ToAddFM)
+                {
+                    item.CPPFMId = 0;
+                    _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
                     await _context.SaveChangesAsync();
-
-
-                    var ToAddFM = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
-              
-                    foreach (var item in ToAddFM)
-                    {
-                        item.CPPFMId = 0;
-                        _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
-                        await _context.SaveChangesAsync();
-                    }
+                }
 
 
 
@@ -553,8 +553,8 @@ namespace DPM.Controllers.Prescriptive
                         Calculation.Add(c.CriticalityFactor);
                         prescriptiveModel.centrifugalPumpPrescriptiveFailureModes.Add(c);
                     }
-                   
-                    
+
+
                 }
 
                 var CF = Calculation.Sum();
@@ -637,7 +637,7 @@ namespace DPM.Controllers.Prescriptive
         {
             try
             {
-              
+
                 var prescriptiveModel = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == id)
                                                          .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                          .First();
@@ -658,8 +658,8 @@ namespace DPM.Controllers.Prescriptive
                 return BadRequest(exe.Message);
             }
 
-       
-           
+
+
         }
 
 
@@ -680,7 +680,8 @@ namespace DPM.Controllers.Prescriptive
                 if (file.ContentType == "application/pdf")
                 {
                     pathToSave = string.Format("{0}{1}", pdfRootPath, UserId);
-                } else if (file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                }
+                else if (file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
                 {
                     pathToSave = string.Format("{0}{1}", wordFolder, UserId);
                 }
@@ -688,14 +689,14 @@ namespace DPM.Controllers.Prescriptive
                 {
                     pathToSave = string.Format("{0}{1}", imageRootPath, UserId);
                 }
-               
+
                 // Check folder exists
                 if (!Directory.Exists(pathToSave))
                 {
                     Directory.CreateDirectory(pathToSave);
                 }
 
-               
+
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -704,7 +705,8 @@ namespace DPM.Controllers.Prescriptive
                     if (file.ContentType == "application/pdf")
                     {
                         dbPath = string.Format("Evidence_PDF/{0}/{1}", UserId, fileName);
-                    } else if (file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                    }
+                    else if (file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
                     {
                         dbPath = string.Format("Evidence_Doc/{0}/{1}", UserId, fileName);
                     }
@@ -726,7 +728,7 @@ namespace DPM.Controllers.Prescriptive
                     return BadRequest();
                 }
             }
-            
+
             catch (Exception exe)
             {
 
@@ -735,9 +737,9 @@ namespace DPM.Controllers.Prescriptive
         }
 
 
-        [HttpPut]
+        [HttpDelete]
         [Route("UpdateFileUpload")]
-        public IActionResult PutUpdateFileUpload(string fullPath)
+        public IActionResult DeleteUpdateFileUpload(string fullPath)
         {
             try
             {

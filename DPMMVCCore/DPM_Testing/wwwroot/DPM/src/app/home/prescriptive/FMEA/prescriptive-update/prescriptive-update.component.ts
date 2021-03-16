@@ -424,6 +424,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
     Data['SafetyFactor'] = this.ADDSafetyFactor
     Data['ProtectionFactor'] =  this.ADDProtectionFactor
     Data['FrequencyFactor'] = this.ADDFrequencyFactor
+    
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
   
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId

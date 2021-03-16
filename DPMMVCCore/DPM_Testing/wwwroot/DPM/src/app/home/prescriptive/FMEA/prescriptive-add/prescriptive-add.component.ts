@@ -113,8 +113,7 @@ export class PrescriptiveAddComponent implements OnInit {
   public fileUpload;
   public dbPath : string = "";
   public Remark : string = "";
-  public filehide: boolean = false;
-
+  public filehide : boolean = false
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -203,13 +202,6 @@ export class PrescriptiveAddComponent implements OnInit {
 
   }
 
-   close(){
-    this.changeDetectorRef.detectChanges();
-    this.filehide = false
-  }
- 
-
-
   CloseAttachmentModal(){
    if(this.fullPath.length > 4){
     const params = new HttpParams()
@@ -217,6 +209,7 @@ export class PrescriptiveAddComponent implements OnInit {
    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe(
      res => {
       this.fileUpload = ""
+      this.filehide = false
      }
    )
    }

@@ -1038,6 +1038,14 @@ export class DashboardComponent {
   }
 
   DeletePrescriptiveRecords(p) {
+    for (let index = 0; index < p.centrifugalPumpPrescriptiveFailureModes.length; index++) {
+     
+      const params = new HttpParams()
+           .set("fullPath", p.centrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath)
+      
+      this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe()
+    }
+
     this.http.delete('api/PrescriptiveAPI/' + p.CFPPrescriptiveId)
       .subscribe(res => {
         this.getPrescriptiveRecords();
@@ -1046,6 +1054,7 @@ export class DashboardComponent {
         console.log(err)
       });
   }
+
 
   ADDConsequenceRecords(p) {
     if (localStorage.getItem('PrescriptiveUpdateObject') != null) {
