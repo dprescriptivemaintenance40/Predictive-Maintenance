@@ -114,6 +114,7 @@ export class PrescriptiveAddComponent implements OnInit {
   public dbPath : string = "";
   public Remark : string = "";
   public filehide: boolean = false;
+
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -180,6 +181,7 @@ export class PrescriptiveAddComponent implements OnInit {
     await localStorage.removeItem('PrescriptiveObject');
   }
   
+
   public uploadFile = (files) => {
     if (files.length === 0) {
       return;
@@ -198,12 +200,15 @@ export class PrescriptiveAddComponent implements OnInit {
         this.fullPath = this.UploadFileDataResponse.fullPath;
       } , err => {console.log(err.err)}
     )
+
   }
-  close(){
+
+   close(){
     this.changeDetectorRef.detectChanges();
     this.filehide = false
   }
  
+
 
   CloseAttachmentModal(){
    if(this.fullPath.length > 4){
@@ -564,7 +569,9 @@ export class PrescriptiveAddComponent implements OnInit {
       obj['MaintainenancePractice'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
       obj['FrequencyMaintainenance'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
       obj['ConditionMonitoring'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
-  
+      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
+      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
+      obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
@@ -602,6 +609,9 @@ export class PrescriptiveAddComponent implements OnInit {
       obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
       obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
       obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
+      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
+      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
+      obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
 
     }
@@ -1062,7 +1072,6 @@ export class PrescriptiveAddComponent implements OnInit {
       detail: event.data.name
     });
   }
- 
 }
 
 
