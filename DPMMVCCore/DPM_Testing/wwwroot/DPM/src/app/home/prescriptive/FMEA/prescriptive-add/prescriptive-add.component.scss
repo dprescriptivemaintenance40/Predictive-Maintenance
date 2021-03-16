@@ -105,14 +105,19 @@
 
 .delete-org-bttn {
     color: red;
-    background: rebeccapurple;
+    background: black;
     cursor: pointer;
     position: absolute;
-    right: -9px;
-    top: -11px;
+    // right: -9px;
+    top: 8px;
     border-radius: 100%;
     border: 1px solid red;
     font-size: 1px;
     padding: 3px;
 }
+.container {
+    text-align: center;
+    display: block;
+    width:100px;
+  }
 
