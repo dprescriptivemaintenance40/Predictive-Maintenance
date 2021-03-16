@@ -735,9 +735,9 @@ namespace DPM.Controllers.Prescriptive
         }
 
 
-        [HttpPut]
+        [HttpDelete]
         [Route("UpdateFileUpload")]
-        public IActionResult PutUpdateFileUpload(string fullPath)
+        public IActionResult DeleteUpdateFileUpload(string fullPath)
         {
             try
             {

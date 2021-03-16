@@ -108,9 +108,11 @@ export class PrescriptiveAddComponent implements OnInit {
   public ProtectionFactor: number; 
   public FrequencyFactor: number;
   private FactoryToAddInFM : any = []
-
+  public fullPath : string = ""
   private UploadFileDataResponse : any = []
-
+  public fileUpload;
+  public dbPath : string = "";
+  public Remark : string = "";
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -176,7 +178,8 @@ export class PrescriptiveAddComponent implements OnInit {
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveObject');
   }
-  public fileUpload;
+  
+
   public uploadFile = (files) => {
     if (files.length === 0) {
       return;
@@ -190,11 +193,26 @@ export class PrescriptiveAddComponent implements OnInit {
     this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
       res => {
         this.UploadFileDataResponse = res;
-        var dbPath = this.UploadFileDataResponse.dbPath;
-        var fullPath = this.UploadFileDataResponse.fullPath;
+        this.dbPath = this.UploadFileDataResponse.dbPath;
+        this.fullPath = this.UploadFileDataResponse.fullPath;
       } , err => {console.log(err.err)}
     )
 
+  }
+
+ 
+
+  CloseAttachmentModal(){
+   if(this.fullPath.length > 4){
+    const params = new HttpParams()
+    .set("fullPath",this.fullPath)
+   this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe(
+     res => {
+      this.fileUpload = ""
+     }
+   )
+   }
+    
   }
 
   dynamicDroppedPopup() {
@@ -461,7 +479,7 @@ export class PrescriptiveAddComponent implements OnInit {
   }
 
   ADDFailuerEffect() {
-    if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
+    if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && this.dbPath.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
     this.FMChild[this.FMCount].children.push(
       {
         label: "Local Effect",
@@ -488,10 +506,17 @@ export class PrescriptiveAddComponent implements OnInit {
     obj['SafetyFactor'] = this.SafetyFactor
     obj['ProtectionFactor'] = this.ProtectionFactor
     obj['FrequencyFactor'] = this.FrequencyFactor
+    obj['AttachmentDBPath'] = this.dbPath
+    obj['AttachmentFullPath'] = this.fullPath
+    obj['Remark'] = this.Remark
+    
     this.FactoryToAddInFM.push(obj)
     if (this.FMCount == this.FMChild.length - 1) {
       this.ADDFailureLSEDiasble = false;
       this.FMLSEffectModeName = ""
+      this.dbPath = ""
+      this.fullPath = ""
+      this.Remark = ""
       this.NextFailureLSEDiasble = true;
       this.ADDFailureLSEDiasble = false; 
       this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
