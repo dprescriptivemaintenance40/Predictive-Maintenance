@@ -182,7 +182,12 @@ export class PrescriptiveConsequencesComponent implements OnInit {
     this.consequenceC = 'p-person'
     this.consequenceD = 'p-person'
     this.consequenceE = 'p-person'
-  
+    
+    this.consequenceTreeColorNodeA = 'p-person1'
+    this.consequenceTreeColorNodeB = 'p-person'
+    this.consequenceTreeColorNodeC = 'p-person'
+    this.consequenceTreeColorNodeD = 'p-person'
+    
 }
 
   onNodeSelect(event) {

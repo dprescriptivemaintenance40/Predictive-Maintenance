@@ -106,7 +106,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public Remark : string = "";
   public AttachmentADD : boolean = true;
   public FreshUploadUpdate: boolean = false;
-
+  public NoData : string = "";
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -200,6 +200,8 @@ export class PrescriptiveUpdateComponent implements OnInit {
     });
 
     if(this.EditdbPath.length > 0){
+      this.NoData = ""
+      this.FreshUploadUpdate = false
       const extension = this.getFileExtension(this.EditdbPath);
       if(extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png'){
          this.extensionImage = true;
@@ -267,6 +269,16 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.UpdateFailureModeConsequence =   this.finalConsequence
     this.finalConsequence = ""
     this.LSFailureMode = ""
+
+    this.consequenceTreeColorNodeA = 'p-person1'
+    this.consequenceTreeColorNodeB = 'p-person'
+    this.consequenceTreeColorNodeC = 'p-person'
+    this.consequenceTreeColorNodeD = 'p-person'
+    this.consequenceA = 'p-person'
+    this.consequenceB = 'p-person'
+    this.consequenceC = 'p-person'
+    this.consequenceD = 'p-person'
+    this.consequenceE = 'p-person'
   }
 
 
@@ -554,6 +566,15 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.FinalDelete = true
     this.ConsequenceTreeADDConsequenceEnable = false
     this.AddFailureMode = false;
+    this.consequenceTreeColorNodeA = 'p-person1'
+    this.consequenceTreeColorNodeB = 'p-person'
+    this.consequenceTreeColorNodeC = 'p-person'
+    this.consequenceTreeColorNodeD = 'p-person'
+    this.consequenceA = 'p-person'
+    this.consequenceB = 'p-person'
+    this.consequenceC = 'p-person'
+    this.consequenceD = 'p-person'
+    this.consequenceE = 'p-person'
   }
 
   UpdateChanges() {
