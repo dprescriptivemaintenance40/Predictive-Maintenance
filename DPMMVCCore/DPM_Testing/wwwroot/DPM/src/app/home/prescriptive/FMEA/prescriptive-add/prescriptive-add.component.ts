@@ -78,7 +78,8 @@ export class PrescriptiveAddComponent implements OnInit {
   public prescriptiveTreeUpdateEnable: boolean = false;
   public prescriptiveTreeNextEnable: boolean = false;
   public prescriptiveTreeBackEnable: boolean = false;
-
+  public prescriptiveEffect1: boolean = false;
+  
   public draggedConsequencesYesNO: any = ['YES', 'NO']
   public droppedYesNo = null;
   public dropedConsequenceFailureMode = []
@@ -320,6 +321,7 @@ export class PrescriptiveAddComponent implements OnInit {
       this.prescriptiveFunctionFailure = false;
       this.prescriptiveFailureMode = false;
       this.prescriptiveEffect = false;
+      this.prescriptiveEffect1 = false
       this.prescriptiveTree = false;
       this.activeIndex = 0;
     } else if (this.EquipmentType.length == 0) {
@@ -468,6 +470,7 @@ export class PrescriptiveAddComponent implements OnInit {
     } 
  
     this.prescriptiveEffect = true
+    this.prescriptiveEffect1 = true
     this.prescriptiveFailureMode = false;
     this.activeIndex = 3
     this.FMCount = 0;
@@ -527,7 +530,7 @@ export class PrescriptiveAddComponent implements OnInit {
       this.FMLSEffectModeName = ""
       this.NextFailureLSEDiasble = true;
       this.ADDFailureLSEDiasble = false; 
-      // this.prescriptiveEffect = false
+       this.prescriptiveEffect = false
       this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
     }
     this.onLSEffectAddedMessage(this.FMChild[this.FMCount]);
@@ -680,6 +683,7 @@ export class PrescriptiveAddComponent implements OnInit {
   FailureEffectNext() {
     this.prescriptiveFailureMode = false;
     this.prescriptiveEffect = false;
+    this.prescriptiveEffect1 = false
     this.prescriptiveTree = true;
     this.prescriptiveTreeBackEnable = true
     this.activeIndex = 4;
@@ -693,12 +697,14 @@ export class PrescriptiveAddComponent implements OnInit {
   }
   FailuerEffectBack() {
     this.prescriptiveEffect = false;
+    this.prescriptiveEffect1 = false
     this.prescriptiveFailureMode = true;
     this.activeIndex = 2
   }
 
   treeBack() {
     this.prescriptiveEffect = true;
+    this.prescriptiveEffect1 = true
     this.prescriptiveTree = false;
 
   }

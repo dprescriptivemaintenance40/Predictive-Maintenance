@@ -141,7 +141,6 @@
                             <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                              <i class="far fa-times-circle "></i>
                             </a>
-                           
                         </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List </small><br><br>
@@ -155,10 +154,8 @@
         </ng-template>
     </p-card>
 </div>
-
-<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
-    <p-card>
-        
+<div *ngIf="prescriptiveEffect1">
+    <p-card> 
         <p-organizationChart [value]="InsertLSEffect"selectionMode="single" [(selection)]="selectedNode"  styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -173,6 +170,8 @@
         <button label="Next" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailuerEffectBack()">Back</button>
         <button *ngIf="NextFailureLSEDiasble" label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
     </p-card>
+</div>
+<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <br>
     <p-card>
         <ng-template pTemplate="title">
@@ -353,7 +352,6 @@
 <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
     <p-card>
         <button *ngIf="prescriptiveTreeBackEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="treeBack()">Back</button>
-
         <button *ngIf="prescriptiveTreeSubmitEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Save & Next</button>
 
         <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()">Next</button> <br><br>
