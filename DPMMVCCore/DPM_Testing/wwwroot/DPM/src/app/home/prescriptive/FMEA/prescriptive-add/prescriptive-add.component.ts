@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { MenuItem } from 'primeng/api';
@@ -108,9 +108,12 @@ export class PrescriptiveAddComponent implements OnInit {
   public ProtectionFactor: number; 
   public FrequencyFactor: number;
   private FactoryToAddInFM : any = []
-
+  public fullPath : string = ""
   private UploadFileDataResponse : any = []
-
+  public fileUpload;
+  public dbPath : string = "";
+  public Remark : string = "";
+  public fileAttachmentEnable : boolean = false;
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -176,7 +179,8 @@ export class PrescriptiveAddComponent implements OnInit {
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveObject');
   }
-  public fileUpload;
+  
+
   public uploadFile = (files) => {
     if (files.length === 0) {
       return;
@@ -190,11 +194,33 @@ export class PrescriptiveAddComponent implements OnInit {
     this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
       res => {
         this.UploadFileDataResponse = res;
-        var dbPath = this.UploadFileDataResponse.dbPath;
-        var fullPath = this.UploadFileDataResponse.fullPath;
+        this.dbPath = this.UploadFileDataResponse.dbPath;
+        this.fullPath = this.UploadFileDataResponse.fullPath;
+        this.fileAttachmentEnable= true;
       } , err => {console.log(err.err)}
     )
 
+  }
+
+ 
+
+  CloseAttachmentModal(){
+   if(this.fullPath.length > 4){
+    const params = new HttpParams()
+    .set("fullPath",this.fullPath)
+   this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe(
+     res => {
+      this.fileUpload = ""
+      this.fileAttachmentEnable = false
+     }
+   )
+   }
+    
+  }
+
+  AttachmentDoneModal(){
+    this.fileAttachmentEnable= false;
+    this.fileUpload = ""
   }
 
   dynamicDroppedPopup() {
@@ -270,7 +296,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.dropDownData.forEach(element => {
           if (element.Function == "Function Failure") {
             this.functionFailureData.push(element)
-          } else {
+          } else if(element.Function == "Function Mode") {
             this.functionModeData.push(element)
           }
 
@@ -461,7 +487,7 @@ export class PrescriptiveAddComponent implements OnInit {
   }
 
   ADDFailuerEffect() {
-    if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
+    if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && this.dbPath.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
     this.FMChild[this.FMCount].children.push(
       {
         label: "Local Effect",
@@ -488,6 +514,10 @@ export class PrescriptiveAddComponent implements OnInit {
     obj['SafetyFactor'] = this.SafetyFactor
     obj['ProtectionFactor'] = this.ProtectionFactor
     obj['FrequencyFactor'] = this.FrequencyFactor
+    obj['AttachmentDBPath'] = this.dbPath
+    obj['AttachmentFullPath'] = this.fullPath
+    obj['Remark'] = this.Remark
+    
     this.FactoryToAddInFM.push(obj)
     if (this.FMCount == this.FMChild.length - 1) {
       this.ADDFailureLSEDiasble = false;
@@ -507,7 +537,10 @@ export class PrescriptiveAddComponent implements OnInit {
      this.FMCount += 1;
     if (this.FMCount <= this.FMChild.length - 1) {
       this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
-    }   
+    } 
+    this.dbPath = ""
+    this.fullPath = ""
+    this.Remark = ""  
 
   }else {
     this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields'});
@@ -536,7 +569,9 @@ export class PrescriptiveAddComponent implements OnInit {
       obj['MaintainenancePractice'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
       obj['FrequencyMaintainenance'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
       obj['ConditionMonitoring'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
-  
+      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
+      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
+      obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
@@ -574,6 +609,9 @@ export class PrescriptiveAddComponent implements OnInit {
       obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
       obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
       obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
+      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
+      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
+      obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
 
     }

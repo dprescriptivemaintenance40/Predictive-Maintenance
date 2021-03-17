@@ -1,4 +1,14 @@
-
+.attachment {
+    color: white;
+    background: black;
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    border-radius: 100%;
+    border: 1px solid black;
+    font-size: 1px;
+    padding: 3px;
+}
   .border {
     border:2px solid black;
     margin: 1rem 0;
