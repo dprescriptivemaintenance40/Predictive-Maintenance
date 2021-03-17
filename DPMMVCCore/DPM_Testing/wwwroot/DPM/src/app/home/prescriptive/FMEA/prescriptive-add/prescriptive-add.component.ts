@@ -448,6 +448,7 @@ export class PrescriptiveAddComponent implements OnInit {
     this.FMChild = []
     this.FactoryToAddInFM = []
     this.NextFailureLSEDiasble = false
+ 
     var Data = [], FMName
     this.dropedMode.forEach(element => {
       Data.push(element.Description)
@@ -479,14 +480,16 @@ export class PrescriptiveAddComponent implements OnInit {
         children: this.FMChild
       }
     ]
-   this.ADDFailureLSEDiasble = true
+    this.ADDFailureLSEDiasble = true
     this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
   }else{
     this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Failure Modes' });
   }
+ 
   }
 
   ADDFailuerEffect() {
+
     if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && this.dbPath.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
     this.FMChild[this.FMCount].children.push(
       {
@@ -524,6 +527,7 @@ export class PrescriptiveAddComponent implements OnInit {
       this.FMLSEffectModeName = ""
       this.NextFailureLSEDiasble = true;
       this.ADDFailureLSEDiasble = false; 
+      // this.prescriptiveEffect = false
       this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
     }
     this.onLSEffectAddedMessage(this.FMChild[this.FMCount]);
@@ -541,7 +545,6 @@ export class PrescriptiveAddComponent implements OnInit {
     this.dbPath = ""
     this.fullPath = ""
     this.Remark = ""  
-
   }else {
     this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields'});
   }
