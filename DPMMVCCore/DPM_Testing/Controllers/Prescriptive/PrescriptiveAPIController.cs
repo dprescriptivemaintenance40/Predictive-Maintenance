@@ -673,16 +673,12 @@ namespace DPM.Controllers.Prescriptive
                 var file = Request.Form.Files[0];
                 var imageFolder = Path.Combine("wwwroot\\Evidence_Image\\");
                 var pdfFolder = Path.Combine("wwwroot\\Evidence_PDF\\");
-                var wordFolder = Path.Combine("wwwroot\\Evidence_Doc\\");
                 var imageRootPath = Path.Combine(Directory.GetCurrentDirectory(), imageFolder);
                 var pdfRootPath = Path.Combine(Directory.GetCurrentDirectory(), pdfFolder);
                 var UserId = User.Claims.First(c => c.Type == "UserID").Value;
                 if (file.ContentType == "application/pdf")
                 {
                     pathToSave = string.Format("{0}{1}", pdfRootPath, UserId);
-                } else if (file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-                {
-                    pathToSave = string.Format("{0}{1}", wordFolder, UserId);
                 }
                 else
                 {
@@ -704,10 +700,7 @@ namespace DPM.Controllers.Prescriptive
                     if (file.ContentType == "application/pdf")
                     {
                         dbPath = string.Format("Evidence_PDF/{0}/{1}", UserId, fileName);
-                    } else if (file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-                    {
-                        dbPath = string.Format("Evidence_Doc/{0}/{1}", UserId, fileName);
-                    }
+                    } 
                     else
                     {
                         dbPath = string.Format("Evidence_Image/{0}/{1}", UserId, fileName);

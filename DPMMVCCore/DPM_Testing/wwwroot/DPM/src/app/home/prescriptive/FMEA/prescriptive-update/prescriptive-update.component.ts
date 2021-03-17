@@ -94,7 +94,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public EditfullPath : string = "";
   public extensionPDF: boolean = false;
   public extensionImage: boolean = false;
-  public extensionDoc: boolean = false;
   public UploadFileDataResponse : any = [];
   public dbPath : string = "";
   public fullPath : string = "";
@@ -193,18 +192,12 @@ export class PrescriptiveUpdateComponent implements OnInit {
 
     if(this.EditfullPath.length > 0){
       const extension = this.getFileExtension(this.EditfullPath);
-      if(extension == 'JPG' || extension == 'JPEG' || extension == 'jpg' || extension == 'jpeg' || extension == 'PNG' || extension == 'png'){
+      if(extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png'){
          this.extensionImage = true;
-         this.extensionDoc = false;
          this.extensionPDF = false;
-      } else if(extension == 'PDF' || extension == 'pdf'){
+      } else if(extension.toLowerCase() == 'pdf'){
         this.extensionImage = false;
-        this.extensionDoc = false;
         this.extensionPDF = true;
-      }else {
-        this.extensionImage = false;
-        this.extensionDoc = true;
-        this.extensionPDF = false;
       }
     }
    

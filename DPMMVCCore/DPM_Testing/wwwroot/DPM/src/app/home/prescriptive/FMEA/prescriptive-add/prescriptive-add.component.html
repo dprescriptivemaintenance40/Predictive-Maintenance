@@ -211,7 +211,7 @@
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
                         <div class="toolbar" role="toolbar">
-                            <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                            <input type="file" #file placeholder="Choose file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile(file.files)" style="display:none;">
                             <button type="button" (click)="file.click()" class="btn btn-light">
                                 <span class="fa fa-paperclip"></span>
                             </button> 
