@@ -23,9 +23,10 @@ import {DialogModule} from 'primeng/dialog';
 
 
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
+import { SafePipe } from "./safe.pipe";
 
 @NgModule({
-    declarations: [CommonLoadingComponent],
+    declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
         NgxSpinnerModule,
         TableModule,
@@ -70,6 +71,7 @@ import { CommonLoadingComponent } from "./Loading/common-loading.component";
         DragDropModule,
         SliderModule,
         TreeModule,
+        SafePipe,
         DialogModule]
 })
 export class SharedModule {

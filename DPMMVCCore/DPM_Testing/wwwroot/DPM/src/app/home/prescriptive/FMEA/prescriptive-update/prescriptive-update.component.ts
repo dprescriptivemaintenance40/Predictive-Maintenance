@@ -92,14 +92,19 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public ADDFrequencyFactor : number = 0;
   private IndexCount : number = 0;
   public EditfullPath : string = "";
+  public EditdbPath : string = "";
   public extensionPDF: boolean = false;
   public extensionImage: boolean = false;
   public UploadFileDataResponse : any = [];
+  public UploadFileDataUpdateResponse : any = [];
   public dbPath : string = "";
   public fullPath : string = "";
+  public dbPathUpdate : string = "";
+  public fullPathUpdate : string = "";
   public fileAttachmentEnable : boolean= false;
   public fileUpload :string = "";
   public Remark : string = "";
+  public AttachmentADD : boolean = true;
 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
@@ -185,13 +190,15 @@ export class PrescriptiveUpdateComponent implements OnInit {
           this.EditSafetyFactor = element.SafetyFactor
           this.EditProtectionFactor = element.ProtectionFactor
           this.EditFrequencyFactor = element.FrequencyFactor
+          this.EditdbPath = element.AttachmentDBPath
           this.EditfullPath = element.AttachmentFullPath
+          
 
        }
     });
 
-    if(this.EditfullPath.length > 0){
-      const extension = this.getFileExtension(this.EditfullPath);
+    if(this.EditdbPath.length > 0){
+      const extension = this.getFileExtension(this.EditdbPath);
       if(extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png'){
          this.extensionImage = true;
          this.extensionPDF = false;
@@ -210,6 +217,16 @@ export class PrescriptiveUpdateComponent implements OnInit {
         return extension;
     }
 
+
+  DeleteAttachment(){
+    this.AttachmentADD = false
+    this.extensionPDF = false
+    this.extensionImage = false
+    
+    const params = new HttpParams()
+    .set("fullPath",this.EditfullPath)
+    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe()
+  }
 
 
   UpdateFM(){
@@ -251,17 +268,36 @@ export class PrescriptiveUpdateComponent implements OnInit {
   }
 
 
-  
-  CloseAttachmentModal(){
-    if(this.EditfullPath.length > 4){
-     const params = new HttpParams()
-     .set("fullPath",this.EditfullPath)
-    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe(
-      res => {
-      }
-    )
+  public uploadFileUpdate = (files) => {
+    if (files.length === 0) {
+      return;
     }
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    
+    formData.append('file', fileToUpload, fileToUpload.name);
+    this.fileUpload = fileToUpload.name;
+   
+    this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
+      res => {
+        this.UploadFileDataUpdateResponse = res;
+        this.dbPathUpdate = this.UploadFileDataUpdateResponse.dbPath;
+        this.fullPathUpdate = this.UploadFileDataUpdateResponse.fullPath;
+        
+      } , err => {console.log(err.err)}
+    )
+
   }
+
+ 
+
+
+  CloseAttachmentModalUpdate(){
+    const params = new HttpParams()
+    .set("fullPath",this.fullPathUpdate)
+    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe()
+   
+ }
 
   SaveFailureModeUpdate(){
     this.FailureModediv.style.display = 'none'
@@ -300,6 +336,16 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data2) 
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
 
+    var dbPath, fullPath;
+    if(this.dbPathUpdate.length > 4){
+      dbPath = this.dbPathUpdate
+      fullPath = this.fullPathUpdate
+    }else{
+        dbPath = this.EditdbPath
+        fullPath = this.EditfullPath
+        
+    }
+
     let obj = {};
       obj['CPPFMId'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId
       obj['CFPPrescriptiveId'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId
@@ -312,6 +358,9 @@ export class PrescriptiveUpdateComponent implements OnInit {
       obj['SafetyFactor'] = this.EditSafetyFactor
       obj['ProtectionFactor'] =  this.EditProtectionFactor
       obj['FrequencyFactor'] = this.EditFrequencyFactor
+      obj['AttachmentDBPath'] = dbPath
+      obj['AttachmentFullPath'] = fullPath
+      obj['Remark'] = this.Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     this.http.put('api/PrescriptiveAPI/EditConsequenceTree', this.centrifugalPumpPrescriptiveOBJ ).subscribe(
       res => { 
@@ -418,6 +467,11 @@ export class PrescriptiveUpdateComponent implements OnInit {
   }
 
  
+
+
+    
+
+
 
   CloseAttachmentModalAdd(){
    if(this.fullPath.length > 4){
@@ -885,12 +939,22 @@ export class PrescriptiveUpdateComponent implements OnInit {
   }
 
   SelectNodeToDelete(p){
+    
     var FMList = this.data1[0].children[0].children[0].children
     var index = FMList.findIndex(std=> std.data.name == p.data.name);
     this.data1[0].children[0].children[0].children.splice(index, 1);
    
     var index2 = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.findIndex(std=> std.FunctionMode == p.data.name);
     var id =  this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index2].CPPFMId
+    var fullpath = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index2].AttachmentFullPath
+    if(fullpath.length > 4){
+      const params = new HttpParams()
+      .set("fullPath", fullpath)
+ 
+      this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe()
+
+    }
+   
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId  
     
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)

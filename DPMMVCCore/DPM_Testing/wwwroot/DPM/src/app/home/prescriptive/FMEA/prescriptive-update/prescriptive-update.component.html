@@ -575,7 +575,7 @@
                 <span>
                     Add Attachment for {{FMLSEffectModeName}}
                 </span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
             </div>  
@@ -583,25 +583,28 @@
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
                         <div class="toolbar" role="toolbar">
-                            <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
-                            <button type="button" (click)="file.click()" class="btn btn-light">
+                            <input type="file" #file placeholder="Choose file" accept="image/x-png,image/jpeg,.pdf" (change)="uploadFileUpdate(file.files)" style="display:none;">
+                            <button type="button" (click)="file.click()" class="btn btn-light" [disabled]="AttachmentADD">
                                 <span class="fa fa-paperclip"></span>
                             </button> 
                         </div>
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="file"><br>
-                                <!-- <span style="margin: 10px;">
+                                <span style="margin: 10px;">
                                     <i class="fas fa-file fa-5x"></i>
                                     {{fileUpload}}  
-                                <a class="attachment"><i class="pi pi-times"></i></a>  
-                               </span>  -->
+                                <a class="attachment" (click)="CloseAttachmentModalUpdate()"><i class="pi pi-times"></i></a>  
+                               </span> 
                                <span style="margin: 10px;" *ngIf="extensionPDF">
-                                <iframe [src]="EditfullPath" width="50" height="50" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
-
-                                {{fileUpload}}  
-                            <a class="attachment"><i class="pi pi-times"></i></a>  
-                           </span> 
-
+                                <iframe [src]="EditdbPath | safeUrl" width="50" height="50" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
+ 
+                               <a class="attachment" (click)="DeleteAttachment()"><i class="pi pi-times"></i></a>  
+                             </span> 
+                             <span style="margin: 10px;" *ngIf="extensionImage">
+                                <img [src]="EditdbPath" height="50"> 
+                             
+                               <a class="attachment" (click)="DeleteAttachment()"><i class="pi pi-times"></i></a>  
+                             </span> 
                             
                             </div>
                           </div>

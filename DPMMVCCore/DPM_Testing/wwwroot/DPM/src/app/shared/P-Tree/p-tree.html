@@ -2,17 +2,31 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Evidences</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Attachment and Remark</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          ...
+            <div style="border-color: black;height: 300px;width: 400px;" class="card">
+                <div class="file"><br>
+                    <span *ngIf="PdfEnable" style="margin: 10px;">
+                      <iframe [src]="FileUrl | safeUrl" width="50" height="50" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
+                    </span> <br>
+                    <span *ngIf="ImageEnable" style="margin: 10px;">
+                     <img [src]="FileUrl" height="50"> 
+                    </span> <br>
+                    <span style="margin-top: 100px;">
+                        <i class="fas fa-comment fa-lg"></i>
+                        {{Remark}}
+                        
+                    </span> 
+                </div>
+             </div>
+             
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" >OK</button>
         </div>
       </div>
     </div>
@@ -44,7 +58,7 @@
                     <span *ngIf="tree.getTemplateForNode(node)">
                         <ng-container *ngTemplateOutlet="tree.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
                     </span>
-                    <button *ngIf="node.edit != undefined && node.edit" type="button" style="margin-left:10px;" class="btn btn-secondary btn-sm"  data-toggle="modal" data-target="#exampleModalCenter">Check Evidence</button>
+                    <button *ngIf="node.edit != undefined && node.edit" type="button" style="margin-left:10px;" class="btn btn-secondary btn-sm"  click="NodeSelection(node)" data-toggle="modal" data-target="#exampleModalCenter">Check Attachment</button>
            
             </span>
       

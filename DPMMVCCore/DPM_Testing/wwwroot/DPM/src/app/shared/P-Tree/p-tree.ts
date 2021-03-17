@@ -56,6 +56,11 @@ export class UITreeNode implements OnInit {
 
     draghoverNode: boolean
 
+    public Remark : string =""
+    public FileUrl  : string = ""
+    public PdfEnable : boolean = false;
+    public ImageEnable : boolean = false
+
     ngOnInit() {
         this.node.parent = this.parentNode;
 
@@ -64,9 +69,30 @@ export class UITreeNode implements OnInit {
         }
     }
 
-
+    
+   NodeSelection(node){
+    this.Remark = node.remark
+    this.FileUrl = node.dbPath
+    var extension = this.getFileExtension(this.FileUrl )
+    
+        if(extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png'){
+           this.ImageEnable = true;
+           this.PdfEnable = false;
+        } else if(extension.toLowerCase() == 'pdf'){
+          this.ImageEnable = false;
+          this.PdfEnable = true;
+        }
+      
+   }
    
-    getIcon() {
+   getFileExtension(filename){
+    const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+    return extension;
+   }
+
+
+
+   getIcon() {
         let icon: string;
 
         if (this.node.icon)
