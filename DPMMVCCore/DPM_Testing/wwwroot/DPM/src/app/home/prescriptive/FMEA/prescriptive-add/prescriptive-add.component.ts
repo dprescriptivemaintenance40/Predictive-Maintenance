@@ -7,7 +7,9 @@ import { MenuItem } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { Router } from '@angular/router';
-import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
+import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model';
+import {OverlayPanel} from 'primeng/overlaypanel';
+
 
 @Component({
   selector: 'app-prescriptive-add',
@@ -113,7 +115,10 @@ export class PrescriptiveAddComponent implements OnInit {
   public fileUpload;
   public dbPath : string = "";
   public Remark : string = "";
-  public filehide : boolean = false
+  public filehide : boolean = false;
+
+
+ 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -123,6 +128,8 @@ export class PrescriptiveAddComponent implements OnInit {
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef) { }
+
+  
 
   ngOnInit() {
     this.title.setTitle('DPM | Prescriptive ');

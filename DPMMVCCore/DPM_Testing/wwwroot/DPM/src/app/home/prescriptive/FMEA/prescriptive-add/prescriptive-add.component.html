@@ -137,7 +137,9 @@
                     <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                         <div *ngFor="let c of dropedMode">
                             <span>{{c?.Description}}</span>
-                            <span><button style="float: right;" type="button" class="btn btn-dark btn-sm" style="margin-left: 700px" (click)="FailureModeDropped(c)">Clear</button></span>
+                            <div class="col-sm-2">
+                            <span><button style="float: right;" type="button" class="btn btn-dark btn-sm" style=" margin-left:700px" (click)="FailureModeDropped(c)">Clear</button></span>
+                        </div>
                         </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List </small><br><br>
@@ -152,8 +154,7 @@
         </ng-template>
     </p-card>
 </div>
-
-
+<!--  -->
 <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
@@ -197,6 +198,7 @@
         </ng-template>
     </p-card>
 </div>
+
 <div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -272,7 +274,15 @@
  <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
-            Factors
+                Factors  
+                <a (click)="panel.show($event)" style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>          
+                <p-overlayPanel #panel>
+                    <li>Down Time Factor</li>
+                    <li>Scrape Factor</li>
+                    <li>Safety Factor</li>
+                    <li>Protection Factor</li>
+                    <li>Frequency Factor</li>
+                  </p-overlayPanel>   
         </ng-template>
         <ng-template pTemplate="subtitle">
             Enter Factors for {{FMLSEffectModeName}}

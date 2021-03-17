@@ -2,7 +2,7 @@
 <div style="padding:10px;">
     <div class="container">
         <div class="row">
-            <div class="col-sm">Tag Number</div>
+            <!-- <div class="col-sm">Tag Number</div> -->
             <div  style="text-align: center;" class="col-sm">Machine Type</div>
             <div style="text-align: center;" class="col-sm">Equipment Type</div>
             <div style="text-align: center;" class="col-sm">Fuction</div>
@@ -23,9 +23,9 @@
     </div>
     <div class="tbody">
         <form class="tr" [formGroup]="fg" *ngFor="let fg of prescriptiveLookUpForms.controls ; let i=index;" (submit)="recordSubmit(fg)">
-            <div class="td">
+            <!-- <div class="td">
                 <input class="form-control" formControlName="tagNumber">
-            </div>
+            </div> -->
                 <div class="td">
                     <select class="form-control" (change)="SelectMachineType(fg)" formControlName="machineType">
                         <option>Pump</option> 
@@ -52,7 +52,7 @@
             
             <div class="td">
                 <select class="form-control" formControlName="function">
-                        <option value="Function">Function </option>
+                        <!-- <option value="Function">Function </option> -->
                         <option value="Function Failure">Function Failure</option> 
                         <option value="Function Mode">Failure Mode</option>
                 </select>
