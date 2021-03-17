@@ -52,6 +52,7 @@ namespace DPM.Models.Prescriptive
         public string ConditionMonitoring { get; set; }
         public string AttachmentDBPath { get; set; }
         public string AttachmentFullPath { get; set; }
+        public string Remark { get; set; }
 
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
     }

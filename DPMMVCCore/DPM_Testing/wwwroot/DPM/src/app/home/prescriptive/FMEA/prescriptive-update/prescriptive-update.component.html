@@ -135,6 +135,10 @@
                                 <label>System Effect</label>
                                 <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect" required>
                             </div>
+                            <div>  
+                                <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModalAdd" > <i class="fa fa-paperclip" aria-hidden="true"></i></button>
+                                <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModalAdd"> <i class="fa fa-comment" aria-hidden="true"></i></button>   
+                             </div>
                         </div>
                     </div>
                     <br>
@@ -199,6 +203,85 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="AttachmentModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                    Add Attachment for {{LSFailureMode}}
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModalAdd()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>  
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="toolbar" role="toolbar">
+                            <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                            <button type="button" (click)="file.click()" class="btn btn-light">
+                                <span class="fa fa-paperclip"></span>
+                            </button> 
+                        </div>
+                        <div style="border-color: black;height: 300px;width: 400px;" class="card">
+                            <div class="file"><br>
+                                <span *ngIf="fileAttachmentEnable" style="margin: 10px;">
+                                    <i class="fas fa-file fa-5x"></i>
+                                    {{fileUpload}}  
+                                <a class="attachment" (click)="CloseAttachmentModalAdd()"><i class="pi pi-times"></i></a>  
+                            </span> 
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="AttachmentDoneModal()">Done</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="CommentModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                    Add Remark for {{LSFailureMode}}
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" >&times;</span>
+        </button>
+            </div>
+             
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="form-group mt-4">
+                            <textarea class="form-control" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Done</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 
 <div *ngIf="Consequences1" class="col-md-12 stepsdemo-content shadow">
     <p-card>
@@ -406,6 +489,10 @@
                             <label for="exampleFormControlTextarea2">System Effect</label>
                             <textarea class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="UpdateFailureModeSystemEffect"  id="exampleFormControlTextarea2" rows="3"></textarea>
                           </div>
+                          <div>  
+                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal" > <i class="fa fa-paperclip" aria-hidden="true"></i></button>
+                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button>   
+                         </div>
                           <div class="form-group">
                             <div class="container">
                                 <div class="row">   
@@ -476,6 +563,86 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="FailureModeUpdate2" (click)="CloseFailureModeUpdate()">Close</button>
                 <button type="button" class="btn btn-primary" data-dismiss="FailureModeUpdate2" (click)="SaveFailureModeUpdate()">Save changes</button>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                    Add Attachment for {{FMLSEffectModeName}}
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>  
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="toolbar" role="toolbar">
+                            <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                            <button type="button" (click)="file.click()" class="btn btn-light">
+                                <span class="fa fa-paperclip"></span>
+                            </button> 
+                        </div>
+                        <div style="border-color: black;height: 300px;width: 400px;" class="card">
+                            <div class="file"><br>
+                                <!-- <span style="margin: 10px;">
+                                    <i class="fas fa-file fa-5x"></i>
+                                    {{fileUpload}}  
+                                <a class="attachment"><i class="pi pi-times"></i></a>  
+                               </span>  -->
+                               <span style="margin: 10px;" *ngIf="extensionPDF">
+                                <iframe [src]="EditfullPath" width="50" height="50" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
+
+                                {{fileUpload}}  
+                            <a class="attachment"><i class="pi pi-times"></i></a>  
+                           </span> 
+
+                            
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                    Add Remark for {{FMLSEffectModeName}}
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" >&times;</span>
+        </button>
+            </div>
+             
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="form-group mt-4">
+                            <textarea class="form-control" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Done</button>
+            </div>
+
         </div>
     </div>
 </div>
