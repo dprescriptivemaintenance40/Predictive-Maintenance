@@ -216,9 +216,15 @@
                                 <span class="fa fa-paperclip"></span>
                             </button> 
                         </div>
-                        <div class="form-group mt-4">
-                            <textarea class="form-control" id="message" name="body" rows="12" placeholder="Add Some Text">{{fileUpload}}</textarea>
-                        </div>
+                        <div style="border-color: black;height: 300px;width: 400px;" class="card">
+                            <div class="file"><br>
+                                <span *ngIf="fileAttachmentEnable" style="margin: 10px;">
+                                    <i class="fas fa-file fa-5x"></i>
+                                    {{fileUpload}}  
+                                <a class="attachment" (click)="CloseAttachmentModal()"><i class="pi pi-times"></i></a>  
+                            </span> 
+                            </div>
+                          </div>
                     </div>
                 </div>
             </div>

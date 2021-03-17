@@ -113,6 +113,7 @@ export class PrescriptiveAddComponent implements OnInit {
   public fileUpload;
   public dbPath : string = "";
   public Remark : string = "";
+  public fileAttachmentEnable : boolean = false;
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -195,6 +196,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.UploadFileDataResponse = res;
         this.dbPath = this.UploadFileDataResponse.dbPath;
         this.fullPath = this.UploadFileDataResponse.fullPath;
+        this.fileAttachmentEnable= true;
       } , err => {console.log(err.err)}
     )
 
@@ -209,6 +211,7 @@ export class PrescriptiveAddComponent implements OnInit {
    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe(
      res => {
       this.fileUpload = ""
+      this.fileAttachmentEnable = false
      }
    )
    }
@@ -288,7 +291,7 @@ export class PrescriptiveAddComponent implements OnInit {
         this.dropDownData.forEach(element => {
           if (element.Function == "Function Failure") {
             this.functionFailureData.push(element)
-          } else {
+          } else if(element.Function == "Function Mode") {
             this.functionModeData.push(element)
           }
 
