@@ -91,6 +91,16 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public ADDProtectionFactor : number = 0;
   public ADDFrequencyFactor : number = 0;
   private IndexCount : number = 0;
+  public EditfullPath : string = "";
+  public extensionPDF: boolean = false;
+  public extensionImage: boolean = false;
+  public extensionDoc: boolean = false;
+  public UploadFileDataResponse : any = [];
+  public dbPath : string = "";
+  public fullPath : string = "";
+  public fileAttachmentEnable : boolean= false;
+  public fileUpload :string = "";
+  public Remark : string = "";
 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
@@ -176,10 +186,38 @@ export class PrescriptiveUpdateComponent implements OnInit {
           this.EditSafetyFactor = element.SafetyFactor
           this.EditProtectionFactor = element.ProtectionFactor
           this.EditFrequencyFactor = element.FrequencyFactor
+          this.EditfullPath = element.AttachmentFullPath
+
        }
     });
+
+    if(this.EditfullPath.length > 0){
+      const extension = this.getFileExtension(this.EditfullPath);
+      if(extension == 'JPG' || extension == 'JPEG' || extension == 'jpg' || extension == 'jpeg' || extension == 'PNG' || extension == 'png'){
+         this.extensionImage = true;
+         this.extensionDoc = false;
+         this.extensionPDF = false;
+      } else if(extension == 'PDF' || extension == 'pdf'){
+        this.extensionImage = false;
+        this.extensionDoc = false;
+        this.extensionPDF = true;
+      }else {
+        this.extensionImage = false;
+        this.extensionDoc = true;
+        this.extensionPDF = false;
+      }
+    }
+   
     
   }
+
+  
+  getFileExtension(filename){
+        const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+        return extension;
+    }
+
+
 
   UpdateFM(){
     this.getDropDownLookMasterData()
@@ -217,6 +255,19 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.UpdateFailureModeConsequence =   this.finalConsequence
     this.finalConsequence = ""
     this.LSFailureMode = ""
+  }
+
+
+  
+  CloseAttachmentModal(){
+    if(this.EditfullPath.length > 4){
+     const params = new HttpParams()
+     .set("fullPath",this.EditfullPath)
+    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe(
+      res => {
+      }
+    )
+    }
   }
 
   SaveFailureModeUpdate(){
@@ -348,6 +399,52 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Please selct Failuer Modes'});
   }
   }
+
+
+  
+
+  public uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    
+    formData.append('file', fileToUpload, fileToUpload.name);
+    this.fileUpload = fileToUpload.name;
+   
+    this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
+      res => {
+        this.UploadFileDataResponse = res;
+        this.dbPath = this.UploadFileDataResponse.dbPath;
+        this.fullPath = this.UploadFileDataResponse.fullPath;
+        this.fileAttachmentEnable= true;
+      } , err => {console.log(err.err)}
+    )
+
+  }
+
+ 
+
+  CloseAttachmentModalAdd(){
+   if(this.fullPath.length > 4){
+    const params = new HttpParams()
+    .set("fullPath",this.fullPath)
+   this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe(
+     res => {
+      this.fileUpload = ""
+      this.fileAttachmentEnable = false
+     }
+   )
+   }
+    
+  }
+
+  AttachmentDoneModal(){
+    this.fileAttachmentEnable= false;
+    this.fileUpload = ""
+  }
+
   
 
   LSEffectToTree() {
@@ -424,6 +521,9 @@ export class PrescriptiveUpdateComponent implements OnInit {
     Data['SafetyFactor'] = this.ADDSafetyFactor
     Data['ProtectionFactor'] =  this.ADDProtectionFactor
     Data['FrequencyFactor'] = this.ADDFrequencyFactor
+    Data['AttachmentDBPath'] = this.dbPath
+    Data['AttachmentFullPath'] = this.fullPath
+
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
   
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { MenuItem } from 'primeng/api';
@@ -216,6 +216,11 @@ export class PrescriptiveAddComponent implements OnInit {
    )
    }
     
+  }
+
+  AttachmentDoneModal(){
+    this.fileAttachmentEnable= false;
+    this.fileUpload = ""
   }
 
   dynamicDroppedPopup() {
@@ -517,9 +522,6 @@ export class PrescriptiveAddComponent implements OnInit {
     if (this.FMCount == this.FMChild.length - 1) {
       this.ADDFailureLSEDiasble = false;
       this.FMLSEffectModeName = ""
-      this.dbPath = ""
-      this.fullPath = ""
-      this.Remark = ""
       this.NextFailureLSEDiasble = true;
       this.ADDFailureLSEDiasble = false; 
       this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
@@ -535,7 +537,10 @@ export class PrescriptiveAddComponent implements OnInit {
      this.FMCount += 1;
     if (this.FMCount <= this.FMChild.length - 1) {
       this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
-    }   
+    } 
+    this.dbPath = ""
+    this.fullPath = ""
+    this.Remark = ""  
 
   }else {
     this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields'});
