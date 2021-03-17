@@ -18,8 +18,8 @@
                     </span> <br>
                     <span style="margin-top: 100px;">
                         <i class="fas fa-comment fa-lg"></i>
-                        {{Remark}}
                         
+                        <input type="text" [(ngModel)]="Remark" disabled >
                     </span> 
                 </div>
              </div>
@@ -58,7 +58,7 @@
                     <span *ngIf="tree.getTemplateForNode(node)">
                         <ng-container *ngTemplateOutlet="tree.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
                     </span>
-                    <button *ngIf="node.edit != undefined && node.edit" type="button" style="margin-left:10px;" class="btn btn-secondary btn-sm"  click="NodeSelection(node)" data-toggle="modal" data-target="#exampleModalCenter">Check Attachment</button>
+                    <button *ngIf="node.edit != undefined && node.edit" type="button" style="margin-left:10px;" class="btn btn-secondary btn-sm"  (click)="NodeSelection(node)" data-toggle="modal" data-target="#exampleModalCenter">Check Attachment</button>
            
             </span>
       

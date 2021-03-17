@@ -105,6 +105,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public fileUpload :string = "";
   public Remark : string = "";
   public AttachmentADD : boolean = true;
+  public FreshUploadUpdate: boolean = false;
 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
@@ -172,6 +173,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
 
   }
   EditFailureMode(p){
+    this.FreshUploadUpdate = false;
     this.FailureModediv = document.getElementById("FailureModeUpdate2")
     this.FailureModediv.style.display = 'block'
     this.IndexCount = p.label
@@ -192,7 +194,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
           this.EditFrequencyFactor = element.FrequencyFactor
           this.EditdbPath = element.AttachmentDBPath
           this.EditfullPath = element.AttachmentFullPath
-          
+          this.Remark = element.Remark
 
        }
     });
@@ -283,7 +285,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
         this.UploadFileDataUpdateResponse = res;
         this.dbPathUpdate = this.UploadFileDataUpdateResponse.dbPath;
         this.fullPathUpdate = this.UploadFileDataUpdateResponse.fullPath;
-        
+        this.FreshUploadUpdate = true
       } , err => {console.log(err.err)}
     )
 
@@ -362,6 +364,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
       obj['AttachmentFullPath'] = fullPath
       obj['Remark'] = this.Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+      this.Remark = ""
     this.http.put('api/PrescriptiveAPI/EditConsequenceTree', this.centrifugalPumpPrescriptiveOBJ ).subscribe(
       res => { 
         console.log(res)
@@ -570,9 +573,10 @@ export class PrescriptiveUpdateComponent implements OnInit {
     Data['FrequencyFactor'] = this.ADDFrequencyFactor
     Data['AttachmentDBPath'] = this.dbPath
     Data['AttachmentFullPath'] = this.fullPath
+    Data['Remark'] = this.Remark
 
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
-  
+    this.Remark = ""
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
     this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {

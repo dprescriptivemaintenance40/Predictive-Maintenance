@@ -590,7 +590,7 @@
                         </div>
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="file"><br>
-                                <span style="margin: 10px;">
+                                <span style="margin: 10px;" *ngIf="FreshUploadUpdate">
                                     <i class="fas fa-file fa-5x"></i>
                                     {{fileUpload}}  
                                 <a class="attachment" (click)="CloseAttachmentModalUpdate()"><i class="pi pi-times"></i></a>  
