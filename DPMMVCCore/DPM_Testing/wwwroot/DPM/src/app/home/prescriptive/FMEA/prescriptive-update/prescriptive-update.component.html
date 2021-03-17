@@ -97,7 +97,10 @@
                         <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                             <div *ngFor="let c of dropedMode">
                                 <span>{{c?.Description}}</span>
-                                <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span>
+                                <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                    <i class="far fa-times-circle fa-2x"></i>
+                                   </a>
+                                <!-- <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span> -->
                             </div>
                         </div>
                         <small class="form-text text-muted">Drag and Drop here, from above List </small>
@@ -470,7 +473,10 @@
                             <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                                 <div *ngFor="let c of dropedMode">
                                     <span>{{c?.Description}}</span>
-                                    <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span>
+                                    <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                        <i class="far fa-times-circle fa-2x"></i>
+                                       </a>
+                                    <!-- <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span> -->
                                 </div>
                             </div>
                             <small class="form-text text-muted">Drag and Drop here, from above List </small>
