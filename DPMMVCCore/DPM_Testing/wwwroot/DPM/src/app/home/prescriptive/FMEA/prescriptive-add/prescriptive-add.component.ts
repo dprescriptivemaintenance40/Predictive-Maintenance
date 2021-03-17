@@ -512,7 +512,53 @@ export class PrescriptiveAddComponent implements OnInit {
         data: {
           name: this.failuerModeSystemEffects
         }
-      }
+      },
+      {
+        label: "DownTimeFactor",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.DownTimeFactor
+        }
+      },
+      {
+        label: "ScrapeFactor",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.ScrapeFactor
+        }
+      },
+      {
+        label: "SafetyFactor",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.SafetyFactor
+        }
+      },
+      {
+        label: "ProtectionFactor",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.ProtectionFactor
+        }
+      },
+      {
+        label: "FrequencyFactor",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.FrequencyFactor
+        }
+      },
+     
     )
     let obj = {}
     obj['DownTimeFactor'] = this.DownTimeFactor;

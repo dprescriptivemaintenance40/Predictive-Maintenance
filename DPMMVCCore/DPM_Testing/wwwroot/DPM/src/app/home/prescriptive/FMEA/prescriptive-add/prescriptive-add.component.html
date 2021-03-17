@@ -154,8 +154,7 @@
         </ng-template>
     </p-card>
 </div>
-<div *ngIf="prescriptiveEffect1">
-    <p-card> 
+<div *ngIf="prescriptiveEffect1"  class="col-md-12" style="overflow: scroll;"> 
         <p-organizationChart [value]="InsertLSEffect"selectionMode="single" [(selection)]="selectedNode"  styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -169,7 +168,6 @@
         </p-organizationChart>
         <button label="Next" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailuerEffectBack()">Back</button>
         <button *ngIf="NextFailureLSEDiasble" label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
-    </p-card>
 </div>
 <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <br>
