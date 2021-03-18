@@ -97,7 +97,10 @@
                         <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                             <div *ngFor="let c of dropedMode">
                                 <span>{{c?.Description}}</span>
-                                <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span>
+                                <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                    <i class="far fa-times-circle fa-2x"></i>
+                                   </a>
+                                <!-- <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span> -->
                             </div>
                         </div>
                         <small class="form-text text-muted">Drag and Drop here, from above List </small>
@@ -376,7 +379,6 @@
 
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List </small> <br>
-
                 </div>
 
             </div>
@@ -460,7 +462,7 @@
                     <form>
                         <div class="form-group">
                           <label for="exampleFormControlInput1">Failure Mode</label>
-                          <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureMode" id="exampleFormControlInput1"  disabled>
+                          <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureMode" id="exampleFormControlInput1"  disabled><br>
                           <button type="button" class="btn btn-secondary btn-sm" (click)="UpdateFM()">Update Failure Mode</button>
                         
                         </div>
@@ -471,7 +473,10 @@
                             <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                                 <div *ngFor="let c of dropedMode">
                                     <span>{{c?.Description}}</span>
-                                    <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span>
+                                    <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                        <i class="far fa-times-circle fa-2x"></i>
+                                       </a>
+                                    <!-- <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span> -->
                                 </div>
                             </div>
                             <small class="form-text text-muted">Drag and Drop here, from above List </small>
@@ -551,7 +556,7 @@
                           </div>
                           <div class="form-group">
                             <label for="exampleFormControlInput2">Consequence</label>
-                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="UpdateFailureModeConsequence"  id="exampleFormControlInput2" disabled>
+                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="UpdateFailureModeConsequence"  id="exampleFormControlInput2" disabled><br>
                             <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()" >Update Consequence</button>
                        
                         </div>
@@ -573,7 +578,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span>
-                    Add Attachment for {{FMLSEffectModeName}}
+                    <!-- Add Attachment for {{FMLSEffectModeName}} -->
                 </span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
           <span aria-hidden="true">&times;</span>
@@ -622,7 +627,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span>
-                    Add Remark for {{FMLSEffectModeName}}
+                    <!-- Add Remark for {{FMLSEffectModeName}} -->
                 </span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" >&times;</span>

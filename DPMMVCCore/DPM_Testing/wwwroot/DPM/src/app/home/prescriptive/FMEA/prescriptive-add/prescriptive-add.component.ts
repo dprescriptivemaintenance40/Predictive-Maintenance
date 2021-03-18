@@ -78,7 +78,8 @@ export class PrescriptiveAddComponent implements OnInit {
   public prescriptiveTreeUpdateEnable: boolean = false;
   public prescriptiveTreeNextEnable: boolean = false;
   public prescriptiveTreeBackEnable: boolean = false;
-
+  public prescriptiveEffect1: boolean = false;
+  
   public draggedConsequencesYesNO: any = ['YES', 'NO']
   public droppedYesNo = null;
   public dropedConsequenceFailureMode = []
@@ -131,6 +132,8 @@ export class PrescriptiveAddComponent implements OnInit {
     }, 2000);
 
     this.items = [{
+      styleClass: 'p-person',
+      expanded: true,
       label: 'Function',
       command: (event: any) => {
         this.activeIndex = 0;
@@ -320,6 +323,7 @@ export class PrescriptiveAddComponent implements OnInit {
       this.prescriptiveFunctionFailure = false;
       this.prescriptiveFailureMode = false;
       this.prescriptiveEffect = false;
+      this.prescriptiveEffect1 = false
       this.prescriptiveTree = false;
       this.activeIndex = 0;
     } else if (this.EquipmentType.length == 0) {
@@ -427,11 +431,8 @@ export class PrescriptiveAddComponent implements OnInit {
 
   }
 
-
-
   FailureModeDropped(c) {
     var findIndexOF = c.PrescriptiveLookupMasterId
-
     var index = -1;
     var filteredObj = this.dropedMode.find(function (item, i) {
       if (item.PrescriptiveLookupMasterId === findIndexOF) {
@@ -448,6 +449,7 @@ export class PrescriptiveAddComponent implements OnInit {
     this.FMChild = []
     this.FactoryToAddInFM = []
     this.NextFailureLSEDiasble = false
+ 
     var Data = [], FMName
     this.dropedMode.forEach(element => {
       Data.push(element.Description)
@@ -467,6 +469,7 @@ export class PrescriptiveAddComponent implements OnInit {
     } 
  
     this.prescriptiveEffect = true
+    this.prescriptiveEffect1 = true
     this.prescriptiveFailureMode = false;
     this.activeIndex = 3
     this.FMCount = 0;
@@ -479,13 +482,12 @@ export class PrescriptiveAddComponent implements OnInit {
         children: this.FMChild
       }
     ]
-   this.ADDFailureLSEDiasble = true
+    this.ADDFailureLSEDiasble = true
     this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
   }else{
     this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Failure Modes' });
+  } 
   }
-  }
-
   ADDFailuerEffect() {
     if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && this.dbPath.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
     this.FMChild[this.FMCount].children.push(
@@ -506,7 +508,7 @@ export class PrescriptiveAddComponent implements OnInit {
         data: {
           name: this.failuerModeSystemEffects
         }
-      }
+      },
     )
     let obj = {}
     obj['DownTimeFactor'] = this.DownTimeFactor;
@@ -524,6 +526,7 @@ export class PrescriptiveAddComponent implements OnInit {
       this.FMLSEffectModeName = ""
       this.NextFailureLSEDiasble = true;
       this.ADDFailureLSEDiasble = false; 
+       this.prescriptiveEffect = false
       this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
     }
     this.onLSEffectAddedMessage(this.FMChild[this.FMCount]);
@@ -541,10 +544,10 @@ export class PrescriptiveAddComponent implements OnInit {
     this.dbPath = ""
     this.fullPath = ""
     this.Remark = ""  
-
   }else {
     this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields'});
   }
+  
   }
 
   SaveConsequences() {
@@ -676,6 +679,7 @@ export class PrescriptiveAddComponent implements OnInit {
   FailureEffectNext() {
     this.prescriptiveFailureMode = false;
     this.prescriptiveEffect = false;
+    this.prescriptiveEffect1 = false
     this.prescriptiveTree = true;
     this.prescriptiveTreeBackEnable = true
     this.activeIndex = 4;
@@ -689,12 +693,14 @@ export class PrescriptiveAddComponent implements OnInit {
   }
   FailuerEffectBack() {
     this.prescriptiveEffect = false;
+    this.prescriptiveEffect1 = false
     this.prescriptiveFailureMode = true;
     this.activeIndex = 2
   }
 
   treeBack() {
     this.prescriptiveEffect = true;
+    this.prescriptiveEffect1 = true
     this.prescriptiveTree = false;
 
   }
@@ -1072,6 +1078,10 @@ export class PrescriptiveAddComponent implements OnInit {
       detail: event.data.name
     });
   }
+
+  onNodeSelect(event) {
+
+}
 }
 
 

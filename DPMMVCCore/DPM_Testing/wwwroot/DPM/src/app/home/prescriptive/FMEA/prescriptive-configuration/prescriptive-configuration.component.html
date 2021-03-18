@@ -1,18 +1,17 @@
-
-<div style="padding:10px;">
+<div class="container">     
+  <div class="table-responsive"> 
+   <div style="padding:10px;">
     <div class="container">
         <div class="row">
-            <div class="col-sm">Tag Number</div>
             <div  style="text-align: center;" class="col-sm">Machine Type</div>
-            <div style="text-align: center;" class="col-sm">Equipment Type</div>
-            <div style="text-align: center;" class="col-sm">Fuction</div>
-            <div style="text-align: right;" class="col-sm">Description</div>
+            <div style="text-align: left;" class="col-sm">Equipment Type</div>
+            <div style="text-align: left;" class="col-sm-2">Fuction</div>
+            <div style="text-align: center;" class="col-sm-2">Description</div>
             <div style="text-align: center;" class="col-sm">
                 <button class="btn btn-outline-primary" (click)="prescriptiveLookUpForm()">
-                        <i class="fa fa-plus"></i> New Record
+                        <i class="fa fa-plus"></i>Record
                 </button>
             </div>
-
             <div class="td col-sm">
                 <span *ngIf="notification" class="elementToFadeInAndOut">
                         <i class="fas fa-check-circle {{notification.class}}"></i>
@@ -20,12 +19,10 @@
                     </span>
             </div>
         </div>
+        
     </div>
     <div class="tbody">
         <form class="tr" [formGroup]="fg" *ngFor="let fg of prescriptiveLookUpForms.controls ; let i=index;" (submit)="recordSubmit(fg)">
-            <div class="td">
-                <input class="form-control" formControlName="tagNumber">
-            </div>
                 <div class="td">
                     <select class="form-control" (change)="SelectMachineType(fg)" formControlName="machineType">
                         <option>Pump</option> 
@@ -52,7 +49,6 @@
             
             <div class="td">
                 <select class="form-control" formControlName="function">
-                        <!-- <option value="Function">Function </option> -->
                         <option value="Function Failure">Function Failure</option> 
                         <option value="Function Mode">Failure Mode</option>
                 </select>
@@ -63,8 +59,8 @@
 
 
             <div class="td">
-                <button type="submit" class="btn btn-outline-primary" [disabled]="fg.invalid" [ngClass]="(fg.get('prescriptiveLookupMasterId').value==0)?'btn btn-outline-primary':'btn-outline-dark'"><i
-                            class="far fa-save"></i>
+                <button type="submit" class="btn btn-outline-primary" [disabled]="fg.invalid" [ngClass]="(fg.get('prescriptiveLookupMasterId').value==0)?'btn btn-outline-primary':'btn-outline-dark'">
+                    <i class="far fa-save"></i>
                         {{fg.get('prescriptiveLookupMasterId').value==0?'Submit':'Update'}}
                     </button>
                 <button class="btn btn-light ml-1" (click)="onDelete(fg.get('prescriptiveLookupMasterId').value,i)">
@@ -73,4 +69,9 @@
             </div>
         </form>
     </div>
+</div> 
 </div>
+</div>
+
+
+  

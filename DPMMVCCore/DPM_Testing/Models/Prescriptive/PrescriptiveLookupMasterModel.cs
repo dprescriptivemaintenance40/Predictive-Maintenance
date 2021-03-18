@@ -10,7 +10,6 @@ namespace DPM.Models.Prescriptive
     {
         [Key]
         public int PrescriptiveLookupMasterId { get; set; }
-        public string TagNumber { get; set; }
         public string MachineType { get; set; }
         public string EquipmentType { get; set; }
         public string Function{ get; set; }
