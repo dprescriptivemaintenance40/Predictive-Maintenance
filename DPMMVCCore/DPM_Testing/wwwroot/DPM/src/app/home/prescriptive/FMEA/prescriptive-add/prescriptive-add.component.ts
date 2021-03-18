@@ -431,11 +431,8 @@ export class PrescriptiveAddComponent implements OnInit {
 
   }
 
-
-
   FailureModeDropped(c) {
     var findIndexOF = c.PrescriptiveLookupMasterId
-
     var index = -1;
     var filteredObj = this.dropedMode.find(function (item, i) {
       if (item.PrescriptiveLookupMasterId === findIndexOF) {
@@ -489,10 +486,8 @@ export class PrescriptiveAddComponent implements OnInit {
     this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
   }else{
     this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Failure Modes' });
+  } 
   }
- 
-  }
-
   ADDFailuerEffect() {
     if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && this.dbPath.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
     this.FMChild[this.FMCount].children.push(
@@ -514,61 +509,6 @@ export class PrescriptiveAddComponent implements OnInit {
           name: this.failuerModeSystemEffects
         }
       },
-      {
-       label: "factors",
-        type: "person",
-        styleClass: "p-person",
-        expanded: false,
-        data: { name: "Factors"},
-        children: [
-              {
-                label: "DownTimeFactor",
-                 type: "person",
-                 styleClass: "p-person",
-                 expanded: true,
-                data: {
-                name: this.DownTimeFactor
-              }
-            },
-              {
-                
-            label: "ScrapeFactor",
-            type: "person",
-            styleClass: "p-person",
-            expanded: true,
-            data: {
-              name: this.ScrapeFactor
-            }
-              },
-              {
-                label: "SafetyFactor",
-            type: "person",
-            styleClass: "p-person",
-            expanded: true,
-            data: {
-              name: this.SafetyFactor
-            }
-              },
-            {
-             label: "ProtectionFactor",
-            type: "person",
-            styleClass: "p-person",
-            expanded: true,
-            data: {
-              name: this.ProtectionFactor
-            }
-          },
-            {
-               label: "FrequencyFactor",
-            type: "person",
-            styleClass: "p-person",
-            expanded: true,
-            data: {
-           name: this.FrequencyFactor
-           }
-              }  
-        ]
-      }
     )
     let obj = {}
     obj['DownTimeFactor'] = this.DownTimeFactor;

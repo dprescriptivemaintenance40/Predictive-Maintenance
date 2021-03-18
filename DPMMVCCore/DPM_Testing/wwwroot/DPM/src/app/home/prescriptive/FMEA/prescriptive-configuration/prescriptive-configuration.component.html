@@ -9,7 +9,7 @@
             <div style="text-align: center;" class="col-sm-2">Description</div>
             <div style="text-align: center;" class="col-sm">
                 <button class="btn btn-outline-primary" (click)="prescriptiveLookUpForm()">
-                        <i class="fa fa-plus"></i> New Record
+                        <i class="fa fa-plus"></i>Record
                 </button>
             </div>
             <div class="td col-sm">
@@ -59,8 +59,8 @@
 
 
             <div class="td">
-                <button type="submit" class="btn btn-outline-primary" [disabled]="fg.invalid" [ngClass]="(fg.get('prescriptiveLookupMasterId').value==0)?'btn btn-outline-primary':'btn-outline-dark'"><i
-                            class="far fa-save"></i>
+                <button type="submit" class="btn btn-outline-primary" [disabled]="fg.invalid" [ngClass]="(fg.get('prescriptiveLookupMasterId').value==0)?'btn btn-outline-primary':'btn-outline-dark'">
+                    <i class="far fa-save"></i>
                         {{fg.get('prescriptiveLookupMasterId').value==0?'Submit':'Update'}}
                     </button>
                 <button class="btn btn-light ml-1" (click)="onDelete(fg.get('prescriptiveLookupMasterId').value,i)">
