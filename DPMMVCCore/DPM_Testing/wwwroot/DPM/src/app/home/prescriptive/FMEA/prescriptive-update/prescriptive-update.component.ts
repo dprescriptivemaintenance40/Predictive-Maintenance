@@ -752,7 +752,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
         if(this.UpdateFailureModeConsequence == "" ){
           this.ConsequenceTreeADDConsequenceEnable = true
         }
-       
         if(this.UpdateFailureModeConsequence.length > 0){
           this.ConsequenceTreeEditConsequenceEnable = true
         }

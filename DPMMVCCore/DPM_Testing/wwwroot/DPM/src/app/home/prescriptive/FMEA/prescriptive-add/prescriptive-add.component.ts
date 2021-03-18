@@ -702,6 +702,7 @@ export class PrescriptiveAddComponent implements OnInit {
     this.prescriptiveEffect1 = false
     this.prescriptiveFailureMode = true;
     this.activeIndex = 2
+    
     for (let index = 0; index < this.FMChild.length; index++) {
       this.failuerModeLocalEffects = this.FMChild[index].children[0].data.name;
       this.failuerModeSystemEffects = this.FMChild[index].children[1].data.name;
@@ -712,6 +713,7 @@ export class PrescriptiveAddComponent implements OnInit {
       this.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
    }
   }
+
 
   treeBack() {
     this.prescriptiveEffect = true;
