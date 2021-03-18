@@ -20,6 +20,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastModule } from "primeng/toast";
 import {SliderModule} from 'primeng/slider';
 import {DialogModule} from 'primeng/dialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';;
 
 
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
@@ -48,6 +49,7 @@ import { SafePipe } from "./safe.pipe";
         DragDropModule,
         SliderModule,
         DialogModule,
+        OverlayPanelModule,
         TreeModule],
     exports: [CommonModule,
         CommonLoadingComponent,
@@ -72,6 +74,7 @@ import { SafePipe } from "./safe.pipe";
         SliderModule,
         TreeModule,
         SafePipe,
+        OverlayPanelModule,
         DialogModule]
 })
 export class SharedModule {
