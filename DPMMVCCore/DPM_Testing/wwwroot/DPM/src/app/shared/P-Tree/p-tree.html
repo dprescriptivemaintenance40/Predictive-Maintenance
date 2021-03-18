@@ -10,17 +10,16 @@
         <div class="modal-body">
             <div style="border-color: black;height: 300px;width: 400px;" class="card">
                 <div class="file"><br>
-                    <span *ngIf="PdfEnable" style="margin: 10px;">
+                    <div *ngIf="PdfEnable" style="margin: 10px;">
                       <iframe [src]="FileUrl | safeUrl" width="50" height="50" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
-                    </span> <br>
-                    <span *ngIf="ImageEnable" style="margin: 10px;">
-                     <img [src]="FileUrl" height="50"> 
-                    </span> <br>
-                    <span style="margin-top: 100px;">
-                        <i class="fas fa-comment fa-lg"></i>
-                        
-                        <input type="text" [(ngModel)]="Remark" disabled >
-                    </span> 
+                    </div> <br>
+                    <div style="margin: 10px;">
+                     <img [src]="FileUrl | safeUrl" height="100"> 
+                    </div> <br>
+                    <div style="margin-top: 100px;">
+                        <i class="fas fa-comment fa-lg"></i>                        
+                        {{Remark}}  ajdhasjdas
+                    </div> 
                 </div>
              </div>
              

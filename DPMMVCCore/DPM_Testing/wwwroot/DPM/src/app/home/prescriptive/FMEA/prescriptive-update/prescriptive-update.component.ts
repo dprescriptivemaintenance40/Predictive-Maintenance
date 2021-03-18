@@ -106,7 +106,9 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public Remark : string = "";
   public AttachmentADD : boolean = true;
   public FreshUploadUpdate: boolean = false;
-  public NoData : string = "";
+  public DeleteFMDataFromTree;
+  public DeleteFMName : string = ""
+  
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -200,7 +202,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     });
 
     if(this.EditdbPath.length > 0){
-      this.NoData = ""
       this.FreshUploadUpdate = false
       const extension = this.getFileExtension(this.EditdbPath);
       if(extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png'){
@@ -963,13 +964,20 @@ export class PrescriptiveUpdateComponent implements OnInit {
     ];
   }
 
-  SelectNodeToDelete(p){
+  
+  SelectNodeToDelete(p){ 
+    this.DeleteFMDataFromTree = p
+    this.DeleteFMName = p.data.name
+   }
+
+ 
+  DeleteFailureModeFrommTree(){
     
     var FMList = this.data1[0].children[0].children[0].children
-    var index = FMList.findIndex(std=> std.data.name == p.data.name);
+    var index = FMList.findIndex(std=> std.data.name == this.DeleteFMDataFromTree.data.name);
     this.data1[0].children[0].children[0].children.splice(index, 1);
    
-    var index2 = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.findIndex(std=> std.FunctionMode == p.data.name);
+    var index2 = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.findIndex(std=> std.FunctionMode == this.DeleteFMDataFromTree.data.name);
     var id =  this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index2].CPPFMId
     var fullpath = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index2].AttachmentFullPath
     if(fullpath.length > 4){
@@ -984,7 +992,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
     
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
     var abc2 = FailureModeWithLSETree[0].children[0].children[0].children
-    var index3 = abc2.findIndex(std=> std.data.name == p.data.name);
+    var index3 = abc2.findIndex(std=> std.data.name == this.DeleteFMDataFromTree.data.name);
     FailureModeWithLSETree[0].children[0].children[0].children.splice(index3, 1);
 
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(FailureModeWithLSETree)

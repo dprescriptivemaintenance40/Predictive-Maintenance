@@ -8,7 +8,7 @@
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}
                     <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)"><i class="pi pi-pencil"></i></a>
-                   <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)"><i class="pi pi-times"></i></a> 
+                   <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)"  data-toggle="modal" data-target="#DeleteFailureMode"><i class="pi pi-times"></i></a> 
                 </div>
                 <div class="node-content">
                     <div class="a">{{node.data.name}}</div>
@@ -649,3 +649,28 @@
         </div>
     </div>
 </div>
+
+
+
+
+<div class="modal fade" id="DeleteFailureMode" tabindex="-1" role="dialog" aria-labelledby="DeleteFailureModeTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete {{DeleteFMName}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="DeleteFailureModeFrommTree()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
