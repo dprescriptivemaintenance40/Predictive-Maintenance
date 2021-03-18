@@ -35,6 +35,7 @@ export class PrescriptiveDisplayComponent implements OnInit {
     ) 
   }
   
+  
 
   getReadyInnerTree(){
     this.InnerTree=[]
@@ -48,10 +49,17 @@ export class PrescriptiveDisplayComponent implements OnInit {
             l = this.FMTree[index].children[0].data.name
             var s : string = ""
             s = this.FMTree[index].children[1].data.name
+
+            var DBPath = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+            var Remark =this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].Remark
+
             this.InnerTree.push(
               {
                 "label":  this.FMTree[index].data.name,
                 "data": "Home Folder",
+                "edit" : true,
+                "dbPath": DBPath,
+                "remark" : Remark,
                 "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
                 "children": [
@@ -118,11 +126,18 @@ export class PrescriptiveDisplayComponent implements OnInit {
           s = this.FMTree[index].children[1].data.name
           var c : string =""
           c = this.FMTree[index].children[2].data.name
+
+          var DBPath = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+          var Remark =this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].Remark
+
           this.InnerTree.push(
 
             {
               "label":  this.FMTree[index].data.name,
               "data": "Home Folder",
+              "edit" : true,
+              "dbPath": DBPath,
+              "remark" : Remark,
               "expandedIcon": "pi pi-folder-open",
               "collapsedIcon": "pi pi-folder",
               "children": [
@@ -191,7 +206,6 @@ export class PrescriptiveDisplayComponent implements OnInit {
       this.abc =  {
         "label":"Equipment Type : " + this.PrescriptiveRecords[this.counter].EquipmentType +",  " +"  "+ "Tag Number : "+ this.PrescriptiveRecords[this.counter].TagNumber,
         "data": "Documents Folder",
-        "edit" : true,
         "expandedIcon": "pi pi-folder-open",
         "collapsedIcon": "pi pi-folder",
         "children": [{

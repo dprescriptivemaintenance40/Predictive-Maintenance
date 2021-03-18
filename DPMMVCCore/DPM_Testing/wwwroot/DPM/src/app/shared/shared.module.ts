@@ -24,9 +24,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';;
 
 
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
+import { SafePipe } from "./safe.pipe";
 
 @NgModule({
-    declarations: [CommonLoadingComponent],
+    declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
         NgxSpinnerModule,
         TableModule,
@@ -48,6 +49,7 @@ import { CommonLoadingComponent } from "./Loading/common-loading.component";
         DragDropModule,
         SliderModule,
         DialogModule,
+        OverlayPanelModule,
         TreeModule],
     exports: [CommonModule,
         CommonLoadingComponent,
@@ -71,6 +73,7 @@ import { CommonLoadingComponent } from "./Loading/common-loading.component";
         DragDropModule,
         SliderModule,
         TreeModule,
+        SafePipe,
         DialogModule,
         OverlayPanelModule]
 })
