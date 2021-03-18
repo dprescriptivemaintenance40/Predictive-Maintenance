@@ -1,10 +1,10 @@
 <p-toast position="top-right"></p-toast>
 <p-card>
-    <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
+    <!-- *ngIf="prescriptiveTree" -->
+    <div  class="col-md-12" style="overflow: scroll;">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
-        <!-- <button *ngIf="FinalDelete" label="delete" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#deleteModal">Delete</button> <br><br> -->
         <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()">ADD Failure Mode</button>
-        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode"  styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}
                     <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)"><i class="pi pi-pencil"></i></a>
@@ -277,14 +277,12 @@
 
         </div>
     </div>
-</div>
+</div><br>
+<div>
+    <p-card>
 
-
-
-
-
-
-
+    </p-card>
+</div><br>
 
 <div *ngIf="Consequences1" class="col-md-12 stepsdemo-content shadow">
     <p-card>
@@ -314,6 +312,7 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
+            <!-- <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence1Back()">Back</button> -->
             <button label="Next" type="button" class="btn btn-dark" (click)="Consequence1Next()">Next</button>
 
         </ng-template>
@@ -430,9 +429,8 @@
     <p-card>
         <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
         <button *ngIf="ConsequenceTreeADDConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()">Add Consequences</button><br><br>
-        <button *ngIf="ConsequenceTreeEditConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="EditConsequenceToTree()">Edit Consequences</button><br><br>
-       
-        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <button *ngIf="ConsequenceTreeEditConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="EditConsequenceToTree()">Edit Consequences</button><br><br> 
+        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode"  styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">

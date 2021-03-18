@@ -5,13 +5,14 @@ import { MessageService } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { Router } from '@angular/router';
+import { TreeNode } from 'primeng/api';
 import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescriptive-model';
 
 
 
 @Component({
   selector: 'app-prescriptive-update',
-  templateUrl: './prescriptive-update.component.html',
+  templateUrl:'./prescriptive-update.component.html',
   styleUrls: ['./prescriptive-update.component.scss'],
   providers: [MessageService]
 })
@@ -108,6 +109,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public FreshUploadUpdate: boolean = false;
   public DeleteFMDataFromTree;
   public DeleteFMName : string = ""
+  public selectedNode: TreeNode;
   
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
@@ -459,8 +461,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
   }
 
 
-  
-
   public uploadFile = (files) => {
     if (files.length === 0) {
       return;
@@ -483,11 +483,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
   }
 
  
-
-
-    
-
-
 
   CloseAttachmentModalAdd(){
    if(this.fullPath.length > 4){
@@ -635,7 +630,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
 
   FailureModeDropped(c) {
     var findIndexOF = c.PrescriptiveLookupMasterId
-
     var index = -1;
     var filteredObj = this.dropedMode.find(function (item, i) {
       if (item.PrescriptiveLookupMasterId === findIndexOF) {
@@ -1081,6 +1075,9 @@ export class PrescriptiveUpdateComponent implements OnInit {
   dragEnd1(e) { }
   dragStart1(e, c) {
     this.dragedFunctionMode = c;
+  }
+  onNodeSelect(){
+
   }
 }
 
