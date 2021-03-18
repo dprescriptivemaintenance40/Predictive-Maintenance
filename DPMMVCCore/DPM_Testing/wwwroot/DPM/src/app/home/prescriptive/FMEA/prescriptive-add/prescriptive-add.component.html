@@ -23,7 +23,7 @@
             <li class="list-group-item"><b>Select</b></li>
             <li class="list-group-item">
                 <div class="input-group mb-3">
-                    <label style="    margin-right: 12px;">Assets</label>
+                    <label style=" margin-right: 12px;">Assets</label>
                     <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
                           <option value="">Choose..</option>
                             <option value="Pump" selected>Pump</option>
@@ -134,10 +134,13 @@
                     <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                         {{func.Description}}
                     </div>
+                   
                     <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                         <div *ngFor="let c of dropedMode">
-                            <span>{{c?.Description}}</span>
-                            <span><button style="float: right;" type="button" class="btn btn-dark btn-sm" style="margin-left: 700px" (click)="FailureModeDropped(c)">Clear</button></span>
+                            <span>{{c?.Description}} </span>
+                            <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                             <i class="far fa-times-circle "></i>
+                            </a>
                         </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List </small><br><br>
@@ -146,16 +149,13 @@
         </ng-template>
 
         <ng-template pTemplate="footer">
-
             <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailureModeBack()">Back</button>
             <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureModeNext()">Next</button>
         </ng-template>
     </p-card>
 </div>
-
-<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
-    <p-card>
-        <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+<div *ngIf="prescriptiveEffect1"  class="col-md-12" style="overflow: scroll;"> 
+        <p-organizationChart [value]="InsertLSEffect"selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -166,7 +166,10 @@
                 {{node.label}}
             </ng-template>
         </p-organizationChart>
-    </p-card>
+        <button label="Next" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailuerEffectBack()">Back</button>
+        <button *ngIf="NextFailureLSEDiasble" label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
+</div>
+<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <br>
     <p-card>
         <ng-template pTemplate="title">
@@ -271,6 +274,14 @@
     <p-card>
         <ng-template pTemplate="title">
             Factors
+            <p-overlayPanel #panel>
+                <li>Down Time Factor</li>
+                <li>Scrape Factor</li>
+                <li>Safety Factor</li>
+                <li>Protection Factor</li>
+                <li>Frequency Factor</li>
+              </p-overlayPanel>
+              <a (click)="panel.show($event)" style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
         </ng-template>
         <ng-template pTemplate="subtitle">
             Enter Factors for {{FMLSEffectModeName}}
@@ -325,17 +336,12 @@
                     <div style="margin-top: 7px; margin-left: 20px;" class="col-md-3">
                         <p-slider  [(ngModel)]="FrequencyFactor" [min]="1" [max]="15"></p-slider>
                     </div>
-               </div>
-                
-                <br>
-                
+               </div>  
+                <br>    
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Next" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailuerEffectBack()">Back</button>
-            <button *ngIf="ADDFailureLSEDiasble" label="Next" type="button" style="float: right; margin-right: 70px" class="btn btn-dark" (click)="ADDFailuerEffect()">ADD</button>
-            <button *ngIf="NextFailureLSEDiasble" label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
-
+            <button *ngIf="ADDFailureLSEDiasble" label="Next" type="button" style="float:center" style="float: right;" style="margin: 20px" class="btn btn-dark" (click)="ADDFailuerEffect()">ADD</button>
         </ng-template>
     </p-card>
 </div>
@@ -344,7 +350,6 @@
 <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
     <p-card>
         <button *ngIf="prescriptiveTreeBackEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="treeBack()">Back</button>
-
         <button *ngIf="prescriptiveTreeSubmitEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Save & Next</button>
 
         <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()">Next</button> <br><br>
@@ -515,7 +520,6 @@
         <ng-template pTemplate="footer">
             <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence4Back()">Back</button>
             <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence4Next()">Next</button>
-
         </ng-template>
     </p-card>
 </div>
@@ -523,7 +527,7 @@
 <div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">
     <p-card>
         <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()">Add Consequences</button><br><br>
+        <button  label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" data-toggle="tooltip" data-placement="right" title="When you add the consequence then it directly save in to the tree">Add Consequences</button><br><br>
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>

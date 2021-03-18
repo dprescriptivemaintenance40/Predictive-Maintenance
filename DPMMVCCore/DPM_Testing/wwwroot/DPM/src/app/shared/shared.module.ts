@@ -74,8 +74,8 @@ import { SafePipe } from "./safe.pipe";
         SliderModule,
         TreeModule,
         SafePipe,
-        OverlayPanelModule,
-        DialogModule]
+        DialogModule,
+        OverlayPanelModule]
 })
 export class SharedModule {
 

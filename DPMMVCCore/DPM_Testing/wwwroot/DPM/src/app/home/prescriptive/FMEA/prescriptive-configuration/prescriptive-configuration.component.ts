@@ -39,7 +39,7 @@ export class PrescriptiveConfigurationComponent implements OnInit {
             
             this.prescriptiveLookUpForms.push(this.fb.group({
               prescriptiveLookupMasterId: [prescriptiveLookUpModel.PrescriptiveLookupMasterId],
-              tagNumber: [prescriptiveLookUpModel.TagNumber, Validators.required],
+              // tagNumber: [prescriptiveLookUpModel.TagNumber, Validators.required],
               machineType: [prescriptiveLookUpModel.MachineType, Validators.required],
               equipmentType: [prescriptiveLookUpModel.EquipmentType, Validators.required],
               function: [prescriptiveLookUpModel.Function, Validators.required],
@@ -69,7 +69,7 @@ export class PrescriptiveConfigurationComponent implements OnInit {
   prescriptiveLookUpForm() {
     this.prescriptiveLookUpForms.push(this.fb.group({
       prescriptiveLookupMasterId: [0],
-      tagNumber: ['', Validators.required],
+      // tagNumber: ['', Validators.required],
       machineType: ['', Validators.required],
       equipmentType: ['', Validators.required],
       function: ['', Validators.required],
