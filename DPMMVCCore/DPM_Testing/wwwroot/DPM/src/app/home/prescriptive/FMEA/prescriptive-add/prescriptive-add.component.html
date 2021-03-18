@@ -155,7 +155,7 @@
     </p-card>
 </div>
 <div *ngIf="prescriptiveEffect1"  class="col-md-12" style="overflow: scroll;"> 
-        <p-organizationChart [value]="InsertLSEffect"selectionMode="single" [(selection)]="selectedNode"  styleClass="company">
+        <p-organizationChart [value]="InsertLSEffect"selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">

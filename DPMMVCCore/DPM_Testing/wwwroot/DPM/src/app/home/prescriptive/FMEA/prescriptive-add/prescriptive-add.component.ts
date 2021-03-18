@@ -132,6 +132,8 @@ export class PrescriptiveAddComponent implements OnInit {
     }, 2000);
 
     this.items = [{
+      styleClass: 'p-person',
+      expanded: true,
       label: 'Function',
       command: (event: any) => {
         this.activeIndex = 0;
@@ -492,7 +494,6 @@ export class PrescriptiveAddComponent implements OnInit {
   }
 
   ADDFailuerEffect() {
-
     if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && this.dbPath.length > 0 && ( this.DownTimeFactor > 0  || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)){
     this.FMChild[this.FMCount].children.push(
       {
@@ -514,51 +515,60 @@ export class PrescriptiveAddComponent implements OnInit {
         }
       },
       {
-        label: "DownTimeFactor",
+       label: "factors",
         type: "person",
         styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.DownTimeFactor
-        }
-      },
-      {
-        label: "ScrapeFactor",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.ScrapeFactor
-        }
-      },
-      {
-        label: "SafetyFactor",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.SafetyFactor
-        }
-      },
-      {
-        label: "ProtectionFactor",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.ProtectionFactor
-        }
-      },
-      {
-        label: "FrequencyFactor",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.FrequencyFactor
-        }
-      },
-     
+        expanded: false,
+        data: { name: "Factors"},
+        children: [
+              {
+                label: "DownTimeFactor",
+                 type: "person",
+                 styleClass: "p-person",
+                 expanded: true,
+                data: {
+                name: this.DownTimeFactor
+              }
+            },
+              {
+                
+            label: "ScrapeFactor",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+              name: this.ScrapeFactor
+            }
+              },
+              {
+                label: "SafetyFactor",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+              name: this.SafetyFactor
+            }
+              },
+            {
+             label: "ProtectionFactor",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+              name: this.ProtectionFactor
+            }
+          },
+            {
+               label: "FrequencyFactor",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+           name: this.FrequencyFactor
+           }
+              }  
+        ]
+      }
     )
     let obj = {}
     obj['DownTimeFactor'] = this.DownTimeFactor;
@@ -1128,6 +1138,10 @@ export class PrescriptiveAddComponent implements OnInit {
       detail: event.data.name
     });
   }
+
+  onNodeSelect(event) {
+
+}
 }
 
 
