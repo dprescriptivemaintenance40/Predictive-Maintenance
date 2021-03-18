@@ -728,7 +728,6 @@ export class PrescriptiveAddComponent implements OnInit {
       this.ProtectionFactor = this.FactoryToAddInFM[index].ProtectionFactor
       this.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
    }
-
   }
 
   treeNext() {

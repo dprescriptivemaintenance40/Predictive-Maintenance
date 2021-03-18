@@ -43,6 +43,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public FMdiv: any;
   public LSEdiv: any;
   public finalConsequence: string = "";
+  public SavedfinalConsequence: string = "";
   public UpdatedFailureModeWithLSETree: string = ""
   public FinalUpdate: boolean = false;
   public FinalDelete: boolean = false;
@@ -60,12 +61,26 @@ export class PrescriptiveUpdateComponent implements OnInit {
   private consequenceTreeColorNodeB = 'p-person'
   private consequenceTreeColorNodeC = 'p-person'
   private consequenceTreeColorNodeD = 'p-person'
+
   private consequenceA;
   private consequenceB;
   private consequenceC;
   private consequenceD;
   private consequenceE;
+ 
+  private SavedconsequenceTreeColorNodeA = 'p-person1'
+  private SavedconsequenceTreeColorNodeB = 'p-person'
+  private SavedconsequenceTreeColorNodeC = 'p-person'
+  private SavedconsequenceTreeColorNodeD = 'p-person'
+
+  private SavedconsequenceA;
+  private SavedconsequenceB;
+  private SavedconsequenceC;
+  private SavedconsequenceD;
+  private SavedconsequenceE;
+
   public ConsequenceNode: any = []
+  public SavedConsequenceNode: any = []
   public draggedConsequencesYesNO: any = ['YES', 'NO']
   public droppedYesNo = null;
   public dropedConsequenceFailureMode = []
@@ -258,6 +273,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
    this.Consequences1 = true
    this.FailureModediv.style.display = 'none'
    this.prescriptiveTree = false
+   this.SavedConsequenceTree()
   }
 
   EditConsequenceToTree(){
@@ -269,7 +285,7 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.dropedConsequenceFailureMode = [];
     this.dropedConsequenceEffectFailureMode = [];
     this.ConsequencesTree = false
-    this.UpdateFailureModeConsequence =   this.finalConsequence
+    this.UpdateFailureModeConsequence = this.finalConsequence
     this.finalConsequence = ""
     this.LSFailureMode = ""
 
@@ -503,7 +519,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     this.fileUpload = ""
   }
 
-  
 
   LSEffectToTree() {
     if(this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && this.ADDDownTimeFactor > 0 &&  this.ADDScrapeFactor > 0 &&  this.ADDSafetyFactor > 0 &&  this.ADDProtectionFactor > 0 &&  this.ADDFrequencyFactor > 0){
@@ -819,7 +834,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
 
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field'});
     }
-
   }
 
   ConsequenceTreeBack() { 
@@ -855,7 +869,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
     }
     this.ConsequenceTreeGeneration();
     this.ConsequencesAnswer = []
-
   }
 
   ConsequenceTreeGeneration() {
@@ -1075,8 +1088,153 @@ export class PrescriptiveUpdateComponent implements OnInit {
   dragStart1(e, c) {
     this.dragedFunctionMode = c;
   }
-  onNodeSelect(){
 
+  SavedConsequenceTree(){
+     this.SavedConsequenceNode = [
+      {
+        label: "Consequences",
+        type: "person",
+        styleClass: this.SavedconsequenceTreeColorNodeA,
+        expanded: true,
+        data: {
+          name:
+            "Will the occurance of the failuer mode be evidient to operational stuff during normal operation of the plant?"
+        },
+        children: [
+          {
+            label: "Yes",
+            type: "person",
+            styleClass: this.SavedconsequenceTreeColorNodeB,
+            expanded: true,
+            data: {
+              name:
+                "Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct adverse effect on operational safety or the environment?"
+            },
+            children: [
+              {
+                label: "Yes",
+                type: "person",
+                styleClass: this.SavedconsequenceB,
+                expanded: true,
+                data: {
+                  name: "B"
+                }
+              },
+              {
+                label: "No",
+                type: "person",
+                styleClass: this.SavedconsequenceTreeColorNodeD,
+                expanded: true,
+                data: {
+                  name:
+                    "Does the Failure mode adversily affect operational capabilities of the plant? "
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    styleClass: this.SavedconsequenceC,
+                    expanded: true,
+                    data: {
+                      name: "C"
+                    }
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    styleClass: this.SavedconsequenceD,
+                    expanded: true,
+                    data: {
+                      name: "D"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+
+          {
+            label: "No",
+            type: "person",
+            styleClass: this.SavedconsequenceTreeColorNodeC,
+            expanded: true,
+            data: {
+              name:
+                "Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment?  "
+            },
+            children: [
+              {
+                label: "Yes",
+                type: "person",
+                styleClass: this.SavedconsequenceA,
+                expanded: true,
+                data: {
+                  name: "A "
+                }
+              },
+              {
+                label: "No",
+                type: "person",
+                styleClass: this.SavedconsequenceE,
+                expanded: true,
+                data: {
+                  name: "E"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ];
+    if(this.Consequences1 == true){
+      if(this.Consequences2[0] == 'Yes'){
+        if(this.Consequences2[1] == 'No'){
+          if(this.Consequences4[1] == 'Yes'){
+            this.finalConsequence = "C"
+            this.SavedconsequenceA = 'p-person'
+            this.SavedconsequenceB = 'p-person'
+            this.SavedconsequenceC = 'p-person1'
+            this.SavedconsequenceD = 'p-person'
+            this.SavedconsequenceE = 'p-person'
+          }else{
+            this.SavedfinalConsequence = "D"
+            this.SavedconsequenceA = 'p-person'
+            this.SavedconsequenceB = 'p-person'
+            this.SavedconsequenceC = 'p-person'
+            this.SavedconsequenceD = 'p-person1'
+            this.SavedconsequenceE = 'p-person'
+          }
+        }else{
+          this.SavedconsequenceA = 'p-person'
+          this.SavedconsequenceB = 'p-person1'
+          this.SavedconsequenceC = 'p-person'
+          this.SavedconsequenceD = 'p-person'
+          this.SavedconsequenceE = 'p-person'
+          this.finalConsequence = "B"
+        }
+      }else if(this.Consequences3[0] == 'Yes'){
+        this.finalConsequence = "A"
+          this.SavedconsequenceA = 'p-person1'
+          this.SavedconsequenceB = 'p-person'
+          this.SavedconsequenceC = 'p-person'
+          this.SavedconsequenceD = 'p-person'
+          this.SavedconsequenceE = 'p-person'
+      }else{
+        this.finalConsequence = "E"
+        this.SavedconsequenceA = 'p-person'
+        this.SavedconsequenceB = 'p-person'
+        this.SavedconsequenceC = 'p-person'
+        this.SavedconsequenceD = 'p-person'
+        this.SavedconsequenceE = 'p-person1'
+      }
+    }
   }
 }
+
+
+
+
+
+
+
 

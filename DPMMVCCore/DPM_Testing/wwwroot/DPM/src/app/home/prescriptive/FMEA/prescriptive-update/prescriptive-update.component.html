@@ -259,28 +259,37 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" >&times;</span>
         </button>
-            </div>
-             
+            </div>  
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
                         <div class="form-group mt-4">
                             <textarea class="form-control" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
                         </div>
-        
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"  data-dismiss="modal">Done</button>
             </div>
-
         </div>
     </div>
 </div><br>
 <div>
     <p-card>
-
+        <p><b>Your selected Tree</b></p>
+        <p-organizationChart [value]="SavedConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}} 
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
     </p-card>
 </div><br>
 
@@ -302,7 +311,11 @@
                         {{con1}}
                     </div>
                     <div class="drop" pDroppable="con1" (onDrop)="dropC1($event)">
-                        <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}</div>
+                        <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}
+                            <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                             <i class="far fa-times-circle "></i>
+                            </a>
+                        </div>
 
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
@@ -339,7 +352,11 @@
                         {{con2}}
                     </div>
                     <div class="drop" pDroppable="con2" (onDrop)="dropC2($event)">
-                        <div *ngFor="let c of dropedConsequenceEffectFailureMode">{{c}}</div>
+                        <div *ngFor="let c of dropedConsequenceEffectFailureMode">{{c}}
+                            <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                <i class="far fa-times-circle "></i>
+                               </a>
+                        </div>
 
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
@@ -372,9 +389,14 @@
                 <div class="container">
                     <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con3" (onDragStart)="dragStartC3($event,con3)" (onDragEnd)="dragEndC3($event)">
                         {{con3}}
+                       
                     </div>
                     <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
-                        <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}</div>
+                        <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}
+                            <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                <i class="far fa-times-circle "></i>
+                               </a>
+                        </div>
 
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List </small> <br>
@@ -406,9 +428,14 @@
                 <div class="container">
                     <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con4" (onDragStart)="dragStartC4($event,con4)" (onDragEnd)="dragEndC4($event)">
                         {{con4}}
+                      
                     </div>
                     <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
-                        <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}</div>
+                        <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}
+                            <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                <i class="far fa-times-circle "></i>
+                               </a>
+                        </div>
 
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
@@ -556,7 +583,6 @@
                             <label for="exampleFormControlInput2">Consequence</label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="UpdateFailureModeConsequence"  id="exampleFormControlInput2" disabled><br>
                             <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()" >Update Consequence</button>
-                       
                         </div>
                         
                       </form>
