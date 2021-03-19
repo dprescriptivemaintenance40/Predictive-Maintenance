@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescriptive-model';
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
-import { TreeMapModule } from 'ngx-charts';
 
 
 
@@ -120,7 +119,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     public commonLoadingDirective: CommonLoadingDirective,
     private router: Router,
     private http: HttpClient) { }
-  private isNewEntity: boolean = true;
+  private isNewEntity: boolean = false;
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if(confirm('Are you sure you want to go back. You have have pending changes')){

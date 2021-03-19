@@ -131,7 +131,11 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if (confirm('Are you sure you want to go back. You have have pending changes')) {
-        // save changes logic
+         if(this.MachineType.length > 2){
+           this.treeSave()
+         } else if( this.SaveConcequencesEnable == true){
+           this.SaveConsequences();
+         }
         return true;
       } else {
         return true;
@@ -567,6 +571,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   }
 
   SaveConsequences() {
+    this.isNewEntity = false
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
@@ -605,8 +610,11 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   }
 
   treeSave() {
+    this.isNewEntity = false;
     this.prescriptiveTreeBackEnable = false
     this.centrifugalPumpPrescriptiveOBJ.MachineType = this.MachineType
+    this.MachineType = "";
+    this.isNewEntity = false;
     this.centrifugalPumpPrescriptiveOBJ.EquipmentType = this.EquipmentType
     this.centrifugalPumpPrescriptiveOBJ.TagNumber = this.TagNumber
     this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FunctionFluidType
@@ -672,6 +680,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
     if (this.FMCount1 == this.FMChild.length) {
       this.prescriptiveTreeNextEnable = false;
       this.SaveConcequencesEnable = true;
+      this.isNewEntity = true
     }
 
     this.activeIndex = 4
@@ -710,6 +719,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
       this.prescriptiveTreeSubmitEnable = true;
     }
 
+    this.isNewEntity = true
     this.GenrationTree()
 
   }

@@ -66,11 +66,13 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
     public commonLoadingDirective: CommonLoadingDirective,
     private router: Router,
     private http: HttpClient) { }
-  private isNewEntity: boolean = true;
+  private isNewEntity: boolean = false;
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if (confirm('Are you sure you want to go back. You have have pending changes')) {
-        // save changes logic
+        if( this.SaveConcequencesEnable == true){
+          this.SubmitConsequenceTree()
+        } 
         return true;
       } else {
         return true;
@@ -183,6 +185,7 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
     if (this.FMCount == this.FMTree.length) {
       this.prescriptiveTreeNextEnable = false;
       this.SaveConcequencesEnable = true;
+      this.isNewEntity = true;
     }
 
     this.prescriptiveTree = true;
@@ -500,6 +503,7 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
   }
 
   SubmitConsequenceTree() {
+    this.isNewEntity = false;
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.ConsequencesData.CFPPrescriptiveId;
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);

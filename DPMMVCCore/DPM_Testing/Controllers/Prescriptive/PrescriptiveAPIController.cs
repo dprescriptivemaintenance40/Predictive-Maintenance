@@ -66,6 +66,28 @@ namespace DPM.Controllers.Prescriptive
 
         }
 
+
+        [HttpPost]
+        [Route("RestoreRecords")]
+
+        public async Task<ActionResult<CentrifugalPumpPrescriptiveModel>> PostRestoreRecords([FromBody] CentrifugalPumpPrescriptiveModel prescriptiveModel)
+        {
+            try
+            {
+                _context.PrescriptiveModelData.Add(prescriptiveModel);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+
+        }
+
         [HttpPost]
         [Route("PostCentrifugalPumpPrescriptiveData")]
         public async Task<ActionResult<CentrifugalPumpPrescriptiveModel>> PostPrescriptive([FromBody] CentrifugalPumpPrescriptiveModel prescriptiveModel)
