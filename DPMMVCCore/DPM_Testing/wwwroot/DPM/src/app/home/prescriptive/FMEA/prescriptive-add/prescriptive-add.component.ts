@@ -697,15 +697,7 @@ export class PrescriptiveAddComponent implements OnInit {
     this.prescriptiveEffect = true;
     this.prescriptiveEffect1 = true
     this.prescriptiveTree = false;
-    for (let index = 0; index < this.FMChild.length; index++) {
-      this.failuerModeLocalEffects = this.FMChild[index].children[0].data.name;
-      this.failuerModeSystemEffects = this.FMChild[index].children[1].data.name;
-      this.DownTimeFactor = this.FactoryToAddInFM[index].DownTimeFactor;
-      this.ScrapeFactor = this.FactoryToAddInFM[index].ScrapeFactor
-      this.SafetyFactor = this.FactoryToAddInFM[index].SafetyFactor
-      this.ProtectionFactor = this.FactoryToAddInFM[index].ProtectionFactor
-      this.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
-   }
+ 
   }
 
   treeNext() {
@@ -1084,25 +1076,26 @@ export class PrescriptiveAddComponent implements OnInit {
     console.log(Data)
     var FMname = Data.data.name
     console.log("Failure Mode Name : ", FMname)
-     var LE, SE = Data[1].data.name 
-    var DTFactor ,SFactor,SFactor,ProFactor,FreqFactor =this.FactoryToAddInFM
+     var LE, SE = Data.data.name 
+    var DTFactor,ScrapeFactor,SafetyFactor,ProFactor,FreqFactor =this.FactoryToAddInFM
 
-    LE = Data[0].data.name
-    SE = Data[0].data.name
-
+    LE = Data.children[0].data.name
+    SE = Data.children[1].data.name
     console.log(LE, SE)
-    DTFactor = this.FactoryToAddInFM
-    SFactor = this.FactoryToAddInFM
-    ProFactor = this.FactoryToAddInFM
-    FreqFactor = this.FactoryToAddInFM
-    console.log(DTFactor, SFactor,ProFactor,FreqFactor)
 
+    DTFactor = this.DownTimeFactor
+    ScrapeFactor = this.ScrapeFactor
+    SafetyFactor = this.SafetyFactor
+    ProFactor = this.ProtectionFactor
+    FreqFactor = this.FrequencyFactor
+
+    console.log(DTFactor, ScrapeFactor,ProFactor,FreqFactor)
     this.failuerModeLocalEffects = LE
     this.failuerModeSystemEffects = SE
     this.DownTimeFactor = DTFactor
-    this.ScrapeFactor = SFactor
+    this.ScrapeFactor = ScrapeFactor
+    this.SafetyFactor = SafetyFactor
     this.ProtectionFactor = ProFactor
     this.FrequencyFactor = FreqFactor
-    
   }
 }
