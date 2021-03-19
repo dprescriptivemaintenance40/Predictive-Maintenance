@@ -1037,22 +1037,24 @@ export class DashboardComponent {
     }
   }
 
-  DeletePrescriptiveRecords(p) {
-    for (let index = 0; index < p.centrifugalPumpPrescriptiveFailureModes.length; index++) {
-     
-      const params = new HttpParams()
-           .set("fullPath", p.centrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath)
-      
-      this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', {params}).subscribe()
-    }
+ 
+  public CFPPrescriptiveId ;
+  public DeleteTreeName : string = ""
 
-    this.http.delete('api/PrescriptiveAPI/' + p.CFPPrescriptiveId)
-      .subscribe(res => {
-        this.getPrescriptiveRecords();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted Successfully' });
-      }, err => {
-        console.log(err)
-      });
+  DeletePrescriptiveRecords(p) {
+   this.CFPPrescriptiveId = p.CFPPrescriptiveId
+   this.DeleteTreeName = p.TagNumber
+  }
+
+  SoftDeletePrescriptiveRecords(){
+   
+    this.http.delete('api/PrescriptiveAPI/DeletePrespectiveModel?id='+ this.CFPPrescriptiveId)
+    .subscribe(res => {
+      this.getPrescriptiveRecords();
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted Successfully' });
+    }, err => {
+      console.log(err)
+    });
   }
 
   ADDConsequenceRecords(p) {

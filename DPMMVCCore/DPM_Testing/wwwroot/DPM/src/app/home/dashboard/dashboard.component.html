@@ -88,7 +88,7 @@
                                 <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-secondary btn-sm" (click)="DeletePrescriptiveRecords(p)">Delete</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" (click)="DeletePrescriptiveRecords(p)"  data-toggle="modal" data-target="#DeleteTree">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -202,3 +202,26 @@
     </div>
 
 </div>
+
+
+
+
+<div class="modal fade" id="DeleteTree" tabindex="-1" role="dialog" aria-labelledby="DeleteTreeTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete Centrifugal Pump : {{DeleteTreeName}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SoftDeletePrescriptiveRecords()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>

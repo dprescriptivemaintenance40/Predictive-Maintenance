@@ -12,7 +12,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     { path: 'Home', loadChildren: () => import('./home/home.module').then(a => a.HomeModule), canActivate: [AuthGuard] },
     { path: 'Reset', component: ResetPasswordComponent },
     { path: 'ForgotPassword', component: ForgotPasswordComponent },
-
+   
   ])],
   exports: [RouterModule]
 })
