@@ -738,7 +738,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   }
 
   treeNext() {
-    this.prescriptiveTree = false;
+    this.prescriptiveTree = true;
     this.Consequences1 = true;
     this.activeIndex = 5
   }

@@ -31,6 +31,8 @@ export class RecycleBinComponent implements OnInit {
       var child :any = res
       if(child.length != 0) {
         for (let index = 0; index < child.length; index++) {
+          if(child[index].restoreCentrifugalPumpPrescriptiveFailureModes.length > 0){
+
           let obj = {}
               obj['RCPFMId']= child[index].restoreCentrifugalPumpPrescriptiveFailureModes[0].RCPFMId;
               obj['RCPPMId'] = child[index].restoreCentrifugalPumpPrescriptiveFailureModes[0].RCPPMId;
@@ -50,6 +52,7 @@ export class RecycleBinComponent implements OnInit {
               obj['AttachmentFullPath'] = child[index].restoreCentrifugalPumpPrescriptiveFailureModes[0].AttachmentFullPath;
               obj['Remark'] = child[index].restoreCentrifugalPumpPrescriptiveFailureModes[0].Remark;
           this.RecycleCentrifugalPumpChildData.push(obj);
+          }
         }
         this.commonLoadingDirective.showLoading(true, 'Getting things Ready....');
         this.RecycleCentrifugalPumpChildList = res;
@@ -108,13 +111,20 @@ export class RecycleBinComponent implements OnInit {
     });
 
     
-    var Records : any = this.getPrescriptiveRecords(data.CFPPrescriptiveId)
+  
+    var Data : any = []
+    const params = new HttpParams()
+          .set("id", data.CFPPrescriptiveId)
 
-    
-    if(Records != undefined) {
-    
-    var LatestConTree : any = Records.FMWithConsequenceTree[0].children[0].children[0].children.push(FMTreeFromConTreeToRemove)
-    var LatestLSTree : any = Records.FailureModeWithLSETree[0].children[0].children[0].children.push(LSTreeToEdit)
+   this.http.get<any>('api/PrescriptiveAPI/GetRecordsFromCPPM', {params}).subscribe(
+    res =>{ 
+      
+     var Records: any= res 
+    if(Records.length > 0) {
+    var RecordConTree = JSON.parse(Records[0].FMWithConsequenceTree)
+    var RecordLSTree = JSON.parse(Records[0].FailureModeWithLSETree)
+    RecordConTree[0].children[0].children[0].children.push(FMTreeFromConTreeToRemove)
+    RecordLSTree[0].children[0].children[0].children.push(LSTreeToEdit)
 
     let obj = {}
     obj['CPPFMId'] = 0 ;
@@ -133,30 +143,39 @@ export class RecycleBinComponent implements OnInit {
     obj['Remark'] = data.Remark;
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = data.CFPPrescriptiveId;
-    this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(LatestConTree)
-    this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(LatestLSTree);
+    this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(RecordConTree)
+    this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(RecordLSTree);
     
-    this.http.post('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
+    this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {
         alert("SuccessFull restored");
+        var RCPPMId : any = 0 ;
+        var RCPFMId = data.RCPFMId 
+        const params = new HttpParams()
+              .set("RCPPMId", RCPPMId )
+              .set("RCPFMId", RCPFMId )
+        this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', {params}).subscribe(
+          res =>{ 
+            alert("SuccessFull Deleted")
+            this.getCentrifugalPumpRecycleChildData();
+            this.getCentrifugalPumpRecycleWholeData()
+          }, err => { console.log(err.err)}
+          
+          )
       }, error => {}
     )
 
 
-    var RCPPMId : any = 0 ;
-    var RCPFMId = data.RCPFMId 
-    const params = new HttpParams()
-    .set("RCPPMId", RCPPMId )
-    .set("RCPFMId", RCPFMId )
-    this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', {params}).subscribe(
-      res =>{ alert("SuccessFull Deleted")}, err => { console.log(err.err)}
-      )
+    
 
 
     } else { 
 
       alert("No records to restore")
     }
+
+  }, 
+  err => { console.log(err)} )
 
   }else if(data.ComponentCriticalityFactor  != undefined ){
    
@@ -240,20 +259,21 @@ export class RecycleBinComponent implements OnInit {
  }
 
 
- getPrescriptiveRecords(data){
+getPrescriptiveRecords(data){
    var Data : any = []
     const params = new HttpParams()
           .set("id", data)
 
    this.http.get<any>('api/PrescriptiveAPI/GetRecordsFromCPPM', {params}).subscribe(
-     res =>{ 
+    res =>{ 
        Data =res
        if(Data.length > 0){
-         return Data;
+        return Data;
+        
        } else { return Data = undefined}
      }, err => { console.log(err)}
    )
- 
+  
  }
 
 
