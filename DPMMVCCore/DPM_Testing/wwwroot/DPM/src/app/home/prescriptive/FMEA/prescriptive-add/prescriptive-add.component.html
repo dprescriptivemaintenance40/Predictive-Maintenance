@@ -100,8 +100,8 @@
                         {{fun.Description}}
                     </div>
                     <div class="drop" pDroppable="fun" (onDrop)="drop($event)">
-                        <div *ngFor="let c of dropedFailure">{{c?.Description}}</div>
-
+                        <div *ngFor="let c of dropedFailure">{{c?.Description}}
+                        </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
 
@@ -180,7 +180,6 @@
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
-               
                 <div>
                     <label>Local Effect</label>
                     <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects" placeholder="Type Local Effect">

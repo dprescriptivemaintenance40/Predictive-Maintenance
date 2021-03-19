@@ -54,6 +54,8 @@ export class PrescriptiveUpdateComponent implements OnInit {
   public Consequences4: boolean = false;
   public ConsequencesTree: boolean = false;
   public SaveConcequencesEnable: boolean = false;
+  public ChangeConsequenceforUpdate: boolean = false;
+  
   public ConsequencesAnswer: any = [];
   public ConsequenceTreeADDConsequenceEnable: boolean = false;
   public ConsequenceTreeEditConsequenceEnable: boolean = false;
@@ -228,18 +230,13 @@ export class PrescriptiveUpdateComponent implements OnInit {
         this.extensionImage = false;
         this.extensionPDF = true;
       }
-    }
-   
-    
-  }
-
-  
+    } 
+  } 
   getFileExtension(filename){
         const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
         return extension;
     }
-
-
+    
   DeleteAttachment(){
     this.AttachmentADD = false
     this.extensionPDF = false
@@ -270,10 +267,11 @@ export class PrescriptiveUpdateComponent implements OnInit {
   ReplaceConsequence(){
    this.LSFailureMode = ""
    this.LSFailureMode = this.UpdateFailureMode
-   this.Consequences1 = true
+   this.Consequences1 = false
    this.FailureModediv.style.display = 'none'
    this.prescriptiveTree = false
-   this.SavedConsequenceTree()
+   this.ChangeConsequenceforUpdate= true
+   this.colorForUpdateTree()
   }
 
   EditConsequenceToTree(){
@@ -1083,13 +1081,12 @@ export class PrescriptiveUpdateComponent implements OnInit {
       this.dragedFunctionMode = null;
     }
   }
-
   dragEnd1(e) { }
   dragStart1(e, c) {
     this.dragedFunctionMode = c;
   }
-
   SavedConsequenceTree(){
+    this.ChangeConsequenceforUpdate= true
      this.SavedConsequenceNode = [
       {
         label: "Consequences",
@@ -1152,7 +1149,6 @@ export class PrescriptiveUpdateComponent implements OnInit {
               }
             ]
           },
-
           {
             label: "No",
             type: "person",
@@ -1186,55 +1182,67 @@ export class PrescriptiveUpdateComponent implements OnInit {
         ]
       }
     ];
-    if(this.Consequences1 == true){
-      if(this.Consequences2[0] == 'Yes'){
-        if(this.Consequences2[1] == 'No'){
-          if(this.Consequences4[1] == 'Yes'){
-            this.finalConsequence = "C"
-            this.SavedconsequenceA = 'p-person'
-            this.SavedconsequenceB = 'p-person'
-            this.SavedconsequenceC = 'p-person1'
-            this.SavedconsequenceD = 'p-person'
-            this.SavedconsequenceE = 'p-person'
-          }else{
-            this.SavedfinalConsequence = "D"
-            this.SavedconsequenceA = 'p-person'
-            this.SavedconsequenceB = 'p-person'
-            this.SavedconsequenceC = 'p-person'
-            this.SavedconsequenceD = 'p-person1'
-            this.SavedconsequenceE = 'p-person'
-          }
-        }else{
-          this.SavedconsequenceA = 'p-person'
-          this.SavedconsequenceB = 'p-person1'
-          this.SavedconsequenceC = 'p-person'
-          this.SavedconsequenceD = 'p-person'
-          this.SavedconsequenceE = 'p-person'
-          this.finalConsequence = "B"
-        }
-      }else if(this.Consequences3[0] == 'Yes'){
-        this.finalConsequence = "A"
-          this.SavedconsequenceA = 'p-person1'
-          this.SavedconsequenceB = 'p-person'
-          this.SavedconsequenceC = 'p-person'
-          this.SavedconsequenceD = 'p-person'
-          this.SavedconsequenceE = 'p-person'
-      }else{
-        this.finalConsequence = "E"
-        this.SavedconsequenceA = 'p-person'
-        this.SavedconsequenceB = 'p-person'
-        this.SavedconsequenceC = 'p-person'
-        this.SavedconsequenceD = 'p-person'
-        this.SavedconsequenceE = 'p-person1'
-      }
+  }
+  colorForUpdateTree(){
+    if(this.UpdateFailureModeConsequence == "E"){
+      this.SavedconsequenceTreeColorNodeA = 'p-person1'
+      this.SavedconsequenceTreeColorNodeB = 'p-person'
+      this.SavedconsequenceTreeColorNodeC = 'p-person1'
+      this.SavedconsequenceTreeColorNodeD = 'p-person'
+      this.SavedconsequenceA = 'p-person'
+      this.SavedconsequenceB = 'p-person'
+      this.SavedconsequenceC = 'p-person'
+      this.SavedconsequenceD = 'p-person'
+      this.SavedconsequenceE = 'p-person1'
+      this.SavedConsequenceTree();
+    } else if(this.UpdateFailureModeConsequence == 'B'){
+      this.SavedconsequenceTreeColorNodeA = 'p-person1'
+      this.SavedconsequenceTreeColorNodeB = 'p-person1'
+      this.SavedconsequenceTreeColorNodeC = 'p-person'
+      this.SavedconsequenceTreeColorNodeD = 'p-person'
+      this.SavedconsequenceA = 'p-person'
+      this.SavedconsequenceB = 'p-person1'
+      this.SavedconsequenceC = 'p-person'
+      this.SavedconsequenceD = 'p-person'
+      this.SavedconsequenceE = 'p-person'
+      this.SavedConsequenceTree();
+    }else if(this.UpdateFailureModeConsequence == 'C'){
+      this.SavedconsequenceTreeColorNodeA = 'p-person1'
+      this.SavedconsequenceTreeColorNodeB = 'p-person'
+      this.SavedconsequenceTreeColorNodeC = 'p-person1'
+      this.SavedconsequenceTreeColorNodeD = 'p-person'
+      this.SavedconsequenceA = 'p-person'
+      this.SavedconsequenceB = 'p-person'
+      this.SavedconsequenceC = 'p-person1'
+      this.SavedconsequenceD = 'p-person'
+      this.SavedconsequenceE = 'p-person'
+      this.SavedConsequenceTree();
+    }else if(this.UpdateFailureModeConsequence == 'D'){
+      this.SavedconsequenceTreeColorNodeA = 'p-person1'
+      this.SavedconsequenceTreeColorNodeB = 'p-person1'
+      this.SavedconsequenceTreeColorNodeC = 'p-person'
+      this.SavedconsequenceTreeColorNodeD = 'p-person1'
+      this.SavedconsequenceA = 'p-person'
+      this.SavedconsequenceB = 'p-person'
+      this.SavedconsequenceC = 'p-person'
+      this.SavedconsequenceD = 'p-person1'
+      this.SavedconsequenceE = 'p-person'
+      this.SavedConsequenceTree();
+    }  else if(this.UpdateFailureModeConsequence == 'A'){
+      this.SavedconsequenceTreeColorNodeA = 'p-person1'
+      this.SavedconsequenceTreeColorNodeB = 'p-person'
+      this.SavedconsequenceTreeColorNodeC = 'p-person'
+      this.SavedconsequenceTreeColorNodeD = 'p-person'
+      this.SavedconsequenceA = 'p-person1'
+      this.SavedconsequenceB = 'p-person'
+      this.SavedconsequenceC = 'p-person'
+      this.SavedconsequenceD = 'p-person'
+      this.SavedconsequenceE = 'p-person'
+      this.SavedConsequenceTree();
+
     }
   }
+  ChangeConsequence(){
+    this.Consequences1 = true
+  }
 }
-
-
-
-
-
-
-
-

@@ -312,8 +312,6 @@ export class PrescriptiveAddComponent implements OnInit {
       })
   }
 
-
-
   GeneratePrescription() {
     if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
       this.getDropDownLookMasterData();
@@ -339,7 +337,6 @@ export class PrescriptiveAddComponent implements OnInit {
       this.prescriptiveFuntion = false;
       this.prescriptiveFunctionFailure = true;
       this.activeIndex = 1;
-
     } else if (this.FunctionFluidType.length == 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'FluidType is missing' });
 
@@ -408,7 +405,6 @@ export class PrescriptiveAddComponent implements OnInit {
       funFailure = this.dropedFailure[0].Description
     }
 
-
     this.data1 = [
       {
         label: "Function",
@@ -449,7 +445,6 @@ export class PrescriptiveAddComponent implements OnInit {
     this.FMChild = []
     this.FactoryToAddInFM = []
     this.NextFailureLSEDiasble = false
- 
     var Data = [], FMName
     this.dropedMode.forEach(element => {
       Data.push(element.Description)
@@ -676,12 +671,8 @@ export class PrescriptiveAddComponent implements OnInit {
     this.consequenceTreeColorNodeA = 'p-person1'
     this.consequenceTreeColorNodeB = 'p-person'
     this.consequenceTreeColorNodeC = 'p-person'
-    this.consequenceTreeColorNodeD = 'p-person'
-    
+    this.consequenceTreeColorNodeD = 'p-person'  
   }
-
-
-
   FailureEffectNext() {
     this.prescriptiveFailureMode = false;
     this.prescriptiveEffect = false;
@@ -693,27 +684,14 @@ export class PrescriptiveAddComponent implements OnInit {
     if (SubmitedTree == null) {
       this.prescriptiveTreeSubmitEnable = true;
     }
-
     this.GenrationTree()
-
   }
   FailuerEffectBack() {
     this.prescriptiveEffect = false;
     this.prescriptiveEffect1 = false
     this.prescriptiveFailureMode = true;
     this.activeIndex = 2
-    
-    for (let index = 0; index < this.FMChild.length; index++) {
-      this.failuerModeLocalEffects = this.FMChild[index].children[0].data.name;
-      this.failuerModeSystemEffects = this.FMChild[index].children[1].data.name;
-      this.DownTimeFactor = this.FactoryToAddInFM[index].DownTimeFactor;
-      this.ScrapeFactor = this.FactoryToAddInFM[index].ScrapeFactor
-      this.SafetyFactor = this.FactoryToAddInFM[index].SafetyFactor
-      this.ProtectionFactor = this.FactoryToAddInFM[index].ProtectionFactor
-      this.FrequencyFactor = this.FactoryToAddInFM[index].FrequencyFactor
-   }
   }
-
 
   treeBack() {
     this.prescriptiveEffect = true;
@@ -735,7 +713,6 @@ export class PrescriptiveAddComponent implements OnInit {
     this.Consequences1 = true;
     this.activeIndex = 5
   }
-
 
   Consequence1Back() {
     this.activeIndex = 4
@@ -923,7 +900,6 @@ export class PrescriptiveAddComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-
   ConsequenceTreeGeneration() {
     this.ConsequenceNode = [
       {
@@ -1103,6 +1079,30 @@ export class PrescriptiveAddComponent implements OnInit {
       detail: event.data.name
     });
   }
+  onNodeSelect(event){
+    var Data = event.node
+    console.log(Data)
+    var FMname = Data.data.name
+    console.log("Failure Mode Name : ", FMname)
+     var LE, SE = Data[1].data.name 
+    var DTFactor ,SFactor,SFactor,ProFactor,FreqFactor =this.FactoryToAddInFM
 
+    LE = Data[0].data.name
+    SE = Data[0].data.name
 
+    console.log(LE, SE)
+    DTFactor = this.FactoryToAddInFM
+    SFactor = this.FactoryToAddInFM
+    ProFactor = this.FactoryToAddInFM
+    FreqFactor = this.FactoryToAddInFM
+    console.log(DTFactor, SFactor,ProFactor,FreqFactor)
+
+    this.failuerModeLocalEffects = LE
+    this.failuerModeSystemEffects = SE
+    this.DownTimeFactor = DTFactor
+    this.ScrapeFactor = SFactor
+    this.ProtectionFactor = ProFactor
+    this.FrequencyFactor = FreqFactor
+    
+  }
 }
