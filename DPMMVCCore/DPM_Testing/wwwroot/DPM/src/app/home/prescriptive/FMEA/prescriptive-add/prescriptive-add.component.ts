@@ -1077,25 +1077,16 @@ export class PrescriptiveAddComponent implements OnInit {
     var FMname = Data.data.name
     console.log("Failure Mode Name : ", FMname)
      var LE, SE = Data.data.name 
-    var DTFactor,ScrapeFactor,SafetyFactor,ProFactor,FreqFactor =this.FactoryToAddInFM
 
     LE = Data.children[0].data.name
     SE = Data.children[1].data.name
-    console.log(LE, SE)
-
-    DTFactor = this.DownTimeFactor
-    ScrapeFactor = this.ScrapeFactor
-    SafetyFactor = this.SafetyFactor
-    ProFactor = this.ProtectionFactor
-    FreqFactor = this.FrequencyFactor
-
-    console.log(DTFactor, ScrapeFactor,ProFactor,FreqFactor)
+    console.log(LE, SE);
     this.failuerModeLocalEffects = LE
     this.failuerModeSystemEffects = SE
-    this.DownTimeFactor = DTFactor
-    this.ScrapeFactor = ScrapeFactor
-    this.SafetyFactor = SafetyFactor
-    this.ProtectionFactor = ProFactor
-    this.FrequencyFactor = FreqFactor
+    this.DownTimeFactor = this.FactoryToAddInFM[0].DownTimeFactor;
+    this.ScrapeFactor = this.FactoryToAddInFM[0].ScrapeFactor;
+    this.SafetyFactor = this.FactoryToAddInFM[0].SafetyFactor;
+    this.ProtectionFactor = this.FactoryToAddInFM[0].ProtectionFactor;
+    this.FrequencyFactor = this.FactoryToAddInFM[0].FrequencyFactor;
   }
 }
