@@ -13,6 +13,7 @@ import { ProfileService } from "./Services/ProfileService";
 import { ScrewCompressorService } from "./Services/ScrewCompressorService";
 import { EventEmitterService } from "./Services/event-emitter.service";
 import { ExcelFormatService } from "./Services/excel-format.service";
+import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { ExcelFormatService } from "./Services/excel-format.service";
         EducationComponent,
         ProfileComponent,
         CentrifugalPumpComponent,
-        ReportComponent
+        ReportComponent,
+        RecycleBinComponent
     ],
     imports: [        
         HomeRoutingModule,       

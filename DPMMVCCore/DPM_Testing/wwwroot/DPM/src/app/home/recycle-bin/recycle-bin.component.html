@@ -1,0 +1,35 @@
+<p-toast position="top-right"></p-toast>
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="col-md-12">
+                <div class="card px-3">
+                    <div class="card-body">
+                        <h4 class="card-title">Recycle Bin</h4>
+
+                        <div class="list-wrapper">
+
+                            <ul class="d-flex flex-column-reverse todo-list" *ngFor="let c of RecycleCentrifugalPumpChildData">
+                                <li>
+                                    <div class="form-check"> <label class="form-check-label"> # Are you want to restore {{c.FunctionMode}} <i class="input-helper"></i></label> </div><i style="float:right;" (click)="Restore(c)" class="remove fa fa-check" aria-hidden="true"></i>                                    <i (click)="Delete(c)" class="remove fa fa-times" aria-hidden="true"></i>
+                                </li>
+
+                            </ul>
+                            <ul *ngFor="let w of RecycleCentrifugalPumpWholeData" class="d-flex flex-column-reverse todo-list">
+                                <li>
+                                    <div class="form-check"> <label class="form-check-label"># Are you want to restore Asset {{w.EquipmentType}} : {{w.TagNumber}} <i class="input-helper"></i></label> </div><i style="float:right;" (click)="Restore(w)" class="remove fa fa-check"
+                                        aria-hidden="true"></i> <i (click)="Delete(w)" class="remove fa fa-times" aria-hidden="true"></i>
+                                </li>
+
+                            </ul>
+
+                            <div class="text-center" *ngIf="RecycleCentrifugalPumpChildData.length === 0 && RecycleCentrifugalPumpWholeData .length === 0">
+                                No Record Found.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

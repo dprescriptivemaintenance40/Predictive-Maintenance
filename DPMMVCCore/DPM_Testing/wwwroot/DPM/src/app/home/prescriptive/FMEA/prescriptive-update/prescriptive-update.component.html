@@ -8,7 +8,7 @@
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}
                     <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)"><i class="pi pi-pencil"></i></a>
-                   <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)"  data-toggle="modal" data-target="#DeleteFailureMode"><i class="pi pi-times"></i></a> 
+                    <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)" data-toggle="modal" data-target="#DeleteFailureMode"><i class="pi pi-times"></i></a>
                 </div>
                 <div class="node-content">
                     <div class="a">{{node.data.name}}</div>
@@ -97,9 +97,9 @@
                         <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                             <div *ngFor="let c of dropedMode">
                                 <span>{{c?.Description}}</span>
-                                <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                     <i class="far fa-times-circle fa-2x"></i>
-                                   </a>
+                                </a>
                                 <!-- <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span> -->
                             </div>
                         </div>
@@ -138,65 +138,65 @@
                                 <label>System Effect</label>
                                 <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect" required>
                             </div>
-                            <div>  
-                                <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModalAdd" > <i class="fa fa-paperclip" aria-hidden="true"></i></button>
-                                <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModalAdd"> <i class="fa fa-comment" aria-hidden="true"></i></button>   
-                             </div>
+                            <div>
+                                <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModalAdd"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
+                                <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModalAdd"> <i class="fa fa-comment" aria-hidden="true"></i></button>
+                            </div>
                         </div>
                     </div>
                     <br>
                     <div class="container">
-                        <div class="row">   
-                             <div class="col-md-8">
-                               <h6> Down Time Factor (Range 1 - 10): {{ADDDownTimeFactor}}</h6>
-                             </div>
-                             <div Style="margin-top:8px;" class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h6> Down Time Factor (Range 1 - 10): {{ADDDownTimeFactor}}</h6>
+                            </div>
+                            <div Style="margin-top:8px;" class="col-md-3">
                                 <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDDownTimeFactor" [min]="1" [max]="10"></p-slider>
-                             </div>
+                            </div>
                         </div>
                         <br>
-                        <div class="row">   
+                        <div class="row">
                             <div class="col-md-8">
-                              <h6> Scrape Factor (Range 1 - 5): {{ADDScrapeFactor}}</h6>
+                                <h6> Scrape Factor (Range 1 - 5): {{ADDScrapeFactor}}</h6>
                             </div>
                             <div Style="margin-top:8px;" class="col-md-3">
                                 <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDScrapeFactor" [min]="1" [max]="5"></p-slider>
                             </div>
-                       </div>
-                        
+                        </div>
+
                         <br>
-        
-                        <div class="row">   
+
+                        <div class="row">
                             <div class="col-md-8">
-                              <h6> Safety Factor (Range 1 - 20): {{ADDSafetyFactor}}</h6>
+                                <h6> Safety Factor (Range 1 - 20): {{ADDSafetyFactor}}</h6>
                             </div>
                             <div Style="margin-top:8px;" class="col-md-3">
-                                <p-slider  [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDSafetyFactor" [min]="1" [max]="20"></p-slider>
+                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDSafetyFactor" [min]="1" [max]="20"></p-slider>
                             </div>
-                       </div>
-                        
+                        </div>
+
                         <br>
-                        <div class="row">   
+                        <div class="row">
                             <div class="col-md-8">
-                              <h6>Protection Factor (Range 1 - 10): {{ADDProtectionFactor}}</h6>
+                                <h6>Protection Factor (Range 1 - 10): {{ADDProtectionFactor}}</h6>
                             </div>
                             <div Style="margin-top:8px;" class="col-md-3">
-                                <p-slider [ngModelOptions]="{standalone: true}"  [(ngModel)]="ADDProtectionFactor" [min]="1" [max]="10"></p-slider>
+                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDProtectionFactor" [min]="1" [max]="10"></p-slider>
                             </div>
-                       </div>
-                        
+                        </div>
+
                         <br>
-                        
-                        <div class="row">   
+
+                        <div class="row">
                             <div class="col-md-8">
-                              <h6>Frequency Factor (Range 1 - 15): {{ADDFrequencyFactor}}</h6>
+                                <h6>Frequency Factor (Range 1 - 15): {{ADDFrequencyFactor}}</h6>
                             </div>
                             <div Style="margin-top:8px;" class="col-md-3">
-                                <p-slider [ngModelOptions]="{standalone: true}"  [(ngModel)]="ADDFrequencyFactor" [min]="1" [max]="15"></p-slider>
+                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDFrequencyFactor" [min]="1" [max]="15"></p-slider>
                             </div>
-                       </div>  
-                        <br>   
-                    </div> 
+                        </div>
+                        <br>
+                    </div>
                 </div>
             </div>
             <div class="LSEffectUpdate modal-footer">
@@ -218,7 +218,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModalAdd()">
           <span aria-hidden="true">&times;</span>
         </button>
-            </div>  
+            </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
@@ -226,7 +226,7 @@
                             <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
                             <button type="button" (click)="file.click()" class="btn btn-light">
                                 <span class="fa fa-paperclip"></span>
-                            </button> 
+                            </button>
                         </div>
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="file"><br>
@@ -234,9 +234,9 @@
                                     <i class="fas fa-file fa-5x"></i>
                                     {{fileUpload}}  
                                 <a class="attachment" (click)="CloseAttachmentModalAdd()"><i class="pi pi-times"></i></a>  
-                            </span> 
+                            </span>
                             </div>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -260,19 +260,19 @@
           <span aria-hidden="true" >&times;</span>
         </button>
             </div>
-             
+
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
                         <div class="form-group mt-4">
-                            <textarea class="form-control" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
+                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
                         </div>
-        
+
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Done</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
             </div>
 
         </div>
@@ -431,7 +431,7 @@
         <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
         <button *ngIf="ConsequenceTreeADDConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()">Add Consequences</button><br><br>
         <button *ngIf="ConsequenceTreeEditConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="EditConsequenceToTree()">Edit Consequences</button><br><br>
-       
+
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -457,14 +457,14 @@
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
-            <div class="modal-body" >
-                <div class="container-fluid" >
+            <div class="modal-body">
+                <div class="container-fluid">
                     <form>
                         <div class="form-group">
-                          <label for="exampleFormControlInput1">Failure Mode</label>
-                          <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureMode" id="exampleFormControlInput1"  disabled><br>
-                          <button type="button" class="btn btn-secondary btn-sm" (click)="UpdateFM()">Update Failure Mode</button>
-                        
+                            <label for="exampleFormControlInput1">Failure Mode</label>
+                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureMode" id="exampleFormControlInput1" disabled><br>
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="UpdateFM()">Update Failure Mode</button>
+
                         </div>
                         <div *ngIf="EditFM" class="form-group">
                             <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
@@ -473,95 +473,95 @@
                             <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                                 <div *ngFor="let c of dropedMode">
                                     <span>{{c?.Description}}</span>
-                                    <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                    <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                         <i class="far fa-times-circle fa-2x"></i>
-                                       </a>
+                                    </a>
                                     <!-- <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span> -->
                                 </div>
                             </div>
                             <small class="form-text text-muted">Drag and Drop here, from above List </small>
-    
+
                             <button type="button" class="btn btn-secondary btn-sm" (click)="CancelFM()">Close</button>
                             <button type="button" class="btn btn-secondary btn-sm" (click)="SaveFMToTreee()">Save</button>
-                        
+
                         </div>
-                        
+
                         <div class="form-group">
-                          <label for="exampleFormControlTextarea1">Local Effect</label>
-                          <textarea class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeLocalEffect"  id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <label for="exampleFormControlTextarea1">Local Effect</label>
+                            <textarea class="form-control custom-textarea" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeLocalEffect" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea2">System Effect</label>
-                            <textarea class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="UpdateFailureModeSystemEffect"  id="exampleFormControlTextarea2" rows="3"></textarea>
-                          </div>
-                          <div>  
-                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal" > <i class="fa fa-paperclip" aria-hidden="true"></i></button>
-                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button>   
-                         </div>
-                          <div class="form-group">
+                            <textarea class="form-control custom-textarea" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeSystemEffect" id="exampleFormControlTextarea2" rows="3"></textarea>
+                        </div>
+                        <div>
+                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
+                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="form-group">
                             <div class="container">
-                                <div class="row">   
-                                     <div class="col-md-8">
-                                       <h6> Down Time Factor (Range 1 - 10): {{EditDownTimeFactor}}</h6>
-                                     </div>
-                                     <div Style="margin-top:8px;" class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h6> Down Time Factor (Range 1 - 10): {{EditDownTimeFactor}}</h6>
+                                    </div>
+                                    <div Style="margin-top:8px;" class="col-md-3">
                                         <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditDownTimeFactor" [min]="1" [max]="10"></p-slider>
-                                     </div>
+                                    </div>
                                 </div>
                                 <br>
-                                <div class="row">   
+                                <div class="row">
                                     <div class="col-md-8">
-                                      <h6> Scrape Factor (Range 1 - 5): {{EditScrapeFactor}}</h6>
+                                        <h6> Scrape Factor (Range 1 - 5): {{EditScrapeFactor}}</h6>
                                     </div>
                                     <div Style="margin-top:8px;" class="col-md-3">
                                         <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditScrapeFactor" [min]="1" [max]="5"></p-slider>
                                     </div>
-                               </div>
-                                
+                                </div>
+
                                 <br>
-                
-                                <div class="row">   
+
+                                <div class="row">
                                     <div class="col-md-8">
-                                      <h6> Safety Factor (Range 1 - 20): {{EditSafetyFactor}}</h6>
+                                        <h6> Safety Factor (Range 1 - 20): {{EditSafetyFactor}}</h6>
                                     </div>
                                     <div Style="margin-top:8px;" class="col-md-3">
-                                        <p-slider  [ngModelOptions]="{standalone: true}" [(ngModel)]="EditSafetyFactor" [min]="1" [max]="20"></p-slider>
+                                        <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditSafetyFactor" [min]="1" [max]="20"></p-slider>
                                     </div>
-                               </div>
-                                
+                                </div>
+
                                 <br>
-                                <div class="row">   
+                                <div class="row">
                                     <div class="col-md-8">
-                                      <h6>Protection Factor (Range 1 - 10): {{EditProtectionFactor}}</h6>
+                                        <h6>Protection Factor (Range 1 - 10): {{EditProtectionFactor}}</h6>
                                     </div>
                                     <div Style="margin-top:8px;" class="col-md-3">
-                                        <p-slider [ngModelOptions]="{standalone: true}"  [(ngModel)]="EditProtectionFactor" [min]="1" [max]="10"></p-slider>
+                                        <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditProtectionFactor" [min]="1" [max]="10"></p-slider>
                                     </div>
-                               </div>
-                                
+                                </div>
+
                                 <br>
-                                
-                                <div class="row">   
+
+                                <div class="row">
                                     <div class="col-md-8">
-                                      <h6>Frequency Factor (Range 1 - 15): {{EditFrequencyFactor}}</h6>
+                                        <h6>Frequency Factor (Range 1 - 15): {{EditFrequencyFactor}}</h6>
                                     </div>
                                     <div Style="margin-top:8px;" class="col-md-3">
-                                        <p-slider [ngModelOptions]="{standalone: true}"  [(ngModel)]="EditFrequencyFactor" [min]="1" [max]="15"></p-slider>
+                                        <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditFrequencyFactor" [min]="1" [max]="15"></p-slider>
                                     </div>
-                               </div>
-                                
+                                </div>
+
                                 <br>
-                                
-                            </div>  
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleFormControlInput2">Consequence</label>
-                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="UpdateFailureModeConsequence"  id="exampleFormControlInput2" disabled><br>
-                            <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()" >Update Consequence</button>
-                       
+
+                            </div>
                         </div>
-                        
-                      </form>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput2">Consequence</label>
+                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeConsequence" id="exampleFormControlInput2" disabled><br>
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()">Update Consequence</button>
+
+                        </div>
+
+                    </form>
                 </div>
             </div>
             <div class="modal-footer">
@@ -583,7 +583,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-            </div>  
+            </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
@@ -591,7 +591,7 @@
                             <input type="file" #file placeholder="Choose file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFileUpdate(file.files)" style="display:none;">
                             <button type="button" (click)="file.click()" class="btn btn-light" [disabled]="AttachmentADD">
                                 <span class="fa fa-paperclip"></span>
-                            </button> 
+                            </button>
                         </div>
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="file"><br>
@@ -599,20 +599,20 @@
                                     <i class="fas fa-file fa-5x"></i>
                                     {{fileUpload}}  
                                 <a class="attachment" (click)="CloseAttachmentModalUpdate()"><i class="pi pi-times"></i></a>  
-                               </span> 
-                               <span style="margin: 10px;" *ngIf="extensionPDF">
-                                <iframe [src]="EditdbPath | safeUrl" width="50" height="50" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
+                               </span>
+                                <span style="margin: 10px;" *ngIf="extensionPDF">
+                                <iframe [src]="EditdbPathURL" width="50" height="50" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
  
                                <a class="attachment" (click)="DeleteAttachment()"><i class="pi pi-times"></i></a>  
-                             </span> 
-                             <span style="margin: 10px;" *ngIf="extensionImage">
-                                <img [src]="EditdbPath" height="50"> 
+                             </span>
+                                <span style="margin: 10px;" *ngIf="extensionImage">
+                                <img [src]="EditdbPathURL" height="50"> 
                              
                                <a class="attachment" (click)="DeleteAttachment()"><i class="pi pi-times"></i></a>  
-                             </span> 
-                            
+                             </span>
+
                             </div>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -636,19 +636,19 @@
           <span aria-hidden="true" >&times;</span>
         </button>
             </div>
-             
+
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
                         <div class="form-group mt-4">
-                            <textarea class="form-control" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
+                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
                         </div>
-        
+
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Done</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
             </div>
 
         </div>
@@ -660,22 +660,20 @@
 
 <div class="modal fade" id="DeleteFailureMode" tabindex="-1" role="dialog" aria-labelledby="DeleteFailureModeTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete {{DeleteFMName}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="DeleteFailureModeFrommTree()">Save</button>
+            </div>
         </div>
-        <div class="modal-body">
-            Are you sure you want to delete {{DeleteFMName}}
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="DeleteFailureModeFrommTree()">Save</button>
-        </div>
-      </div>
     </div>
-  </div>
-
-
+</div>

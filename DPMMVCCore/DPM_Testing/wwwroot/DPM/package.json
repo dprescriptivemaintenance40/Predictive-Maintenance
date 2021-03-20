@@ -31,6 +31,7 @@
         "intl-tel-input": "^17.0.8",
         "jspdf": "^2.2.0",
         "jw-angular-pagination": "^1.2.0",
+        "moment": "^2.29.1",
         "ng2-charts": "^2.4.2",
         "ng2-tel-input": "^2.3.0",
         "ngx-charts": "^3.0.2",
