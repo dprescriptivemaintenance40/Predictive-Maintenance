@@ -134,12 +134,12 @@
                     <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                         {{func.Description}}
                     </div>
-                   
+
                     <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                         <div *ngFor="let c of dropedMode">
                             <span>{{c?.Description}} </span>
-                            <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
-                             <i class="far fa-times-circle "></i>
+                            <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                <i class="far fa-times-circle "></i>
                             </a>
                         </div>
                     </div>
@@ -154,20 +154,20 @@
         </ng-template>
     </p-card>
 </div>
-<div *ngIf="prescriptiveEffect1"  class="col-md-12" style="overflow: scroll;"> 
-        <p-organizationChart [value]="InsertLSEffect"selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
-            <ng-template let-node pTemplate="person">
-                <div class="node-header p-corner-top">{{node.label}}</div>
-                <div class="node-content">
-                    <div class="a">{{node.data.name}}</div>
-                </div>
-            </ng-template>
-            <ng-template let-node pTemplate="department">
-                {{node.label}}
-            </ng-template>
-        </p-organizationChart>
-        <button label="Next" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailuerEffectBack()">Back</button>
-        <button *ngIf="NextFailureLSEDiasble" label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
+<div *ngIf="prescriptiveEffect1" class="col-md-12" style="overflow: scroll;">
+    <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <ng-template let-node pTemplate="person">
+            <div class="node-header p-corner-top">{{node.label}}</div>
+            <div class="node-content">
+                <div class="a">{{node.data.name}}</div>
+            </div>
+        </ng-template>
+        <ng-template let-node pTemplate="department">
+            {{node.label}}
+        </ng-template>
+    </p-organizationChart>
+    <button label="Next" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailuerEffectBack()">Back</button>
+    <button *ngIf="NextFailureLSEDiasble" label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
 </div>
 <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <br>
@@ -180,7 +180,7 @@
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
-               
+
                 <div>
                     <label>Local Effect</label>
                     <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects" placeholder="Type Local Effect">
@@ -189,10 +189,10 @@
                     <label>System Effect</label>
                     <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect">
                 </div>
-                <div style="margin-top: 20px;">  
-                    <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal" > <i class="fa fa-paperclip" aria-hidden="true"></i></button>
-                    <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button>   
-                 </div>
+                <div style="margin-top: 20px;">
+                    <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
+                    <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button>
+                </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
@@ -209,7 +209,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
           <span aria-hidden="true">&times;</span>
         </button>
-            </div>  
+            </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
@@ -217,7 +217,7 @@
                             <input type="file" #file placeholder="Choose file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile(file.files)" style="display:none;">
                             <button type="button" (click)="file.click()" class="btn btn-light">
                                 <span class="fa fa-paperclip"></span>
-                            </button> 
+                            </button>
                         </div>
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="file"><br>
@@ -225,9 +225,9 @@
                                     <i class="fas fa-file fa-5x"></i>
                                     {{fileUpload}}  
                                 <a class="attachment" (click)="CloseAttachmentModal()"><i class="pi pi-times"></i></a>  
-                            </span> 
+                            </span>
                             </div>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -251,26 +251,26 @@
           <span aria-hidden="true" >&times;</span>
         </button>
             </div>
-             
+
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
                         <div class="form-group mt-4">
-                            <textarea class="form-control" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
+                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
                         </div>
-        
+
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Done</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
             </div>
 
         </div>
     </div>
 </div>
 
- <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
+<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
             Factors
@@ -280,68 +280,69 @@
                 <li>Safety Factor</li>
                 <li>Protection Factor</li>
                 <li>Frequency Factor</li>
-              </p-overlayPanel>
-              <a (click)="panel.show($event)" style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
+            </p-overlayPanel>
+            <a (click)="panel.show($event)" style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
         </ng-template>
         <ng-template pTemplate="subtitle">
             Enter Factors for {{FMLSEffectModeName}}
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
-                <div class="row">   
-                     <div class="col-md-5">
-                       <h6 style=" margin-left: 50px;"> Down Time Factor (Range 1 - 10): {{DownTimeFactor}}</h6>
-                     </div>
-                     <div style="margin-top: 7px; margin-left: 20px;" class="col-md-3">
-                        <p-slider  [(ngModel)]="DownTimeFactor" [min]="1" [max]="10"></p-slider>
-                     </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <h6 style=" margin-left: 50px;"> Down Time Factor (Range 1 - 10): {{DownTimeFactor}}</h6>
+                    </div>
+                    <div style="margin-top: 7px; margin-left: 20px;" class="col-md-3">
+                        <p-slider [(ngModel)]="DownTimeFactor" [min]="1" [max]="10"></p-slider>
+                    </div>
                 </div>
                 <br>
-                <div class="row">   
+                <div class="row">
                     <div class="col-md-5">
-                      <h6 style=" margin-left: 50px;"> Scrape Factor (Range 1 - 5): {{ScrapeFactor}}</h6>
+                        <h6 style=" margin-left: 50px;"> Scrape Factor (Range 1 - 5): {{ScrapeFactor}}</h6>
                     </div>
                     <div style="margin-top: 7px; margin-left: 20px;" class="col-md-3">
-                        <p-slider  [(ngModel)]="ScrapeFactor" [min]="1" [max]="5"></p-slider>
+                        <p-slider [(ngModel)]="ScrapeFactor" [min]="1" [max]="5"></p-slider>
                     </div>
-               </div>
-                
+                </div>
+
                 <br>
 
-                <div class="row">   
+                <div class="row">
                     <div class="col-md-5">
-                      <h6 style=" margin-left: 50px;"> Safety Factor (Range 1 - 20): {{SafetyFactor}}</h6>
+                        <h6 style=" margin-left: 50px;"> Safety Factor (Range 1 - 20): {{SafetyFactor}}</h6>
                     </div>
                     <div style="margin-top: 7px; margin-left: 20px;" class="col-md-3">
-                        <p-slider  [(ngModel)]="SafetyFactor" [min]="1" [max]="20"></p-slider>
+                        <p-slider [(ngModel)]="SafetyFactor" [min]="1" [max]="20"></p-slider>
                     </div>
-               </div>
-                
+                </div>
+
                 <br>
-                <div class="row">   
+                <div class="row">
                     <div class="col-md-5">
-                      <h6 style=" margin-left: 50px;">Protection Factor (Range 1 - 10): {{ProtectionFactor}}</h6>
+                        <h6 style=" margin-left: 50px;">Protection Factor (Range 1 - 10): {{ProtectionFactor}}</h6>
                     </div>
                     <div style="margin-top: 7px; margin-left: 20px;" class="col-md-3">
-                        <p-slider  [(ngModel)]="ProtectionFactor" [min]="1" [max]="10"></p-slider>
+                        <p-slider [(ngModel)]="ProtectionFactor" [min]="1" [max]="10"></p-slider>
                     </div>
-               </div>
-                
+                </div>
+
                 <br>
-                
-                <div class="row">   
+
+                <div class="row">
                     <div class="col-md-5">
-                      <h6 style=" margin-left: 50px;">Frequency Factor (Range 1 - 15): {{FrequencyFactor}}</h6>
+                        <h6 style=" margin-left: 50px;">Frequency Factor (Range 1 - 15): {{FrequencyFactor}}</h6>
                     </div>
                     <div style="margin-top: 7px; margin-left: 20px;" class="col-md-3">
-                        <p-slider  [(ngModel)]="FrequencyFactor" [min]="1" [max]="15"></p-slider>
+                        <p-slider [(ngModel)]="FrequencyFactor" [min]="1" [max]="15"></p-slider>
                     </div>
-               </div>  
-                <br>    
+                </div>
+                <br>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
             <button *ngIf="ADDFailureLSEDiasble" label="Next" type="button" style="float:center" style="float: right;" style="margin: 20px" class="btn btn-dark" (click)="ADDFailuerEffect()">ADD</button>
+            <button *ngIf="!ADDFailureLSEDiasble" label="Next" type="button" style="float:center" style="float: right;" style="margin: 20px" class="btn btn-dark" (click)="UPDATEFailuerEffect()">UPDATE</button>
         </ng-template>
     </p-card>
 </div>
@@ -389,9 +390,7 @@
     </div>
 </div>
 
-
 <!--    Consequences -->
-
 <div *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
@@ -527,7 +526,7 @@
 <div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">
     <p-card>
         <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
-        <button  label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" data-toggle="tooltip" data-placement="right" title="When you add the consequence then it directly save in to the tree">Add Consequences</button><br><br>
+        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" data-toggle="tooltip" data-placement="right" title="When you add the consequence then it directly save in to the tree">Add Consequences</button><br><br>
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -559,7 +558,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-               
+
                 <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SaveConsequences()">Save changes</button>
             </div>
         </div>

@@ -1,17 +1,21 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import { catchError, finalize, tap } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { CommonLoadingDirective } from "./shared/Loading/common-loading.directive";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private router: Router) {
+    private totalRequests = 0;
+    constructor(private router: Router,
+        private commonLoadingDirective: CommonLoadingDirective) {
 
     }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
+        this.totalRequests++;
+        this.commonLoadingDirective.showLoading(true, 'Loading....');
         if (localStorage.getItem('token') != null) {
             var clonedReq = req.clone({
                 setHeaders: {
@@ -20,16 +24,20 @@ export class AuthInterceptor implements HttpInterceptor {
 
             });
             return next.handle(clonedReq).pipe(
-                tap(
-                    succ => { },
-                    err => {
-                        if (err.status == 401) {
-                            localStorage.removeItem('token');
-                            this.router.navigateByUrl('Login');
-                        }
+                catchError(error => {
+                    if (error.status == 401) {
+                        localStorage.removeItem('token');
+                        this.router.navigateByUrl('Login');
                     }
-                )
-            )
+                    throw error;
+                }),
+                finalize(() => {
+                    this.totalRequests--;
+                    if (this.totalRequests === 0) {
+                        this.commonLoadingDirective.showLoading(false, '');
+                    }
+                })
+            );
         }
         else
             return next.handle(req.clone());

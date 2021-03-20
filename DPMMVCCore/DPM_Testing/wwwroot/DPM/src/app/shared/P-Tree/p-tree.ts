@@ -1,6 +1,6 @@
 import {
     NgModule, Component, Input, AfterContentInit, OnDestroy, Output, EventEmitter, OnInit, OnChanges,
-    ContentChildren, QueryList, TemplateRef, Inject, ElementRef, forwardRef, ChangeDetectionStrategy, SimpleChanges, ViewEncapsulation, ViewChild, ChangeDetectorRef
+    ContentChildren, QueryList, TemplateRef, Inject, ElementRef, forwardRef, ChangeDetectionStrategy, SimpleChanges, ViewEncapsulation, ViewChild, ChangeDetectorRef,
 } from '@angular/core';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { Optional } from '@angular/core';
@@ -14,23 +14,15 @@ import { BlockableUI } from 'primeng/api';
 import { ObjectUtils } from 'primeng/utils';
 import { DomHandler } from 'primeng/dom';
 import { RippleModule } from 'primeng/ripple';
-import { EventEmitterService } from 'src/app/home/Services/event-emitter.service';
-
+import { DomSanitizer } from '@angular/platform-browser';
+import * as moment from 'moment'
 @Component({
     selector: 'p-treeNode',
     templateUrl: './p-tree.html',
-    // template: `
-
-    // `,
     encapsulation: ViewEncapsulation.None
 })
 export class UITreeNode implements OnInit {
 
-    public Remark: string = ""
-    public FileUrl: string = ""
-    public PdfEnable: boolean = false;
-    public ImageEnable: boolean = false
-    
     static ICON_CLASS: string = 'p-treenode-icon ';
 
     @Input() rowNode: any;
@@ -51,10 +43,21 @@ export class UITreeNode implements OnInit {
 
     @Input() indentation: number;
 
-    tree: Tree;
+    @Output("NodeSelected")
+    public NodeSelectedData: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(@Inject(forwardRef(() => Tree)) tree,
-        private changeDetectorRef: ChangeDetectorRef) {
+    tree: Tree;
+    public showOverlay: boolean = false;
+    public Remark: string = "";
+    public FileSafeUrl: any;
+    public FileUrl: any;
+    public PdfEnable: boolean = false;
+    public ImageEnable: boolean = false;
+
+    constructor(
+        @Inject(forwardRef(() => Tree),) tree,
+        private sanitizer: DomSanitizer,
+        private change: ChangeDetectorRef) {
         this.tree = tree as Tree;
     }
 
@@ -64,22 +67,21 @@ export class UITreeNode implements OnInit {
 
     draghoverNode: boolean
 
-    
-
     ngOnInit() {
         this.node.parent = this.parentNode;
-
         if (this.parentNode) {
             this.tree.syncNodeOption(this.node, this.tree.value, 'parent', this.tree.getNodeWithKey(this.parentNode.key, this.tree.value));
         }
     }
 
 
-    NodeSelection(node) {
-        this.Remark = node.remark
-        this.FileUrl = node.dbPath
-        var extension = this.getFileExtension(this.FileUrl)
-
+    NodeSelection(node) {  
+        node.edit = false;      
+        this.showOverlay = true;
+        this.Remark = !!node.remark? node.remark : '';
+        this.FileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(node.dbPath);
+        this.FileUrl = node.dbPath;
+        var extension = this.getFileExtension(node.dbPath);
         if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
             this.ImageEnable = true;
             this.PdfEnable = false;
@@ -87,19 +89,24 @@ export class UITreeNode implements OnInit {
             this.ImageEnable = false;
             this.PdfEnable = true;
         }
-        this.changeDetectorRef.detectChanges();
     }
-
+    close(node) {
+        node.edit = true;
+        this.showOverlay = false;
+    }
+    downloadURI() {
+        var a = document.createElement("a");
+        a.href = this.FileUrl;
+        a.setAttribute("download", `Document ${moment().format('DD-MM-YYYY')}`);
+        a.click();
+    }
     getFileExtension(filename) {
         const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
         return extension;
     }
 
-
-
     getIcon() {
         let icon: string;
-
         if (this.node.icon)
             icon = this.node.icon;
         else
@@ -492,7 +499,8 @@ export class UITreeNode implements OnInit {
                 <div class="p-tree-wrapper" [style.max-height]="scrollHeight">
                     <ul class="p-tree-container" *ngIf="getRootNode()" role="tree" [attr.aria-label]="ariaLabel" [attr.aria-labelledby]="ariaLabelledBy">
                         <p-treeNode *ngFor="let node of getRootNode(); let firstChild=first;let lastChild=last; let index=index; trackBy: trackBy" [node]="node"
-                                    [firstChild]="firstChild" [lastChild]="lastChild" [index]="index" [level]="0"></p-treeNode>
+                                    [firstChild]="firstChild" [lastChild]="lastChild" [index]="index" [level]="0"
+                                    ></p-treeNode>
                     </ul>
                 </div>
             </ng-container>
@@ -500,7 +508,8 @@ export class UITreeNode implements OnInit {
                 <cdk-virtual-scroll-viewport class="p-tree-wrapper" [style.height]="scrollHeight" [itemSize]="virtualNodeHeight" [minBufferPx]="minBufferPx" [maxBufferPx]="maxBufferPx">
                     <ul class="p-tree-container" *ngIf="getRootNode()" role="tree" [attr.aria-label]="ariaLabel" [attr.aria-labelledby]="ariaLabelledBy">
                         <p-treeNode *cdkVirtualFor="let rowNode of serializedValue; let firstChild=first; let lastChild=last; let index=index; trackBy: trackBy; templateCacheSize: 0"  [level]="rowNode.level"
-                                    [rowNode]="rowNode" [node]="rowNode.node" [firstChild]="firstChild" [lastChild]="lastChild" [index]="index" [style.height.px]="virtualNodeHeight" [indentation]="indentation"></p-treeNode>
+                                    [rowNode]="rowNode" [node]="rowNode.node" [firstChild]="firstChild" [lastChild]="lastChild" [index]="index" [style.height.px]="virtualNodeHeight" [indentation]="indentation"
+                                    ></p-treeNode>
                     </ul>
                 </cdk-virtual-scroll-viewport>
             </ng-template>

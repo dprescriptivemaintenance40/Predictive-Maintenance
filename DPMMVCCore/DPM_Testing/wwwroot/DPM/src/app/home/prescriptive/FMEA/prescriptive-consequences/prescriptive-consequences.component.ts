@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescripti
   styleUrls: ['./prescriptive-consequences.component.scss'],
   providers: [MessageService],
 })
-export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDeactivate {
+export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDeactivate {
 
   public draggedConsequencesYesNO: any = ['YES', 'NO']
   public droppedYesNo = null;
@@ -65,14 +65,15 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
     public title: Title,
     public commonLoadingDirective: CommonLoadingDirective,
     private router: Router,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private changeDetectorRef:ChangeDetectorRef) { }
   private isNewEntity: boolean = false;
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if (confirm('Are you sure you want to go back. You have have pending changes')) {
-        if( this.SaveConcequencesEnable == true){
+        if (this.SaveConcequencesEnable == true) {
           this.SubmitConsequenceTree()
-        } 
+        }
         return true;
       } else {
         return true;
@@ -109,6 +110,7 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
 
   dropC1(e) {
     if (this.droppedYesNo) {
+      this.dropedConsequenceFailureMode = [];
       this.dropedConsequenceFailureMode.push(this.droppedYesNo);
       this.droppedYesNo = null;
     }
@@ -124,6 +126,7 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
 
   dropC2(e) {
     if (this.droppedYesNo1) {
+      this.dropedConsequenceEffectFailureMode = [];
       this.dropedConsequenceEffectFailureMode.push(this.droppedYesNo1);
       this.droppedYesNo1 = null;
     }
@@ -140,6 +143,7 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
 
   dropC3(e) {
     if (this.droppedYesNo2) {
+      this.dropedConsequenceCombinationFailureMode = [];
       this.dropedConsequenceCombinationFailureMode.push(this.droppedYesNo2);
       this.droppedYesNo2 = null;
     }
@@ -155,6 +159,7 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
 
   dropC4(e) {
     if (this.droppedYesNo3) {
+      this.dropedConsequenceAffectFailureMode = [];
       this.dropedConsequenceAffectFailureMode.push(this.droppedYesNo3);
       this.droppedYesNo3 = null;
     }
@@ -167,17 +172,16 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
   }
 
   ADDConsequence() {
-    this.FMTree[this.FMCount].children.push(
-      {
-        label: "Consequence",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.finalConsequence
-        }
+    var CNode = {
+      label: "Consequence",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.finalConsequence
       }
-    )
+    }
+    this.FMTree[this.FMCount].children.push(CNode)
     this.FMCount += 1;
     if (this.FMCount <= this.FMTree.length - 1) {
       this.FMLSConsequenceName = this.FMTree[this.FMCount].data.name
@@ -187,7 +191,6 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
       this.SaveConcequencesEnable = true;
       this.isNewEntity = true;
     }
-
     this.prescriptiveTree = true;
     this.Consequences1 = false;
     this.ConsequencesTree = false;
@@ -206,7 +209,7 @@ export class PrescriptiveConsequencesComponent implements OnInit,CanComponentDea
     this.consequenceTreeColorNodeB = 'p-person'
     this.consequenceTreeColorNodeC = 'p-person'
     this.consequenceTreeColorNodeD = 'p-person'
-
+    this.changeDetectorRef.detectChanges();
   }
 
   onNodeSelect(event) {

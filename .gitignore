@@ -4,6 +4,9 @@ DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - FTP.pubxml.user
 DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - ReadOnly - FTP.pubxml.user
 DPMMVCCore/DPM_Testing/Properties/PublishProfiles/dpm-demo - Web Deploy.pubxml.user
 DPMMVCCore/DPM_Testing/wwwroot/dist
+DPMMVCCore/DPM_Testing/wwwroot/Evidence_PDF
+DPMMVCCore/DPM_Testing/wwwroot/DPM_Profile_Images
+DPMMVCCore/DPM_Testing/wwwroot/Evidence_Image
 *.cache
 
 *.swp

@@ -20,16 +20,14 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastModule } from "primeng/toast";
 import {SliderModule} from 'primeng/slider';
 import {DialogModule} from 'primeng/dialog';
-import { OverlayPanelModule } from 'primeng/overlaypanel';;
-
-
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
 
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
-        NgxSpinnerModule,
+        NgxSpinnerModule,        
         TableModule,
         FormsModule,
         ReactiveFormsModule,

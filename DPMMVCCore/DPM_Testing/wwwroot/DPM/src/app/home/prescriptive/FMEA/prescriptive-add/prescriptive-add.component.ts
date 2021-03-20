@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./prescriptive-add.component.scss'],
   providers: [MessageService],
 })
-export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate{
+export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate {
   public MachineType: string = "";
   private FMCount: number = 0;
   private FMCount1: number = 0;
@@ -118,6 +118,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   public Remark: string = "";
   public fileAttachmentEnable: boolean = false;
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+  public selectedModeData: any;
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -131,11 +132,11 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if (confirm('Are you sure you want to go back. You have have pending changes')) {
-         if(this.MachineType.length > 2){
-           this.treeSave()
-         } else if( this.SaveConcequencesEnable == true){
-           this.SaveConsequences();
-         }
+        if (this.MachineType.length > 2) {
+          this.treeSave()
+        } else if (this.SaveConcequencesEnable == true) {
+          this.SaveConsequences();
+        }
         return true;
       } else {
         return true;
@@ -509,27 +510,33 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
     }
   }
   ADDFailuerEffect() {
-    if (this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && this.dbPath.length > 0 && (this.DownTimeFactor > 0 || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)) {
-      this.FMChild[this.FMCount].children.push(
-        {
-          label: "Local Effect",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.failuerModeLocalEffects
-          }
-        },
-        {
-          label: "System Effect",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.failuerModeSystemEffects
-          }
-        },
-      )
+    //&& this.dbPath.length > 0 
+    if (this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && (this.DownTimeFactor > 0 || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)) {
+
+      let LFNode = {
+        label: "Local Effect",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.failuerModeLocalEffects
+        }
+      }
+      let SFNode = {
+        label: "System Effect",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.failuerModeSystemEffects
+        }
+      }
+      this.changeDetectorRef.detectChanges();
+      this.FMChild[this.FMCount].children.push(LFNode);
+      this.FMChild[this.FMCount].children.push(SFNode);
+      // this.InsertLSEffect[0].children[this.FMCount].children.push(LFNode);
+      // this.InsertLSEffect[0].children[this.FMCount].children.push(SFNode);
+      // this.changeDetectorRef.detectChanges();
       let obj = {}
       obj['DownTimeFactor'] = this.DownTimeFactor;
       obj['ScrapeFactor'] = this.ScrapeFactor
@@ -549,7 +556,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
         this.prescriptiveEffect = false
         this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
       }
-      this.onLSEffectAddedMessage(this.FMChild[this.FMCount]);
+      this.onLSEffectAddedUpdateMessage(this.FMChild[this.FMCount], 'Added');
       this.failuerModeLocalEffects = ""
       this.failuerModeSystemEffects = ""
       this.DownTimeFactor = 0
@@ -568,6 +575,56 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields' });
     }
 
+  }
+
+  UPDATEFailuerEffect() {
+    this.ADDFailureLSEDiasble = true;
+    this.selectedModeData.children[0].data.name = this.failuerModeLocalEffects;
+    this.selectedModeData.children[1].data.name = this.failuerModeSystemEffects;
+    let obj = {}
+    obj['DownTimeFactor'] = this.DownTimeFactor;
+    obj['ScrapeFactor'] = this.ScrapeFactor
+    obj['SafetyFactor'] = this.SafetyFactor
+    obj['ProtectionFactor'] = this.ProtectionFactor
+    obj['FrequencyFactor'] = this.FrequencyFactor
+    obj['AttachmentDBPath'] = this.dbPath
+    obj['AttachmentFullPath'] = this.fullPath
+    obj['Remark'] = this.Remark
+
+    this.FactoryToAddInFM[this.selectedModeData.label - 1] = obj;
+    if (this.selectedModeData.label - 1 == this.FMChild.length - 1) {
+      this.ADDFailureLSEDiasble = false;
+      this.FMLSEffectModeName = ""
+      this.NextFailureLSEDiasble = true;
+      this.ADDFailureLSEDiasble = false;
+      this.prescriptiveEffect = false
+      this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
+    }
+    this.onLSEffectAddedUpdateMessage(this.FMChild[this.selectedModeData.label - 1], 'Updated');
+    this.failuerModeLocalEffects = "";
+    this.failuerModeSystemEffects = "";
+    this.DownTimeFactor = 0;
+    this.ScrapeFactor = 0;
+    this.SafetyFactor = 0;
+    this.ProtectionFactor = 0;
+    this.FrequencyFactor = 0;
+    if (this.selectedModeData.label <= this.FMChild.length - 1) {
+      this.FMLSEffectModeName = this.FMChild[this.selectedModeData.label].data.name;
+    }
+    let isCheck = false;
+    this.FMChild.forEach(row => {
+      if (row.children.length > 0) {
+        isCheck = true;
+      } else {
+        isCheck = false;
+      }
+    });
+    if (isCheck) {
+      this.prescriptiveEffect = false;
+    }
+    this.dbPath = "";
+    this.fullPath = "";
+    this.Remark = "";
   }
 
   SaveConsequences() {
@@ -724,10 +781,32 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
 
   }
   FailuerEffectBack() {
-    this.prescriptiveEffect = false;
-    this.prescriptiveEffect1 = false
-    this.prescriptiveFailureMode = true;
-    this.activeIndex = 2
+    if (this.FMChild[0].children.length > 0) {
+      if (confirm("Are you sure want to go back? Yes then your recently added changes will get deleted.")) {
+        this.prescriptiveEffect = false;
+        this.prescriptiveEffect1 = false
+        this.prescriptiveFailureMode = true;
+        this.activeIndex = 2;
+        this.failuerModeLocalEffects = "";
+        this.failuerModeSystemEffects = "";
+        this.DownTimeFactor = 0;
+        this.ScrapeFactor = 0;
+        this.SafetyFactor = 0;
+        this.ProtectionFactor = 0;
+        this.FrequencyFactor = 0;
+        this.prescriptiveEffect = false;
+        this.ADDFailureLSEDiasble = true;
+        this.selectedModeData = "";
+        this.fullPath = "";
+        this.Remark = "";
+        this.dbPath = "";
+      }
+    } else {
+      this.prescriptiveEffect = false;
+      this.prescriptiveEffect1 = false
+      this.prescriptiveFailureMode = true;
+      this.activeIndex = 2;
+    }
   }
 
   treeBack() {
@@ -1028,9 +1107,6 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
         ]
       }
     ];
-
-
-
   }
 
   dragStart(e, f) {
@@ -1062,6 +1138,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   dragEndC1(e) { }
   dropC1(e) {
     if (this.droppedYesNo) {
+      this.dropedConsequenceFailureMode = [];
       this.dropedConsequenceFailureMode.push(this.droppedYesNo);
       this.droppedYesNo = null;
     }
@@ -1073,6 +1150,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   dragEndC2(e) { }
   dropC2(e) {
     if (this.droppedYesNo1) {
+      this.dropedConsequenceEffectFailureMode = [];
       this.dropedConsequenceEffectFailureMode.push(this.droppedYesNo1);
       this.droppedYesNo1 = null;
     }
@@ -1085,6 +1163,7 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
   dragEndC3(e) { }
   dropC3(e) {
     if (this.droppedYesNo2) {
+      this.dropedConsequenceCombinationFailureMode = [];
       this.dropedConsequenceCombinationFailureMode.push(this.droppedYesNo2);
       this.droppedYesNo2 = null;
     }
@@ -1098,21 +1177,48 @@ export class PrescriptiveAddComponent implements OnInit , CanComponentDeactivate
 
   dropC4(e) {
     if (this.droppedYesNo3) {
+      this.dropedConsequenceAffectFailureMode = [];
       this.dropedConsequenceAffectFailureMode.push(this.droppedYesNo3);
       this.droppedYesNo3 = null;
     }
   }
 
-  onLSEffectAddedMessage(event) {
+  onLSEffectAddedUpdateMessage(event, type) {
     this.messageService.add({
       severity: "success",
-      summary: "Successfully added Local and System Effect to",
-      detail: event.data.name
+      summary: `${type} Local and System Effect `,
+      detail: `${event.data.name} to local`
     });
   }
 
   onNodeSelect(event) {
-
+    var Data = event.node;
+    if (Data.children.length > 0) {
+      var LE, SE;
+      LE = Data.children[0].data.name
+      SE = Data.children[1].data.name
+      console.log(LE, SE);
+      this.failuerModeLocalEffects = LE
+      this.failuerModeSystemEffects = SE
+      this.DownTimeFactor = this.FactoryToAddInFM[event.node.label - 1].DownTimeFactor;
+      this.ScrapeFactor = this.FactoryToAddInFM[event.node.label - 1].ScrapeFactor;
+      this.SafetyFactor = this.FactoryToAddInFM[event.node.label - 1].SafetyFactor;
+      this.ProtectionFactor = this.FactoryToAddInFM[event.node.label - 1].ProtectionFactor;
+      this.FrequencyFactor = this.FactoryToAddInFM[event.node.label - 1].FrequencyFactor;
+      this.dbPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentDBPath;
+      this.Remark = this.FactoryToAddInFM[event.node.label - 1].Remark;
+      this.fullPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentFullPath;
+      this.FMLSEffectModeName = this.FMChild[event.node.label - 1].data.name
+      this.prescriptiveEffect = true;
+      this.ADDFailureLSEDiasble = false;
+      this.selectedModeData = event.node;
+    } else {
+      this.messageService.add({
+        severity: "info",
+        summary: "Note",
+        detail: "Record Found! Please add."
+      });
+    }
   }
 }
 

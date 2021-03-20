@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Title } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl, Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { Router } from '@angular/router';
 import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescriptive-model';
@@ -95,6 +95,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   private IndexCount: number = 0;
   public EditfullPath: string = "";
   public EditdbPath: string = "";
+  public EditdbPathURL: SafeUrl;
   public extensionPDF: boolean = false;
   public extensionImage: boolean = false;
   public UploadFileDataResponse: any = [];
@@ -106,10 +107,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public fileAttachmentEnable: boolean = false;
   public fileUpload: string = "";
   public Remark: string = "";
-  public AttachmentADD: boolean = true;
+  public AttachmentADD: boolean = false;
   public FreshUploadUpdate: boolean = false;
   public DeleteFMDataFromTree;
-  public DeleteFMName: string = ""
+  public DeleteFMName: string = "";
 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
@@ -118,17 +119,18 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     public title: Title,
     public commonLoadingDirective: CommonLoadingDirective,
     private router: Router,
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private sanitizer: DomSanitizer) { }
   private isNewEntity: boolean = false;
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
-      if(confirm('Are you sure you want to go back. You have have pending changes')){
+      if (confirm('Are you sure you want to go back. You have have pending changes')) {
         // save changes logic
         return true;
-      }else{
+      } else {
         return true;
       };
-    }else{
+    } else {
       return true;
     }
   };
@@ -209,14 +211,15 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.EditSafetyFactor = element.SafetyFactor
         this.EditProtectionFactor = element.ProtectionFactor
         this.EditFrequencyFactor = element.FrequencyFactor
-        this.EditdbPath = element.AttachmentDBPath
+        this.EditdbPath = element.AttachmentDBPath;
+        this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(element.AttachmentDBPath);
         this.EditfullPath = element.AttachmentFullPath
         this.Remark = element.Remark
 
       }
     });
 
-    if (this.EditdbPath.length > 0) {
+    if (this.EditdbPath !== null) {
       this.FreshUploadUpdate = false
       const extension = this.getFileExtension(this.EditdbPath);
       if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
@@ -227,8 +230,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.extensionPDF = true;
       }
     }
-
-
   }
 
 
@@ -239,9 +240,9 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
 
   DeleteAttachment() {
-    this.AttachmentADD = false
-    this.extensionPDF = false
-    this.extensionImage = false
+    this.AttachmentADD = true;
+    this.extensionPDF = false;
+    this.extensionImage = false;
 
     const params = new HttpParams()
       .set("fullPath", this.EditfullPath)
@@ -1027,6 +1028,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   dropC1(e) {
     if (this.droppedYesNo) {
+      this.dropedConsequenceFailureMode = [];
       this.dropedConsequenceFailureMode.push(this.droppedYesNo);
       this.droppedYesNo = null;
     }
@@ -1042,6 +1044,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   dropC2(e) {
     if (this.droppedYesNo1) {
+      this.dropedConsequenceEffectFailureMode = [];
       this.dropedConsequenceEffectFailureMode.push(this.droppedYesNo1);
       this.droppedYesNo1 = null;
     }
@@ -1058,6 +1061,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   dropC3(e) {
     if (this.droppedYesNo2) {
+      this.dropedConsequenceCombinationFailureMode =[];
       this.dropedConsequenceCombinationFailureMode.push(this.droppedYesNo2);
       this.droppedYesNo2 = null;
     }
@@ -1073,6 +1077,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   dropC4(e) {
     if (this.droppedYesNo3) {
+      this.dropedConsequenceAffectFailureMode =[];
       this.dropedConsequenceAffectFailureMode.push(this.droppedYesNo3);
       this.droppedYesNo3 = null;
     }
