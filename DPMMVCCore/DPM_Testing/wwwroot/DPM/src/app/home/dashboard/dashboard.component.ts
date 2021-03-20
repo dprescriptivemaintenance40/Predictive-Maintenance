@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { DatePipe } from '@angular/common'
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Title } from "@angular/platform-browser";
+import { DomSanitizer, Title } from "@angular/platform-browser";
 import { Chart } from "chart.js";
 import * as moment from "moment";
 import "chartjs-plugin-streaming";
@@ -92,6 +92,7 @@ export class DashboardComponent {
     public datepipe: DatePipe,
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
+    private sanitizer: DomSanitizer,
     public changeDetectorRef: ChangeDetectorRef) {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
@@ -1040,6 +1041,85 @@ export class DashboardComponent {
  
   public CFPPrescriptiveId ;
   public DeleteTreeName : string = ""
+  public fileAttachmentEnable : boolean = false
+  public fileUpload : string = ""
+  public UploadFileDataResponse: any =[]
+  public fileToUpload;
+  public ImageEnable : boolean = false;
+  public PdfEnable : boolean = false;
+  public FileSafeUrl: any;
+  public FileUrl: any;
+  private ParentId :number = 0;
+
+  public uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    this.fileToUpload = <File>files[0];
+    this.fileUpload = this.fileToUpload.name;
+
+
+  }
+
+  getAttachmentID(p){
+   this.ParentId = p.CFPPrescriptiveId
+  }
+
+  saveAttachment(){
+    
+    const formData = new FormData();
+
+    formData.append('file', this.fileToUpload, this.fileToUpload.name);
+    
+    this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
+      res => {
+        this.UploadFileDataResponse = res;
+        this.fileAttachmentEnable = true;
+      }, err => { console.log(err.err) }
+    )
+  
+  }
+
+  UpdateAtachments(){
+    var id : any = this.ParentId
+      const params = new HttpParams()
+            .set('dbPath', this.UploadFileDataResponse.dbPath)
+            .set('fullPath', this.UploadFileDataResponse.fullPath)
+            .set('id', id)
+      this.http.put('api/PrescriptiveAPI/CompontentAttachment', { params}).subscribe(
+        res => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Updated Successfully' });
+   
+        }, error => {}
+      )
+  }
+
+
+    ViewAttachment(p){
+
+       this.FileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(p.CAttachmentDBPath);
+        this.FileUrl = p.CAttachmentDBPath;
+        var extension = this.getFileExtension("dbPath");
+        if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
+            this.ImageEnable = true;
+            this.PdfEnable = false;
+        } else if (extension.toLowerCase() == 'pdf') {
+            this.ImageEnable = false;
+            this.PdfEnable = true;
+        }
+
+   }
+
+
+   getFileExtension(filename) {
+    const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+    return extension;
+}
+
+  CloseAttachmentModal() {
+   this.fileAttachmentEnable = false
+   this.fileToUpload = []
+  }
 
   DeletePrescriptiveRecords(p) {
    this.CFPPrescriptiveId = p.CFPPrescriptiveId

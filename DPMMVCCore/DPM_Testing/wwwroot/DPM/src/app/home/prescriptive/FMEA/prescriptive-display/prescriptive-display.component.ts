@@ -54,7 +54,12 @@ export class PrescriptiveDisplayComponent implements OnInit {
         var s: string = ""
         s = this.FMTree[index].children[1].data.name
 
-        var DBPath = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+        var Data = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath 
+
+        if(Data != null){
+          var DBPath = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+       
+        } 
         var Remark = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].Remark
 
         this.InnerTree.push(
@@ -137,7 +142,13 @@ export class PrescriptiveDisplayComponent implements OnInit {
         var c: string = ""
         c = this.FMTree[index].children[2].data.name
 
-        var DBPath = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+        var Data = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath 
+
+        if(Data != null){
+          var DBPath = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+       
+        } 
+
         var Remark = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].Remark
 
         this.InnerTree.push(

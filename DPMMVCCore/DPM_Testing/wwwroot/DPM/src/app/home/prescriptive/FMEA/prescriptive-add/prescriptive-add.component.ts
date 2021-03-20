@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 })
 export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate {
   public MachineType: string = "";
+  public FMAttachmentPathList : any []
   private FMCount: number = 0;
   private FMCount1: number = 0;
   private FMLSConsequenceName: string = "";
@@ -117,6 +118,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public dbPath: string = "";
   public Remark: string = "";
   public fileAttachmentEnable: boolean = false;
+  public FailureModeFileList : any = []
+  public FailureModeFileListFormData : any = []
+
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
 
@@ -209,43 +213,36 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     if (files.length === 0) {
       return;
     }
+
+    this.FailureModeFileList = []
+    this.fileAttachmentEnable = true;
     let fileToUpload = <File>files[0];
-    const formData = new FormData();
-
-    formData.append('file', fileToUpload, fileToUpload.name);
     this.fileUpload = fileToUpload.name;
-
-    this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
-      res => {
-        this.UploadFileDataResponse = res;
-        this.dbPath = this.UploadFileDataResponse.dbPath;
-        this.fullPath = this.UploadFileDataResponse.fullPath;
-        this.fileAttachmentEnable = true;
-      }, err => { console.log(err.err) }
-    )
-
+    this.FailureModeFileList.push(fileToUpload)
+    this.FailureModeFileListFormData.push(files)
+  
   }
 
 
 
   CloseAttachmentModal() {
-    if (this.fullPath.length > 4) {
-      const params = new HttpParams()
-        .set("fullPath", this.fullPath)
-      this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe(
-        res => {
-          this.fileUpload = ""
-          this.fileAttachmentEnable = false
-        }
-      )
-    }
-
-  }
-
-  AttachmentDoneModal() {
-    this.fileAttachmentEnable = false;
+    this.FailureModeFileList = []
     this.fileUpload = ""
+    this.fileAttachmentEnable = false
+    // if (this.fullPath.length > 4) {
+    //   const params = new HttpParams()
+    //     .set("fullPath", this.fullPath)
+    //   this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe(
+    //     res => {
+    //       this.fileUpload = ""
+    //       this.fileAttachmentEnable = false
+    //     }
+    //   )
+    // }
+
   }
+
+
 
   dynamicDroppedPopup() {
     //faliure droped popup
@@ -297,7 +294,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   MachineEquipmentSelect(event) {
     if (this.MachineType == "Pump") {
       this.EquipmentList = null
-      this.EquipmentList = ["Centrifugal Pump", "Pump 2"]
+      this.EquipmentList = ["Centrifugal Pump"]
     }
     if (this.MachineType == "Compressor") {
       this.EquipmentList = null
@@ -543,8 +540,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['SafetyFactor'] = this.SafetyFactor
       obj['ProtectionFactor'] = this.ProtectionFactor
       obj['FrequencyFactor'] = this.FrequencyFactor
-      obj['AttachmentDBPath'] = this.dbPath
-      obj['AttachmentFullPath'] = this.fullPath
+      obj['AttachmentDBPath'] = this.FailureModeFileList
+      obj['AttachmentFullPath'] = this.FailureModeFileList
       obj['Remark'] = this.Remark
 
       this.FactoryToAddInFM.push(obj)
@@ -571,6 +568,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.dbPath = ""
       this.fullPath = ""
       this.Remark = ""
+      this.fileUpload = ""
+      this.fileAttachmentEnable = false;
     } else {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields' });
     }
@@ -587,8 +586,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     obj['SafetyFactor'] = this.SafetyFactor
     obj['ProtectionFactor'] = this.ProtectionFactor
     obj['FrequencyFactor'] = this.FrequencyFactor
-    obj['AttachmentDBPath'] = this.dbPath
-    obj['AttachmentFullPath'] = this.fullPath
+    obj['AttachmentDBPath'] = this.FailureModeFileList
+    obj['AttachmentFullPath'] = this.FailureModeFileList
     obj['Remark'] = this.Remark
 
     this.FactoryToAddInFM[this.selectedModeData.label - 1] = obj;
@@ -666,6 +665,32 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   }
 
+  
+
+  getPathList(){
+    // this.FMAttachmentPathList = []
+    // for (let index = 0; index < this.FailureModeFileListFormData.length; index++) {
+  
+    //   let fileToUpload = <File>this.FailureModeFileListFormData[index];
+    //   var filename = fileToUpload.name
+    //   var blob = new Blob([JSON.stringify(['file', fileToUpload, filename])], {type : 'application/json'});
+    //   var fileOfBlob = new File([blob], filename);
+    //   const formData = new FormData();
+    //   formData.append('file', fileOfBlob);
+    //   this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
+    //     res => {
+    //       this.UploadFileDataResponse = res;
+    //       let obj = {}
+    //       obj['AttachmentDBPat'] = this.UploadFileDataResponse.dbPath;
+    //       obj['AttachmentFullPath'] =  this.UploadFileDataResponse.fullPath;
+    //       this.FMAttachmentPathList.push(obj);
+    //     }, err => { console.log(err.err) }
+    //   )
+      
+    // }
+    // console.log(this.FMAttachmentPathList)
+  }
+
   treeSave() {
     this.isNewEntity = false;
     this.prescriptiveTreeBackEnable = false
@@ -693,8 +718,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
       obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
       obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
-      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
-      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
+      // obj['AttachmentDBPath'] = this.FMAttachmentPathList[index].AttachmentDBPath
+      // obj['AttachmentFullPath'] = this.FMAttachmentPathList[index].AttachmentFullPath
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
 
@@ -778,6 +803,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
     this.isNewEntity = true
     this.GenrationTree()
+    this.getPathList()
 
   }
   FailuerEffectBack() {
@@ -1205,12 +1231,13 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.SafetyFactor = this.FactoryToAddInFM[event.node.label - 1].SafetyFactor;
       this.ProtectionFactor = this.FactoryToAddInFM[event.node.label - 1].ProtectionFactor;
       this.FrequencyFactor = this.FactoryToAddInFM[event.node.label - 1].FrequencyFactor;
-      this.dbPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentDBPath;
+      this.fileUpload = this.FactoryToAddInFM[event.node.label - 1].AttachmentDBPath[0].name;
       this.Remark = this.FactoryToAddInFM[event.node.label - 1].Remark;
-      this.fullPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentFullPath;
+    //  this.fullPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentFullPath;
       this.FMLSEffectModeName = this.FMChild[event.node.label - 1].data.name
       this.prescriptiveEffect = true;
       this.ADDFailureLSEDiasble = false;
+      this.fileAttachmentEnable = true;
       this.selectedModeData = event.node;
     } else {
       this.messageService.add({

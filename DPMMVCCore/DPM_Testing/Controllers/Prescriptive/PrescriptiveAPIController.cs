@@ -534,6 +534,8 @@ namespace DPM.Controllers.Prescriptive
             recyclePM.CMaintainenancePractice = centrifugalPumpPrescriptiveModel.CMaintainenancePractice;
             recyclePM.CFrequencyMaintainenance = centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance;
             recyclePM.CConditionMonitoring = centrifugalPumpPrescriptiveModel.CConditionMonitoring;
+            recyclePM.CAttachmentDBPath = centrifugalPumpPrescriptiveModel.CAttachmentDBPath;
+            recyclePM.CAttachmentFullPath = centrifugalPumpPrescriptiveModel.CAttachmentFullPath;
             recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
 
             _context.recycleCentrifugalPumpModelData.Add(recyclePM);
@@ -723,8 +725,36 @@ namespace DPM.Controllers.Prescriptive
                 RestoreCentrifugalPumpPrescriptiveFailureMode recycleChild = new RestoreCentrifugalPumpPrescriptiveFailureMode();
                 recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes = new List<RestoreCentrifugalPumpPrescriptiveFailureMode>();
 
+                recyclePM.CFPPrescriptiveId = prescriptiveModel.CFPPrescriptiveId;
+                recyclePM.UserId = prescriptiveModel.UserId;
+                recyclePM.MachineType = prescriptiveModel.MachineType;
+                recyclePM.EquipmentType = prescriptiveModel.EquipmentType;
+                recyclePM.TagNumber = prescriptiveModel.TagNumber;
+                recyclePM.FunctionFluidType = prescriptiveModel.FunctionFluidType;
+                recyclePM.FunctionRatedHead = prescriptiveModel.FunctionRatedHead;
+                recyclePM.FunctionPeriodType = prescriptiveModel.FunctionPeriodType;
+                recyclePM.FunctionFailure = prescriptiveModel.FunctionFailure;
+                recyclePM.Date = prescriptiveModel.Date;
+                recyclePM.FailureModeWithLSETree = prescriptiveModel.FailureModeWithLSETree;
+                recyclePM.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+                recyclePM.ComponentCriticalityFactor = prescriptiveModel.ComponentCriticalityFactor;
+                recyclePM.ComponentRating = prescriptiveModel.ComponentRating;
+                recyclePM.CMaintainenancePractice = prescriptiveModel.CMaintainenancePractice;
+                recyclePM.CFrequencyMaintainenance = prescriptiveModel.CFrequencyMaintainenance;
+                recyclePM.CConditionMonitoring = prescriptiveModel.CConditionMonitoring;
+                recyclePM.CAttachmentDBPath = prescriptiveModel.CAttachmentDBPath;
+                recyclePM.CAttachmentFullPath = prescriptiveModel.CAttachmentFullPath;
+                recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes = null;
+
+                _context.recycleCentrifugalPumpModelData.Add(recyclePM);
+                await _context.SaveChangesAsync();
+
+                int ID = recyclePM.RCPPMId;
+
+
                 foreach (var item in prescriptiveModel.centrifugalPumpPrescriptiveFailureModes)
                 {
+                    recycleChild.RCPPMId = ID;
                     recycleChild.UserId = prescriptiveModel.UserId;
                     recycleChild.CPPFMId = item.CPPFMId;
                     recycleChild.CFPPrescriptiveId = item.CFPPrescriptiveId;
@@ -745,29 +775,14 @@ namespace DPM.Controllers.Prescriptive
                     recycleChild.AttachmentDBPath = item.AttachmentDBPath;
                     recycleChild.AttachmentFullPath = item.AttachmentFullPath;
                     recycleChild.Remark = item.Remark;
+                    //recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
+                    _context.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
+                    await _context.SaveChangesAsync();
+
                 }
 
-                recyclePM.CFPPrescriptiveId = prescriptiveModel.CFPPrescriptiveId;
-                recyclePM.UserId = prescriptiveModel.UserId;
-                recyclePM.MachineType = prescriptiveModel.MachineType;
-                recyclePM.EquipmentType = prescriptiveModel.EquipmentType;
-                recyclePM.TagNumber = prescriptiveModel.TagNumber;
-                recyclePM.FunctionFluidType = prescriptiveModel.FunctionFluidType;
-                recyclePM.FunctionRatedHead = prescriptiveModel.FunctionRatedHead;
-                recyclePM.FunctionPeriodType = prescriptiveModel.FunctionPeriodType;
-                recyclePM.FunctionFailure = prescriptiveModel.FunctionFailure;
-                recyclePM.Date = prescriptiveModel.Date;
-                recyclePM.FailureModeWithLSETree = prescriptiveModel.FailureModeWithLSETree;
-                recyclePM.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
-                recyclePM.ComponentCriticalityFactor = prescriptiveModel.ComponentCriticalityFactor;
-                recyclePM.ComponentRating = prescriptiveModel.ComponentRating;
-                recyclePM.CMaintainenancePractice = prescriptiveModel.CMaintainenancePractice;
-                recyclePM.CFrequencyMaintainenance = prescriptiveModel.CFrequencyMaintainenance;
-                recyclePM.CConditionMonitoring = prescriptiveModel.CConditionMonitoring;
-                recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
 
-                _context.recycleCentrifugalPumpModelData.Add(recyclePM);
-                _context.PrescriptiveModelData.Remove(prescriptiveModel);
+             //   _context.PrescriptiveModelData.Remove(prescriptiveModel);
                 await _context.SaveChangesAsync();
 
                 return NoContent();
@@ -964,5 +979,33 @@ namespace DPM.Controllers.Prescriptive
                 return BadRequest(exe.Message);
             }
         }
+
+
+
+        [HttpPut]
+        [Route("CompontentAttachment")]
+        public async Task<IActionResult> PutCompontentAttachment(string dbPath, string fullPath, int id)
+        {
+
+            try
+            {
+                CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+                centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.FindAsync(id);
+                centrifugalPumpPrescriptiveModel.CAttachmentDBPath = dbPath;
+                centrifugalPumpPrescriptiveModel.CAttachmentFullPath = fullPath;
+
+                _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+
+        }
+
     }
 }

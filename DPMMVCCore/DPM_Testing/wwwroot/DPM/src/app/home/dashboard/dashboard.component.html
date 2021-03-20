@@ -65,6 +65,7 @@
                                 <th scope="col">Component Criticality Factor</th>
                                 <th scope="col">Component Rating</th>
                                 <th scope="col">Maintainenance Practice</th>
+                                <th scope="col">Attachment</th>
                                 <th scope="col">Delete</th>
                             </tr>
                         </thead>
@@ -87,6 +88,10 @@
                                 <td (click)="FailureModeTable(p)" >{{p.ComponentCriticalityFactor}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
+                                <td>
+                                    <button label="Next" style="margin: 20px" type="button" (click)="getAttachmentID(p)" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
+                                    <button  label="Next" style="margin: 20px" type="button" (click)="ViewAttachment(p)" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal">view</button>
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-secondary btn-sm" (click)="DeletePrescriptiveRecords(p)"  data-toggle="modal" data-target="#DeleteTree">Delete</button>
                                 </td>
@@ -225,3 +230,82 @@
       </div>
     </div>
   </div>
+
+
+  
+
+  <div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                    Add Attachment to Pump
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-11 ml-auto">
+                        <div class="toolbar" role="toolbar">
+                            <input type="file" #file placeholder="Choose file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile(file.files)" style="display:none;">
+                            <button type="button" (click)="file.click()" class="btn btn-light">
+                                <span class="fa fa-paperclip"></span>
+                            </button>
+                        </div>
+                        <div style="border-color: black;height: 300px;width: 400px;" class="card">
+                            <div class="file"><br>
+                                <span *ngIf="fileAttachmentEnable" style="margin: 10px;">
+                                    <i class="fas fa-file fa-5x"></i>
+                                    {{fileUpload}}  
+                                <a class="attachment" (click)="CloseAttachmentModal()"><i class="pi pi-times"></i></a>  
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="saveAttachment()" >Done</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                    view Attachment
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" >&times;</span>
+        </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="file"><br>
+                        <div *ngIf="PdfEnable" style="margin: 10px;" id="file">
+                            <iframe [src]="FileSafeUrl" width="500" height="300"> </iframe>
+                        </div>
+                        <div *ngIf="ImageEnable" style="margin: 10px;" id="file">
+                            <img [src]="FileSafeUrl" width="500" height="300">
+                        </div> 
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
+            </div>
+
+        </div>
+    </div>
+</div>
