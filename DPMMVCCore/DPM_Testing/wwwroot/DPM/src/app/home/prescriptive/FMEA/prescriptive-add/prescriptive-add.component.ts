@@ -666,29 +666,35 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   
+ async getRecords(formData){
+  this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
+    res => {
+     return res
+    }, err => { console.log(err.err) }
+  )
 
-  getPathList(){
-    // this.FMAttachmentPathList = []
-    // for (let index = 0; index < this.FailureModeFileListFormData.length; index++) {
+
+ }
+
+
+ async getPathList(){
+    this.FMAttachmentPathList = []
+    for (let index = 0; index < this.FailureModeFileListFormData.length; index++) {
   
-    //   let fileToUpload = <File>this.FailureModeFileListFormData[index];
-    //   var filename = fileToUpload.name
-    //   var blob = new Blob([JSON.stringify(['file', fileToUpload, filename])], {type : 'application/json'});
-    //   var fileOfBlob = new File([blob], filename);
-    //   const formData = new FormData();
-    //   formData.append('file', fileOfBlob);
-    //   this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
-    //     res => {
-    //       this.UploadFileDataResponse = res;
-    //       let obj = {}
-    //       obj['AttachmentDBPat'] = this.UploadFileDataResponse.dbPath;
-    //       obj['AttachmentFullPath'] =  this.UploadFileDataResponse.fullPath;
-    //       this.FMAttachmentPathList.push(obj);
-    //     }, err => { console.log(err.err) }
-    //   )
+      let fileToUpload = <File>this.FailureModeFileListFormData[index];
+      var filename = fileToUpload.name
+      var blob = new Blob([JSON.stringify(['file', fileToUpload, filename])], {type : 'application/json'});
+      var fileOfBlob = new File([blob], filename);
+      const formData = new FormData();
+      formData.append('file', fileOfBlob);
+       
+       this.UploadFileDataResponse = await this.getRecords(formData)
+       let obj = {}
+       obj['AttachmentDBPat'] = this.UploadFileDataResponse.dbPath;
+       obj['AttachmentFullPath'] =  this.UploadFileDataResponse.fullPath;
       
-    // }
-    // console.log(this.FMAttachmentPathList)
+    }
+  
   }
 
   treeSave() {
@@ -718,8 +724,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
       obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
       obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
-      // obj['AttachmentDBPath'] = this.FMAttachmentPathList[index].AttachmentDBPath
-      // obj['AttachmentFullPath'] = this.FMAttachmentPathList[index].AttachmentFullPath
+      obj['AttachmentDBPath'] = this.FMAttachmentPathList[index].AttachmentDBPath
+      obj['AttachmentFullPath'] = this.FMAttachmentPathList[index].AttachmentFullPath
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
 

@@ -89,8 +89,8 @@
                                 <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                                 <td>
-                                    <button label="Next" style="margin: 20px" type="button" (click)="getAttachmentID(p)" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
-                                    <button  label="Next" style="margin: 20px" type="button" (click)="ViewAttachment(p)" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal">view</button>
+                                    <button *ngIf="(p.CAttachmentDBPath == null)" label="Next" style="margin: 20px" type="button" (click)="getAttachmentID(p)" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
+                                    <button *ngIf="(p.CAttachmentDBPath != null)"label="Next" style="margin: 20px" type="button" (click)="ViewAttachment(p)" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal">view</button>
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-secondary btn-sm" (click)="DeletePrescriptiveRecords(p)"  data-toggle="modal" data-target="#DeleteTree">Delete</button>

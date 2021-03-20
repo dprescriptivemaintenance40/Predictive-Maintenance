@@ -1075,6 +1075,7 @@ export class DashboardComponent {
       res => {
         this.UploadFileDataResponse = res;
         this.fileAttachmentEnable = true;
+        this.UpdateAtachments()
       }, err => { console.log(err.err) }
     )
   
