@@ -105,19 +105,19 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public FMChild = []
   public FMLSEffectModeName: string = ""
 
-  public DownTimeFactor: number;
-  public ScrapeFactor: number;
-  public SafetyFactor: number;
-  public ProtectionFactor: number;
-  public FrequencyFactor: number;
+  public DownTimeFactor: number = 0;
+  public ScrapeFactor: number = 0;
+  public SafetyFactor: number = 0;
+  public ProtectionFactor: number = 0;
+  public FrequencyFactor: number = 0;
   private FactoryToAddInFM: any = []
   public fullPath: string = ""
-  private UploadFileDataResponse: any = []
-  public fileUpload;
+  public fileUpload: string = "";
   public dbPath: string = "";
   public Remark: string = "";
+  public FileId: string = "";
   public fileAttachmentEnable: boolean = false;
-  centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+  public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
 
   constructor(private messageService: MessageService,
@@ -204,26 +204,32 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     await localStorage.removeItem('PrescriptiveObject');
   }
 
+  public uploadedAttachmentList: any[] = [];
+  public uploadFile(event) {
+    if (event.target.files.length > 0) {
+      if (event.target.files[0].type === 'application/pdf'
+        || event.target.files[0].type === 'image/png'
+        || event.target.files[0].type === 'image/jpeg') {
+        let filedata = this.uploadedAttachmentList.find(a => a.FileId === this.FileId);
+        let fileToUpload = event.target.files[0];
+        const formData = new FormData();
+        formData.append('file', fileToUpload, fileToUpload.name);
+        formData.append('removePath', !!filedata ? filedata.dbPath : "");
+        this.fileUpload = fileToUpload.name;
+        this.http.post('api/PrescriptiveAPI/UploadFile', formData)
+          .subscribe((res: any) => {
+            this.dbPath = res.dbPath;
+            this.fullPath = res.fullPath;
+            this.fileUpload = res.fileName;
+            this.FileId = res.FileId;
+            this.uploadedAttachmentList.push(res)
+            this.fileAttachmentEnable = true;
+          }, err => { console.log(err.err) });
 
-  public uploadFile = (files) => {
-    if (files.length === 0) {
-      return;
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
+      }
     }
-    let fileToUpload = <File>files[0];
-    const formData = new FormData();
-
-    formData.append('file', fileToUpload, fileToUpload.name);
-    this.fileUpload = fileToUpload.name;
-
-    this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
-      res => {
-        this.UploadFileDataResponse = res;
-        this.dbPath = this.UploadFileDataResponse.dbPath;
-        this.fullPath = this.UploadFileDataResponse.fullPath;
-        this.fileAttachmentEnable = true;
-      }, err => { console.log(err.err) }
-    )
-
   }
 
 
@@ -297,11 +303,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   MachineEquipmentSelect(event) {
     if (this.MachineType == "Pump") {
       this.EquipmentList = null
-      this.EquipmentList = ["Centrifugal Pump", "Pump 2"]
+      this.EquipmentList = ["Centrifugal Pump"]
     }
     if (this.MachineType == "Compressor") {
       this.EquipmentList = null
-      this.EquipmentList = ["Compressor", "Compressor 2"]
+      this.EquipmentList = ["Compressor"]
     }
     console.log(this.EquipmentType)
   }
@@ -511,7 +517,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
   ADDFailuerEffect() {
     //&& this.dbPath.length > 0 
-    if (this.failuerModeLocalEffects.length > 0 && this.failuerModeSystemEffects.length > 0 && (this.DownTimeFactor > 0 || this.ScrapeFactor > 0 || this.FrequencyFactor > 0)) {
+    if (this.failuerModeLocalEffects !== ''
+      && this.failuerModeSystemEffects !== '' && this.DownTimeFactor !== 0
+      && this.ScrapeFactor !== 0 && this.SafetyFactor !== 0
+      && this.ProtectionFactor !== 0 && this.FrequencyFactor !== 0) {
 
       let LFNode = {
         label: "Local Effect",
@@ -534,18 +543,17 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.changeDetectorRef.detectChanges();
       this.FMChild[this.FMCount].children.push(LFNode);
       this.FMChild[this.FMCount].children.push(SFNode);
-      // this.InsertLSEffect[0].children[this.FMCount].children.push(LFNode);
-      // this.InsertLSEffect[0].children[this.FMCount].children.push(SFNode);
-      // this.changeDetectorRef.detectChanges();
       let obj = {}
       obj['DownTimeFactor'] = this.DownTimeFactor;
-      obj['ScrapeFactor'] = this.ScrapeFactor
-      obj['SafetyFactor'] = this.SafetyFactor
-      obj['ProtectionFactor'] = this.ProtectionFactor
-      obj['FrequencyFactor'] = this.FrequencyFactor
-      obj['AttachmentDBPath'] = this.dbPath
-      obj['AttachmentFullPath'] = this.fullPath
-      obj['Remark'] = this.Remark
+      obj['ScrapeFactor'] = this.ScrapeFactor;
+      obj['SafetyFactor'] = this.SafetyFactor;
+      obj['ProtectionFactor'] = this.ProtectionFactor;
+      obj['FrequencyFactor'] = this.FrequencyFactor;
+      obj['AttachmentDBPath'] = this.dbPath;
+      obj['AttachmentFullPath'] = this.fullPath;
+      obj['Remark'] = this.Remark;
+      obj['FileId'] = this.FileId;
+      obj['fileName'] = this.fileUpload;
 
       this.FactoryToAddInFM.push(obj)
       if (this.FMCount == this.FMChild.length - 1) {
@@ -568,9 +576,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       if (this.FMCount <= this.FMChild.length - 1) {
         this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
       }
-      this.dbPath = ""
-      this.fullPath = ""
-      this.Remark = ""
+      this.dbPath = "";
+      this.fullPath = "";
+      this.Remark = "";
+      this.fileUpload = "";
+      this.FileId = "";
     } else {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields' });
     }
@@ -589,7 +599,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     obj['FrequencyFactor'] = this.FrequencyFactor
     obj['AttachmentDBPath'] = this.dbPath
     obj['AttachmentFullPath'] = this.fullPath
-    obj['Remark'] = this.Remark
+    obj['Remark'] = this.Remark;
+    obj['FileId'] = this.FileId;
+    obj['fileName'] = this.fileUpload;
 
     this.FactoryToAddInFM[this.selectedModeData.label - 1] = obj;
     if (this.selectedModeData.label - 1 == this.FMChild.length - 1) {
@@ -625,6 +637,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.dbPath = "";
     this.fullPath = "";
     this.Remark = "";
+    this.fileUpload = "";
+    this.FileId = "";
   }
 
   SaveConsequences() {
@@ -800,6 +814,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.fullPath = "";
         this.Remark = "";
         this.dbPath = "";
+        this.fileUpload = "";
       }
     } else {
       this.prescriptiveEffect = false;
@@ -1192,14 +1207,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   onNodeSelect(event) {
-    var Data = event.node;
-    if (Data.children.length > 0) {
-      var LE, SE;
-      LE = Data.children[0].data.name
-      SE = Data.children[1].data.name
-      console.log(LE, SE);
-      this.failuerModeLocalEffects = LE
-      this.failuerModeSystemEffects = SE
+    if (event.node.children.length > 0) {
+      this.failuerModeLocalEffects = event.node.children[0].data.name;
+      this.failuerModeSystemEffects = event.node.children[1].data.name;
       this.DownTimeFactor = this.FactoryToAddInFM[event.node.label - 1].DownTimeFactor;
       this.ScrapeFactor = this.FactoryToAddInFM[event.node.label - 1].ScrapeFactor;
       this.SafetyFactor = this.FactoryToAddInFM[event.node.label - 1].SafetyFactor;
@@ -1208,6 +1218,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.dbPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentDBPath;
       this.Remark = this.FactoryToAddInFM[event.node.label - 1].Remark;
       this.fullPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentFullPath;
+      this.fileUpload = this.FactoryToAddInFM[event.node.label - 1].fileName;
+      this.FileId = this.FactoryToAddInFM[event.node.label - 1].FileId;
       this.FMLSEffectModeName = this.FMChild[event.node.label - 1].data.name
       this.prescriptiveEffect = true;
       this.ADDFailureLSEDiasble = false;

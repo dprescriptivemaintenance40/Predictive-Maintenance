@@ -27,7 +27,7 @@
                     <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
                           <option value="">Choose..</option>
                             <option value="Pump" selected>Pump</option>
-                                <option value="Compressor">Compressor</option>  
+                                <!-- <option value="Compressor">Compressor</option>   -->
                         </select>
                 </div>
             </li>
@@ -170,7 +170,6 @@
     <button *ngIf="NextFailureLSEDiasble" label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
 </div>
 <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
-    <br>
     <p-card>
         <ng-template pTemplate="title">
             Failure Mode Effects
@@ -190,12 +189,30 @@
                     <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect">
                 </div>
                 <div style="margin-top: 20px;">
-                    <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
-                    <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="uploadAttachments">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                    <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
+                                    <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group mb-3">
+                                <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></button> -->
+                    <!-- <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button> -->
                 </div>
             </div>
-        </ng-template>
-        <ng-template pTemplate="footer">
         </ng-template>
     </p-card>
 </div>

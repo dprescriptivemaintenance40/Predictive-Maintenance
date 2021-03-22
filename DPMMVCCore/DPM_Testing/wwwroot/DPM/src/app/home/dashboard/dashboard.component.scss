@@ -9,15 +9,9 @@
     background-color: #6200EA
 }
 
-.prescriptive i {
-    font-style: italic
-}
-
 .prescriptive .container {
     margin-top: 10px
 }
-
-
 
 .prescriptive .card-header:first-child {
     border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0
@@ -127,12 +121,12 @@
 .btn:not(:disabled):not(.disabled) {
     cursor: pointer
 }
+
 .table thead th {
     vertical-align: bottom;
     padding-left: 1px;
     border-bottom: 2px solid #dee2e6;
-    
-}  
+}
 
 .btn {
     position: relative;

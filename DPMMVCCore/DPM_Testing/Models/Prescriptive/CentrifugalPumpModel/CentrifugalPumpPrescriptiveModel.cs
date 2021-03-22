@@ -26,6 +26,9 @@ namespace DPM.Models.Prescriptive
         public string CMaintainenancePractice { get; set; }
         public string CFrequencyMaintainenance { get; set; }
         public string CConditionMonitoring { get; set; }
+        public string CAttachmentDBPath { get; set; }
+        public string CAttachmentFullPath { get; set; }
+        public string CRemarks { get; set; }
 
         public List<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
 

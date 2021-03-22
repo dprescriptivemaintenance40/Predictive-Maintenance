@@ -1,3 +1,13 @@
+<style>
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+    
+    a.pointer {
+        cursor: pointer;
+    }
+</style>
 <p-toast position="top-center"></p-toast>
 
 <div class="container-fluid">
@@ -49,82 +59,120 @@
                     <h6 style="color: #585570;" class="m-0 font-weight-bold " class="card-header-title font-size-lg text-capitalize font-weight-normal"><i class="fa fa-tasks"></i>&nbsp;Prescriptive Equipment List</h6>
                     <div class="col" *ngIf="Table2">
                         <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable1()">Back</button>
-                                     
+
                     </div>
                 </div>
                 <div class="card-body">
-                    <table style="text-align:center;" *ngIf="Table1" class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Assets</th>
-                                <th scope="col">Sub Units</th>
-                                <th scope="col">Tag No.</th>
-                                <th scope="col">Tree Update</th>
-                                <th scope="col">Consequence Update</th>
-                                <th scope="col">Component Criticality Factor</th>
-                                <th scope="col">Component Rating</th>
-                                <th scope="col">Maintainenance Practice</th>
-                                <th scope="col">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody style="margin-right: 10px;">
-                            <tr *ngIf="prescriptiveRecords.length == 0" >
-                                <td style="text-align:center; margin-top: 20px;" colspan="10" >No Records to show</td>
-                            </tr>
 
-                            <tr *ngFor="let p of prescriptiveRecords; let i=index;">
-                                <th scope="row">{{i+1}}</th>
-                                <td (click)="FailureModeTable(p)" >{{p.MachineType}}</td>
+                    <p-table *ngIf="Table1" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="prescriptiveRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
+                        <ng-template pTemplate="colgroup">
+                            <colgroup>
+                                <col style="width:5em;">
+                                <col style="width:6em;">
+                                <col style="width:10em;">
+                                <col style="width:7em;">
+                                <col style="width:6em;">
+                                <col style="width:13em;">
+                                <col style="width:15em;">
+                                <col style="width:11em;">
+                                <col style="width:16em;">
+                                <col style="width:10em;">
+                                <col style="width:6em;">
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Sr. No </th>
+                                <th>Assets </th>
+                                <th>Sub Units </th>
+                                <th>Tag No. </th>
+                                <th>Tree</th>
+                                <th>Consequence </th>
+                                <th>Component Criticality Factor </th>
+                                <th>Component Rating</th>
+                                <th>Maintainenance Practice</th>
+                                <th>Attachment</th>
+                                <th>Delete</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                            <tr>
+                                <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td>
+                                <td (click)="FailureModeTable(p)">{{p.MachineType}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.EquipmentType}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.TagNumber}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-secondary btn-sm" (click)="UpdatePrescriptiveRecords(p)" [disabled]="p.FMWithConsequenceTree.length == 0" >Update</button>
-                                </td>       
-                                <td>
-                                    <button type="button" class="btn btn-secondary btn-sm" (click)="ADDConsequenceRecords(p)" [disabled]="p.FMWithConsequenceTree.length > 0" >ADD Cons.</button>
+                                    <a style="color: green;" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length == 0}"><i class="fa fa-edit"></i></a>
                                 </td>
-                                <td (click)="FailureModeTable(p)" >{{p.ComponentCriticalityFactor}}</td>
+                                <td>
+                                    <a style="color: green;" title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}"><i class="pi pi-plus"></i></a>
+                                </td>
+                                <td (click)="FailureModeTable(p)">{{p.ComponentCriticalityFactor}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-secondary btn-sm" (click)="DeletePrescriptiveRecords(p)"  data-toggle="modal" data-target="#DeleteTree">Delete</button>
+                                    <a *ngIf="(p.CAttachmentDBPath == null)" label="Next" style="margin: 20px" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>
+                                    <a *ngIf="(p.CAttachmentDBPath != null)" label="Next" style="margin: 20px" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                    <a *ngIf="(p.CAttachmentDBPath != null)" label="Next" style="margin: 20px" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                                </td>
+                                <td>
+                                    <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><i class="pi pi-trash"></i></a>
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                    <table *ngIf="Table2" class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Failure Mode</th>
-                                <th scope="col">Local Effect</th>
-                                <th scope="col">System Effect</th>
-                                <th scope="col">Criticality Factor</th>
-                                <th scope="col">Rating</th>
-                                <th scope="col">Maintainenance Practice</th>
-                                <th scope="col">Frequency Maintainenance</th>
-                                <th scope="col">Condition Monitoring</th>
-                                <th scope="col">Consequence</th>
-                            
+                            <tr *ngIf="prescriptiveRecords.length == 0">
+                                <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>
                             </tr>
-                        </thead>
-                        <tbody style="margin-right: 10px;" (click)="BackToTable1()">
-                            <tr *ngFor="let p of FailureModeDataTabe2; let i=index;">
-                                <th scope="row">{{i+1}}</th>
-                                <td>{{p.FunctionMode}}</td>
+                        </ng-template>
+                    </p-table>
+                    <p-table *ngIf="Table2" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe2" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
+                        <ng-template pTemplate="colgroup">
+                            <colgroup>
+                                <col style="width:5em;">
+                                <col style="width:10em;">
+                                <col style="width:9em;">
+                                <col style="width:9em;">
+                                <col style="width:10em;">
+                                <col style="width:7em;">
+                                <col style="width:15em;">
+                                <col style="width:15em;">
+                                <col style="width:13em;">
+                                <col style="width:10em;">
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Sr. No</th>
+                                <th>Failure Mode</th>
+                                <th>Local Effect</th>
+                                <th>System Effect</th>
+                                <th>Criticality Factor</th>
+                                <th>Rating</th>
+                                <th>Maintainenance Practice</th>
+                                <th>Frequency Maintainenance</th>
+                                <th>Condition Monitoring</th>
+                                <th>Consequence</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                            <tr>
+                                <td>{{rowIndex + 1}}</td>
+                                <td class="text-truncate" pTooltip="{{p.FunctionMode}}" tooltipPosition="top">{{p.FunctionMode}}</td>
                                 <td>{{p.LocalEffect}}</td>
                                 <td>{{p.SystemEffect}}</td>
                                 <td>{{p.CriticalityFactor}}</td>
                                 <td>{{p.Rating}}</td>
                                 <td>{{p.MaintainenancePractice}}</td>
-                                <td>{{p.FrequencyMaintainenance}}</td>
+                                <td class="text-truncate" pTooltip="{{p.FrequencyMaintainenance}}" tooltipPosition="top">{{p.FrequencyMaintainenance}}</td>
                                 <td>{{p.ConditionMonitoring}}</td>
                                 <td>{{p.Consequence}}</td>
-                                
                             </tr>
-                        </tbody>
-                    </table>
+                            <tr *ngIf="FailureModeDataTabe2.length == 0">
+                                <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </div>
             </div>
         </div>
@@ -204,24 +252,101 @@
 </div>
 
 
-
-
 <div class="modal fade" id="DeleteTree" tabindex="-1" role="dialog" aria-labelledby="DeleteTreeTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete Centrifugal Pump : {{DeleteTreeName}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SoftDeletePrescriptiveRecords()">Save</button>
+            </div>
         </div>
-        <div class="modal-body">
-            Are you sure you want to delete Centrifugal Pump : {{DeleteTreeName}}
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SoftDeletePrescriptiveRecords()">Save</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
+<div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="AttachmentModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                   {{fileToUpload != null ? 'Update' : 'Add'}} Attachment & Remark
+                </span>
+                <button type="button" class="btn btn-dark" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="uploadAttachments">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
+                                <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="input-group mb-3">
+                            <textarea class="form-control custom-textarea" [(ngModel)]="CRemarks" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="saveAttachment()">Done</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="CommentModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>
+                   <h3>Attachment & Remark</h3> 
+                </span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true" >&times;</span>
+                    </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row ">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <label for="file " style="font-size: 1.3em; font-weight: bold; border-bottom: 2px solid; margin: 13px; ">Uploaded File</label>
+                            <div class="text-center" *ngIf="PdfEnable " style="margin: 10px; " id="file ">
+                                <iframe [src]="FileSafeUrl " width="480 " height="300 "> </iframe>
+                            </div>
+                            <div *ngIf="ImageEnable " style="margin: 10px; " id="file ">
+                                <img [src]="FileSafeUrl " width="480 " height="300 ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="text-center " style="margin-bottom: 10px; ">
+                            <label for="remark " style="font-size: 1.3em; font-weight: bold; border-bottom: 2px solid; margin: 13px; ">Remark</label>
+                            <div *ngIf="CRemarks !=='' " id="remark ">
+                                <textarea class="custom-textarea " cols="60 " rows="4 ">{{CRemarks}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
