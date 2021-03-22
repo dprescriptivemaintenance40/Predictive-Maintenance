@@ -1,6 +1,7 @@
 ﻿using DPM.Models.Prescriptive;
 using DPM.Models.RecycleBinModel;
 using DPM_ServerSide.DAL;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,10 +19,12 @@ namespace DPM.Controllers.Prescriptive
     {
 
         private readonly DPMDal _context;
+        private IWebHostEnvironment _hostingEnvironment;
 
-        public PrescriptiveAPIController(DPMDal context)
+        public PrescriptiveAPIController(DPMDal context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -416,7 +419,7 @@ namespace DPM.Controllers.Prescriptive
                     await _context.SaveChangesAsync();
                 }
 
-
+                return Ok(ToAddFM);
 
             }
             catch (DbUpdateConcurrencyException)
@@ -430,8 +433,6 @@ namespace DPM.Controllers.Prescriptive
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
 
@@ -527,7 +528,7 @@ namespace DPM.Controllers.Prescriptive
             recyclePM.FunctionPeriodType = centrifugalPumpPrescriptiveModel.FunctionPeriodType;
             recyclePM.FunctionFailure = centrifugalPumpPrescriptiveModel.FunctionFailure;
             recyclePM.Date = centrifugalPumpPrescriptiveModel.Date;
-            recyclePM.FailureModeWithLSETree = "";
+            recyclePM.FailureModeWithLSETree = centrifugalPumpPrescriptiveModel.FailureModeWithLSETree;
             recyclePM.FMWithConsequenceTree = centrifugalPumpPrescriptiveModel.FMWithConsequenceTree;
             recyclePM.ComponentCriticalityFactor = centrifugalPumpPrescriptiveModel.ComponentCriticalityFactor;
             recyclePM.ComponentRating = centrifugalPumpPrescriptiveModel.ComponentRating;
@@ -808,6 +809,10 @@ namespace DPM.Controllers.Prescriptive
                     _context.restoreCentrifugalPumpPrescriptiveFailureModes.Remove(RecycleData);
                     await _context.SaveChangesAsync();
                 }
+                else
+                {
+
+                }
 
                 return Ok();
 
@@ -833,6 +838,7 @@ namespace DPM.Controllers.Prescriptive
                 var imageRootPath = Path.Combine(Directory.GetCurrentDirectory(), imageFolder);
                 var pdfRootPath = Path.Combine(Directory.GetCurrentDirectory(), pdfFolder);
                 var UserId = User.Claims.First(c => c.Type == "UserID").Value;
+                var removePath = Request.Form["removePath"];
                 if (file.ContentType == "application/pdf")
                 {
                     pathToSave = string.Format("{0}{1}", pdfRootPath, UserId);
@@ -848,7 +854,6 @@ namespace DPM.Controllers.Prescriptive
                     Directory.CreateDirectory(pathToSave);
                 }
 
-
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -862,14 +867,18 @@ namespace DPM.Controllers.Prescriptive
                     {
                         dbPath = string.Format("Evidence_Image/{0}/{1}", UserId, fileName);
                     }
+                    if (!string.IsNullOrEmpty(removePath))
+                    {
+                        System.IO.File.Delete(Path.Combine(_hostingEnvironment.WebRootPath, removePath));
+                    }
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                         stream.Position = 0;
                     }
-
-                    return Ok(new { dbPath, fullPath });
+                    var FileId = Guid.NewGuid();
+                    return Ok(new { dbPath, fullPath, UserId, FileId, fileName });
                 }
                 else
                 {
@@ -892,7 +901,7 @@ namespace DPM.Controllers.Prescriptive
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                return await _context.recycleCentrifugalPumpModelData.Where(a => a.UserId == userId && a.FailureModeWithLSETree == "")
+                return await _context.recycleCentrifugalPumpModelData.Where(a => a.UserId == userId)
                                                            .Include(a => a.restoreCentrifugalPumpPrescriptiveFailureModes)
                                                            .OrderBy(a => a.RCPPMId)
                                                            .ToListAsync();
@@ -910,10 +919,9 @@ namespace DPM.Controllers.Prescriptive
         {
             try
             {
-                IQueryable<CentrifugalPumpPrescriptiveModel> Data = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == id)
-                                                                                                      .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
-                                                                                                      .AsQueryable();
-                var record = Data.ToList();
+                CentrifugalPumpPrescriptiveModel record = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == id)
+                                                                                        .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                                                         .FirstOrDefault();
                 return Ok(record);
             }
             catch (Exception exe)
@@ -931,7 +939,7 @@ namespace DPM.Controllers.Prescriptive
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                return await _context.recycleCentrifugalPumpModelData.Where(a => a.UserId == userId && a.FailureModeWithLSETree != "")
+                return await _context.recycleCentrifugalPumpModelData.Where(a => a.UserId == userId)
                                                            .Include(a => a.restoreCentrifugalPumpPrescriptiveFailureModes)
                                                            .OrderBy(a => a.RCPPMId)
                                                            .ToListAsync();
@@ -963,6 +971,81 @@ namespace DPM.Controllers.Prescriptive
 
                 return BadRequest(exe.Message);
             }
+        }
+
+        [HttpPut]
+        [Route("CompontentAttachment")]
+        public async Task<IActionResult> PutCompontentAttachment(int id)
+        {
+
+            try
+            {
+                string pathToSave = "";
+                var file = Request.Form.Files[0];
+                var imageFolder = Path.Combine("wwwroot\\Evidence_Image\\");
+                var pdfFolder = Path.Combine("wwwroot\\Evidence_PDF\\");
+                var imageRootPath = Path.Combine(Directory.GetCurrentDirectory(), imageFolder);
+                var pdfRootPath = Path.Combine(Directory.GetCurrentDirectory(), pdfFolder);
+                var UserId = User.Claims.First(c => c.Type == "UserID").Value;
+                var CRemarks = Request.Form["CRemarks"];
+                var removePath = Request.Form["removePath"];
+                if (file.ContentType == "application/pdf")
+                {
+                    pathToSave = string.Format("{0}", pdfRootPath);
+                }
+                else
+                {
+                    pathToSave = string.Format("{0}", imageRootPath);
+                }
+
+                // Check folder exists
+                if (!Directory.Exists(pathToSave))
+                {
+                    Directory.CreateDirectory(pathToSave);
+                }
+
+
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    string dbPath = "";
+                    if (file.ContentType == "application/pdf")
+                    {
+                        dbPath = string.Format("Evidence_PDF/{0}", fileName);
+                    }
+                    else
+                    {
+                        dbPath = string.Format("Evidence_Image/{0}", fileName);
+                    }
+                    if (!string.IsNullOrEmpty(removePath))
+                    {
+                        System.IO.File.Delete(Path.Combine(_hostingEnvironment.WebRootPath, removePath));
+                    }
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        stream.Position = 0;
+                    }
+
+
+                    CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+                    centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.FindAsync(id);
+                    centrifugalPumpPrescriptiveModel.CAttachmentDBPath = dbPath;
+                    centrifugalPumpPrescriptiveModel.CAttachmentFullPath = fullPath;
+                    centrifugalPumpPrescriptiveModel.CRemarks = CRemarks;
+
+                    _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+
         }
     }
 }

@@ -595,8 +595,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
 
   UpdateChanges() {
-    this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = this.UpdatedFailureModeWithLSETree
-    this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
+    this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1);
+    this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
     var Data = {}
     Data['CPPFMId'] = 0
     Data['CFPPrescriptiveId'] = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
@@ -982,8 +982,9 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
 
   SelectNodeToDelete(p) {
-    this.DeleteFMDataFromTree = p
-    this.DeleteFMName = p.data.name
+    this.DeleteFMDataFromTree = p;
+    this.DeleteFMName = p.data.name;
+    this.data1
   }
 
 
@@ -1012,6 +1013,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       console.log(res)
       this.FinalDelete = false;
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Delete Successfully' });
+      this.router.navigateByUrl('/Home/Dashboard');
     }, err => {
       console.log(err);
     }
@@ -1061,7 +1063,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   dropC3(e) {
     if (this.droppedYesNo2) {
-      this.dropedConsequenceCombinationFailureMode =[];
+      this.dropedConsequenceCombinationFailureMode = [];
       this.dropedConsequenceCombinationFailureMode.push(this.droppedYesNo2);
       this.droppedYesNo2 = null;
     }
@@ -1077,7 +1079,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   dropC4(e) {
     if (this.droppedYesNo3) {
-      this.dropedConsequenceAffectFailureMode =[];
+      this.dropedConsequenceAffectFailureMode = [];
       this.dropedConsequenceAffectFailureMode.push(this.droppedYesNo3);
       this.droppedYesNo3 = null;
     }

@@ -23,7 +23,7 @@ import {DialogModule} from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
-
+import {TooltipModule} from 'primeng/tooltip';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
@@ -48,7 +48,8 @@ import { SafePipe } from "./safe.pipe";
         SliderModule,
         DialogModule,
         OverlayPanelModule,
-        TreeModule],
+        TreeModule,
+        TooltipModule],
     exports: [CommonModule,
         CommonLoadingComponent,
         NgxSpinnerModule,
@@ -73,7 +74,8 @@ import { SafePipe } from "./safe.pipe";
         TreeModule,
         SafePipe,
         DialogModule,
-        OverlayPanelModule]
+        OverlayPanelModule,
+        TooltipModule]
 })
 export class SharedModule {
 

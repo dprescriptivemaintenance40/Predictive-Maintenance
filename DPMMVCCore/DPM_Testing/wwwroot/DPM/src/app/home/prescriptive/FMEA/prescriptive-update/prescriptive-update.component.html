@@ -3,10 +3,11 @@
     <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
         <!-- <button *ngIf="FinalDelete" label="delete" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#deleteModal">Delete</button> <br><br> -->
-        <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()">ADD Failure Mode</button>
+        <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()"><i class="pi pi-plus"></i> Failure Mode</button>
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
-                <div class="node-header p-corner-top">{{node.label}}
+                <div class="node-header p-corner-top">
+                    {{node.label}}
                     <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)"><i class="pi pi-pencil"></i></a>
                     <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)" data-toggle="modal" data-target="#DeleteFailureMode"><i class="pi pi-times"></i></a>
                 </div>
