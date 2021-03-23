@@ -62,8 +62,9 @@
 
                     </div>
                 </div>
+                <div class="container">     
+                    <div class="table-responsive"> 
                 <div class="card-body">
-
                     <p-table *ngIf="Table1" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="prescriptiveRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                         [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
                         <ng-template pTemplate="colgroup">
@@ -93,7 +94,9 @@
                                 <th>Component Rating</th>
                                 <th>Maintainenance Practice</th>
                                 <th>Attachment</th>
+                                <th>Report</th>
                                 <th>Delete</th>
+
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
@@ -115,6 +118,9 @@
                                     <a *ngIf="(p.CAttachmentDBPath == null)" label="Next" style="margin: 20px" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>
                                     <a *ngIf="(p.CAttachmentDBPath != null)" label="Next" style="margin: 20px" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                     <a *ngIf="(p.CAttachmentDBPath != null)" label="Next" style="margin: 20px" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                                </td>
+                                <td>
+                                    <a [routerLink]="['/Home/Prescriptive/Report']" label="Next" style="margin: 20px;" (click)="FMEAReports(p)" ><i class="fa fa-edit" aria-hidden="true"> Report</i></a>
                                 </td>
                                 <td>
                                     <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><i class="pi pi-trash"></i></a>
@@ -174,6 +180,8 @@
                         </ng-template>
                     </p-table>
                 </div>
+                </div>
+        </div>
             </div>
         </div>
     </div>
