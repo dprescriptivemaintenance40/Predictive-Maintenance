@@ -14,27 +14,34 @@ export class PrescriptiveReportComponent implements OnInit {
 
    public data: any = []
    public data1: any = []
-   public AnnexuresTreeList : Array<any> = [] ;
+   public AnnexuresTreeList : any =[]
    public SingleFailuerTree : any =[]
-  
+   public Time: string = "";
+   public ChairPerson: string = "";
+   public Participants: string = "";
+   public prescriptveReportSelect: boolean = true;
+   public ReportSelect: boolean = false;
+   
 
   constructor( public datepipe: DatePipe,
     private messageService: MessageService,) {  }
 
   ngOnInit(){  
-   this.data= JSON.parse(localStorage.getItem('ReportObj'))
-   this.data.Date = this.datepipe.transform(this.data.Date,'dd/MM/YYYY')
-   var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
-   var NewTree = JSON.parse(this.data.FMWithConsequenceTree)
-   ConsequenceTree[0].children[0].children[0].children = []
-    NewTree[0].children[0].children[0].children.forEach(element => {
+    this.data= JSON.parse(localStorage.getItem('ReportObj'))
+    this.data.Date = this.datepipe.transform(this.data.Date,'dd/MM/YYYY')
+    var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
+    var NewTree = JSON.parse(this.data.FMWithConsequenceTree)
+    this.AnnexuresTreeList = NewTree[0].children[0].children[0].children
     ConsequenceTree[0].children[0].children[0].children = []
-    ConsequenceTree[0].children[0].children[0].children.push(element)
-    let data = ConsequenceTree
-    this.AnnexuresTreeList.push(data)
-   });
-
-   console.log(this.SingleFailuerTree)
+    this.SingleFailuerTree = ConsequenceTree
+    let obj = this.AnnexuresTreeList[0] 
+    this.data1 = JSON.parse(this.data.FMWithConsequenceTree) 
+    console.log(this.data1)
+    this.data1[0].children[0].children[0].children.forEach(element => {
+      element.data.name = ""
+      element.children = []
+    });
+  
    }
 
    async ngOnDestroy(){
@@ -93,4 +100,14 @@ export class PrescriptiveReportComponent implements OnInit {
 		    pdf.save("PrescriptiveFMEA Report.pdf");
         });
 	};
+  GeneratePrescriptionReport(){
+   if(this.ChairPerson.length >0 && this.Participants.length > 0){
+    this.prescriptveReportSelect = false
+    this.ReportSelect = true
+    this.ChairPerson = this.ChairPerson.toUpperCase()
+    this.Participants = this.Participants.toUpperCase()
+   }else{
+     alert("Fields are missing")
+   }
+  }
 }

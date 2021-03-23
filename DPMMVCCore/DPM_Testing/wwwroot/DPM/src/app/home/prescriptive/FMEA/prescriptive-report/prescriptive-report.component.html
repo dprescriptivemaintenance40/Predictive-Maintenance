@@ -1,9 +1,43 @@
-<div class="card" style="margin: 20px;" >
+<div *ngIf="prescriptveReportSelect" style="margin-left: 150px; margin-top: 110px;">
+    <div class="card shadow" style="width: 24rem;margin-left: 150px;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <label style=" margin-right: 12px;">chair Person</label>
+                    <input type="text" class="form-control" [(ngModel)]="ChairPerson" id="exampleInputPassword1" placeholder="Person Name">
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <label style="margin-right: 12px;">Participants</label>
+                    <input type="text" class="form-control" [(ngModel)]="Participants" id="exampleInputPassword1" placeholder="Participant name">
+                </div>
+            </li>
+            <li class="list-group-item">
+                <button class="btn btn-dark" (click)="GeneratePrescriptionReport()">Done</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div  *ngIf="ReportSelect" class="card" style="margin: 20px;" >
     <div class="card shadow">
         <div>
             <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" (click)="DownloadPDF()">Print PDf</button>
         </div>
     <div style="margin: 20px;" id="contentToConvert">
+        <div class="sidebar-brand-icon col-sm-2">
+            <style>
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            </style>
+            <div class="image-container">
+                <img src="dist/DPM/assets/img/Logo_final.jpg" alt="">
+            </div>
+        
+        </div>
     <h5><b>Executive Summary </b></h5><br>
     <p>
         This document provides guidance and insight into the analysis process for FMEA. 
@@ -36,8 +70,9 @@
 
     <h5><b>Introduction</b></h5><br>
     <p>
-        FMEA analysis completed on <b>{{data.Date}}</b> for <b> {{data.EquipmentType}} </b> with Tag No <b>{{data.TagNumber}}</b>. 
-        FMEA finalized by using the current data of the asset and considering the failure history for a time domain of (years, months) (ANNEXURE…….)
+        FMEA analysis completed on {{data.Date}} for  {{data.EquipmentType}}  with Tag No {{data.TagNumber}}. 
+        FMEA finalized by using the current data of the asset and considering the failure history for a time domain of  &ensp;
+        <input type="text" class="custom-form-control" [(ngModel)]="Time" placeholder="Year/months"> &ensp;
     </p>
     <p>
         An understanding of the system to be analyzed was essential prior to the development of a FMEA. 
@@ -46,10 +81,12 @@
     </p><br>
 
     <h5><b>FMEA Methodology</b></h5><br>
-    <h5><b>Current and future actions</b></h5><br>
+    <textarea type ="text"></textarea>
+    <h5><b>Current and future actions</b></h5>
+    <textarea type ="text"></textarea><br>
     <h5><b>Conclusions </b></h5><br>
     <p>
-        The objective of the task was to analyze the current condition of  <b> {{data.EquipmentType}} </b> with Tag No <b>{{data.TagNumber}}</b>. and propose technical solutions to increase integrity and reliability of the asset .
+        The objective of the task was to analyze the current condition of   {{data.EquipmentType}}  with Tag No {{data.TagNumber}}. and propose technical solutions to increase integrity and reliability of the asset .
     </p>
     <p>
         The reliability methodology was based on FMEA was developed in order to take into consideration the objectives and recommended actions to eliminate the failures. 
@@ -57,10 +94,12 @@
     <p>
         During FMEA a detail list of failure modes and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation. 
     </p>
+    <span ><h6><b>Chair Person: {{ChairPerson}} </b></h6> </span><br>
+    <span ><h6><b>Participants: {{Participants}} </b></h6></span><br><br>
     <h5><b>Annexures </b></h5><br>
-    <p> <b>Block diagrams and attachments shall be included in Annexures.</b></p>
-    <div *ngFor ="let tree of AnnexuresTreeList ">
-        <p-organizationChart [value]="tree" selectionMode="single" styleClass="company">
+    <p> Block diagrams.</p>
+    <div>
+        <p-organizationChart [value]="data1" selectionMode="single" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -72,6 +111,21 @@
             </ng-template>
         </p-organizationChart><br><br>
     </div>
+    <!-- *ngFor ="let tree of AnnexuresTreeList" -->
+    <div  >
+        <p-organizationChart [value]="AnnexuresTreeList" selectionMode="single" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div class="a">{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart><br><br>
+    </div>
+    <p>Remark & Attachments {{CRemarks}}</p>
 </div>
 </div>       
 </div>
