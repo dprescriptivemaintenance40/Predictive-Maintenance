@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { DatePipe } from '@angular/common'
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { DomSanitizer, Title } from "@angular/platform-browser";
@@ -1145,8 +1145,6 @@ export class DashboardComponent {
     }
 
   }
-
-
   getFileExtension(filename) {
     const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
     return extension;
@@ -1155,4 +1153,8 @@ export class DashboardComponent {
     this.fileAttachmentEnable = false
     this.fileToUpload = []
   }
+  FMEAReports(p){
+   localStorage.setItem('ReportObj',JSON.stringify(p))
+  }
+
 }

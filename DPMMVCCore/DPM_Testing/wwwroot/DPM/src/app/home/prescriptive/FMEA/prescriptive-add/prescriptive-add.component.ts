@@ -203,7 +203,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveObject');
   }
-
   public uploadedAttachmentList: any[] = [];
   public uploadFile(event) {
     if (event.target.files.length > 0) {
