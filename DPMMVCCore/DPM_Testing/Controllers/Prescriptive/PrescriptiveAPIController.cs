@@ -77,8 +77,22 @@ namespace DPM.Controllers.Prescriptive
         {
             try
             {
+		var childData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
+		prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
+                prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = null;
                 _context.PrescriptiveModelData.Add(prescriptiveModel);
                 await _context.SaveChangesAsync();
+		
+		int ID = prescriptiveModel.CFPPrescriptiveId;
+		
+	    	foreach (var item in childData)
+                {
+		  item.CPPFMId = 0;
+		  item.CFPPrescriptiveId = ID;
+		  _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
+                  await _context.SaveChangesAsync();
+		}
+                  
 
                 return Ok();
 
