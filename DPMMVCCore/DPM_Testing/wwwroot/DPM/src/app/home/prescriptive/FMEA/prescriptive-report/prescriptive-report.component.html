@@ -22,8 +22,8 @@
 
 <div *ngIf="ReportSelect" class="card" style="margin: 20px;">
     <div class="card shadow">
-        <div>
-            <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" (click)="DownloadPDF()">Print PDf</button>
+        <div class="print" >
+            <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark"  value='Print' (click)="DownloadPDF()">Print PDf</button>
         </div>
         <div style="margin: 20px;" id="contentToConvert">
             <div class="sidebar-brand-icon col-sm-2">
@@ -120,14 +120,32 @@
                     </ng-template>
                 </p-organizationChart><br><br>
             </div>
+         
             <h5><b>Attachments & Remarks </b></h5><br>
-            <div *ngFor = "let AR of attachmentRemark" >
+            <!-- <div *ngFor = "let AR of attachmentRemark" >
                 <p><b>Failure Modes : </b> {{AR.FunctionMode}} </p>
                 <p><b>Remark : </b> {{AR.Remark}}</p>
                 <p><b>Attachments : </b> {{AR.AttachmentDBPath}}</p>
-                <!-- <a href="url/AR.AttachmentDBPath/" download><i class="fas fa-download"></i> </a> > -->
                  <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments<i class="fas fa-download"></i> </a> 
-            </div>     
+            </div>  -->
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Failure Modes</th>
+                    <th scope="col">Remark</th>
+                    <th scope="col">Attachments</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor = "let AR of attachmentRemark;let i = index">
+                    <th scope="row">{{i+1}}</th>
+                    <td> {{AR.FunctionMode}} </td>
+                    <td>{{AR.Remark}}</td>
+                    <td> <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments<i class="fas fa-download"></i> </a> </td>
+                  </tr>
+                </tbody>
+              </table>
         </div>
     </div>
 </div>

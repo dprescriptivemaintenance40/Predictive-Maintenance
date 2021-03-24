@@ -22,7 +22,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public prescriptveReportSelect: boolean = true;
   public ReportSelect: boolean = false;
   public attachmentRemark : any =[]
-  public url : string ="https://localhost:44331"
+  public url : string =""
 
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef) { }
@@ -54,8 +54,14 @@ export class PrescriptiveReportComponent implements OnInit {
   }
 
   public DownloadPDF(){
-    window.print() 
+  //  let printContents = document.getElementById('contentToConvert').innerHTML;
+  //  let originalContents = document.body.innerHTML;
+  //  document.body.innerHTML = printContents;
+  //  window.print();
+  //  document.body.innerHTML = originalContents;
+  window.print();
   }
+  
 
   // public DownloadPDF() {
   //   var data = document.getElementById('contentToConvert');
