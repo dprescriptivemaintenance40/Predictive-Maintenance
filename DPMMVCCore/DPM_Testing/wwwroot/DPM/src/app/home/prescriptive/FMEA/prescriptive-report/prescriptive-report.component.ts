@@ -55,14 +55,13 @@ export class PrescriptiveReportComponent implements OnInit {
   }
 
   public DownloadPDF(){ 
-  //  let printContents = document.getElementById('contentToConvert').innerHTML;
-  //  let originalContents = document.body.innerHTML;
-  //  document.body.innerHTML = printContents;
-  //  window.print();
-  //  document.body.innerHTML = originalContents;
+   let printContents = document.getElementById('contentToConvert').innerHTML;
+   let originalContents = document.body.innerHTML;
+   document.body.innerHTML = printContents;
    window.print();
-   this.ReportSelect = false
-   this.attachmentRemarkTable = true
+   document.body.innerHTML = originalContents;
+  // window.print();
+  
   }
   
 
@@ -124,9 +123,6 @@ export class PrescriptiveReportComponent implements OnInit {
       alert("Fields are missing")
     }
   }
-  Back(){
-    this.ReportSelect = true
-    this.attachmentRemarkTable = false
-  }
+
 
 }

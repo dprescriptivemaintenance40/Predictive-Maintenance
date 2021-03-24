@@ -1,3 +1,4 @@
+<div >
 <div *ngIf="prescriptveReportSelect" style="margin-left: 150px; margin-top: 110px;">
     <div class="card shadow" style="width: 24rem;margin-left: 150px;">
         <ul class="list-group list-group-flush">
@@ -21,7 +22,6 @@
 </div>
 
 <div *ngIf="ReportSelect" class="card" style="margin: 20px;">
-    <!-- <div class="card shadow"> -->
         <div class="print" >
             <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" media="print" (click)="DownloadPDF()">Print PDf</button>
         </div>
@@ -123,56 +123,37 @@
                 </p-organizationChart><br><br>
             </div>
          
-              <!-- <h5><b>Attachments & Remarks </b></h5><br>
-              <div *ngFor = "let AR of attachmentRemark" >
+          <h5><b>Attachments & Remarks </b></h5><br>
+              <!-- <div *ngFor = "let AR of attachmentRemark" >
                 <p><b>Failure Modes : </b> {{AR.FunctionMode}} </p>
                 <p><b>Remark : </b> {{AR.Remark}}</p>
                 <p><b>Attachments : </b> {{AR.AttachmentDBPath}}</p>
                  <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments<i class="fas fa-download"></i> </a> 
             </div>  -->
-            <!-- <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Failure Modes</th>
-                    <th scope="col">Remark</th>
-                    <th scope="col">Attachments</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor = "let AR of attachmentRemark;let i = index">
-                    <th scope="row">{{i+1}}</th>
-                    <td> {{AR.FunctionMode}} </td>
-                    <td>{{AR.Remark}}</td>
-                    <td> <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a> </td>
-                  </tr>
-                </tbody>
-              </table> -->
         </div>
         </div>
-    <!-- </div> -->
+  
 </div>
-<div *ngIf ="attachmentRemarkTable" class="card"style="margin: 20px;">
-    <h5><b>Attachments & Remarks </b></h5>
-    <div class="print" >
-        <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" media="print" (click)="Back()">Back</button>
-    </div>
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Failure Modes</th>
-        <th scope="col">Remark</th>
-        <th scope="col">Attachments</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor = "let AR of attachmentRemark;let i = index">
-        <th scope="row">{{i+1}}</th>
-        <td> {{AR.FunctionMode}} </td>
-        <td>{{AR.Remark}}</td>
-        <td> <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a> </td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
+<div class="card" style="margin: 20px;">
+ <div *ngIf="ReportSelect">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Failure Modes</th>
+            <th scope="col">Remark</th>
+            <th scope="col">Attachments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let AR of attachmentRemark;let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td> {{AR.FunctionMode}} </td>
+            <td>{{AR.Remark}}</td>
+            <td> <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a> </td>
+          </tr>
+        </tbody>
+      </table> 
+ </div>
+ </div>
+ </div>
