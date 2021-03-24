@@ -61,6 +61,7 @@
             <p>
                 Part 4 describes the conclusion and current actions the team come up with based on FMEA.
             </p>
+            
             <p>
                 Annexures provide the fault tree analysis of current study
             </p><br>
@@ -119,7 +120,14 @@
                     </ng-template>
                 </p-organizationChart><br><br>
             </div>
-            <p>Remark & Attachments {{CRemarks}}</p>
+            <h5><b>Attachments & Remarks </b></h5><br>
+            <div *ngFor = "let AR of attachmentRemark" >
+                <p><b>Failure Modes : </b> {{AR.FunctionMode}} </p>
+                <p><b>Remark : </b> {{AR.Remark}}</p>
+                <p><b>Attachments : </b> {{AR.AttachmentDBPath}}</p>
+                <!-- <a href="url/AR.AttachmentDBPath/" download><i class="fas fa-download"></i> </a> > -->
+                 <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments<i class="fas fa-download"></i> </a> 
+            </div>     
         </div>
     </div>
 </div>

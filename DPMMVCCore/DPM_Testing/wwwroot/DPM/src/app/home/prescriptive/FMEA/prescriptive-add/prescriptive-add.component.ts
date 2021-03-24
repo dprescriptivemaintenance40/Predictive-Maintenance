@@ -224,7 +224,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             this.uploadedAttachmentList.push(res)
             this.fileAttachmentEnable = true;
           }, err => { console.log(err.err) });
-
       } else {
         this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
       }

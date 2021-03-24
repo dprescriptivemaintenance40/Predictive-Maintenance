@@ -11,7 +11,7 @@ import { MessageService } from 'primeng/api';
   providers: [MessageService, DatePipe]
 })
 export class PrescriptiveReportComponent implements OnInit {
-
+  public FileUrl: any;
   public data: any = []
   public data1: any = []
   public AnnexuresTreeList: any = []
@@ -21,13 +21,17 @@ export class PrescriptiveReportComponent implements OnInit {
   public Participants: string = "";
   public prescriptveReportSelect: boolean = true;
   public ReportSelect: boolean = false;
-
+  public attachmentRemark : any =[]
+  public url : string ="https://localhost:44331"
 
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.data = JSON.parse(localStorage.getItem('ReportObj'))
+    this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes
+    var BrowserURl  = window.location.href
+    var BrowserURl = window.location.href.split('#')[0]
     this.data.Date = this.datepipe.transform(this.data.Date, 'dd/MM/YYYY')
     var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
     var NewTree = JSON.parse(this.data.FMWithConsequenceTree)
@@ -49,15 +53,15 @@ export class PrescriptiveReportComponent implements OnInit {
     await localStorage.removeItem('ReportObj')
   }
 
-  // public DownloadPDF(){
-  //   //window.print() 
-  // }
+  public DownloadPDF(){
+    window.print() 
+  }
 
   // public DownloadPDF() {
   //   var data = document.getElementById('contentToConvert');
   //   html2canvas(data, { scrollY: -window.scrollY, scale: 1 }).then(canvas => {
   //     for (var i = 0; i <= data.clientHeight/980; i++) {
-  //       var imgWidth = 190;
+  //        var imgWidth = 190;
   //       var pageHeight = 220;
   //       var imgHeight = canvas.height * imgWidth / canvas.width;
   //       var heightLeft = imgHeight;
@@ -67,40 +71,40 @@ export class PrescriptiveReportComponent implements OnInit {
   //       pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight)
   //       pdf.setPage(i+1);
   //     }
-  //    // pdf.addPage();
+  //     pdf.addPage();
   //     pdf.save('PrescriptiveFMEA Report.pdf'); // Generated PDF
   //   });
   // } 
 
+  // DownloadPDF() {
+  //   var HTML_Width = 190;
+  //   var HTML_Height = 220;
+  //   var top_left_margin = 15;
+  //   var PDF_Width: number = HTML_Width + (top_left_margin * 2);
+  //   var PDF_Width1: any = HTML_Width + (top_left_margin * 2)
+  //   var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+  //   var PDF_Height1: any = (PDF_Width * 1.5) + (top_left_margin * 2);
+  //   var canvas_image_width = HTML_Width;
+  //   var canvas_image_height = HTML_Height;
 
-  DownloadPDF() {
-    var HTML_Width = 190;
-    var HTML_Height = 220;
-    var top_left_margin = 15;
-    var PDF_Width: number = HTML_Width + (top_left_margin * 2);
-    var PDF_Width1: any = HTML_Width + (top_left_margin * 2)
-    var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
-    var PDF_Height1: any = (PDF_Width * 1.5) + (top_left_margin * 2);
-    var canvas_image_width = HTML_Width;
-    var canvas_image_height = HTML_Height;
+  //   var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
 
-    var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+  //   var data = document.getElementById('contentToConvert');
+  //   html2canvas(data, { allowTaint: true }).then(function (canvas) {
+  //     canvas.getContext('2d');
+  //     console.log(canvas.height + "  " + canvas.width);
+  //     var imgData = canvas.toDataURL("image/jpeg", 1.0);
+  //     var pdf = new jspdf('p', 'mm', 'a4',);
+  //     pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+  
+  //     for (var i = 1; i <= totalPDFPages; i++) {
+  //       pdf.addPage(PDF_Width1, PDF_Height1);
+  //       pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height); 
+  //     }
+  //     pdf.save("PrescriptiveFMEA Report.pdf");
+  //   });
+  // };
 
-    var data = document.getElementById('contentToConvert');
-    html2canvas(data, { allowTaint: true }).then(function (canvas) {
-      canvas.getContext('2d');
-      console.log(canvas.height + "  " + canvas.width);
-      var imgData = canvas.toDataURL("image/jpeg", 1.0);
-      var pdf = new jspdf('p', 'mm', 'a4',);
-      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
-
-      for (var i = 1; i <= totalPDFPages; i++) {
-        pdf.addPage(PDF_Width1, PDF_Height1);
-        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
-      }
-      pdf.save("PrescriptiveFMEA Report.pdf");
-    });
-  };
   GeneratePrescriptionReport() {
     if (this.ChairPerson.length > 0 && this.Participants.length > 0) {
       this.prescriptveReportSelect = false
@@ -111,4 +115,5 @@ export class PrescriptiveReportComponent implements OnInit {
       alert("Fields are missing")
     }
   }
+
 }
