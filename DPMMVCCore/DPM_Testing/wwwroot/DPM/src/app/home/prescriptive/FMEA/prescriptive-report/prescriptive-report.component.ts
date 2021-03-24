@@ -21,6 +21,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public Participants: string = "";
   public prescriptveReportSelect: boolean = true;
   public ReportSelect: boolean = false;
+  public attachmentRemarkTable: boolean = false; 
   public attachmentRemark : any =[]
   public url : string =""
 
@@ -53,13 +54,15 @@ export class PrescriptiveReportComponent implements OnInit {
     await localStorage.removeItem('ReportObj')
   }
 
-  public DownloadPDF(){
+  public DownloadPDF(){ 
   //  let printContents = document.getElementById('contentToConvert').innerHTML;
   //  let originalContents = document.body.innerHTML;
   //  document.body.innerHTML = printContents;
   //  window.print();
   //  document.body.innerHTML = originalContents;
-  window.print();
+   window.print();
+   this.ReportSelect = false
+   this.attachmentRemarkTable = true
   }
   
 
@@ -120,6 +123,10 @@ export class PrescriptiveReportComponent implements OnInit {
     } else {
       alert("Fields are missing")
     }
+  }
+  Back(){
+    this.ReportSelect = true
+    this.attachmentRemarkTable = false
   }
 
 }

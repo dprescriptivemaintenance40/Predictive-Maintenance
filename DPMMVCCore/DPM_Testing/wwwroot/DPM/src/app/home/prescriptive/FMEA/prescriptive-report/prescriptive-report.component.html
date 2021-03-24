@@ -21,9 +21,9 @@
 </div>
 
 <div *ngIf="ReportSelect" class="card" style="margin: 20px;">
-    <div class="card shadow">
+    <!-- <div class="card shadow"> -->
         <div class="print" >
-            <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark"  value='Print' (click)="DownloadPDF()">Print PDf</button>
+            <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" media="print" (click)="DownloadPDF()">Print PDf</button>
         </div>
         <div style="margin: 20px;" id="contentToConvert">
             <div class="sidebar-brand-icon col-sm-2">
@@ -38,6 +38,8 @@
                 </div>
 
             </div>
+        
+            <div id ="Print">
             <h5><b>Executive Summary </b></h5><br>
             <p>
                 This document provides guidance and insight into the analysis process for FMEA. Utilization of this analysis offers a mutual understating of the current condition of assets
@@ -121,14 +123,14 @@
                 </p-organizationChart><br><br>
             </div>
          
-            <h5><b>Attachments & Remarks </b></h5><br>
-            <!-- <div *ngFor = "let AR of attachmentRemark" >
+              <!-- <h5><b>Attachments & Remarks </b></h5><br>
+              <div *ngFor = "let AR of attachmentRemark" >
                 <p><b>Failure Modes : </b> {{AR.FunctionMode}} </p>
                 <p><b>Remark : </b> {{AR.Remark}}</p>
                 <p><b>Attachments : </b> {{AR.AttachmentDBPath}}</p>
                  <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments<i class="fas fa-download"></i> </a> 
             </div>  -->
-            <table class="table">
+            <!-- <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -142,10 +144,35 @@
                     <th scope="row">{{i+1}}</th>
                     <td> {{AR.FunctionMode}} </td>
                     <td>{{AR.Remark}}</td>
-                    <td> <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments<i class="fas fa-download"></i> </a> </td>
+                    <td> <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a> </td>
                   </tr>
                 </tbody>
-              </table>
+              </table> -->
         </div>
-    </div>
+        </div>
+    <!-- </div> -->
 </div>
+<div *ngIf ="attachmentRemarkTable" class="card"style="margin: 20px;">
+    <h5><b>Attachments & Remarks </b></h5>
+    <div class="print" >
+        <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" media="print" (click)="Back()">Back</button>
+    </div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Failure Modes</th>
+        <th scope="col">Remark</th>
+        <th scope="col">Attachments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let AR of attachmentRemark;let i = index">
+        <th scope="row">{{i+1}}</th>
+        <td> {{AR.FunctionMode}} </td>
+        <td>{{AR.Remark}}</td>
+        <td> <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a> </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>

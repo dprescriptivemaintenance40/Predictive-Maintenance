@@ -1,3 +1,4 @@
+
 @media print {
     .print-area {
         background-color: white;
@@ -15,6 +16,7 @@
         size: portrait;
         margin: 1cm;
     }
+    
 }
 :host ::ng-deep .p-organizationchart {
     .p-person {
@@ -45,10 +47,7 @@
 
     .node-content {
         text-align: center;
-        border: 1px solid #495ebb;
-       
-      
-        
+        border: 1px solid #495ebb;    
     }
 
     .node-content img {
