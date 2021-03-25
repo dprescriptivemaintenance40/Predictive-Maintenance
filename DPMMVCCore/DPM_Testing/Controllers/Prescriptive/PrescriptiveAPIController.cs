@@ -465,6 +465,7 @@ namespace DPM.Controllers.Prescriptive
                 MinusCF = FailuerMode.CriticalityFactor;
                 _context.centrifugalPumpPrescriptiveFailureModes.Remove(FailuerMode);
 
+                recycleChild.RCPPMId = 0;
                 recycleChild.UserId = userId;
                 recycleChild.CPPFMId = FailuerMode.CPPFMId;
                 recycleChild.CFPPrescriptiveId = FailuerMode.CFPPrescriptiveId;
@@ -485,6 +486,8 @@ namespace DPM.Controllers.Prescriptive
                 recycleChild.AttachmentDBPath = FailuerMode.AttachmentDBPath;
                 recycleChild.AttachmentFullPath = FailuerMode.AttachmentFullPath;
                 recycleChild.Remark = FailuerMode.Remark;
+                recycleChild.IsDeleted = 1;
+                recycleChild.DeletedFMTree = obj.FunctionFailure;
 
             }
 
@@ -530,28 +533,7 @@ namespace DPM.Controllers.Prescriptive
                 centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Nan";
             }
 
-
-
-            recyclePM.CFPPrescriptiveId = centrifugalPumpPrescriptiveModel.CFPPrescriptiveId;
-            recyclePM.UserId = centrifugalPumpPrescriptiveModel.UserId;
-            recyclePM.MachineType = centrifugalPumpPrescriptiveModel.MachineType;
-            recyclePM.EquipmentType = centrifugalPumpPrescriptiveModel.EquipmentType;
-            recyclePM.TagNumber = centrifugalPumpPrescriptiveModel.TagNumber;
-            recyclePM.FunctionFluidType = centrifugalPumpPrescriptiveModel.FunctionFluidType;
-            recyclePM.FunctionRatedHead = centrifugalPumpPrescriptiveModel.FunctionRatedHead;
-            recyclePM.FunctionPeriodType = centrifugalPumpPrescriptiveModel.FunctionPeriodType;
-            recyclePM.FunctionFailure = centrifugalPumpPrescriptiveModel.FunctionFailure;
-            recyclePM.Date = centrifugalPumpPrescriptiveModel.Date;
-            recyclePM.FailureModeWithLSETree = centrifugalPumpPrescriptiveModel.FailureModeWithLSETree;
-            recyclePM.FMWithConsequenceTree = centrifugalPumpPrescriptiveModel.FMWithConsequenceTree;
-            recyclePM.ComponentCriticalityFactor = centrifugalPumpPrescriptiveModel.ComponentCriticalityFactor;
-            recyclePM.ComponentRating = centrifugalPumpPrescriptiveModel.ComponentRating;
-            recyclePM.CMaintainenancePractice = centrifugalPumpPrescriptiveModel.CMaintainenancePractice;
-            recyclePM.CFrequencyMaintainenance = centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance;
-            recyclePM.CConditionMonitoring = centrifugalPumpPrescriptiveModel.CConditionMonitoring;
-            recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
-
-            _context.recycleCentrifugalPumpModelData.Add(recyclePM);
+            _context.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
 
             centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = obj.FMWithConsequenceTree;
             centrifugalPumpPrescriptiveModel.FailureModeWithLSETree = obj.FailureModeWithLSETree;
@@ -790,6 +772,7 @@ namespace DPM.Controllers.Prescriptive
                     recycleChild.AttachmentDBPath = item.AttachmentDBPath;
                     recycleChild.AttachmentFullPath = item.AttachmentFullPath;
                     recycleChild.Remark = item.Remark;
+                    recycleChild.IsDeleted = 0;
                     //recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
                     _context.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
                     await _context.SaveChangesAsync();
@@ -931,10 +914,10 @@ namespace DPM.Controllers.Prescriptive
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                return await _context.recycleCentrifugalPumpModelData.Where(a => a.UserId == userId)
-                                                           .Include(a => a.restoreCentrifugalPumpPrescriptiveFailureModes)
-                                                           .OrderBy(a => a.RCPPMId)
-                                                           .ToListAsync();
+                var data = await _context.restoreCentrifugalPumpPrescriptiveFailureModes.Where(a => a.UserId == userId && a.IsDeleted == 1)
+                                                            .OrderBy(a => a.RCPPMId)
+                                                            .ToListAsync();
+                return Ok(data);
             }
             catch (Exception exe)
             {
