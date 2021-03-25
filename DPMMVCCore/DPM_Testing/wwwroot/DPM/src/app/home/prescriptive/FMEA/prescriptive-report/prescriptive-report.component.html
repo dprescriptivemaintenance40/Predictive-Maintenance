@@ -1,16 +1,17 @@
+
 <div >
 <div *ngIf="prescriptveReportSelect" style="margin-left: 150px; margin-top: 110px;">
     <div class="card shadow" style="width: 24rem;margin-left: 150px;">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">chair Person</label>
+                    <label style=" margin-right: 12px;">CHAIR PERSON</label>
                     <input type="text" class="form-control" [(ngModel)]="ChairPerson" id="exampleInputPassword1" placeholder="Person Name">
                 </div>
             </li>
             <li class="list-group-item">
                 <div class="input-group mb-3">
-                    <label style="margin-right: 12px;">Participants</label>
+                    <label style="margin-right: 12px;">PARTICIPANTS</label>
                     <input type="text" class="form-control" [(ngModel)]="Participants" id="exampleInputPassword1" placeholder="Participant name">
                 </div>
             </li>
@@ -26,6 +27,7 @@
             <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" media="print" (click)="DownloadPDF()">Print PDf</button>
         </div>
         <div style="margin: 20px;" id="contentToConvert">
+            <div class="page">
             <div class="sidebar-brand-icon col-sm-2">
                 <style>
                     img {
@@ -39,22 +41,26 @@
 
             </div>
         
-            <div id ="Print">
+            <div id ="div1" style="page-break-before: always;"> 
             <h5><b>Executive Summary </b></h5><br>
             <p>
-                This document provides guidance and insight into the analysis process for FMEA. Utilization of this analysis offers a mutual understating of the current condition of assets
+                This document provides guidance and insight into the analysis process for FMEA.
+                 Utilization of this analysis offers a mutual understating of the current condition of assets
             </p>
             <p>
-                This study was carried out by a dedicated engineering team and the results from this analysis are used to assist in finalizing and improving the system design and associated handling and testing procedures
+                This study was carried out by a dedicated engineering team and the results from this analysis are used to assist in finalizing and improving 
+                the system design and associated handling and testing procedures
             </p>
             <p>
-                It provides a formalize approach to technical issues and propose future actions to improve integrity and reliability of asset, minimize environmental risks and eliminate operational downtime.
+                It provides a formalize approach to technical issues and propose future actions
+                 to improve integrity and reliability of asset, minimize environmental risks and eliminate operational downtime.
             </p>
             <p>
                 Part 1 introduces the system data along with engineers participated on the FMEA.
             </p>
             <p>
-                Part 2 is a detail description of the system including sub-assemblies and components and the steps followed to come up with the final result. Past and present data of the data was considered. Site visits attended and discussion with all relevant departments.
+                Part 2 is a detail description of the system including sub-assemblies and components and the steps followed to come up with the final result. 
+                Past and present data of the data was considered. Site visits attended and discussion with all relevant departments.
                 FMEA analysis performed in line with the objectives and specificities.
             </p>
             <p>
@@ -67,36 +73,42 @@
             <p>
                 Annexures provide the fault tree analysis of current study
             </p><br>
-
             <h5><b>Introduction</b></h5><br>
             <p>
-                FMEA analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}. FMEA finalized by using the current data of the asset and considering the failure history for a time domain of &ensp;
+                FMEA analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}. 
+                FMEA finalized by using the current data of the asset and considering the failure history for a time domain of &ensp;
                 <input type="text" class="custom-form-control" [(ngModel)]="Time" placeholder="Year/months"> &ensp;
             </p>
             <p>
-                An understanding of the system to be analyzed was essential prior to the development of a FMEA. Operation parameters of the system had to be considered out along with assets operational criticality. Typically, system block diagrams and many other system-modeling
+                An understanding of the system to be analyzed was essential prior to the development of a FMEA.
+                 Operation parameters of the system had to be considered out along with assets operational criticality. 
+                 Typically, system block diagrams and many other system-modeling
                 techniques used to understand system hierarchies
             </p><br>
-
             <h5><b>FMEA Methodology</b></h5><br>
             <textarea class="custom-textarea form-control"></textarea>
             <h5><b>Current and future actions</b></h5>
             <textarea class="custom-textarea form-control"></textarea><br>
+        </div>
+            <div id="div2" style="page-break-before: always;">
             <h5><b>Conclusions </b></h5><br>
             <p>
-                The objective of the task was to analyze the current condition of {{data.EquipmentType}} with Tag No {{data.TagNumber}}. and propose technical solutions to increase integrity and reliability of the asset .
+                The objective of the task was to analyze the current condition of {{data.EquipmentType}} with Tag No {{data.TagNumber}}. 
+                and propose technical solutions to increase integrity and reliability of the asset .
             </p>
             <p>
                 The reliability methodology was based on FMEA was developed in order to take into consideration the objectives and recommended actions to eliminate the failures.
             </p>
             <p>
-                During FMEA a detail list of failure modes and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation.
+                During FMEA a detail list of failure modes and causes analyzed and technically elaborated. 
+                The team came up with some current actions and proposed future recommendations for implementation.
             </p>
             <span><h6><b>Chair Person: {{ChairPerson}} </b></h6> </span><br>
             <span><h6><b>Participants: {{Participants}} </b></h6></span><br><br>
+            </div>
             <h5><b>Annexures </b></h5><br>
             <p> Block diagrams.</p>
-            <div>
+            <div id ="div3"> 
                 <p-organizationChart [value]="data1" selectionMode="single" styleClass="company">
                     <ng-template let-node pTemplate="person">
                         <div class="node-header p-corner-top">{{node.label}}</div>
@@ -108,7 +120,7 @@
                         {{node.label}}
                     </ng-template>
                 </p-organizationChart><br><br>
-            </div>
+          
             <div *ngFor="let tree of AnnexuresTreeList">
                 <p-organizationChart [value]="tree" selectionMode="single" styleClass="company">
                     <ng-template let-node pTemplate="person">
@@ -122,20 +134,13 @@
                     </ng-template>
                 </p-organizationChart><br><br>
             </div>
-         
-          <h5><b>Attachments & Remarks </b></h5><br>
-              <!-- <div *ngFor = "let AR of attachmentRemark" >
-                <p><b>Failure Modes : </b> {{AR.FunctionMode}} </p>
-                <p><b>Remark : </b> {{AR.Remark}}</p>
-                <p><b>Attachments : </b> {{AR.AttachmentDBPath}}</p>
-                 <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments<i class="fas fa-download"></i> </a> 
-            </div>  -->
         </div>
-        </div>
-  
+        </div> 
+     </div>
 </div>
 <div class="card" style="margin: 20px;">
  <div *ngIf="ReportSelect">
+    <h5><b>Attachments & Remarks </b></h5>
     <table class="table">
         <thead>
           <tr>
