@@ -97,12 +97,43 @@ export class PrescriptiveReportComponent implements OnInit {
     // documentContent += '</head>';
     // documentContent += '<body onload="window.print()">' + printContents + '</body></html>' 
 
-      let popupWinindow;
-      var printContents = document.getElementById("contentToConvert").innerHTML;
-      popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-      popupWinindow.document.open();
-      popupWinindow.document.write('<html><head><link rel="stylesheet" type="text/scss" href="../../../.././assets/printFile.scss" media="print"/></head><body onload="window.print()">' + printContents + '</body></html>');
-      popupWinindow.document.close();
+      // let popupWinindow;
+      // var printContents = document.getElementById("contentToConvert").innerHTML;
+      // popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+      // popupWinindow.document.open();
+      // popupWinindow.document.write(`<html>
+      //       <head>
+      //         <title></title>
+      //         <link rel="stylesheet" type="text/css" media="screen,print" href="assets/printFile.scss">
+
+      //       </head>
+      //   <body onload="window.print();window.close()">`
+      //       + printContents + `</body>
+      //     </html>`
+      //   );
+        
+      // popupWinindow.document.close();
+
+      // const printContent = document.getElementById("contentToConvert");
+      // const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+      // WindowPrt.document.write(printContent.innerHTML);
+      //  WindowPrt.document.write('<link rel="stylesheet" type="text/scss" href="../../../assets/printFile.scss">');
+      //  WindowPrt.document.close();
+      //  WindowPrt.focus();
+      //  WindowPrt.print();
+      // WindowPrt.close();
+      
+    let popupWinindow;
+    let printContents = document.getElementById('contentToConvert').innerHTML;
+    popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+    popupWinindow.document.open();
+    let documentContent = "<html><head>";
+    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/printFile.scss">';
+    documentContent += '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">';
+    documentContent += '</head>';
+    documentContent += '<body onload="window.print()">' + printContents + '</body></html>'
+    popupWinindow.document.write(documentContent);
+    popupWinindow.document.close();
     
   }
 

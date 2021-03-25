@@ -24,8 +24,8 @@
 
 <div *ngIf="ReportSelect" class="card" style="margin: 20px;">
         <div class="print" >
-            <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" media="print" (click)="DownloadPDF()"><i class="fa fa-download" aria-hidden="true"></i></button>    
-            <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark"  media="print"(click)="printPage()"><i class="fa fa-print " aria-hidden="true"></i></button>
+            <a (click)="DownloadPDF()"><i style="float: right;padding-left: 20px;" class="fa fa-download fa-2x"></i></a>  
+            <a (click)="printPage()"><i style="float: right;padding-left: 20px;" class="fa fa-print fa-2x"></i></a>   
         </div>
         <div style="margin: 20px;" id="contentToConvert">
             <div class="page">
@@ -42,7 +42,7 @@
 
             </div>
         
-            <div id ="div1"> 
+            <div id ="div1">
             <h5><b>Executive Summary </b></h5><br>
             <p>
                 This document provides guidance and insight into the analysis process for FMEA.
