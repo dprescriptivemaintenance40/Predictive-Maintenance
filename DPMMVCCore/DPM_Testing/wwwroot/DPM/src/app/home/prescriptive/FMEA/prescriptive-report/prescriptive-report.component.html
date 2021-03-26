@@ -165,40 +165,21 @@
                         </div>
                     </div>
                     </div>
-                    <h5><b>Annexures </b></h5>
-                  <span>
-                    <tr *ngFor = "let AR of PDFURL;let i = index"><br>
-                        <th scope="row">{{i+1}}</th>
-                        Failure Modes: {{AR.FM}} <br>
-                        Remark: {{AR.Remark}}<br>
-                     <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a><br>
-                      </tr>
-                  </span>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div class="card" style="margin: 20px;">
- <div *ngIf="ReportSelect">
-    <h5><b>Attachments & Remarks </b></h5>
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Failure Modes</th>
-            <th scope="col">Remark</th>
-            <th scope="col">Attachments</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor = "let AR of attachmentRemark;let i = index">
-            <th scope="row">{{i+1}}</th>
-            <td> {{AR.FunctionMode}} </td>
-            <td>{{AR.Remark}}</td>
-            <td> <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a> </td>
-          </tr>
-        </tbody>
-      </table> 
- </div>
- </div> -->
+    <div class="card" style="margin: 20px;">
+        <div *ngIf="ReportSelect">
+         <h5><b>Attachments & Remarks </b></h5>
+         <span style="margin: 20px;">
+             <tr *ngFor = "let AR of PDFURL;let i = index"><br>
+                 <th scope="row">{{i+1}}</th>
+                 Failure Modes: {{AR.FM}} <br>
+                 Remark: {{AR.Remark}}<br>
+              <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a><br>
+               </tr>
+           </span>
+      </div>
+      </div>
 </div>
