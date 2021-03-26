@@ -990,6 +990,11 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   DeleteFailureModeFrommTree() {
 
+    var DeletedFMTree = JSON.stringify(this.DeleteFMDataFromTree)
+      
+    // Here deleted failure mode has taken and send data from Function failure to backend
+    this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = DeletedFMTree;
+    
     var FMList = this.data1[0].children[0].children[0].children
     var index = FMList.findIndex(std => std.data.name == this.DeleteFMDataFromTree.data.name);
     this.data1[0].children[0].children[0].children.splice(index, 1);
@@ -1002,6 +1007,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
     var abc2 = FailureModeWithLSETree[0].children[0].children[0].children
     var index3 = abc2.findIndex(std => std.data.name == this.DeleteFMDataFromTree.data.name);
+  
     FailureModeWithLSETree[0].children[0].children[0].children.splice(index3, 1);
 
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(FailureModeWithLSETree)
