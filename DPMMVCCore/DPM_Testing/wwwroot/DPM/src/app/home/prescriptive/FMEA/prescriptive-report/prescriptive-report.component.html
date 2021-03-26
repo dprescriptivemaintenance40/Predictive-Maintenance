@@ -29,6 +29,8 @@
         </div>
         <div style="margin: 20px;" id="contentToConvert">
             <div class="page">
+                <div class="text-center">
+                <h4><b>FMEA Analysis Report</b></h4><br></div>
             <div class="sidebar-brand-icon col-sm-2">
                 <style>
                     img {
@@ -39,7 +41,7 @@
                 <div class="image-container">
                     <img src="dist/DPM/assets/img/Logo_final.jpg" alt="">
                 </div>
-
+            
             </div>
         
             <div id ="div1">
@@ -87,9 +89,9 @@
                 techniques used to understand system hierarchies
             </p><br>
             <h5><b>FMEA Methodology</b></h5><br>
-            <textarea class="custom-textarea form-control"></textarea>
+            <textarea class="custom-textarea form-control"placeholder="Type Methodology"></textarea>
             <h5><b>Current and future actions</b></h5>
-            <textarea class="custom-textarea form-control"></textarea><br>
+            <textarea class="custom-textarea form-control"placeholder="Type Current and future actions"></textarea><br>
         </div>
             <div id="div2" style="page-break-before: always;">
             <h5><b>Conclusions </b></h5><br>
@@ -123,7 +125,7 @@
                 </p-organizationChart><br><br>
           
             <div *ngFor="let tree of AnnexuresTreeList">
-                <p-organizationChart [value]="tree" selectionMode="single" styleClass="company">
+                <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
                     <ng-template let-node pTemplate="person">
                         <div class="node-header p-corner-top">{{node.label}}</div>
                         <div class="node-content">
@@ -133,9 +135,15 @@
                     <ng-template let-node pTemplate="department">
                         {{node.label}}
                     </ng-template>
-                </p-organizationChart><br><br>
+                </p-organizationChart><br><br>  
             </div>
-        </div>
+            <div *ngIf="ImageEnable" style="margin: 10px;width: 120px;height: 120px; "id="file ">
+                <img [src]="EditdbPathURL" width="10 " height="10 ">
+                <tr *ngFor = "let AR of attachmentRemark;let i = index">
+                    {{AR.Remark}}
+                </tr>
+            </div>
+          </div>
         </div> 
      </div>
 </div>
