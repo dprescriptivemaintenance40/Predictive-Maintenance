@@ -322,7 +322,11 @@
                         {{con1}}
                     </div>
                     <div class="drop" pDroppable="con1" (onDrop)="dropC1($event)">
-                        <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}</div>
+                        <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}
+                            <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                             <i class="far fa-times-circle "></i>
+                            </a>
+                        </div>
 
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
@@ -358,8 +362,11 @@
                         {{con2}}
                     </div>
                     <div class="drop" pDroppable="con2" (onDrop)="dropC2($event)">
-                        <div *ngFor="let c of dropedConsequenceEffectFailureMode">{{c}}</div>
-
+                        <div *ngFor="let c of dropedConsequenceEffectFailureMode">{{c}}
+                            <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                <i class="far fa-times-circle "></i>
+                               </a>
+                        </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
 
@@ -389,8 +396,10 @@
                     <p>Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment? </p>
                 </div>
                 <div class="container">
-                    <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con3" (onDragStart)="dragStartC3($event,con3)" (onDragEnd)="dragEndC3($event)">
-                        {{con3}}
+                    <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}
+                        <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                            <i class="far fa-times-circle "></i>
+                           </a>
                     </div>
                     <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
                         <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}</div>
@@ -423,8 +432,10 @@
                     <p>Does the Failure mode adversily affect operational capabilities of the plant? </p>
                 </div>
                 <div class="container">
-                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con4" (onDragStart)="dragStartC4($event,con4)" (onDragEnd)="dragEndC4($event)">
-                        {{con4}}
+                    <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}
+                        <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                            <i class="far fa-times-circle "></i>
+                           </a>
                     </div>
                     <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
                         <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}</div>
@@ -694,7 +705,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="DeleteFailureModeFrommTree()">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="DeleteFailureModeFrommTree()">Delete</button>
             </div>
         </div>
     </div>
@@ -722,3 +733,44 @@
         </div>
     </div>
 </div>
+
+
+<div>
+    <p-card>
+
+        <p><b>Your selected Tree</b></p>
+        <p-organizationChart [value]="SavedConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}} 
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+</div><br>
+
+
+<div class="modal fade" id="ChangeConsequence" tabindex="-1" role="dialog" aria-labelledby="ChangeConsequence" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to Change the Consequence
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="ChangeConsequence()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>

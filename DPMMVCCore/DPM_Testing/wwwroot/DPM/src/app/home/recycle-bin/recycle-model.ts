@@ -16,6 +16,9 @@ export class CentrifugalPumpPrescriptiveModel{
     public CMaintainenancePractice : string = "";
     public CFrequencyMaintainenance : string = "";
     public CConditionMonitoring : string = "";
+    public CAttachmentDBPath : string = ""
+    public CAttachmentFullPath : string = ""
+    public CRemarks : string = ""
 
     public centrifugalPumpPrescriptiveFailureModes: any = []
 

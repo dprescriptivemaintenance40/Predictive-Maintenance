@@ -77,21 +77,21 @@ namespace DPM.Controllers.Prescriptive
         {
             try
             {
-		var childData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
-		prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
+		        var childData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
+		        prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
                 prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = null;
                 _context.PrescriptiveModelData.Add(prescriptiveModel);
                 await _context.SaveChangesAsync();
 		
-		int ID = prescriptiveModel.CFPPrescriptiveId;
+	            int ID = prescriptiveModel.CFPPrescriptiveId;
 		
-	    	foreach (var item in childData)
+	    	    foreach (var item in childData)
                 {
-		  item.CPPFMId = 0;
-		  item.CFPPrescriptiveId = ID;
-		  _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
+		          item.CPPFMId = 0;
+		          item.CFPPrescriptiveId = ID;
+		          _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
                   await _context.SaveChangesAsync();
-		}
+		        }
                   
 
                 return Ok();
@@ -915,8 +915,8 @@ namespace DPM.Controllers.Prescriptive
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
                 var data = await _context.restoreCentrifugalPumpPrescriptiveFailureModes.Where(a => a.UserId == userId && a.IsDeleted == 1)
-                                                            .OrderBy(a => a.RCPPMId)
-                                                            .ToListAsync();
+                                                                                        .OrderBy(a => a.RCPPMId)
+                                                                                        .ToListAsync();
                 return Ok(data);
             }
             catch (Exception exe)
