@@ -9,7 +9,6 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e"
-      
     },
     "private": true,
     "dependencies": {
@@ -27,6 +26,7 @@
         "canvasjs": "^1.8.3",
         "chart.js": "^2.9.4",
         "chartjs-plugin-streaming": "^1.8.0",
+        "easy-pdf-merge": "^0.2.6",
         "file-saver": "^2.0.5",
         "html2canvas": "^1.0.0-rc.7",
         "intl-tel-input": "^17.0.8",
@@ -39,6 +39,8 @@
         "ngx-spinner": "^10.0.1",
         "ngx-toastr": "^9.1.1",
         "ngx-tooltip": "0.0.9",
+        "pdf-lib": "^1.6.0",
+        "pdf-merger-js": "^3.1.0",
         "primeicons": "^4.1.0",
         "primeng": "^10.0.3",
         "read-excel-file": "^4.1.0",
@@ -52,7 +54,7 @@
         "@angular/cli": "^11.0.5",
         "@angular/compiler-cli": "~11.0.5",
         "@types/jasmine": "~3.6.0",
-        "@types/node": "^12.11.1",
+        "@types/node": "^12.20.6",
         "codelyzer": "^6.0.0",
         "jasmine-core": "~3.6.0",
         "jasmine-spec-reporter": "~5.0.0",

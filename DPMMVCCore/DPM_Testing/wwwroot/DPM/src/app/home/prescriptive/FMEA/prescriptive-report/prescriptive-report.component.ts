@@ -4,8 +4,10 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import html2canvas from 'html2canvas';
 import jspdf, { jsPDF } from 'jspdf';
 import { MessageService } from 'primeng/api';
-import { from } from 'rxjs';
+import { PDFDocument } from 'pdf-lib'
 
+
+//const PDFMerger = require('pdf-merger-js');
 
 @Component({
   selector: 'app-prescriptive-report',
@@ -19,6 +21,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public EditdbPathURL: SafeUrl;
   public data1: any = []
   public AnnexuresTreeList: any = []
+  public PDFFile: any = []
   public SingleFailuerTree: any = []
   public Time: string = "";
   public ChairPerson: string = "";
@@ -28,14 +31,11 @@ export class PrescriptiveReportComponent implements OnInit {
   public ReportSelect: boolean = false;
   public attachmentRemark : any =[]
   public url : string =""
-  public FileId: string = "";
   public fileUpload: string = "";
-  public uploadedAttachmentList: any[] = [];
-  public CAttachmentFile: any;
   public FileSafeUrl: any;
-  public fullPath: string = ""
-  public dbPath: string = "";
-  public Remark: string = "";
+  public BrowserURl: string = "";
+  public PDFURL :any=[]
+
 
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
@@ -44,12 +44,30 @@ export class PrescriptiveReportComponent implements OnInit {
   ngOnInit() {
     this.data = JSON.parse(localStorage.getItem('ReportObj'))
     this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes
-    var BrowserURl  = window.location.href
-    var BrowserURl = window.location.href.split('#')[0]
+     this.BrowserURl  = window.location.href
+     this.BrowserURl  = window.location.href.split('#')[0]
     this.data.Date = this.datepipe.transform(this.data.Date, 'dd/MM/YYYY')
     var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
     var NewTree = JSON.parse(this.data.FMWithConsequenceTree)
+    var NewTree = JSON.parse(this.data.FMWithConsequenceTree)
     NewTree[0].children[0].children[0].children.forEach((res: any) => {
+      for (let index = 0; index < this.attachmentRemark.length; index++) {
+        if(res.data.name == this.attachmentRemark[index].FunctionMode){
+          var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
+          if(extn == 'jpg' || extn == 'png'){
+            res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
+            res.Remark = this.attachmentRemark[index].Remark
+          }else{
+            let obj ={}
+            obj['FM'] = res.data.name;
+            obj['Remark'] = this.attachmentRemark[index].Remark;
+            obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
+          
+            this.PDFURL.push(obj)
+          } 
+
+          } 
+      }      
       this.AnnexuresTreeList.push([res]);
     });
     ConsequenceTree[0].children[0].children[0].children = [];
@@ -72,8 +90,8 @@ export class PrescriptiveReportComponent implements OnInit {
         this.ImageEnable = false;
     }
     console.log(extension)
-  }
-  async ngOnDestroy() {
+   }
+   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
   }
 
@@ -81,7 +99,6 @@ export class PrescriptiveReportComponent implements OnInit {
     const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
     return extension;
 }
-
 
   public DownloadPDF() {
     var data = document.getElementById('contentToConvert');
@@ -100,56 +117,24 @@ export class PrescriptiveReportComponent implements OnInit {
         doc.addPage();
         doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight+90);
         heightLeft -= pageHeight;
-        doc.addPage();
     }
-  doc.save("PrescriptiveFMEA Report.pdf");
+    doc.save("PrescriptiveFMEA Report.pdf");
 });
+
   }
 
+//    DownloadPDF1(){
+//   var merger = new PDFMerger();
+//   // merger.add('pdf1.pdf');  
+//   // merger.add('pdf2.pdf'); 
+//   //  merger.save('merged.pdf');
+//   this.attachmentRemark.forEach(element => {
+//     merger.add( this.BrowserURl+element.AttachmentDBPath)  
+//   });
+//   merger.save('Report.pdf'); 
+// }
 
-  // printPage() {
-  //   let printContents = document.getElementById('contentToConvert').innerHTML;
-  //   let originalContents = document.body.innerHTML;
-  //   document.body.innerHTML = printContents;
-  //   window.print();
-  //   document.body.innerHTML = originalContents;  
-  
-  // }
-
-
-  printPage() {
-    // let printContents = document.getElementById('contentToConvert').innerHTML;
-    // let documentContent = "<html><head>";
-    // documentContent += '<link rel="stylesheet" type="text/css" href="../../../../../assets/printFile.scss"/>';
-    // documentContent += '</head>';
-    // documentContent += '<body onload="window.print()">' + printContents + '</body></html>' 
-
-      // let popupWinindow;
-      // var printContents = document.getElementById("contentToConvert").innerHTML;
-      // popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-      // popupWinindow.document.open();
-      // popupWinindow.document.write(`<html>
-      //       <head>
-      //         <title></title>
-      //         <link rel="stylesheet" type="text/css" media="screen,print" href="assets/printFile.scss">
-
-      //       </head>
-      //   <body onload="window.print();window.close()">`
-      //       + printContents + `</body>
-      //     </html>`
-      //   );
-        
-      // popupWinindow.document.close();
-
-      // const printContent = document.getElementById("contentToConvert");
-      // const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-      // WindowPrt.document.write(printContent.innerHTML);
-      //  WindowPrt.document.write('<link rel="stylesheet" type="text/scss" href="../../../assets/printFile.scss">');
-      //  WindowPrt.document.close();
-      //  WindowPrt.focus();
-      //  WindowPrt.print();
-      // WindowPrt.close();
-      
+  printPage() {  
     let popupWinindow;
     let printContents = document.getElementById('contentToConvert').innerHTML;
     popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
@@ -174,20 +159,14 @@ export class PrescriptiveReportComponent implements OnInit {
       alert("Fields are missing")
     }
   }
- 
     // const mergedPdf = await PDFDocument.create();
-
     // const pdfA = await PDFDocument.load(fs.readFileSync('contentToConvert.pdf'));
-    //  const pdfB = await PDFDocument.load(fs.readFileSync('b.pdf'));
-
+    // const pdfB = await PDFDocument.load(fs.readFileSync('b.pdf'));
     // const copiedPagesA = await mergedPdf.copyPages(pdfA, pdfA.getPageIndices());
-    //  copiedPagesA.forEach((page) => mergedPdf.addPage(page));
-
+    // copiedPagesA.forEach((page) =>mergedPdf.addPage(page));
     // const copiedPagesB = await mergedPdf.copyPages(pdfB, pdfB.getPageIndices());
     // copiedPagesB.forEach((page) => mergedPdf.addPage(page));
-
     //  const mergedPdfFile = await mergedPdf.save()
-
 
     // async mergePdfs(pdfsToMerges: ArrayBuffer[]) {  
     //   const mergedPdf = await PDFDocument.create();
@@ -203,6 +182,62 @@ export class PrescriptiveReportComponent implements OnInit {
     //   const mergedPdfFile = await mergedPdf.save();
     //   return mergedPdfFile;
     // }
+
+    // private async generatePdfList(type: string, page = 1) {
+    //   console.log('STEP 1:', new Date());
+    //   const elements = document.querySelectorAll('.staff-list-receipt');
+    //   const elementArray = Array.from(elements);
+    //   const bufferPromises: Promise<any>[] = elementArray
+    //     .filter(element => !!element)
+    //     .map(element => this.elementToPdfBuffer(type, element, page));
+    //   const pdfArrayBuffers = await Promise.all(bufferPromises);
+    //   console.log('STEP 2:', new Date());
+    //   const mergedPdf = await this.mergePdfs(pdfArrayBuffers);
+    //   const pdfUrl = URL.createObjectURL(
+    //     new Blob([mergedPdf], { type: 'application/pdf' }),
+    //   );
+    // }
+  
+    async elementToPdfBuffer(type, element, page) {
+      let printContents = document.getElementById('contentToConvert').innerHTML;
+      var pdf
+     const pdfBuffer = await pdf.output("arraybuffer");
+      return pdfBuffer;
+    }
+    async mergePdfs(pdfsToMerges: ArrayBuffer[]) {
+      const mergedPdf = await PDFDocument.create();
+      const actions = pdfsToMerges.map(async pdfBuffer => {
+        const pdf = await PDFDocument.load(pdfBuffer);
+        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+        copiedPages.forEach((page) => {
+          page.setWidth(210);
+          mergedPdf.addPage(page);
+        });
+      });
+      await Promise.all(actions);
+      const mergedPdfFile = await mergedPdf.save();
+      return mergedPdfFile;
+    }
+
+  //   mergeAllPDFs(url) {
+  //   var PDFLib
+  //     const pdfDoc = PDFLib.PDFDocument.create();
+  //     const numDocs = url.length;
+      
+  //     for(var i = 0; i < numDocs; i++) {
+  //         const donorPdfBytes =  fetch(url[i]).then(res => res.arrayBuffer());
+  //         const donorPdfDoc = PDFLib.PDFDocument.load(donorPdfBytes);
+  //         const docLength = donorPdfDoc.getPageCount();
+  //         for(var k = 0; k < docLength; k++) {
+  //             const [donorPage] =  pdfDoc.copyPages(donorPdfDoc, [k]);
+  //             pdfDoc.addPage(donorPage);
+  //         }
+  //     }
+  //     const pdfDataUri =  pdfDoc.saveAsBase64({ dataUri: true });
+  //     var data_pdf = pdfDataUri.substring(pdfDataUri.indexOf(',')+1);
+  // }
+  
+
 
 
 }
