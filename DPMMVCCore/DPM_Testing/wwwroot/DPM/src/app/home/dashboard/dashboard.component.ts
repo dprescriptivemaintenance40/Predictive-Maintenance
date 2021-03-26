@@ -1021,11 +1021,16 @@ export class DashboardComponent {
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI').subscribe(
       res => {
-        this.prescriptiveRecords = res
+        this.prescriptiveRecords = res;
+        this.getTreeStructure(this.prescriptiveRecords[0]);
       }, err => {
         console.log(err.err);
       }
     )
+  }
+
+  getTreeStructure(item) {
+    this.tree = JSON.parse(item.FailureModeWithLSETree);
   }
 
   UpdatePrescriptiveRecords(p) {
@@ -1073,7 +1078,8 @@ export class DashboardComponent {
   FailureModeTable(p) {
     this.Table1 = false
     this.Table2 = true
-    this.FailureModeDataTabe2 = p.centrifugalPumpPrescriptiveFailureModes
+    this.FailureModeDataTabe2 = p.centrifugalPumpPrescriptiveFailureModes;
+    this.getTreeStructure(p);
   }
 
   BackToTable1() {
@@ -1091,6 +1097,7 @@ export class DashboardComponent {
   private ParentId: number = 0;
   public CRemarks: string = "";
   public CAttachmentFile: any;
+  public tree: any;
   public uploadFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
@@ -1116,7 +1123,7 @@ export class DashboardComponent {
     const formData = new FormData();
     formData.append('file', this.CAttachmentFile);
     formData.append('CRemarks', this.CRemarks);
-    formData.append('removePath',this.fileToUpload)
+    formData.append('removePath', this.fileToUpload)
 
     this.http.put(`api/PrescriptiveAPI/CompontentAttachment?id=${this.ParentId}`, formData)
       .subscribe(res => {
@@ -1153,8 +1160,8 @@ export class DashboardComponent {
     this.fileAttachmentEnable = false
     this.fileToUpload = []
   }
-  FMEAReports(p){
-   localStorage.setItem('ReportObj',JSON.stringify(p))
+  FMEAReports(p) {
+    localStorage.setItem('ReportObj', JSON.stringify(p))
   }
 
 }

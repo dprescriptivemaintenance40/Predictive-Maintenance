@@ -10,19 +10,19 @@
     padding: 3px;
 }
 
-  .border {
-    border:2px solid black;
+.border {
+    border: 2px solid black;
     margin: 1rem 0;
     padding: 0.25rem;
-    cursor: pointer; 
-   
-  }
-  .drop {
+    cursor: pointer;
+}
+
+.drop {
     border: 3px solid #585570;
-     padding: 1rem;
-     margin: 1rem 0;
-     border-color: #585570;
-  }
+    padding: 1rem;
+    margin: 1rem 0;
+    border-color: #585570;
+}
 
 :host ::ng-deep .p-organizationchart {
     .p-person {
@@ -37,7 +37,6 @@
     .node-header,
     .node-content {
         padding: .5em .7rem;
-        
     }
     .node-content:hover {
         overflow: visible;

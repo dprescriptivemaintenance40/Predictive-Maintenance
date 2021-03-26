@@ -226,13 +226,13 @@
                         <div class="toolbar" role="toolbar">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <span [disabled]="FMAttachmentADD"  class="input-group-text">Upload</span>
+                                    <span class="input-group-text">Upload</span>
                                 </div>
                                 <div class="custom-file">
-                                  <input [disabled]="FMAttachmentADD"  type="file" accept="image/x-png,image/jpeg,.pdf," (change)="AddUploadAttachmentFile($event)" class="custom-file-input" id="inputGroupFile01">
-                                  <label class="custom-file-label" for="inputGroupFile01">Choose attachment</label>
+                                    <input [disabled]="FMAttachmentADD" type="file" accept="image/x-png,image/jpeg,.pdf," (change)="AddUploadAttachmentFile($event)" class="custom-file-input" id="inputGroupFile01">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose attachment</label>
                                 </div>
-                              </div>
+                            </div>
                             <!-- <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
                             <button type="button" (click)="file.click()" class="btn btn-light">
                                 <span class="fa fa-paperclip"></span>
@@ -608,17 +608,17 @@
                         <div class="toolbar" role="toolbar">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <span [disabled]="AttachmentADD"  class="input-group-text">Upload</span>
+                                    <span class="input-group-text">Upload</span>
                                 </div>
                                 <div class="custom-file">
-                                  <input [disabled]="AttachmentADD" type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)" class="custom-file-input" id="inputGroupFile01">
-                                  <label class="custom-file-label" for="inputGroupFile01">Choose file to update attachment</label>
+                                    <input [disabled]="AttachmentADD" type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)" class="custom-file-input" id="inputGroupFile01">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file to update attachment</label>
                                 </div>
-                              </div>
+                            </div>
                         </div>
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="file"><br>
-                               
+
                                 <span *ngIf="(EditdbPathURL == '')">
                                     <p style="margin: 20px; margin-left: 40px;"> No attachment to show</p>
                                 </span>
@@ -717,7 +717,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="DeleteAttachment()" >Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="DeleteAttachment()">Delete</button>
             </div>
         </div>
     </div>
