@@ -96,7 +96,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public EditfullPath: string = "";
   public EditdbPath: string = "";
   public EditdbPathURL: SafeUrl;
+  public ADDdbPathURL: SafeUrl;
   public extensionPDF: boolean = false;
+  public extensionAddImage: boolean = false;
+  public extensionAddPDF: boolean = false;
   public extensionImage: boolean = false;
   public UploadFileDataResponse: any = [];
   public UploadFileDataUpdateResponse: any = [];
@@ -111,6 +114,15 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public FreshUploadUpdate: boolean = false;
   public DeleteFMDataFromTree;
   public DeleteFMName: string = "";
+  public UpdatedAttachmentInFMDBPath : string = ""
+  public UpdatedAttachmentInFMFullPath : string = ""
+  public ADDUpdatedAttachmentInFMDBPath : string = ""
+  public ADDUpdatedAttachmentInFMFullPath : string = ""
+  public FMAttachmentADD : boolean = false
+  public uploadedAttachmentList: any[] = [];
+  public FileId;
+  public AddUploadedAttachmentList: any[] = [];
+  public AddFileId;
 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
@@ -213,7 +225,12 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.EditFrequencyFactor = element.FrequencyFactor
         this.EditdbPath = element.AttachmentDBPath;
         this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(element.AttachmentDBPath);
+        this.UpdatedAttachmentInFMDBPath = element.AttachmentDBPath;
+        this.UpdatedAttachmentInFMFullPath = element.AttachmentFullPath;
         this.EditfullPath = element.AttachmentFullPath
+        if(this.EditdbPathURL == ''){
+          this.AttachmentADD = false;
+        }else{ this.AttachmentADD = true;}
         this.Remark = element.Remark
 
       }
@@ -238,15 +255,115 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     return extension;
   }
 
-
   DeleteAttachment() {
-    this.AttachmentADD = true;
+    this.AttachmentADD = false;
     this.extensionPDF = false;
     this.extensionImage = false;
-
+    this.EditdbPathURL = ""
     const params = new HttpParams()
-      .set("fullPath", this.EditfullPath)
+          .set("fullPath",this.UpdatedAttachmentInFMFullPath )
     this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
+    this.UpdatedAttachmentInFMDBPath = "";
+    this.UpdatedAttachmentInFMFullPath = "";
+    
+  }
+
+  
+  public uploadAttachmentFile(event) {
+    if (event.target.files.length > 0) {
+      if (event.target.files[0].type === 'application/pdf'
+        || event.target.files[0].type === 'image/png'
+        || event.target.files[0].type === 'image/jpeg') {  
+        let filedata = this.uploadedAttachmentList.find(a => a.FileId === this.FileId);
+        let fileToUpload = event.target.files[0];
+        if(this.EditdbPath != ""){
+          filedata=[]
+          var dbPath= this.EditdbPath
+          // filedata.push('dbPath')
+          filedata.dbPath = dbPath 
+          this.EditdbPath = ""
+        }
+        const formData = new FormData();
+        formData.append('file', fileToUpload, fileToUpload.name);
+        formData.append('removePath', !!filedata ? filedata.dbPath : "");
+        this.fileUpload = fileToUpload.name;
+        this.http.post('api/PrescriptiveAPI/UploadFile', formData)
+          .subscribe((res: any) => {
+            this.dbPath = res.dbPath;
+            this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.dbPath);
+            this.fullPath = res.fullPath;
+            this.fileUpload = res.fileName;
+            this.UpdatedAttachmentInFMDBPath =  res.dbPath;
+            this.UpdatedAttachmentInFMFullPath = res.fullPath;
+            this.FileId = res.FileId;
+            this.uploadedAttachmentList.push(res)
+            var ext = this.getFileExtension(this.dbPath)
+            if(ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'png'){
+              this.extensionPDF = false
+              this.extensionImage = true
+            }else if(ext.toLowerCase() == 'pdf'){
+              this.extensionPDF = true
+              this.extensionImage = false
+            }
+          }, err => { console.log(err.err) });
+
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
+      }
+    }
+  }
+
+  
+
+  public AddUploadAttachmentFile(event) {
+    if (event.target.files.length > 0) {
+      if (event.target.files[0].type === 'application/pdf'
+        || event.target.files[0].type === 'image/png'
+        || event.target.files[0].type === 'image/jpeg') {  
+        let filedata = this.AddUploadedAttachmentList.find(a => a.FileId === this.FileId);
+        let fileToUpload = event.target.files[0];
+        const formData = new FormData();
+        formData.append('file', fileToUpload, fileToUpload.name);
+        formData.append('removePath', !!filedata ? filedata.dbPath : "");
+        this.http.post('api/PrescriptiveAPI/UploadFile', formData)
+          .subscribe((res: any) => {
+           // this.dbPath = res.dbPath;
+             this.ADDdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(res.dbPath);
+            // this.fullPath = res.fullPath;
+            // this.fileUpload = res.fileName;
+            this.ADDUpdatedAttachmentInFMDBPath =  res.dbPath;
+            this.ADDUpdatedAttachmentInFMFullPath = res.fullPath;
+            this.AddFileId = res.FileId;
+            this.AddUploadedAttachmentList.push(res)
+            this.FMAttachmentADD = true
+            var ext = this.getFileExtension(res.dbPath)
+            if(ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'png'){
+              this.extensionAddPDF = false
+              this.extensionAddImage = true
+            }else if(ext.toLowerCase() == 'pdf'){
+              this.extensionAddPDF = true
+              this.extensionAddImage = false
+            }
+          }, err => { console.log(err.err) });
+
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
+      }
+    }
+  }
+
+
+  DeleteADDAttachment() {
+    this.FMAttachmentADD = false
+    this.extensionAddPDF = false;
+    this.extensionAddImage = false;
+    this.ADDdbPathURL = ""
+    const params = new HttpParams()
+          .set("fullPath",this.ADDUpdatedAttachmentInFMFullPath )
+    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
+    this.ADDUpdatedAttachmentInFMDBPath = "";
+    this.ADDUpdatedAttachmentInFMFullPath = "";
+    
   }
 
 
@@ -299,29 +416,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
 
 
-  public uploadFileUpdate = (files) => {
-    if (files.length === 0) {
-      return;
-    }
-    let fileToUpload = <File>files[0];
-    const formData = new FormData();
-
-    formData.append('file', fileToUpload, fileToUpload.name);
-    this.fileUpload = fileToUpload.name;
-
-    this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
-      res => {
-        this.UploadFileDataUpdateResponse = res;
-        this.dbPathUpdate = this.UploadFileDataUpdateResponse.dbPath;
-        this.fullPathUpdate = this.UploadFileDataUpdateResponse.fullPath;
-        this.FreshUploadUpdate = true
-      }, err => { console.log(err.err) }
-    )
-
-  }
-
-
-
 
   CloseAttachmentModalUpdate() {
     const params = new HttpParams()
@@ -367,16 +461,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data2)
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
 
-    var dbPath, fullPath;
-    if (this.dbPathUpdate.length > 4) {
-      dbPath = this.dbPathUpdate
-      fullPath = this.fullPathUpdate
-    } else {
-      dbPath = this.EditdbPath
-      fullPath = this.EditfullPath
-
-    }
-
+    
     let obj = {};
     obj['CPPFMId'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId
     obj['CFPPrescriptiveId'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId
@@ -389,8 +474,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     obj['SafetyFactor'] = this.EditSafetyFactor
     obj['ProtectionFactor'] = this.EditProtectionFactor
     obj['FrequencyFactor'] = this.EditFrequencyFactor
-    obj['AttachmentDBPath'] = dbPath
-    obj['AttachmentFullPath'] = fullPath
+    obj['AttachmentDBPath'] = this.UpdatedAttachmentInFMDBPath 
+    obj['AttachmentFullPath'] = this.UpdatedAttachmentInFMFullPath
     obj['Remark'] = this.Remark
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     this.Remark = ""
@@ -473,35 +558,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Please selct Failuer Modes' });
     }
   }
-
-
-
-
-  public uploadFile = (files) => {
-    if (files.length === 0) {
-      return;
-    }
-    let fileToUpload = <File>files[0];
-    const formData = new FormData();
-
-    formData.append('file', fileToUpload, fileToUpload.name);
-    this.fileUpload = fileToUpload.name;
-
-    this.http.post('api/PrescriptiveAPI/UploadFile', formData).subscribe(
-      res => {
-        this.UploadFileDataResponse = res;
-        this.dbPath = this.UploadFileDataResponse.dbPath;
-        this.fullPath = this.UploadFileDataResponse.fullPath;
-        this.fileAttachmentEnable = true;
-      }, err => { console.log(err.err) }
-    )
-
-  }
-
-
-
-
-
 
 
 
@@ -609,8 +665,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     Data['SafetyFactor'] = this.ADDSafetyFactor
     Data['ProtectionFactor'] = this.ADDProtectionFactor
     Data['FrequencyFactor'] = this.ADDFrequencyFactor
-    Data['AttachmentDBPath'] = this.dbPath
-    Data['AttachmentFullPath'] = this.fullPath
+    Data['AttachmentDBPath'] = this.ADDUpdatedAttachmentInFMDBPath
+    Data['AttachmentFullPath'] = this.ADDUpdatedAttachmentInFMFullPath
     Data['Remark'] = this.Remark
 
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
@@ -621,6 +677,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Successfully updated' });
         this.FinalUpdate = false;
         this.AddFailureMode = true;
+        this.router.navigateByUrl('/Home/Dashboard')
       }
     )
 
