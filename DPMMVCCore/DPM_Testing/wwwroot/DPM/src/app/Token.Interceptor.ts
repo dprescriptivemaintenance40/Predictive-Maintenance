@@ -39,7 +39,9 @@ export class AuthInterceptor implements HttpInterceptor {
                 })
             );
         }
-        else
+        else {
+            this.commonLoadingDirective.showLoading(false, '');
             return next.handle(req.clone());
+        }
     }
 }

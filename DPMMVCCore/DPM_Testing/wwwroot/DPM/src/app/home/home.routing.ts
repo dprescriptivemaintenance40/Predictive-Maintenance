@@ -21,11 +21,11 @@ import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
         {
             path: '', component: HomeComponent,
             children: [
-                { path: '', redirectTo: 'Dashboard', pathMatch: 'full' },
-                { path: 'Dashboard', component: DashboardComponent },
-                { path: 'Compressor', loadChildren: () => import('./Compressor/ScrewCompressor/compressor.module').then(a => a.CompressorModule) },
-                { path: 'Prescriptive', loadChildren: () => import('./prescriptive/prescriptive.module').then(a => a.PrescriptiveModule) },
+                { path: '', redirectTo: 'Education', pathMatch: 'full' },
                 { path: 'Education', component: EducationComponent },
+                // { path: 'Dashboard', component: DashboardComponent },
+                { path: 'Compressor', loadChildren: () => import('./Compressor/ScrewCompressor/compressor.module').then(a => a.CompressorModule) },
+                { path: 'Prescriptive', loadChildren: () => import('./prescriptive/prescriptive.module').then(a => a.PrescriptiveModule) },               
                 { path: 'Profile', component: ProfileComponent },
                 { path: 'Report', component: ReportComponent },
                 { path: 'CentrifugalPump', component: CentrifugalPumpComponent },
