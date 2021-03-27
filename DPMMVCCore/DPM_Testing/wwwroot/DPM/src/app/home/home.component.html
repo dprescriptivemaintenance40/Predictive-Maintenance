@@ -15,11 +15,18 @@
                 </div>
             </div>
         </a>
-        <hr class="sidebar-divider ">
+        <!--  <hr class="sidebar-divider ">
         <li class="nav-item active">
             <a class="nav-link" [routerLink]="['/Home/Dashboard']">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
+        </li> -->
+        <hr class="sidebar-divider ">
+        <li class="nav-item active">
+            <a [routerLink]="[ '/Home/Education']" class="nav-link">
+                <i [routerLink]="[ '/Home/Education']" class="fas fa-graduation-cap"></i>
+                <span> DPM-Education</span>
+            </a>
         </li>
         <hr class="sidebar-divider">
         <li class="nav-item">
@@ -72,22 +79,15 @@
                 </li>
             </div>
         </li>
-        <li class="nav-item" *ngIf="staticEquitment">
+        <!-- <li class="nav-item" *ngIf="staticEquitment">
             <a class="nav-link collapsed" aria-expanded="true">
                 <i class="fas fa-toolbox"></i>
                 <span> Static Equipment</span>
             </a>
-        </li>
-
-        <li class="nav-item">
-            <a [routerLink]="[ '/Home/Education']" class="nav-link collapsed" data-toggle="collapse" data-target="" aria-expanded="true" aria-controls="">
-                <i [routerLink]="[ '/Home/Education']" class="fas fa-graduation-cap"></i>
-                <span> DPM-Education</span>
-            </a>
-        </li>
+        </li> -->
 
         <li *ngIf="report" class="nav-item">
-            <a [routerLink]="[ '/Home/Report']" class="nav-link collapsed" data-toggle="collapse" data-target="" aria-expanded="true" aria-controls="">
+            <a [routerLink]="[ '/Home/Report']" class="nav-link">
                 <i [routerLink]="[ '/Home/Report']"></i>
                 <i class="fas fa-file-pdf"></i>
                 <span>Report</span>
@@ -116,8 +116,8 @@
             </div>
         </li>
 
-        <li  class="nav-item">
-            <a [routerLink]="[ '/Home/RecycleBin']" class="nav-link collapsed" data-toggle="collapse" data-target="" aria-expanded="true" aria-controls="">
+        <li class="nav-item">
+            <a [routerLink]="[ '/Home/RecycleBin']" class="nav-link">
                 <i [routerLink]="[ '/Home/RecycleBin']"></i>
                 <i class="fas fa-trash"></i>
                 <span>Recycle Bin</span>

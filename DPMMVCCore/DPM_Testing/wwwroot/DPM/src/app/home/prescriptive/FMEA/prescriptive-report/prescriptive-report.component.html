@@ -1,26 +1,23 @@
-<div>
-    <div *ngIf="prescriptveReportSelect" style="margin-left: 150px; margin-top: 110px;">
-        <div class="card shadow" style="width: 24rem;margin-left: 150px;">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    <div class="input-group mb-3">
-                        <label style=" margin-right: 12px;">CHAIR PERSON</label>
-                        <input type="text" class="form-control" [(ngModel)]="ChairPerson" id="exampleInputPassword1"
-                            placeholder="Person Name">
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="input-group mb-3">
-                        <label style="margin-right: 12px;">PARTICIPANTS</label>
-                        <input type="text" class="form-control" [(ngModel)]="Participants" id="exampleInputPassword1"
-                            placeholder="Participant name">
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <button class="btn btn-dark" (click)="GeneratePrescriptionReport()">Done</button>
-                </li>
-            </ul>
-        </div>
+<div *ngIf="prescriptveReportSelect">
+    <div class="card shadow" style="margin: auto; width: 50%; padding: 10px;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Provide below informations</b></li>
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <label style=" margin-right: 12px;">chair Person</label>
+                    <input type="text" class="form-control" [(ngModel)]="ChairPerson" id="exampleInputPassword1" placeholder="Person Name">
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <label style="margin-right: 12px;">Participants</label>
+                    <input type="text" class="form-control" [(ngModel)]="Participants" id="exampleInputPassword1" placeholder="Participant name">
+                </div>
+            </li>
+            <li class="list-group-item">
+                <button class="btn btn-dark" (click)="GeneratePrescriptionReport()">Done</button>
+            </li>
+        </ul>
     </div>
 
     <div *ngIf="ReportSelect" class="card" style="margin: 20px;">

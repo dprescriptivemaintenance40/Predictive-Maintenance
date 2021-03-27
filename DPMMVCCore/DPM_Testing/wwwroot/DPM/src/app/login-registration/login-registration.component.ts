@@ -37,7 +37,7 @@ export class LoginRegistrationComponent {
     this.service.formModel.reset();
 
     if (localStorage.getItem('token') != null) {
-      this.router.navigateByUrl('/Home/Dashboard');
+      this.router.navigateByUrl('Home');
     }
 
     this.loginForm = this.formBuilder.group({
@@ -106,7 +106,7 @@ export class LoginRegistrationComponent {
            localStorage.setItem('userObject', JSON.stringify(res.user));
            var data = JSON.parse(localStorage.getItem('userObject'))
            this.eventEmitterService.SendDataToHomeComponent(data); 
-            this.router.navigateByUrl('/Home/Dashboard');
+            this.router.navigateByUrl('Home');
           },
           err => {
             if (err.status == 400)

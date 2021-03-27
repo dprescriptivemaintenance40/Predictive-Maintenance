@@ -2,15 +2,14 @@
     <div class="card">
         <h5 style="background-color: #585570;padding: 10px; ; border-color:#585570" class="card-header">Report</h5>
 
-        <div *ngIf="reportHide" style="margin: 100px;">
-            <div class="card" style="width: 18rem;">
+        <div *ngIf="reportHide" style="margin: auto; width: 50%; padding: 10px;">
+            <div class="card shadow">
 
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">To Generate Report Please input some data.</li>
+                    <li class="list-group-item">To generate report please input some data</li>
                     <li class="list-group-item">
                         <div class="input-group mb-3">
-                            <label>Equipment Type</label>
-
+                            <label style="margin-right: 12px;">Equipment Type</label>
                             <select [ngModelOptions]="{standalone: true}" [(ngModel)]="EquipmentType" class="form-select" class="form-control">
                               <option value="">Select Type</option>
                                 <option value="Compressor">Compressor</option>

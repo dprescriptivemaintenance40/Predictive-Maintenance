@@ -13,46 +13,6 @@
 <div class="container-fluid">
     <h1 class="h3 mb-2 text-gray-800">Dashboard</h1>
     <div class="row">
-
-        <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <div style="color: #585570;" class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold">Illustrations</h6>
-                </div>
-                <div class="card-body">
-                    <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-2" src="dist/DPM/assets/img/undraw_posting_photo.svg" alt="">
-                    </div>
-                    <p> <b>Dynamic Prescriptive Maintenance</b> <br> Conventional Maintenance practices are (1)Reactive, (2)Preventive, and (3)Predictive. <br> Organizations are gradually adopting Proactive maintenance practice. In the digital age, a new
-                        maintenance practice is evolving, called Prescriptive. Dynamic Prescriptive Maintenance (D.P.M.) is the methodology that enables data capturing in near-real-time (dynamic); applies artificial intelligence to recognize pattern &
-                        forecast future failure; and prescribes just-in-time maintenance tasks, to minimize business risk and maximize profitability.</p>
-                    <a style="color:#585570;" href="https://linkedin.com/in/dynamic-prescriptive-maintenance-08bb101b8">Browse Illustrations on
-                                LinkedIn &rarr;</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 style="color: #585570;" class="m-0 font-weight-bold">DPM (Product Development Progress)</h6>
-                </div>
-                <div class="card-body">
-                    <h4 class="small font-weight-bold">Compressor<span class="float-right">60%</span></h4>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div> <br>
-
-                    <h4 class="small font-weight-bold">Pumps Under Progress <span class="float-right">10%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-xl-12 col-lg-11">
             <div class="card prescriptive shadow mb-4 con" *ngIf="!(user.UserType == 3)">
                 <div class="card-header">
@@ -68,34 +28,33 @@
                         <ng-template pTemplate="colgroup">
                             <colgroup>
                                 <col style="width:5em;">
-                                <col style="width:6em;">
+                                <col style="width:5em;">
                                 <col style="width:10em;">
                                 <col style="width:7em;">
-                                <col style="width:6em;">
-                                <col style="width:13em;">
-                                <col style="width:15em;">
-                                <col style="width:11em;">
-                                <col style="width:16em;">
+                                <col style="width:4em;">
+                                <col style="width:9em;">
                                 <col style="width:10em;">
+                                <col style="width:6em;">
+                                <col style="width:14em;">
                                 <col style="width:8em;">
                                 <col style="width:6em;">
+                                <col style="width:5em;">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Sr. No </th>
-                                <th>Assets </th>
+                                <th>Sr. No</th>
+                                <th>Assets</th>
                                 <th>Sub Units </th>
-                                <th>Tag No. </th>
+                                <th>Tag No.</th>
                                 <th>Tree</th>
-                                <th>Consequence </th>
-                                <th>Component Criticality Factor </th>
-                                <th>Component Rating</th>
+                                <th>Consequence</th>
+                                <th>Criticality Factor</th>
+                                <th>Rating</th>
                                 <th>Maintainenance Practice</th>
                                 <th>Attachment</th>
                                 <th>Report</th>
                                 <th>Delete</th>
-
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
@@ -114,12 +73,12 @@
                                 <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
                                 <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                                 <td>
-                                    <a *ngIf="(p.CAttachmentDBPath == null)" label="Next" style="margin: 20px" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>
-                                    <a *ngIf="(p.CAttachmentDBPath != null)" label="Next" style="margin: 20px" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <a *ngIf="(p.CAttachmentDBPath != null)" label="Next" style="margin: 20px" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                                    <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>&nbsp;
+                                    <a title="View Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal"><i class="fa fa-eye" aria-hidden="true"></i></a>&nbsp;
+                                    <a title="Edit Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"><i class="fa fa-edit" aria-hidden="true"></i></a>&nbsp;
                                 </td>
                                 <td>
-                                    <a [routerLink]="['/Home/Prescriptive/Report']" label="Next" style="margin: 20px;" (click)="FMEAReports(p)"><i class="fa fa-edit" aria-hidden="true"> Report</i></a>
+                                    <a title="Report" [routerLink]="['/Home/Prescriptive/Report']" (click)="FMEAReports(p)"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;
                                 </td>
                                 <td>
                                     <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><i class="pi pi-trash"></i></a>
@@ -182,8 +141,24 @@
             </div>
         </div>
     </div>
+    <!-- 
     <div class="row">
-        <!-- line Chart -->
+        <p-organizationChart [value]="tree" selectionMode="single" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">
+                    {{node.label}}
+                </div>
+                <div class="node-content">
+                    <div class="a">{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </div> -->
+
+    <div class="row">
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4" *ngIf="!(user.UserType == 3)">
                 <div class="card-header py-3">
@@ -240,11 +215,9 @@
         </div>
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4" *ngIf="!(user.UserType == 3)">
-                <!-- Card Header - Dropdown -->
                 <div class="card-header py-3">
                     <h6 style="color: #585570;" class="m-0 font-weight-bold">Pie Chart</h6>
                 </div>
-                <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-pie pt-4">
                         <canvas id="pie" width="400" height="400"></canvas>
@@ -253,8 +226,8 @@
             </div>
         </div>
     </div>
-
 </div>
+
 
 
 <div class="modal fade" id="DeleteTree" tabindex="-1" role="dialog" aria-labelledby="DeleteTreeTitle" aria-hidden="true">
