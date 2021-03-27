@@ -4,19 +4,6 @@ body {
     min-width: 500px !important;
 }
 
-@media print {
-    @page {
-        margin: 0;
-    }
-    body {
-        margin: 1.6cm;
-    }
-    .no-print,
-    .no-print * {
-        display: none !important;
-    }
-}
-
 .grid-table {
     display: table;
 }

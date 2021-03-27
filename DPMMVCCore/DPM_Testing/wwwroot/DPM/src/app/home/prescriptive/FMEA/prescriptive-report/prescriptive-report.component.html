@@ -1,17 +1,18 @@
+<div>
 <div *ngIf="prescriptveReportSelect">
     <div class="card shadow" style="margin: auto; width: 50%; padding: 10px;">
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>Provide below informations</b></li>
             <li class="list-group-item">
                 <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">chair Person</label>
-                    <input type="text" class="form-control" [(ngModel)]="ChairPerson" id="exampleInputPassword1" placeholder="Person Name">
+                    <label style=" margin-right: 12px;">CHAIR PERSON</label>
+                    <input type="text" class="form-control" [(ngModel)]="ChairPerson" placeholder="Person Name">
                 </div>
             </li>
             <li class="list-group-item">
                 <div class="input-group mb-3">
-                    <label style="margin-right: 12px;">Participants</label>
-                    <input type="text" class="form-control" [(ngModel)]="Participants" id="exampleInputPassword1" placeholder="Participant name">
+                    <label style="margin-right: 12px;">PARTICIPANTS</label>
+                    <input type="text" class="form-control" [(ngModel)]="Participants"  placeholder="Participant name">
                 </div>
             </li>
             <li class="list-group-item">
@@ -21,106 +22,163 @@
     </div>
 </div>
 
-<div *ngIf="ReportSelect" class="card" style="margin: 20px;">
-    <div class="card shadow">
-        <div>
-            <button label="Download" style="margin: 20px;float: right;" type="button" class="btn btn-dark" (click)="DownloadPDF()">Print PDf</button>
+    <div *ngIf="ReportSelect" class="card" style="margin: 20px;">
+        <div class="print">
+            <a (click)="DownloadPDF()"><i style="float: right;padding-left: 20px;" class="fa fa-download fa-2x"></i></a>
+            <a (click)="printPage()"><i style="float: right;padding-left: 20px;" class="fa fa-print fa-2x"></i></a>
         </div>
         <div style="margin: 20px;" id="contentToConvert">
-            <div class="sidebar-brand-icon col-sm-2">
-                <style>
-                    img {
-                        width: 100%;
-                        height: 100%;
-                    }
-                </style>
-                <div class="image-container">
-                    <img src="dist/DPM/assets/img/Logo_final.jpg" alt="">
+            <div class="page">
+                <div class="text-center">
+                    <h4><b>FMEA Report Analysis </b></h4><br>
+                </div>
+                <div class="sidebar-brand-icon col-sm-2">
+                    <style>
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    </style>
+                    <div class="image-container">
+                        <img src="dist/DPM/assets/img/Logo_final.jpg" alt="">
+                    </div>
+
                 </div>
 
-            </div>
-            <h5><b>Executive Summary </b></h5><br>
-            <p>
-                This document provides guidance and insight into the analysis process for FMEA. Utilization of this analysis offers a mutual understating of the current condition of assets
-            </p>
-            <p>
-                This study was carried out by a dedicated engineering team and the results from this analysis are used to assist in finalizing and improving the system design and associated handling and testing procedures
-            </p>
-            <p>
-                It provides a formalize approach to technical issues and propose future actions to improve integrity and reliability of asset, minimize environmental risks and eliminate operational downtime.
-            </p>
-            <p>
-                Part 1 introduces the system data along with engineers participated on the FMEA.
-            </p>
-            <p>
-                Part 2 is a detail description of the system including sub-assemblies and components and the steps followed to come up with the final result. Past and present data of the data was considered. Site visits attended and discussion with all relevant departments.
-                FMEA analysis performed in line with the objectives and specificities.
-            </p>
-            <p>
-                Part 3 are the future actions and recommendations
-            </p>
-            <p>
-                Part 4 describes the conclusion and current actions the team come up with based on FMEA.
-            </p>
-            <p>
-                Annexures provide the fault tree analysis of current study
-            </p><br>
+                <div id="div1">
+                    <h5><b>Executive Summary </b></h5><br>
+                    <p>
+                        This document provides guidance and insight into the analysis process for FMEA.
+                        Utilization of this analysis offers a mutual understating of the current condition of assets
+                    </p>
+                    <p>
+                        This study was carried out by a dedicated engineering team and the results from this analysis
+                        are used to assist in finalizing and improving
+                        the system design and associated handling and testing procedures
+                    </p>
+                    <p>
+                        It provides a formalize approach to technical issues and propose future actions
+                        to improve integrity and reliability of asset, minimize environmental risks and eliminate
+                        operational downtime.
+                    </p>
+                    <p>
+                        Part 1 introduces the system data along with engineers participated on the FMEA.
+                    </p>
+                    <p>
+                        Part 2 is a detail description of the system including sub-assemblies and components and the
+                        steps followed to come up with the final result.
+                        Past and present data of the data was considered. Site visits attended and discussion with all
+                        relevant departments.
+                        FMEA analysis performed in line with the objectives and specificities.
+                    </p>
+                    <p>
+                        Part 3 are the future actions and recommendations
+                    </p>
+                    <p>
+                        Part 4 describes the conclusion and current actions the team come up with based on FMEA.
+                    </p>
 
-            <h5><b>Introduction</b></h5><br>
-            <p>
-                FMEA analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}. FMEA finalized by using the current data of the asset and considering the failure history for a time domain of &ensp;
-                <input type="text" class="custom-form-control" [(ngModel)]="Time" placeholder="Year/months"> &ensp;
-            </p>
-            <p>
-                An understanding of the system to be analyzed was essential prior to the development of a FMEA. Operation parameters of the system had to be considered out along with assets operational criticality. Typically, system block diagrams and many other system-modeling
-                techniques used to understand system hierarchies
-            </p><br>
+                    <p>
+                        Annexures provide the fault tree analysis of current study
+                    </p><br>
+                    <h5><b>Introduction</b></h5><br>
+                    <p>
+                        FMEA analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No
+                        {{data.TagNumber}}.
+                        FMEA finalized by using the current data of the asset and considering the failure history for a
+                        time domain of &ensp;
+                        <input type="text" class="custom-form-control" [(ngModel)]="Time" placeholder="Year/months">
+                        &ensp;
+                    </p>
+                    <p>
+                        An understanding of the system to be analyzed was essential prior to the development of a FMEA.
+                        Operation parameters of the system had to be considered out along with assets operational
+                        criticality.
+                        Typically, system block diagrams and many other system-modeling
+                        techniques used to understand system hierarchies
+                    </p><br>
+                    <h5><b>FMEA Methodology</b></h5><br>
+                    <textarea class="custom-textarea form-control" placeholder="Type Methodology"></textarea>
+                    <h5><b>Current and future actions</b></h5>
+                    <textarea class="custom-textarea form-control"
+                        placeholder="Type Current and future actions"></textarea><br>
+                </div>
+                <div id="div2" style="page-break-before: always;">
+                    <h5><b>Conclusions </b></h5><br>
+                    <p>
+                        The objective of the task was to analyze the current condition of {{data.EquipmentType}} with
+                        Tag No {{data.TagNumber}}.
+                        and propose technical solutions to increase integrity and reliability of the asset .
+                    </p>
+                    <p>
+                        The reliability methodology was based on FMEA was developed in order to take into consideration
+                        the objectives and recommended actions to eliminate the failures.
+                    </p>
+                    <p>
+                        During FMEA a detail list of failure modes and causes analyzed and technically elaborated.
+                        The team came up with some current actions and proposed future recommendations for
+                        implementation.
+                    </p>
+                    <span>
+                        <h6><b>Chair Person: {{ChairPerson}} </b></h6>
+                    </span><br>
+                    <span>
+                        <h6><b>Participants: {{Participants}} </b></h6>
+                    </span><br><br>
+          </div>
+             
+                <p> Block diagrams.</p>
+                <div id="div3">
+                    <p-organizationChart [value]="data1" selectionMode="single" styleClass="company">
+                        <ng-template let-node pTemplate="person">
+                            <div class="node-header p-corner-top">{{node.label}}</div>
+                            <div class="node-content" *ngIf="node.data.name !== ''">
+                                <div class="a">{{node.data.name}}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-node pTemplate="department">
+                            {{node.label}}
+                        </ng-template>
+                    </p-organizationChart><br><br>
 
-            <h5><b>FMEA Methodology</b></h5><br>
-            <textarea class="custom-textarea form-control"></textarea>
-            <h5><b>Current and future actions</b></h5>
-            <textarea class="custom-textarea form-control"></textarea><br>
-            <h5><b>Conclusions </b></h5><br>
-            <p>
-                The objective of the task was to analyze the current condition of {{data.EquipmentType}} with Tag No {{data.TagNumber}}. and propose technical solutions to increase integrity and reliability of the asset .
-            </p>
-            <p>
-                The reliability methodology was based on FMEA was developed in order to take into consideration the objectives and recommended actions to eliminate the failures.
-            </p>
-            <p>
-                During FMEA a detail list of failure modes and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation.
-            </p>
-            <span><h6><b>Chair Person: {{ChairPerson}} </b></h6> </span><br>
-            <span><h6><b>Participants: {{Participants}} </b></h6></span><br><br>
-            <h5><b>Annexures </b></h5><br>
-            <p> Block diagrams.</p>
-            <div>
-                <p-organizationChart [value]="data1" selectionMode="single" styleClass="company">
-                    <ng-template let-node pTemplate="person">
-                        <div class="node-header p-corner-top">{{node.label}}</div>
-                        <div class="node-content" *ngIf="node.data.name !== ''">
-                            <div class="a">{{node.data.name}}</div>
+                    <div *ngFor="let tree of AnnexuresTreeList">
+                        <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode"
+                            styleClass="company">
+                            <ng-template let-node pTemplate="person">
+                                <div class="node-header p-corner-top">{{node.label}}</div>
+                                <div class="node-content">
+                                    <div class="a">{{node.data.name}}</div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-node pTemplate="department">
+                                {{node.label}}
+                            </ng-template>
+                        </p-organizationChart><br><br>
+                        <div class="center" style="margin-left: 330px;">
+                        <div *ngIf="(tree[0].imgPath !=undefined)" style="margin: 10px;width: 500px;height: 500px; " id="file ">
+                            <img [src]="tree[0].imgPath" width="10 " height="10 ">
+                        </div></div>
+                        <div *ngIf="(tree[0].Remark !=undefined)"  class="center" style="margin-left: 330px;">
+                        <div *ngIf="tree[0].Remark !== ''" id="remark">
+                            <textarea class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea>
                         </div>
-                    </ng-template>
-                    <ng-template let-node pTemplate="department">
-                        {{node.label}}
-                    </ng-template>
-                </p-organizationChart><br><br>
+                    </div>
+                    </div>
+                </div>
             </div>
-            <div *ngFor="let tree of AnnexuresTreeList">
-                <p-organizationChart [value]="tree" selectionMode="single" styleClass="company">
-                    <ng-template let-node pTemplate="person">
-                        <div class="node-header p-corner-top">{{node.label}}</div>
-                        <div class="node-content">
-                            <div class="a">{{node.data.name}}</div>
-                        </div>
-                    </ng-template>
-                    <ng-template let-node pTemplate="department">
-                        {{node.label}}
-                    </ng-template>
-                </p-organizationChart><br><br>
-            </div>
-            <p>Remark & Attachments {{CRemarks}}</p>
         </div>
     </div>
+    <div class="card" style="margin: 20px;">
+     <div *ngIf="ReportSelect1">
+         <h5><b>Attachments & Remarks </b></h5>
+         <span style="margin: 20px;">
+             <tr *ngFor = "let AR of PDFURL;let i = index"><br>
+                 <th scope="row">{{i+1}}</th>
+                 Failure Modes: {{AR.FM}} <br>
+                 Remark: {{AR.Remark}}<br>
+              <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a><br>
+               </tr>
+           </span>
+      </div>
+      </div>
 </div>

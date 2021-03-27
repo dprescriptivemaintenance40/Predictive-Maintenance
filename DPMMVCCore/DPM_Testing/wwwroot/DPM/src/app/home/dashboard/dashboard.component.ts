@@ -1119,7 +1119,6 @@ export class DashboardComponent {
   }
 
   saveAttachment() {
-
     const formData = new FormData();
     formData.append('file', this.CAttachmentFile);
     formData.append('CRemarks', this.CRemarks);
@@ -1135,10 +1134,8 @@ export class DashboardComponent {
         this.fileUpload = "";
       }, err => { console.log(err.err) }
       )
-
   }
   ViewAttachment(p) {
-
     this.FileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(p.CAttachmentDBPath);
     this.FileUrl = p.CAttachmentDBPath;
     var extension = this.getFileExtension(p.CAttachmentDBPath);
@@ -1150,7 +1147,6 @@ export class DashboardComponent {
       this.ImageEnable = false;
       this.PdfEnable = true;
     }
-
   }
   getFileExtension(filename) {
     const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
