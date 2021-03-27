@@ -539,7 +539,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
       res => {
         console.log(res);
         this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Successfully Done' });
-        this.router.navigateByUrl('/Home/Dashboard');
+        this.router.navigateByUrl('/Home/Prescriptive/List');
       }, err => { console.log(err.err) }
     )
 

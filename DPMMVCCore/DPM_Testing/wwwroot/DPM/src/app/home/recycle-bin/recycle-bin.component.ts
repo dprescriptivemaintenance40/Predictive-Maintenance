@@ -175,7 +175,9 @@ export class RecycleBinComponent implements OnInit {
       this.centrifugalPumpPrescriptiveOBJ.CMaintainenancePractice = data.CMaintainenancePractice
       this.centrifugalPumpPrescriptiveOBJ.CFrequencyMaintainenance = data.CFrequencyMaintainenance
       this.centrifugalPumpPrescriptiveOBJ.CConditionMonitoring = data.CConditionMonitoring
-
+      this.centrifugalPumpPrescriptiveOBJ.CAttachmentDBPath = data.CAttachmentDBPath
+      this.centrifugalPumpPrescriptiveOBJ.CAttachmentFullPath = data.CAttachmentFullPath
+      this.centrifugalPumpPrescriptiveOBJ.CRemarks = data.CRemarks
 
       for (let index = 0; index < data.restoreCentrifugalPumpPrescriptiveFailureModes.length; index++) {
         let obj = {}

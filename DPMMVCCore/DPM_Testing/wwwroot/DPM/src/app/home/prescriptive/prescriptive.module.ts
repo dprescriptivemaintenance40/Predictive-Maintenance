@@ -8,6 +8,7 @@ import { PrescriptiveUpdateComponent } from "./FMEA/prescriptive-update/prescrip
 import { PrescriptiveComponent } from "./prescriptive.component";
 import { PrescriptiveRoutingModule } from "./prescriptive.routing";
 import { PrescriptiveReportComponent } from './FMEA/prescriptive-report/prescriptive-report.component';
+import { PrescriptiveListComponent } from './FMEA/prescriptive-list/prescriptive-list.component';
 
 @NgModule({
     declarations: [PrescriptiveComponent,
@@ -17,6 +18,7 @@ import { PrescriptiveReportComponent } from './FMEA/prescriptive-report/prescrip
         PrescriptiveUpdateComponent,
         PrescriptiveConsequencesComponent,
         PrescriptiveReportComponent,
+        PrescriptiveListComponent,
     ],
     imports: [
         SharedModule,
