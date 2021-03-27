@@ -26,6 +26,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public prescriptveReportSelect: boolean = true;
   public ImageEnable: boolean = true;
   public ReportSelect: boolean = false;
+  public ReportSelect1: boolean = false;
   public attachmentRemark: any = []
   public url: string = ""
   public fileUpload: string = "";
@@ -176,6 +177,9 @@ export class PrescriptiveReportComponent implements OnInit {
       this.ReportSelect = true
       this.ChairPerson = this.ChairPerson.toUpperCase()
       this.Participants = this.Participants.toUpperCase()
+      if(this.PDFURL.length > 0 ){
+        this.ReportSelect1 = true
+      }
     } else {
       alert("Fields are missing")
     }

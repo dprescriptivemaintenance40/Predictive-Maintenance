@@ -23,7 +23,7 @@ import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
             children: [
                 { path: '', redirectTo: 'Education', pathMatch: 'full' },
                 { path: 'Education', component: EducationComponent },
-                // { path: 'Dashboard', component: DashboardComponent },
+                 { path: 'Dashboard', component: DashboardComponent },
                 { path: 'Compressor', loadChildren: () => import('./Compressor/ScrewCompressor/compressor.module').then(a => a.CompressorModule) },
                 { path: 'Prescriptive', loadChildren: () => import('./prescriptive/prescriptive.module').then(a => a.PrescriptiveModule) },               
                 { path: 'Profile', component: ProfileComponent },

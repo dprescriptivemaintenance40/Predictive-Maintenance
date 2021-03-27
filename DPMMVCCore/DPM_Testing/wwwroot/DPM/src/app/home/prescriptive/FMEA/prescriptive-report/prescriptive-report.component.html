@@ -1,17 +1,18 @@
+<div>
 <div *ngIf="prescriptveReportSelect">
     <div class="card shadow" style="margin: auto; width: 50%; padding: 10px;">
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>Provide below informations</b></li>
             <li class="list-group-item">
                 <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">chair Person</label>
-                    <input type="text" class="form-control" [(ngModel)]="ChairPerson" id="exampleInputPassword1" placeholder="Person Name">
+                    <label style=" margin-right: 12px;">CHAIR PERSON</label>
+                    <input type="text" class="form-control" [(ngModel)]="ChairPerson" placeholder="Person Name">
                 </div>
             </li>
             <li class="list-group-item">
                 <div class="input-group mb-3">
-                    <label style="margin-right: 12px;">Participants</label>
-                    <input type="text" class="form-control" [(ngModel)]="Participants" id="exampleInputPassword1" placeholder="Participant name">
+                    <label style="margin-right: 12px;">PARTICIPANTS</label>
+                    <input type="text" class="form-control" [(ngModel)]="Participants"  placeholder="Participant name">
                 </div>
             </li>
             <li class="list-group-item">
@@ -19,6 +20,7 @@
             </li>
         </ul>
     </div>
+</div>
 
     <div *ngIf="ReportSelect" class="card" style="margin: 20px;">
         <div class="print">
@@ -167,7 +169,7 @@
         </div>
     </div>
     <div class="card" style="margin: 20px;">
-        <div *ngIf="ReportSelect">
+     <div *ngIf="ReportSelect1">
          <h5><b>Attachments & Remarks </b></h5>
          <span style="margin: 20px;">
              <tr *ngFor = "let AR of PDFURL;let i = index"><br>
