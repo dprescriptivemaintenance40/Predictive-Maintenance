@@ -102,7 +102,7 @@ export class PrescriptiveReportComponent implements OnInit {
     var  pdfdata =  html2canvas(data).then(canvas => {
       var imgData = canvas.toDataURL('image/png');
       var imgWidth = 190;
-      var pageHeight = 295;
+      var pageHeight = 298;
       var imgHeight = canvas.height * imgWidth / canvas.width;
       var heightLeft = imgHeight;
       var doc = new jsPDF('p', 'mm', "a4");
