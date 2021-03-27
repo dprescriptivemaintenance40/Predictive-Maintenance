@@ -136,7 +136,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   private SavedconsequenceE;
   public SavedConsequenceNode : any = []
   public ChangeConsequenceforUpdate: boolean = false;
-
+  public ColoredTreeForUpdate: boolean = false;
+  public UpdateColorTreeEnable : boolean = false;
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -401,7 +402,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.LSFailureMode = this.UpdateFailureMode
     this.Consequences1 = false
     this.FailureModediv.style.display = 'none'
-    this.prescriptiveTree = false
+    this.prescriptiveTree = true
+    this.ColoredTreeForUpdate = true
     this.ChangeConsequenceforUpdate= true
    this.colorForUpdateTree()
   }
@@ -415,6 +417,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.dropedConsequenceFailureMode = [];
     this.dropedConsequenceEffectFailureMode = [];
     this.ConsequencesTree = false
+    this.ColoredTreeForUpdate = false
     this.UpdateFailureModeConsequence = this.finalConsequence
     this.finalConsequence = ""
     this.LSFailureMode = ""
@@ -1259,6 +1262,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
   ChangeConsequence(){
     this.Consequences1 = true
+    this.UpdateColorTreeEnable = true;
   }
 
   dragStartC1(e, con1) {
