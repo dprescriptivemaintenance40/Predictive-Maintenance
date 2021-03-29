@@ -9,8 +9,6 @@ import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescripti
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
 
-
-
 @Component({
   selector: 'app-prescriptive-update',
   templateUrl: './prescriptive-update.component.html',
@@ -114,11 +112,11 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public FreshUploadUpdate: boolean = false;
   public DeleteFMDataFromTree;
   public DeleteFMName: string = "";
-  public UpdatedAttachmentInFMDBPath : string = ""
-  public UpdatedAttachmentInFMFullPath : string = ""
-  public ADDUpdatedAttachmentInFMDBPath : string = ""
-  public ADDUpdatedAttachmentInFMFullPath : string = ""
-  public FMAttachmentADD : boolean = false
+  public UpdatedAttachmentInFMDBPath: string = ""
+  public UpdatedAttachmentInFMFullPath: string = ""
+  public ADDUpdatedAttachmentInFMDBPath: string = ""
+  public ADDUpdatedAttachmentInFMFullPath: string = ""
+  public FMAttachmentADD: boolean = false
   public uploadedAttachmentList: any[] = [];
   public FileId;
   public AddUploadedAttachmentList: any[] = [];
@@ -134,10 +132,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   private SavedconsequenceC;
   private SavedconsequenceD;
   private SavedconsequenceE;
-  public SavedConsequenceNode : any = []
+  public SavedConsequenceNode: any = []
   public ChangeConsequenceforUpdate: boolean = false;
   public ColoredTreeForUpdate: boolean = false;
-  public UpdateColorTreeEnable : boolean = false;
+  public UpdateColorTreeEnable: boolean = false;
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -172,26 +170,12 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       mode.delete = true;
     });
     this.FMTree = this.data1[0].children[0].children[0].children
-
-    setInterval(() => {
-      this.dynamicDroppedPopup();
-    }, 2000);
-
   }
 
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveUpdateObject');
   }
 
-  dynamicDroppedPopup() {
-    //faliure droped popup
-    if (this.dropedMode.length > 1) {
-      for (let index = 0; index < this.dropedMode.length - 1; index++) {
-        var elementIndex = this.dropedMode[this.dropedMode.length];
-        this.dropedMode.splice(elementIndex, 1)
-      }
-    }
-  }
   SelectNodeToUpdate(p) {
     console.log(p.data.name)
     console.log(p.label)
@@ -242,9 +226,9 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.UpdatedAttachmentInFMDBPath = element.AttachmentDBPath;
         this.UpdatedAttachmentInFMFullPath = element.AttachmentFullPath;
         this.EditfullPath = element.AttachmentFullPath
-        if(this.EditdbPathURL == ''){
+        if (this.EditdbPathURL == '') {
           this.AttachmentADD = false;
-        }else{ this.AttachmentADD = true;}
+        } else { this.AttachmentADD = true; }
         this.Remark = element.Remark
 
       }
@@ -275,26 +259,26 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.extensionImage = false;
     this.EditdbPathURL = ""
     const params = new HttpParams()
-          .set("fullPath",this.UpdatedAttachmentInFMFullPath )
+      .set("fullPath", this.UpdatedAttachmentInFMFullPath)
     this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
     this.UpdatedAttachmentInFMDBPath = "";
     this.UpdatedAttachmentInFMFullPath = "";
-    
+
   }
 
-  
+
   public uploadAttachmentFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
         || event.target.files[0].type === 'image/png'
-        || event.target.files[0].type === 'image/jpeg') {  
+        || event.target.files[0].type === 'image/jpeg') {
         let filedata = this.uploadedAttachmentList.find(a => a.FileId === this.FileId);
         let fileToUpload = event.target.files[0];
-        if(this.EditdbPath != ""){
-          filedata=[]
-          var dbPath= this.EditdbPath
+        if (this.EditdbPath != "") {
+          filedata = []
+          var dbPath = this.EditdbPath
           // filedata.push('dbPath')
-          filedata.dbPath = dbPath 
+          filedata.dbPath = dbPath
           this.EditdbPath = ""
         }
         const formData = new FormData();
@@ -307,15 +291,15 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
             this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.dbPath);
             this.fullPath = res.fullPath;
             this.fileUpload = res.fileName;
-            this.UpdatedAttachmentInFMDBPath =  res.dbPath;
+            this.UpdatedAttachmentInFMDBPath = res.dbPath;
             this.UpdatedAttachmentInFMFullPath = res.fullPath;
             this.FileId = res.FileId;
             this.uploadedAttachmentList.push(res)
             var ext = this.getFileExtension(this.dbPath)
-            if(ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'png'){
+            if (ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'png') {
               this.extensionPDF = false
               this.extensionImage = true
-            }else if(ext.toLowerCase() == 'pdf'){
+            } else if (ext.toLowerCase() == 'pdf') {
               this.extensionPDF = true
               this.extensionImage = false
             }
@@ -327,13 +311,13 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     }
   }
 
-  
+
 
   public AddUploadAttachmentFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
         || event.target.files[0].type === 'image/png'
-        || event.target.files[0].type === 'image/jpeg') {  
+        || event.target.files[0].type === 'image/jpeg') {
         let filedata = this.AddUploadedAttachmentList.find(a => a.FileId === this.FileId);
         let fileToUpload = event.target.files[0];
         const formData = new FormData();
@@ -341,20 +325,20 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         formData.append('removePath', !!filedata ? filedata.dbPath : "");
         this.http.post('api/PrescriptiveAPI/UploadFile', formData)
           .subscribe((res: any) => {
-           // this.dbPath = res.dbPath;
-             this.ADDdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(res.dbPath);
+            // this.dbPath = res.dbPath;
+            this.ADDdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(res.dbPath);
             // this.fullPath = res.fullPath;
             // this.fileUpload = res.fileName;
-            this.ADDUpdatedAttachmentInFMDBPath =  res.dbPath;
+            this.ADDUpdatedAttachmentInFMDBPath = res.dbPath;
             this.ADDUpdatedAttachmentInFMFullPath = res.fullPath;
             this.AddFileId = res.FileId;
             this.AddUploadedAttachmentList.push(res)
             this.FMAttachmentADD = true
             var ext = this.getFileExtension(res.dbPath)
-            if(ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'png'){
+            if (ext.toLowerCase() == 'jpg' || ext.toLowerCase() == 'png') {
               this.extensionAddPDF = false
               this.extensionAddImage = true
-            }else if(ext.toLowerCase() == 'pdf'){
+            } else if (ext.toLowerCase() == 'pdf') {
               this.extensionAddPDF = true
               this.extensionAddImage = false
             }
@@ -373,11 +357,11 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.extensionAddImage = false;
     this.ADDdbPathURL = ""
     const params = new HttpParams()
-          .set("fullPath",this.ADDUpdatedAttachmentInFMFullPath )
+      .set("fullPath", this.ADDUpdatedAttachmentInFMFullPath)
     this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
     this.ADDUpdatedAttachmentInFMDBPath = "";
     this.ADDUpdatedAttachmentInFMFullPath = "";
-    
+
   }
 
 
@@ -404,8 +388,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FailureModediv.style.display = 'none'
     this.prescriptiveTree = true
     this.ColoredTreeForUpdate = true
-    this.ChangeConsequenceforUpdate= true
-   this.colorForUpdateTree()
+    this.ChangeConsequenceforUpdate = true
+    this.colorForUpdateTree()
   }
 
   EditConsequenceToTree() {
@@ -479,7 +463,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data2)
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
 
-    
+
     let obj = {};
     obj['CPPFMId'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId
     obj['CFPPrescriptiveId'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId
@@ -492,7 +476,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     obj['SafetyFactor'] = this.EditSafetyFactor
     obj['ProtectionFactor'] = this.EditProtectionFactor
     obj['FrequencyFactor'] = this.EditFrequencyFactor
-    obj['AttachmentDBPath'] = this.UpdatedAttachmentInFMDBPath 
+    obj['AttachmentDBPath'] = this.UpdatedAttachmentInFMDBPath
     obj['AttachmentFullPath'] = this.UpdatedAttachmentInFMFullPath
     obj['Remark'] = this.Remark
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
@@ -1066,10 +1050,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   DeleteFailureModeFrommTree() {
 
     var DeletedFMTree = JSON.stringify(this.DeleteFMDataFromTree)
-      
+
     // Here deleted failure mode has taken and send data from Function failure to backend
     this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = DeletedFMTree;
-    
+
     var FMList = this.data1[0].children[0].children[0].children
     var index = FMList.findIndex(std => std.data.name == this.DeleteFMDataFromTree.data.name);
     this.data1[0].children[0].children[0].children.splice(index, 1);
@@ -1082,7 +1066,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
     var abc2 = FailureModeWithLSETree[0].children[0].children[0].children
     var index3 = abc2.findIndex(std => std.data.name == this.DeleteFMDataFromTree.data.name);
-  
+
     FailureModeWithLSETree[0].children[0].children[0].children.splice(index3, 1);
 
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(FailureModeWithLSETree)
@@ -1102,107 +1086,107 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
 
 
-  SavedConsequenceTree(){
+  SavedConsequenceTree() {
     this.SavedConsequenceNode = [
-     {
-       label: "Consequences",
-       type: "person",
-       styleClass: this.SavedconsequenceTreeColorNodeA,
-       expanded: true,
-       data: {
-         name:
-           "Will the occurance of the failuer mode be evidient to operational stuff during normal operation of the plant?"
-       },
-       children: [
-         {
-           label: "Yes",
-           type: "person",
-           styleClass: this.SavedconsequenceTreeColorNodeB,
-           expanded: true,
-           data: {
-             name:
-               "Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct adverse effect on operational safety or the environment?"
-           },
-           children: [
-             {
-               label: "Yes",
-               type: "person",
-               styleClass: this.SavedconsequenceB,
-               expanded: true,
-               data: {
-                 name: "B"
-               }
-             },
-             {
-               label: "No",
-               type: "person",
-               styleClass: this.SavedconsequenceTreeColorNodeD,
-               expanded: true,
-               data: {
-                 name:
-                   "Does the Failure mode adversily affect operational capabilities of the plant? "
-               },
-               children: [
-                 {
-                   label: "Yes",
-                   type: "person",
-                   styleClass: this.SavedconsequenceC,
-                   expanded: true,
-                   data: {
-                     name: "C"
-                   }
-                 },
-                 {
-                   label: "No",
-                   type: "person",
-                   styleClass: this.SavedconsequenceD,
-                   expanded: true,
-                   data: {
-                     name: "D"
-                   }
-                 }
-               ]
-             }
-           ]
-         },
+      {
+        label: "Consequences",
+        type: "person",
+        styleClass: this.SavedconsequenceTreeColorNodeA,
+        expanded: true,
+        data: {
+          name:
+            "Will the occurance of the failuer mode be evidient to operational stuff during normal operation of the plant?"
+        },
+        children: [
+          {
+            label: "Yes",
+            type: "person",
+            styleClass: this.SavedconsequenceTreeColorNodeB,
+            expanded: true,
+            data: {
+              name:
+                "Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct adverse effect on operational safety or the environment?"
+            },
+            children: [
+              {
+                label: "Yes",
+                type: "person",
+                styleClass: this.SavedconsequenceB,
+                expanded: true,
+                data: {
+                  name: "B"
+                }
+              },
+              {
+                label: "No",
+                type: "person",
+                styleClass: this.SavedconsequenceTreeColorNodeD,
+                expanded: true,
+                data: {
+                  name:
+                    "Does the Failure mode adversily affect operational capabilities of the plant? "
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    styleClass: this.SavedconsequenceC,
+                    expanded: true,
+                    data: {
+                      name: "C"
+                    }
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    styleClass: this.SavedconsequenceD,
+                    expanded: true,
+                    data: {
+                      name: "D"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
 
-         {
-           label: "No",
-           type: "person",
-           styleClass: this.SavedconsequenceTreeColorNodeC,
-           expanded: true,
-           data: {
-             name:
-               "Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment?  "
-           },
-           children: [
-             {
-               label: "Yes",
-               type: "person",
-               styleClass: this.SavedconsequenceA,
-               expanded: true,
-               data: {
-                 name: "A "
-               }
-             },
-             {
-               label: "No",
-               type: "person",
-               styleClass: this.SavedconsequenceE,
-               expanded: true,
-               data: {
-                 name: "E"
-               }
-             }
-           ]
-         }
-       ]
-     }
-   ]
+          {
+            label: "No",
+            type: "person",
+            styleClass: this.SavedconsequenceTreeColorNodeC,
+            expanded: true,
+            data: {
+              name:
+                "Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment?  "
+            },
+            children: [
+              {
+                label: "Yes",
+                type: "person",
+                styleClass: this.SavedconsequenceA,
+                expanded: true,
+                data: {
+                  name: "A "
+                }
+              },
+              {
+                label: "No",
+                type: "person",
+                styleClass: this.SavedconsequenceE,
+                expanded: true,
+                data: {
+                  name: "E"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
 
   }
-  colorForUpdateTree(){
-    if(this.UpdateFailureModeConsequence == "E"){
+  colorForUpdateTree() {
+    if (this.UpdateFailureModeConsequence == "E") {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person'
       this.SavedconsequenceTreeColorNodeC = 'p-person1'
@@ -1213,7 +1197,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.SavedconsequenceD = 'p-person'
       this.SavedconsequenceE = 'p-person1'
       this.SavedConsequenceTree();
-    } else if(this.UpdateFailureModeConsequence == 'B'){
+    } else if (this.UpdateFailureModeConsequence == 'B') {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person1'
       this.SavedconsequenceTreeColorNodeC = 'p-person'
@@ -1224,7 +1208,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.SavedconsequenceD = 'p-person'
       this.SavedconsequenceE = 'p-person'
       this.SavedConsequenceTree();
-    }else if(this.UpdateFailureModeConsequence == 'C'){
+    } else if (this.UpdateFailureModeConsequence == 'C') {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person'
       this.SavedconsequenceTreeColorNodeC = 'p-person1'
@@ -1235,7 +1219,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.SavedconsequenceD = 'p-person'
       this.SavedconsequenceE = 'p-person'
       this.SavedConsequenceTree();
-    }else if(this.UpdateFailureModeConsequence == 'D'){
+    } else if (this.UpdateFailureModeConsequence == 'D') {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person1'
       this.SavedconsequenceTreeColorNodeC = 'p-person'
@@ -1246,7 +1230,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.SavedconsequenceD = 'p-person1'
       this.SavedconsequenceE = 'p-person'
       this.SavedConsequenceTree();
-    }  else if(this.UpdateFailureModeConsequence == 'A'){
+    } else if (this.UpdateFailureModeConsequence == 'A') {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person'
       this.SavedconsequenceTreeColorNodeC = 'p-person'
@@ -1260,7 +1244,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
     }
   }
-  ChangeConsequence(){
+  ChangeConsequence() {
     this.Consequences1 = true
     this.UpdateColorTreeEnable = true;
   }
@@ -1329,8 +1313,9 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     }
   }
 
-  drop1(e) {
+  drop1(e) {   
     if (this.dragedFunctionMode) {
+      this.dropedMode = [];
       this.dropedMode.push(this.dragedFunctionMode);
       this.dragedFunctionMode = null;
     }

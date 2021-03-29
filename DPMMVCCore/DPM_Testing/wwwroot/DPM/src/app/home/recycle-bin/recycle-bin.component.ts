@@ -15,7 +15,7 @@ export class RecycleBinComponent implements OnInit {
   public RecycleCentrifugalPumpChildData: any = [];
   public RecycleCentrifugalPumpChildList: any = [];
   public RecycleCentrifugalPumpWholeData: any = [];
-  public FMChild : any ;
+  public FMChild: any;
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private http: HttpClient,
@@ -82,55 +82,45 @@ export class RecycleBinComponent implements OnInit {
       var FMToRestore = JSON.parse(data.DeletedFMTree)
       var LSToRestore = JSON.parse(data.DeletedFMTree)
       LSToRestore.children.splice(2, 1)
-      var indexAtTreeRestore = FMToRestore.label - 1
-      var DataToRestore : any = [];
-     
-      const params = new HttpParams()
-      .set("id", data.CFPPrescriptiveId)
-       this.http.get('api/PrescriptiveAPI', {params}).subscribe(
-        (res: any) => {
-          DataToRestore = res;
-
-          if(DataToRestore.length > 0){
-
+      var indexAtTreeRestore = FMToRestore.label - 1;
+      this.http.get('api/PrescriptiveAPI/GetPrescriptiveById?id=' + data.CFPPrescriptiveId)
+        .subscribe((res: any) => {
+          const DataToRestore = res;
           var consTree: any = [], LSTree: any = []
-          consTree = JSON.parse(DataToRestore[0].FMWithConsequenceTree)
-          LSTree = JSON.parse(DataToRestore[0].FailureModeWithLSETree)
+          consTree = JSON.parse(DataToRestore.FMWithConsequenceTree)
+          LSTree = JSON.parse(DataToRestore.FailureModeWithLSETree)
           consTree[0].children[0].children[0].children.splice(indexAtTreeRestore, 0, FMToRestore);
           LSTree[0].children[0].children[0].children.splice(indexAtTreeRestore, 0, LSToRestore);
-  
+          var FMWithConsequenceTree: string = JSON.stringify(consTree);
+          var FailureModeWithLSETree: string = JSON.stringify(LSTree);
+          let obj = {}
+          obj['CPPFMId'] = 0;
+          obj['CFPPrescriptiveId'] = DataToRestore.CFPPrescriptiveId;
+          obj['FunctionMode'] = data.FunctionMode;
+          obj['LocalEffect'] = data.LocalEffect;
+          obj['SystemEffect'] = data.SystemEffect;
+          if (data.Consequence != undefined) {
+            obj['Consequence'] = data.Consequence;
+          } else { obj['Consequence'] = "" }
 
-            var FMWithConsequenceTree : string = JSON.stringify(consTree);
-            var FailureModeWithLSETree: string = JSON.stringify(LSTree);
-    
-            let obj = {}
-            obj['CPPFMId'] = 0;
-            obj['CFPPrescriptiveId'] = DataToRestore[0].CFPPrescriptiveId;
-            obj['FunctionMode'] = data.FunctionMode;
-            obj['LocalEffect'] = data.LocalEffect;
-            obj['SystemEffect'] = data.SystemEffect;
-            if(data.Consequence != undefined){
-              obj['Consequence'] = data.Consequence;
-            }else{ obj['Consequence'] = "" }
-            
-            obj['DownTimeFactor'] = data.DownTimeFactor;
-            obj['ScrapeFactor'] = data.ScrapeFactor;
-            obj['SafetyFactor'] = data.SafetyFactor;
-            obj['ProtectionFactor'] = data.ProtectionFactor;
-            obj['FrequencyFactor'] = data.FrequencyFactor;
-            obj['AttachmentDBPath'] = data.AttachmentDBPath;
-            obj['AttachmentFullPath'] = data.AttachmentFullPath;
-            obj['Remark'] = data.Remark;
-            this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
-            this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = DataToRestore[0].CFPPrescriptiveId;
-            this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = FMWithConsequenceTree
-            this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = FailureModeWithLSETree
-    
-            this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ)
-              .subscribe(
-                (res: any) => {
-                  this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully restored' });
-                  const params = new HttpParams()
+          obj['DownTimeFactor'] = data.DownTimeFactor;
+          obj['ScrapeFactor'] = data.ScrapeFactor;
+          obj['SafetyFactor'] = data.SafetyFactor;
+          obj['ProtectionFactor'] = data.ProtectionFactor;
+          obj['FrequencyFactor'] = data.FrequencyFactor;
+          obj['AttachmentDBPath'] = data.AttachmentDBPath;
+          obj['AttachmentFullPath'] = data.AttachmentFullPath;
+          obj['Remark'] = data.Remark;
+          this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+          this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = DataToRestore.CFPPrescriptiveId;
+          this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = FMWithConsequenceTree
+          this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = FailureModeWithLSETree
+
+          this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ)
+            .subscribe(
+              (res: any) => {
+                this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully restored' });
+                const params = new HttpParams()
                   .set("RCPPMId", data.RCPPMId)
                   .set("RCPFMId", data.RCPFMId)
                 this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
@@ -141,20 +131,14 @@ export class RecycleBinComponent implements OnInit {
                     console.log(err.err)
                     this.getCentrifugalPumpRecycleChildData();
                   });
-                }, err => {
-                  console.log(err.error)
-                });
+              }, err => {
+                console.log(err.error);
+              });
 
-           
-    
-
-            } else {
-              this.messageService.add({ severity: 'warn', detail: 'Corresponding tree not found to restore, please delete the failure mode'})
-            } 
-
-
-        }, err => { console.log(err.err)}
-      )
+        }, err => {
+          this.messageService.add({ severity: 'warn', detail: err.error });
+          console.log(err.err)
+        });
 
     } else if (data.ComponentCriticalityFactor != undefined) {
 
@@ -216,19 +200,19 @@ export class RecycleBinComponent implements OnInit {
 
   }
 
-  DeleteRecycleBinWholeTree(RCPPMId){
-      var RCPPMId = RCPPMId;
-      var RCPFMId: any = 0
-      const params = new HttpParams()
-        .set("RCPPMId", RCPPMId)
-        .set("RCPFMId", RCPFMId)
-      this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
-        .subscribe(
-          res => {
-            this.getCentrifugalPumpRecycleWholeData();
-            this.messageService.add({ severity: 'success', summary: 'success', detail: 'Asset has been Removed From Recycle Bin' });
-          }, err => { console.log(err.err) }
-        )
+  DeleteRecycleBinWholeTree(RCPPMId) {
+    var RCPPMId = RCPPMId;
+    var RCPFMId: any = 0
+    const params = new HttpParams()
+      .set("RCPPMId", RCPPMId)
+      .set("RCPFMId", RCPFMId)
+    this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
+      .subscribe(
+        res => {
+          this.getCentrifugalPumpRecycleWholeData();
+          this.messageService.add({ severity: 'success', summary: 'success', detail: 'Asset has been Removed From Recycle Bin' });
+        }, err => { console.log(err.err) }
+      )
   }
 
 

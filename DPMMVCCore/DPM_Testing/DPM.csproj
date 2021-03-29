@@ -7,9 +7,21 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\DPM\**" />
+    <Compile Remove="wwwroot\DPM_Profile_Images\**" />
+    <Compile Remove="wwwroot\Evidence_Image\**" />
+    <Compile Remove="wwwroot\Evidence_PDF\**" />
     <Content Remove="wwwroot\DPM\**" />
+    <Content Remove="wwwroot\DPM_Profile_Images\**" />
+    <Content Remove="wwwroot\Evidence_Image\**" />
+    <Content Remove="wwwroot\Evidence_PDF\**" />
     <EmbeddedResource Remove="wwwroot\DPM\**" />
+    <EmbeddedResource Remove="wwwroot\DPM_Profile_Images\**" />
+    <EmbeddedResource Remove="wwwroot\Evidence_Image\**" />
+    <EmbeddedResource Remove="wwwroot\Evidence_PDF\**" />
     <None Remove="wwwroot\DPM\**" />
+    <None Remove="wwwroot\DPM_Profile_Images\**" />
+    <None Remove="wwwroot\Evidence_Image\**" />
+    <None Remove="wwwroot\Evidence_PDF\**" />
   </ItemGroup>
 
   <ItemGroup>

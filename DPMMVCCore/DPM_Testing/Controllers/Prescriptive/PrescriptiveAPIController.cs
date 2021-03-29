@@ -46,7 +46,8 @@ namespace DPM.Controllers.Prescriptive
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("GetPrescriptiveById")]
         public async Task<ActionResult<CentrifugalPumpPrescriptiveModel>> GetPrescriptiveById(int id)
         {
             try
@@ -55,18 +56,15 @@ namespace DPM.Controllers.Prescriptive
 
                 if (prescriptiveModel == null)
                 {
-                    return NotFound();
+                    return BadRequest("Corresponding tree not found to restore, please delete the failure mode");
                 }
 
                 return prescriptiveModel;
-
             }
             catch (Exception exe)
             {
-
                 return BadRequest(exe.Message);
             }
-
         }
 
 
