@@ -21,6 +21,7 @@
                             <col style="width:9em;">
                             <col style="width:10em;">
                             <col style="width:6em;">
+                            <col style="width:6em;">
                             <col style="width:14em;">
                             <col style="width:8em;">
                             <col style="width:6em;">
@@ -37,6 +38,7 @@
                             <th>Consequence</th>
                             <th>Criticality Factor</th>
                             <th>Rating</th>
+                            <th>FCA</th>
                             <th>Maintainenance Practice</th>
                             <th>Attachment</th>
                             <th>Report</th>
@@ -57,6 +59,9 @@
                             </td>
                             <td (click)="FailureModeTable(p)">{{p.ComponentCriticalityFactor}}</td>
                             <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
+                            <td>    
+                                <a style="color: green;" title="Add FCA"><i class="pi pi-plus"></i></a>
+                            </td>
                             <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                             <td>
                                 <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>&nbsp;

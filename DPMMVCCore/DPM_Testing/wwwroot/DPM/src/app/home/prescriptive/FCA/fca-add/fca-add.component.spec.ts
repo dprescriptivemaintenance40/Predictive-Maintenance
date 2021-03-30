@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrescriptiveAddComponent } from './prescriptive-add.component';
+import { FCAADDComponent } from './fca-add.component';
 
-describe('PrescriptiveAddComponent', () => {
-  let component: PrescriptiveAddComponent;
-  let fixture: ComponentFixture<PrescriptiveAddComponent>;
+describe('FCAADDComponent', () => {
+  let component: FCAADDComponent;
+  let fixture: ComponentFixture<FCAADDComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PrescriptiveAddComponent ]
+      declarations: [ FCAADDComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrescriptiveAddComponent);
+    fixture = TestBed.createComponent(FCAADDComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

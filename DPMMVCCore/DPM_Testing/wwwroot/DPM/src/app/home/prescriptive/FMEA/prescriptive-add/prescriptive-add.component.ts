@@ -119,7 +119,13 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public fileAttachmentEnable: boolean = false;
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
-
+  public FCAdata1 : any;
+  public FMPattern = [ 'Pattern 1', 'Pattern 2','Pattern 3','Pattern 4','Pattern 5', 'Pattern 6'];
+  public Pattern : string = ""
+  public PatternPathEnable: boolean = false;
+  public PatternNextOnPrescriptiveTree: boolean = false;
+  public FailureModePatternTree: boolean = false;
+  
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
@@ -148,6 +154,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   ngOnInit() {
     this.title.setTitle('DPM | Prescriptive ');
+    this.PatternTree()
     setInterval(() => {
       this.dynamicDroppedPopup();
     }, 2000);
@@ -193,6 +200,13 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       label: 'Consequences',
       command: (event: any) => {
         this.activeIndex = 5;
+
+      }
+    }, 
+    {
+      label: 'FCA',
+      command: (event: any) => {
+        this.activeIndex = 6;
 
       }
     }
@@ -672,7 +686,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       res => {
         console.log(res);
         this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-        this.router.navigateByUrl('/Home/Prescriptive/List');
+       // this.router.navigateByUrl('/Home/Prescriptive/List');
+          this.SaveConcequencesEnable = false;
+          this.PatternNextOnPrescriptiveTree = true;
       }, err => { console.log(err.err) }
     )
 
@@ -1230,6 +1246,333 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       });
     }
   }
+
+  public PattenNode1 : string = "p-person"
+  public PattenNode2 : string = "p-person"
+  public PattenNode3 : string = "p-person"
+  public PattenNode4 : string = "p-person"
+  public PattenNode5 : string = "p-person"
+  public PattenNode6 : string = "p-person"
+  public PattenNode7 : string = "p-person"
+  public PattenNode8 : string = "p-person"
+  public PattenAnsNode1 : string = "p-person"
+  public PattenAnsNode2P1 : string = "p-person"
+  public PattenAnsNode2P2 : string = "p-person"
+  public PattenAnsNode3P1 : string = "p-person"
+  public PattenAnsNode3P2 : string = "p-person"
+  public PattenAnsNode4 : string = "p-person"
+  public PattenAnsNode5 : string = "p-person"
+  public PattenAnsNode6P1 : string = "p-person"
+  public PattenAnsNode6P2 : string = "p-person"
+  public PatternEnable:boolean = true
+
+  PatternTree(){
+    this.FCAdata1 = [
+      {
+        label: "Pattern",
+        type: "person",
+        styleClass: this.PattenNode1,
+        // node:"Node1",
+        expanded: true,
+        data: { name: "Are Failuers caused by wear elments" },
+        children: [
+          {
+            label: "No",
+            type: "person",
+            styleClass: this.PattenNode2,
+            // node:"Node2",
+            expanded: true,
+            data: {
+              name:
+                "Are failures caused by envrionmental chemical or stress reaction?"
+            },
+            children: [
+              {
+                label: "No",
+                type: "person",
+                styleClass: this.PattenNode4,
+                // node:"Node4",
+                expanded: true,
+                data: {
+                  name:
+                    "Are failures mostly random with only a few early life failures"
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    styleClass: this.PattenAnsNode4,
+                    expanded: true,
+                    data: {
+                      name: "Pattern 4"
+                    }
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    styleClass: this.PattenNode7,
+                    // node:"Node7",
+                    expanded: true,
+                    data: {
+                      name:
+                        "Do more failures Occur Shortly after Installation repair or overhaul"
+                    },
+                    children: [
+                      {
+                        label: "Yes",
+                        type: "person",
+                        styleClass: this.PattenAnsNode6P1,
+                        expanded: true,
+                        data: {
+                          name: "Pattern 6"
+                        }
+                      },
+                      {
+                        label: "No",
+                        type: "person",
+                        styleClass: this.PattenAnsNode5,
+                        expanded: true,
+                        data: {
+                          name: "Pattern 5"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }, 
+              {
+                label: "Yes",
+                type: "person",
+                styleClass: this.PattenNode5,
+                // node:"Node5",
+                expanded: true,
+                data: {
+                  name:
+                    "Do failures increase steadily with time but without a discernable sudden increase?"
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    styleClass: this.PattenAnsNode3P1,
+                    expanded: true,
+                    data: {
+                      name: "Pattern 3"
+                    }
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    styleClass: this.PattenAnsNode2P1,
+                    expanded: true,
+                    data: {
+                      name: "Pattern 2"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            label: "Yes",
+            type: "person",
+            styleClass: this.PattenNode3,
+            // node:"Node3",
+            expanded: true,
+            data: {
+              name:
+                "Are failures a combination Of early life random and late life"
+            },
+            children: [
+              {
+                label: "Yes",
+                type: "person",
+                styleClass: this.PattenAnsNode1,
+                expanded: true,
+                data: {
+                  name: "Pattern1"
+                }
+              },
+              {
+                label: "No",
+                type: "person",
+                styleClass: this.PattenNode6,
+                // node:"Node6",
+                expanded: true,
+                data: {
+                  name:
+                    "Do high Percentage failures occuer at a reasonably consistent age"
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    styleClass: this.PattenAnsNode2P2,
+                    expanded: true,
+                    data: {
+                      name: "Pattern 2"
+                    }
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    styleClass: this.PattenNode8,
+                    // node:"Node8",
+                    expanded: true,
+                    data: {
+                      name:
+                        "Do more failuers Occur Shortly after Installation repair or overhaul"
+                    },
+                    children: [
+                      {
+                        label: "Yes",
+                        type: "person",
+                        styleClass: this.PattenAnsNode6P2,
+                        expanded: true,
+                        data: {
+                          name: "Pattern 6"
+                        }
+                      },
+                      {
+                        label: "No",
+                        type: "person",
+                        styleClass: this.PattenAnsNode3P2,
+                        expanded: true,
+                        data: {
+                          name: "Pattern 3"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ];
+  }
+
+
+
+  SelectPatternForFailureMode(){
+    this.changeDetectorRef.detectChanges();
+    this.PattenNode1 = 'p-person'
+    this.PattenNode2 = 'p-person'
+    this.PattenNode3 = 'p-person'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode5 = 'p-person'
+    this.PattenNode6 = 'p-person'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode1 = 'p-person'
+    this.PattenAnsNode2P2 = 'p-person'
+    this.PattenAnsNode2P1 = 'p-person'
+    this.PattenAnsNode3P1 = 'p-person'
+    this.PattenAnsNode3P2 = 'p-person'
+    this.PattenAnsNode4 = 'p-person'
+    this.PattenAnsNode5 = 'p-person'
+    this.PattenAnsNode6P1 = 'p-person'
+    this.PattenAnsNode6P2 = 'p-person'
+    this.PatternPathEnable = false
+
+    if(this.Pattern === 'Pattern 1'){
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'p-person'
+      this.PattenNode3 = 'StylePattern'
+      this.PattenNode4 = 'p-person'
+      this.PattenNode5 = 'p-person'
+      this.PattenNode6 = 'p-person'
+      this.PattenNode7 = 'p-person'
+      this.PattenNode8 = 'p-person'
+      this.PattenAnsNode1 = 'StylePattern'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+    }else if(this.Pattern === 'Pattern 2'){
+        this.PatternPathEnable = true
+        this.PattenNode2 = 'StylePattern1'
+        this.PattenNode5 = 'StylePattern1'
+        this.PattenAnsNode2P1 = 'StylePattern1'
+
+        this.PattenNode1 = 'StylePattern'
+        this.PattenNode3 = 'StylePattern2'
+        this.PattenNode4 = 'p-person'
+        this.PattenNode6 = 'StylePattern2'
+        this.PattenNode7 = 'p-person'
+        this.PattenNode8 = 'p-person'
+        this.PattenAnsNode2P2 = 'StylePattern2'
+        this.changeDetectorRef.detectChanges();
+        this.PatternTree()
+
+       
+
+    }else if(this.Pattern === 'Pattern 3'){
+        this.PatternPathEnable = true  
+        this.PattenNode1 = 'StylePattern'
+        this.PattenNode2 = 'StylePattern1'
+        this.PattenNode5 = 'StylePattern1'
+        this.PattenAnsNode3P1 = 'StylePattern1'
+        this.PattenNode3 = 'StylePattern2'
+        this.PattenNode6 = 'StylePattern2'
+        this.PattenNode8 = 'StylePattern2'
+        this.PattenAnsNode3P2 = 'StylePattern2'
+        this.changeDetectorRef.detectChanges();
+        this.PatternTree()
+
+
+    }else if(this.Pattern === 'Pattern 4'){
+        this.PattenNode1 = 'StylePattern'
+        this.PattenNode2 = 'StylePattern'
+        this.PattenNode4 = 'StylePattern'
+        this.PattenAnsNode4 = 'StylePattern'
+        this.changeDetectorRef.detectChanges();
+        this.PatternTree()
+
+    }else if(this.Pattern === 'Pattern 5'){
+        this.PattenNode1 = 'StylePattern'
+        this.PattenNode2 = 'StylePattern'
+        this.PattenNode4 = 'StylePattern'
+        this.PattenNode7 = 'StylePattern'
+        this.PattenAnsNode5 = 'StylePattern'
+        this.changeDetectorRef.detectChanges();
+        this.PatternTree()
+        this.PatternEnable = true;
+
+    }else if(this.Pattern === 'Pattern 6'){
+        this.PatternPathEnable = true
+        this.PattenNode1 = 'StylePattern'
+        this.PattenNode2 = 'StylePattern1'
+        this.PattenNode4 = 'StylePattern1'
+        this.PattenNode7 = 'StylePattern1'
+        this.PattenAnsNode6P1 = 'StylePattern1'
+
+        this.PattenNode3 = 'StylePattern2'
+        this.PattenNode6 = 'StylePattern2'
+        this.PattenNode8 = 'StylePattern2'
+        this.PattenAnsNode6P2 = 'StylePattern2'
+
+        this.changeDetectorRef.detectChanges();
+        this.PatternTree()
+
+    }
+
+  }
+
+  ADDFMToFCA(){
+    this.prescriptiveTree = false
+    this.FailureModePatternTree = true
+    this.activeIndex = 6
+  }
+  PatternBack(){
+    this.prescriptiveTree = true
+    this.FailureModePatternTree = false
+    this.activeIndex = 5
+  }
+
+  PatternAdd(){}
+
+
 }
 
 
