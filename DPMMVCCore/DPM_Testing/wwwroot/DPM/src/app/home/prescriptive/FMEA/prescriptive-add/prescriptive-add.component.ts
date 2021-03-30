@@ -1249,7 +1249,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             styleClass: "p-person",
             // node:"Node1",
             expanded: true,
-            data: { name: "Are Failuers caused by wear elments" },
+            data: { name: "Are Failures caused by wear elements" },
             children: [
               {
                 label: "Yes",
@@ -1258,7 +1258,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                 expanded: true,
                 data: {
                   name:
-                    "Are failuer a combination Of early life random and late life"
+                    "Are failure a combination Of early life random and late life?"
                 },
                 children: [
                   {
@@ -1266,7 +1266,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     type: "person",
                     expanded: true,
                     data: {
-                      name: "Pattern1"
+                      name: "Pattern 1"
                     }
                   },
                   {
@@ -1276,7 +1276,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     expanded: true,
                     data: {
                       name:
-                        "Do high Percentage Failuer occuer at a reasonably consistent age"
+                        "Do high Percentage of Failure occuer at a reasonably consistent age?"
                     },
                     children: [
                       {
@@ -1294,7 +1294,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                         expanded: true,
                         data: {
                           name:
-                            "Do more failuers Occuer Shortly after Installation repair or overhaul"
+                            "Do more failures Occuer Shortly after Installation repair or overhaul?"
                         },
                         children: [
                           {
@@ -1326,7 +1326,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                 expanded: true,
                 data: {
                   name:
-                    "Are failuer a caued by envrinmental chemical or stress reaction?"
+                    "Are failure a caused by envrinmental, chemical or stress reaction?"
                 },
                 children: [
                   {
@@ -1336,7 +1336,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     expanded: true,
                     data: {
                       name:
-                        "Do failuer increase steadily with time but without a dissenrable sudden increase?"
+                        "Do failure increase steadily with time but without a dissenrable sudden increase?"
                     },
                     children: [
                       {
@@ -1364,7 +1364,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     expanded: true,
                     data: {
                       name:
-                        "Are failuer mostly random with only few early life failuers"
+                        "Are failure mostly random with only few early life failures"
                     },
                     children: [
                       {
@@ -1382,7 +1382,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                         expanded: true,
                         data: {
                           name:
-                            "Do more failuers Occuer Shortly after Installation repair or overhaul"
+                            "Do more failures Occuer Shortly after Installation repair or overhaul?"
                         },
                         children: [
                           {
