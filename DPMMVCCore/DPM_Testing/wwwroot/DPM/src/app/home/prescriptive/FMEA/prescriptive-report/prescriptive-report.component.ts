@@ -147,7 +147,6 @@ export class PrescriptiveReportComponent implements OnInit {
       pdfsToMerge.push(`${this.BrowserURl}${item.Link}`);
     });
 
-
     for (const pdfCopyDoc of pdfsToMerge) {
       const pdfBytes = await fetch(pdfCopyDoc).then(res => res.arrayBuffer())
       const pdf = await PDFDocument.load(pdfBytes);

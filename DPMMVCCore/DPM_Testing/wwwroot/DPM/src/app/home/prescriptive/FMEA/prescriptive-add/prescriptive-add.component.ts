@@ -119,6 +119,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public fileAttachmentEnable: boolean = false;
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
+  FCAdata1: TreeNode[];
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -1230,6 +1231,191 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       });
     }
   }
-}
+
+
+
+  FCAFailurePattern(){
+    this.FCAdata1 = [
+      {
+        label: "Failure Pattern",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: { name: "Patterns" },
+        children: [
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: "p-person",
+            // node:"Node1",
+            expanded: true,
+            data: { name: "Are Failuers caused by wear elments" },
+            children: [
+              {
+                label: "Yes",
+                type: "person",
+                // node:"Node3",
+                expanded: true,
+                data: {
+                  name:
+                    "Are failuer a combination Of early life random and late life"
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    expanded: true,
+                    data: {
+                      name: "Pattern1"
+                    }
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    // node:"Node6",
+                    expanded: true,
+                    data: {
+                      name:
+                        "Do high Percentage Failuer occuer at a reasonably consistent age"
+                    },
+                    children: [
+                      {
+                        label: "Yes",
+                        type: "person",
+                        expanded: true,
+                        data: {
+                          name: "Pattern 2"
+                        }
+                      },
+                      {
+                        label: "No",
+                        type: "person",
+                        // node:"Node8",
+                        expanded: true,
+                        data: {
+                          name:
+                            "Do more failuers Occuer Shortly after Installation repair or overhaul"
+                        },
+                        children: [
+                          {
+                            label: "Yes",
+                            type: "person",
+                            expanded: true,
+                            data: {
+                              name: "Pattern 6"
+                            }
+                          },
+                          {
+                            label: "No",
+                            type: "person",
+                            expanded: true,
+                            data: {
+                              name: "Pattern 3"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                label: "No",
+                type: "person",
+                // node:"Node2",
+                expanded: true,
+                data: {
+                  name:
+                    "Are failuer a caued by envrinmental chemical or stress reaction?"
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    // node:"Node5",
+                    expanded: true,
+                    data: {
+                      name:
+                        "Do failuer increase steadily with time but without a dissenrable sudden increase?"
+                    },
+                    children: [
+                      {
+                        label: "Yes",
+                        type: "person",
+                        expanded: true,
+                        data: {
+                          name: "Pattern 3"
+                        }
+                      },
+                      {
+                        label: "No",
+                        type: "person",
+                        expanded: true,
+                        data: {
+                          name: "Pattern 2"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    // node:"Node4",
+                    expanded: true,
+                    data: {
+                      name:
+                        "Are failuer mostly random with only few early life failuers"
+                    },
+                    children: [
+                      {
+                        label: "Yes",
+                        type: "person",
+                        expanded: true,
+                        data: {
+                          name: "Pattern 4"
+                        }
+                      },
+                      {
+                        label: "No",
+                        type: "person",
+                        // node:"Node7",
+                        expanded: true,
+                        data: {
+                          name:
+                            "Do more failuers Occuer Shortly after Installation repair or overhaul"
+                        },
+                        children: [
+                          {
+                            label: "Yes",
+                            type: "person",
+                            expanded: true,
+                            data: {
+                              name: "Pattern 6"
+                            }
+                          },
+                          {
+                            label: "No",
+                            type: "person",
+                            expanded: true,
+                            data: {
+                              name: "Pattern 5"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ];
+  }
+  }
+
+
+
 
 
