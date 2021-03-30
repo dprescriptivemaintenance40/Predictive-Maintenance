@@ -120,7 +120,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
   FCAdata1: TreeNode[];
-  public Scroll: boolean = false;
+
+
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
@@ -643,7 +644,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   SaveConsequences() {
-    this.Scroll = true
+   
     this.isNewEntity = false
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
@@ -831,11 +832,15 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   }
 
-  treeNext() {
+ 
+  
+  async treeNext() {
     this.prescriptiveTree = true;
     this.Consequences1 = true;
     this.activeIndex = 5
-    
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#ScrollUpdateTree1")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
 
@@ -843,7 +848,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.activeIndex = 4
     this.prescriptiveTree = true;
     this.Consequences1 = false;
-    this.Scroll = true
+   
   }
   Consequence1Next() {
     if (this.dropedConsequenceFailureMode.length == 1) {

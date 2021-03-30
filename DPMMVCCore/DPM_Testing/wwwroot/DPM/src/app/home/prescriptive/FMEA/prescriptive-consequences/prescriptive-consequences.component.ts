@@ -165,10 +165,13 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     }
   }
 
-  treeNext() {
+  async treeNext() {
     this.prescriptiveTree = false;
     this.Consequences1 = true;
     this.FMLSConsequenceName = this.FMTree[this.FMCount].data.name
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#ScrollUpdateTree2")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   ADDConsequence() {

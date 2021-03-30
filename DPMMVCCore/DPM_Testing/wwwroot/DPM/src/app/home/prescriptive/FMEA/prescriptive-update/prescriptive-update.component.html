@@ -2,7 +2,6 @@
 <p-card>
     <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
-        <!-- <button *ngIf="FinalDelete" label="delete" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#deleteModal">Delete</button> <br><br> -->
         <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()"><i class="pi pi-plus"></i> Failure Mode</button>
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -22,7 +21,7 @@
     </div>
 </p-card>
 
-<div class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div id="ScrollUpdateTree5" class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -235,10 +234,6 @@
                                     <label class="custom-file-label" for="inputGroupFile01">Choose attachment</label>
                                 </div>
                             </div>
-                            <!-- <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
-                            <button type="button" (click)="file.click()" class="btn btn-light">
-                                <span class="fa fa-paperclip"></span>
-                            </button> -->
                         </div>
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="file"><br>
@@ -299,12 +294,10 @@
     </div>
 </div>
 
-
-
 <div *ngIf="ColoredTreeForUpdate">
     <p-card>
-        <p style="margin-left: 200px;"><b>Your selected Tree</b></p>
-        <p-organizationChart [value]="SavedConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+        <p style="margin-left: 200px;"><b>You selected {{LSFailureMode}} Tree </b></p>
+        <p-organizationChart id="ScrollUpdateTree" [value]="SavedConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -322,7 +315,7 @@
 
 
 
-<div *ngIf="Consequences1" class="col-md-12 stepsdemo-content shadow">
+<div  id="ScrollUpdateTree4" *ngIf="Consequences1" class="col-md-12 stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
             Consequences for {{LSFailureMode}}
@@ -513,7 +506,14 @@
     <p-card>
         <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
         <button *ngIf="ConsequenceTreeADDConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()">Add Consequences</button><br><br>
+        <span *ngIf="ConsequenceTreeADDConsequenceEnable">
+   
+            <small class="form-text text-muted">Your  {{LSFailureMode}} Tree</small>
+        </span>
         <button *ngIf="ConsequenceTreeEditConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="EditConsequenceToTree()">Edit Consequences</button><br><br>
+        <span *ngIf="ConsequenceTreeEditConsequenceEnable">
+            <small class="form-text text-muted"> Your  {{LSFailureMode}} Tree </small>
+        </span>
 
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -640,8 +640,7 @@
                         <div class="form-group">
                             <label for="exampleFormControlInput2">Consequence</label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeConsequence" id="exampleFormControlInput2" disabled><br>
-                            <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()">Update Consequence</button>
-
+                                <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()">Update Consequence</button>
                         </div>
 
                     </form>
