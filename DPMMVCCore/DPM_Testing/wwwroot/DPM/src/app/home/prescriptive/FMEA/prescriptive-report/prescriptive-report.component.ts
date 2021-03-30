@@ -58,7 +58,7 @@ export class PrescriptiveReportComponent implements OnInit {
       for (let index = 0; index < this.attachmentRemark.length; index++) {
         if (res.data.name == this.attachmentRemark[index].FunctionMode) {
           var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
-          if (extn == 'jpg' || extn == 'png') {
+          if (extn.toLowerCase() == 'jpg' || extn.toLowerCase()  == 'png') {
             res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
             res.Remark = this.attachmentRemark[index].Remark
           } else {
@@ -129,6 +129,7 @@ export class PrescriptiveReportComponent implements OnInit {
         this.mergePdfs(arrbf);
         this.commonLoadingDirective.showLoading(false, '');
       });
+      this.hide = false;
     } else {
       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Fill the mandatory fields' });
     }
@@ -143,10 +144,11 @@ export class PrescriptiveReportComponent implements OnInit {
     });
 
     let pdfsToMerge = [];
+    if(this.PDFURL.length > 0){
     this.PDFURL.forEach(item => {
       pdfsToMerge.push(`${this.BrowserURl}${item.Link}`);
     });
-
+    }
     for (const pdfCopyDoc of pdfsToMerge) {
       const pdfBytes = await fetch(pdfCopyDoc).then(res => res.arrayBuffer())
       const pdf = await PDFDocument.load(pdfBytes);
@@ -157,7 +159,8 @@ export class PrescriptiveReportComponent implements OnInit {
     }
     const savedpdf = await mergedPdf.save();
     this.saveByteArray("FMEA Analysis Report", savedpdf);
-  }
+  
+}
 
   saveByteArray(reportName, byte) {
     var blob = new Blob([byte], { type: "application/pdf" });

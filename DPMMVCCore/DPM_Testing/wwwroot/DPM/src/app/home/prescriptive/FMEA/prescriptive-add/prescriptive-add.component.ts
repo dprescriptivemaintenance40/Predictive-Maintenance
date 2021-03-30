@@ -120,7 +120,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
   FCAdata1: TreeNode[];
-
+  public Scroll: boolean = false;
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
@@ -130,6 +130,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     private changeDetectorRef: ChangeDetectorRef) { }
 
   private isNewEntity: boolean = false;
+
+  
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if (confirm('Are you sure you want to go back. You have have pending changes')) {
@@ -641,6 +643,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   SaveConsequences() {
+    this.Scroll = true
     this.isNewEntity = false
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
@@ -692,7 +695,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType
     this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.dropedFailure[0].Description
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
-
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};
       obj['CPPFMId'] = 0;
@@ -710,7 +712,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
-
     }
 
 
@@ -834,6 +835,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.prescriptiveTree = true;
     this.Consequences1 = true;
     this.activeIndex = 5
+    
   }
 
 
@@ -841,6 +843,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.activeIndex = 4
     this.prescriptiveTree = true;
     this.Consequences1 = false;
+    this.Scroll = true
   }
   Consequence1Next() {
     if (this.dropedConsequenceFailureMode.length == 1) {
