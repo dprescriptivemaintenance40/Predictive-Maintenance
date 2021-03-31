@@ -296,7 +296,7 @@
 
 <div *ngIf="ColoredTreeForUpdate">
     <p-card>
-        <p style="margin-left: 200px;"><b>You selected {{LSFailureMode}} Tree </b></p>
+        <h5 style="margin-bottom: 1em;"><b>Your selected {{LSFailureMode}} Tree </b></h5>
         <p-organizationChart id="ScrollUpdateTree" [value]="SavedConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -315,7 +315,7 @@
 
 
 
-<div  id="ScrollUpdateTree4" *ngIf="Consequences1" class="col-md-12 stepsdemo-content shadow">
+<div id="ScrollUpdateTree4" *ngIf="Consequences1" class="col-md-12 stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
             Consequences for {{LSFailureMode}}
@@ -504,16 +504,15 @@
 
 <div *ngIf="ConsequencesTree" class="col-md-12 stepsdemo-content shadow">
     <p-card>
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
-        <button *ngIf="ConsequenceTreeADDConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()">Add Consequences</button><br><br>
         <span *ngIf="ConsequenceTreeADDConsequenceEnable">
             <small class="form-text text-muted"><h4>Your {{LSFailureMode}} Tree</h4></small>
         </span>
-        <button *ngIf="ConsequenceTreeEditConsequenceEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="EditConsequenceToTree()">Edit Consequences</button><br><br>
         <span *ngIf="ConsequenceTreeEditConsequenceEnable">
-            <small class="form-text text-muted"><h4> You {{LSFailureMode}} Tree </h4></small>
+            <small class="form-text text-muted"><h4> Your {{LSFailureMode}} Tree </h4></small>
         </span>
-
+        <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()">Back</button>&nbsp;&nbsp;
+        <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button>
+        <button *ngIf="ConsequenceTreeEditConsequenceEnable" title="Edit Consequences" label="Back" type="button" class="btn btn-dark" (click)="EditConsequenceToTree()"><i class="pi pi-pencil"></i> Consequences</button><br>
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -639,7 +638,7 @@
                         <div class="form-group">
                             <label for="exampleFormControlInput2">Consequence</label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeConsequence" id="exampleFormControlInput2" disabled><br>
-                                <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()">Update Consequence</button>
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="ReplaceConsequence()">Update Consequence</button>
                         </div>
 
                     </form>
