@@ -158,7 +158,9 @@
                     </div>
                     <div *ngIf="(tree[0].Remark !=undefined)" class="center" style="margin-left: 330px;">
                         <div *ngIf="tree[0].Remark !== ''" id="remark">
-                            <textarea class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea>
+                            <span *ngIf="hide">{{tree[0].Remark}}</span>
+                            <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea>
+                            <!-- <textarea class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea> -->
                         </div>
                     </div>
                 </div>
@@ -174,7 +176,9 @@
                  <th scope="row">{{i+1}}</th>
                  Failure Modes: {{AR.FM}} <br>
                  Remark: {{AR.Remark}}<br>
+                 <!-- ParentFile : {{AR.ParentFile}}<br>  -->
               <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a><br>
+              <!-- <a href={{BrowserURl}}{{AR.CAttachmentDBPath}} download> Download Attachments </a><br> -->
                </tr>
            </span>
     </div>

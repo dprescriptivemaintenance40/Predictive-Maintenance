@@ -298,7 +298,7 @@
                 <li>Protection Factor</li>
                 <li>Frequency Factor</li>
             </p-overlayPanel>
-            <a (click)="panel.show($event)" style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
+            <a (click)="panel.show($event)" title="Explaination of each factors." style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
         </ng-template>
         <ng-template pTemplate="subtitle">
             Enter Factors for {{FMLSEffectModeName}}
@@ -370,7 +370,7 @@
         <button *ngIf="prescriptiveTreeBackEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="treeBack()">Back</button>
         <button *ngIf="prescriptiveTreeSubmitEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Save & Next</button>
 
-        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()">Next</button> <br><br>
+        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext(target)">Next</button> <br><br>
         <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#Consequences01">Save Consequences</button><br><br>
 
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
@@ -408,7 +408,7 @@
 </div>
 
 <!--    Consequences -->
-<div *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow">
+<div id="ScrollUpdateTree1" *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
             Consequences for {{FMLSConsequenceName}}
@@ -540,10 +540,14 @@
     </p-card>
 </div>
 
+
 <div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">
     <p-card>
+        <span>
+            <small class="form-text text-muted"><h5> Your {{FMLSConsequenceName}} Tree </h5></small>
+        </span>
         <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" data-toggle="tooltip" data-placement="right" title="When you add the consequence then it directly save in to the tree">Add Consequences</button><br><br>
+        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" data-toggle="tooltip" data-placement="right" title="When you add the consequence then it directly save in to the tree"><i class="pi pi-plus"></i> Consequences</button><br><br>
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -580,4 +584,19 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<div>
+    <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+        <ng-template let-node pTemplate="person">
+            <div class="node-header p-corner-top">{{node.label}}</div>
+            <div class="node-content">
+                <div>{{node.data.name}}</div>
+            </div>
+        </ng-template>
+        <ng-template let-node pTemplate="department">
+            {{node.label}}
+        </ng-template>
+    </p-organizationChart>
 </div>

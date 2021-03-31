@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DomSanitizer, SafeUrl, Title } from '@angular/platform-browser';
@@ -144,6 +144,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     public commonLoadingDirective: CommonLoadingDirective,
     private router: Router,
     private http: HttpClient,
+    private changeDetectorRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer) { }
   private isNewEntity: boolean = false;
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
@@ -381,7 +382,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.EditFM = false
   }
 
-  ReplaceConsequence() {
+  async ReplaceConsequence() {
     this.LSFailureMode = ""
     this.LSFailureMode = this.UpdateFailureMode
     this.Consequences1 = false
@@ -389,7 +390,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.prescriptiveTree = true
     this.ColoredTreeForUpdate = true
     this.ChangeConsequenceforUpdate = true
-    this.colorForUpdateTree()
+    await this.colorForUpdateTree()
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#ScrollUpdateTree")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })  
   }
 
   EditConsequenceToTree() {
@@ -1244,9 +1248,12 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
     }
   }
-  ChangeConsequence() {
+  async ChangeConsequence() {
     this.Consequences1 = true
     this.UpdateColorTreeEnable = true;
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#ScrollUpdateTree4")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   dragStartC1(e, con1) {

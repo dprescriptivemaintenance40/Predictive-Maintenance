@@ -119,6 +119,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public fileAttachmentEnable: boolean = false;
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
+  FCAdata1: TreeNode[];
+
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -129,6 +131,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     private changeDetectorRef: ChangeDetectorRef) { }
 
   private isNewEntity: boolean = false;
+
+  
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if (confirm('Are you sure you want to go back. You have have pending changes')) {
@@ -640,6 +644,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   SaveConsequences() {
+   
     this.isNewEntity = false
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
@@ -691,7 +696,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType
     this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.dropedFailure[0].Description
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
-
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};
       obj['CPPFMId'] = 0;
@@ -709,7 +713,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
-
     }
 
 
@@ -773,9 +776,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.consequenceTreeColorNodeD = 'p-person'
 
   }
-
-
-
   FailureEffectNext() {
     this.prescriptiveFailureMode = false;
     this.prescriptiveEffect = false;
@@ -783,11 +783,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.prescriptiveTree = true;
     this.prescriptiveTreeBackEnable = true
     this.activeIndex = 4;
-    var SubmitedTree = JSON.parse(localStorage.getItem('PrescriptiveObject'))
-    if (SubmitedTree == null) {
-      this.prescriptiveTreeSubmitEnable = true;
-    }
-
+    this.prescriptiveTreeSubmitEnable = true;
+    // var SubmitedTree = JSON.parse(localStorage.getItem('PrescriptiveObject'))
+    // if (SubmitedTree == null) {
+    //   this.prescriptiveTreeSubmitEnable = true;
+    // }
     this.isNewEntity = true
     this.GenrationTree()
 
@@ -829,10 +829,15 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   }
 
-  treeNext() {
+ 
+  
+  async treeNext() {
     this.prescriptiveTree = true;
     this.Consequences1 = true;
     this.activeIndex = 5
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#ScrollUpdateTree1")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
 
@@ -840,6 +845,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.activeIndex = 4
     this.prescriptiveTree = true;
     this.Consequences1 = false;
+   
   }
   Consequence1Next() {
     if (this.dropedConsequenceFailureMode.length == 1) {
@@ -1230,6 +1236,191 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       });
     }
   }
-}
+
+
+
+  FCAFailurePattern(){
+    this.FCAdata1 = [
+      {
+        label: "Failure Pattern",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: { name: "Patterns" },
+        children: [
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: "p-person",
+            // node:"Node1",
+            expanded: true,
+            data: { name: "Are Failures caused by wear elements" },
+            children: [
+              {
+                label: "Yes",
+                type: "person",
+                // node:"Node3",
+                expanded: true,
+                data: {
+                  name:
+                    "Are failure a combination Of early life random and late life?"
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    expanded: true,
+                    data: {
+                      name: "Pattern 1"
+                    }
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    // node:"Node6",
+                    expanded: true,
+                    data: {
+                      name:
+                        "Do high Percentage of Failure occuer at a reasonably consistent age?"
+                    },
+                    children: [
+                      {
+                        label: "Yes",
+                        type: "person",
+                        expanded: true,
+                        data: {
+                          name: "Pattern 2"
+                        }
+                      },
+                      {
+                        label: "No",
+                        type: "person",
+                        // node:"Node8",
+                        expanded: true,
+                        data: {
+                          name:
+                            "Do more failures Occuer Shortly after Installation repair or overhaul?"
+                        },
+                        children: [
+                          {
+                            label: "Yes",
+                            type: "person",
+                            expanded: true,
+                            data: {
+                              name: "Pattern 6"
+                            }
+                          },
+                          {
+                            label: "No",
+                            type: "person",
+                            expanded: true,
+                            data: {
+                              name: "Pattern 3"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                label: "No",
+                type: "person",
+                // node:"Node2",
+                expanded: true,
+                data: {
+                  name:
+                    "Are failure a caused by envrinmental, chemical or stress reaction?"
+                },
+                children: [
+                  {
+                    label: "Yes",
+                    type: "person",
+                    // node:"Node5",
+                    expanded: true,
+                    data: {
+                      name:
+                        "Do failure increase steadily with time but without a dissenrable sudden increase?"
+                    },
+                    children: [
+                      {
+                        label: "Yes",
+                        type: "person",
+                        expanded: true,
+                        data: {
+                          name: "Pattern 3"
+                        }
+                      },
+                      {
+                        label: "No",
+                        type: "person",
+                        expanded: true,
+                        data: {
+                          name: "Pattern 2"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    label: "No",
+                    type: "person",
+                    // node:"Node4",
+                    expanded: true,
+                    data: {
+                      name:
+                        "Are failure mostly random with only few early life failures"
+                    },
+                    children: [
+                      {
+                        label: "Yes",
+                        type: "person",
+                        expanded: true,
+                        data: {
+                          name: "Pattern 4"
+                        }
+                      },
+                      {
+                        label: "No",
+                        type: "person",
+                        // node:"Node7",
+                        expanded: true,
+                        data: {
+                          name:
+                            "Do more failures Occuer Shortly after Installation repair or overhaul?"
+                        },
+                        children: [
+                          {
+                            label: "Yes",
+                            type: "person",
+                            expanded: true,
+                            data: {
+                              name: "Pattern 6"
+                            }
+                          },
+                          {
+                            label: "No",
+                            type: "person",
+                            expanded: true,
+                            data: {
+                              name: "Pattern 5"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ];
+  }
+  }
+
+
+
 
 
