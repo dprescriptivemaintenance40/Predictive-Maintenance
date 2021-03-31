@@ -776,9 +776,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.consequenceTreeColorNodeD = 'p-person'
 
   }
-
-
-
   FailureEffectNext() {
     this.prescriptiveFailureMode = false;
     this.prescriptiveEffect = false;
@@ -791,7 +788,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     // if (SubmitedTree == null) {
     //   this.prescriptiveTreeSubmitEnable = true;
     // }
-
     this.isNewEntity = true
     this.GenrationTree()
 
