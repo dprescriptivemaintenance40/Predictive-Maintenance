@@ -30,6 +30,7 @@ export class PrescriptiveListComponent implements OnInit {
   public Table1: boolean = true;
   public Table2: boolean = false;
   public FailureModeDataTabe2: any;
+  FMWithConsequenceTree : boolean = false;
 
   constructor(public http: HttpClient,
     public title: Title,
@@ -91,7 +92,6 @@ export class PrescriptiveListComponent implements OnInit {
       this.router.navigateByUrl('/Home/Prescriptive/Consequences');
       this.getPrescriptiveRecords();
     }
-
   }
 
   FailureModeTable(p) {

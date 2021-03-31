@@ -38,6 +38,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public hide: boolean = false;
   public TypeMethodology: string = "";
   public TypeCurrentandfuture: string = "";
+  public ParentFile : string =""
 
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
@@ -45,7 +46,7 @@ export class PrescriptiveReportComponent implements OnInit {
     private messageService: MessageService,
     private commonLoadingDirective: CommonLoadingDirective) { }
 
-  ngOnInit() {
+  ngOnInit(){
     this.data = JSON.parse(localStorage.getItem('ReportObj'))
     this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes
     this.BrowserURl = window.location.href
@@ -68,7 +69,6 @@ export class PrescriptiveReportComponent implements OnInit {
             obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
             this.PDFURL.push(obj)
           }
-
         }
       }
       this.AnnexuresTreeList.push([res]);
@@ -93,6 +93,9 @@ export class PrescriptiveReportComponent implements OnInit {
       this.ImageEnable = false;
     }
     console.log(extension)
+    if(this.ParentFile != null){
+      this.ParentFile =  this.data.CAttachmentDBPath
+    }
   }
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
@@ -117,12 +120,12 @@ export class PrescriptiveReportComponent implements OnInit {
         var heightLeft = imgHeight;
         var doc = new jsPDF('p', 'mm', "a4");
         var position = 0;
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 90);
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 95);
         heightLeft -= pageHeight;
         while (heightLeft >= 0) {
           position = heightLeft - imgHeight;
           doc.addPage();
-          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 90);
+          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 95);
           heightLeft -= pageHeight;
         }
         const arrbf = doc.output("arraybuffer");

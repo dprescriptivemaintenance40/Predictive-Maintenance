@@ -786,10 +786,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.prescriptiveTree = true;
     this.prescriptiveTreeBackEnable = true
     this.activeIndex = 4;
-    var SubmitedTree = JSON.parse(localStorage.getItem('PrescriptiveObject'))
-    if (SubmitedTree == null) {
-      this.prescriptiveTreeSubmitEnable = true;
-    }
+    this.prescriptiveTreeSubmitEnable = true;
+    // var SubmitedTree = JSON.parse(localStorage.getItem('PrescriptiveObject'))
+    // if (SubmitedTree == null) {
+    //   this.prescriptiveTreeSubmitEnable = true;
+    // }
 
     this.isNewEntity = true
     this.GenrationTree()
