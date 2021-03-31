@@ -127,7 +127,6 @@ export class PrescriptiveListComponent implements OnInit {
   }
 
   saveAttachment() {
-
     const formData = new FormData();
     formData.append('file', this.CAttachmentFile);
     formData.append('CRemarks', this.CRemarks);

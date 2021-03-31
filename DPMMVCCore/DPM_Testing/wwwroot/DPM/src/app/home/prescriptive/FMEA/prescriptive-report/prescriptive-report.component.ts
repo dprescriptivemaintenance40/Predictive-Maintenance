@@ -38,7 +38,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public hide: boolean = false;
   public TypeMethodology: string = "";
   public TypeCurrentandfuture: string = "";
-  public ParentFile : string =""
+  public ParentAttachmentFile : string =""
 
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
@@ -47,26 +47,33 @@ export class PrescriptiveReportComponent implements OnInit {
     private commonLoadingDirective: CommonLoadingDirective) { }
 
   ngOnInit(){
-    this.data = JSON.parse(localStorage.getItem('ReportObj'))
+    this.data = JSON.parse(localStorage.getItem('ReportObj'))    
+    if(this.data.CAttachmentDBPath != null){
+      var FileExt = this.getFileExtension(this.data.CAttachmentDBPath)
+      if (FileExt.toLowerCase() == 'pdf') {
+      let obj = {}
+      obj['Link'] = this.data.CAttachmentDBPath; 
+      this.PDFURL.push(obj) 
+    }
+  }
     this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes
     this.BrowserURl = window.location.href
     this.BrowserURl = window.location.href.split('#')[0]
     this.data.Date = this.datepipe.transform(this.data.Date, 'dd/MM/YYYY')
     var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
     var NewTree = JSON.parse(this.data.FMWithConsequenceTree)
-    var NewTree = JSON.parse(this.data.FMWithConsequenceTree)
     NewTree[0].children[0].children[0].children.forEach((res: any) => {
       for (let index = 0; index < this.attachmentRemark.length; index++) {
         if (res.data.name == this.attachmentRemark[index].FunctionMode) {
           var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
-          if (extn.toLowerCase() == 'jpg' || extn.toLowerCase()  == 'png') {
+          if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg'|| extn.toLowerCase()  == 'png') {
             res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
             res.Remark = this.attachmentRemark[index].Remark
           } else {
             let obj = {}
             obj['FM'] = res.data.name;
             obj['Remark'] = this.attachmentRemark[index].Remark;
-            obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
+            obj['Link'] = this.attachmentRemark[index].AttachmentDBPath; 
             this.PDFURL.push(obj)
           }
         }
@@ -88,14 +95,12 @@ export class PrescriptiveReportComponent implements OnInit {
     this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(str);
     var extension = this.getFileExtension(str);
     if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
-      this.ImageEnable = true;
+   this.ImageEnable = true;
     } else if (extension.toLowerCase() == 'pdf') {
       this.ImageEnable = false;
     }
+    
     console.log(extension)
-    if(this.ParentFile != null){
-      this.ParentFile =  this.data.CAttachmentDBPath
-    }
   }
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
@@ -120,12 +125,12 @@ export class PrescriptiveReportComponent implements OnInit {
         var heightLeft = imgHeight;
         var doc = new jsPDF('p', 'mm', "a4");
         var position = 0;
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 95);
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 90);
         heightLeft -= pageHeight;
         while (heightLeft >= 0) {
           position = heightLeft - imgHeight;
           doc.addPage();
-          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 95);
+          doc.addImage(imgData, 'PNG', 10, position, imgWidth,imgHeight + 90);
           heightLeft -= pageHeight;
         }
         const arrbf = doc.output("arraybuffer");
@@ -162,7 +167,6 @@ export class PrescriptiveReportComponent implements OnInit {
     }
     const savedpdf = await mergedPdf.save();
     this.saveByteArray("FMEA Analysis Report", savedpdf);
-  
 }
 
   saveByteArray(reportName, byte) {
