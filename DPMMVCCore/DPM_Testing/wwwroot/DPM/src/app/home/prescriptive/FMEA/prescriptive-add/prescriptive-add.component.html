@@ -546,7 +546,7 @@
         <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
         <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" data-toggle="tooltip" data-placement="right" title="When you add the consequence then it directly save in to the tree">Add Consequences</button><br><br>
         <span>
-            <small class="form-text text-muted"> Your {{FMLSConsequenceName}} Tree </small>
+            <small class="form-text text-muted"><h5> Your {{FMLSConsequenceName}} Tree </h5></small>
         </span>
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
