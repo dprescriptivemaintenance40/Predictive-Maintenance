@@ -372,7 +372,8 @@
 
         <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()">Next</button> <br><br>
         <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#Consequences01">Save Consequences</button><br><br>
-        <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px"  (click)="ADDFMToFCA()">Add FCA</button> <br><br>
+        <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px"  (click)="ADDFMToFCA()">Add FCA</button>
+        <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()">Next</button> <br><br>
 
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -585,6 +586,7 @@
 
 
 <div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;">
+    <small class="form-text text-muted">Add FCA for {{PatternFMName}}</small>
     <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode"
     (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
@@ -603,7 +605,7 @@
             Pattern For Failure Mode
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Enter Pattern 
+            Enter Pattern for {{PatternFMName}}
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
@@ -622,14 +624,14 @@
                 </div>
                 
                   <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
-                    <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+                    <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio" class="custom-control-input">
                     <label class="custom-control-label" for="customRadio1">Select Path</label>
                     <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
                         <i class="fas fa-circle"></i>
                     </a>
                   </div>
                   <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
-                    <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+                    <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio" class="custom-control-input">
                     <label class="custom-control-label" for="customRadio2">Select Path</label>
                     <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(212, 218, 211);" class="fas fa-circle">
                     </a>

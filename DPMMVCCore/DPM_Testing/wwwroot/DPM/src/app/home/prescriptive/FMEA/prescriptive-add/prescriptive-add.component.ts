@@ -1048,7 +1048,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         expanded: true,
         data: {
           name:
-            "Will the occurance of the failuer mode be evidient to operational stuff during normal operation of the plant?"
+            "Will the occurance of the failure mode be evidient to operational stuff during normal operation of the plant?"
         },
         children: [
           {
@@ -1058,7 +1058,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             expanded: true,
             data: {
               name:
-                "Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct adverse effect on operational safety or the environment?"
+                "Does the effect of the failure mode(or the secondary effect resulting from the failures) have direct adverse effect on operational safety or the environment?"
             },
             children: [
               {
@@ -1274,7 +1274,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         styleClass: this.PattenNode1,
         // node:"Node1",
         expanded: true,
-        data: { name: "Are Failuers caused by wear elments" },
+        data: { name: "Are Failures caused by wear elments" },
         children: [
           {
             label: "No",
@@ -1421,7 +1421,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     expanded: true,
                     data: {
                       name:
-                        "Do more failuers Occur Shortly after Installation repair or overhaul"
+                        "Do more failures Occur Shortly after Installation repair or overhaul"
                     },
                     children: [
                       {
@@ -1555,6 +1555,28 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.changeDetectorRef.detectChanges();
         this.PatternTree()
 
+    } else if(this.Pattern === ""){
+          this.PattenNode1 = 'p-person'
+          this.PattenNode2 = 'p-person'
+          this.PattenNode3 = 'p-person'
+          this.PattenNode4 = 'p-person'
+          this.PattenNode5 = 'p-person'
+          this.PattenNode6 = 'p-person'
+          this.PattenNode7 = 'p-person'
+          this.PattenNode8 = 'p-person'
+          this.PattenAnsNode1 = 'p-person'
+          this.PattenAnsNode2P2 = 'p-person'
+          this.PattenAnsNode2P1 = 'p-person'
+          this.PattenAnsNode3P1 = 'p-person'
+          this.PattenAnsNode3P2 = 'p-person'
+          this.PattenAnsNode4 = 'p-person'
+          this.PattenAnsNode5 = 'p-person'
+          this.PattenAnsNode6P1 = 'p-person'
+          this.PattenAnsNode6P2 = 'p-person'
+          this.PatternPathEnable = false
+          this.Pattern = ""
+          this.PatternPath=""
+          this.changeDetectorRef.detectChanges();
     }
 
   }
@@ -1563,6 +1585,30 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.prescriptiveTree = false
     this.FailureModePatternTree = true
     this.activeIndex = 6
+
+    this.PattenNode1 = 'p-person'
+    this.PattenNode2 = 'p-person'
+    this.PattenNode3 = 'p-person'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode5 = 'p-person'
+    this.PattenNode6 = 'p-person'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode1 = 'p-person'
+    this.PattenAnsNode2P2 = 'p-person'
+    this.PattenAnsNode2P1 = 'p-person'
+    this.PattenAnsNode3P1 = 'p-person'
+    this.PattenAnsNode3P2 = 'p-person'
+    this.PattenAnsNode4 = 'p-person'
+    this.PattenAnsNode5 = 'p-person'
+    this.PattenAnsNode6P1 = 'p-person'
+    this.PattenAnsNode6P2 = 'p-person'
+    this.PatternPathEnable = false
+    this.Pattern = ""
+    this.PatternPath=""
+    this.changeDetectorRef.detectChanges();
+    this.PatternFMName = this.data1[0].children[0].children[0].children[0].data.name
+    this.PatternNextOnPrescriptiveTree = false
   }
   PatternBack(){
     this.prescriptiveTree = true
@@ -1570,7 +1616,185 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.activeIndex = 5
   }
 
-  PatternAdd(){}
+  public PatternPath : string="";
+  private PatternCounter : number = 0;
+  public PatternFMName: string = ""
+  PatternAdd(){
+    if(this.Pattern === 'Pattern 2' || this.Pattern ==='Pattern 3'|| this.Pattern ==='Pattern 6'){
+        var path;
+        if(this.Pattern === 'Pattern 2' && this. PatternPath == "1"){
+          path =  {
+                Node1 : 'StylePattern1',
+                Node2 : 'StylePattern1',
+                Node5 : 'StylePattern1', 
+                AnsNode2P1 : 'StylePattern1' } 
+        } else if (this.Pattern === 'Pattern 2' && this. PatternPath == "2"){
+          path = {
+                Node1 : 'StylePattern2',
+                Node3 : 'StylePattern2',
+                Node6 : 'StylePattern2',
+                AnsNode2P2 : 'StylePattern2' 
+              }
+
+          } else if(this.Pattern ==='Pattern 3' && this. PatternPath == "1"){
+            path = {
+                Node1 : 'StylePattern1',
+                Node2 : 'StylePattern1',
+                Node5 : 'StylePattern1',
+                AnsNode3P1 : 'StylePattern1'
+            }
+
+        } else if(this.Pattern ==='Pattern 3' && this. PatternPath == "2"){
+            path ={
+                Node1 : 'StylePattern2',
+                Node3 : 'StylePattern2',
+                Node6 : 'StylePattern2',
+                Node8 : 'StylePattern2',
+                AnsNode3P2 : 'StylePattern2'
+            }
+
+        } else if(this.Pattern ==='Pattern 6' && this. PatternPath == "1"){ 
+          path = {
+                  Node1 : 'StylePattern1',
+                  Node2 : 'StylePattern1',
+                  Node4 : 'StylePattern1',
+                  Node7 : 'StylePattern1',
+                  AnsNode6P1 : 'StylePattern1'
+                }
+        }else if(this.Pattern ==='Pattern 6' && this. PatternPath == "2"){ 
+            path = {
+                  Node1 : 'StylePattern2',
+                  Node3 : 'StylePattern2',
+                  Node6 : 'StylePattern2',
+                  Node8 : 'StylePattern2',
+                  AnsNode6P2 : 'StylePattern2' 
+            }
+        }
+
+        
+        var FCATree = {
+                    label: "FCA",
+                    type: "person",
+                    styleClass: 'p-person',
+                    expanded: true,
+                    nodePath: path ,
+                    data: { name: "FCA" },
+                    children: [
+                      {
+                        label: "Pattern",
+                        type: "person",
+                        styleClass: 'p-person',
+                        expanded: true,
+                        data: {
+                          name: this.Pattern
+                        }
+                      }  
+                    ]
+                  }
+
+          this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
+          if( this.PatternCounter > this.data1[0].children[0].children[0].children.length ){
+            this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
+         
+          } 
+          this.PatternCounter = this.PatternCounter + 1
+          if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
+              this.Pattern = ""
+          } 
+        this.FailureModePatternTree = false;
+        this.prescriptiveTree = true
+
+      }else{
+
+        if(this.Pattern === 'Pattern 1' ){
+          path = {
+            Node1 : 'StylePattern',
+            Node3 : 'StylePattern',
+            AnsNode1 : 'StylePattern'
+          }
+
+        }else  if(this.Pattern === 'Pattern 4' ){
+          path = {
+              Node1 : 'StylePattern',
+              Node2 : 'StylePattern',
+              Node4 : 'StylePattern',
+              AnsNode4 : 'StylePattern'
+          }
+
+        }else if(this.Pattern === 'Pattern 5' ){
+          path = {
+            Node1 : 'StylePattern',
+            Node2 : 'StylePattern',
+            Node4 : 'StylePattern',
+            Node7 : 'StylePattern',
+            AnsNode5 : 'StylePattern'
+          }
+
+        }
+
+
+         var FCATree1 = {
+                    label: "FCA",
+                    type: "person",
+                    styleClass: 'p-person',
+                    expanded: true,
+                    nodePath: path ,
+                    data: { name: "FCA" },
+                    children: [
+                      {
+                        label: "Pattern",
+                        type: "person",
+                        styleClass: 'p-person',
+                        expanded: true,
+                        data: {
+                          name: this.Pattern
+                        }
+                      }  
+                    ]
+                  }
+
+
+        this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
+        if( this.PatternCounter > this.data1[0].children[0].children[0].children.length ){
+          this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
+       
+        }
+        this.PatternCounter = this.PatternCounter + 1
+        if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
+            this.Pattern = ""
+        } 
+      this.FailureModePatternTree = false;
+      this.prescriptiveTree = true
+      }
+ 
+  }
+
+
+  ADDNextFCA(){
+    this.prescriptiveTree = false
+    this.PatternNextOnPrescriptiveTree = false
+    this.FailureModePatternTree = false
+    this.PattenNode1 = 'p-person'
+    this.PattenNode2 = 'p-person'
+    this.PattenNode3 = 'p-person'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode5 = 'p-person'
+    this.PattenNode6 = 'p-person'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode1 = 'p-person'
+    this.PattenAnsNode2P2 = 'p-person'
+    this.PattenAnsNode2P1 = 'p-person'
+    this.PattenAnsNode3P1 = 'p-person'
+    this.PattenAnsNode3P2 = 'p-person'
+    this.PattenAnsNode4 = 'p-person'
+    this.PattenAnsNode5 = 'p-person'
+    this.PattenAnsNode6P1 = 'p-person'
+    this.PattenAnsNode6P2 = 'p-person'
+    this.PatternPathEnable = false
+    this.changeDetectorRef.detectChanges();
+    this.FailureModePatternTree = true
+  }
 
 
 }
