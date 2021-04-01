@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-prescriptive-add',
@@ -120,6 +121,14 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
   FCAdata1: TreeNode[];
+  public EditdbPath: string = "";
+  public EditdbPathURL: SafeUrl;
+  public ADDdbPathURL: SafeUrl;
+  public extensionPDF: boolean = false;
+  public extensionAddImage: boolean = false;
+  public extensionAddPDF: boolean = false;
+  public extensionImage: boolean = false;
+  
 
 
   constructor(private messageService: MessageService,
@@ -128,6 +137,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
+    private sanitizer: DomSanitizer,
     private changeDetectorRef: ChangeDetectorRef) { }
 
   private isNewEntity: boolean = false;
@@ -1236,8 +1246,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       });
     }
   }
-
-
 
   FCAFailurePattern(){
     this.FCAdata1 = [

@@ -116,6 +116,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public UpdatedAttachmentInFMFullPath: string = ""
   public ADDUpdatedAttachmentInFMDBPath: string = ""
   public ADDUpdatedAttachmentInFMFullPath: string = ""
+  public AttaRemarks: string = "" 
   public FMAttachmentADD: boolean = false
   public uploadedAttachmentList: any[] = [];
   public FileId;
@@ -136,6 +137,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public ChangeConsequenceforUpdate: boolean = false;
   public ColoredTreeForUpdate: boolean = false;
   public UpdateColorTreeEnable: boolean = false;
+ 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
   constructor(private messageService: MessageService,
@@ -202,6 +204,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     return (item, i) => item[key] === value
 
   }
+
+
   EditFailureMode(p) {
     this.FreshUploadUpdate = false;
     this.FailureModediv = document.getElementById("FailureModeUpdate2")
@@ -214,7 +218,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.UpdateFailureModeLocalEffect = p.children[0].data.name
     this.UpdateFailureModeSystemEffect = p.children[1].data.name
     this.UpdateFailureModeConsequence = p.children[2].data.name
-    this.EditFailureModeInsideTree = this.UpdateFailureMode
+    this.EditFailureModeInsideTree = this.UpdateFailureMode 
     this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.forEach(element => {
       if (element.FunctionMode == FM && element.LocalEffect == LE && element.SystemEffect == SE) {
         this.EditDownTimeFactor = element.DownTimeFactor
@@ -223,6 +227,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.EditProtectionFactor = element.ProtectionFactor
         this.EditFrequencyFactor = element.FrequencyFactor
         this.EditdbPath = element.AttachmentDBPath;
+        this.AttaRemarks = this.EditdbPath .replace(/^.*[\\\/]/, '')
         this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(element.AttachmentDBPath);
         this.UpdatedAttachmentInFMDBPath = element.AttachmentDBPath;
         this.UpdatedAttachmentInFMFullPath = element.AttachmentFullPath;
@@ -248,7 +253,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     }
   }
 
-
   getFileExtension(filename) {
     const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
     return extension;
@@ -266,8 +270,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.UpdatedAttachmentInFMFullPath = "";
 
   }
-
-
+  
   public uploadAttachmentFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
@@ -278,7 +281,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         if (this.EditdbPath != "") {
           filedata = []
           var dbPath = this.EditdbPath
-          // filedata.push('dbPath')
           filedata.dbPath = dbPath
           this.EditdbPath = ""
         }

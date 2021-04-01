@@ -3,12 +3,12 @@
     <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
         <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()"><i class="pi pi-plus"></i> Failure Mode</button>
-        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <p-organizationChart [value]="data1"   (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">
                     {{node.label}}
-                    <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)"><i class="pi pi-pencil"></i></a>
-                    <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)" data-toggle="modal" data-target="#DeleteFailureMode"><i class="pi pi-times"></i></a>
+                    <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)" pTooltip="Edit Node" tooltipPosition="top"><i class="pi pi-pencil"></i></a>
+                    <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)" data-toggle="modal" data-target="#DeleteFailureMode" pTooltip="Delete Node" tooltipPosition="top"><i class="pi pi-times"></i></a>
                 </div>
                 <div class="node-content">
                     <div class="a">{{node.data.name}}</div>
@@ -140,6 +140,28 @@
                                 <label>System Effect</label>
                                 <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect" required>
                             </div>
+                            <div style="margin-top: 20px;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="uploadAttachments">Upload</span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                                <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
+                                                <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group mb-3">
+                                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                                        </div>
+            
+                                    </div>
+                                </div>
+                            </div>
                             <div>
                                 <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModalAdd"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
                                 <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModalAdd"> <i class="fa fa-comment" aria-hidden="true"></i></button>
@@ -147,58 +169,6 @@
                         </div>
                     </div>
                     <br>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6> Down Time Factor (Range 1 - 10): {{ADDDownTimeFactor}}</h6>
-                            </div>
-                            <div Style="margin-top:8px;" class="col-md-3">
-                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDDownTimeFactor" [min]="1" [max]="10"></p-slider>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6> Scrape Factor (Range 1 - 5): {{ADDScrapeFactor}}</h6>
-                            </div>
-                            <div Style="margin-top:8px;" class="col-md-3">
-                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDScrapeFactor" [min]="1" [max]="5"></p-slider>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6> Safety Factor (Range 1 - 20): {{ADDSafetyFactor}}</h6>
-                            </div>
-                            <div Style="margin-top:8px;" class="col-md-3">
-                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDSafetyFactor" [min]="1" [max]="20"></p-slider>
-                            </div>
-                        </div>
-
-                        <br>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6>Protection Factor (Range 1 - 10): {{ADDProtectionFactor}}</h6>
-                            </div>
-                            <div Style="margin-top:8px;" class="col-md-3">
-                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDProtectionFactor" [min]="1" [max]="10"></p-slider>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6>Frequency Factor (Range 1 - 15): {{ADDFrequencyFactor}}</h6>
-                            </div>
-                            <div Style="margin-top:8px;" class="col-md-3">
-                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDFrequencyFactor" [min]="1" [max]="15"></p-slider>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
                 </div>
             </div>
             <div class="LSEffectUpdate modal-footer">
@@ -217,7 +187,7 @@
                 <span>
                     Add Attachment for {{LSFailureMode}}
                 </span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModalAdd()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModalAdd()"pTooltip="Add Attachments" tooltipPosition="top">
           <span aria-hidden="true">&times;</span>
         </button>
             </div>
@@ -259,10 +229,10 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="AttachmentDoneModal()">Done</button>
             </div>
 
+
         </div>
     </div>
-</div>
-
+</div> 
 
 <div class="modal fade" id="CommentModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -297,7 +267,7 @@
 <div *ngIf="ColoredTreeForUpdate">
     <p-card>
         <h5 style="margin-bottom: 1em;"><b>Your selected {{LSFailureMode}} Tree </b></h5>
-        <p-organizationChart id="ScrollUpdateTree" [value]="SavedConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+        <p-organizationChart id="ScrollUpdateTree" [value]="SavedConsequenceNode" selectionMode="single"  styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -417,22 +387,6 @@
                             </a>
                         </div>
                     </div>
-
-
-
-
-                    <!-- <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con2" (onDragStart)="dragStartC2($event,con2)" (onDragEnd)="dragEndC2($event)">
-                        {{con3}}
-                    </div>
-                    <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}
-                        <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
-                            <i class="far fa-times-circle "></i>
-                           </a>
-                    </div> -->
-                    <!-- <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
-                        <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}</div>
-
-                    </div> -->
                     <small class="form-text text-muted">Drag and Drop here, from above List </small> <br>
                 </div>
 
@@ -470,24 +424,6 @@
                             </a>
                         </div>
                     </div>
-
-
-
-                    <!-- 
-                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con2" (onDragStart)="dragStartC2($event,con2)" (onDragEnd)="dragEndC2($event)">
-                        {{con4}}
-                    </div>
-                    <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
-                    <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}
-                        <a class="cell-icon-button cdk-close"  style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
-                            <i class="far fa-times-circle "></i>
-                           </a>
-                    </div>
-                    </div> -->
-                    <!-- <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
-                        <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}</div>
-
-                    </div> -->
                     <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
 
                 </div>
@@ -513,7 +449,7 @@
         <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()">Back</button>&nbsp;&nbsp;
         <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button>
         <button *ngIf="ConsequenceTreeEditConsequenceEnable" title="Edit Consequences" label="Back" type="button" class="btn btn-dark" (click)="EditConsequenceToTree()"><i class="pi pi-pencil"></i> Consequences</button><br>
-        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <p-organizationChart [value]="ConsequenceNode"  (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -533,8 +469,8 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" (click)="UpdateFM()">Update Failure Mode</h5>
-                <button type="button" class="close" data-dismiss="FailureModeUpdate2" aria-label="Close" (click)="CloseFailureModeUpdate()">
+                <h5 class="modal-title" (click)="UpdateFM()" pTooltip="Update Failure modes" tooltipPosition="top">Update Failure Mode</h5>
+                <button type="button" class="close" data-dismiss="FailureModeUpdate2" aria-label="Close" (click)="CloseFailureModeUpdate()" pTooltip="Add new Failuer Mode" tooltipPosition="top">
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
@@ -544,8 +480,7 @@
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Failure Mode</label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureMode" id="exampleFormControlInput1" disabled><br>
-                            <button type="button" class="btn btn-secondary btn-sm" (click)="UpdateFM()">Update Failure Mode</button>
-
+                            <button type="button" class="btn btn-secondary btn-sm" (click)="UpdateFM()" pTooltip="Update Failure modes" tooltipPosition="top">Update Failure Mode</button>
                         </div>
                         <div *ngIf="EditFM" class="form-group">
                             <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
@@ -557,7 +492,6 @@
                                     <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                         <i class="far fa-times-circle fa-2x"></i>
                                     </a>
-                                    <!-- <span><button style="float: right;" type="button" class="btn btn-dark btn-sm"  (click)="FailureModeDropped(c)">Clear</button></span> -->
                                 </div>
                             </div>
                             <small class="form-text text-muted">Drag and Drop here, from above List </small>
@@ -575,10 +509,37 @@
                             <label for="exampleFormControlTextarea2">System Effect</label>
                             <textarea class="form-control custom-textarea" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeSystemEffect" id="exampleFormControlTextarea2" rows="3"></textarea>
                         </div>
-                        <div>
-                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModalUpdate"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
-                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button>
+                        <!-- <div>
+                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark"  data-toggle="modal" data-target="#AttachmentModalUpdate"> <i class="fa fa-paperclip" aria-hidden="true" pTooltip="Add Attachments" tooltipPosition="top"></i></button>
+                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"  pTooltip="Add Remarks" tooltipPosition="top"></i></button>
+                        </div> -->
+                        <div style="margin-top: 20px;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="uploadAttachments">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                            <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
+                                            <label class="custom-file-label" (change)="onFileChange($event)" *ngIf="AttaRemarks != ''" for="inputGroupFile01">{{AttaRemarks}}
+                                             <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
+                                            </label>
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                                    </div>
+        
+                                </div>
+                            </div>
                         </div>
+                     
+
                         <div class="form-group">
                             <div class="container">
                                 <div class="row">
@@ -630,9 +591,7 @@
                                         <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditFrequencyFactor" [min]="1" [max]="15"></p-slider>
                                     </div>
                                 </div>
-
                                 <br>
-
                             </div>
                         </div>
                         <div class="form-group">
@@ -653,13 +612,11 @@
 </div>
 
 
+<!-- 
 <div class="modal fade" id="AttachmentModalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span>
-                    <!-- Add Attachment for {{FMLSEffectModeName}} -->
-                </span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -680,13 +637,11 @@
                         </div>
                         <div style="border-color: black;height: 300px;width: 400px;" class="card">
                             <div class="file"><br>
-
                                 <span *ngIf="(EditdbPathURL == '')">
                                     <p style="margin: 20px; margin-left: 40px;"> No attachment to show</p>
                                 </span>
                                 <span style="margin: 10px;" *ngIf="extensionPDF">
                                 <iframe [src]="EditdbPathURL" width="350" height="250" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
- 
                                <a class="attachment"  data-toggle="modal" data-target="#DeleteFailureModeAttachment"><i class="pi pi-times"></i></a>  
                              </span>
                                 <span style="margin: 10px;" *ngIf="extensionImage">
@@ -706,16 +661,12 @@
 
         </div>
     </div>
-</div>
+</div>  -->
 
-
-<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <!-- <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span>
-                    <!-- Add Remark for {{FMLSEffectModeName}} -->
-                </span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" >&times;</span>
         </button>
@@ -737,10 +688,7 @@
 
         </div>
     </div>
-</div>
-
-
-
+</div>  -->
 
 <div class="modal fade" id="DeleteFailureMode" tabindex="-1" role="dialog" aria-labelledby="DeleteFailureModeTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
