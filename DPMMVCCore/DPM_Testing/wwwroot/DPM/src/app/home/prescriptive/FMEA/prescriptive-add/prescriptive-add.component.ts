@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, JsonpClientBackend } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
@@ -28,6 +28,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public val: any;
   public failureModeData: any = []
   public data1: TreeNode[];
+  public data1Clone: any;
   public data2: TreeNode[];
   public ConsequenceNode: TreeNode[];
   public selectedNode: TreeNode;
@@ -125,27 +126,27 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public PatternPathEnable: boolean = false;
   public PatternNextOnPrescriptiveTree: boolean = false;
   public FailureModePatternTree: boolean = false;
-  PattenNode1: string;
-  PattenNode2: string;
-  PattenNode4: string;
-  PattenAnsNode4: string;
-  PattenNode7: string;
-  PattenAnsNode6P1: string;
-  PattenAnsNode5: string;
-  PattenNode5: string;
-  PattenAnsNode3P1: string;
-  PattenAnsNode2P1: string;
-  PattenNode3: string;
-  PattenAnsNode1: string;
-  PattenNode6: string;
-  PattenAnsNode2P2: string;
-  PattenNode8: string;
-  PattenAnsNode6P2: string;
-  PattenAnsNode3P2: string;
-  PatternEnable: boolean;
-  PatternPath: string;
-  PatternFMName: any;
-  PatternCounter: number;
+  public PattenNode1: string;
+  public PattenNode2: string;
+  public PattenNode4: string;
+  public PattenAnsNode4: string;
+  public PattenNode7: string;
+  public PattenAnsNode6P1: string;
+  public PattenAnsNode5: string;
+  public PattenNode5: string;
+  public PattenAnsNode3P1: string;
+  public PattenAnsNode2P1: string;
+  public PattenNode3: string;
+  public PattenAnsNode1: string;
+  public PattenNode6: string;
+  public PattenAnsNode2P2: string;
+  public PattenNode8: string;
+  public PattenAnsNode6P2: string;
+  public PattenAnsNode3P2: string;
+  public PatternEnable: boolean;
+  public PatternPath: string = "";
+  public PatternFMName: any;
+  public PatternCounter: number = 0;
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -525,7 +526,16 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             styleClass: "p-person",
             expanded: true,
             data: { name: FMName },
-            children: []
+            children: [
+              {
+                label: 1,
+                type: "person",
+                styleClass: "p-person",
+                expanded: true,
+                data: { name: 'FMEA' },
+                children: []
+              }
+            ]
           }
         )
       }
@@ -576,8 +586,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         }
       }
       this.changeDetectorRef.detectChanges();
-      this.FMChild[this.FMCount].children.push(LFNode);
-      this.FMChild[this.FMCount].children.push(SFNode);
+      this.FMChild[this.FMCount].children[0].children.push(LFNode);
+      this.FMChild[this.FMCount].children[0].children.push(SFNode);
       let obj = {}
       obj['DownTimeFactor'] = this.DownTimeFactor;
       obj['ScrapeFactor'] = this.ScrapeFactor;
@@ -679,6 +689,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   SaveConsequences() {
    
     this.isNewEntity = false
+    this.data1[0].children[0].children.forEach((res : any) =>{
+      res.Consequence =this.data1Clone
+    })
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
@@ -687,9 +700,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['CPPFMId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
       obj['CFPPrescriptiveId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
       obj['FunctionMode'] = this.FMChild[index].data.name;
-      obj['LocalEffect'] = this.FMChild[index].children[0].data.name;
-      obj['SystemEffect'] = this.FMChild[index].children[1].data.name;
-      obj['Consequence'] = this.FMChild[index].children[2].data.name;
+      obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
+      obj['SystemEffect'] =this.FMChild[index].children[0].children[1].data.name;;
+      obj['Consequence'] = this.FMChild[index].children[0].children[2].data.name;
       obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
       obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
       obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
@@ -736,8 +749,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['CPPFMId'] = 0;
       obj['CFPPrescriptiveId'] = 0;
       obj['FunctionMode'] = this.FMChild[index].data.name;
-      obj['LocalEffect'] = this.FMChild[index].children[0].data.name;
-      obj['SystemEffect'] = this.FMChild[index].children[1].data.name;
+      obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
+      obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;
       obj['Consequence'] = "";
       obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
       obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
@@ -769,7 +782,19 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   PushConcequences() {
-    this.FMChild[this.FMCount1].children.push(
+    this.FMChild[this.FMCount1].children[0].children.push(
+      {
+        label: "Consequence",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.finalConsequence
+        }
+      }
+    )
+
+    this.data1Clone[0].children[0].children[0].children[this.FMCount1].children.push(
       {
         label: "Consequence",
         type: "person",
@@ -825,8 +850,24 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     // }
     this.isNewEntity = true
     this.GenrationTree()
+    var temp2;
+    var temp : string= JSON.stringify(this.data1)
+    temp2 = JSON.parse(temp)
+    
+    var i : number = 0
+    temp2[0].children[0].children[0].children.forEach((res: any) => {
+        var abc :any[] = res.children[0].children
+        temp2[0].children[0].children[0].children[i].children.pop()
+        temp2[0].children[0].children[0].children[i].children = abc
+        i = i + 1;  
+    });
+    this.data1Clone = temp2
+    this.data1[0].children[0].children.forEach((res : any) =>{
+      res.FMEA =temp2
+    })
+  } 
 
-  }
+
   FailuerEffectBack() {
     if (this.FMChild[0].children.length > 0) {
       if (confirm("Are you sure want to go back? Yes then your recently added changes will get deleted.")) {
@@ -1629,6 +1670,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   PatternAdd(){
     if(this.Pattern === 'Pattern 2' || this.Pattern ==='Pattern 3'|| this.Pattern ==='Pattern 6'){
+      if((this.Pattern === 'Pattern 2' || this.Pattern ==='Pattern 3'
+                                      || this.Pattern ==='Pattern 6')
+                                      && this.PatternPath != ""){
         var path;
         if(this.Pattern === 'Pattern 2' && this. PatternPath == "1"){
           path =  {
@@ -1700,6 +1744,19 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     ]
                   }
 
+    this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+    this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+                                     {
+                                       label: "Pattern",
+                                       type: "person",
+                                       styleClass: 'p-person',
+                                       expanded: true,
+                                       data: {
+                                         name: this.Pattern
+                                       }
+                                     } 
+                                   )
+
           this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
           if( this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1 ){
             this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
@@ -1708,11 +1765,18 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
           this.PatternCounter = this.PatternCounter + 1
           if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
               this.Pattern = ""
+              this.SaveFCAEnable = true
           } 
         this.FailureModePatternTree = false;
         this.prescriptiveTree = true
+        this.PatternPath=""
 
       }else{
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
+        
+      }
+
+      }else if(this.Pattern === 'Pattern 1' || this.Pattern ==='Pattern 4'|| this.Pattern ==='Pattern 5'){
 
         if(this.Pattern === 'Pattern 1' ){
           path = {
@@ -1761,6 +1825,21 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     ]
                   }
 
+                  
+     this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children= []
+     this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+                        {
+                          label: "Pattern",
+                          type: "person",
+                          styleClass: 'p-person',
+                          expanded: true,
+                          data: {
+                            name: this.Pattern
+                          }
+                        } 
+                      )
+                     
+
 
         this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
         if(this.PatternCounter < this.data1[0].children[0].children[0].children.length -1 ){
@@ -1770,9 +1849,14 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.PatternCounter = this.PatternCounter + 1
         if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
             this.Pattern = ""
+            this.SaveFCAEnable = true
         } 
       this.FailureModePatternTree = false;
       this.prescriptiveTree = true
+      }
+      else{
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
+        
       }
  
   }
@@ -1821,6 +1905,52 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.FailureModePatternTree = true
     this.changeDetectorRef.detectChanges();
     
+  }
+
+  public SaveFCAEnable : boolean = false
+  SaveFCA(){
+   var  centrifugalPumpOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+    this.data1[0].children[0].children.forEach((res : any) =>{
+      res.FCA =this.data1Clone
+    })
+    centrifugalPumpOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
+    centrifugalPumpOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
+    centrifugalPumpOBJ.FCAAdded = "1";
+    
+    for (let index = 0; index < this.data1[0].children[0].children[0].children.length; index++) {
+      let obj = {};
+      obj['CPPFMId'] = 0;
+      obj['CFPPrescriptiveId'] = 0;
+      obj['FunctionMode'] = "" ;
+      obj['LocalEffect'] = "";
+      obj['SystemEffect'] = "";
+      obj['Consequence'] = "";
+      obj['DownTimeFactor'] = 0;
+      obj['ScrapeFactor'] = 0
+      obj['SafetyFactor'] = 0
+      obj['ProtectionFactor'] = 0
+      obj['FrequencyFactor'] = 0
+      obj['CriticalityFactor'] = 0
+      obj['Rating'] = "";
+      obj['MaintainenancePractice'] = "";
+      obj['FrequencyMaintainenance'] = "";
+      obj['ConditionMonitoring'] = "";
+      obj['AttachmentDBPath'] = ""
+      obj['AttachmentFullPath'] = ""
+      obj['Remark'] = ""
+      obj['Pattern'] = this.data1Clone[0].children[0].children[0].children[index].children[0].data.name
+      centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+    }
+
+    this.http.put('api/PrescriptiveAPI/PrespectivePattern', centrifugalPumpOBJ).subscribe(
+        res => {
+          this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
+          this.SaveFCAEnable = false
+          this.router.navigateByUrl('/Home/Prescriptive/List');
+        }, err => console.log(err.error)
+       )
+
+
   }
 
 
