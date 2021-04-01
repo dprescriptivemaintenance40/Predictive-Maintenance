@@ -39,10 +39,7 @@
                     <i class="pi pi-download"></i>
                 </a>
                 <div class="text-center">
-                    <label for="file" style="font-size: 1.3em;
-                    font-weight: bold;
-                    border-bottom: 2px solid;
-                    margin: 13px;">Uploaded File</label>
+                    <label for="file" class="custom-label">Uploaded File</label>
                     <div *ngIf="PdfEnable" style="margin: 10px;" id="file">
                         <iframe [src]="FileSafeUrl" width="500" height="300"> </iframe>
                     </div>
@@ -51,10 +48,7 @@
                     </div>
                 </div>
                 <div class="text-center" style="margin-bottom: 10px;">
-                    <label for="remark" style="font-size: 1.3em;
-                                               font-weight: bold;
-                                               border-bottom: 2px solid;
-                                               margin: 13px;">Remark</label>
+                    <label for="remark" class="custom-label">Remark</label>
                     <div *ngIf="Remark !== ''" id="remark">
                         <textarea class="custom-textarea" cols="60" rows="4">{{Remark}}</textarea>
                     </div>
