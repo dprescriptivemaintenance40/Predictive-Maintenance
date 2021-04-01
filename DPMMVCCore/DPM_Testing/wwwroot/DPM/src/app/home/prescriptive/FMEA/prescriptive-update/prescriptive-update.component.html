@@ -2,7 +2,7 @@
 <p-card>
     <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
-        <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()"><i class="pi pi-plus"></i> Failure Mode</button>
+        <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()" pTooltip="If you Want to Update the tree Click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button>
         <p-organizationChart [value]="data1"   (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">
