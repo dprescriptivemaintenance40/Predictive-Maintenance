@@ -1,7 +1,7 @@
 <!-- <p-toast position="top-center"></p-toast> -->
 <div class="col-md-12">
     <p-card>
-        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()">Next</button> <br><br>
+        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()"><i class="pi pi-arrow-right"></i></button> <br><br>
         <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#ConsequenceSubmitModal">Save Consequences</button><br><br>
 
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
@@ -19,7 +19,8 @@
 </div>
 
 <!--    Consequences -->
-<div *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow">
+
+<div id="ScrollUpdateTree2" *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
             Consequences for {{FMLSConsequenceName}}
@@ -47,8 +48,7 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Next" type="button" class="btn btn-dark" (click)="Consequence1Next()">Next</button>
-
+            <button label="Next" type="button" class="btn btn-dark" (click)="Consequence1Next()"><i class="pi pi-arrow-right"></i></button>
         </ng-template>
     </p-card>
 </div>
@@ -83,8 +83,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence2Back()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence2Next()">Next</button>
+            <button label="Back" type="button" class="btn btn-dark" (click)="Consequence2Back()"><i class="pi pi-arrow-left"></i></button>
+            <button label="Next" type="button" class="btn btn-dark" style="float: right;" (click)="Consequence2Next()"><i class="pi pi-arrow-right"></i></button>
 
         </ng-template>
     </p-card>
@@ -118,8 +118,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence3Back()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence3Next()">Next</button>
+            <button label="Back" type="button" class="btn btn-dark" (click)="Consequence3Back()"><i class="pi pi-arrow-left"></i></button>
+            <button label="Next" type="button" class="btn btn-dark" style="float: right; " (click)="Consequence3Next()"><i class="pi pi-arrow-right"></i></button>
 
         </ng-template>
     </p-card>
@@ -161,8 +161,11 @@
 
 <div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">
     <p-card>
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequence()">ADD Consequence</button> <br><br>
+        <span>
+            <small class="form-text text-muted"><h5> Your {{FMLSConsequenceName}} Tree </h5></small>
+        </span>
+        <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()"><i class="pi pi-arrow-left"></i></button> &nbsp; &nbsp;
+        <button label="Back" type="button" class="btn btn-dark" (click)="ADDConsequence()"><i class="pi pi-plus"></i> Consequence</button> <br><br>
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>

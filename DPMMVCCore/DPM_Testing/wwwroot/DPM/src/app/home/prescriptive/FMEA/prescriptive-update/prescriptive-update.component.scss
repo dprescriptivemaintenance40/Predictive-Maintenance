@@ -91,3 +91,17 @@
     font-size: 1px;
     padding: 3px;
 }
+
+html {
+    scroll-behavior: smooth;
+  }
+  
+  #section1 {
+    height: 600px;
+    //background-color: pink;
+  }
+  
+  #section2 {
+    height: 600px;
+   // background-color: yellow;
+  }
