@@ -125,6 +125,27 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public PatternPathEnable: boolean = false;
   public PatternNextOnPrescriptiveTree: boolean = false;
   public FailureModePatternTree: boolean = false;
+  PattenNode1: string;
+  PattenNode2: string;
+  PattenNode4: string;
+  PattenAnsNode4: string;
+  PattenNode7: string;
+  PattenAnsNode6P1: string;
+  PattenAnsNode5: string;
+  PattenNode5: string;
+  PattenAnsNode3P1: string;
+  PattenAnsNode2P1: string;
+  PattenNode3: string;
+  PattenAnsNode1: string;
+  PattenNode6: string;
+  PattenAnsNode2P2: string;
+  PattenNode8: string;
+  PattenAnsNode6P2: string;
+  PattenAnsNode3P2: string;
+  PatternEnable: boolean;
+  PatternPath: string;
+  PatternFMName: any;
+  PatternCounter: number;
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -1251,24 +1272,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
   }
 
-  public PattenNode1 : string = "p-person"
-  public PattenNode2 : string = "p-person"
-  public PattenNode3 : string = "p-person"
-  public PattenNode4 : string = "p-person"
-  public PattenNode5 : string = "p-person"
-  public PattenNode6 : string = "p-person"
-  public PattenNode7 : string = "p-person"
-  public PattenNode8 : string = "p-person"
-  public PattenAnsNode1 : string = "p-person"
-  public PattenAnsNode2P1 : string = "p-person"
-  public PattenAnsNode2P2 : string = "p-person"
-  public PattenAnsNode3P1 : string = "p-person"
-  public PattenAnsNode3P2 : string = "p-person"
-  public PattenAnsNode4 : string = "p-person"
-  public PattenAnsNode5 : string = "p-person"
-  public PattenAnsNode6P1 : string = "p-person"
-  public PattenAnsNode6P2 : string = "p-person"
-  public PatternEnable:boolean = true
+  
 
   PatternTree(){
     this.FCAdata1 = [
@@ -1618,11 +1622,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.prescriptiveTree = true
     this.FailureModePatternTree = false
     this.activeIndex = 5
+    if(this.PatternCounter == 0){
+      this.PatternNextOnPrescriptiveTree = true;
+    }
   }
 
-  public PatternPath : string="";
-  private PatternCounter : number = 0;
-  public PatternFMName: string = ""
   PatternAdd(){
     if(this.Pattern === 'Pattern 2' || this.Pattern ==='Pattern 3'|| this.Pattern ==='Pattern 6'){
         var path;
@@ -1697,7 +1701,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                   }
 
           this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
-          if( this.PatternCounter > this.data1[0].children[0].children[0].children.length ){
+          if( this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1 ){
             this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
          
           } 
@@ -1759,7 +1763,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
         this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
-        if( this.PatternCounter > this.data1[0].children[0].children[0].children.length ){
+        if(this.PatternCounter < this.data1[0].children[0].children[0].children.length -1 ){
           this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
        
         }
@@ -1775,9 +1779,24 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
   ADDNextFCA(){
-    this.prescriptiveTree = false
-    this.PatternNextOnPrescriptiveTree = false
-    this.FailureModePatternTree = false
+    this.PattenNode1 = ''
+    this.PattenNode2 = ''
+    this.PattenNode3 = ''
+    this.PattenNode4 = ''
+    this.PattenNode5 = ''
+    this.PattenNode6 = ''
+    this.PattenNode7 = ''
+    this.PattenNode8 = ''
+    this.PattenAnsNode1 = ''
+    this.PattenAnsNode2P2 = ''
+    this.PattenAnsNode2P1 = ''
+    this.PattenAnsNode3P1 = ''
+    this.PattenAnsNode3P2 = ''
+    this.PattenAnsNode4 = ''
+    this.PattenAnsNode5 = ''
+    this.PattenAnsNode6P1 = ''
+    this.PattenAnsNode6P2 = ''
+
     this.PattenNode1 = 'p-person'
     this.PattenNode2 = 'p-person'
     this.PattenNode3 = 'p-person'
@@ -1795,9 +1814,13 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.PattenAnsNode5 = 'p-person'
     this.PattenAnsNode6P1 = 'p-person'
     this.PattenAnsNode6P2 = 'p-person'
-    this.PatternPathEnable = false
+    this.prescriptiveTree = false
+    this.PatternNextOnPrescriptiveTree = false
     this.changeDetectorRef.detectChanges();
+    this.PatternPathEnable = false
     this.FailureModePatternTree = true
+    this.changeDetectorRef.detectChanges();
+    
   }
 
 
