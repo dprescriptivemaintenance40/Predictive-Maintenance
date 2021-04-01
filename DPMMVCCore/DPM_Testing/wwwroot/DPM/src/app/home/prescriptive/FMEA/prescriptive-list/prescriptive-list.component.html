@@ -1,3 +1,11 @@
+<style>
+    .disabled {
+        pointer-events: none;
+        cursor: default;
+        text-decoration: none;
+        color: black;
+    }
+</style>
 <div class="row">
     <div class="col-xl-12 col-lg-11">
         <div class="card prescriptive shadow mb-4 con">
@@ -59,7 +67,7 @@
                             </td>
                             <td (click)="FailureModeTable(p)">{{p.ComponentCriticalityFactor}}</td>
                             <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
-                            <td>    
+                            <td>
                                 <a style="color: green;" title="Add FCA"><i class="pi pi-plus"></i></a>
                             </td>
                             <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
