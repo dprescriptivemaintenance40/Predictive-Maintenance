@@ -54,6 +54,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
   public SaveConcequencesEnable: boolean = false;
   public FMLSConsequenceName: string = ""
   public data1: any;
+  public data1Clone: any;
   public selectedNode: TreeNode;
   private FMCount: number = 0;
   private FMTree: any;
@@ -89,6 +90,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     this.ConsequencesData = JSON.parse(localStorage.getItem('PrescriptiveUpdateObject'))
     var FailureModeWithLSETree = JSON.parse(this.ConsequencesData.FailureModeWithLSETree)
     this.data1 = FailureModeWithLSETree
+    this.data1Clone = this.data1[0].children[0].children[0].FMEA
     this.prescriptiveTreeNextEnable = true
     this.prescriptiveTree = true
     this.FMTree = this.data1[0].children[0].children[0].children
@@ -174,7 +176,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  ADDConsequence() {
+  async ADDConsequence() {
     var CNode = {
       label: "Consequence",
       type: "person",
@@ -184,7 +186,18 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         name: this.finalConsequence
       }
     }
-    this.FMTree[this.FMCount].children.push(CNode)
+    this.FMTree[this.FMCount].children[0].children.push(CNode)
+    this.data1Clone[0].children[0].children[0].children[this.FMCount].children.push(
+      {
+        label: "Consequence",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.finalConsequence
+        }
+      }
+    )
     this.FMCount += 1;
     if (this.FMCount <= this.FMTree.length - 1) {
       this.FMLSConsequenceName = this.FMTree[this.FMCount].data.name
@@ -213,6 +226,9 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     this.consequenceTreeColorNodeC = 'p-person'
     this.consequenceTreeColorNodeD = 'p-person'
     this.changeDetectorRef.detectChanges();
+
+    const element = document.querySelector("#BackToNext")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   onNodeSelect(event) {
@@ -510,6 +526,9 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
 
   SubmitConsequenceTree() {
     this.isNewEntity = false;
+    this.data1[0].children[0].children.forEach((res : any) =>{
+      res.Consequence =this.data1Clone
+    })
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.ConsequencesData.CFPPrescriptiveId;
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
@@ -518,21 +537,21 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
       obj['CPPFMId'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
       obj['CFPPrescriptiveId'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
       obj['FunctionMode'] = this.FMTree[index].data.name;
-      obj['LocalEffect'] = this.FMTree[index].children[0].data.name;
-      obj['SystemEffect'] = this.FMTree[index].children[1].data.name;
-      obj['Consequence'] = this.FMTree[index].children[2].data.name;
+      obj['LocalEffect'] =  this.FMTree[index].children[0].children[0].data.name;;
+      obj['SystemEffect'] = this.FMTree[index].children[0].children[1].data.name;
+      obj['Consequence'] =  this.FMTree[index].children[0].children[2].data.name;
       obj['DownTimeFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].DownTimeFactor;
-      obj['ScrapeFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ScrapeFactor;
-      obj['SafetyFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].SafetyFactor;
+      obj['ScrapeFactor'] =   this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ScrapeFactor;
+      obj['SafetyFactor'] =   this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].SafetyFactor;
       obj['ProtectionFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ProtectionFactor;
-      obj['FrequencyFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyFactor;
-      obj['CriticalityFactor'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor;
+      obj['FrequencyFactor'] =  this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyFactor;
+      obj['CriticalityFactor'] =this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor;
       obj['Rating'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].Rating;
-      obj['MaintainenancePractice'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
+      obj['MaintainenancePractice'] =  this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
       obj['FrequencyMaintainenance'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
       obj['ConditionMonitoring'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
-      obj['AttachmentDBPath'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
-      obj['AttachmentFullPath'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath
+      obj['AttachmentDBPath'] =    this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
+      obj['AttachmentFullPath'] =  this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath
       obj['Remark'] = this.ConsequencesData.centrifugalPumpPrescriptiveFailureModes[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
 
