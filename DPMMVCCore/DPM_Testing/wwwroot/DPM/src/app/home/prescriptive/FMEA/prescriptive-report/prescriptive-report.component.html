@@ -42,7 +42,6 @@
 <div *ngIf="ReportSelect" class="card" style="margin: 20px;">
     <div class="print">
         <a (click)="DownloadPDF()" title="Download FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: red;" class="pi pi-file-pdf"></i></a>
-        <!-- <a (click)="printPage()"><i style="float: right;padding-left: 20px;" class="pi pi-print"></i></a> -->
     </div>
     <div style="margin: 20px;" id="contentToConvert">
         <div class="page">
@@ -160,7 +159,6 @@
                         <div *ngIf="tree[0].Remark !== ''" id="remark">
                             <span *ngIf="hide">{{tree[0].Remark}}</span>
                             <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea>
-                            <!-- <textarea class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea> -->
                         </div>
                     </div>
                 </div>
@@ -176,9 +174,7 @@
                  <th scope="row">{{i+1}}</th>
                  Failure Modes: {{AR.FM}} <br>
                  Remark: {{AR.Remark}}<br>
-                 <!-- ParentFile : {{AR.ParentFile}}<br>  -->
               <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a><br>
-              <!-- <a href={{BrowserURl}}{{AR.CAttachmentDBPath}} download> Download Attachments </a><br> -->
                </tr>
            </span>
     </div>

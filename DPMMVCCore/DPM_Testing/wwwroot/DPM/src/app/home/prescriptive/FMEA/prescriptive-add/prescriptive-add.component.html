@@ -27,7 +27,6 @@
                     <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
                           <option value="">Choose..</option>
                             <option value="Pump" selected>Pump</option>
-                                <!-- <option value="Compressor">Compressor</option>   -->
                         </select>
                 </div>
             </li>
@@ -78,7 +77,9 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div>
-                <button label="Next" type="button" class="btn btn-dark" (click)="FunctionNext()">Next</button>
+                <a class="btn btn-dark" (click)="FunctionNext()" pTooltip="To add Function Failure  Click on Next" tooltipPosition="top">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </ng-template>
     </p-card>
@@ -113,9 +114,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FunctionFailureBack()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FunctionFailureNext()">Next</button>
-
+            <a class="btn btn-dark" (click)="FunctionFailureBack()" pTooltip=" Back to the Function" tooltipPosition="top">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a class="btn btn-dark" style="float: right;" (click)="FunctionFailureNext()" pTooltip="To add Failure Mode Click on Next" tooltipPosition="top">
+                <i class="fas fa-arrow-right"></i>
+            </a>
         </ng-template>
     </p-card>
 </div>
@@ -149,8 +153,12 @@
         </ng-template>
 
         <ng-template pTemplate="footer">
-            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailureModeBack()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureModeNext()">Next</button>
+            <a class="btn btn-dark" (click)="FailureModeBack()" pTooltip=" Back to the Function Failure" tooltipPosition="top">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a class="btn btn-dark" style="float: right;" (click)="FailureModeNext()" pTooltip="To add Local & System Effect  Click on Next" tooltipPosition="top">
+                <i class="fas fa-arrow-right"></i>
+            </a>
         </ng-template>
     </p-card>
 </div>
@@ -166,8 +174,12 @@
             {{node.label}}
         </ng-template>
     </p-organizationChart>
-    <button label="Next" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="FailuerEffectBack()">Back</button>
-    <button *ngIf="NextFailureLSEDiasble" label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="FailureEffectNext()">Next</button>
+    <a class="btn btn-dark" (click)="FailuerEffectBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()" pTooltip="Click on Next & Lookout the tree" tooltipPosition="top">
+        <i class="fas fa-arrow-right"></i>
+    </a>
 </div>
 <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
@@ -179,14 +191,13 @@
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
-
                 <div>
-                    <label>Local Effect</label>
-                    <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects" placeholder="Type Local Effect">
-                </div>
+                    <label><b>Local Effect</b></label>
+                    <textarea class="form-control custom-textarea" [(ngModel)]="failuerModeLocalEffects" id="message" name="body" rows="4" placeholder="Type Local Effect"></textarea>
+                </div><br>
                 <div>
-                    <label>System Effect</label>
-                    <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect">
+                    <label><b>System Effect</b></label>
+                    <textarea class="form-control custom-textarea" [(ngModel)]="failuerModeSystemEffects" id="message" name="body" rows="4" placeholder="Type System Effect"></textarea>
                 </div>
                 <div style="margin-top: 20px;">
                     <div class="row">
@@ -209,8 +220,6 @@
 
                         </div>
                     </div>
-                    <!-- <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></button> -->
-                    <!-- <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"></i></button> -->
                 </div>
             </div>
         </ng-template>
@@ -358,8 +367,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button *ngIf="ADDFailureLSEDiasble" label="Next" type="button" style="float:center" style="float: right;" style="margin: 20px" class="btn btn-dark" (click)="ADDFailuerEffect()">ADD</button>
-            <button *ngIf="!ADDFailureLSEDiasble" label="Next" type="button" style="float:center" style="float: right;" style="margin: 20px" class="btn btn-dark" (click)="UPDATEFailuerEffect()">UPDATE</button>
+            <a class="btn btn-dark" (click)="ADDFailuerEffect()" pTooltip=" Add  Failure Mode with Local & System Effect" tooltipPosition="top">
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="UPDATEFailuerEffect()" pTooltip="Update Failure Effects" tooltipPosition="top">
+                <i class="fas fa-edit"></i>
+            </a>
         </ng-template>
     </p-card>
 </div>
@@ -367,14 +380,18 @@
 
 <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
     <p-card>
-        <button *ngIf="prescriptiveTreeBackEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="treeBack()">Back</button>
-        <button *ngIf="prescriptiveTreeSubmitEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Save & Next</button>
-
-        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext(target)">Next</button> <br><br>
-        <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#Consequences01">Save Consequences</button><br><br>
-        <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()">Add FCA</button>
-        <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()">Next</button> <br>
-        <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br>
+        <a *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <a *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()" pTooltip="For adding the Consequences Please Click" tooltipPosition="top" data-toggle="modal" data-target="#treeModal">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        <a *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        <a *ngIf="SaveConcequencesEnable" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()" pTooltip="Save Consequences" tooltipPosition="top" data-toggle="modal" data-target="#Consequences01">
+            <i class="fas fa-arrow-right"></i>
+        </a>
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -436,8 +453,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence1Back()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence1Next()">Next</button>
+            <a class="btn btn-dark" (click)="Consequence1Back()" pTooltip=" Back to the Tree " tooltipPosition="top">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence1Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
+                <i class="fas fa-arrow-right"></i>
+            </a>
         </ng-template>
     </p-card>
 </div>
@@ -469,8 +490,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence2Back()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence2Next()">Next</button>
+            <a class="btn btn-dark" (click)="Consequence2Back()" pTooltip=" Back to the First Consequence" tooltipPosition="top">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence2Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
+                <i class="fas fa-arrow-right"></i>
+            </a>
 
         </ng-template>
     </p-card>
@@ -501,8 +526,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence3Back()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence3Next()">Next</button>
+            <a class="btn btn-dark" (click)="Consequence3Back()" pTooltip=" Back to the Second Consequence" tooltipPosition="top">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence3Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
+                <i class="fas fa-arrow-right"></i>
+            </a>
 
         </ng-template>
     </p-card>
@@ -536,8 +565,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="Consequence4Back()">Back</button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence4Next()">Next</button>
+            <a class="btn btn-dark" (click)="Consequence4Back()" pTooltip=" Back to the Third Consequence" tooltipPosition="top">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence4Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
+                <i class="fas fa-arrow-right"></i>
+            </a>
         </ng-template>
     </p-card>
 </div>
@@ -548,8 +581,10 @@
         <span>
             <small class="form-text text-muted"><h5> Your {{FMLSConsequenceName}} Tree </h5></small>
         </span>
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ConsequenceTreeBack()">Back</button>
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" data-toggle="tooltip" data-placement="right" title="When you add the consequence then it directly save in to the tree"><i class="pi pi-plus"></i> Consequences</button><br><br>
+        <a class="btn btn-dark" (click)="ConsequenceTreeBack()" pTooltip=" Back to  Add the Consequence" tooltipPosition="top">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" pTooltip="When you add the consequence then it directly save in to the tree" tooltipPosition="top"><i class="pi pi-plus"></i> Consequences</button><br><br>
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -581,7 +616,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
                 <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SaveConsequences()">Save changes</button>
             </div>
         </div>

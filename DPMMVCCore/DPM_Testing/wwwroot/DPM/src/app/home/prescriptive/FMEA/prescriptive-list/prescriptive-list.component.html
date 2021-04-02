@@ -3,7 +3,7 @@
         pointer-events: none;
         cursor: default;
         text-decoration: none;
-        color: black;
+        color: grey !important;
     }
 </style>
 <div class="row">
@@ -68,7 +68,7 @@
                             <td (click)="FailureModeTable(p)">{{p.ComponentCriticalityFactor}}</td>
                             <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
                             <td>
-                                <a style="color: green;"  [ngClass]="{disabled:p.FCAAdded == 1}" title="Add FCA"><i class="pi pi-plus"></i></a>
+                                <a style="color: green;" [ngClass]="{disabled:p.FCAAdded == 1}" title="Add FCA"><i class="pi pi-plus"></i></a>
                             </td>
                             <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                             <td>
@@ -77,7 +77,7 @@
                                 <a title="Edit Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"><i class="pi pi-pencil"></i></a>&nbsp;
                             </td>
                             <td>
-                                <a title="Report" [routerLink]="['/Home/Prescriptive/Report']" (click)="FMEAReports(p)"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;
+                                <a title="Report" [routerLink]="['/Home/Prescriptive/Report']" (click)="FMEAReports(p)" [ngClass]="{disabled:p.FMWithConsequenceTree ==''}"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;
                             </td>
                             <td>
                                 <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><i class="pi pi-trash"></i></a>
