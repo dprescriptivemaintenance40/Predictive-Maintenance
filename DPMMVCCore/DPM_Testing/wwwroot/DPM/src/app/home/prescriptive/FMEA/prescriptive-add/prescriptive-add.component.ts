@@ -2114,6 +2114,21 @@ var myChart = new Chart('myChart4', {
     if(p.children[0].data.name == 'Pattern 1') {
     await this.Pattern1Chart();
     }
+    if(p.children[0].data.name == 'Pattern 2') {
+      await this.Pattern2Chart();
+    }
+    if(p.children[0].data.name == 'Pattern 3') {
+      await this.Pattern3Chart();
+      }
+    if(p.children[0].data.name == 'Pattern 4') {
+        await this.Pattern4Chart();
+      }
+    if(p.children[0].data.name == 'Pattern 5') {
+        await this.Pattern5Chart();
+      }
+     if(p.children[0].data.name == 'Pattern 6') {
+        await this.Pattern6Chart();
+        }
    this.ViewPatterns = true
    const element = document.querySelector("#ScrollUpdateTreeView")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -2124,26 +2139,292 @@ var myChart = new Chart('myChart4', {
     var Pattern1 = new Chart('Pattern1', {
       type: 'line',
       data: {
-        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow" ,"Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi",],
         datasets: [{
-         // label: 'Series 1', // Name the series
-          data: [70, 60 , 50, 50, 50 ,50,50,50,50,50,50,50, 50,50, 60, 70 ], // Specify the data values array
-          fill: false,
-          borderColor: '#2196f3', // Add custom color border (Line)
-          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
+          label: '',
+          backgroundColor: "rgba(255, 99, 132,0.4)",
+          borderColor: "rgb(255, 99, 132)",
+          fill: true,
+          data: [
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+          ],
         }]
       },
       options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-        legend: {
-          display: false
-      },
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Pattern 1'
+        },
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              labelString: 'Time',
+              display: true,
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              labelString: 'Failure Probability',
+              display: true
+            }
+          }]
+        }
       }
     });
   }
 
+   
+ async Pattern2Chart(){
+  var Pattern2 = new Chart('Pattern2', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 8, y: 1 },
+          { x: 1, y: 8 },
+          { x: 8, y: 1 },
+          { x: 1, y: 8 },
+          { x: 8, y: 1 },
+          { x: 1, y: 8 },
+
+
+        ],
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 2'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+ 
+async Pattern3Chart(){
+  var Pattern3 = new Chart('Pattern3', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 15, y: 3 },
+          { x: 15, y: 15 },
+          { x: 15, y: 15 },
+         { x: 15, y: 15 },
+         { x: 15, y: 15 },,
+         { x: 15, y: 15 },
+         { x: 5, y: 19 }
+       ]
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 3'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+ 
+async Pattern4Chart(){
+  var Pattern4 = new Chart('Pattern4', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 15, y: 3 },
+          { x: 15, y: 15 },
+          { x: 15, y: 15 },
+         { x: 15, y: 15 },
+         { x: 15, y: 15 },,
+         { x: 15, y: 15 },
+         { x: 5, y: 19 }
+       ]
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 4'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+ 
+async Pattern5Chart(){
+  var Pattern5 = new Chart('Pattern5', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 17, y: 17 },
+          { x: 15, y: 12 },
+          { x: 9, y: 9 },
+          { x: 0, y: 9 },
+          { x: 17, y: 17 },
+          { x: 1, y: 6 },
+          { x: 5, y: 9 },
+          { x: 0, y: 12 },
+          { x: 17, y: 17 },
+        ],
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 5'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+ 
+async Pattern6Chart(){
+  var Pattern6 = new Chart('Pattern6', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 17, y: 17 },
+          { x: 15, y: 12 },
+          { x: 9, y: 9 },
+          { x: 0, y: 9 },
+          { x: 17, y: 17 },
+          { x: 1, y: 6 },
+          { x: 5, y: 9 },
+          { x: 0, y: 12 },
+          { x: 17, y: 17 },
+        ],
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 6'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
                                                                                                               
 }
 
