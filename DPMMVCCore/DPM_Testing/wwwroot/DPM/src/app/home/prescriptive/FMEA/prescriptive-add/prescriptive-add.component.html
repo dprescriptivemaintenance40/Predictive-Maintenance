@@ -619,8 +619,23 @@
         </div>
     </div>
 </div>
-
+<!-- 
 <p-card *ngIf="ViewPatterns" id="ScrollUpdateTreeView" >
+    <div>
+        <p-card>
+             <p-organizationChart [value]="FCAView"  styleClass="company">
+                <ng-template let-node pTemplate="person">
+                    <div class="node-header p-corner-top">{{node.label}}</div>
+                    <div class="node-content">
+                        <div>{{node.data.name}}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-node pTemplate="department">
+                    {{node.label}}
+                </ng-template>
+            </p-organizationChart>
+        </p-card>
+    </div>
     <div class="row">
         <div class="row col-md-12">
             <div class="col-md-2">
@@ -656,7 +671,32 @@
         </div>
     </div>
 
-</p-card>
+</p-card> -->
+
+
+<div *ngIf="ViewPatterns" id="ScrollUpdateTreeView">
+    <p-card>
+        <div class="col-md-4">
+            <div class="col-md-12" style="width: 13em;height: 13em;">
+                <canvas id="Pattern1"></canvas>
+            </div>
+        </div>
+
+        <p-organizationChart [value]="FCAView"  styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+</div>
+
+
 
 
 <div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;">
@@ -721,3 +761,4 @@
     </p-card>
 
 </div>
+

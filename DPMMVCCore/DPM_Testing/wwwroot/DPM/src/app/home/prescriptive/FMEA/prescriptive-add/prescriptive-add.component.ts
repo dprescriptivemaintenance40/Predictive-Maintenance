@@ -192,8 +192,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   ngOnInit() {
     this.title.setTitle('DPM | Prescriptive ');
+    this.data1 = JSON.parse(localStorage.getItem('TestingOBj'))
     this.PatternTree()
-  
+    this.Pattern1Chart()
     setInterval(() => {
       this.dynamicDroppedPopup();
     }, 2000);
@@ -666,6 +667,7 @@ var myChart = new Chart('myChart4', {
       });
       for (let index = 0; index < Data.length; index++) {
         FMName = Data[index]
+        var FMEALABEL : number = index +1
         this.FMChild.push(
           {
             label: index + 1,
@@ -675,10 +677,9 @@ var myChart = new Chart('myChart4', {
             data: { name: FMName },
             children: [
               {
-                label: 1,
+                label: FMEALABEL,
                 type: "person",
                 styleClass: "p-person",
-                //edit : true,
                 expanded: true,
                 data: { name: 'FMEA' },
                 children: []
@@ -843,6 +844,7 @@ var myChart = new Chart('myChart4', {
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
+    localStorage.setItem('TestingOBj', JSON.stringify(this.data1))
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};
       obj['CPPFMId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
@@ -1867,7 +1869,7 @@ var myChart = new Chart('myChart4', {
             }
         } 
         var FCATree = {
-                    label: "index+1",    //this.data1[0].children[0].children[0].children[index],
+                    label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label, 
                     type: "person",
                     styleClass: 'p-person',
                     edit:true,
@@ -1948,7 +1950,7 @@ var myChart = new Chart('myChart4', {
 
 
          var FCATree1 = {
-                    label: "FCA",
+                    label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
                     type: "person",
                     styleClass: 'p-person',
                     edit:true,
@@ -2095,17 +2097,53 @@ var myChart = new Chart('myChart4', {
 
   }
 
+  public FCAView : any;
+
   async SelectNodeToView(p){
     console.log(p.data.name)
-    console.log(p.label)
-    // for (let index = 0; index < this.data1[0].children[0].data.name.length; index++) {
-    //   console.log(p.children[index].data.name)
-    // }
-    console.log(p.children[0].data.name)
+    var indexOfFCA = p.label -1;
+    this.FCAView = []
+    var i = 0;
+    this.data1[0].children[0].children[0].children[indexOfFCA].children.forEach((res : any) => {
+      if(i == 1){
+        this.FCAView.push(res)
+      }
+      i = i+1;
+    });
+
+    if(p.children[0].data.name == 'Pattern 1') {
+    await this.Pattern1Chart();
+    }
    this.ViewPatterns = true
    const element = document.querySelector("#ScrollUpdateTreeView")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+
+ 
+ async Pattern1Chart(){
+    var Pattern1 = new Chart('Pattern1', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow" ,"Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi",],
+        datasets: [{
+         // label: 'Series 1', // Name the series
+          data: [70, 60 , 50, 50, 50 ,50,50,50,50,50,50,50, 50,50, 60, 70 ], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+  }
+
                                                                                                               
 }
 
