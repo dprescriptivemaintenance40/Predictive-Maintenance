@@ -11,6 +11,7 @@ import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import * as Chart from 'chart.js';
 
 @Component({
   selector: 'app-prescriptive-add',
@@ -155,6 +156,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public extensionAddImage: boolean = false;
   public extensionAddPDF: boolean = false;
   public extensionImage: boolean = false;
+  public ViewPatterns: boolean = false;
+  
   
 
 
@@ -190,6 +193,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   ngOnInit() {
     this.title.setTitle('DPM | Prescriptive ');
     this.PatternTree()
+  
     setInterval(() => {
       this.dynamicDroppedPopup();
     }, 2000);
@@ -245,8 +249,140 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
       }
     }
-
     ];
+
+    var myChart = new Chart('myChart', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+
+    var myChart = new Chart('myChart1', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+
+    var myChart = new Chart('myChart2', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+  
+    var myChart = new Chart('myChart3', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+
+var myChart = new Chart('myChart4', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+
+    var myChart = new Chart('myChart5', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+    
   }
 
   async ngOnDestroy() {
@@ -542,6 +678,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                 label: 1,
                 type: "person",
                 styleClass: "p-person",
+                //edit : true,
                 expanded: true,
                 data: { name: 'FMEA' },
                 children: []
@@ -788,8 +925,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       },
       err => { console.log(err.Message) }
     )
-
-
   }
 
   PushConcequences() {
@@ -1730,13 +1865,12 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                   Node8 : 'StylePattern2',
                   AnsNode6P2 : 'StylePattern2' 
             }
-        }
-
-        
+        } 
         var FCATree = {
-                    label: "FCA",
+                    label: "index+1",    //this.data1[0].children[0].children[0].children[index],
                     type: "person",
                     styleClass: 'p-person',
+                    edit:true,
                     expanded: true,
                     nodePath: path ,
                     data: { name: "FCA" },
@@ -1781,8 +1915,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.PatternPath=""
 
       }else{
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
-        
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })  
       }
 
       }else if(this.Pattern === 'Pattern 1' || this.Pattern ==='Pattern 4'|| this.Pattern ==='Pattern 5'){
@@ -1818,6 +1951,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     label: "FCA",
                     type: "person",
                     styleClass: 'p-person',
+                    edit:true,
                     expanded: true,
                     nodePath: path ,
                     data: { name: "FCA" },
@@ -1853,7 +1987,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
         if(this.PatternCounter < this.data1[0].children[0].children[0].children.length -1 ){
           this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
-       
         }
         this.PatternCounter = this.PatternCounter + 1
         if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
@@ -1962,7 +2095,18 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   }
 
-
+  async SelectNodeToView(p){
+    console.log(p.data.name)
+    console.log(p.label)
+    // for (let index = 0; index < this.data1[0].children[0].data.name.length; index++) {
+    //   console.log(p.children[index].data.name)
+    // }
+    console.log(p.children[0].data.name)
+   this.ViewPatterns = true
+   const element = document.querySelector("#ScrollUpdateTreeView")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+                                                                                                              
 }
 
 

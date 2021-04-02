@@ -127,7 +127,18 @@
     font-size: 12px;
     align-self: center;
 }
-
+.edit-org-bttn {
+    color: white;
+    background: green;
+    cursor: pointer;
+    position: absolute;
+    right: 1px;
+    top: -11px;
+    border-radius: 100%;
+   // border: 1px solid #fff;
+    // font-size: 1px;
+    padding: 2px;
+}
 
 
   
