@@ -77,7 +77,7 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div>
-                <a class="btn btn-dark"(click)="FunctionNext()" pTooltip="To add Function Failure  Click on Next" tooltipPosition="top">
+                <a class="btn btn-dark" (click)="FunctionNext()" pTooltip="To add Function Failure  Click on Next" tooltipPosition="top">
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -177,7 +177,7 @@
     <a class="btn btn-dark" (click)="FailuerEffectBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">
         <i class="fas fa-arrow-left"></i>
     </a>
-    <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()"pTooltip="Click on Next & Lookout the tree" tooltipPosition="top">
+    <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()" pTooltip="Click on Next & Lookout the tree" tooltipPosition="top">
         <i class="fas fa-arrow-right"></i>
     </a>
 </div>
@@ -368,7 +368,7 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <a class="btn btn-dark" (click)="ADDFailuerEffect()" pTooltip=" Add  Failure Mode with Local & System Effect" tooltipPosition="top">
-               <i class="fas fa-arrow-right"></i>
+                <i class="fas fa-arrow-right"></i>
             </a>
             <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="UPDATEFailuerEffect()" pTooltip="Update Failure Effects" tooltipPosition="top">
                 <i class="fas fa-edit"></i>
@@ -383,13 +383,13 @@
         <a *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">
             <i class="fas fa-arrow-left"></i>
         </a>
-        <a *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()"pTooltip="For adding the Consequences Please Click" tooltipPosition="top" data-toggle="modal" data-target="#treeModal">
+        <a *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()" pTooltip="For adding the Consequences Please Click" tooltipPosition="top" data-toggle="modal" data-target="#treeModal">
             <i class="fas fa-arrow-right"></i>
         </a>
         <a *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top">
             <i class="fas fa-arrow-right"></i>
         </a>
-        <a *ngIf="SaveConcequencesEnable" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()"pTooltip="Save Consequences" tooltipPosition="top" data-toggle="modal" data-target="#Consequences01">
+        <a *ngIf="SaveConcequencesEnable" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()" pTooltip="Save Consequences" tooltipPosition="top" data-toggle="modal" data-target="#Consequences01">
             <i class="fas fa-arrow-right"></i>
         </a>
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
@@ -420,7 +420,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="treeSave()">Save changes</button> 
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="treeSave()">Save changes</button>
             </div>
         </div>
     </div>
@@ -456,7 +456,7 @@
             <a class="btn btn-dark" (click)="Consequence1Back()" pTooltip=" Back to the Tree " tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence1Next()"pTooltip=" Click To add next Consequence " tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence1Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
         </ng-template>
@@ -493,7 +493,7 @@
             <a class="btn btn-dark" (click)="Consequence2Back()" pTooltip=" Back to the First Consequence" tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence2Next()"pTooltip=" Click To add next Consequence " tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence2Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
 
@@ -529,7 +529,7 @@
             <a class="btn btn-dark" (click)="Consequence3Back()" pTooltip=" Back to the Second Consequence" tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence3Next()"pTooltip=" Click To add next Consequence " tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence3Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
 
@@ -568,7 +568,7 @@
             <a class="btn btn-dark" (click)="Consequence4Back()" pTooltip=" Back to the Third Consequence" tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence4Next()"pTooltip=" Click To add next Consequence " tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence4Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
         </ng-template>
@@ -623,8 +623,9 @@
 </div>
 
 
-<div>
-    <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+<div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;">
+    <small class="form-text text-muted">Add FCA for {{PatternFMName}}</small>
+    <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
             <div class="node-content">
@@ -635,4 +636,52 @@
             {{node.label}}
         </ng-template>
     </p-organizationChart>
+
+    <p-card>
+        <ng-template pTemplate="title">
+            Pattern For Failure Mode
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Enter Pattern for {{PatternFMName}}
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label style="margin-right: 30px;">Select Pattern</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" [(ngModel)]="Pattern" class="form-control" (change)="SelectPatternForFailureMode()">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let EL of FMPattern" [ngValue]="EL">{{EL}}</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                    <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio1">Select Path</label>
+                    <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
+                        <i class="fas fa-circle"></i>
+                    </a>
+                </div>
+                <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                    <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio2">Select Path</label>
+                    <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(212, 218, 211);" class="fas fa-circle">
+                    </a>
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div>
+                <button label="Next" type="button" (click)="PatternBack()" class="btn btn-dark">Back</button>
+                <button label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark">ADD</button>
+            </div>
+        </ng-template>
+    </p-card>
+
 </div>

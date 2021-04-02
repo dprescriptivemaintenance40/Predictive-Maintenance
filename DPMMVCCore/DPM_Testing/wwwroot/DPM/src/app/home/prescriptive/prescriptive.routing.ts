@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { AuthGuard } from "src/app/auth.guard";
+import { FCAADDComponent } from "./FCA/fca-add/fca-add.component";
 import { PrescriptiveAddComponent } from "./FMEA/prescriptive-add/prescriptive-add.component";
 import { PrescriptiveConfigurationComponent } from "./FMEA/prescriptive-configuration/prescriptive-configuration.component";
 import { PrescriptiveConsequencesComponent } from "./FMEA/prescriptive-consequences/prescriptive-consequences.component";
@@ -22,7 +23,8 @@ import { PrescriptiveComponent } from "./prescriptive.component";
                 { path: 'Display', component: PrescriptiveDisplayComponent},
                 { path: 'Consequences', component: PrescriptiveConsequencesComponent,  canDeactivate: [AuthGuard]  },
                 { path: 'Report', component: PrescriptiveReportComponent},
-                { path: 'List', component: PrescriptiveListComponent}
+                { path: 'List', component: PrescriptiveListComponent},
+                { path: 'FCAAdd', component: FCAADDComponent}
             ]
         }
     ])],

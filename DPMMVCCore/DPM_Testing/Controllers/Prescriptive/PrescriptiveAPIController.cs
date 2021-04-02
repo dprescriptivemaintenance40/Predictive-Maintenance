@@ -223,6 +223,47 @@ namespace DPM.Controllers.Prescriptive
         }
 
 
+        [HttpPut]
+        [Route("PrespectivePattern")]
+        public async Task<IActionResult> PutPrespectivePattern(CentrifugalPumpPrescriptiveModel prescriptiveModel)
+        {
+
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId && a.UserId == userId)
+                                                                                                                  .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                                                                                  .First();
+                centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+                centrifugalPumpPrescriptiveModel.FCAAdded = prescriptiveModel.FCAAdded;
+                
+                _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                var collection = centrifugalPumpPrescriptiveModel.centrifugalPumpPrescriptiveFailureModes.ToList();
+                var i = 0;
+                foreach (var item in collection)
+                {
+                    item.Pattern = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].Pattern;
+                    i = i + 1;
+                    _context.Entry(item).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+
+
+
+
+
+        }
+
 
         [HttpPut]
         [Route("CFPrescriptiveAdd")]

@@ -3,7 +3,7 @@
     <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
         <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()" pTooltip="If you Want to Update the tree Click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button>
-        <p-organizationChart [value]="data1"   (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <p-organizationChart [value]="data1" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">
                     {{node.label}}
@@ -157,7 +157,7 @@
                                         <div class="input-group mb-3">
                                             <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
                                         </div>
-            
+
                                     </div>
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
                 <span>
                     Add Attachment for {{LSFailureMode}}
                 </span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModalAdd()"pTooltip="Add Attachments" tooltipPosition="top">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModalAdd()" pTooltip="Add Attachments" tooltipPosition="top">
           <span aria-hidden="true">&times;</span>
         </button>
             </div>
@@ -231,7 +231,7 @@
 
         </div>
     </div>
-</div> 
+</div>
 
 <div class="modal fade" id="CommentModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -266,7 +266,7 @@
 <div *ngIf="ColoredTreeForUpdate">
     <p-card>
         <h5 style="margin-bottom: 1em;"><b>Your selected {{LSFailureMode}} Tree </b></h5>
-        <p-organizationChart id="ScrollUpdateTree" [value]="SavedConsequenceNode" selectionMode="single"  styleClass="company">
+        <p-organizationChart id="ScrollUpdateTree" [value]="SavedConsequenceNode" selectionMode="single" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -448,7 +448,7 @@
         <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()">Back</button>&nbsp;&nbsp;
         <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button>
         <button *ngIf="ConsequenceTreeEditConsequenceEnable" title="Edit Consequences" label="Back" type="button" class="btn btn-dark" (click)="EditConsequenceToTree()"><i class="pi pi-pencil"></i> Consequences</button><br>
-        <p-organizationChart [value]="ConsequenceNode"  (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <p-organizationChart [value]="ConsequenceNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -526,18 +526,18 @@
                                              <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
                                             </label>
                                         </div>
-                                      
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group mb-3">
                                         <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
                                     </div>
-        
+
                                 </div>
                             </div>
                         </div>
-                     
+
 
                         <div class="form-group">
                             <div class="container">
@@ -662,7 +662,7 @@
     </div>
 </div>  -->
 
- <!-- <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
