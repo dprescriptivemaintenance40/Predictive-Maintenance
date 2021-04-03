@@ -15,7 +15,7 @@ import * as Chart from 'chart.js';
 @Component({
   selector: 'app-prescriptive-add',
   templateUrl: './prescriptive-add.component.html',
-  styleUrls: ['./prescriptive-add.component.scss','../../../../../assets/orgchart.scss'],
+  styleUrls: ['./prescriptive-add.component.scss', '../../../../../assets/orgchart.scss'],
   providers: [MessageService],
 })
 export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate {
@@ -121,9 +121,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public fileAttachmentEnable: boolean = false;
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
-  public FCAdata1 : TreeNode[];
-  public FMPattern = [ 'Pattern 1', 'Pattern 2','Pattern 3','Pattern 4','Pattern 5', 'Pattern 6'];
-  public Pattern : string = ""
+  public FCAdata1: TreeNode[];
+  public FMPattern = ['Pattern 1', 'Pattern 2', 'Pattern 3', 'Pattern 4', 'Pattern 5', 'Pattern 6'];
+  public Pattern: string = ""
   public PatternPathEnable: boolean = false;
   public PatternNextOnPrescriptiveTree: boolean = false;
   public FailureModePatternTree: boolean = false;
@@ -155,9 +155,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public extensionAddImage: boolean = false;
   public extensionAddPDF: boolean = false;
   public extensionImage: boolean = false;
+  private isNewEntity: boolean = false;
+  public uploadedAttachmentList: any[] = [];
   public ViewPatterns: boolean = false;
-  
-  
 
 
   constructor(private messageService: MessageService,
@@ -166,12 +166,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
-    private sanitizer: DomSanitizer,
     private changeDetectorRef: ChangeDetectorRef) { }
 
-  private isNewEntity: boolean = false;
 
-  
+
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if (confirm('Are you sure you want to go back. You have have pending changes')) {
@@ -241,7 +239,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.activeIndex = 5;
 
       }
-    }, 
+    },
     {
       label: 'FCA',
       command: (event: any) => {
@@ -251,144 +249,14 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
     ];
 
-    var myChart = new Chart('myChart', {
-      type: 'line',
-      data: {
-        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
-        datasets: [{
-          label: 'Series 1', // Name the series
-          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
-          fill: false,
-          borderColor: '#2196f3', // Add custom color border (Line)
-          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-        legend: {
-          display: false
-      },
-      }
-    });
-
-    var myChart = new Chart('myChart1', {
-      type: 'line',
-      data: {
-        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
-        datasets: [{
-          label: 'Series 1', // Name the series
-          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
-          fill: false,
-          borderColor: '#2196f3', // Add custom color border (Line)
-          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-        legend: {
-          display: false
-      },
-      }
-    });
-
-    var myChart = new Chart('myChart2', {
-      type: 'line',
-      data: {
-        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
-        datasets: [{
-          label: 'Series 1', // Name the series
-          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
-          fill: false,
-          borderColor: '#2196f3', // Add custom color border (Line)
-          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-        legend: {
-          display: false
-      },
-      }
-    });
-  
-    var myChart = new Chart('myChart3', {
-      type: 'line',
-      data: {
-        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
-        datasets: [{
-          label: 'Series 1', // Name the series
-          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
-          fill: false,
-          borderColor: '#2196f3', // Add custom color border (Line)
-          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-        legend: {
-          display: false
-      },
-      }
-    });
-
-var myChart = new Chart('myChart4', {
-      type: 'line',
-      data: {
-        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
-        datasets: [{
-          label: 'Series 1', // Name the series
-          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
-          fill: false,
-          borderColor: '#2196f3', // Add custom color border (Line)
-          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-        legend: {
-          display: false
-      },
-      }
-    });
-
-    var myChart = new Chart('myChart5', {
-      type: 'line',
-      data: {
-        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
-        datasets: [{
-          label: 'Series 1', // Name the series
-          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
-          fill: false,
-          borderColor: '#2196f3', // Add custom color border (Line)
-          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
-        }]
-      },
-      options: {
-        responsive: true, // Instruct chart js to respond nicely.
-        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-        legend: {
-          display: false
-      },
-      }
-    });
-    
   }
+
+
 
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveObject');
   }
-  public uploadedAttachmentList: any[] = [];
+
   public uploadFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
@@ -666,7 +534,7 @@ var myChart = new Chart('myChart4', {
       });
       for (let index = 0; index < Data.length; index++) {
         FMName = Data[index]
-        var FMEALABEL : number = index +1
+        var FMEALABEL: number = index + 1
         this.FMChild.push(
           {
             label: index + 1,
@@ -835,10 +703,10 @@ var myChart = new Chart('myChart4', {
   }
 
   SaveConsequences() {
-   
+
     this.isNewEntity = false
-    this.data1[0].children[0].children.forEach((res : any) =>{
-      res.Consequence =this.data1Clone
+    this.data1[0].children[0].children.forEach((res: any) => {
+      res.Consequence = this.data1Clone
     })
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
@@ -850,7 +718,7 @@ var myChart = new Chart('myChart4', {
       obj['CFPPrescriptiveId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
       obj['FunctionMode'] = this.FMChild[index].data.name;
       obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
-      obj['SystemEffect'] =this.FMChild[index].children[0].children[1].data.name;;
+      obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;;
       obj['Consequence'] = this.FMChild[index].children[0].children[2].data.name;
       obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
       obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
@@ -872,9 +740,9 @@ var myChart = new Chart('myChart4', {
       res => {
         console.log(res);
         this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-       // this.router.navigateByUrl('/Home/Prescriptive/List');
-          this.SaveConcequencesEnable = false;
-          this.PatternNextOnPrescriptiveTree = true;
+        // this.router.navigateByUrl('/Home/Prescriptive/List');
+        this.SaveConcequencesEnable = false;
+        this.PatternNextOnPrescriptiveTree = true;
       }, err => { console.log(err.err) }
     )
 
@@ -998,21 +866,21 @@ var myChart = new Chart('myChart4', {
     this.isNewEntity = true
     this.GenrationTree()
     var temp2;
-    var temp : string= JSON.stringify(this.data1)
+    var temp: string = JSON.stringify(this.data1)
     temp2 = JSON.parse(temp)
-    
-    var i : number = 0
+
+    var i: number = 0
     temp2[0].children[0].children[0].children.forEach((res: any) => {
-        var abc :any[] = res.children[0].children
-        temp2[0].children[0].children[0].children[i].children.pop()
-        temp2[0].children[0].children[0].children[i].children = abc
-        i = i + 1;  
+      var abc: any[] = res.children[0].children
+      temp2[0].children[0].children[0].children[i].children.pop()
+      temp2[0].children[0].children[0].children[i].children = abc
+      i = i + 1;
     });
     this.data1Clone = temp2
-    this.data1[0].children[0].children.forEach((res : any) =>{
-      res.FMEA =temp2
+    this.data1[0].children[0].children.forEach((res: any) => {
+      res.FMEA = temp2
     })
-  } 
+  }
 
 
   FailuerEffectBack() {
@@ -1052,8 +920,8 @@ var myChart = new Chart('myChart4', {
 
   }
 
- 
-  
+
+
   async treeNext() {
     this.prescriptiveTree = true;
     this.Consequences1 = true;
@@ -1068,7 +936,7 @@ var myChart = new Chart('myChart4', {
     this.activeIndex = 4
     this.prescriptiveTree = true;
     this.Consequences1 = false;
-   
+
   }
   Consequence1Next() {
     if (this.dropedConsequenceFailureMode.length == 1) {
@@ -1460,7 +1328,7 @@ var myChart = new Chart('myChart4', {
     }
   }
 
-  PatternTree(){
+  PatternTree() {
     this.FCAdata1 = [
       {
         label: "Pattern",
@@ -1533,7 +1401,7 @@ var myChart = new Chart('myChart4', {
                     ]
                   }
                 ]
-              }, 
+              },
               {
                 label: "Yes",
                 type: "person",
@@ -1649,7 +1517,7 @@ var myChart = new Chart('myChart4', {
 
 
 
-  SelectPatternForFailureMode(){
+  SelectPatternForFailureMode() {
     this.changeDetectorRef.detectChanges();
     this.PattenNode1 = 'p-person'
     this.PattenNode2 = 'p-person'
@@ -1670,7 +1538,7 @@ var myChart = new Chart('myChart4', {
     this.PattenAnsNode6P2 = 'p-person'
     this.PatternPathEnable = false
 
-    if(this.Pattern === 'Pattern 1'){
+    if (this.Pattern === 'Pattern 1') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'p-person'
       this.PattenNode3 = 'StylePattern'
@@ -1683,99 +1551,99 @@ var myChart = new Chart('myChart4', {
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    }else if(this.Pattern === 'Pattern 2'){
-        this.PatternPathEnable = true
-        this.PattenNode2 = 'StylePattern1'
-        this.PattenNode5 = 'StylePattern1'
-        this.PattenAnsNode2P1 = 'StylePattern1'
+    } else if (this.Pattern === 'Pattern 2') {
+      this.PatternPathEnable = true
+      this.PattenNode2 = 'StylePattern1'
+      this.PattenNode5 = 'StylePattern1'
+      this.PattenAnsNode2P1 = 'StylePattern1'
 
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode3 = 'StylePattern2'
-        this.PattenNode4 = 'p-person'
-        this.PattenNode6 = 'StylePattern2'
-        this.PattenNode7 = 'p-person'
-        this.PattenNode8 = 'p-person'
-        this.PattenAnsNode2P2 = 'StylePattern2'
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
-
-       
-
-    }else if(this.Pattern === 'Pattern 3'){
-        this.PatternPathEnable = true  
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode2 = 'StylePattern1'
-        this.PattenNode5 = 'StylePattern1'
-        this.PattenAnsNode3P1 = 'StylePattern1'
-        this.PattenNode3 = 'StylePattern2'
-        this.PattenNode6 = 'StylePattern2'
-        this.PattenNode8 = 'StylePattern2'
-        this.PattenAnsNode3P2 = 'StylePattern2'
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode4 = 'p-person'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode7 = 'p-person'
+      this.PattenNode8 = 'p-person'
+      this.PattenAnsNode2P2 = 'StylePattern2'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
 
 
-    }else if(this.Pattern === 'Pattern 4'){
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode2 = 'StylePattern'
-        this.PattenNode4 = 'StylePattern'
-        this.PattenAnsNode4 = 'StylePattern'
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
 
-    }else if(this.Pattern === 'Pattern 5'){
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode2 = 'StylePattern'
-        this.PattenNode4 = 'StylePattern'
-        this.PattenNode7 = 'StylePattern'
-        this.PattenAnsNode5 = 'StylePattern'
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
-        this.PatternEnable = true;
+    } else if (this.Pattern === 'Pattern 3') {
+      this.PatternPathEnable = true
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern1'
+      this.PattenNode5 = 'StylePattern1'
+      this.PattenAnsNode3P1 = 'StylePattern1'
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode8 = 'StylePattern2'
+      this.PattenAnsNode3P2 = 'StylePattern2'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
 
-    }else if(this.Pattern === 'Pattern 6'){
-        this.PatternPathEnable = true
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode2 = 'StylePattern1'
-        this.PattenNode4 = 'StylePattern1'
-        this.PattenNode7 = 'StylePattern1'
-        this.PattenAnsNode6P1 = 'StylePattern1'
 
-        this.PattenNode3 = 'StylePattern2'
-        this.PattenNode6 = 'StylePattern2'
-        this.PattenNode8 = 'StylePattern2'
-        this.PattenAnsNode6P2 = 'StylePattern2'
+    } else if (this.Pattern === 'Pattern 4') {
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern'
+      this.PattenNode4 = 'StylePattern'
+      this.PattenAnsNode4 = 'StylePattern'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
 
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
+    } else if (this.Pattern === 'Pattern 5') {
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern'
+      this.PattenNode4 = 'StylePattern'
+      this.PattenNode7 = 'StylePattern'
+      this.PattenAnsNode5 = 'StylePattern'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+      this.PatternEnable = true;
 
-    } else if(this.Pattern === ""){
-          this.PattenNode1 = 'p-person'
-          this.PattenNode2 = 'p-person'
-          this.PattenNode3 = 'p-person'
-          this.PattenNode4 = 'p-person'
-          this.PattenNode5 = 'p-person'
-          this.PattenNode6 = 'p-person'
-          this.PattenNode7 = 'p-person'
-          this.PattenNode8 = 'p-person'
-          this.PattenAnsNode1 = 'p-person'
-          this.PattenAnsNode2P2 = 'p-person'
-          this.PattenAnsNode2P1 = 'p-person'
-          this.PattenAnsNode3P1 = 'p-person'
-          this.PattenAnsNode3P2 = 'p-person'
-          this.PattenAnsNode4 = 'p-person'
-          this.PattenAnsNode5 = 'p-person'
-          this.PattenAnsNode6P1 = 'p-person'
-          this.PattenAnsNode6P2 = 'p-person'
-          this.PatternPathEnable = false
-          this.Pattern = ""
-          this.PatternPath=""
-          this.changeDetectorRef.detectChanges();
+    } else if (this.Pattern === 'Pattern 6') {
+      this.PatternPathEnable = true
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern1'
+      this.PattenNode4 = 'StylePattern1'
+      this.PattenNode7 = 'StylePattern1'
+      this.PattenAnsNode6P1 = 'StylePattern1'
+
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode8 = 'StylePattern2'
+      this.PattenAnsNode6P2 = 'StylePattern2'
+
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+    } else if (this.Pattern === "") {
+      this.PattenNode1 = 'p-person'
+      this.PattenNode2 = 'p-person'
+      this.PattenNode3 = 'p-person'
+      this.PattenNode4 = 'p-person'
+      this.PattenNode5 = 'p-person'
+      this.PattenNode6 = 'p-person'
+      this.PattenNode7 = 'p-person'
+      this.PattenNode8 = 'p-person'
+      this.PattenAnsNode1 = 'p-person'
+      this.PattenAnsNode2P2 = 'p-person'
+      this.PattenAnsNode2P1 = 'p-person'
+      this.PattenAnsNode3P1 = 'p-person'
+      this.PattenAnsNode3P2 = 'p-person'
+      this.PattenAnsNode4 = 'p-person'
+      this.PattenAnsNode5 = 'p-person'
+      this.PattenAnsNode6P1 = 'p-person'
+      this.PattenAnsNode6P2 = 'p-person'
+      this.PatternPathEnable = false
+      this.Pattern = ""
+      this.PatternPath = ""
+      this.changeDetectorRef.detectChanges();
     }
 
   }
 
-  ADDFMToFCA(){
+  ADDFMToFCA() {
     this.prescriptiveTree = false
     this.FailureModePatternTree = true
     this.activeIndex = 6
@@ -1799,213 +1667,214 @@ var myChart = new Chart('myChart4', {
     this.PattenAnsNode6P2 = 'p-person'
     this.PatternPathEnable = false
     this.Pattern = ""
-    this.PatternPath=""
+    this.PatternPath = ""
     this.changeDetectorRef.detectChanges();
     this.PatternFMName = this.data1[0].children[0].children[0].children[0].data.name
     this.PatternNextOnPrescriptiveTree = false
   }
-  PatternBack(){
+  PatternBack() {
     this.prescriptiveTree = true
     this.FailureModePatternTree = false
     this.activeIndex = 5
-    if(this.PatternCounter == 0){
+    if (this.PatternCounter == 0) {
       this.PatternNextOnPrescriptiveTree = true;
     }
   }
 
-  PatternAdd(){
-    if(this.Pattern === 'Pattern 2' || this.Pattern ==='Pattern 3'|| this.Pattern ==='Pattern 6'){
-      if((this.Pattern === 'Pattern 2' || this.Pattern ==='Pattern 3'
-                                      || this.Pattern ==='Pattern 6')
-                                      && this.PatternPath != ""){
+  PatternAdd() {
+    if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
+      if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
+        || this.Pattern === 'Pattern 6')
+        && this.PatternPath != "") {
         var path;
-        if(this.Pattern === 'Pattern 2' && this. PatternPath == "1"){
-          path =  {
-                Node1 : 'StylePattern1',
-                Node2 : 'StylePattern1',
-                Node5 : 'StylePattern1', 
-                AnsNode2P1 : 'StylePattern1' } 
-        } else if (this.Pattern === 'Pattern 2' && this. PatternPath == "2"){
+        if (this.Pattern === 'Pattern 2' && this.PatternPath == "1") {
           path = {
-                Node1 : 'StylePattern2',
-                Node3 : 'StylePattern2',
-                Node6 : 'StylePattern2',
-                AnsNode2P2 : 'StylePattern2' 
-              }
-
-          } else if(this.Pattern ==='Pattern 3' && this. PatternPath == "1"){
-            path = {
-                Node1 : 'StylePattern1',
-                Node2 : 'StylePattern1',
-                Node5 : 'StylePattern1',
-                AnsNode3P1 : 'StylePattern1'
-            }
-
-        } else if(this.Pattern ==='Pattern 3' && this. PatternPath == "2"){
-            path ={
-                Node1 : 'StylePattern2',
-                Node3 : 'StylePattern2',
-                Node6 : 'StylePattern2',
-                Node8 : 'StylePattern2',
-                AnsNode3P2 : 'StylePattern2'
-            }
-
-        } else if(this.Pattern ==='Pattern 6' && this. PatternPath == "1"){ 
+            Node1: 'StylePattern1',
+            Node2: 'StylePattern1',
+            Node5: 'StylePattern1',
+            AnsNode2P1: 'StylePattern1'
+          }
+        } else if (this.Pattern === 'Pattern 2' && this.PatternPath == "2") {
           path = {
-                  Node1 : 'StylePattern1',
-                  Node2 : 'StylePattern1',
-                  Node4 : 'StylePattern1',
-                  Node7 : 'StylePattern1',
-                  AnsNode6P1 : 'StylePattern1'
-                }
-        }else if(this.Pattern ==='Pattern 6' && this. PatternPath == "2"){ 
-            path = {
-                  Node1 : 'StylePattern2',
-                  Node3 : 'StylePattern2',
-                  Node6 : 'StylePattern2',
-                  Node8 : 'StylePattern2',
-                  AnsNode6P2 : 'StylePattern2' 
-            }
-        } 
+            Node1: 'StylePattern2',
+            Node3: 'StylePattern2',
+            Node6: 'StylePattern2',
+            AnsNode2P2: 'StylePattern2'
+          }
+
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "1") {
+          path = {
+            Node1: 'StylePattern1',
+            Node2: 'StylePattern1',
+            Node5: 'StylePattern1',
+            AnsNode3P1: 'StylePattern1'
+          }
+
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "2") {
+          path = {
+            Node1: 'StylePattern2',
+            Node3: 'StylePattern2',
+            Node6: 'StylePattern2',
+            Node8: 'StylePattern2',
+            AnsNode3P2: 'StylePattern2'
+          }
+
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "1") {
+          path = {
+            Node1: 'StylePattern1',
+            Node2: 'StylePattern1',
+            Node4: 'StylePattern1',
+            Node7: 'StylePattern1',
+            AnsNode6P1: 'StylePattern1'
+          }
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
+          path = {
+            Node1: 'StylePattern2',
+            Node3: 'StylePattern2',
+            Node6: 'StylePattern2',
+            Node8: 'StylePattern2',
+            AnsNode6P2: 'StylePattern2'
+          }
+        }
         var FCATree = {
-                    label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label, 
-                    type: "person",
-                    styleClass: 'p-person',
-                    edit:true,
-                    expanded: true,
-                    nodePath: path ,
-                    data: { name: "FCA" },
-                    children: [
-                      {
-                        label: "Pattern",
-                        type: "person",
-                        styleClass: 'p-person',
-                        expanded: true,
-                        data: {
-                          name: this.Pattern
-                        }
-                      }  
-                    ]
-                  }
-
-    this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
-    this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
-                                     {
-                                       label: "Pattern",
-                                       type: "person",
-                                       styleClass: 'p-person',
-                                       expanded: true,
-                                       data: {
-                                         name: this.Pattern
-                                       }
-                                     } 
-                                   )
-
-          this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
-          if( this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1 ){
-            this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
-         
-          } 
-          this.PatternCounter = this.PatternCounter + 1
-          if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
-              this.Pattern = ""
-              this.SaveFCAEnable = true
-          } 
-        this.FailureModePatternTree = false;
-        this.prescriptiveTree = true
-        this.PatternPath=""
-
-      }else{
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })  
-      }
-
-      }else if(this.Pattern === 'Pattern 1' || this.Pattern ==='Pattern 4'|| this.Pattern ==='Pattern 5'){
-
-        if(this.Pattern === 'Pattern 1' ){
-          path = {
-            Node1 : 'StylePattern',
-            Node3 : 'StylePattern',
-            AnsNode1 : 'StylePattern'
-          }
-
-        }else  if(this.Pattern === 'Pattern 4' ){
-          path = {
-              Node1 : 'StylePattern',
-              Node2 : 'StylePattern',
-              Node4 : 'StylePattern',
-              AnsNode4 : 'StylePattern'
-          }
-
-        }else if(this.Pattern === 'Pattern 5' ){
-          path = {
-            Node1 : 'StylePattern',
-            Node2 : 'StylePattern',
-            Node4 : 'StylePattern',
-            Node7 : 'StylePattern',
-            AnsNode5 : 'StylePattern'
-          }
-
+          label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+          type: "person",
+          styleClass: 'p-person',
+          edit: true,
+          expanded: true,
+          nodePath: path,
+          data: { name: "FCA" },
+          children: [
+            {
+              label: "Pattern",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.Pattern
+              }
+            }
+          ]
         }
 
+        this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+        this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.Pattern
+            }
+          }
+        )
 
-         var FCATree1 = {
-                    label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
-                    type: "person",
-                    styleClass: 'p-person',
-                    edit:true,
-                    expanded: true,
-                    nodePath: path ,
-                    data: { name: "FCA" },
-                    children: [
-                      {
-                        label: "Pattern",
-                        type: "person",
-                        styleClass: 'p-person',
-                        expanded: true,
-                        data: {
-                          name: this.Pattern
-                        }
-                      }  
-                    ]
-                  }
-
-                  
-     this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children= []
-     this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
-                        {
-                          label: "Pattern",
-                          type: "person",
-                          styleClass: 'p-person',
-                          expanded: true,
-                          data: {
-                            name: this.Pattern
-                          }
-                        } 
-                      )
-                     
-
-
-        this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
-        if(this.PatternCounter < this.data1[0].children[0].children[0].children.length -1 ){
+        this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
+        if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
           this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
+
         }
         this.PatternCounter = this.PatternCounter + 1
-        if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
-            this.Pattern = ""
-            this.SaveFCAEnable = true
-        } 
+        if (this.PatternCounter == this.data1[0].children[0].children[0].children.length) {
+          this.Pattern = ""
+          this.SaveFCAEnable = true
+        }
+        this.FailureModePatternTree = false;
+        this.prescriptiveTree = true
+        this.PatternPath = ""
+
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
+      }
+
+    } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
+
+      if (this.Pattern === 'Pattern 1') {
+        path = {
+          Node1: 'StylePattern',
+          Node3: 'StylePattern',
+          AnsNode1: 'StylePattern'
+        }
+
+      } else if (this.Pattern === 'Pattern 4') {
+        path = {
+          Node1: 'StylePattern',
+          Node2: 'StylePattern',
+          Node4: 'StylePattern',
+          AnsNode4: 'StylePattern'
+        }
+
+      } else if (this.Pattern === 'Pattern 5') {
+        path = {
+          Node1: 'StylePattern',
+          Node2: 'StylePattern',
+          Node4: 'StylePattern',
+          Node7: 'StylePattern',
+          AnsNode5: 'StylePattern'
+        }
+
+      }
+
+
+      var FCATree1 = {
+        label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+        type: "person",
+        styleClass: 'p-person',
+        edit: true,
+        expanded: true,
+        nodePath: path,
+        data: { name: "FCA" },
+        children: [
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.Pattern
+            }
+          }
+        ]
+      }
+
+
+      this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+      this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+        {
+          label: "Pattern",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.Pattern
+          }
+        }
+      )
+
+
+
+      this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
+      if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
+        this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
+      }
+      this.PatternCounter = this.PatternCounter + 1
+      if (this.PatternCounter == this.data1[0].children[0].children[0].children.length) {
+        this.Pattern = ""
+        this.SaveFCAEnable = true
+      }
       this.FailureModePatternTree = false;
       this.prescriptiveTree = true
-      }
-      else{
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
-        
-      }
- 
+    }
+    else {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
+
+    }
+
   }
 
 
-  ADDNextFCA(){
+  ADDNextFCA() {
     this.PattenNode1 = ''
     this.PattenNode2 = ''
     this.PattenNode3 = ''
@@ -2047,24 +1916,24 @@ var myChart = new Chart('myChart4', {
     this.PatternPathEnable = false
     this.FailureModePatternTree = true
     this.changeDetectorRef.detectChanges();
-    
+
   }
 
-  public SaveFCAEnable : boolean = false
-  SaveFCA(){
-   var  centrifugalPumpOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
-    this.data1[0].children[0].children.forEach((res : any) =>{
-      res.FCA =this.data1Clone
+  public SaveFCAEnable: boolean = false
+  SaveFCA() {
+    var centrifugalPumpOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+    this.data1[0].children[0].children.forEach((res: any) => {
+      res.FCA = this.data1Clone
     })
     centrifugalPumpOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
     centrifugalPumpOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
     centrifugalPumpOBJ.FCAAdded = "1";
-    
+
     for (let index = 0; index < this.data1[0].children[0].children[0].children.length; index++) {
       let obj = {};
       obj['CPPFMId'] = 0;
       obj['CFPPrescriptiveId'] = 0;
-      obj['FunctionMode'] = "" ;
+      obj['FunctionMode'] = "";
       obj['LocalEffect'] = "";
       obj['SystemEffect'] = "";
       obj['Consequence'] = "";
@@ -2086,55 +1955,55 @@ var myChart = new Chart('myChart4', {
     }
 
     this.http.put('api/PrescriptiveAPI/PrespectivePattern', centrifugalPumpOBJ).subscribe(
-        res => {
-          this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
-          this.SaveFCAEnable = false
-          this.router.navigateByUrl('/Home/Prescriptive/List');
-        }, err => console.log(err.error)
-       )
+      res => {
+        this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
+        this.SaveFCAEnable = false
+        this.router.navigateByUrl('/Home/Prescriptive/List');
+      }, err => console.log(err.error)
+    )
 
 
   }
 
-  public FCAView : any;
+  public FCAView: any;
 
-  async SelectNodeToView(p){
+  async SelectNodeToView(p) {
     console.log(p.data.name)
-    var indexOfFCA = p.label -1;
+    var indexOfFCA = p.label - 1;
     this.FCAView = []
     var i = 0;
-    this.data1[0].children[0].children[0].children[indexOfFCA].children.forEach((res : any) => {
-      if(i == 1){
+    this.data1[0].children[0].children[0].children[indexOfFCA].children.forEach((res: any) => {
+      if (i == 1) {
         this.FCAView.push(res)
       }
-      i = i+1;
+      i = i + 1;
     });
 
-    if(p.children[0].data.name == 'Pattern 1') {
-    await this.Pattern1Chart();
+    if (p.children[0].data.name == 'Pattern 1') {
+      await this.Pattern1Chart();
     }
-    if(p.children[0].data.name == 'Pattern 2') {
+    if (p.children[0].data.name == 'Pattern 2') {
       await this.Pattern2Chart();
     }
-    if(p.children[0].data.name == 'Pattern 3') {
+    if (p.children[0].data.name == 'Pattern 3') {
       await this.Pattern3Chart();
-      }
-    if(p.children[0].data.name == 'Pattern 4') {
-        await this.Pattern4Chart();
-      }
-    if(p.children[0].data.name == 'Pattern 5') {
-        await this.Pattern5Chart();
-      }
-     if(p.children[0].data.name == 'Pattern 6') {
-        await this.Pattern6Chart();
-        }
-   this.ViewPatterns = true
-   const element = document.querySelector("#ScrollUpdateTreeView")
-   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    if (p.children[0].data.name == 'Pattern 4') {
+      await this.Pattern4Chart();
+    }
+    if (p.children[0].data.name == 'Pattern 5') {
+      await this.Pattern5Chart();
+    }
+    if (p.children[0].data.name == 'Pattern 6') {
+      await this.Pattern6Chart();
+    }
+    this.ViewPatterns = true;
+    const element = document.querySelector("#ScrollUpdateTreeView")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
- 
- async Pattern1Chart(){
+
+  async Pattern1Chart() {
     var Pattern1 = new Chart('Pattern1', {
       type: 'line',
       data: {
@@ -2180,251 +2049,251 @@ var myChart = new Chart('myChart4', {
     });
   }
 
-   
- async Pattern2Chart(){
-  var Pattern2 = new Chart('Pattern2', {
-    type: 'line',
-    data: {
-      datasets: [{
-        label: '',
-        backgroundColor: "rgba(255, 99, 132,0.4)",
-        borderColor: "rgb(255, 99, 132)",
-        fill: true,
-        data: [
-          { x: 8, y: 1 },
-          { x: 1, y: 8 },
-          { x: 8, y: 1 },
-          { x: 1, y: 8 },
-          { x: 8, y: 1 },
-          { x: 1, y: 8 },
+
+  async Pattern2Chart() {
+    var Pattern2 = new Chart('Pattern2', {
+      type: 'line',
+      data: {
+        datasets: [{
+          label: '',
+          backgroundColor: "rgba(255, 99, 132,0.4)",
+          borderColor: "rgb(255, 99, 132)",
+          fill: true,
+          data: [
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
 
 
-        ],
-      }]
-    },
-    options: {
-      responsive: true,
-      title: {
-        display: true,
-        text: 'Pattern 2'
-      },
-      scales: {
-        xAxes: [{
-          type: 'linear',
-          position: 'bottom',
-          scaleLabel: {
-            labelString: 'Time',
-            display: true,
-          }
-        }],
-        yAxes: [{
-          type: 'linear',
-          scaleLabel: {
-            labelString: 'Failure Probability',
-            display: true
-          }
+          ],
         }]
-      }
-    }
-  });
-}
-
- 
-async Pattern3Chart(){
-  var Pattern3 = new Chart('Pattern3', {
-    type: 'line',
-    data: {
-      datasets: [{
-        label: '',
-        backgroundColor: "rgba(255, 99, 132,0.4)",
-        borderColor: "rgb(255, 99, 132)",
-        fill: true,
-        data: [
-          { x: 15, y: 3 },
-          { x: 15, y: 15 },
-          { x: 15, y: 15 },
-         { x: 15, y: 15 },
-         { x: 15, y: 15 },,
-         { x: 15, y: 15 },
-         { x: 5, y: 19 }
-       ]
-      }]
-    },
-    options: {
-      responsive: true,
-      title: {
-        display: true,
-        text: 'Pattern 3'
       },
-      scales: {
-        xAxes: [{
-          type: 'linear',
-          position: 'bottom',
-          scaleLabel: {
-            labelString: 'Time',
-            display: true,
-          }
-        }],
-        yAxes: [{
-          type: 'linear',
-          scaleLabel: {
-            labelString: 'Failure Probability',
-            display: true
-          }
-        }]
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Pattern 2'
+        },
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              labelString: 'Time',
+              display: true,
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              labelString: 'Failure Probability',
+              display: true
+            }
+          }]
+        }
       }
-    }
-  });
-}
+    });
+  }
 
- 
-async Pattern4Chart(){
-  var Pattern4 = new Chart('Pattern4', {
-    type: 'line',
-    data: {
-      datasets: [{
-        label: '',
-        backgroundColor: "rgba(255, 99, 132,0.4)",
-        borderColor: "rgb(255, 99, 132)",
-        fill: true,
-        data: [
-          { x: 15, y: 3 },
-          { x: 15, y: 15 },
-          { x: 15, y: 15 },
-         { x: 15, y: 15 },
-         { x: 15, y: 15 },,
-         { x: 15, y: 15 },
-         { x: 5, y: 19 }
-       ]
-      }]
-    },
-    options: {
-      responsive: true,
-      title: {
-        display: true,
-        text: 'Pattern 4'
-      },
-      scales: {
-        xAxes: [{
-          type: 'linear',
-          position: 'bottom',
-          scaleLabel: {
-            labelString: 'Time',
-            display: true,
-          }
-        }],
-        yAxes: [{
-          type: 'linear',
-          scaleLabel: {
-            labelString: 'Failure Probability',
-            display: true
-          }
-        }]
-      }
-    }
-  });
-}
 
- 
-async Pattern5Chart(){
-  var Pattern5 = new Chart('Pattern5', {
-    type: 'line',
-    data: {
-      datasets: [{
-        label: '',
-        backgroundColor: "rgba(255, 99, 132,0.4)",
-        borderColor: "rgb(255, 99, 132)",
-        fill: true,
-        data: [
-          { x: 17, y: 17 },
-          { x: 15, y: 12 },
-          { x: 9, y: 9 },
-          { x: 0, y: 9 },
-          { x: 17, y: 17 },
-          { x: 1, y: 6 },
-          { x: 5, y: 9 },
-          { x: 0, y: 12 },
-          { x: 17, y: 17 },
-        ],
-      }]
-    },
-    options: {
-      responsive: true,
-      title: {
-        display: true,
-        text: 'Pattern 5'
-      },
-      scales: {
-        xAxes: [{
-          type: 'linear',
-          position: 'bottom',
-          scaleLabel: {
-            labelString: 'Time',
-            display: true,
-          }
-        }],
-        yAxes: [{
-          type: 'linear',
-          scaleLabel: {
-            labelString: 'Failure Probability',
-            display: true
-          }
+  async Pattern3Chart() {
+    var Pattern3 = new Chart('Pattern3', {
+      type: 'line',
+      data: {
+        datasets: [{
+          label: '',
+          backgroundColor: "rgba(255, 99, 132,0.4)",
+          borderColor: "rgb(255, 99, 132)",
+          fill: true,
+          data: [
+            { x: 15, y: 3 },
+            { x: 15, y: 15 },
+            { x: 15, y: 15 },
+            { x: 15, y: 15 },
+            { x: 15, y: 15 }, ,
+            { x: 15, y: 15 },
+            { x: 5, y: 19 }
+          ]
         }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Pattern 3'
+        },
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              labelString: 'Time',
+              display: true,
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              labelString: 'Failure Probability',
+              display: true
+            }
+          }]
+        }
       }
-    }
-  });
-}
+    });
+  }
 
- 
-async Pattern6Chart(){
-  var Pattern6 = new Chart('Pattern6', {
-    type: 'line',
-    data: {
-      datasets: [{
-        label: '',
-        backgroundColor: "rgba(255, 99, 132,0.4)",
-        borderColor: "rgb(255, 99, 132)",
-        fill: true,
-        data: [
-          { x: 17, y: 17 },
-          { x: 15, y: 12 },
-          { x: 9, y: 9 },
-          { x: 0, y: 9 },
-          { x: 17, y: 17 },
-          { x: 1, y: 6 },
-          { x: 5, y: 9 },
-          { x: 0, y: 12 },
-          { x: 17, y: 17 },
-        ],
-      }]
-    },
-    options: {
-      responsive: true,
-      title: {
-        display: true,
-        text: 'Pattern 6'
-      },
-      scales: {
-        xAxes: [{
-          type: 'linear',
-          position: 'bottom',
-          scaleLabel: {
-            labelString: 'Time',
-            display: true,
-          }
-        }],
-        yAxes: [{
-          type: 'linear',
-          scaleLabel: {
-            labelString: 'Failure Probability',
-            display: true
-          }
+
+  async Pattern4Chart() {
+    var Pattern4 = new Chart('Pattern4', {
+      type: 'line',
+      data: {
+        datasets: [{
+          label: '',
+          backgroundColor: "rgba(255, 99, 132,0.4)",
+          borderColor: "rgb(255, 99, 132)",
+          fill: true,
+          data: [
+            { x: 15, y: 3 },
+            { x: 15, y: 15 },
+            { x: 15, y: 15 },
+            { x: 15, y: 15 },
+            { x: 15, y: 15 }, ,
+            { x: 15, y: 15 },
+            { x: 5, y: 19 }
+          ]
         }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Pattern 4'
+        },
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              labelString: 'Time',
+              display: true,
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              labelString: 'Failure Probability',
+              display: true
+            }
+          }]
+        }
       }
-    }
-  });
-}
-                                                                                                              
+    });
+  }
+
+
+  async Pattern5Chart() {
+    var Pattern5 = new Chart('Pattern5', {
+      type: 'line',
+      data: {
+        datasets: [{
+          label: '',
+          backgroundColor: "rgba(255, 99, 132,0.4)",
+          borderColor: "rgb(255, 99, 132)",
+          fill: true,
+          data: [
+            { x: 17, y: 17 },
+            { x: 15, y: 12 },
+            { x: 9, y: 9 },
+            { x: 0, y: 9 },
+            { x: 17, y: 17 },
+            { x: 1, y: 6 },
+            { x: 5, y: 9 },
+            { x: 0, y: 12 },
+            { x: 17, y: 17 },
+          ],
+        }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Pattern 5'
+        },
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              labelString: 'Time',
+              display: true,
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              labelString: 'Failure Probability',
+              display: true
+            }
+          }]
+        }
+      }
+    });
+  }
+
+
+  async Pattern6Chart() {
+    var Pattern6 = new Chart('Pattern6', {
+      type: 'line',
+      data: {
+        datasets: [{
+          label: '',
+          backgroundColor: "rgba(255, 99, 132,0.4)",
+          borderColor: "rgb(255, 99, 132)",
+          fill: true,
+          data: [
+            { x: 17, y: 17 },
+            { x: 15, y: 12 },
+            { x: 9, y: 9 },
+            { x: 0, y: 9 },
+            { x: 17, y: 17 },
+            { x: 1, y: 6 },
+            { x: 5, y: 9 },
+            { x: 0, y: 12 },
+            { x: 17, y: 17 },
+          ],
+        }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Pattern 6'
+        },
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              labelString: 'Time',
+              display: true,
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              labelString: 'Failure Probability',
+              display: true
+            }
+          }]
+        }
+      }
+    });
+  }
+
 }
 
 
