@@ -1,23 +1,7 @@
-<style>
-    .custom-form-control {
-        margin-right: 5px;
-        height: calc(1.5em + .75rem + 2px);
-        padding: .375rem .75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        outline: none;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        border-radius: .25rem;
-        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    }
-</style>
-<p-toast position="top-right"></p-toast>
+<p-toast position="top-right">
+</p-toast>
 <div *ngIf="prescriptveReportSelect">
-    <div class="card shadow" style="margin: auto; width: 50%; padding: 10px;">
+    <div class="card shadow div-in-middle">
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>Provide below information</b></li>
             <li class="list-group-item">
@@ -42,27 +26,23 @@
 <div *ngIf="ReportSelect" class="card" style="margin: 20px;">
     <div class="print">
         <a (click)="DownloadPDF()" title="Download FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: red;" class="pi pi-file-pdf"></i></a>
+        <a (click)="printPage()" title="Print FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: rgb(26, 26, 226);" class="pi pi-print"></i></a>
     </div>
     <div style="margin: 20px;" id="contentToConvert">
         <div class="page">
             <div class="text-center">
-                <h4><b>FMEA Report Analysis </b></h4><br>
+                <h4><b>FMEA Report Analysis </b></h4>
             </div>
             <div class="sidebar-brand-icon col-sm-2">
-                <style>
-                    img {
-                        width: 100%;
-                        height: 100%;
-                    }
-                </style>
+
                 <div class="image-container">
-                    <img src="dist/DPM/assets/img/Logo_final.jpg" alt="">
+                    <img width="100%" src="dist/DPM/assets/img/Logo_final.jpg" alt="">
                 </div>
 
             </div>
 
             <div id="div1">
-                <h5><b>Executive Summary </b></h5><br>
+                <h5><b>Executive Summary </b></h5>
                 <p>
                     This document provides guidance and insight into the analysis process for FMEA. Utilization of this analysis offers a mutual understating of the current condition of assets
                 </p>
@@ -88,8 +68,8 @@
 
                 <p>
                     Annexures provide the fault tree analysis of current study
-                </p><br>
-                <h5><b>Introduction</b></h5><br>
+                </p>
+                <h5><b>Introduction</b></h5>
                 <p>
                     FMEA analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}. FMEA finalized by using the current data of the asset and considering the failure history for a time domain of &ensp;
                     <span *ngIf="hide">{{Time}}</span> <input type="text" *ngIf="!hide" class="custom-form-control" [(ngModel)]="Time" placeholder="Year/months *"> &ensp;
@@ -97,16 +77,16 @@
                 <p>
                     An understanding of the system to be analyzed was essential prior to the development of a FMEA. Operation parameters of the system had to be considered out along with assets operational criticality. Typically, system block diagrams and many other system-modeling
                     techniques used to understand system hierarchies
-                </p><br>
+                </p>
                 <h5><b>FMEA Methodology</b></h5>
                 <span *ngIf="hide">{{TypeMethodology}}</span>
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeMethodology" placeholder="Type Methodology *"></textarea>
                 <h5><b>Current and future actions</b></h5>
                 <span *ngIf="hide">{{TypeCurrentandfuture}}</span>
-                <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeCurrentandfuture" placeholder="Type Current and future actions *"></textarea><br>
+                <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeCurrentandfuture" placeholder="Type Current and future actions *"></textarea>
             </div>
-            <div id="div2" style="page-break-before: always;">
-                <h5><b>Conclusion </b></h5><br>
+            <div id="div2">
+                <h5><b>Conclusion </b></h5>
                 <p>
                     The objective of the task was to analyze the current condition of {{data.EquipmentType}} with Tag No {{data.TagNumber}}. and propose technical solutions to increase integrity and reliability of the asset .
                 </p>
@@ -118,14 +98,13 @@
                 </p>
                 <span>
                         <h6><b>Chair Person: {{ChairPerson}} </b></h6>
-                    </span><br>
+                    </span>
                 <span>
                         <h6><b>Participants: {{Participants}} </b></h6>
-                    </span><br><br>
+                    </span>
             </div>
-
-            <p> Block diagrams.</p>
-            <div id="div3">
+            <div id="div3" style="page-break-before: always;">
+                <p> Block diagrams.</p>
                 <p-organizationChart [value]="data1" selectionMode="single" styleClass="company">
                     <ng-template let-node pTemplate="person">
                         <div class="node-header p-corner-top">{{node.label}}</div>
@@ -136,8 +115,9 @@
                     <ng-template let-node pTemplate="department">
                         {{node.label}}
                     </ng-template>
-                </p-organizationChart><br><br>
-
+                </p-organizationChart>
+            </div>
+            <div id="div4" style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
                     <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
                         <ng-template let-node pTemplate="person">
@@ -149,13 +129,15 @@
                         <ng-template let-node pTemplate="department">
                             {{node.label}}
                         </ng-template>
-                    </p-organizationChart><br><br>
-                    <div class="center" style="margin-left: 330px;">
-                        <div *ngIf="(tree[0].imgPath !=undefined)" style="margin: 10px;width: 500px;height: 500px; " id="file ">
-                            <img [src]="tree[0].imgPath" width="10 " height="10 ">
+                    </p-organizationChart>
+                    <div class="div-in-middle">
+                        <label for="file" class="custom-label">Uploaded File</label>
+                        <div *ngIf="(tree[0].imgPath !=undefined)" id="file ">
+                            <img width="100%" [src]="tree[0].imgPath">
                         </div>
                     </div>
-                    <div *ngIf="(tree[0].Remark !=undefined)" class="center" style="margin-left: 330px;">
+                    <div *ngIf="(tree[0].Remark !=undefined)" class="div-in-middle">
+                        <label for="remark" class="custom-label">Remark</label>
                         <div *ngIf="tree[0].Remark !== ''" id="remark">
                             <span *ngIf="hide">{{tree[0].Remark}}</span>
                             <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea>
@@ -163,6 +145,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -170,11 +153,11 @@
     <div>
         <h5><b>Attachments & Remarks </b></h5>
         <span style="margin: 20px;">
-             <tr *ngFor = "let AR of PDFURL;let i = index"><br>
+             <tr *ngFor = "let AR of PDFURL;let i = index">
                  <th scope="row">{{i+1}}</th>
-                 Failure Modes: {{AR.FM}} <br>
-                 Remark: {{AR.Remark}}<br>
-              <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a><br>
+                 Failure Modes: {{AR.FM}} 
+                 Remark: {{AR.Remark}}
+              <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a>
                </tr>
            </span>
     </div>

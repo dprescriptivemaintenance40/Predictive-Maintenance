@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import './assets/css/bootstrap.css';
+@import './assets/vendor/fontawesome-free/css/all.min.css';
+@import './assets/css/primeng/primeicons/primeicons.css';
+@import './assets/css/primeng/resources/themes/saga-blue/theme.css';
+@import './assets/css/primeng/resources/primeng.min.css';
+@import './assets/orgchart.scss';
 body {
     min-width: 500px !important;
 }
