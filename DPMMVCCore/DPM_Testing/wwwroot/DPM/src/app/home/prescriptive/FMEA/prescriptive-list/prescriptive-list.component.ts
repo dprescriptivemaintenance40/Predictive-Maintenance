@@ -172,6 +172,12 @@ export class PrescriptiveListComponent implements OnInit {
   }
 
 
+  getFCAData(p){
+    localStorage.setItem('FCAObject',JSON.stringify(p))
+    this.router.navigateByUrl('/Home/Prescriptive/FCAAdd');
+  }
+
+
 
 
 

@@ -1,1 +1,83 @@
-<p>fca-add works!</p>
+<p-toast position="top-center"></p-toast>
+<div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
+    <p-card>
+        <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()">Add FCA</button>
+        <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button> 
+        <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> 
+        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div class="a">{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+ </div>
+
+
+<div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;">
+    <small class="form-text text-muted">Add FCA for {{PatternFMName}}</small>
+    <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <ng-template let-node pTemplate="person">
+            <div class="node-header p-corner-top">{{node.label}}</div>
+            <div class="node-content">
+                <div>{{node.data.name}}</div>
+            </div>
+        </ng-template>
+        <ng-template let-node pTemplate="department">
+            {{node.label}}
+        </ng-template>
+    </p-organizationChart>
+
+    <p-card>
+        <ng-template pTemplate="title">
+            Pattern For Failure Mode
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Enter Pattern for {{PatternFMName}}
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label style="margin-right: 30px;">Select Pattern</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" [(ngModel)]="Pattern" class="form-control" (change)="SelectPatternForFailureMode()">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let EL of FMPattern" [ngValue]="EL">{{EL}}</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                    <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio1">Select Path</label>
+                    <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
+                        <i class="fas fa-circle"></i>
+                    </a>
+                </div>
+                <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                    <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio2">Select Path</label>
+                    <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(212, 218, 211);" class="fas fa-circle">
+                    </a>
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div>
+                <button label="Next" type="button" (click)="PatternBack()" class="btn btn-dark">Back</button>
+                <button label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark">ADD</button>
+            </div>
+        </ng-template>
+    </p-card>
+
+</div>

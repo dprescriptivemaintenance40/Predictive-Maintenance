@@ -1,5 +1,5 @@
 <!-- <p-toast position="top-center"></p-toast> -->
-<div class="col-md-12">
+<div id="BackToNext" class="col-md-12">
     <p-card>
         <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()"><i class="pi pi-arrow-right"></i></button> <br><br>
         <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#ConsequenceSubmitModal">Save Consequences</button><br><br>
@@ -153,7 +153,7 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; margin-right: 70px" (click)="Consequence4Next()">Next</button>
+            <button label="Next" type="button" class="btn btn-dark" style="float: right;" (click)="Consequence4Next()"><i class="pi pi-arrow-right"></i></button>
 
         </ng-template>
     </p-card>
