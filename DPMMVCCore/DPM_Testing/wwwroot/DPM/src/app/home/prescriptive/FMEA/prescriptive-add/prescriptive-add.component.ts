@@ -11,11 +11,10 @@ import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
 @Component({
   selector: 'app-prescriptive-add',
   templateUrl: './prescriptive-add.component.html',
-  styleUrls: ['./prescriptive-add.component.scss'],
+  styleUrls: ['./prescriptive-add.component.scss','../../../../../assets/orgchart.scss'],
   providers: [MessageService],
 })
 export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate {

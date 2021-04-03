@@ -10,7 +10,7 @@ import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.di
 @Component({
   selector: 'app-prescriptive-report',
   templateUrl: './prescriptive-report.component.html',
-  styleUrls: ['./prescriptive-report.component.scss'],
+  styleUrls: ['./prescriptive-report.component.scss', '../../../../../assets/orgchart.scss'],
   providers: [MessageService, DatePipe]
 })
 export class PrescriptiveReportComponent implements OnInit {
@@ -38,24 +38,25 @@ export class PrescriptiveReportComponent implements OnInit {
   public hide: boolean = false;
   public TypeMethodology: string = "";
   public TypeCurrentandfuture: string = "";
-  public ParentAttachmentFile : string =""
+  public ParentAttachmentFile: string = ""
 
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
     private messageService: MessageService,
-    private commonLoadingDirective: CommonLoadingDirective) { }
+    private commonLoadingDirective: CommonLoadingDirective) {
+  }
 
-  ngOnInit(){
-    this.data = JSON.parse(localStorage.getItem('ReportObj'))    
-    if(this.data.CAttachmentDBPath != null){
+  ngOnInit() {
+    this.data = JSON.parse(localStorage.getItem('ReportObj'))
+    if (this.data.CAttachmentDBPath != null) {
       var FileExt = this.getFileExtension(this.data.CAttachmentDBPath)
       if (FileExt.toLowerCase() == 'pdf') {
-      let obj = {}
-      obj['Link'] = this.data.CAttachmentDBPath; 
-      this.PDFURL.push(obj) 
+        let obj = {}
+        obj['Link'] = this.data.CAttachmentDBPath;
+        this.PDFURL.push(obj)
+      }
     }
-  }
     this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes
     this.BrowserURl = window.location.href
     this.BrowserURl = window.location.href.split('#')[0]
@@ -66,14 +67,14 @@ export class PrescriptiveReportComponent implements OnInit {
       for (let index = 0; index < this.attachmentRemark.length; index++) {
         if (res.data.name == this.attachmentRemark[index].FunctionMode) {
           var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
-          if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg'|| extn.toLowerCase()  == 'png') {
+          if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
             res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
             res.Remark = this.attachmentRemark[index].Remark
           } else {
             let obj = {}
             obj['FM'] = res.data.name;
             obj['Remark'] = this.attachmentRemark[index].Remark;
-            obj['Link'] = this.attachmentRemark[index].AttachmentDBPath; 
+            obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
             this.PDFURL.push(obj)
           }
         }
@@ -95,12 +96,14 @@ export class PrescriptiveReportComponent implements OnInit {
     this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(str);
     var extension = this.getFileExtension(str);
     if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
-   this.ImageEnable = true;
+      this.ImageEnable = true;
     } else if (extension.toLowerCase() == 'pdf') {
       this.ImageEnable = false;
     }
-    
+
     console.log(extension)
+  
+  
   }
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
@@ -130,7 +133,7 @@ export class PrescriptiveReportComponent implements OnInit {
         while (heightLeft >= 0) {
           position = heightLeft - imgHeight;
           doc.addPage();
-          doc.addImage(imgData, 'PNG', 10, position, imgWidth,imgHeight + 90);
+          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 90);
           heightLeft -= pageHeight;
         }
         const arrbf = doc.output("arraybuffer");
@@ -152,10 +155,10 @@ export class PrescriptiveReportComponent implements OnInit {
     });
 
     let pdfsToMerge = [];
-    if(this.PDFURL.length > 0){
-    this.PDFURL.forEach(item => {
-      pdfsToMerge.push(`${this.BrowserURl}${item.Link}`);
-    });
+    if (this.PDFURL.length > 0) {
+      this.PDFURL.forEach(item => {
+        pdfsToMerge.push(`${this.BrowserURl}${item.Link}`);
+      });
     }
     for (const pdfCopyDoc of pdfsToMerge) {
       const pdfBytes = await fetch(pdfCopyDoc).then(res => res.arrayBuffer())
@@ -169,7 +172,7 @@ export class PrescriptiveReportComponent implements OnInit {
     this.saveByteArray("FMEA Analysis Report", savedpdf);
     this.hide = false;
     this.change.detectChanges();
-}
+  }
 
   saveByteArray(reportName, byte) {
     var blob = new Blob([byte], { type: "application/pdf" });
@@ -182,25 +185,25 @@ export class PrescriptiveReportComponent implements OnInit {
 
   printPage() {
     // if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
-      this.hide = true;
-      this.change.detectChanges();
-      let popupWinindow;
-      let printContents = document.getElementById('contentToConvert').innerHTML;
-      popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-      popupWinindow.document.open();
-      let documentContent = "<html><head>";
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
-      documentContent += '<link rel="stylesheet" type="text/scss" href="/dist/DPM/assets/printFile.scss">';
-      documentContent += '</head>';
-      documentContent += '<body onload="window.print()">' + printContents + '</body></html>'
-      popupWinindow.document.write(documentContent);
-      popupWinindow.document.close();
-      this.hide = false;
-      this.change.detectChanges();
+    this.hide = true;
+    this.change.detectChanges();
+    let popupWinindow;
+    let printContents = document.getElementById('contentToConvert').innerHTML;
+    popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+    popupWinindow.document.open();
+    let documentContent = "<html><head>";
+    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
+    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
+    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
+    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
+    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
+    documentContent += '<link rel="stylesheet" type="text/scss" href="/dist/DPM/assets/printFile.scss">';
+    documentContent += '</head>';
+    documentContent += '<body onload="window.print()">' + printContents + '</body></html>'
+    popupWinindow.document.write(documentContent);
+    popupWinindow.document.close();
+    this.hide = false;
+    this.change.detectChanges();
     // } else {
     //   this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Fill the mandatory fields' });
     // }

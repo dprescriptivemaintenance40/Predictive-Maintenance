@@ -10613,64 +10613,54 @@ a.text-dark:hover {
 
 /*# sourceMappingURL=bootstrap.min.css.map */
 
-
-/* 
-
-.p-organizationchart .p-person {
+:host ::ng-deep .p-organizationchart .p-person {
     padding: 0;
     border: 0 none;
 }
 
-.p-organizationchart.p-person {
+:host ::ng-deep .p-organizationchart .p-person1 {
     padding: 0;
     border: 0 none;
+    background-color: #7bc97b;
 }
 
-.p-organizationchart .p-person1 {
-    padding: 0;
-    border: 0 none;
-    background-color: rgb(123, 201, 123)
+:host ::ng-deep .p-organizationchart .node-header,
+ :host ::ng-deep .p-organizationchart .node-content {
+    padding: 0.5em 0.7rem;
 }
 
-.p-organizationchart .node-header,
-.node-content {
-    padding: .5em .7rem;
-}
-
-.p-organizationchart .node-content:hover {
+:host ::ng-deep .p-organizationchart .node-content:hover {
     overflow: visible;
 }
 
-.p-organizationchart .node-header {
+:host ::ng-deep .p-organizationchart .node-header {
     background-color: #495ebb;
-    color: #ffffff;
+    color: #fff;
 }
 
-.p-organizationchart .node-content {
+:host ::ng-deep .p-organizationchart .node-content {
     text-align: center;
     border: 1px solid #495ebb;
 }
 
-.p-organizationchart .node-content img {
+:host ::ng-deep .p-organizationchart .node-content img {
     border-radius: 50%;
 }
 
-.p-organizationchart .department-cfo {
+:host ::ng-deep .p-organizationchart .department-cfo {
     background-color: #7247bc;
-    color: #ffffff;
+    color: #fff;
 }
 
-.p-organizationchart .department-coo {
+:host ::ng-deep .p-organizationchart .department-coo {
     background-color: #a534b6;
-    color: #ffffff;
+    color: #fff;
 }
 
-.p-organizationchart .department-cto {
+:host ::ng-deep .p-organizationchart .department-cto {
     background-color: #e9286f;
-    color: #ffffff;
+    color: #fff;
 }
-
-*/
 
 
 /*Custom Css*/
