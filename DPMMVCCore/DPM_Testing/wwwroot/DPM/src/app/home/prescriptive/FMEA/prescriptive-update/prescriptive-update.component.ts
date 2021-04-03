@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-prescriptive-update',
   templateUrl: './prescriptive-update.component.html',
-  styleUrls: ['./prescriptive-update.component.scss'],
+  styleUrls: ['./prescriptive-update.component.scss','../../../../../assets/orgchart.scss'],
   providers: [MessageService]
 })
 export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactivate {

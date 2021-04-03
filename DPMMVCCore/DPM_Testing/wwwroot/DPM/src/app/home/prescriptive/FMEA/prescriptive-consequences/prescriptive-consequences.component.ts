@@ -12,7 +12,7 @@ import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescripti
 @Component({
   selector: 'app-prescriptive-consequences',
   templateUrl: './prescriptive-consequences.component.html',
-  styleUrls: ['./prescriptive-consequences.component.scss'],
+  styleUrls: ['./prescriptive-consequences.component.scss','../../../../../assets/orgchart.scss'],
   providers: [MessageService],
 })
 export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDeactivate {

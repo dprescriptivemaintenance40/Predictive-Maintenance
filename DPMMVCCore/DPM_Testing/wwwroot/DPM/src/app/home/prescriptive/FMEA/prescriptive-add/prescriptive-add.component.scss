@@ -9,116 +9,36 @@
     font-size: 1px;
     padding: 3px;
 }
-  .border {
-    border:2px solid black;
+
+.border {
+    border: 2px solid black;
     margin: 1rem 0;
     padding: 0.25rem;
-    cursor: pointer; 
-   
-  }
-  .drop {
-    border: 3px solid #585570;
-     padding: 1rem;
-     margin: 1rem 0;
-     border-color: #585570;
-  }
-
-:host ::ng-deep .p-organizationchart {
-    .p-person {
-        padding: 0;
-        border: 0 none;
-    }
-
-    .p-person1 {
-        padding: 0;
-        border: 0 none;
-        background-color: rgb(123, 201, 123)
-    }
-    .StylePattern {
-        padding: 0;
-        border: 0 none;
-        background-color: rgb(108, 212, 219) 
-    }
-    .StylePattern1 {
-        padding: 0;
-        border: 0 none;
-        background-color: rgb(245, 148, 172) 
-    }
-    .StylePattern2 {
-        padding: 0;
-        border: 0 none;
-        background-color: rgb(212, 218, 211) 
-    }
-
-
-    .node-header, .node-content {
-        padding: .5em .7rem; 
-        
-    }
-    .node-content:hover{
-        overflow: visible;
-    }
-   
-    .node-header {
-        background-color: #495ebb;
-        color: #ffffff;
-     
-    }
-
-    .node-content {
-        text-align: center;
-        border: 1px solid #495ebb;
-       
-      
-        
-    }
-
-    .node-content img {
-        border-radius: 50%;
-    }
-
-    .department-cfo {
-        background-color: #7247bc;
-        color: #ffffff;
-
-    }
-
-    .department-coo {
-        background-color: #a534b6;
-        color: #ffffff;
-    }
-
-    .department-cto {
-        background-color: #e9286f;
-        color: #ffffff;
-    }
-  
-
+    cursor: pointer;
 }
 
-
+.drop {
+    border: 3px solid #585570;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-color: #585570;
+}
 
 .email-app .inbox .toolbar {
     padding-bottom: 1rem;
     border-bottom: 1px solid #e1e6ef;
 }
 
-
-
-
 .email-app .message .toolbar {
     padding-bottom: 1rem;
     border-bottom: 1px solid #e1e6ef;
 }
-
-
 
 .email-app .message .details .attachments {
     padding: 1rem 0;
     margin-bottom: 1rem;
     border-top: 3px solid #f9f9fa;
     border-bottom: 3px solid #f9f9fa;
-    
 }
 
 .email-app .message .details .attachments .attachment {
@@ -127,7 +47,3 @@
     font-size: 12px;
     align-self: center;
 }
-
-
-
-  
