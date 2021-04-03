@@ -11,6 +11,7 @@ import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import * as Chart from 'chart.js';
 @Component({
   selector: 'app-prescriptive-add',
   templateUrl: './prescriptive-add.component.html',
@@ -154,6 +155,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public extensionAddImage: boolean = false;
   public extensionAddPDF: boolean = false;
   public extensionImage: boolean = false;
+  public ViewPatterns: boolean = false;
+  
   
 
 
@@ -188,7 +191,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   ngOnInit() {
     this.title.setTitle('DPM | Prescriptive ');
+    this.data1 = JSON.parse(localStorage.getItem('TestingOBj'))
     this.PatternTree()
+    this.Pattern1Chart()
     setInterval(() => {
       this.dynamicDroppedPopup();
     }, 2000);
@@ -244,8 +249,140 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
       }
     }
-
     ];
+
+    var myChart = new Chart('myChart', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+
+    var myChart = new Chart('myChart1', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+
+    var myChart = new Chart('myChart2', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+  
+    var myChart = new Chart('myChart3', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+
+var myChart = new Chart('myChart4', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+
+    var myChart = new Chart('myChart5', {
+      type: 'line',
+      data: {
+        labels: ["Tokyo", "Mumbai", "Mexico City", "Shanghai", "Sao Paulo", "New York", "Karachi", "Buenos Aires", "Delhi", "Moscow"],
+        datasets: [{
+          label: 'Series 1', // Name the series
+          data: [500, 50, 2424, 14040, 14141, 4111, 4544, 47, 5555, 6811], // Specify the data values array
+          fill: false,
+          borderColor: '#2196f3', // Add custom color border (Line)
+          backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+          borderWidth: 1 // Specify bar border width
+        }]
+      },
+      options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+        legend: {
+          display: false
+      },
+      }
+    });
+    
   }
 
   async ngOnDestroy() {
@@ -529,6 +666,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       });
       for (let index = 0; index < Data.length; index++) {
         FMName = Data[index]
+        var FMEALABEL : number = index +1
         this.FMChild.push(
           {
             label: index + 1,
@@ -538,7 +676,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             data: { name: FMName },
             children: [
               {
-                label: 1,
+                label: FMEALABEL,
                 type: "person",
                 styleClass: "p-person",
                 expanded: true,
@@ -705,6 +843,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
+    localStorage.setItem('TestingOBj', JSON.stringify(this.data1))
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};
       obj['CPPFMId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
@@ -787,8 +926,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       },
       err => { console.log(err.Message) }
     )
-
-
   }
 
   PushConcequences() {
@@ -1729,13 +1866,12 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                   Node8 : 'StylePattern2',
                   AnsNode6P2 : 'StylePattern2' 
             }
-        }
-
-        
+        } 
         var FCATree = {
-                    label: "FCA",
+                    label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label, 
                     type: "person",
                     styleClass: 'p-person',
+                    edit:true,
                     expanded: true,
                     nodePath: path ,
                     data: { name: "FCA" },
@@ -1780,8 +1916,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.PatternPath=""
 
       }else{
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
-        
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })  
       }
 
       }else if(this.Pattern === 'Pattern 1' || this.Pattern ==='Pattern 4'|| this.Pattern ==='Pattern 5'){
@@ -1814,9 +1949,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
          var FCATree1 = {
-                    label: "FCA",
+                    label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
                     type: "person",
                     styleClass: 'p-person',
+                    edit:true,
                     expanded: true,
                     nodePath: path ,
                     data: { name: "FCA" },
@@ -1852,7 +1988,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
         if(this.PatternCounter < this.data1[0].children[0].children[0].children.length -1 ){
           this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
-       
         }
         this.PatternCounter = this.PatternCounter + 1
         if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
@@ -1961,7 +2096,335 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   }
 
+  public FCAView : any;
 
+  async SelectNodeToView(p){
+    console.log(p.data.name)
+    var indexOfFCA = p.label -1;
+    this.FCAView = []
+    var i = 0;
+    this.data1[0].children[0].children[0].children[indexOfFCA].children.forEach((res : any) => {
+      if(i == 1){
+        this.FCAView.push(res)
+      }
+      i = i+1;
+    });
+
+    if(p.children[0].data.name == 'Pattern 1') {
+    await this.Pattern1Chart();
+    }
+    if(p.children[0].data.name == 'Pattern 2') {
+      await this.Pattern2Chart();
+    }
+    if(p.children[0].data.name == 'Pattern 3') {
+      await this.Pattern3Chart();
+      }
+    if(p.children[0].data.name == 'Pattern 4') {
+        await this.Pattern4Chart();
+      }
+    if(p.children[0].data.name == 'Pattern 5') {
+        await this.Pattern5Chart();
+      }
+     if(p.children[0].data.name == 'Pattern 6') {
+        await this.Pattern6Chart();
+        }
+   this.ViewPatterns = true
+   const element = document.querySelector("#ScrollUpdateTreeView")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+ 
+ async Pattern1Chart(){
+    var Pattern1 = new Chart('Pattern1', {
+      type: 'line',
+      data: {
+        datasets: [{
+          label: '',
+          backgroundColor: "rgba(255, 99, 132,0.4)",
+          borderColor: "rgb(255, 99, 132)",
+          fill: true,
+          data: [
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+            { x: 8, y: 1 },
+            { x: 1, y: 8 },
+          ],
+        }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Pattern 1'
+        },
+        scales: {
+          xAxes: [{
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              labelString: 'Time',
+              display: true,
+            }
+          }],
+          yAxes: [{
+            type: 'linear',
+            scaleLabel: {
+              labelString: 'Failure Probability',
+              display: true
+            }
+          }]
+        }
+      }
+    });
+  }
+
+   
+ async Pattern2Chart(){
+  var Pattern2 = new Chart('Pattern2', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 8, y: 1 },
+          { x: 1, y: 8 },
+          { x: 8, y: 1 },
+          { x: 1, y: 8 },
+          { x: 8, y: 1 },
+          { x: 1, y: 8 },
+
+
+        ],
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 2'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+ 
+async Pattern3Chart(){
+  var Pattern3 = new Chart('Pattern3', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 15, y: 3 },
+          { x: 15, y: 15 },
+          { x: 15, y: 15 },
+         { x: 15, y: 15 },
+         { x: 15, y: 15 },,
+         { x: 15, y: 15 },
+         { x: 5, y: 19 }
+       ]
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 3'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+ 
+async Pattern4Chart(){
+  var Pattern4 = new Chart('Pattern4', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 15, y: 3 },
+          { x: 15, y: 15 },
+          { x: 15, y: 15 },
+         { x: 15, y: 15 },
+         { x: 15, y: 15 },,
+         { x: 15, y: 15 },
+         { x: 5, y: 19 }
+       ]
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 4'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+ 
+async Pattern5Chart(){
+  var Pattern5 = new Chart('Pattern5', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 17, y: 17 },
+          { x: 15, y: 12 },
+          { x: 9, y: 9 },
+          { x: 0, y: 9 },
+          { x: 17, y: 17 },
+          { x: 1, y: 6 },
+          { x: 5, y: 9 },
+          { x: 0, y: 12 },
+          { x: 17, y: 17 },
+        ],
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 5'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+
+ 
+async Pattern6Chart(){
+  var Pattern6 = new Chart('Pattern6', {
+    type: 'line',
+    data: {
+      datasets: [{
+        label: '',
+        backgroundColor: "rgba(255, 99, 132,0.4)",
+        borderColor: "rgb(255, 99, 132)",
+        fill: true,
+        data: [
+          { x: 17, y: 17 },
+          { x: 15, y: 12 },
+          { x: 9, y: 9 },
+          { x: 0, y: 9 },
+          { x: 17, y: 17 },
+          { x: 1, y: 6 },
+          { x: 5, y: 9 },
+          { x: 0, y: 12 },
+          { x: 17, y: 17 },
+        ],
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: 'Pattern 6'
+      },
+      scales: {
+        xAxes: [{
+          type: 'linear',
+          position: 'bottom',
+          scaleLabel: {
+            labelString: 'Time',
+            display: true,
+          }
+        }],
+        yAxes: [{
+          type: 'linear',
+          scaleLabel: {
+            labelString: 'Failure Probability',
+            display: true
+          }
+        }]
+      }
+    }
+  });
+}
+                                                                                                              
 }
 
 
