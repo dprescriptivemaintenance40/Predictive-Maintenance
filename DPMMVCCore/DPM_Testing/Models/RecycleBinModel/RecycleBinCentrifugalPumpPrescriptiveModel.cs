@@ -30,6 +30,7 @@ namespace DPM.Models.RecycleBinModel
         public string CAttachmentDBPath { get; set; }
         public string CAttachmentFullPath { get; set; }
         public string CRemarks { get; set; }
+        public string FCAAdded { get; set; }
         public List<RestoreCentrifugalPumpPrescriptiveFailureMode> restoreCentrifugalPumpPrescriptiveFailureModes { get; set; }
 
     }
@@ -61,6 +62,7 @@ namespace DPM.Models.RecycleBinModel
         public string Remark { get; set; }
         public int IsDeleted { get; set; }
         public string DeletedFMTree { get; set; }
+        public string Pattern { get; set; }
 
         public RecycleBinCentrifugalPumpPrescriptiveModel RecycleBinCentrifugalPumpPrescriptiveModel { get; set; }
     }

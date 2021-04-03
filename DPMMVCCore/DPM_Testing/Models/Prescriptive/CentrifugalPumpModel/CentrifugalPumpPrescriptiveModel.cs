@@ -29,7 +29,7 @@ namespace DPM.Models.Prescriptive
         public string CAttachmentDBPath { get; set; }
         public string CAttachmentFullPath { get; set; }
         public string CRemarks { get; set; }
-
+        public string FCAAdded { get; set; }
         public List<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
 
     }
@@ -56,6 +56,7 @@ namespace DPM.Models.Prescriptive
         public string AttachmentDBPath { get; set; }
         public string AttachmentFullPath { get; set; }
         public string Remark { get; set; }
+        public string Pattern { get; set; }
 
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
     }
