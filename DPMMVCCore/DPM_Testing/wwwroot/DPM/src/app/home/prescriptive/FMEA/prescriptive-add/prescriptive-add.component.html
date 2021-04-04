@@ -360,7 +360,7 @@
 </div>
 
 
-<div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
+<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-card>
         <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark"  (click)="treeBack()"  pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
         <button *ngIf="prescriptiveTreeSubmitEnable"  class="btn btn-dark" style="float: right;"  data-toggle="modal" data-target="#treeModal"  pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> <i class="fas fa-arrow-right"></i></button>
@@ -731,6 +731,40 @@
             <div class="p-fluid">
 
                 <div class="row">
+                    <div class="row col-md-12">
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 1')">
+                                <canvas id="pattern1"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 2')">
+                                <canvas id="pattern2"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 3')">
+                                <canvas id="pattern3"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 4')">
+                                <canvas id="pattern4"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 5')">
+                                <canvas id="pattern5"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 6')">
+                                <canvas id="pattern6"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row">
                     <div class="col-md-4">
                         <label style="margin-right: 30px;">Select Pattern</label>
                     </div>
@@ -740,7 +774,7 @@
                             <option *ngFor="let EL of FMPattern" [ngValue]="EL">{{EL}}</option>
                         </select>
                     </div>
-                </div>
+                </div> -->
 
                 <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
                     <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio" class="custom-control-input">
@@ -768,3 +802,33 @@
 
 </div>
 
+
+
+<div *ngIf="FCAViewEnabled" >
+    <p-card>
+        <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAView()" pTooltip="Delete" tooltipPosition="top">
+            <i class="far fa-times-circle "></i>
+        </a>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div style="width: 13em;height: 7em; margin-left: 140px;">
+                    <canvas id="ViewPattern"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>   
+       
+        <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department"  id ="FCATreeShow">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+</div>

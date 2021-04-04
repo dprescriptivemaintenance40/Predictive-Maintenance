@@ -158,6 +158,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   private isNewEntity: boolean = false;
   public uploadedAttachmentList: any[] = [];
   public ViewPatterns: boolean = false;
+  public FCAViewEnabled : boolean = false;
+  public FCAView: any;
 
 
   constructor(private messageService: MessageService,
@@ -191,7 +193,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.title.setTitle('DPM | Prescriptive ');
     this.data1 = JSON.parse(localStorage.getItem('TestingOBj'))
     this.PatternTree()
-    this.Pattern1Chart()
     setInterval(() => {
       this.dynamicDroppedPopup();
     }, 2000);
@@ -1517,7 +1518,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
 
-  SelectPatternForFailureMode() {
+  SelectPatternForFailureMode(value: string) {
+    this.Pattern = value;
     this.changeDetectorRef.detectChanges();
     this.PattenNode1 = 'p-person'
     this.PattenNode2 = 'p-person'
@@ -1671,6 +1673,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.changeDetectorRef.detectChanges();
     this.PatternFMName = this.data1[0].children[0].children[0].children[0].data.name
     this.PatternNextOnPrescriptiveTree = false
+    this.GetChartData();
   }
   PatternBack() {
     this.prescriptiveTree = true
@@ -1916,6 +1919,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.PatternPathEnable = false
     this.FailureModePatternTree = true
     this.changeDetectorRef.detectChanges();
+    this.GetChartData();
 
   }
 
@@ -1965,334 +1969,159 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   }
 
-  public FCAView: any;
 
-  async SelectNodeToView(p) {
-    console.log(p.data.name)
+  SelectNodeToView(p){
+    const element = document.querySelector("#FCATreeShow")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
     var indexOfFCA = p.label - 1;
     this.FCAView = []
     var i = 0;
     this.data1[0].children[0].children[0].children[indexOfFCA].children.forEach((res: any) => {
       if (i == 1) {
+        res.expanded = true;
         this.FCAView.push(res)
+        this.FCAViewEnabled = true
+        this.changeDetectorRef.detectChanges();
+        this.GetChartToView(p.children[0].data.name)
+       
       }
       i = i + 1;
     });
+  }
 
-    if (p.children[0].data.name == 'Pattern 1') {
-      await this.Pattern1Chart();
+
+  
+  GetChartToView(p : string){
+    this.FCAViewEnabled = true
+    if (p == 'Pattern 1') {
+      const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+      this.getChartTree(patternLabel1, patternData1, 'ViewPattern',p);
+    } else if (p == 'Pattern 2') {
+      const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+      this.getChartTree(patternLabel2, patternData2, 'ViewPattern',p);
+    } else if (p == 'Pattern 3') {
+      const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+      this.getChartTree(patternLabel3, patternData3, 'ViewPattern',p);
+    } else if (p == 'Pattern 4') {
+      const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+      this.getChartTree(patternLabel4, patternData4,'ViewPattern',p);
+    } else if (p == 'Pattern 5') {
+      const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+      const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+      this.getChartTree(patternLabel5, patternData5, 'ViewPattern',p);
+    } else if (p == 'Pattern 6') {
+      const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+      this.getChartTree(patternLabel6, patternData6, 'ViewPattern', p);
     }
-    if (p.children[0].data.name == 'Pattern 2') {
-      await this.Pattern2Chart();
-    }
-    if (p.children[0].data.name == 'Pattern 3') {
-      await this.Pattern3Chart();
-    }
-    if (p.children[0].data.name == 'Pattern 4') {
-      await this.Pattern4Chart();
-    }
-    if (p.children[0].data.name == 'Pattern 5') {
-      await this.Pattern5Chart();
-    }
-    if (p.children[0].data.name == 'Pattern 6') {
-      await this.Pattern6Chart();
-    }
-    this.ViewPatterns = true;
-    const element = document.querySelector("#ScrollUpdateTreeView")
+  }
+
+
+  CloseFCAView(){
+    this.FCAViewEnabled = false
+    const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
   }
 
 
-  async Pattern1Chart() {
-    var Pattern1 = new Chart('Pattern1', {
+  
+  
+  private GetChartData() {
+    const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+    this.getChartTree(patternLabel1, patternData1, 'pattern1', 'Pattern 1');
+
+    const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+    this.getChartTree(patternLabel2, patternData2, 'pattern2', 'Pattern 2');
+
+    const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+    this.getChartTree(patternLabel3, patternData3, 'pattern3', 'Pattern 3');
+
+    const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+    this.getChartTree(patternLabel4, patternData4, 'pattern4', 'Pattern 4');
+
+    const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+    const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+    this.getChartTree(patternLabel5, patternData5, 'pattern5', 'Pattern 5');
+
+    const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+    this.getChartTree(patternLabel6, patternData6, 'pattern6', 'Pattern 6');
+  }
+
+  private getChartTree(labels: any[], data: any[], id: string, title: string) {
+    let patternCharts = new Chart(id, {
       type: 'line',
       data: {
+        labels: labels,
         datasets: [{
-          label: '',
-          backgroundColor: "rgba(255, 99, 132,0.4)",
-          borderColor: "rgb(255, 99, 132)",
+          label: 'Time',
+          data: data,
           fill: true,
-          data: [
-            { x: 8, y: 1 },
-            { x: 1, y: 8 },
-            { x: 8, y: 1 },
-            { x: 1, y: 8 },
-            { x: 8, y: 1 },
-            { x: 1, y: 8 },
-          ],
+          borderColor: '#2196f3',
+          backgroundColor: '#2196f3',
+          borderWidth: 1
         }]
       },
       options: {
-        responsive: true,
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
         title: {
           display: true,
-          text: 'Pattern 1'
+          text: title
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          display: false
         },
         scales: {
           xAxes: [{
-            type: 'linear',
-            position: 'bottom',
+            ticks: {
+              beginAtZero: true,
+              display: false
+            },
             scaleLabel: {
-              labelString: 'Time',
               display: true,
+              labelString: 'Time'
             }
           }],
           yAxes: [{
-            type: 'linear',
+            gridLines: {
+              display: true,
+              color: 'rgba(219,219,219,0.3)',
+              zeroLineColor: 'rgba(219,219,219,0.3)',
+              drawBorder: false,
+              lineWidth: 27,
+              zeroLineWidth: 1
+            },
+            ticks: {
+              beginAtZero: true,
+              display: false
+            },
             scaleLabel: {
-              labelString: 'Failure Probability',
-              display: true
+              display: true,
+              labelString: 'Failure probability'
             }
           }]
         }
       }
     });
+    this.changeDetectorRef.detectChanges();
   }
 
-
-  async Pattern2Chart() {
-    var Pattern2 = new Chart('Pattern2', {
-      type: 'line',
-      data: {
-        datasets: [{
-          label: '',
-          backgroundColor: "rgba(255, 99, 132,0.4)",
-          borderColor: "rgb(255, 99, 132)",
-          fill: true,
-          data: [
-            { x: 8, y: 1 },
-            { x: 1, y: 8 },
-            { x: 8, y: 1 },
-            { x: 1, y: 8 },
-            { x: 8, y: 1 },
-            { x: 1, y: 8 },
-
-
-          ],
-        }]
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Pattern 2'
-        },
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              labelString: 'Time',
-              display: true,
-            }
-          }],
-          yAxes: [{
-            type: 'linear',
-            scaleLabel: {
-              labelString: 'Failure Probability',
-              display: true
-            }
-          }]
-        }
-      }
-    });
-  }
-
-
-  async Pattern3Chart() {
-    var Pattern3 = new Chart('Pattern3', {
-      type: 'line',
-      data: {
-        datasets: [{
-          label: '',
-          backgroundColor: "rgba(255, 99, 132,0.4)",
-          borderColor: "rgb(255, 99, 132)",
-          fill: true,
-          data: [
-            { x: 15, y: 3 },
-            { x: 15, y: 15 },
-            { x: 15, y: 15 },
-            { x: 15, y: 15 },
-            { x: 15, y: 15 }, ,
-            { x: 15, y: 15 },
-            { x: 5, y: 19 }
-          ]
-        }]
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Pattern 3'
-        },
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              labelString: 'Time',
-              display: true,
-            }
-          }],
-          yAxes: [{
-            type: 'linear',
-            scaleLabel: {
-              labelString: 'Failure Probability',
-              display: true
-            }
-          }]
-        }
-      }
-    });
-  }
-
-
-  async Pattern4Chart() {
-    var Pattern4 = new Chart('Pattern4', {
-      type: 'line',
-      data: {
-        datasets: [{
-          label: '',
-          backgroundColor: "rgba(255, 99, 132,0.4)",
-          borderColor: "rgb(255, 99, 132)",
-          fill: true,
-          data: [
-            { x: 15, y: 3 },
-            { x: 15, y: 15 },
-            { x: 15, y: 15 },
-            { x: 15, y: 15 },
-            { x: 15, y: 15 }, ,
-            { x: 15, y: 15 },
-            { x: 5, y: 19 }
-          ]
-        }]
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Pattern 4'
-        },
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              labelString: 'Time',
-              display: true,
-            }
-          }],
-          yAxes: [{
-            type: 'linear',
-            scaleLabel: {
-              labelString: 'Failure Probability',
-              display: true
-            }
-          }]
-        }
-      }
-    });
-  }
-
-
-  async Pattern5Chart() {
-    var Pattern5 = new Chart('Pattern5', {
-      type: 'line',
-      data: {
-        datasets: [{
-          label: '',
-          backgroundColor: "rgba(255, 99, 132,0.4)",
-          borderColor: "rgb(255, 99, 132)",
-          fill: true,
-          data: [
-            { x: 17, y: 17 },
-            { x: 15, y: 12 },
-            { x: 9, y: 9 },
-            { x: 0, y: 9 },
-            { x: 17, y: 17 },
-            { x: 1, y: 6 },
-            { x: 5, y: 9 },
-            { x: 0, y: 12 },
-            { x: 17, y: 17 },
-          ],
-        }]
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Pattern 5'
-        },
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              labelString: 'Time',
-              display: true,
-            }
-          }],
-          yAxes: [{
-            type: 'linear',
-            scaleLabel: {
-              labelString: 'Failure Probability',
-              display: true
-            }
-          }]
-        }
-      }
-    });
-  }
-
-
-  async Pattern6Chart() {
-    var Pattern6 = new Chart('Pattern6', {
-      type: 'line',
-      data: {
-        datasets: [{
-          label: '',
-          backgroundColor: "rgba(255, 99, 132,0.4)",
-          borderColor: "rgb(255, 99, 132)",
-          fill: true,
-          data: [
-            { x: 17, y: 17 },
-            { x: 15, y: 12 },
-            { x: 9, y: 9 },
-            { x: 0, y: 9 },
-            { x: 17, y: 17 },
-            { x: 1, y: 6 },
-            { x: 5, y: 9 },
-            { x: 0, y: 12 },
-            { x: 17, y: 17 },
-          ],
-        }]
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Pattern 6'
-        },
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              labelString: 'Time',
-              display: true,
-            }
-          }],
-          yAxes: [{
-            type: 'linear',
-            scaleLabel: {
-              labelString: 'Failure Probability',
-              display: true
-            }
-          }]
-        }
-      }
-    });
-  }
 
 }
 
