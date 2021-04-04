@@ -1540,7 +1540,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.PattenAnsNode6P2 = 'p-person'
     this.PatternPathEnable = false
 
-    if (this.Pattern === 'Pattern 1') {
+    if (value === 'Pattern 1') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'p-person'
       this.PattenNode3 = 'StylePattern'
@@ -1553,7 +1553,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    } else if (this.Pattern === 'Pattern 2') {
+    } else if (value === 'Pattern 2') {
       this.PatternPathEnable = true
       this.PattenNode2 = 'StylePattern1'
       this.PattenNode5 = 'StylePattern1'
@@ -1571,7 +1571,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
 
-    } else if (this.Pattern === 'Pattern 3') {
+    } else if (value === 'Pattern 3') {
       this.PatternPathEnable = true
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern1'
@@ -1585,7 +1585,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.PatternTree()
 
 
-    } else if (this.Pattern === 'Pattern 4') {
+    } else if (value === 'Pattern 4') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern'
       this.PattenNode4 = 'StylePattern'
@@ -1593,7 +1593,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    } else if (this.Pattern === 'Pattern 5') {
+    } else if (value === 'Pattern 5') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern'
       this.PattenNode4 = 'StylePattern'
@@ -1603,7 +1603,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.PatternTree()
       this.PatternEnable = true;
 
-    } else if (this.Pattern === 'Pattern 6') {
+    } else if (value === 'Pattern 6') {
       this.PatternPathEnable = true
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern1'
@@ -1619,7 +1619,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    } else if (this.Pattern === "") {
+    } else if (value === "") {
       this.PattenNode1 = 'p-person'
       this.PattenNode2 = 'p-person'
       this.PattenNode3 = 'p-person'
@@ -1642,6 +1642,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.PatternPath = ""
       this.changeDetectorRef.detectChanges();
     }
+
+    const element = document.querySelector("#ScrollToFCATree")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   }
 
