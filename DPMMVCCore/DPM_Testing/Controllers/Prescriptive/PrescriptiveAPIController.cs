@@ -224,6 +224,44 @@ namespace DPM.Controllers.Prescriptive
 
 
         [HttpPut]
+        [Route("UpdatePrespectivePattern")]
+        public async Task<IActionResult> PutUpdatePrespectivePattern(CentrifugalPumpPrescriptiveModel prescriptiveModel)
+        {
+
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId && a.UserId == userId)
+                                                                                                                  .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                                                                                  .First();
+                centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+
+                _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                var collection = centrifugalPumpPrescriptiveModel.centrifugalPumpPrescriptiveFailureModes.ToList();
+                foreach (var item in collection)
+                {
+                    if(item.CPPFMId == prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].CPPFMId) {
+                        item.Pattern = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].Pattern;
+                        _context.Entry(item).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                        break;
+                    }
+
+                }
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+
+        }
+
+        [HttpPut]
         [Route("PrespectivePattern")]
         public async Task<IActionResult> PutPrespectivePattern(CentrifugalPumpPrescriptiveModel prescriptiveModel)
         {
@@ -257,10 +295,6 @@ namespace DPM.Controllers.Prescriptive
 
                 return BadRequest(exe.Message);
             }
-
-
-
-
 
         }
 

@@ -1742,11 +1742,15 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             AnsNode6P2: 'StylePattern2'
           }
         }
-        var FCATree = {
+
+
+
+        var FCATreeClone = {
           label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
           type: "person",
           styleClass: 'p-person',
-          edit: true,
+          editFCA: true,
+          viewFCA: true,
           expanded: true,
           nodePath: path,
           data: { name: "FCA" },
@@ -1762,7 +1766,20 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             }
           ]
         }
-
+  
+  
+  
+        var FCATree = {
+          label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+          type: "person",
+          styleClass: 'p-person',
+          editFCA: true,
+          viewFCA: true,
+          FCAData: FCATreeClone,
+          nodePath: path,
+          data: { name: "FCA" }
+        }
+  
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
           {
@@ -1822,12 +1839,12 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
       }
 
-
-      var FCATree1 = {
+      var FCATree1Clone = {
         label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
         type: "person",
         styleClass: 'p-person',
-        edit: true,
+        editFCA: true,
+        viewFCA: true,
         expanded: true,
         nodePath: path,
         data: { name: "FCA" },
@@ -1843,6 +1860,20 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
           }
         ]
       }
+
+
+
+      var FCATree1 = {
+        label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+        type: "person",
+        styleClass: 'p-person',
+        editFCA: true,
+        viewFCA: true,
+        FCAData: FCATree1Clone,
+        nodePath: path,
+        data: { name: "FCA" }
+      }
+
 
 
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
@@ -1974,23 +2005,14 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
   SelectNodeToView(p){
+    this.FCAView = []
+    this.FCAView.push(p.FCAData)
+    this.FCAViewEnabled = true
+    this.changeDetectorRef.detectChanges();
+    this.GetChartToView(this.FCAView[0].children[0].data.name)
     const element = document.querySelector("#FCATreeShow")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-    var indexOfFCA = p.label - 1;
-    this.FCAView = []
-    var i = 0;
-    this.data1[0].children[0].children[0].children[indexOfFCA].children.forEach((res: any) => {
-      if (i == 1) {
-        res.expanded = true;
-        this.FCAView.push(res)
-        this.FCAViewEnabled = true
-        this.changeDetectorRef.detectChanges();
-        this.GetChartToView(p.children[0].data.name)
-       
-      }
-      i = i + 1;
-    });
   }
 
 
