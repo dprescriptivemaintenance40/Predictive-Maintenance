@@ -16,32 +16,26 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         this.totalRequests++;
         this.commonLoadingDirective.showLoading(true, 'Loading....');
-        if (localStorage.getItem('token') != null) {
-            var clonedReq = req.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                }
+        var clonedReq = req.clone({
+            setHeaders: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
 
-            });
-            return next.handle(clonedReq).pipe(
-                catchError(error => {
-                    if (error.status == 401) {
-                        localStorage.removeItem('token');
-                        this.router.navigateByUrl('Login');
-                    }
-                    throw error;
-                }),
-                finalize(() => {
-                    this.totalRequests--;
-                    if (this.totalRequests === 0) {
-                        this.commonLoadingDirective.showLoading(false, '');
-                    }
-                })
-            );
-        }
-        else {
-            this.commonLoadingDirective.showLoading(false, '');
-            return next.handle(req.clone());
-        }
+        });
+        return next.handle(clonedReq).pipe(
+            catchError(error => {
+                if (error.status == 401) {
+                    localStorage.removeItem('token');
+                    this.router.navigateByUrl('Login');
+                }
+                throw error;
+            }),
+            finalize(() => {
+                this.totalRequests--;
+                if (this.totalRequests === 0) {
+                    this.commonLoadingDirective.showLoading(false, '');
+                }
+            })
+        );
     }
 }
