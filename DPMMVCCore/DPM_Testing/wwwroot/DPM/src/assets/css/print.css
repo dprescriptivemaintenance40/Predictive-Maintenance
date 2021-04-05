@@ -1,0 +1,91 @@
+.p-organizationchart .node-header {
+    background-color: rgb(73, 94, 187);
+    color: rgb(255, 255, 255);
+}
+
+.p-organizationchart .node-header,
+.p-organizationchart .node-content {
+    padding: 0.5em 0.7rem;
+}
+
+.p-organizationchart .p-person {
+    padding: 0;
+    border: 0 none;
+}
+
+.p-organizationchart-node-content .p-node-toggler {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    bottom: -.75rem;
+    cursor: pointer;
+    height: 1.5rem;
+    left: 50%;
+    margin-left: -.75rem;
+    position: absolute;
+    user-select: none;
+    width: 1.5rem;
+    z-index: 2;
+}
+
+.p-organizationchart-table>tbody>tr>td {
+    padding: 0 .75rem;
+    text-align: center;
+    vertical-align: top;
+}
+
+.p-organizationchart-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0 auto;
+}
+
+.p-organizationchart-node-content .p-node-toggler .p-node-toggler-icon {
+    position: relative;
+    top: .25rem;
+}
+
+.p-organizationchart .p-organizationchart-node-content .p-node-toggler {
+    background: inherit;
+    color: inherit;
+    border-radius: 50%;
+}
+
+.p-organizationchart-line-down {
+    height: 20px;
+    margin: 0 auto;
+    width: 1px;
+}
+
+.p-organizationchart-selectable-node {
+    cursor: pointer;
+}
+
+.p-organizationchart-node-content {
+    display: inline-block;
+    position: relative;
+}
+
+.p-organizationchart .node-content {
+    text-align: center;
+    border: 1px solid #495ebb;
+}
+
+.p-organizationchart .department-cto {
+    border: 1px solid #dee2e6 !important;
+    background-color: #e9286f !important;
+    color: #ffffff !important;
+    padding: 1rem !important;
+}
+
+.p-organizationchart-line-left,
+.p-organizationchart-line-right {
+    border-radius: 0;
+}
+
+.p-organizationchart .p-organizationchart-node-content {
+    border: 0 none;
+    background: #ffffff;
+    color: #495057;
+    padding: 0;
+}

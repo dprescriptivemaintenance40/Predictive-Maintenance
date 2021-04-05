@@ -16,7 +16,6 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         this.totalRequests++;
         this.commonLoadingDirective.showLoading(true, 'Loading....');
-        // if (localStorage.getItem('token') != null) {
         var clonedReq = req.clone({
             setHeaders: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -38,10 +37,5 @@ export class AuthInterceptor implements HttpInterceptor {
                 }
             })
         );
-        // }
-        // else {
-        //     this.commonLoadingDirective.showLoading(false, '');
-        //     return next.handle(req.clone());
-        // }
     }
 }

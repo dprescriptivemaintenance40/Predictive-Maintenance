@@ -102,8 +102,8 @@ export class PrescriptiveReportComponent implements OnInit {
     }
 
     console.log(extension)
-  
-  
+
+
   }
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
@@ -184,29 +184,29 @@ export class PrescriptiveReportComponent implements OnInit {
   };
 
   printPage() {
-    // if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
-    this.hide = true;
-    this.change.detectChanges();
-    let popupWinindow;
-    let printContents = document.getElementById('contentToConvert').innerHTML;
-    popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-    popupWinindow.document.open();
-    let documentContent = "<html><head>";
-    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
-    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
-    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
-    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
-    documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
-    documentContent += '<link rel="stylesheet" type="text/scss" href="/dist/DPM/assets/printFile.scss">';
-    documentContent += '</head>';
-    documentContent += '<body onload="window.print()">' + printContents + '</body></html>'
-    popupWinindow.document.write(documentContent);
-    popupWinindow.document.close();
-    this.hide = false;
-    this.change.detectChanges();
-    // } else {
-    //   this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Fill the mandatory fields' });
-    // }
+    if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
+      this.hide = true;
+      this.change.detectChanges();
+      let popupWinindow;
+      let printContents = document.getElementById('contentToConvert').innerHTML;
+      popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+      popupWinindow.document.open();
+      let documentContent = "<html><head>";
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
+      documentContent += '</head>';
+      documentContent += '<body onload="window.print()">' + printContents + '</body></html>'
+      popupWinindow.document.write(documentContent);
+      popupWinindow.document.close();
+      this.hide = false;
+      this.change.detectChanges();
+    } else {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Fill the mandatory fields' });
+    }
   }
 
   GeneratePrescriptionReport() {
