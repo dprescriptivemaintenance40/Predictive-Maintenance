@@ -1,1 +1,145 @@
-<p>fca-add works!</p>
+<p-toast position="top-center"></p-toast>
+<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
+    <p-card>
+        <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()">Add FCA</button>
+        <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button>
+        <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button>
+        <p-organizationChart [value]="data1" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <a class="edit-org-bttn" *ngIf ="node.edit !== undefined && node.edit"  (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                <div class="node-content">
+                    <div class="a">{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+</div>
+
+
+<div *ngIf="FailureModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
+    <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label>
+    <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <ng-template let-node pTemplate="person">
+            <div class="node-header p-corner-top">{{node.label}}</div>
+            <div class="node-content">
+                <div>{{node.data.name}}</div>
+            </div>
+        </ng-template>
+        <ng-template let-node pTemplate="department">
+            {{node.label}}
+        </ng-template>
+    </p-organizationChart>
+
+    <p-card>
+        <ng-template pTemplate="title">
+            Pattern For Failure Mode
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Enter Pattern for {{PatternFMName}}
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid">
+                <div class="row">
+                    <div class="row col-md-12">
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 1')">
+                                <canvas id="pattern1"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 2')">
+                                <canvas id="pattern2"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 3')">
+                                <canvas id="pattern3"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 4')">
+                                <canvas id="pattern4"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 5')">
+                                <canvas id="pattern5"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 6')">
+                                <canvas id="pattern6"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-md-4">
+                        <label style="margin-right: 30px;">Select Pattern</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" [(ngModel)]="Pattern" class="form-control" (change)="SelectPatternForFailureMode()">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let EL of FMPattern" [ngValue]="EL">{{EL}}</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                    <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio1">Select Path</label>
+                    <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
+                        <i class="fas fa-circle"></i>
+                    </a>
+                </div>
+                <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                    <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio2">Select Path</label>
+                    <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(212, 218, 211);" class="fas fa-circle">
+                    </a>
+                </div>
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div>
+                <button label="Next" type="button" (click)="PatternBack()" class="btn btn-dark">Back</button>
+                <button label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark">ADD</button>
+            </div>
+        </ng-template>
+    </p-card>
+
+</div>
+
+<div *ngIf="FCAViewEnabled" >
+    <p-card>
+        <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseView()" pTooltip="Delete" tooltipPosition="top">
+            <i class="far fa-times-circle "></i>
+        </a>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div style="width: 13em;height: 7em; margin-left: 140px;">
+                    <canvas id="ViewPattern"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>   
+       
+        <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department"  id ="FCATreeShow">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+    </p-card>
+</div>

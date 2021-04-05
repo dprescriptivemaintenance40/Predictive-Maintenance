@@ -11,10 +11,11 @@ import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import * as Chart from 'chart.js';
 @Component({
   selector: 'app-prescriptive-add',
   templateUrl: './prescriptive-add.component.html',
-  styleUrls: ['./prescriptive-add.component.scss','../../../../../assets/orgchart.scss'],
+  styleUrls: ['./prescriptive-add.component.scss', '../../../../../assets/orgchart.scss'],
   providers: [MessageService],
 })
 export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate {
@@ -120,9 +121,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public fileAttachmentEnable: boolean = false;
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
   public selectedModeData: any;
-  public FCAdata1 : TreeNode[];
-  public FMPattern = [ 'Pattern 1', 'Pattern 2','Pattern 3','Pattern 4','Pattern 5', 'Pattern 6'];
-  public Pattern : string = ""
+  public FCAdata1: TreeNode[];
+  public FMPattern = ['Pattern 1', 'Pattern 2', 'Pattern 3', 'Pattern 4', 'Pattern 5', 'Pattern 6'];
+  public Pattern: string = ""
   public PatternPathEnable: boolean = false;
   public PatternNextOnPrescriptiveTree: boolean = false;
   public FailureModePatternTree: boolean = false;
@@ -154,7 +155,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public extensionAddImage: boolean = false;
   public extensionAddPDF: boolean = false;
   public extensionImage: boolean = false;
-  
+  private isNewEntity: boolean = false;
+  public uploadedAttachmentList: any[] = [];
+  public ViewPatterns: boolean = false;
+  public FCAViewEnabled : boolean = false;
+  public FCAView: any;
 
 
   constructor(private messageService: MessageService,
@@ -163,12 +168,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
-    private sanitizer: DomSanitizer,
     private changeDetectorRef: ChangeDetectorRef) { }
 
-  private isNewEntity: boolean = false;
 
-  
+
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
       if (confirm('Are you sure you want to go back. You have have pending changes')) {
@@ -188,6 +191,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   ngOnInit() {
     this.title.setTitle('DPM | Prescriptive ');
+    this.data1 = JSON.parse(localStorage.getItem('TestingOBj'))
     this.PatternTree()
     setInterval(() => {
       this.dynamicDroppedPopup();
@@ -236,7 +240,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.activeIndex = 5;
 
       }
-    }, 
+    },
     {
       label: 'FCA',
       command: (event: any) => {
@@ -244,14 +248,16 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
       }
     }
-
     ];
+
   }
+
+
 
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveObject');
   }
-  public uploadedAttachmentList: any[] = [];
+
   public uploadFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
@@ -529,6 +535,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       });
       for (let index = 0; index < Data.length; index++) {
         FMName = Data[index]
+        var FMEALABEL: number = index + 1
         this.FMChild.push(
           {
             label: index + 1,
@@ -538,7 +545,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             data: { name: FMName },
             children: [
               {
-                label: 1,
+                label: FMEALABEL,
                 type: "person",
                 styleClass: "p-person",
                 expanded: true,
@@ -697,21 +704,22 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   SaveConsequences() {
-   
+
     this.isNewEntity = false
-    this.data1[0].children[0].children.forEach((res : any) =>{
-      res.Consequence =this.data1Clone
+    this.data1[0].children[0].children.forEach((res: any) => {
+      res.Consequence = this.data1Clone
     })
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
+    localStorage.setItem('TestingOBj', JSON.stringify(this.data1))
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};
       obj['CPPFMId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
       obj['CFPPrescriptiveId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
       obj['FunctionMode'] = this.FMChild[index].data.name;
       obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
-      obj['SystemEffect'] =this.FMChild[index].children[0].children[1].data.name;;
+      obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;;
       obj['Consequence'] = this.FMChild[index].children[0].children[2].data.name;
       obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
       obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
@@ -733,9 +741,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       res => {
         console.log(res);
         this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-       // this.router.navigateByUrl('/Home/Prescriptive/List');
-          this.SaveConcequencesEnable = false;
-          this.PatternNextOnPrescriptiveTree = true;
+        // this.router.navigateByUrl('/Home/Prescriptive/List');
+        this.SaveConcequencesEnable = false;
+        this.PatternNextOnPrescriptiveTree = true;
       }, err => { console.log(err.err) }
     )
 
@@ -787,8 +795,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       },
       err => { console.log(err.Message) }
     )
-
-
   }
 
   PushConcequences() {
@@ -861,21 +867,21 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.isNewEntity = true
     this.GenrationTree()
     var temp2;
-    var temp : string= JSON.stringify(this.data1)
+    var temp: string = JSON.stringify(this.data1)
     temp2 = JSON.parse(temp)
-    
-    var i : number = 0
+
+    var i: number = 0
     temp2[0].children[0].children[0].children.forEach((res: any) => {
-        var abc :any[] = res.children[0].children
-        temp2[0].children[0].children[0].children[i].children.pop()
-        temp2[0].children[0].children[0].children[i].children = abc
-        i = i + 1;  
+      var abc: any[] = res.children[0].children
+      temp2[0].children[0].children[0].children[i].children.pop()
+      temp2[0].children[0].children[0].children[i].children = abc
+      i = i + 1;
     });
     this.data1Clone = temp2
-    this.data1[0].children[0].children.forEach((res : any) =>{
-      res.FMEA =temp2
+    this.data1[0].children[0].children.forEach((res: any) => {
+      res.FMEA = temp2
     })
-  } 
+  }
 
 
   FailuerEffectBack() {
@@ -915,8 +921,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   }
 
- 
-  
+
+
   async treeNext() {
     this.prescriptiveTree = true;
     this.Consequences1 = true;
@@ -931,7 +937,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.activeIndex = 4
     this.prescriptiveTree = true;
     this.Consequences1 = false;
-   
+
   }
   Consequence1Next() {
     if (this.dropedConsequenceFailureMode.length == 1) {
@@ -1323,7 +1329,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
   }
 
-  PatternTree(){
+  PatternTree() {
     this.FCAdata1 = [
       {
         label: "Pattern",
@@ -1396,7 +1402,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     ]
                   }
                 ]
-              }, 
+              },
               {
                 label: "Yes",
                 type: "person",
@@ -1512,7 +1518,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
 
-  SelectPatternForFailureMode(){
+  SelectPatternForFailureMode(value: string) {
+    this.Pattern = value;
     this.changeDetectorRef.detectChanges();
     this.PattenNode1 = 'p-person'
     this.PattenNode2 = 'p-person'
@@ -1533,7 +1540,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.PattenAnsNode6P2 = 'p-person'
     this.PatternPathEnable = false
 
-    if(this.Pattern === 'Pattern 1'){
+    if (value === 'Pattern 1') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'p-person'
       this.PattenNode3 = 'StylePattern'
@@ -1546,99 +1553,102 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    }else if(this.Pattern === 'Pattern 2'){
-        this.PatternPathEnable = true
-        this.PattenNode2 = 'StylePattern1'
-        this.PattenNode5 = 'StylePattern1'
-        this.PattenAnsNode2P1 = 'StylePattern1'
+    } else if (value === 'Pattern 2') {
+      this.PatternPathEnable = true
+      this.PattenNode2 = 'StylePattern1'
+      this.PattenNode5 = 'StylePattern1'
+      this.PattenAnsNode2P1 = 'StylePattern1'
 
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode3 = 'StylePattern2'
-        this.PattenNode4 = 'p-person'
-        this.PattenNode6 = 'StylePattern2'
-        this.PattenNode7 = 'p-person'
-        this.PattenNode8 = 'p-person'
-        this.PattenAnsNode2P2 = 'StylePattern2'
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
-
-       
-
-    }else if(this.Pattern === 'Pattern 3'){
-        this.PatternPathEnable = true  
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode2 = 'StylePattern1'
-        this.PattenNode5 = 'StylePattern1'
-        this.PattenAnsNode3P1 = 'StylePattern1'
-        this.PattenNode3 = 'StylePattern2'
-        this.PattenNode6 = 'StylePattern2'
-        this.PattenNode8 = 'StylePattern2'
-        this.PattenAnsNode3P2 = 'StylePattern2'
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode4 = 'p-person'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode7 = 'p-person'
+      this.PattenNode8 = 'p-person'
+      this.PattenAnsNode2P2 = 'StylePattern2'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
 
 
-    }else if(this.Pattern === 'Pattern 4'){
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode2 = 'StylePattern'
-        this.PattenNode4 = 'StylePattern'
-        this.PattenAnsNode4 = 'StylePattern'
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
 
-    }else if(this.Pattern === 'Pattern 5'){
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode2 = 'StylePattern'
-        this.PattenNode4 = 'StylePattern'
-        this.PattenNode7 = 'StylePattern'
-        this.PattenAnsNode5 = 'StylePattern'
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
-        this.PatternEnable = true;
+    } else if (value === 'Pattern 3') {
+      this.PatternPathEnable = true
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern1'
+      this.PattenNode5 = 'StylePattern1'
+      this.PattenAnsNode3P1 = 'StylePattern1'
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode8 = 'StylePattern2'
+      this.PattenAnsNode3P2 = 'StylePattern2'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
 
-    }else if(this.Pattern === 'Pattern 6'){
-        this.PatternPathEnable = true
-        this.PattenNode1 = 'StylePattern'
-        this.PattenNode2 = 'StylePattern1'
-        this.PattenNode4 = 'StylePattern1'
-        this.PattenNode7 = 'StylePattern1'
-        this.PattenAnsNode6P1 = 'StylePattern1'
 
-        this.PattenNode3 = 'StylePattern2'
-        this.PattenNode6 = 'StylePattern2'
-        this.PattenNode8 = 'StylePattern2'
-        this.PattenAnsNode6P2 = 'StylePattern2'
+    } else if (value === 'Pattern 4') {
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern'
+      this.PattenNode4 = 'StylePattern'
+      this.PattenAnsNode4 = 'StylePattern'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
 
-        this.changeDetectorRef.detectChanges();
-        this.PatternTree()
+    } else if (value === 'Pattern 5') {
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern'
+      this.PattenNode4 = 'StylePattern'
+      this.PattenNode7 = 'StylePattern'
+      this.PattenAnsNode5 = 'StylePattern'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+      this.PatternEnable = true;
 
-    } else if(this.Pattern === ""){
-          this.PattenNode1 = 'p-person'
-          this.PattenNode2 = 'p-person'
-          this.PattenNode3 = 'p-person'
-          this.PattenNode4 = 'p-person'
-          this.PattenNode5 = 'p-person'
-          this.PattenNode6 = 'p-person'
-          this.PattenNode7 = 'p-person'
-          this.PattenNode8 = 'p-person'
-          this.PattenAnsNode1 = 'p-person'
-          this.PattenAnsNode2P2 = 'p-person'
-          this.PattenAnsNode2P1 = 'p-person'
-          this.PattenAnsNode3P1 = 'p-person'
-          this.PattenAnsNode3P2 = 'p-person'
-          this.PattenAnsNode4 = 'p-person'
-          this.PattenAnsNode5 = 'p-person'
-          this.PattenAnsNode6P1 = 'p-person'
-          this.PattenAnsNode6P2 = 'p-person'
-          this.PatternPathEnable = false
-          this.Pattern = ""
-          this.PatternPath=""
-          this.changeDetectorRef.detectChanges();
+    } else if (value === 'Pattern 6') {
+      this.PatternPathEnable = true
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern1'
+      this.PattenNode4 = 'StylePattern1'
+      this.PattenNode7 = 'StylePattern1'
+      this.PattenAnsNode6P1 = 'StylePattern1'
+
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode8 = 'StylePattern2'
+      this.PattenAnsNode6P2 = 'StylePattern2'
+
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+    } else if (value === "") {
+      this.PattenNode1 = 'p-person'
+      this.PattenNode2 = 'p-person'
+      this.PattenNode3 = 'p-person'
+      this.PattenNode4 = 'p-person'
+      this.PattenNode5 = 'p-person'
+      this.PattenNode6 = 'p-person'
+      this.PattenNode7 = 'p-person'
+      this.PattenNode8 = 'p-person'
+      this.PattenAnsNode1 = 'p-person'
+      this.PattenAnsNode2P2 = 'p-person'
+      this.PattenAnsNode2P1 = 'p-person'
+      this.PattenAnsNode3P1 = 'p-person'
+      this.PattenAnsNode3P2 = 'p-person'
+      this.PattenAnsNode4 = 'p-person'
+      this.PattenAnsNode5 = 'p-person'
+      this.PattenAnsNode6P1 = 'p-person'
+      this.PattenAnsNode6P2 = 'p-person'
+      this.PatternPathEnable = false
+      this.Pattern = ""
+      this.PatternPath = ""
+      this.changeDetectorRef.detectChanges();
     }
+
+    const element = document.querySelector("#ScrollToFCATree")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   }
 
-  ADDFMToFCA(){
+  ADDFMToFCA() {
     this.prescriptiveTree = false
     this.FailureModePatternTree = true
     this.activeIndex = 6
@@ -1662,215 +1672,215 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.PattenAnsNode6P2 = 'p-person'
     this.PatternPathEnable = false
     this.Pattern = ""
-    this.PatternPath=""
+    this.PatternPath = ""
     this.changeDetectorRef.detectChanges();
     this.PatternFMName = this.data1[0].children[0].children[0].children[0].data.name
     this.PatternNextOnPrescriptiveTree = false
+    this.GetChartData();
   }
-  PatternBack(){
+  PatternBack() {
     this.prescriptiveTree = true
     this.FailureModePatternTree = false
     this.activeIndex = 5
-    if(this.PatternCounter == 0){
+    if (this.PatternCounter == 0) {
       this.PatternNextOnPrescriptiveTree = true;
     }
   }
 
-  PatternAdd(){
-    if(this.Pattern === 'Pattern 2' || this.Pattern ==='Pattern 3'|| this.Pattern ==='Pattern 6'){
-      if((this.Pattern === 'Pattern 2' || this.Pattern ==='Pattern 3'
-                                      || this.Pattern ==='Pattern 6')
-                                      && this.PatternPath != ""){
+  PatternAdd() {
+    if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
+      if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
+        || this.Pattern === 'Pattern 6')
+        && this.PatternPath != "") {
         var path;
-        if(this.Pattern === 'Pattern 2' && this. PatternPath == "1"){
-          path =  {
-                Node1 : 'StylePattern1',
-                Node2 : 'StylePattern1',
-                Node5 : 'StylePattern1', 
-                AnsNode2P1 : 'StylePattern1' } 
-        } else if (this.Pattern === 'Pattern 2' && this. PatternPath == "2"){
+        if (this.Pattern === 'Pattern 2' && this.PatternPath == "1") {
           path = {
-                Node1 : 'StylePattern2',
-                Node3 : 'StylePattern2',
-                Node6 : 'StylePattern2',
-                AnsNode2P2 : 'StylePattern2' 
-              }
-
-          } else if(this.Pattern ==='Pattern 3' && this. PatternPath == "1"){
-            path = {
-                Node1 : 'StylePattern1',
-                Node2 : 'StylePattern1',
-                Node5 : 'StylePattern1',
-                AnsNode3P1 : 'StylePattern1'
-            }
-
-        } else if(this.Pattern ==='Pattern 3' && this. PatternPath == "2"){
-            path ={
-                Node1 : 'StylePattern2',
-                Node3 : 'StylePattern2',
-                Node6 : 'StylePattern2',
-                Node8 : 'StylePattern2',
-                AnsNode3P2 : 'StylePattern2'
-            }
-
-        } else if(this.Pattern ==='Pattern 6' && this. PatternPath == "1"){ 
+            Node1: 'StylePattern1',
+            Node2: 'StylePattern1',
+            Node5: 'StylePattern1',
+            AnsNode2P1: 'StylePattern1'
+          }
+        } else if (this.Pattern === 'Pattern 2' && this.PatternPath == "2") {
           path = {
-                  Node1 : 'StylePattern1',
-                  Node2 : 'StylePattern1',
-                  Node4 : 'StylePattern1',
-                  Node7 : 'StylePattern1',
-                  AnsNode6P1 : 'StylePattern1'
-                }
-        }else if(this.Pattern ==='Pattern 6' && this. PatternPath == "2"){ 
-            path = {
-                  Node1 : 'StylePattern2',
-                  Node3 : 'StylePattern2',
-                  Node6 : 'StylePattern2',
-                  Node8 : 'StylePattern2',
-                  AnsNode6P2 : 'StylePattern2' 
-            }
+            Node1: 'StylePattern2',
+            Node3: 'StylePattern2',
+            Node6: 'StylePattern2',
+            AnsNode2P2: 'StylePattern2'
+          }
+
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "1") {
+          path = {
+            Node1: 'StylePattern1',
+            Node2: 'StylePattern1',
+            Node5: 'StylePattern1',
+            AnsNode3P1: 'StylePattern1'
+          }
+
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "2") {
+          path = {
+            Node1: 'StylePattern2',
+            Node3: 'StylePattern2',
+            Node6: 'StylePattern2',
+            Node8: 'StylePattern2',
+            AnsNode3P2: 'StylePattern2'
+          }
+
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "1") {
+          path = {
+            Node1: 'StylePattern1',
+            Node2: 'StylePattern1',
+            Node4: 'StylePattern1',
+            Node7: 'StylePattern1',
+            AnsNode6P1: 'StylePattern1'
+          }
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
+          path = {
+            Node1: 'StylePattern2',
+            Node3: 'StylePattern2',
+            Node6: 'StylePattern2',
+            Node8: 'StylePattern2',
+            AnsNode6P2: 'StylePattern2'
+          }
         }
-
-        
         var FCATree = {
-                    label: "FCA",
-                    type: "person",
-                    styleClass: 'p-person',
-                    expanded: true,
-                    nodePath: path ,
-                    data: { name: "FCA" },
-                    children: [
-                      {
-                        label: "Pattern",
-                        type: "person",
-                        styleClass: 'p-person',
-                        expanded: true,
-                        data: {
-                          name: this.Pattern
-                        }
-                      }  
-                    ]
-                  }
-
-    this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
-    this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
-                                     {
-                                       label: "Pattern",
-                                       type: "person",
-                                       styleClass: 'p-person',
-                                       expanded: true,
-                                       data: {
-                                         name: this.Pattern
-                                       }
-                                     } 
-                                   )
-
-          this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
-          if( this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1 ){
-            this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
-         
-          } 
-          this.PatternCounter = this.PatternCounter + 1
-          if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
-              this.Pattern = ""
-              this.SaveFCAEnable = true
-          } 
-        this.FailureModePatternTree = false;
-        this.prescriptiveTree = true
-        this.PatternPath=""
-
-      }else{
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
-        
-      }
-
-      }else if(this.Pattern === 'Pattern 1' || this.Pattern ==='Pattern 4'|| this.Pattern ==='Pattern 5'){
-
-        if(this.Pattern === 'Pattern 1' ){
-          path = {
-            Node1 : 'StylePattern',
-            Node3 : 'StylePattern',
-            AnsNode1 : 'StylePattern'
-          }
-
-        }else  if(this.Pattern === 'Pattern 4' ){
-          path = {
-              Node1 : 'StylePattern',
-              Node2 : 'StylePattern',
-              Node4 : 'StylePattern',
-              AnsNode4 : 'StylePattern'
-          }
-
-        }else if(this.Pattern === 'Pattern 5' ){
-          path = {
-            Node1 : 'StylePattern',
-            Node2 : 'StylePattern',
-            Node4 : 'StylePattern',
-            Node7 : 'StylePattern',
-            AnsNode5 : 'StylePattern'
-          }
-
+          label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+          type: "person",
+          styleClass: 'p-person',
+          edit: true,
+          expanded: true,
+          nodePath: path,
+          data: { name: "FCA" },
+          children: [
+            {
+              label: "Pattern",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.Pattern
+              }
+            }
+          ]
         }
 
+        this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+        this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.Pattern
+            }
+          }
+        )
 
-         var FCATree1 = {
-                    label: "FCA",
-                    type: "person",
-                    styleClass: 'p-person',
-                    expanded: true,
-                    nodePath: path ,
-                    data: { name: "FCA" },
-                    children: [
-                      {
-                        label: "Pattern",
-                        type: "person",
-                        styleClass: 'p-person',
-                        expanded: true,
-                        data: {
-                          name: this.Pattern
-                        }
-                      }  
-                    ]
-                  }
-
-                  
-     this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children= []
-     this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
-                        {
-                          label: "Pattern",
-                          type: "person",
-                          styleClass: 'p-person',
-                          expanded: true,
-                          data: {
-                            name: this.Pattern
-                          }
-                        } 
-                      )
-                     
-
-
-        this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
-        if(this.PatternCounter < this.data1[0].children[0].children[0].children.length -1 ){
+        this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
+        if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
           this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
-       
+
         }
         this.PatternCounter = this.PatternCounter + 1
-        if( this.PatternCounter == this.data1[0].children[0].children[0].children.length ){
-            this.Pattern = ""
-            this.SaveFCAEnable = true
-        } 
+        if (this.PatternCounter == this.data1[0].children[0].children[0].children.length) {
+          this.Pattern = ""
+          this.SaveFCAEnable = true
+        }
+        this.FailureModePatternTree = false;
+        this.prescriptiveTree = true
+        this.PatternPath = ""
+
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
+      }
+
+    } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
+
+      if (this.Pattern === 'Pattern 1') {
+        path = {
+          Node1: 'StylePattern',
+          Node3: 'StylePattern',
+          AnsNode1: 'StylePattern'
+        }
+
+      } else if (this.Pattern === 'Pattern 4') {
+        path = {
+          Node1: 'StylePattern',
+          Node2: 'StylePattern',
+          Node4: 'StylePattern',
+          AnsNode4: 'StylePattern'
+        }
+
+      } else if (this.Pattern === 'Pattern 5') {
+        path = {
+          Node1: 'StylePattern',
+          Node2: 'StylePattern',
+          Node4: 'StylePattern',
+          Node7: 'StylePattern',
+          AnsNode5: 'StylePattern'
+        }
+
+      }
+
+
+      var FCATree1 = {
+        label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+        type: "person",
+        styleClass: 'p-person',
+        edit: true,
+        expanded: true,
+        nodePath: path,
+        data: { name: "FCA" },
+        children: [
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.Pattern
+            }
+          }
+        ]
+      }
+
+
+      this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+      this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+        {
+          label: "Pattern",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.Pattern
+          }
+        }
+      )
+
+
+
+      this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
+      if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
+        this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
+      }
+      this.PatternCounter = this.PatternCounter + 1
+      if (this.PatternCounter == this.data1[0].children[0].children[0].children.length) {
+        this.Pattern = ""
+        this.SaveFCAEnable = true
+      }
       this.FailureModePatternTree = false;
       this.prescriptiveTree = true
-      }
-      else{
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
-        
-      }
- 
+    }
+    else {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
+
+    }
+
   }
 
 
-  ADDNextFCA(){
+  ADDNextFCA() {
     this.PattenNode1 = ''
     this.PattenNode2 = ''
     this.PattenNode3 = ''
@@ -1912,24 +1922,25 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.PatternPathEnable = false
     this.FailureModePatternTree = true
     this.changeDetectorRef.detectChanges();
-    
+    this.GetChartData();
+
   }
 
-  public SaveFCAEnable : boolean = false
-  SaveFCA(){
-   var  centrifugalPumpOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
-    this.data1[0].children[0].children.forEach((res : any) =>{
-      res.FCA =this.data1Clone
+  public SaveFCAEnable: boolean = false
+  SaveFCA() {
+    var centrifugalPumpOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+    this.data1[0].children[0].children.forEach((res: any) => {
+      res.FCA = this.data1Clone
     })
     centrifugalPumpOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
     centrifugalPumpOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
     centrifugalPumpOBJ.FCAAdded = "1";
-    
+
     for (let index = 0; index < this.data1[0].children[0].children[0].children.length; index++) {
       let obj = {};
       obj['CPPFMId'] = 0;
       obj['CFPPrescriptiveId'] = 0;
-      obj['FunctionMode'] = "" ;
+      obj['FunctionMode'] = "";
       obj['LocalEffect'] = "";
       obj['SystemEffect'] = "";
       obj['Consequence'] = "";
@@ -1951,14 +1962,167 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
 
     this.http.put('api/PrescriptiveAPI/PrespectivePattern', centrifugalPumpOBJ).subscribe(
-        res => {
-          this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
-          this.SaveFCAEnable = false
-          this.router.navigateByUrl('/Home/Prescriptive/List');
-        }, err => console.log(err.error)
-       )
+      res => {
+        this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
+        this.SaveFCAEnable = false
+        this.router.navigateByUrl('/Home/Prescriptive/List');
+      }, err => console.log(err.error)
+    )
 
 
+  }
+
+
+  SelectNodeToView(p){
+    const element = document.querySelector("#FCATreeShow")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+    var indexOfFCA = p.label - 1;
+    this.FCAView = []
+    var i = 0;
+    this.data1[0].children[0].children[0].children[indexOfFCA].children.forEach((res: any) => {
+      if (i == 1) {
+        res.expanded = true;
+        this.FCAView.push(res)
+        this.FCAViewEnabled = true
+        this.changeDetectorRef.detectChanges();
+        this.GetChartToView(p.children[0].data.name)
+       
+      }
+      i = i + 1;
+    });
+  }
+
+
+  
+  GetChartToView(p : string){
+    this.FCAViewEnabled = true
+    if (p == 'Pattern 1') {
+      const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+      this.getChartTree(patternLabel1, patternData1, 'ViewPattern',p);
+    } else if (p == 'Pattern 2') {
+      const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+      this.getChartTree(patternLabel2, patternData2, 'ViewPattern',p);
+    } else if (p == 'Pattern 3') {
+      const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+      this.getChartTree(patternLabel3, patternData3, 'ViewPattern',p);
+    } else if (p == 'Pattern 4') {
+      const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+      this.getChartTree(patternLabel4, patternData4,'ViewPattern',p);
+    } else if (p == 'Pattern 5') {
+      const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+      const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+      this.getChartTree(patternLabel5, patternData5, 'ViewPattern',p);
+    } else if (p == 'Pattern 6') {
+      const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+      const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+      this.getChartTree(patternLabel6, patternData6, 'ViewPattern', p);
+    }
+  }
+
+
+  CloseFCAView(){
+    this.FCAViewEnabled = false
+    const element = document.querySelector("#prescriptive")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  }
+
+
+  
+  
+  private GetChartData() {
+    const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+    this.getChartTree(patternLabel1, patternData1, 'pattern1', 'Pattern 1');
+
+    const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+    this.getChartTree(patternLabel2, patternData2, 'pattern2', 'Pattern 2');
+
+    const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+    this.getChartTree(patternLabel3, patternData3, 'pattern3', 'Pattern 3');
+
+    const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+    this.getChartTree(patternLabel4, patternData4, 'pattern4', 'Pattern 4');
+
+    const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+    const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+    this.getChartTree(patternLabel5, patternData5, 'pattern5', 'Pattern 5');
+
+    const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+    this.getChartTree(patternLabel6, patternData6, 'pattern6', 'Pattern 6');
+  }
+
+  private getChartTree(labels: any[], data: any[], id: string, title: string) {
+    let patternCharts = new Chart(id, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Time',
+          data: data,
+          fill: true,
+          borderColor: '#2196f3',
+          backgroundColor: '#2196f3',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
+        title: {
+          display: true,
+          text: title
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              beginAtZero: true,
+              display: false
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            }
+          }],
+          yAxes: [{
+            gridLines: {
+              display: true,
+              color: 'rgba(219,219,219,0.3)',
+              zeroLineColor: 'rgba(219,219,219,0.3)',
+              drawBorder: false,
+              lineWidth: 27,
+              zeroLineWidth: 1
+            },
+            ticks: {
+              beginAtZero: true,
+              display: false
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Failure probability'
+            }
+          }]
+        }
+      }
+    });
+    this.changeDetectorRef.detectChanges();
   }
 
 
