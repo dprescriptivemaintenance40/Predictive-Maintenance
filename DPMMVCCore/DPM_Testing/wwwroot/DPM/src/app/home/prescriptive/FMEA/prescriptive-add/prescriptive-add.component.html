@@ -380,9 +380,9 @@
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-card>
         <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark"  (click)="treeBack()"  pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
-        <button *ngIf="prescriptiveTreeSubmitEnable"  class="btn btn-dark" style="float: right;"  data-toggle="modal" data-target="#treeModal"  pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> <i class="fas fa-arrow-right"></i></button>
+        <button *ngIf="prescriptiveTreeSubmitEnable"  class="btn btn-dark" style="float: right;"  data-toggle="modal" data-target="#treeModal"  pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
         <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark"  (click)="treeNext(target)"pTooltip="Click on Next To add Consequences" tooltipPosition="top"> <i class="fas fa-arrow-right"></i></button> 
-        <button *ngIf="SaveConcequencesEnable"  class="btn btn-dark" style="float: right;"  data-toggle="modal" data-target="#Consequences01" pTooltip="Save Consequences" tooltipPosition="top" data-toggle="modal">  <i class="fas fa-arrow-right"></i></button>
+        <button *ngIf="SaveConcequencesEnable"  class="btn btn-dark" style="float: right;"  data-toggle="modal" data-target="#Consequences01"  data-toggle="modal"> Save Consequences</button>
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
         <button *ngIf="!(Pattern == '')" label="Back" type="button"  style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()" > <i class="fas fa-arrow-right"></i></button><br>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br>
@@ -698,7 +698,7 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                              <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 2')" pTooltip=" Depicts age related Failure resulting from detrioins process, but their are still considerable differences in the behaviour of any two components subject to the same nominal stress"  tooltipPosition="right">
+                              <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 2')" pTooltip=" Depicts age related Failure resulting from detrioins process, but their are still considerable differences in the behaviour of any two components subject to the same nominal stress" tooltipPosition="right">
                                 <canvas id="pattern2"></canvas>
                             </div>
                         </div>
@@ -716,8 +716,8 @@
                         </div>
                         <div class="col-md-2">
                             <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 5')"  pTooltip=" It is for random failuer.This means that the probability that an item will fail in any of iterval of time is same is the same as in other.
-                            Random failuer is charactersized by an exponcial survival distribution and constatnt probability of failuer, so their is no age at which scheduled rework or scheduled discard is appropriate.
-                            " tooltipPosition="right">
+                            Random failuer is charactersized by an exponcial survival distribution and constatnt probability of failuer, so their is no age at which scheduled rework or scheduled discard is appropriate."
+                             tooltipPosition="right">
                                 <canvas id="pattern5"></canvas>
                             </div>
                         </div>
