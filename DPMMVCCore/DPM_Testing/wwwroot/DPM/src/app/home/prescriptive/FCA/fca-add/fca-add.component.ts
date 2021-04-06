@@ -750,9 +750,11 @@ export class FCAADDComponent implements OnInit {
 
   public SaveFCAEnable: boolean = false
   SaveFCA() {
+    var temp: string = JSON.stringify(this.data1Clone)
+    var temp2 = JSON.parse(temp)
     var centrifugalPumpOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
     this.data1[0].children[0].children.forEach((res: any) => {
-      res.FCA = this.data1Clone
+      res.FCA = temp2
     })
     centrifugalPumpOBJ.CFPPrescriptiveId = this.CFPPrescriptiveId
     centrifugalPumpOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)

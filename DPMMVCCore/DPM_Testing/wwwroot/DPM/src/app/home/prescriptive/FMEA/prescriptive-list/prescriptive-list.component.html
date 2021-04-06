@@ -10,7 +10,7 @@
     <div class="col-xl-12 col-lg-11">
         <div class="card prescriptive shadow mb-4 con">
             <div class="card-header">
-                <h6 style="color: #585570;" class="m-0 font-weight-bold " class="card-header-title font-size-lg text-capitalize font-weight-normal"><i class="fa fa-tasks"></i>&nbsp;Prescriptive Equipment List</h6>
+                <h6 style="color: #585570;" class="m-0 font-weight-bold " class="card-header-title font-size-lg text-capitalize font-weight-normal"><i class="fa fa-tasks"></i>&nbsp;Prescriptive Assets List</h6>
                 <div class="col" *ngIf="Table2">
                     <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable1()">Back</button>
 
@@ -60,7 +60,7 @@
                             <td (click)="FailureModeTable(p)">{{p.EquipmentType}}</td>
                             <td (click)="FailureModeTable(p)">{{p.TagNumber}}</td>
                             <td>
-                                <a style="color: green;" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length == 0}"><i class="pi pi-pencil"></i></a>
+                                <a style="color: green;" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded == 1}"><i class="pi pi-pencil"></i></a>
                             </td>
                             <td>
                                 <a style="color: green;" title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}"><i class="pi pi-plus"></i></a>

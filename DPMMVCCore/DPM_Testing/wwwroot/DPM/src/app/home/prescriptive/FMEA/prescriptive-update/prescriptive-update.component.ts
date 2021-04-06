@@ -138,6 +138,38 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public ChangeConsequenceforUpdate: boolean = false;
   public ColoredTreeForUpdate: boolean = false;
   public UpdateColorTreeEnable: boolean = false;
+
+  public FCAViewEnabled : boolean = false
+  public FCAViewTreeEnabled : boolean = false
+  public FCAView:any;
+  public FCAPatternTree : any;
+  public FCAdata1: any;
+  public PattenNode1: string;
+  public PattenNode2: string;
+  public PattenNode4: string;
+  public PattenAnsNode4: string;
+  public PattenNode7: string;
+  public PattenAnsNode6P1: string;
+  public PattenAnsNode5: string;
+  public PattenNode5: string;
+  public PattenAnsNode3P1: string;
+  public PattenAnsNode2P1: string;
+  public PattenNode3: string;
+  public PattenAnsNode1: string;
+  public PattenNode6: string;
+  public PattenAnsNode2P2: string;
+  public PattenNode8: string;
+  public PattenAnsNode6P2: string;
+  public PattenAnsNode3P2: string;
+  public Pattern: string;
+  public PatternPathEnable : boolean = false;
+  public PatternPath: string;
+  public FailureModePatternTree : boolean = false;
+  public FCAChangeData : any
+  public PatternBack: string;
+  private nodePath : number = 0;
+  public AddFMPatternAddEnable : boolean = false;
+  public UpdatePatternAddEnable : boolean = false;
  
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
@@ -446,6 +478,11 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         && element.children[0].children[1].data.name == system
         && element.children[0].children[2].data.name == consequence) {
 
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[element.label - 1].children[0].data.name = this.UpdateFailureModeLocalEffect
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[element.label - 1].children[1].data.name = this.UpdateFailureModeSystemEffect
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[element.label - 1].children[2].data.name = this.UpdateFailureModeConsequence
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[element.label - 1].data.name = this.UpdateFailureMode
+       
         element.data.name = this.UpdateFailureMode
         element.children[0].children[0].data.name = this.UpdateFailureModeLocalEffect
         element.children[0].children[1].data.name = this.UpdateFailureModeSystemEffect
@@ -547,7 +584,41 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     if (this.dropedMode.length > 0) {
       this.LSFailureMode = this.dropedMode[0].Description
       var index = this.FMTree.length
-      var Add = {
+      var AddFMEA = {
+        label: index + 1,
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: { name: this.LSFailureMode },
+        children: [
+          {
+            label: index + 1,
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: { name: 'FMEA' },
+            children: []
+          }
+        ]
+      }
+      var AddFCA = {
+        label: index + 1,
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: { name: this.LSFailureMode },
+        children: [
+          {
+            label: index + 1,
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: { name: 'FCA' },
+            children: []
+          }
+        ]
+      }
+      var FMEA = {
         label: index + 1,
         type: "person",
         styleClass: "p-person",
@@ -555,7 +626,55 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         data: { name: this.LSFailureMode },
         children: []
       }
-      this.data1[0].children[0].children[0].children.push(Add)
+
+      var FCAFMEA = {
+        label: index + 1,
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: { name: this.LSFailureMode },
+        children: []
+      }
+      
+      var FCATreeClone = {
+        label: index + 1,
+        type: "person",
+        styleClass: 'p-person',
+        editFCA: true,
+        expanded: true,
+        nodePath: 0,
+        pattern: "pattern",
+        data: { name: "FCA" },
+        children: [
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.Pattern
+            }
+          }
+        ]
+      }
+
+
+
+      var FCATree = {
+        label: index + 1,
+        type: "person",
+        styleClass: 'p-person',
+        viewFCA: true,
+        FCAData: FCATreeClone,
+        nodePath: 0,
+        pattern: 1,
+        data: { name: "FCA" }
+      }
+
+      this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children.push(FMEA)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.push(FCAFMEA)
+      this.data1[0].children[0].children[0].children.push(AddFMEA)
+      this.data1[0].children[0].children[0].children[index].children.push(FCATree)
       var temp: any = this.data1
       this.data1 = []
       this.data1 = temp
@@ -613,8 +732,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       }
 
-      this.data1[0].children[0].children[0].children[index - 1].children.push(LNode)
-      this.data1[0].children[0].children[0].children[index - 1].children.push(ENode)
+      this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(LNode)
+      this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(ENode)
+      this.data1[0].children[0].children[0].children[index - 1].children[0].children.push(LNode)
+      this.data1[0].children[0].children[0].children[index - 1].children[0].children.push(ENode)
       this.UpdatedFailureModeWithLSETree = JSON.stringify(this.data1)
       this.LSEdiv.style.display = 'none'
 
@@ -637,14 +758,16 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         name: this.finalConsequence
       }
     }
-    this.data1[0].children[0].children[0].children[index - 1].children.push(CNode)
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(CNode)
+    this.data1[0].children[0].children[0].children[index - 1].children[0].children.push(CNode)
     this.Consequences1 = false
     this.Consequences2 = false
     this.Consequences3 = false
     this.Consequences4 = false
-    this.prescriptiveTree = true
+    this.prescriptiveTree = false
     this.ConsequencesTree = false;
-    this.FinalUpdate = true;
+    this.FinalUpdate = false;
+    this.FailureModePatternTree = true;
     this.FinalDelete = true
     this.ConsequenceTreeADDConsequenceEnable = false
     this.AddFailureMode = false;
@@ -657,6 +780,134 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.consequenceC = 'p-person'
     this.consequenceD = 'p-person'
     this.consequenceE = 'p-person'
+    this.Pattern = ""
+    this.PatternPath = ""
+    this.changeDetectorRef.detectChanges();
+    this.PattenNode1 = 'p-person'
+    this.PattenNode2 = 'p-person'
+    this.PattenNode3 = 'p-person'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode5 = 'p-person'
+    this.PattenNode6 = 'p-person'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode1 = 'p-person'
+    this.PattenAnsNode2P2 = 'p-person'
+    this.PattenAnsNode2P1 = 'p-person'
+    this.PattenAnsNode3P1 = 'p-person'
+    this.PattenAnsNode3P2 = 'p-person'
+    this.PattenAnsNode4 = 'p-person'
+    this.PattenAnsNode5 = 'p-person'
+    this.PattenAnsNode6P1 = 'p-person'
+    this.PattenAnsNode6P2 = 'p-person'
+    this.AddFMPatternAddEnable = true;
+    this.UpdatePatternAddEnable = false;
+    this.changeDetectorRef.detectChanges();
+    this.PatternTree()
+    this.GetChartData();
+    
+  }
+
+  AddPatternToNewFM(){
+    if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
+      if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
+        || this.Pattern === 'Pattern 6')
+        && this.PatternPath != "") {
+        var path, pattern
+        if (this.Pattern === 'Pattern 2' && this.PatternPath == "1") {
+          path = 1;
+          pattern = 'Pattern 2'
+        } else if (this.Pattern === 'Pattern 2' && this.PatternPath == "2") {
+          path = 2;
+          pattern = 'Pattern 2'
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "1") {
+          path = 1;
+          pattern = 'Pattern 3'
+
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "2") {
+          path = 2;
+          pattern = 'Pattern 3'
+
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "1") {
+          path = 1;
+          pattern = 'Pattern 6'
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
+          path = 2;
+          pattern = 'Pattern 6'
+        }
+
+        var Pattern=  {
+              label: "Pattern",
+              type: "person",
+              styleClass: "p-person",
+              expanded: true,
+              data: {
+                name: this.Pattern
+              }
+        }
+
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children.push(Pattern)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].pattern = this.Pattern;
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].nodePath = path;  
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.nodePath = path
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.pattern = this.Pattern
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.children[0].data.name = this.Pattern
+        this.prescriptiveTree = true
+        this.FinalUpdate = true;
+        this.FailureModePatternTree = false;
+        this.PatternPath = ""
+        this.Pattern = ""
+        this.AddFMPatternAddEnable = false;
+        this.UpdatePatternAddEnable = false;
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
+
+      }
+
+    } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
+
+      if (this.Pattern === 'Pattern 1') {
+        path = 0;
+        pattern = 'Pattern 1'
+
+      } else if (this.Pattern === 'Pattern 4') {
+        path = 0;
+        pattern = 'Pattern 4'
+
+      } else if (this.Pattern === 'Pattern 5') {
+        path = 0;
+        pattern = 'Pattern 5'
+
+      }
+      
+      var Pattern2nd=  {
+        label: "Pattern",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.Pattern
+        }
+  }
+      
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children.push(Pattern2nd)
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[0].pattern = this.Pattern;
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[0].nodePath = path;  
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.nodePath = path
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.pattern = this.Pattern
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.children[0].data.name = this.Pattern
+      this.prescriptiveTree = true
+      this.FinalUpdate = true;
+      this.FailureModePatternTree = false;
+      this.PatternPath = ""
+      this.Pattern = ""
+      this.AddFMPatternAddEnable = false;
+      this.UpdatePatternAddEnable = false;
+    }
+    else {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
+
+    }
   }
 
   UpdateChanges() {
@@ -677,7 +928,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     Data['AttachmentDBPath'] = this.ADDUpdatedAttachmentInFMDBPath
     Data['AttachmentFullPath'] = this.ADDUpdatedAttachmentInFMFullPath
     Data['Remark'] = this.Remark
-
+    Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].pattern
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
     this.Remark = ""
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
@@ -1259,35 +1510,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  public FCAViewEnabled : boolean = false
-  public FCAViewTreeEnabled : boolean = false
-  public FCAView:any;
-  public FCAPatternTree : any;
-  public FCAdata1: any;
-  public PattenNode1: string;
-  public PattenNode2: string;
-  public PattenNode4: string;
-  public PattenAnsNode4: string;
-  public PattenNode7: string;
-  public PattenAnsNode6P1: string;
-  public PattenAnsNode5: string;
-  public PattenNode5: string;
-  public PattenAnsNode3P1: string;
-  public PattenAnsNode2P1: string;
-  public PattenNode3: string;
-  public PattenAnsNode1: string;
-  public PattenNode6: string;
-  public PattenAnsNode2P2: string;
-  public PattenNode8: string;
-  public PattenAnsNode6P2: string;
-  public PattenAnsNode3P2: string;
-  public Pattern: string;
-  public PatternPathEnable : boolean = false;
-  public PatternPath: string;
-  public FailureModePatternTree : boolean = false;
-  public FCAChangeData : any
-  public PatternBack: string;
-  private nodePath : number = 0;
+  
 
  async SelectNodeToView(p){
     this.PatternBack = p.pattern;
@@ -1432,6 +1655,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 UpdatePattern(){
   this.FCAViewTreeEnabled = false
   this.FailureModePatternTree = true
+  this.AddFMPatternAddEnable = false;
+  this.UpdatePatternAddEnable = true;
   this.changeDetectorRef.detectChanges();
   this.GetChartData();
 }
@@ -1752,9 +1977,14 @@ PatternUpdateBack(){
 }
 PatternUpdateAdd(){
   this.FCAView[0].children[0].data.name = this.Pattern
+  this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].pattern = this.Pattern
+  this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 0
+  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[0].data.name = this.Pattern
   this.FCAView[0].pattern = this.Pattern
   this.FCAView[0].nodePath = 0
   this.EnabledPatternUpdate = true;
+  this.AddFMPatternAddEnable = false;
+  this.UpdatePatternAddEnable = false;
   if (this.Pattern == 'Pattern 1') {
     const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
@@ -1784,10 +2014,11 @@ PatternUpdateAdd(){
     if(this.PatternPath == '1'){
       this.ColorPatternTreUpdate(this.Pattern, 1)
       this.FCAView[0].nodePath = 1
+      this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 1
     }else if(this.PatternPath == '2'){
         this.ColorPatternTreUpdate(this.Pattern, 2)
         this.FCAView[0].nodePath = 2
-     
+        this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 2
     }
    
   }else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {

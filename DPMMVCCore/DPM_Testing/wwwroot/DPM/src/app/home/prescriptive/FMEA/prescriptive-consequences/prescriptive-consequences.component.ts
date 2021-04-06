@@ -526,8 +526,10 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
 
   SubmitConsequenceTree() {
     this.isNewEntity = false;
+    var temp: string = JSON.stringify(this.data1Clone)
+    var temp2 = JSON.parse(temp)
     this.data1[0].children[0].children.forEach((res : any) =>{
-      res.Consequence =this.data1Clone
+      res.Consequence = temp2
     })
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.ConsequencesData.CFPPrescriptiveId;

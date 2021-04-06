@@ -812,7 +812,7 @@
 
 <div *ngIf="FCAViewEnabled" >
     <p-card>
-        <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAUpdateView()" pTooltip="Delete" tooltipPosition="top">
+        <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAUpdateView()" pTooltip="Close" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
         </a>
         <div class="row">
@@ -958,8 +958,8 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div>
-                <button label="Next" type="button" (click)="PatternUpdateBack()" class="btn btn-dark">Cancel</button>
-                <button label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">ADD</button>
+                <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">ADD</button>
+                <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;" (click)="AddPatternToNewFM()" type="button" class="btn btn-dark">ADD Pattern</button>
             </div>
         </ng-template>
     </p-card>
