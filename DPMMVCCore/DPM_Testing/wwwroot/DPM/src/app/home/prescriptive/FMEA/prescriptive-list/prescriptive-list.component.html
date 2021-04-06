@@ -60,7 +60,7 @@
                             <td (click)="FailureModeTable(p)">{{p.EquipmentType}}</td>
                             <td (click)="FailureModeTable(p)">{{p.TagNumber}}</td>
                             <td>
-                                <a style="color: green;" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded == 1}"><i class="pi pi-pencil"></i></a>
+                                <a style="color: green;" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded != 1}"><i class="pi pi-pencil"></i></a>
                             </td>
                             <td>
                                 <a style="color: green;" title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}"><i class="pi pi-plus"></i></a>
