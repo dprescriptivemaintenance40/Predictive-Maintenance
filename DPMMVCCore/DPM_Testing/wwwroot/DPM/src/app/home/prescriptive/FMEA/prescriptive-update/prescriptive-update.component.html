@@ -216,10 +216,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <!-- <div>
                                 <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModalAdd"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
                                 <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModalAdd"> <i class="fa fa-comment" aria-hidden="true"></i></button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <br>
@@ -810,7 +810,7 @@
 </div>
 
 
-<div *ngIf="FCAViewEnabled" >
+<div *ngIf="FCAViewEnabled">
     <p-card>
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAUpdateView()" pTooltip="Close" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
@@ -823,29 +823,29 @@
                 </div>
             </div>
             <div class="col-md-3"></div>
-        </div>   
+        </div>
 
         <div class="col-md-12" style="overflow: scroll;">
-        <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
-            <ng-template let-node pTemplate="person">
-                <div class="node-header p-corner-top">{{node.label}}</div>
-                <a class="editFCA-org-bttn" pTooltip="Select Node To edit" data-toggle="modal" data-target="#UpdatePattern" tooltipPosition="top" *ngIf="node.editFCA !== undefined && node.editFCA"  (click)="SelectNodeToEdit(node)" pTooltip="Edit Node" tooltipPosition="top"><i class="pi pi-pencil"></i></a>
-                <div class="node-content">
-                    <div>{{node.data.name}}</div>
-                </div>
-            </ng-template>
-            <ng-template let-node pTemplate="department"  id ="FCATreeShow">
-                {{node.label}}
-            </ng-template>
-        </p-organizationChart>
+            <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
+                <ng-template let-node pTemplate="person">
+                    <div class="node-header p-corner-top">{{node.label}}</div>
+                    <a class="editFCA-org-bttn" pTooltip="Select Node To edit" data-toggle="modal" data-target="#UpdatePattern" tooltipPosition="top" *ngIf="node.editFCA !== undefined && node.editFCA" (click)="SelectNodeToEdit(node)" pTooltip="Edit Node" tooltipPosition="top"><i class="pi pi-pencil"></i></a>
+                    <div class="node-content">
+                        <div>{{node.data.name}}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-node pTemplate="department" id="FCATreeShow">
+                    {{node.label}}
+                </ng-template>
+            </p-organizationChart>
         </div>
-    <br><br>
+        <br><br>
 
 
-      <div *ngIf="FCAViewTreeEnabled" class="col-md-12" style="overflow: scroll;">
-           <label>You Have Selected this path</label>
-          <button *ngIf="EnabledPatternUpdate" title="Save Pattern" label="save" type="button" class="btn btn-dark" (click)="SaveUpdatedPattern()">Save & Update</button><br>
-       
+        <div *ngIf="FCAViewTreeEnabled" class="col-md-12" style="overflow: scroll;">
+            <label>You Have Selected this path</label>
+            <button *ngIf="EnabledPatternUpdate" title="Save Pattern" label="save" type="button" class="btn btn-dark" (click)="SaveUpdatedPattern()">Save & Update</button><br>
+
             <p-organizationChart [value]="FCAdata1" styleClass="company">
                 <ng-template let-node pTemplate="person">
                     <div class="node-header p-corner-top">{{node.label}}</div>
@@ -857,7 +857,7 @@
                     {{node.label}}
                 </ng-template>
             </p-organizationChart>
-       </div>     
+        </div>
     </p-card>
 </div>
 
@@ -875,14 +875,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="UpdatePattern()" >Change</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="UpdatePattern()">Change</button>
             </div>
         </div>
     </div>
 </div>
 
 <br><br>
-<div *ngIf="FailureModePatternTree" class="col-md-12"  style="overflow: scroll;">
+<div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;">
     <!-- <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label> -->
     <p-organizationChart [value]="FCAChangeData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
@@ -939,7 +939,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
                     <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio" class="custom-control-input">
                     <label class="custom-control-label" for="customRadio1">Select Path</label>

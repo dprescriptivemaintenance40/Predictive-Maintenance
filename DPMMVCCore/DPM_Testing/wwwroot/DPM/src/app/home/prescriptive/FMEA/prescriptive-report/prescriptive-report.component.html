@@ -85,7 +85,7 @@
                 <span *ngIf="hide">{{TypeCurrentandfuture}}</span>
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeCurrentandfuture" placeholder="Type Current and future actions *"></textarea>
             </div>
-            <div id="div2">
+            <div id="div2" style="page-break-before: always;">
                 <h5><b>Conclusion </b></h5>
                 <p>
                     The objective of the task was to analyze the current condition of {{data.EquipmentType}} with Tag No {{data.TagNumber}}. and propose technical solutions to increase integrity and reliability of the asset .
@@ -130,19 +130,20 @@
                             {{node.label}}
                         </ng-template>
                     </p-organizationChart>
-                    <div class="div-in-middle">
+                    <div class="div-in-middle" *ngIf="tree[0].imgPath">
                         <label for="file" class="custom-label">Uploaded File</label>
-                        <div *ngIf="(tree[0].imgPath !=undefined)" id="file ">
+                        <div id="file ">
                             <img width="100%" [src]="tree[0].imgPath">
                         </div>
                     </div>
-                    <div *ngIf="(tree[0].Remark !=undefined)" class="div-in-middle">
+                    <div *ngIf="tree[0].Remark" class="div-in-middle">
                         <label for="remark" class="custom-label">Remark</label>
-                        <div *ngIf="tree[0].Remark !== ''" id="remark">
+                        <div id="remark">
                             <span *ngIf="hide">{{tree[0].Remark}}</span>
                             <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea>
                         </div>
                     </div>
+                    <div style="page-break-before: always;"></div>
                 </div>
             </div>
 

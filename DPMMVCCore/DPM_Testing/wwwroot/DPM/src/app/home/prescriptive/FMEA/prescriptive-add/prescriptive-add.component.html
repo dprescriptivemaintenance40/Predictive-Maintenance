@@ -281,30 +281,24 @@
 <div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
     <p-card>
         <ng-template pTemplate="title">
-            Factors 
-            <p-overlayPanel #panel >
+            Factors
+            <p-overlayPanel #panel>
                 <div style=" margin-right: 2px;width: 40rem;">
-                <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time 
-                    associated to the equipment. More the down time more is the factor, less the down time less is 
-                    the factor.  </li>
+                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to the equipment. More the down time more is the factor, less the down time less is the factor. </li>
 
-                <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the 
-                    case of failure are high then the scrap factor value is taken more and in the case of less chance to 
-                    scrape the equipment or component factor value is taken less. </li>
+                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of failure are high then the scrap factor value is taken more and in the case of less chance to scrape the equipment or component factor
+                        value is taken less. </li>
 
-                <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of injury (both man and machine) are high in the 
-                    case of equipment failure, more is the value given to the safety factor and less the chances of 
-                    injury, less is the value given to the safety factor.</li>
+                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of injury (both man and machine) are high in the case of equipment failure, more is the value given to the safety factor and less the chances
+                        of injury, less is the value given to the safety factor.</li>
 
-                <li><b>Protection Factor</b> :  is a number awarded on the account of ease to protect the equipment from 
-                    failure. Minimum no. is given when protection against the failure is easy. Maximum no. is given 
-                    when protection against the failure is very difficult.
+                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment from failure. Minimum no. is given when protection against the failure is easy. Maximum no. is given when protection against the failure
+                        is very difficult.
                     </li>
 
-                <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the no. 
-                    of failure more is the value given to the factor.
+                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the no. of failure more is the value given to the factor.
                     </li>
-                    </div>
+                </div>
             </p-overlayPanel>
             <a (click)="panel.show($event)" style="width: 20rem;" title="Explaination of each factors." style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
         </ng-template>
@@ -377,20 +371,20 @@
 </div>
 
 
-<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
-    <p-card>
-        <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark"  (click)="treeBack()"  pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
-        <button *ngIf="prescriptiveTreeSubmitEnable"  class="btn btn-dark" style="float: right;"  data-toggle="modal" data-target="#treeModal"  pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
-        <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark"  (click)="treeNext(target)"pTooltip="Click on Next To add Consequences" tooltipPosition="top"> <i class="fas fa-arrow-right"></i></button> 
-        <button *ngIf="SaveConcequencesEnable"  class="btn btn-dark" style="float: right;"  data-toggle="modal" data-target="#Consequences01"  data-toggle="modal"> Save Consequences</button>
+<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12">
+    <p-card [style]="{overflow: scroll}">
+        <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
+        <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
+        <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top"> <i class="fas fa-arrow-right"></i></button>
+        <button *ngIf="SaveConcequencesEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#Consequences01" data-toggle="modal"> Save Consequences</button>
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
-        <button *ngIf="!(Pattern == '')" label="Back" type="button"  style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()" > <i class="fas fa-arrow-right"></i></button><br>
+        <button *ngIf="!(Pattern == '')" label="Back" type="button" style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button><br>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br>
 
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}
-                    <a class="edit-org-bttn" *ngIf ="node.viewFCA !== undefined && node.viewFCA"  (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a class="edit-org-bttn" *ngIf="node.viewFCA !== undefined && node.viewFCA" (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i class="fa fa-eye" aria-hidden="true"></i></a>
                 </div>
                 <div class="node-content">
                     <div class="a">{{node.data.name}}</div>
@@ -622,50 +616,50 @@
     <p-card>
         <div class="row">
             <div class="col-6 .col-md-4">
-            <div class="col">
-                <canvas id="Pattern1" width="700" height="250"></canvas>
-            </div>
-            <div class="col">
-                <canvas id="Pattern2" width="700" height="250"></canvas>
-            </div>
-
-            <div class="col">
-                <canvas id="Pattern3" width="700" height="250"></canvas>
-            </div>
-
-            <div class="col">
-                <canvas id="Pattern4" width="700" height="250"></canvas>
-            </div>
-            <div class="col">
-                <canvas id="Pattern5" width="700" height="250"></canvas>
-            </div>
-
-            <div class="col">
-                <canvas id="Pattern6" width="700" height="250"></canvas>
-            </div>
-    </div>
-  
-    <div class="col-6 .col-md-4">
-        <p-organizationChart [value]="FCAView"  styleClass="company">
-            <ng-template let-node pTemplate="person">
-                <div class="node-header p-corner-top">{{node.label}}</div>
-                <div class="node-content">
-                    <div>{{node.data.name}}</div>
+                <div class="col">
+                    <canvas id="Pattern1" width="700" height="250"></canvas>
                 </div>
-            </ng-template>
-            <ng-template let-node pTemplate="department">
-                {{node.label}}
-            </ng-template>
-        </p-organizationChart>
-    </div>
-</div>
+                <div class="col">
+                    <canvas id="Pattern2" width="700" height="250"></canvas>
+                </div>
+
+                <div class="col">
+                    <canvas id="Pattern3" width="700" height="250"></canvas>
+                </div>
+
+                <div class="col">
+                    <canvas id="Pattern4" width="700" height="250"></canvas>
+                </div>
+                <div class="col">
+                    <canvas id="Pattern5" width="700" height="250"></canvas>
+                </div>
+
+                <div class="col">
+                    <canvas id="Pattern6" width="700" height="250"></canvas>
+                </div>
+            </div>
+
+            <div class="col-6 .col-md-4">
+                <p-organizationChart [value]="FCAView" styleClass="company">
+                    <ng-template let-node pTemplate="person">
+                        <div class="node-header p-corner-top">{{node.label}}</div>
+                        <div class="node-content">
+                            <div>{{node.data.name}}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-node pTemplate="department">
+                        {{node.label}}
+                    </ng-template>
+                </p-organizationChart>
+            </div>
+        </div>
     </p-card>
 </div>
 
 
 
 
-<div *ngIf="FailureModePatternTree" id ="ScrollToFCATree" class="col-md-12" style="overflow: scroll;">
+<div *ngIf="FailureModePatternTree" id="ScrollToFCATree" class="col-md-12" style="overflow: scroll;">
     <small class="form-text text-muted"><h5>Add FCA for {{PatternFMName}}</h5></small>
     <p-organizationChart [value]="FCAdata1" selectionMode="single" styleClass="company">
         <ng-template let-node pTemplate="person">
@@ -693,31 +687,31 @@
                 <div class="row">
                     <div class="row col-md-12">
                         <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 1')" pTooltip=" " tooltipPosition="right" >
-                                <canvas id="pattern1"></canvas>    
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 1')" pTooltip=" " tooltipPosition="right">
+                                <canvas id="pattern1"></canvas>
                             </div>
                         </div>
                         <div class="col-md-2">
-                              <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 2')" pTooltip=" Depicts age related Failure resulting from detrioins process, but their are still considerable differences in the behaviour of any two components subject to the same nominal stress" tooltipPosition="right">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 2')" pTooltip=" Depicts age related Failure resulting from detrioins process, but their are still considerable differences in the behaviour of any two components subject to the same nominal stress"
+                                tooltipPosition="right">
                                 <canvas id="pattern2"></canvas>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 3')"  pTooltip=" Has stedily increasing failuer probability,but no single pointer
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 3')" pTooltip=" Has stedily increasing failuer probability,but no single pointer
                             where it can be said the component wears out.Faituge failuer, bloKage of filters and flow of turbine efficiency reduction
                             through the dirt accumlation are example. The slope of the curve is governed by the Weibull scale parameter ranging from days to decade." tooltipPosition="right">
                                 <canvas id="pattern3"></canvas>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 4')"  pTooltip=" " tooltipPosition="right">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 4')" pTooltip=" " tooltipPosition="right">
                                 <canvas id="pattern4"></canvas>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 5')"  pTooltip=" It is for random failuer.This means that the probability that an item will fail in any of iterval of time is same is the same as in other.
-                            Random failuer is charactersized by an exponcial survival distribution and constatnt probability of failuer, so their is no age at which scheduled rework or scheduled discard is appropriate."
-                             tooltipPosition="right">
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 5')" pTooltip=" It is for random failuer.This means that the probability that an item will fail in any of iterval of time is same is the same as in other.
+                            Random failuer is charactersized by an exponcial survival distribution and constatnt probability of failuer, so their is no age at which scheduled rework or scheduled discard is appropriate." tooltipPosition="right">
                                 <canvas id="pattern5"></canvas>
                             </div>
                         </div>
@@ -762,14 +756,14 @@
             <div>
                 <!-- <button label="Next" type="button" (click)="PatternBack()" class="btn btn-dark">Back</button>
                 <button label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark">ADD</button> -->
-           
+
                 <button class="btn btn-dark" (click)="PatternBack()" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top">
                     <i class="fas fa-arrow-left"></i>
                 </button>
                 <button *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="PatternAdd()" pTooltip=" Click To add the Patterns" tooltipPosition="top">
                     <i class="fas fa-arrow-right"></i>
                 </button>
-           
+
             </div>
         </ng-template>
     </p-card>
@@ -778,7 +772,7 @@
 
 
 
-<div *ngIf="FCAViewEnabled" >
+<div *ngIf="FCAViewEnabled">
     <p-card>
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAView()" pTooltip="Delete" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
@@ -791,8 +785,8 @@
                 </div>
             </div>
             <div class="col-md-3"></div>
-        </div>   
-       
+        </div>
+
         <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -800,7 +794,7 @@
                     <div>{{node.data.name}}</div>
                 </div>
             </ng-template>
-            <ng-template let-node pTemplate="department"  id ="FCATreeShow">
+            <ng-template let-node pTemplate="department" id="FCATreeShow">
                 {{node.label}}
             </ng-template>
         </p-organizationChart>
