@@ -50,7 +50,7 @@
 
 .edit-org-bttn {
     color: white;
-    background: black;
+    background: green;
     cursor: pointer;
     position: absolute;
     right: 1px;
@@ -60,21 +60,21 @@
     // font-size: 1px;
     padding: 2px;
 }
+
 :host ::ng-deep .p-organizationchart {
     .StylePattern {
         padding: 0;
         border: 0 none;
-        background-color: rgb(108, 212, 219) 
+        background-color: rgb(108, 212, 219)
     }
     .StylePattern1 {
         padding: 0;
         border: 0 none;
-        background-color: rgb(245, 148, 172) 
+        background-color: rgb(245, 148, 172)
     }
     .StylePattern2 {
         padding: 0;
         border: 0 none;
-        background-color: rgb(212, 218, 211) 
+        background-color: rgb(212, 218, 211)
     }
-
 }
