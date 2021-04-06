@@ -706,9 +706,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   SaveConsequences() {
 
+    var temp: string = JSON.stringify(this.data1Clone)
+    var temp2 = JSON.parse(temp)
     this.isNewEntity = false
     this.data1[0].children[0].children.forEach((res: any) => {
-      res.Consequence = this.data1Clone
+      res.Consequence = temp2
     })
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
@@ -1693,62 +1695,36 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
         || this.Pattern === 'Pattern 6')
         && this.PatternPath != "") {
-        var path;
+        var path, pattern
         if (this.Pattern === 'Pattern 2' && this.PatternPath == "1") {
-          path = {
-            Node1: 'StylePattern1',
-            Node2: 'StylePattern1',
-            Node5: 'StylePattern1',
-            AnsNode2P1: 'StylePattern1'
-          }
+          path = 1;
+          pattern = 'Pattern 2'
         } else if (this.Pattern === 'Pattern 2' && this.PatternPath == "2") {
-          path = {
-            Node1: 'StylePattern2',
-            Node3: 'StylePattern2',
-            Node6: 'StylePattern2',
-            AnsNode2P2: 'StylePattern2'
-          }
-
+          path = 2;
+          pattern = 'Pattern 2'
         } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "1") {
-          path = {
-            Node1: 'StylePattern1',
-            Node2: 'StylePattern1',
-            Node5: 'StylePattern1',
-            AnsNode3P1: 'StylePattern1'
-          }
+          path = 1;
+          pattern = 'Pattern 3'
 
         } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "2") {
-          path = {
-            Node1: 'StylePattern2',
-            Node3: 'StylePattern2',
-            Node6: 'StylePattern2',
-            Node8: 'StylePattern2',
-            AnsNode3P2: 'StylePattern2'
-          }
+          path = 2;
+          pattern = 'Pattern 3'
 
         } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "1") {
-          path = {
-            Node1: 'StylePattern1',
-            Node2: 'StylePattern1',
-            Node4: 'StylePattern1',
-            Node7: 'StylePattern1',
-            AnsNode6P1: 'StylePattern1'
-          }
+          path = 1;
+          pattern = 'Pattern 6'
         } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
-          path = {
-            Node1: 'StylePattern2',
-            Node3: 'StylePattern2',
-            Node6: 'StylePattern2',
-            Node8: 'StylePattern2',
-            AnsNode6P2: 'StylePattern2'
-          }
+          path = 2;
+          pattern = 'Pattern 6'
         }
-        var FCATree = {
+
+        var FCATreeClone = {
           label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
           type: "person",
           styleClass: 'p-person',
-          edit: true,
+          editFCA: true,
           expanded: true,
+          pattern: pattern,
           nodePath: path,
           data: { name: "FCA" },
           children: [
@@ -1763,6 +1739,21 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             }
           ]
         }
+  
+  
+  
+        var FCATree = {
+          label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+          type: "person",
+          styleClass: 'p-person',
+          viewFCA: true,
+          FCAData: FCATreeClone,
+          nodePath: path,
+          pattern: pattern,
+          data: { name: "FCA" }
+        }
+  
+  
 
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
@@ -1793,44 +1784,33 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
       } else {
         this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
+
       }
 
     } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
 
       if (this.Pattern === 'Pattern 1') {
-        path = {
-          Node1: 'StylePattern',
-          Node3: 'StylePattern',
-          AnsNode1: 'StylePattern'
-        }
+        path = 0;
+        pattern = 'Pattern 1'
 
       } else if (this.Pattern === 'Pattern 4') {
-        path = {
-          Node1: 'StylePattern',
-          Node2: 'StylePattern',
-          Node4: 'StylePattern',
-          AnsNode4: 'StylePattern'
-        }
+        path = 0;
+        pattern = 'Pattern 4'
 
       } else if (this.Pattern === 'Pattern 5') {
-        path = {
-          Node1: 'StylePattern',
-          Node2: 'StylePattern',
-          Node4: 'StylePattern',
-          Node7: 'StylePattern',
-          AnsNode5: 'StylePattern'
-        }
+        path = 0;
+        pattern = 'Pattern 5'
 
       }
-
-
-      var FCATree1 = {
+      
+      var FCATree1Clone = {
         label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
         type: "person",
         styleClass: 'p-person',
-        edit: true,
+        editFCA: true,
         expanded: true,
         nodePath: path,
+        pattern: pattern,
         data: { name: "FCA" },
         children: [
           {
@@ -1843,6 +1823,19 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             }
           }
         ]
+      }
+
+
+
+      var FCATree1 = {
+        label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+        type: "person",
+        styleClass: 'p-person',
+        viewFCA: true,
+        FCAData: FCATree1Clone,
+        nodePath: path,
+        pattern: pattern,
+        data: { name: "FCA" }
       }
 
 
@@ -1864,6 +1857,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
         this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
+
       }
       this.PatternCounter = this.PatternCounter + 1
       if (this.PatternCounter == this.data1[0].children[0].children[0].children.length) {
@@ -1929,9 +1923,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   public SaveFCAEnable: boolean = false
   SaveFCA() {
+    var temp1: string = JSON.stringify(this.data1Clone)
+    var temp3 = JSON.parse(temp1)
     var centrifugalPumpOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
     this.data1[0].children[0].children.forEach((res: any) => {
-      res.FCA = this.data1Clone
+      res.FCA = temp3
     })
     centrifugalPumpOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
     centrifugalPumpOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
@@ -1975,23 +1971,14 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
   SelectNodeToView(p){
+    this.FCAView = []
+    this.FCAView.push(p.FCAData)
+    this.FCAViewEnabled = true
+    this.changeDetectorRef.detectChanges();
+    this.GetChartToView(this.FCAView[0].children[0].data.name)
     const element = document.querySelector("#FCATreeShow")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-    var indexOfFCA = p.label - 1;
-    this.FCAView = []
-    var i = 0;
-    this.data1[0].children[0].children[0].children[indexOfFCA].children.forEach((res: any) => {
-      if (i == 1) {
-        res.expanded = true;
-        this.FCAView.push(res)
-        this.FCAViewEnabled = true
-        this.changeDetectorRef.detectChanges();
-        this.GetChartToView(p.children[0].data.name)
-       
-      }
-      i = i + 1;
-    });
   }
 
 

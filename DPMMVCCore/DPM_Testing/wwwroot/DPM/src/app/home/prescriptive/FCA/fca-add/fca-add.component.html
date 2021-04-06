@@ -8,7 +8,7 @@
         <p-organizationChart [value]="data1" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
-                <a class="edit-org-bttn" *ngIf ="node.edit !== undefined && node.edit"  (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                <a class="edit-org-bttn" *ngIf ="node.viewFCA !== undefined && node.viewFCA"  (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i class="fa fa-eye" aria-hidden="true"></i></a>
                 <div class="node-content">
                     <div class="a">{{node.data.name}}</div>
                 </div>

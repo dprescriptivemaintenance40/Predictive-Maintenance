@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescriptive-model';
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
+import * as Chart from 'chart.js';
 
 @Component({
   selector: 'app-prescriptive-update',
@@ -137,6 +138,38 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public ChangeConsequenceforUpdate: boolean = false;
   public ColoredTreeForUpdate: boolean = false;
   public UpdateColorTreeEnable: boolean = false;
+
+  public FCAViewEnabled : boolean = false
+  public FCAViewTreeEnabled : boolean = false
+  public FCAView:any;
+  public FCAPatternTree : any;
+  public FCAdata1: any;
+  public PattenNode1: string;
+  public PattenNode2: string;
+  public PattenNode4: string;
+  public PattenAnsNode4: string;
+  public PattenNode7: string;
+  public PattenAnsNode6P1: string;
+  public PattenAnsNode5: string;
+  public PattenNode5: string;
+  public PattenAnsNode3P1: string;
+  public PattenAnsNode2P1: string;
+  public PattenNode3: string;
+  public PattenAnsNode1: string;
+  public PattenNode6: string;
+  public PattenAnsNode2P2: string;
+  public PattenNode8: string;
+  public PattenAnsNode6P2: string;
+  public PattenAnsNode3P2: string;
+  public Pattern: string;
+  public PatternPathEnable : boolean = false;
+  public PatternPath: string;
+  public FailureModePatternTree : boolean = false;
+  public FCAChangeData : any
+  public PatternBack: string;
+  private nodePath : number = 0;
+  public AddFMPatternAddEnable : boolean = false;
+  public UpdatePatternAddEnable : boolean = false;
  
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
@@ -212,12 +245,12 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FailureModediv.style.display = 'block'
     this.IndexCount = p.label
     var FM = p.data.name
-    var LE = p.children[0].data.name
-    var SE = p.children[1].data.name
+    var LE = p.children[0].children[0].data.name
+    var SE = p.children[0].children[1].data.name
     this.UpdateFailureMode = p.data.name
-    this.UpdateFailureModeLocalEffect = p.children[0].data.name
-    this.UpdateFailureModeSystemEffect = p.children[1].data.name
-    this.UpdateFailureModeConsequence = p.children[2].data.name
+    this.UpdateFailureModeLocalEffect = p.children[0].children[0].data.name
+    this.UpdateFailureModeSystemEffect = p.children[0].children[1].data.name
+    this.UpdateFailureModeConsequence = p.children[0].children[2].data.name
     this.EditFailureModeInsideTree = this.UpdateFailureMode 
     this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.forEach(element => {
       if (element.FunctionMode == FM && element.LocalEffect == LE && element.SystemEffect == SE) {
@@ -435,31 +468,36 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   SaveFailureModeUpdate() {
     this.FailureModediv.style.display = 'none'
     var i = this.IndexCount - 1
-    var local = this.data1[0].children[0].children[0].children[i].children[0].data.name
-    var system = this.data1[0].children[0].children[0].children[i].children[1].data.name
-    var consequence = this.data1[0].children[0].children[0].children[i].children[2].data.name
+    var local = this.data1[0].children[0].children[0].children[i].children[0].children[0].data.name
+    var system = this.data1[0].children[0].children[0].children[i].children[0].children[1].data.name
+    var consequence = this.data1[0].children[0].children[0].children[i].children[0].children[2].data.name
 
     this.data1[0].children[0].children[0].children.forEach(element => {
       if (element.data.name == this.EditFailureModeInsideTree
-        && element.children[0].data.name == local
-        && element.children[1].data.name == system
-        && element.children[2].data.name == consequence) {
+        && element.children[0].children[0].data.name == local
+        && element.children[0].children[1].data.name == system
+        && element.children[0].children[2].data.name == consequence) {
 
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[element.label - 1].children[0].data.name = this.UpdateFailureModeLocalEffect
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[element.label - 1].children[1].data.name = this.UpdateFailureModeSystemEffect
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[element.label - 1].children[2].data.name = this.UpdateFailureModeConsequence
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[element.label - 1].data.name = this.UpdateFailureMode
+       
         element.data.name = this.UpdateFailureMode
-        element.children[0].data.name = this.UpdateFailureModeLocalEffect
-        element.children[1].data.name = this.UpdateFailureModeSystemEffect
-        element.children[2].data.name = this.UpdateFailureModeConsequence
+        element.children[0].children[0].data.name = this.UpdateFailureModeLocalEffect
+        element.children[0].children[1].data.name = this.UpdateFailureModeSystemEffect
+        element.children[0].children[2].data.name = this.UpdateFailureModeConsequence
 
       }
     });
     this.data2[0].children[0].children[0].children.forEach(element => {
       if (element.data.name == this.EditFailureModeInsideTree
-        && element.children[0].data.name == local
-        && element.children[1].data.name == system) {
+        && element.children[0].children[0].data.name == local
+        && element.children[0].children[1].data.name == system) {
 
         element.data.name = this.UpdateFailureMode
-        element.children[0].data.name = this.UpdateFailureModeLocalEffect
-        element.children[1].data.name = this.UpdateFailureModeSystemEffect
+        element.children[0].children[0].data.name = this.UpdateFailureModeLocalEffect
+        element.children[0].children[1].data.name = this.UpdateFailureModeSystemEffect
 
       }
     });
@@ -546,7 +584,41 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     if (this.dropedMode.length > 0) {
       this.LSFailureMode = this.dropedMode[0].Description
       var index = this.FMTree.length
-      var Add = {
+      var AddFMEA = {
+        label: index + 1,
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: { name: this.LSFailureMode },
+        children: [
+          {
+            label: index + 1,
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: { name: 'FMEA' },
+            children: []
+          }
+        ]
+      }
+      var AddFCA = {
+        label: index + 1,
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: { name: this.LSFailureMode },
+        children: [
+          {
+            label: index + 1,
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: { name: 'FCA' },
+            children: []
+          }
+        ]
+      }
+      var FMEA = {
         label: index + 1,
         type: "person",
         styleClass: "p-person",
@@ -554,7 +626,55 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         data: { name: this.LSFailureMode },
         children: []
       }
-      this.data1[0].children[0].children[0].children.push(Add)
+
+      var FCAFMEA = {
+        label: index + 1,
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: { name: this.LSFailureMode },
+        children: []
+      }
+      
+      var FCATreeClone = {
+        label: index + 1,
+        type: "person",
+        styleClass: 'p-person',
+        editFCA: true,
+        expanded: true,
+        nodePath: 0,
+        pattern: "pattern",
+        data: { name: "FCA" },
+        children: [
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.Pattern
+            }
+          }
+        ]
+      }
+
+
+
+      var FCATree = {
+        label: index + 1,
+        type: "person",
+        styleClass: 'p-person',
+        viewFCA: true,
+        FCAData: FCATreeClone,
+        nodePath: 0,
+        pattern: 1,
+        data: { name: "FCA" }
+      }
+
+      this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children.push(FMEA)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.push(FCAFMEA)
+      this.data1[0].children[0].children[0].children.push(AddFMEA)
+      this.data1[0].children[0].children[0].children[index].children.push(FCATree)
       var temp: any = this.data1
       this.data1 = []
       this.data1 = temp
@@ -612,8 +732,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       }
 
-      this.data1[0].children[0].children[0].children[index - 1].children.push(LNode)
-      this.data1[0].children[0].children[0].children[index - 1].children.push(ENode)
+      this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(LNode)
+      this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(ENode)
+      this.data1[0].children[0].children[0].children[index - 1].children[0].children.push(LNode)
+      this.data1[0].children[0].children[0].children[index - 1].children[0].children.push(ENode)
       this.UpdatedFailureModeWithLSETree = JSON.stringify(this.data1)
       this.LSEdiv.style.display = 'none'
 
@@ -636,14 +758,16 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         name: this.finalConsequence
       }
     }
-    this.data1[0].children[0].children[0].children[index - 1].children.push(CNode)
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(CNode)
+    this.data1[0].children[0].children[0].children[index - 1].children[0].children.push(CNode)
     this.Consequences1 = false
     this.Consequences2 = false
     this.Consequences3 = false
     this.Consequences4 = false
-    this.prescriptiveTree = true
+    this.prescriptiveTree = false
     this.ConsequencesTree = false;
-    this.FinalUpdate = true;
+    this.FinalUpdate = false;
+    this.FailureModePatternTree = true;
     this.FinalDelete = true
     this.ConsequenceTreeADDConsequenceEnable = false
     this.AddFailureMode = false;
@@ -656,6 +780,134 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.consequenceC = 'p-person'
     this.consequenceD = 'p-person'
     this.consequenceE = 'p-person'
+    this.Pattern = ""
+    this.PatternPath = ""
+    this.changeDetectorRef.detectChanges();
+    this.PattenNode1 = 'p-person'
+    this.PattenNode2 = 'p-person'
+    this.PattenNode3 = 'p-person'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode5 = 'p-person'
+    this.PattenNode6 = 'p-person'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode1 = 'p-person'
+    this.PattenAnsNode2P2 = 'p-person'
+    this.PattenAnsNode2P1 = 'p-person'
+    this.PattenAnsNode3P1 = 'p-person'
+    this.PattenAnsNode3P2 = 'p-person'
+    this.PattenAnsNode4 = 'p-person'
+    this.PattenAnsNode5 = 'p-person'
+    this.PattenAnsNode6P1 = 'p-person'
+    this.PattenAnsNode6P2 = 'p-person'
+    this.AddFMPatternAddEnable = true;
+    this.UpdatePatternAddEnable = false;
+    this.changeDetectorRef.detectChanges();
+    this.PatternTree()
+    this.GetChartData();
+    
+  }
+
+  AddPatternToNewFM(){
+    if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
+      if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
+        || this.Pattern === 'Pattern 6')
+        && this.PatternPath != "") {
+        var path, pattern
+        if (this.Pattern === 'Pattern 2' && this.PatternPath == "1") {
+          path = 1;
+          pattern = 'Pattern 2'
+        } else if (this.Pattern === 'Pattern 2' && this.PatternPath == "2") {
+          path = 2;
+          pattern = 'Pattern 2'
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "1") {
+          path = 1;
+          pattern = 'Pattern 3'
+
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "2") {
+          path = 2;
+          pattern = 'Pattern 3'
+
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "1") {
+          path = 1;
+          pattern = 'Pattern 6'
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
+          path = 2;
+          pattern = 'Pattern 6'
+        }
+
+        var Pattern=  {
+              label: "Pattern",
+              type: "person",
+              styleClass: "p-person",
+              expanded: true,
+              data: {
+                name: this.Pattern
+              }
+        }
+
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children.push(Pattern)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].pattern = this.Pattern;
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].nodePath = path;  
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.nodePath = path
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.pattern = this.Pattern
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.children[0].data.name = this.Pattern
+        this.prescriptiveTree = true
+        this.FinalUpdate = true;
+        this.FailureModePatternTree = false;
+        this.PatternPath = ""
+        this.Pattern = ""
+        this.AddFMPatternAddEnable = false;
+        this.UpdatePatternAddEnable = false;
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
+
+      }
+
+    } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
+
+      if (this.Pattern === 'Pattern 1') {
+        path = 0;
+        pattern = 'Pattern 1'
+
+      } else if (this.Pattern === 'Pattern 4') {
+        path = 0;
+        pattern = 'Pattern 4'
+
+      } else if (this.Pattern === 'Pattern 5') {
+        path = 0;
+        pattern = 'Pattern 5'
+
+      }
+      
+      var Pattern2nd=  {
+        label: "Pattern",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.Pattern
+        }
+  }
+      
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children.push(Pattern2nd)
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[0].pattern = this.Pattern;
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[0].nodePath = path;  
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.nodePath = path
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.pattern = this.Pattern
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.children[0].data.name = this.Pattern
+      this.prescriptiveTree = true
+      this.FinalUpdate = true;
+      this.FailureModePatternTree = false;
+      this.PatternPath = ""
+      this.Pattern = ""
+      this.AddFMPatternAddEnable = false;
+      this.UpdatePatternAddEnable = false;
+    }
+    else {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
+
+    }
   }
 
   UpdateChanges() {
@@ -676,7 +928,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     Data['AttachmentDBPath'] = this.ADDUpdatedAttachmentInFMDBPath
     Data['AttachmentFullPath'] = this.ADDUpdatedAttachmentInFMFullPath
     Data['Remark'] = this.Remark
-
+    Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].pattern
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
     this.Remark = ""
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
@@ -1257,6 +1509,693 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     const element = document.querySelector("#ScrollUpdateTree4")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+
+  
+
+ async SelectNodeToView(p){
+    this.PatternBack = p.pattern;
+    this.nodePath = p.nodePath;
+    this.FCAViewEnabled = true
+    this.FCAViewTreeEnabled = true
+    this.FCAView = []
+    this.FCAView.push(p.FCAData)
+    this.FCAViewEnabled = true
+    this.FCAViewTreeEnabled = true
+    this.changeDetectorRef.detectChanges();
+    await this.GetChartToView(this.FCAView[0].children[0].data.name)
+    this.ColorPatternTreUpdate(p.pattern, p.nodePath)
+    const element = document.querySelector("#SelectedPath")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  }
+
+  ColorPatternTreUpdate(value , nodePath){
+    this.Pattern = value;
+    this.changeDetectorRef.detectChanges();
+    this.PattenNode1 = 'p-person'
+    this.PattenNode2 = 'p-person'
+    this.PattenNode3 = 'p-person'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode5 = 'p-person'
+    this.PattenNode6 = 'p-person'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode1 = 'p-person'
+    this.PattenAnsNode2P2 = 'p-person'
+    this.PattenAnsNode2P1 = 'p-person'
+    this.PattenAnsNode3P1 = 'p-person'
+    this.PattenAnsNode3P2 = 'p-person'
+    this.PattenAnsNode4 = 'p-person'
+    this.PattenAnsNode5 = 'p-person'
+    this.PattenAnsNode6P1 = 'p-person'
+    this.PattenAnsNode6P2 = 'p-person'
+
+    if (value === 'Pattern 1') {
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'p-person'
+      this.PattenNode3 = 'StylePattern'
+      this.PattenNode4 = 'p-person'
+      this.PattenNode5 = 'p-person'
+      this.PattenNode6 = 'p-person'
+      this.PattenNode7 = 'p-person'
+      this.PattenNode8 = 'p-person'
+      this.PattenAnsNode1 = 'StylePattern'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+    } else if (value === 'Pattern 2') {
+      if(nodePath == 1){
+        this.PattenNode1 = 'StylePattern1'
+        this.PattenNode2 = 'StylePattern1'
+        this.PattenNode5 = 'StylePattern1'
+        this.PattenAnsNode2P1 = 'StylePattern1'
+      }
+      if(nodePath == 2){
+      this.PattenNode1 = 'StylePattern2'
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode4 = 'p-person'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode7 = 'p-person'
+      this.PattenNode8 = 'p-person'
+      this.PattenAnsNode2P2 = 'StylePattern2'
+      }
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+
+
+    } else if (value === 'Pattern 3') {
+      if(nodePath == 1){
+      this.PattenNode1 = 'StylePattern1'
+      this.PattenNode2 = 'StylePattern1'
+      this.PattenNode5 = 'StylePattern1'
+      this.PattenAnsNode3P1 = 'StylePattern1'
+      }
+      if(nodePath == 2){
+      this.PattenNode1 = 'StylePattern2'
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode8 = 'StylePattern2'
+      this.PattenAnsNode3P2 = 'StylePattern2'
+      }
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+
+    } else if (value === 'Pattern 4') {
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern'
+      this.PattenNode4 = 'StylePattern'
+      this.PattenAnsNode4 = 'StylePattern'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+    } else if (value === 'Pattern 5') {
+      this.PattenNode1 = 'StylePattern'
+      this.PattenNode2 = 'StylePattern'
+      this.PattenNode4 = 'StylePattern'
+      this.PattenNode7 = 'StylePattern'
+      this.PattenAnsNode5 = 'StylePattern'
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+    } else if (value === 'Pattern 6') {
+      if(nodePath == 1){
+      this.PattenNode1 = 'StylePattern1'
+      this.PattenNode2 = 'StylePattern1'
+      this.PattenNode4 = 'StylePattern1'
+      this.PattenNode7 = 'StylePattern1'
+      this.PattenAnsNode6P1 = 'StylePattern1'
+      }
+      if(nodePath == 2){
+      this.PattenNode1 = 'StylePattern2'
+      this.PattenNode3 = 'StylePattern2'
+      this.PattenNode6 = 'StylePattern2'
+      this.PattenNode8 = 'StylePattern2'
+      this.PattenAnsNode6P2 = 'StylePattern2'
+      }
+      this.changeDetectorRef.detectChanges();
+      this.PatternTree()
+
+    } 
+  }
+
+ SelectNodeToEdit(p){
+
+ }
+
+ CloseFCAUpdateView(){
+  this.FCAViewEnabled = false
+  this.FCAViewTreeEnabled = false
+  // const element = document.querySelector("#prescriptive")
+  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+}
+
+UpdatePattern(){
+  this.FCAViewTreeEnabled = false
+  this.FailureModePatternTree = true
+  this.AddFMPatternAddEnable = false;
+  this.UpdatePatternAddEnable = true;
+  this.changeDetectorRef.detectChanges();
+  this.GetChartData();
+}
+ 
+ GetChartToView(p : string){
+  this.FCAViewEnabled = true
+  if (p == 'Pattern 1') {
+    const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+    this.getChartTree(patternLabel1, patternData1, 'ViewPattern',p);
+  } else if (p == 'Pattern 2') {
+    const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+    this.getChartTree(patternLabel2, patternData2, 'ViewPattern',p);
+  } else if (p == 'Pattern 3') {
+    const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+    this.getChartTree(patternLabel3, patternData3, 'ViewPattern',p);
+  } else if (p == 'Pattern 4') {
+    const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+    this.getChartTree(patternLabel4, patternData4,'ViewPattern',p);
+  } else if (p == 'Pattern 5') {
+    const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+    const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+    this.getChartTree(patternLabel5, patternData5, 'ViewPattern',p);
+  } else if (p == 'Pattern 6') {
+    const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+    this.getChartTree(patternLabel6, patternData6, 'ViewPattern', p);
+  }
+}
+
+
+private getChartTree(labels: any[], data: any[], id: string, title: string) {
+  let patternCharts = new Chart(id, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Time',
+        data: data,
+        fill: true,
+        borderColor: '#2196f3',
+        backgroundColor: '#2196f3',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      elements: {
+        point: {
+          radius: 0
+        }
+      },
+      title: {
+        display: true,
+        text: title
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [{
+          ticks: {
+            beginAtZero: true,
+            display: false
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Time'
+          }
+        }],
+        yAxes: [{
+          gridLines: {
+            display: true,
+            color: 'rgba(219,219,219,0.3)',
+            zeroLineColor: 'rgba(219,219,219,0.3)',
+            drawBorder: false,
+            lineWidth: 27,
+            zeroLineWidth: 1
+          },
+          ticks: {
+            beginAtZero: true,
+            display: false
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Failure probability'
+          }
+        }]
+      }
+    }
+  });
+  this.changeDetectorRef.detectChanges();
+}
+
+
+PatternTree() {
+ var Abc = [
+    {
+      label: "Pattern",
+      type: "person",
+      styleClass: this.PattenNode1,
+      // node:"Node1",
+      expanded: true,
+      data: { name: "Are Failures caused by wear elments" },
+      children: [
+        {
+          label: "No",
+          type: "person",
+          styleClass: this.PattenNode2,
+          // node:"Node2",
+          expanded: true,
+          data: {
+            name:
+              "Are failures caused by envrionmental chemical or stress reaction?"
+          },
+          children: [
+            {
+              label: "No",
+              type: "person",
+              styleClass: this.PattenNode4,
+              // node:"Node4",
+              expanded: true,
+              data: {
+                name:
+                  "Are failures mostly random with only a few early life failures"
+              },
+              children: [
+                {
+                  label: "Yes",
+                  type: "person",
+                  styleClass: this.PattenAnsNode4,
+                  expanded: true,
+                  data: {
+                    name: "Pattern 4"
+                  }
+                },
+                {
+                  label: "No",
+                  type: "person",
+                  styleClass: this.PattenNode7,
+                  // node:"Node7",
+                  expanded: true,
+                  data: {
+                    name:
+                      "Do more failures Occur Shortly after Installation repair or overhaul"
+                  },
+                  children: [
+                    {
+                      label: "Yes",
+                      type: "person",
+                      styleClass: this.PattenAnsNode6P1,
+                      expanded: true,
+                      data: {
+                        name: "Pattern 6"
+                      }
+                    },
+                    {
+                      label: "No",
+                      type: "person",
+                      styleClass: this.PattenAnsNode5,
+                      expanded: true,
+                      data: {
+                        name: "Pattern 5"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              label: "Yes",
+              type: "person",
+              styleClass: this.PattenNode5,
+              // node:"Node5",
+              expanded: true,
+              data: {
+                name:
+                  "Do failures increase steadily with time but without a discernable sudden increase?"
+              },
+              children: [
+                {
+                  label: "Yes",
+                  type: "person",
+                  styleClass: this.PattenAnsNode3P1,
+                  expanded: true,
+                  data: {
+                    name: "Pattern 3"
+                  }
+                },
+                {
+                  label: "No",
+                  type: "person",
+                  styleClass: this.PattenAnsNode2P1,
+                  expanded: true,
+                  data: {
+                    name: "Pattern 2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: "Yes",
+          type: "person",
+          styleClass: this.PattenNode3,
+          // node:"Node3",
+          expanded: true,
+          data: {
+            name:
+              "Are failures a combination Of early life random and late life"
+          },
+          children: [
+            {
+              label: "Yes",
+              type: "person",
+              styleClass: this.PattenAnsNode1,
+              expanded: true,
+              data: {
+                name: "Pattern 1"
+              }
+            },
+            {
+              label: "No",
+              type: "person",
+              styleClass: this.PattenNode6,
+              // node:"Node6",
+              expanded: true,
+              data: {
+                name:
+                  "Do high Percentage failures occuer at a reasonably consistent age"
+              },
+              children: [
+                {
+                  label: "Yes",
+                  type: "person",
+                  styleClass: this.PattenAnsNode2P2,
+                  expanded: true,
+                  data: {
+                    name: "Pattern 2"
+                  }
+                },
+                {
+                  label: "No",
+                  type: "person",
+                  styleClass: this.PattenNode8,
+                  expanded: true,
+                  data: {
+                    name:
+                      "Do more failures Occur Shortly after Installation repair or overhaul"
+                  },
+                  children: [
+                    {
+                      label: "Yes",
+                      type: "person",
+                      styleClass: this.PattenAnsNode6P2,
+                      expanded: true,
+                      data: {
+                        name: "Pattern 6"
+                      }
+                    },
+                    {
+                      label: "No",
+                      type: "person",
+                      styleClass: this.PattenAnsNode3P2,
+                      expanded: true,
+                      data: {
+                        name: "Pattern 3"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ];
+  this.FCAdata1 = Abc
+  this.FCAChangeData = Abc
+}
+
+private GetChartData() {
+  const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+  const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+  this.getChartTree(patternLabel1, patternData1, 'pattern1', 'Pattern 1');
+
+  const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+  const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+  this.getChartTree(patternLabel2, patternData2, 'pattern2', 'Pattern 2');
+
+  const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+  const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+  this.getChartTree(patternLabel3, patternData3, 'pattern3', 'Pattern 3');
+
+  const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+  const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+  this.getChartTree(patternLabel4, patternData4, 'pattern4', 'Pattern 4');
+
+  const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+  const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+  this.getChartTree(patternLabel5, patternData5, 'pattern5', 'Pattern 5');
+
+  const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+  const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+  this.getChartTree(patternLabel6, patternData6, 'pattern6', 'Pattern 6');
+}
+
+PatternUpdateBack(){
+  this.FailureModePatternTree = false;
+  this.FCAViewTreeEnabled = true
+  this.ColorPatternTreUpdate(this.PatternBack, this.nodePath )
+}
+PatternUpdateAdd(){
+  this.FCAView[0].children[0].data.name = this.Pattern
+  this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].pattern = this.Pattern
+  this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 0
+  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[0].data.name = this.Pattern
+  this.FCAView[0].pattern = this.Pattern
+  this.FCAView[0].nodePath = 0
+  this.EnabledPatternUpdate = true;
+  this.AddFMPatternAddEnable = false;
+  this.UpdatePatternAddEnable = false;
+  if (this.Pattern == 'Pattern 1') {
+    const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+    this.getChartTree(patternLabel1, patternData1, 'ViewPattern',this.Pattern);
+  } else if (this.Pattern == 'Pattern 2') {
+    const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+    this.getChartTree(patternLabel2, patternData2, 'ViewPattern',this.Pattern);
+  } else if (this.Pattern == 'Pattern 3') {
+    const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+    this.getChartTree(patternLabel3, patternData3, 'ViewPattern',this.Pattern);
+  } else if (this.Pattern == 'Pattern 4') {
+    const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+    this.getChartTree(patternLabel4, patternData4,'ViewPattern',this.Pattern);
+  } else if (this.Pattern == 'Pattern 5') {
+    const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+    const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+    this.getChartTree(patternLabel5, patternData5, 'ViewPattern', this.Pattern);
+  } else if (this.Pattern == 'Pattern 6') {
+    const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+    const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+    this.getChartTree(patternLabel6, patternData6, 'ViewPattern', this.Pattern);
+  }
+  if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
+    if(this.PatternPath == '1'){
+      this.ColorPatternTreUpdate(this.Pattern, 1)
+      this.FCAView[0].nodePath = 1
+      this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 1
+    }else if(this.PatternPath == '2'){
+        this.ColorPatternTreUpdate(this.Pattern, 2)
+        this.FCAView[0].nodePath = 2
+        this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 2
+    }
+   
+  }else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
+    this.ColorPatternTreUpdate(this.Pattern, 0)
+  }
+  this.FailureModePatternTree = false;
+  this.FCAViewTreeEnabled = true
+}
+
+public EnabledPatternUpdate : boolean = false
+SaveUpdatedPattern(){
+    var CPObj : CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+    CPObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId;
+    CPObj.FMWithConsequenceTree = JSON.stringify(this.data1)
+    var FM, LE, SE, Con
+
+    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach(element => {
+      if(element.data.name == FM && element.label == this.FCAView[0].label){
+        element.children[0].data.name = this.Pattern
+      }
+    })
+    
+    this.data1[0].children[0].children[0].children.forEach(element => {
+            if(element.label == this.FCAView[0].label ){
+               FM = element.data.name
+               LE = element.children[0].children[0].data.name
+               SE = element.children[0].children[1].data.name
+               Con = element.children[0].children[2].data.name
+            }
+    });
+
+    this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.forEach(element => {
+          if(element.FunctionMode == FM && element.LocalEffect == LE && element.SystemEffect == SE && element.Consequence == Con){
+            element.Pattern = this.Pattern
+            CPObj.centrifugalPumpPrescriptiveFailureModes.push(element)
+          }
+    });
+
+    this.http.put('api/PrescriptiveAPI/UpdatePrespectivePattern', CPObj).subscribe(
+      res => {
+        this.router.navigateByUrl('/Home/Prescriptive/List')
+      }, err => { console.log(err.error)}
+    )
+
+    
+}
+
+SelectPatternForFailureMode(value: string) {
+  this.Pattern = value;
+  this.changeDetectorRef.detectChanges();
+  this.PattenNode1 = 'p-person'
+  this.PattenNode2 = 'p-person'
+  this.PattenNode3 = 'p-person'
+  this.PattenNode4 = 'p-person'
+  this.PattenNode5 = 'p-person'
+  this.PattenNode6 = 'p-person'
+  this.PattenNode7 = 'p-person'
+  this.PattenNode8 = 'p-person'
+  this.PattenAnsNode1 = 'p-person'
+  this.PattenAnsNode2P2 = 'p-person'
+  this.PattenAnsNode2P1 = 'p-person'
+  this.PattenAnsNode3P1 = 'p-person'
+  this.PattenAnsNode3P2 = 'p-person'
+  this.PattenAnsNode4 = 'p-person'
+  this.PattenAnsNode5 = 'p-person'
+  this.PattenAnsNode6P1 = 'p-person'
+  this.PattenAnsNode6P2 = 'p-person'
+  this.PatternPathEnable = false
+
+  if (value === 'Pattern 1') {
+    this.PattenNode1 = 'StylePattern'
+    this.PattenNode2 = 'p-person'
+    this.PattenNode3 = 'StylePattern'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode5 = 'p-person'
+    this.PattenNode6 = 'p-person'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode1 = 'StylePattern'
+    this.changeDetectorRef.detectChanges();
+    this.PatternTree()
+
+  } else if (value === 'Pattern 2') {
+    this.PatternPathEnable = true
+    this.PattenNode2 = 'StylePattern1'
+    this.PattenNode5 = 'StylePattern1'
+    this.PattenAnsNode2P1 = 'StylePattern1'
+
+    this.PattenNode1 = 'StylePattern'
+    this.PattenNode3 = 'StylePattern2'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode6 = 'StylePattern2'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode2P2 = 'StylePattern2'
+    this.changeDetectorRef.detectChanges();
+    this.PatternTree()
+
+
+
+  } else if (value === 'Pattern 3') {
+    this.PatternPathEnable = true
+    this.PattenNode1 = 'StylePattern'
+    this.PattenNode2 = 'StylePattern1'
+    this.PattenNode5 = 'StylePattern1'
+    this.PattenAnsNode3P1 = 'StylePattern1'
+    this.PattenNode3 = 'StylePattern2'
+    this.PattenNode6 = 'StylePattern2'
+    this.PattenNode8 = 'StylePattern2'
+    this.PattenAnsNode3P2 = 'StylePattern2'
+    this.changeDetectorRef.detectChanges();
+    this.PatternTree()
+
+
+  } else if (value === 'Pattern 4') {
+    this.PattenNode1 = 'StylePattern'
+    this.PattenNode2 = 'StylePattern'
+    this.PattenNode4 = 'StylePattern'
+    this.PattenAnsNode4 = 'StylePattern'
+    this.changeDetectorRef.detectChanges();
+    this.PatternTree()
+
+  } else if (value === 'Pattern 5') {
+    this.PattenNode1 = 'StylePattern'
+    this.PattenNode2 = 'StylePattern'
+    this.PattenNode4 = 'StylePattern'
+    this.PattenNode7 = 'StylePattern'
+    this.PattenAnsNode5 = 'StylePattern'
+    this.changeDetectorRef.detectChanges();
+    this.PatternTree()
+
+  } else if (value === 'Pattern 6') {
+    this.PatternPathEnable = true
+    this.PattenNode1 = 'StylePattern'
+    this.PattenNode2 = 'StylePattern1'
+    this.PattenNode4 = 'StylePattern1'
+    this.PattenNode7 = 'StylePattern1'
+    this.PattenAnsNode6P1 = 'StylePattern1'
+
+    this.PattenNode3 = 'StylePattern2'
+    this.PattenNode6 = 'StylePattern2'
+    this.PattenNode8 = 'StylePattern2'
+    this.PattenAnsNode6P2 = 'StylePattern2'
+
+    this.changeDetectorRef.detectChanges();
+    this.PatternTree()
+
+  } else if (value === "") {
+    this.PattenNode1 = 'p-person'
+    this.PattenNode2 = 'p-person'
+    this.PattenNode3 = 'p-person'
+    this.PattenNode4 = 'p-person'
+    this.PattenNode5 = 'p-person'
+    this.PattenNode6 = 'p-person'
+    this.PattenNode7 = 'p-person'
+    this.PattenNode8 = 'p-person'
+    this.PattenAnsNode1 = 'p-person'
+    this.PattenAnsNode2P2 = 'p-person'
+    this.PattenAnsNode2P1 = 'p-person'
+    this.PattenAnsNode3P1 = 'p-person'
+    this.PattenAnsNode3P2 = 'p-person'
+    this.PattenAnsNode4 = 'p-person'
+    this.PattenAnsNode5 = 'p-person'
+    this.PattenAnsNode6P1 = 'p-person'
+    this.PattenAnsNode6P2 = 'p-person'
+    this.PatternPathEnable = false
+    this.Pattern = ""
+    this.PatternPath = ""
+    this.changeDetectorRef.detectChanges();
+  }
+
+  // const element = document.querySelector("#ScrollToFCATree")
+  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+}
+
+
 
   dragStartC1(e, con1) {
     this.droppedYesNo = con1;
