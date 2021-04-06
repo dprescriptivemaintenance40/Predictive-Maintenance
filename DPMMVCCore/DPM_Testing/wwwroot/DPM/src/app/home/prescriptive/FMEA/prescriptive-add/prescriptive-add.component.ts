@@ -12,6 +12,7 @@ import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as Chart from 'chart.js';
+import { OverlayPanel } from "primeng/overlaypanel";
 @Component({
   selector: 'app-prescriptive-add',
   templateUrl: './prescriptive-add.component.html',
