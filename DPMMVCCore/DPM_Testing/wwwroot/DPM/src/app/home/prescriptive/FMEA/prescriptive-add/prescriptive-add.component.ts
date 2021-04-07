@@ -163,6 +163,28 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public FCAView: any;
 
 
+
+  public EDCC: string = ""
+  public ComponentRef: string = ""
+  public FailuerModeRef: string = ""
+  public CompiledBy: string = ""
+
+  public FewHours: string = "";
+  public Weeks: string = "";
+  public Month: string = "";
+  public TwoMonth: string = "";
+  public SixMonth: string = "";
+  public OneYear: string = "";
+  public TwoYear: string = "";
+
+  public FailuerRateMonth: string = "";
+  public FailuerRateThreeMonth: string = "";
+  public FailuerRateSixMonth: string = "";
+  public FailuerRateTwoYear: string = "";
+  public FailuerRateFiveYear: string = "";
+
+
+
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
@@ -2113,7 +2135,23 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.changeDetectorRef.detectChanges();
   }
 
+  FailuerDone(){
 
+  }
+
+  FailuerRate2(){
+
+  }
+  FailuerOccuer(){
+
+  }
+  FailuerWarning(){
+
+  }
+
+  FailuerDetectWarning5(){
+    
+  }
 }
 
 
