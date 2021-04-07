@@ -577,7 +577,9 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.getDropDownLookMasterData();
     this.FMdiv = document.getElementById("FailureModeUpdate")
     this.FMdiv.style.display = 'block'
-
+    this.FailureModePatternTree = false;
+    this.FCAViewTreeEnabled = false;
+    this.FCAViewEnabled = false;
   }
 
   ADDSingleFailureModeToTree() {
@@ -1510,9 +1512,12 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  
+  PatternUpdateCancel(){
+    this.FailureModePatternTree = false;
+  }
 
  async SelectNodeToView(p){
+    this.FailureModePatternTree = false
     this.PatternBack = p.pattern;
     this.nodePath = p.nodePath;
     this.FCAViewEnabled = true
@@ -1523,10 +1528,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FCAViewTreeEnabled = true
     this.changeDetectorRef.detectChanges();
     await this.GetChartToView(this.FCAView[0].children[0].data.name)
-    this.ColorPatternTreUpdate(p.pattern, p.nodePath)
+    await this.ColorPatternTreUpdate(p.pattern, p.nodePath)
     const element = document.querySelector("#SelectedPath")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
+    this.GetChartData();
   }
 
   ColorPatternTreUpdate(value , nodePath){

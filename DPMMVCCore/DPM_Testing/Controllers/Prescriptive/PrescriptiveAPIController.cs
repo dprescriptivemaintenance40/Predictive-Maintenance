@@ -559,6 +559,7 @@ namespace DPM.Controllers.Prescriptive
                 recycleChild.AttachmentDBPath = FailuerMode.AttachmentDBPath;
                 recycleChild.AttachmentFullPath = FailuerMode.AttachmentFullPath;
                 recycleChild.Remark = FailuerMode.Remark;
+                recycleChild.Pattern = FailuerMode.Pattern;
                 recycleChild.IsDeleted = 1;
                 recycleChild.DeletedFMTree = obj.FunctionFailure;
 

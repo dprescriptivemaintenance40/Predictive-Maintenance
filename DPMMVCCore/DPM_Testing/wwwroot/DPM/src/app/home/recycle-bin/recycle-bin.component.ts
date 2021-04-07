@@ -111,6 +111,7 @@ export class RecycleBinComponent implements OnInit {
           obj['AttachmentDBPath'] = data.AttachmentDBPath;
           obj['AttachmentFullPath'] = data.AttachmentFullPath;
           obj['Remark'] = data.Remark;
+          obj['Pattern'] = data.Pattern;
           this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
           this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = DataToRestore.CFPPrescriptiveId;
           this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = FMWithConsequenceTree
@@ -184,6 +185,7 @@ export class RecycleBinComponent implements OnInit {
         obj['AttachmentDBPath'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath;
         obj['AttachmentFullPath'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath;
         obj['Remark'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].Remark;
+        obj['Pattern'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].Pattern;
 
         this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj);
       }
