@@ -668,8 +668,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         styleClass: 'p-person',
         viewFCA: true,
         FCAData: FCATreeClone,
-        nodePath: 0,
-        pattern: 1,
         data: { name: "FCA" }
       }
 
@@ -930,7 +928,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     Data['AttachmentDBPath'] = this.ADDUpdatedAttachmentInFMDBPath
     Data['AttachmentFullPath'] = this.ADDUpdatedAttachmentInFMFullPath
     Data['Remark'] = this.Remark
-    Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].pattern
+    Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.children[0].data.name
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
     this.Remark = ""
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
@@ -1326,6 +1324,14 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
     var abc2 = FailureModeWithLSETree[0].children[0].children[0].children
     var index3 = abc2.findIndex(std => std.data.name == this.DeleteFMDataFromTree.data.name);
+
+    var FMEAList =  this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children
+    var index5 = FMEAList.findIndex(std => std.data.name == this.DeleteFMDataFromTree.data.name);
+    this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children.splice(index5,1)
+
+    var FCAList =  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children
+    var index6 = FCAList.findIndex(std => std.data.name == this.DeleteFMDataFromTree.data.name);
+    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.splice(index6,1)
 
     FailureModeWithLSETree[0].children[0].children[0].children.splice(index3, 1);
 
