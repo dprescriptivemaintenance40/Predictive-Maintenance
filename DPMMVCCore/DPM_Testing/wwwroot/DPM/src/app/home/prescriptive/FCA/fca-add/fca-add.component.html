@@ -138,3 +138,319 @@
         </p-organizationChart>
     </p-card>
 </div>
+
+
+<div *ngIf="FailureModePatternTree1">
+    <div class="card" style="margin: 20px;">
+    <p-card>
+        <ng-template pTemplate="title">
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is.If the equipmentwere left alone
+                for a period of time, would you expect this failuer to have happened.tick one box for each period with your estimate of how 
+                likely the failuer is.
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Period</th>
+                    <th scope="col">Failuer unlikely</th>
+                    <th scope="col">About events</th>
+                    <th scope="col">Failuer very likely</th>
+                    <th scope="col">Dont know</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>1 Month</td>
+                    <td><input type="checkbox"  name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>3 Month</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>6 Month</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>2 year</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>5 year</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                </tbody><br>
+              <button class="btn btn-dark" style="float:right;" (click)="FailuerRate2()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>  
+              </table>
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b>3. Are their any prior warnings before the failuer occure? Tick all that apply.
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm"><br>
+                    <p-card>
+                   Vibration<br>
+                   <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                  <div class="col-sm"><br>
+                    <p-card>
+                    Noice<br>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Leakage<br>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Performance drop<br>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Temprature Change<br>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    </p-card></div><br>
+                </div><br>
+               
+                <div class="row">
+                    <div class="col-sm-2"><br>
+                        <p-card>
+                        Emmision changes<br>
+                        <td><input type="checkbox" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm-2"><br>
+                        <p-card>
+                        Increase Lubricant Consumption<br>
+                        <td><input type="checkbox" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm-2"><br>
+                        <p-card>
+                        Other(give details)<br>
+                        <td><input type="checkbox" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm-2"> </div>
+                       <div class="col-sm-2"> </div>
+                  </div>
+                  <button class="btn btn-dark" style="float:right;" (click)="FailuerOccuer()"> <i class="fa fa-check" aria-hidden="true"></i>save</button><br>
+              </div><br>
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+     
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b>4. If their are any warning signs, can they be monitored? if so, how?
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                   Human Senses<br>
+                   <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </div></div>
+                  <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Existing instumentation(portable or fixed)<br>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    New instumentation(portable or fixed)<br>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Process Condtions<br>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Sample Anyalysis<br>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                   </div></div>  
+                </div><br> 
+                <button class="btn btn-dark" style="float:right;" (click)="FailuerWarning()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            </div><br>
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+     
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b>5. What is the likely interval between detacting a warning sign and the failuer happening? Tick the boxes that apply.
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Period</th>
+                    <th scope="col">Failuer unlikely</th>
+                    <th scope="col">About events</th>
+                    <th scope="col">Failuer very likely</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Few hours or days</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>1-2 Weeks</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>1 Month</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>2-3 Months</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>6 Months</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                  <th scope="row">5</th>
+                    <td>1 year</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>2-5 year</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" name="name1" />&nbsp;</td>
+                </tr>
+                </tbody><br>
+                <button class="btn btn-dark" style="float:right;" (click)="FailuerDetectWarning5()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+              </table>
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b>6. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-sm">
+                    Yes <td><input type="checkbox" name="name1" />&nbsp;</td>
+                </div>
+                <div class="col-sm">      
+                    No <td><input type="checkbox" name="name1" />&nbsp;</td>
+                </div>
+                <div class="col-sm"></div> 
+            </div>
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b >7. Some of the failuer cannot avoided by maintenance e.g; nail is just as likely puncture a new tyre or an old one
+                so no overhaul or a replacement is effective against failuer. Would planned replacement or refurbishment
+                maintainace prevent or mitigate this failuer Mode?
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-sm">
+                    Yes <td><input type="checkbox" name="name1" />&nbsp;</td>
+                </div>
+                <div class="col-sm">      
+                    No <td><input type="checkbox" name="name1" />&nbsp;</td>
+                </div>
+                <div class="col-sm"></div>
+            </div>
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+     
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b> 8. Do you have any comments regarding the failuer of this equipment or how the maintainace of the equipment
+                could be improved
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <textarea class="form-control custom-textarea"  id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
+        </ng-template>
+    </p-card>
+    </div>
+</div> 
+

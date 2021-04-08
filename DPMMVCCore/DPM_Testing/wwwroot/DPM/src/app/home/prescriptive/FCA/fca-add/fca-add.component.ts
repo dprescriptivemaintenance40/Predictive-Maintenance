@@ -22,6 +22,7 @@ export class FCAADDComponent implements OnInit {
   public PatternPathEnable: boolean = false;
   public PatternNextOnPrescriptiveTree: boolean = false;
   public FailureModePatternTree: boolean = false;
+  public FailureModePatternTree1: boolean = false;
   public PattenNode1: string;
   public PattenNode2: string;
   public PattenNode4: string;
@@ -47,6 +48,30 @@ export class FCAADDComponent implements OnInit {
   public data1: any;
   public data1Clone: any;
   public CFPPrescriptiveId: number = 0;
+
+
+  
+  public EDCC: string = ""
+  public ComponentRef: string = ""
+  public FailuerModeRef: string = ""
+  public CompiledBy: string = ""
+
+  public FewHours: string = "";
+  public Weeks: string = "";
+  public Month: string = "";
+  public TwoMonth: string = "";
+  public SixMonth: string = "";
+  public OneYear: string = "";
+  public TwoYear: string = "";
+
+  public FailuerRateMonth: string = "";
+  public FailuerRateThreeMonth: string = "";
+  public FailuerRateSixMonth: string = "";
+  public FailuerRateTwoYear: string = "";
+  public FailuerRateFiveYear: string = "";
+
+
+
 
   constructor(private messageService: MessageService,
     public title: Title,
@@ -484,7 +509,7 @@ export class FCAADDComponent implements OnInit {
   ADDFMToFCA() {
     this.prescriptiveTree = false
     this.FailureModePatternTree = true
-
+    this.FailureModePatternTree1 = true
     this.PattenNode1 = 'p-person'
     this.PattenNode2 = 'p-person'
     this.PattenNode3 = 'p-person'
@@ -513,6 +538,7 @@ export class FCAADDComponent implements OnInit {
   PatternBack() {
     this.prescriptiveTree = true
     this.FailureModePatternTree = false
+    this.FailureModePatternTree1 = false
     if (this.PatternCounter == 0) {
       this.PatternNextOnPrescriptiveTree = true;
     }
@@ -607,6 +633,7 @@ export class FCAADDComponent implements OnInit {
           this.SaveFCAEnable = true
         }
         this.FailureModePatternTree = false;
+        this.FailureModePatternTree1 = false;
         this.prescriptiveTree = true
         this.PatternPath = ""
 
@@ -693,6 +720,7 @@ export class FCAADDComponent implements OnInit {
         this.SaveFCAEnable = true
       }
       this.FailureModePatternTree = false;
+      this.FailureModePatternTree1 = false;
       this.prescriptiveTree = true
     }
     else {
@@ -744,6 +772,7 @@ export class FCAADDComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
     this.PatternPathEnable = false
     this.FailureModePatternTree = true
+    this.FailureModePatternTree1 = true
     this.changeDetectorRef.detectChanges();
     this.GetChartData();
   }
@@ -846,6 +875,33 @@ public FCAViewEnabled : boolean = false
     const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
+  }
+
+  
+  FailuerDone(){
+
+  }
+
+  FailuerRate2(){
+
+  }
+  FailuerOccuer(){
+
+  }
+  FailuerWarning(){
+
+  }
+
+  FailuerDetectWarning5(){
+    
+  }
+
+  FailuerPrevent(){
+
+  }
+
+  FailuerInspection(){
+    
   }
 
 }

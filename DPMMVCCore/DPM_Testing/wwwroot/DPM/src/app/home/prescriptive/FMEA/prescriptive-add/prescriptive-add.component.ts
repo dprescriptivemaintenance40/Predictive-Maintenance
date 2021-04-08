@@ -152,6 +152,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public EditdbPath: string = "";
   public EditdbPathURL: SafeUrl;
   public ADDdbPathURL: SafeUrl;
+
   public extensionPDF: boolean = false;
   public extensionAddImage: boolean = false;
   public extensionAddPDF: boolean = false;
@@ -162,29 +163,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public FCAViewEnabled : boolean = false;
   public FCAView: any;
 
-
-
-  public EDCC: string = ""
-  public ComponentRef: string = ""
-  public FailuerModeRef: string = ""
-  public CompiledBy: string = ""
-
-  public FewHours: string = "";
-  public Weeks: string = "";
-  public Month: string = "";
-  public TwoMonth: string = "";
-  public SixMonth: string = "";
-  public OneYear: string = "";
-  public TwoYear: string = "";
-
-  public FailuerRateMonth: string = "";
-  public FailuerRateThreeMonth: string = "";
-  public FailuerRateSixMonth: string = "";
-  public FailuerRateTwoYear: string = "";
-  public FailuerRateFiveYear: string = "";
-
-
-
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
@@ -192,8 +170,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef) { }
-
-
 
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {

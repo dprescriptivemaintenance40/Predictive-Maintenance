@@ -143,6 +143,19 @@
                             <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea>
                         </div>
                     </div>
+                    <div class="div-in-middle" *ngIf="tree[0].pdfPath">
+                        <label for="file" class="custom-label">Uploaded File</label>
+                        <div id="file ">
+                            <a href={{tree[0].pdfPath}} download> Download Attachments </a>
+                        </div>
+                    </div>
+                    <div *ngIf="tree[0].pdfRemark" class="div-in-middle">
+                        <label for="remark" class="custom-label"> PDF Remark</label>
+                        <div id="remark">
+                            <span *ngIf="hide">{{tree[0].pdfRemark}}</span>
+                            <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].pdfRemark}}</textarea>
+                        </div>
+                    </div>
                     <div style="page-break-before: always;"></div>
                 </div>
             </div>
@@ -150,6 +163,7 @@
         </div>
     </div>
 </div>
+<!-- 
 <div *ngIf="ReportSelect1" class="card" style="margin: 20px;">
     <div>
         <h5><b>Attachments & Remarks </b></h5>
@@ -160,6 +174,6 @@
                  Remark: {{AR.Remark}}
               <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a>
                </tr>
-           </span>
+        </span>
     </div>
-</div>
+</div> -->

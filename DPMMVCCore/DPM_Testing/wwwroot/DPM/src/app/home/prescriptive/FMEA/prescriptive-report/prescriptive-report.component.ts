@@ -67,16 +67,20 @@ export class PrescriptiveReportComponent implements OnInit {
       for (let index = 0; index < this.attachmentRemark.length; index++) {
         if (res.data.name == this.attachmentRemark[index].FunctionMode) {
           var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
-          if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
-            res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
-            res.Remark = this.attachmentRemark[index].Remark
-          } else {
+          if(extn.toLowerCase() == 'pdf') {
             let obj = {}
             obj['FM'] = res.data.name;
             obj['Remark'] = this.attachmentRemark[index].Remark;
             obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
             this.PDFURL.push(obj)
           }
+          if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
+            res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
+            res.Remark = this.attachmentRemark[index].Remark
+          }else if( extn.toLowerCase() == 'pdf'){
+            res.pdfPath = `${this.BrowserURl}${this.attachmentRemark[index].AttachmentDBPath}`;
+            res.pdfRemark = this.attachmentRemark[index].Remark
+          } 
         }
       }
       this.AnnexuresTreeList.push([res]);
@@ -100,10 +104,7 @@ export class PrescriptiveReportComponent implements OnInit {
     } else if (extension.toLowerCase() == 'pdf') {
       this.ImageEnable = false;
     }
-
     console.log(extension)
-
-
   }
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
@@ -173,6 +174,16 @@ export class PrescriptiveReportComponent implements OnInit {
     this.hide = false;
     this.change.detectChanges();
   }
+
+// downloadFile(data) {
+//   const blob = new Blob([data], { type: 'application/pdf' });
+//   const url= window.URL.createObjectURL(blob);
+//   //window.open(url);
+//   printJS({
+//     printable: url,
+//     type: 'pdf',
+//   })
+//  }
 
   saveByteArray(reportName, byte) {
     var blob = new Blob([byte], { type: "application/pdf" });
