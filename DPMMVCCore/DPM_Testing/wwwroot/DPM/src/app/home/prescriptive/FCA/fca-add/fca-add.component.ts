@@ -51,10 +51,10 @@ export class FCAADDComponent implements OnInit {
 
 
   
-  public EDCC: string = ""
-  public ComponentRef: string = ""
-  public FailuerModeRef: string = ""
-  public CompiledBy: string = ""
+  public FailuerVeryLikely: string = ""
+  public FailuerVeryLikelyFFA: string = ""
+  public FailuerVeryUnlikelyFFA: string = ""
+ 
 
   public FewHours: string = "";
   public Weeks: string = "";

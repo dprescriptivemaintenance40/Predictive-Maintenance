@@ -143,70 +143,22 @@
 <div *ngIf="FailureModePatternTree1">
     <div class="card" style="margin: 20px;">
     <p-card>
-        <ng-template pTemplate="title">
-        </ng-template>
         <ng-template pTemplate="subtitle">
-            <p><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is.If the equipmentwere left alone
-                for a period of time, would you expect this failuer to have happened.tick one box for each period with your estimate of how 
-                likely the failuer is.
-            </b></p>
-        </ng-template>
-        <ng-template pTemplate="content">
-            <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Period</th>
-                    <th scope="col">Failuer unlikely</th>
-                    <th scope="col">About events</th>
-                    <th scope="col">Failuer very likely</th>
-                    <th scope="col">Dont know</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>1 Month</td>
-                    <td><input type="checkbox"  name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>3 Month</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>6 Month</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>2 year</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>5 year</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                </tbody><br>
-              <button class="btn btn-dark" style="float:right;" (click)="FailuerRate2()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>  
-              </table>
+            <div class="input-group mb-3">
+                <label><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is.If the equipmentwere left alone
+                    for a period of time, would you expect this failuer to have happened.</b></label>
+                    <div class="div-in-middle">
+                        <select [(ngModel)]="FailuerVeryLikely" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                        <option value="">Failuer very likely</option>
+                            <option value="Fewhoursordays" selected> Few hours or days</option>
+                            <option value="1Month" selected>1 Month</option>
+                            <option value="2Month" selected>2 Month</option>
+                            <option value="6Month" selected>6 Month</option>
+                            <option value="2year" selected>2 year</option>
+                            <option value="5year" selected>5 year</option>
+                        </select>
+                    </div>
+            </div>
         </ng-template>
     </p-card>
     </div>
@@ -274,9 +226,6 @@
     </div>
     <div class="card" style="margin: 20px;">
     <p-card >
-        <ng-template pTemplate="title">
-     
-        </ng-template>
         <ng-template pTemplate="subtitle">
             <p><b>4. If their are any warning signs, can they be monitored? if so, how?
             </b></p>
@@ -317,84 +266,41 @@
     </div>
     <div class="card" style="margin: 20px;">
     <p-card >
-        <ng-template pTemplate="title">
-     
-        </ng-template>
         <ng-template pTemplate="subtitle">
-            <p><b>5. What is the likely interval between detacting a warning sign and the failuer happening? Tick the boxes that apply.
-            </b></p>
-        </ng-template>
-        <ng-template pTemplate="content">
-            <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Period</th>
-                    <th scope="col">Failuer unlikely</th>
-                    <th scope="col">About events</th>
-                    <th scope="col">Failuer very likely</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Few hours or days</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>1-2 Weeks</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>1 Month</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>2-3 Months</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>6 Months</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                  <th scope="row">5</th>
-                    <td>1 year</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>2-5 year</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                    <td><input type="checkbox" name="name1" />&nbsp;</td>
-                </tr>
-                </tbody><br>
-                <button class="btn btn-dark" style="float:right;" (click)="FailuerDetectWarning5()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
-              </table>
+            <div class="input-group mb-3">
+                <label><b>5. What is the likely interval between detacting a warning sign and the failuer happening?</b></label>   
+                       <div class="div-in-middle">
+                            <label><b>Failuer very likely</b></label>
+                            <select [(ngModel)]="FailuerVeryLikelyFFA" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                                <option value="">Failuer very likely</option>
+                                <option value="Fewhoursordays" selected> Few hours or days</option>
+                                <option value="Weeks" selected>1-2 Weeks</option>
+                                <option value="1Month" selected>1 Month</option>
+                                <option value="2Month" selected>2-3 Months</option>
+                                <option value="6Month" selected>6 Month</option>
+                                <option value="1year" selected>1 year</option>
+                                <option value="5year" selected>2-5 year</option>
+                            </select>
+                         </div>
+                         <div class="div-in-middle">
+                                <label><b>Failuer very Unlikely</b></label>
+                                <select [(ngModel)]="FailuerVeryUnlikelyFFA" class="form-select"  class="form-control" placeholder="Failuer very Unlikely">
+                                    <option value="">Failuer very Unlikely</option>
+                                    <option value="Fewhoursordays" selected> Few hours or days</option>
+                                    <option value="Weeks" selected>1-2 Weeks</option>
+                                    <option value="1Month" selected>1 Month</option>
+                                    <option value="2Month" selected>2-3 Months</option>
+                                    <option value="6Month" selected>6 Month</option>
+                                    <option value="1year" selected>1 year</option>
+                                    <option value="5year" selected>2-5 year</option>
+                                </select>
+                        </div>
+            </div>
         </ng-template>
     </p-card>
     </div>
     <div class="card" style="margin: 20px;">
     <p-card >
-        <ng-template pTemplate="title">
-        </ng-template>
         <ng-template pTemplate="subtitle">
             <p><b>6. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
             </b></p>
