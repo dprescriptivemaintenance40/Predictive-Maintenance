@@ -578,7 +578,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Failure Modes' });
     }
   }
-  ADDFailuerEffect() {
+ async ADDFailuerEffect() {
     //&& this.dbPath.length > 0 
     if (this.failuerModeLocalEffects !== ''
       && this.failuerModeSystemEffects !== '' && this.DownTimeFactor !== 0
@@ -647,7 +647,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     } else {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields' });
     }
-
   }
 
   UPDATEFailuerEffect() {
@@ -749,7 +748,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.PatternNextOnPrescriptiveTree = true;
       }, err => { console.log(err.err) }
     )
-
   }
 
   treeSave() {
@@ -921,7 +919,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.prescriptiveEffect = true;
     this.prescriptiveEffect1 = true
     this.prescriptiveTree = false;
-
   }
 
 

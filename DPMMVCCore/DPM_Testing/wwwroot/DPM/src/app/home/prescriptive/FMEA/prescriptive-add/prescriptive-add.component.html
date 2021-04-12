@@ -278,7 +278,7 @@
     </div>
 </div>
 
-<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
+<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow" id="scrollTop">
     <p-card>
         <ng-template pTemplate="title">
             Factors
@@ -375,7 +375,7 @@
     <p-card [style]="{overflow: scroll}">
         <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
         <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
-        <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top"> <i class="fas fa-arrow-right"></i></button>
+        <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top"><i class="pi pi-plus">Consequences</i></button>
         <button *ngIf="SaveConcequencesEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#Consequences01" data-toggle="modal"> Save Consequences</button>
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
         <button *ngIf="!(Pattern == '')" label="Back" type="button" style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button><br>
