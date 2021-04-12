@@ -62,13 +62,13 @@ export class FCAADDComponent implements OnInit {
   public FailuerMaintenance: boolean = false
   public FailuerComments: boolean = false
 
-  failuerrate = true
-  failurewarning = true
-  warningsign= true
-  intervaldeteacting = true
-  failuerevident = true
-  failuermaintenance = true
-  failuercomments = true
+ public failuerrate: boolean  = true
+ public failurewarning: boolean  = true
+ public warningsign: boolean = true
+ public intervaldeteacting: boolean  = true
+ public failuerevident: boolean  = true
+ public failuermaintenance: boolean  = true
+ public failuercomments: boolean  = true
  
   constructor(private messageService: MessageService,
     public title: Title,
@@ -549,8 +549,12 @@ export class FCAADDComponent implements OnInit {
     this.FailuerMaintenance = true
     this.FailuerComments = true
     this.FailureModePatternTree = true
+
+    this.changeDetectorRef.detectChanges()
+    this.failuerrate = !this.failuerrate; 
     const element = document.querySelector("#PatternTree2")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
   }
 
   PatternAdd() {
@@ -615,7 +619,7 @@ export class FCAADDComponent implements OnInit {
               styleClass: 'p-person',
               expanded: true,
               data: {
-                name: this.FCAInterval
+                name: `${this.FCAInterval}${" "}${"Hours"}`
               }
             },
             {
@@ -624,7 +628,7 @@ export class FCAADDComponent implements OnInit {
               styleClass: 'p-person',
               expanded: true,
               data: {
-                name: this.FCAFFInterval
+                name: `${this.FCAFFInterval}${" "}${"Hours"}`
               }
             }
             
@@ -670,7 +674,27 @@ export class FCAADDComponent implements OnInit {
         this.SampleAnyalysis = ""
         this.CommentFIEYN = ""
         this.CommentFIEYN2 = ""
-        
+        this.interval = ""
+        this.intervalValue = 0
+        this.ffInterval =""
+        this.ffIntervalValue = 0
+        this.failuerrate = true
+        this.failurewarning = true
+        this.warningsign = true
+        this.intervaldeteacting = true
+        this.failuerevident = true
+        this.failuermaintenance = true
+        this.failuercomments = true
+
+        this.FailuerRate = false
+        this.FailureWarning = false
+        this.WarningSign = false
+        this.IntervalDeteacting = false
+        this.FailuerEvident = false
+        this.FailuerMaintenance = false
+        this.FailuerComments = false
+   
+   
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
           {
@@ -753,7 +777,7 @@ export class FCAADDComponent implements OnInit {
             styleClass: 'p-person',
             expanded: true,
             data: {
-              name: this.FCAInterval
+              name: `${this.FCAInterval}${" "}${"Hours"}`
             }
           },
           {
@@ -762,7 +786,7 @@ export class FCAADDComponent implements OnInit {
             styleClass: 'p-person',
             expanded: true,
             data: {
-              name: this.FCAFFInterval
+              name: `${this.FCAFFInterval}${" "}${"Hours"}`
             }
           }
         ]
@@ -808,6 +832,26 @@ export class FCAADDComponent implements OnInit {
         this.SampleAnyalysis = ""
         this.CommentFIEYN = ""
         this.CommentFIEYN2 = ""
+        this.interval = ""
+        this.intervalValue = 0
+        this.ffInterval =""
+        this.ffIntervalValue = 0
+        this.failuerrate = true
+        this.failurewarning = true
+        this.warningsign = true
+        this.intervaldeteacting = true
+        this.failuerevident = true
+        this.failuermaintenance = true
+        this.failuercomments = true
+
+        this.FailuerRate = false
+        this.FailureWarning = false
+        this.WarningSign = false
+        this.IntervalDeteacting = false
+        this.FailuerEvident = false
+        this.FailuerMaintenance = false
+        this.FailuerComments = false
+   
 
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
@@ -924,10 +968,10 @@ export class FCAADDComponent implements OnInit {
       obj['AttachmentFullPath'] = ""
       obj['Remark'] = ""
       obj['Pattern'] = this.data1Clone[0].children[0].children[0].children[index].children[0].data.name
-      obj['FCACondition'] = this.FCAData[index].FCACondition
+      obj['FCACondition'] = JSON.stringify(this.FCAData[index].FCACondition)
       obj['FCAInterval'] = this.FCAData[index].FCAInterval
       obj['FCAFFI'] = this.FCAData[index].FCAFFI
-      obj['FCAComment'] = this.FCAData[index].FCAComment
+      obj['FCAComment'] = JSON.stringify(this.FCAData[index].FCAComment)
       centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
@@ -1033,10 +1077,15 @@ public FCAViewEnabled : boolean = false
    } else if(this.interval == 'Year'){ 
      this.FCAInterval = this.intervalValue * 365 * 24
    }
-   this.changeDetectorRef.detectChanges()
-   this.failurewarning = !this.failurewarning;
-   const element = document.querySelector("#Patternfailurewarning")
-   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ if(this.interval.length> 0 && this.intervalValue >0){
+  this.changeDetectorRef.detectChanges()
+  this.failurewarning = !this.failurewarning;
+  
+  const element = document.querySelector("#Patternfailurewarning")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ }else{
+  alert("fill the data")
+ }
   }
 
   
@@ -1080,11 +1129,17 @@ public FCAViewEnabled : boolean = false
       this.Other = "Other"
       this.FCACondition.push(this.Other)
     }
-    this.changeDetectorRef.detectChanges()
-    this.warningsign = !this.warningsign;
-
+    if(this.Vibration.length >0 || this.Noice.length > 0 || this.Leakage.length >0 || this. PerformanceDrop.length > 0 || this.TempratureChange.length>0 || this.EmmisionChange.length>0 || this.IncreaseLubricantConsumption.length >0 || this.Other.length > 0){
+      this.changeDetectorRef.detectChanges()
+      this.warningsign = !this.warningsign;
+      
     const element = document.querySelector("#PatternWarningSign")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    else{
+      alert("fill the data")
+    }
+
   }
 
   ConditionSecond(){
@@ -1111,10 +1166,15 @@ public FCAViewEnabled : boolean = false
       this.SampleAnyalysis = "Sample Anyalysis"
       this.FCACondition.push(this.SampleAnyalysis)
     }
-    this.changeDetectorRef.detectChanges()
-    this.intervaldeteacting = !this.intervaldeteacting;    
-    const element = document.querySelector("#PatternIntervalDeteacting")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if(this.HumanSenses.length >0 || this.ExistingInstumentation.length >0 || this.NewInstumentation.length >0|| this.ProcessCondtions.length >0||this.SampleAnyalysis.length >0){
+      this.changeDetectorRef.detectChanges()
+      this.intervaldeteacting = !this.intervaldeteacting;    
+      const element = document.querySelector("#PatternIntervalDeteacting")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }else{
+      alert("fill the data")
+    }
+  
   }
   
   FFInterval(){
@@ -1127,26 +1187,42 @@ public FCAViewEnabled : boolean = false
     } else if(this.ffInterval == 'Year'){ 
       this.FCAFFInterval = this.ffIntervalValue * 365 * 24
     }
-    this.changeDetectorRef.detectChanges()
-    this.failuerevident = !this.failuerevident; 
-    const element = document.querySelector("#PatternFailuerEvident")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+    if(this.ffInterval.length >0 && this.ffIntervalValue >0){
+      this.changeDetectorRef.detectChanges()
+      this.failuerevident = !this.failuerevident; 
+      const element = document.querySelector("#PatternFailuerEvident")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }else{
+      alert("Fill the data")
+    }
+  
   }
 
   CommentThird(){
     this.FCAComment.push(this.CommentFIEYN)
-    this.changeDetectorRef.detectChanges()
-    this.failuermaintenance = !this.failuermaintenance;   
-    const element = document.querySelector("#PatternFailuerMaintenance")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
+    if( this.CommentFIEYN.length>0 && this.CommentFIEYN.length>0){
+      this.changeDetectorRef.detectChanges()
+      this.failuermaintenance = !this.failuermaintenance;   
+      const element = document.querySelector("#PatternFailuerMaintenance")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
+    }else{
+      alert("fill the data")
+    }
+  
   }
 
   CommentFourth(){
     this.FCAComment.push(this.CommentFIEYN2)
-    this.changeDetectorRef.detectChanges()
-    this.failuercomments = !this.failuercomments; 
-    const element = document.querySelector("#PatternFailuerComments")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if( this.CommentFIEYN2.length>0 && this.CommentFIEYN2.length>0){
+      this.changeDetectorRef.detectChanges()
+      this.failuercomments = !this.failuercomments; 
+      const element = document.querySelector("#PatternFailuerComments")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }else{
+      alert("fill the data")
+    }
+ 
   }
 
  async FCAFreeTextSave(){

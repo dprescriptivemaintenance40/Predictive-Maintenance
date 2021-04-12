@@ -2,7 +2,7 @@
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-card>
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
-        <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button>
+        <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()" pTooltip="Select To Add FCA" tooltipPosition="top"><i class="pi pi-plus">Add FCA</i></button>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button>
         <p-organizationChart [value]="data1" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -22,9 +22,7 @@
 
 <div *ngIf="FailureModePatternTree" id="ModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
     <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label>
-    <p-card>
         <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
-    </p-card>
     <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -155,8 +153,8 @@
 </style>
 
 <div *ngIf="FailureModePatternTree" id="PatternTree2">
-    <div class="card" style="margin: 20px;" *ngIf="FailuerRate" [ngClass]="{disableddiv: Pattern ==''}">
-    <p-card >
+    <div class="card" style="margin: 20px;" *ngIf="FailuerRate">
+        <p-card  [ngClass]=" {disableddiv: failuerrate  ? true : false}">
        <ng-template pTemplate="subtitle">
             <p><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone
                 for a period of time, would you expect this failuer to have happened.
@@ -176,8 +174,7 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <button class="btn btn-dark" style="float:right;" (click)="IntervalSave()"> <i class="fa fa-check" aria-hidden="true" ></i>save</button><br>
-        </ng-template>
-             
+        </ng-template>      
     </p-card>
     </div>
     <div class="card" style="margin: 20px;" *ngIf ="FailureWarning" id="Patternfailurewarning">
