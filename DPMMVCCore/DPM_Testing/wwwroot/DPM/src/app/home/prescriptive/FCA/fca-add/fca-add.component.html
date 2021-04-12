@@ -1,7 +1,6 @@
 <p-toast position="top-center"></p-toast>
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-card>
-        <!-- <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()">Add FCA</button> -->
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
         <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button>
@@ -38,7 +37,7 @@
         </ng-template>
     </p-organizationChart>
 
-    <p-card>
+    <p-card >
         <ng-template pTemplate="title">
             Pattern For Failure Mode
         </ng-template>
@@ -105,7 +104,8 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div>
-                <button label="Next" type="button" (click)="PatternBack()" class="btn btn-dark" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
+                <button label="Back" type="button" (click)="PatternBack()" class="btn btn-dark" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
+                <button label="Next"  style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-right"> Save</i></button>
                 
             </div>
         </ng-template>
@@ -147,44 +147,50 @@
         pointer-events: none;
         cursor: default;
         text-decoration: none;
-        background-color: grey !important;
+         opacity: 0.5;
+         padding:1px;
+        background-color:#777  
+       
     }
 </style>
 
-<div *ngIf="FailureModePatternTree">
-    <div class="card" style="margin: 20px;">
-    <p-card [ngClass]="{disableddiv: Pattern ==''}">
-        <ng-template pTemplate="subtitle">
+<div *ngIf="FailureModePatternTree" id="PatternTree2">
+    <div class="card" style="margin: 20px;" *ngIf="FailuerRate" [ngClass]="{disableddiv: Pattern ==''}">
+    <p-card >
+       <ng-template pTemplate="subtitle">
+            <p><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone
+                for a period of time, would you expect this failuer to have happened.
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
             <div class="input-group mb-3">
-                <label><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone
-                    for a period of time, would you expect this failuer to have happened.</b></label>
-                        <select [(ngModel)]="interval" class="form-select"  class="form-control" placeholder="Failuer very likely">
-                        <option value="">Choose</option>
-                            <option value="Days" selected> Days</option>
-                            <option value="Week" selected> Week</option>
-                            <option value="Month" selected>Month</option>
-                            <option value="Year" selected>Year</option>
-                        </select>
-                       <input type="number" [(ngModel)]="intervalValue" name="Interval" class="form-control">        
+                <select [(ngModel)]="interval" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                    <option value="">Choose</option>
+                        <option value="Days" selected> Days</option>
+                        <option value="Week" selected> Week</option>
+                        <option value="Month" selected>Month</option>
+                        <option value="Year" selected>Year</option>
+                    </select>
+                   <input type="number" [(ngModel)]="intervalValue" name="Interval" class="form-control">        
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" style="float:right;" (click)="IntervalSave()"> <i class="fa fa-check" aria-hidden="true"></i>save</button><br>
+            <button class="btn btn-dark" style="float:right;" (click)="IntervalSave()"> <i class="fa fa-check" aria-hidden="true" ></i>save</button><br>
         </ng-template>
              
     </p-card>
     </div>
-    <div class="card" style="margin: 20px;">
-    <p-card >
+    <div class="card" style="margin: 20px;" *ngIf ="FailureWarning" id="Patternfailurewarning">
+    <p-card  [ngClass]=" {disableddiv: failurewarning  ? true : false}">
         <ng-template pTemplate="title">
         </ng-template>
         <ng-template pTemplate="subtitle">
             <p><b>3. Are their any prior warnings before the failuer occure? Tick all that apply.
             </b></p>
         </ng-template>
-        <ng-template pTemplate="content">
+        <ng-template pTemplate="content" >
             <div class="container">
-                <div class="row">
+                <div class="row" >
                     <div class="col-sm"><br>
                     <p-card>
                    Vibration<br>
@@ -238,8 +244,8 @@
         </ng-template>     
     </p-card>
     </div>
-    <div class="card" style="margin: 20px;">
-    <p-card >
+    <div class="card" style="margin: 20px;" *ngIf ="WarningSign" id="PatternWarningSign">
+        <p-card [ngClass]=" {disableddiv: warningsign  ? true : false}">
         <ng-template pTemplate="subtitle">
             <p><b>4. If their are any warning signs, can they be monitored? if so, how?
             </b></p>
@@ -268,21 +274,21 @@
                     <td><input type="checkbox" [(ngModel)]="ProcessCondtions" value="Process Condtions" name="name1" />&nbsp;</td>
                    </div></div>
                    <div class="col-sm"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    Sample Anyalysis<br>
-                    <td><input type="checkbox" [(ngModel)]="SampleAnyalysis" value="Sample Anyalysis" name="name1" />&nbsp;</td>
-                   </div></div>  
-                </div><br> 
-                 </div><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        Sample Anyalysis<br>
+                        <td><input type="checkbox" [(ngModel)]="SampleAnyalysis" value="Sample Anyalysis" name="name1" />&nbsp;</td>
+                    </div>
+                   </div>  
+                </div> 
+          </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" style="float:right;" (click)="ConditionSecond()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
-           
+            <button class="btn btn-dark"  (click)="ConditionSecond()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
-    <div class="card" style="margin: 20px;">
-    <p-card >
+    <div class="card" style="margin: 20px;" *ngIf ="IntervalDeteacting" id="PatternIntervalDeteacting">
+        <p-card [ngClass]=" {disableddiv: intervaldeteacting  ? true : false}" >
         <ng-template pTemplate="subtitle">
             <div class="input-group mb-3">
                 <label><b>5. What is the likely interval between detacting a warning sign and the failuer happening?</b></label>   
@@ -297,13 +303,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" style="float:right;" (click)="FFInterval()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
-           
+            <button class="btn btn-dark" (click)="FFInterval()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
-    <div class="card" style="margin: 20px;">
-    <p-card >
+    <div class="card" style="margin: 20px;" *ngIf ="FailuerEvident" id="PatternFailuerEvident">
+        <p-card [ngClass]=" {disableddiv: failuerevident  ? true : false}" >
         <ng-template pTemplate="subtitle">
             <p><b>6. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
             </b></p>
@@ -321,13 +326,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" style="float:right;" (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
-           
+            <button class="btn btn-dark"  (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button> 
         </ng-template>
     </p-card>
     </div>
-    <div class="card" style="margin: 20px;">
-    <p-card >
+    <div class="card" style="margin: 20px;" *ngIf ="FailuerMaintenance" id="PatternFailuerMaintenance">
+        <p-card [ngClass]=" {disableddiv: failuermaintenance ? true : false}">
         <ng-template pTemplate="title">
         </ng-template>
         <ng-template pTemplate="subtitle">
@@ -350,13 +354,13 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" style="float:right;" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            <button class="btn btn-dark" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
          
         </ng-template>
     </p-card>
     </div>
-    <div class="card" style="margin: 20px;">
-    <p-card >
+    <div class="card" style="margin: 20px;" *ngIf ="FailuerComments" id="PatternFailuerComments">
+        <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}">
         <ng-template pTemplate="title">
      
         </ng-template>
@@ -369,9 +373,9 @@
             <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText"  id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" style="float:left;" (click)="FCAFreeTextCancel()"> <i class="fa fa-check" aria-hidden="true"></i>Cancel</button>
+            <button class="btn btn-dark"  (click)="FCAFreeTextCancel()">Cancel</button>
          
-            <button class="btn btn-dark" style="float:right;" (click)="FCAFreeTextSave()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            <button class="btn btn-dark" style="float:right;" (click)="FCAFreeTextSave()">Save</button>
          
         </ng-template>
     </p-card>

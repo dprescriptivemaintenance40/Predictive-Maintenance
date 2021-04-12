@@ -99,6 +99,11 @@ export class PrescriptiveReportComponent implements OnInit {
     return extension;
   }
 
+  ReportBack(){
+    this.prescriptveReportSelect = true;
+     this.ReportSelect = false
+     //this.ReportSelect1 = false
+  }
   public DownloadPDF() {
     if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
       this.hide = true;

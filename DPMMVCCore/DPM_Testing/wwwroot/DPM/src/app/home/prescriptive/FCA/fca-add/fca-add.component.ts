@@ -48,31 +48,28 @@ export class FCAADDComponent implements OnInit {
   public data1Clone: any;
   public CFPPrescriptiveId: number = 0;
 
-  
-
-  
   public interval: string = ""
   public intervalValue: number = 0;
    
   public ffInterval: string = ""
   public ffIntervalValue: number = 0;
 
-  public FewHours: string = "";
-  public Weeks: string = "";
-  public Month: string = "";
-  public TwoMonth: string = "";
-  public SixMonth: string = "";
-  public OneYear: string = "";
-  public TwoYear: string = "";
+  public FailuerRate: boolean = false
+  public FailureWarning: boolean = false
+  public WarningSign: boolean = false
+  public IntervalDeteacting: boolean = false
+  public FailuerEvident: boolean = false
+  public FailuerMaintenance: boolean = false
+  public FailuerComments: boolean = false
 
-  public FailuerRateMonth: string = "";
-  public FailuerRateThreeMonth: string = "";
-  public FailuerRateSixMonth: string = "";
-  public FailuerRateTwoYear: string = "";
-  public FailuerRateFiveYear: string = "";
-
-
-
+  failuerrate = true
+  failurewarning = true
+  warningsign= true
+  intervaldeteacting = true
+  failuerevident = true
+  failuermaintenance = true
+  failuercomments = true
+ 
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -506,10 +503,9 @@ export class FCAADDComponent implements OnInit {
 
   }
 
-  ADDFMToFCA() {
+  ADDFMToFCA() {  
     this.prescriptiveTree = false
     this.FailureModePatternTree = true
-
     this.PattenNode1 = 'p-person'
     this.PattenNode2 = 'p-person'
     this.PattenNode3 = 'p-person'
@@ -541,6 +537,20 @@ export class FCAADDComponent implements OnInit {
     if (this.PatternCounter == 0) {
       this.PatternNextOnPrescriptiveTree = true;
     }
+  }
+
+  async PatternSave(){
+    this.FailuerRate = true
+    this.FailureWarning = true
+    this.FailureWarning = true
+    this.WarningSign = true
+    this.IntervalDeteacting = true
+    this.FailuerEvident = true
+    this.FailuerMaintenance = true
+    this.FailuerComments = true
+    this.FailureModePatternTree = true
+    const element = document.querySelector("#PatternTree2")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   PatternAdd() {
@@ -1023,7 +1033,10 @@ public FCAViewEnabled : boolean = false
    } else if(this.interval == 'Year'){ 
      this.FCAInterval = this.intervalValue * 365 * 24
    }
-
+   this.changeDetectorRef.detectChanges()
+   this.failurewarning = !this.failurewarning;
+   const element = document.querySelector("#Patternfailurewarning")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   
@@ -1067,8 +1080,11 @@ public FCAViewEnabled : boolean = false
       this.Other = "Other"
       this.FCACondition.push(this.Other)
     }
-    
+    this.changeDetectorRef.detectChanges()
+    this.warningsign = !this.warningsign;
 
+    const element = document.querySelector("#PatternWarningSign")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   ConditionSecond(){
@@ -1095,7 +1111,10 @@ public FCAViewEnabled : boolean = false
       this.SampleAnyalysis = "Sample Anyalysis"
       this.FCACondition.push(this.SampleAnyalysis)
     }
-    
+    this.changeDetectorRef.detectChanges()
+    this.intervaldeteacting = !this.intervaldeteacting;    
+    const element = document.querySelector("#PatternIntervalDeteacting")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
   
   FFInterval(){
@@ -1108,14 +1127,26 @@ public FCAViewEnabled : boolean = false
     } else if(this.ffInterval == 'Year'){ 
       this.FCAFFInterval = this.ffIntervalValue * 365 * 24
     }
+    this.changeDetectorRef.detectChanges()
+    this.failuerevident = !this.failuerevident; 
+    const element = document.querySelector("#PatternFailuerEvident")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   CommentThird(){
     this.FCAComment.push(this.CommentFIEYN)
+    this.changeDetectorRef.detectChanges()
+    this.failuermaintenance = !this.failuermaintenance;   
+    const element = document.querySelector("#PatternFailuerMaintenance")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
   }
 
   CommentFourth(){
     this.FCAComment.push(this.CommentFIEYN2)
+    this.changeDetectorRef.detectChanges()
+    this.failuercomments = !this.failuercomments; 
+    const element = document.querySelector("#PatternFailuerComments")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
  async FCAFreeTextSave(){
