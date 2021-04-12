@@ -57,7 +57,10 @@ namespace DPM.Models.Prescriptive
         public string AttachmentFullPath { get; set; }
         public string Remark { get; set; }
         public string Pattern { get; set; }
-
+        public string FCACondition { get; set; }
+        public int FCAInterval { get; set; }
+        public string FCAFFI { get; set; }
+        public string FCAComment { get; set; }
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
     }
 }

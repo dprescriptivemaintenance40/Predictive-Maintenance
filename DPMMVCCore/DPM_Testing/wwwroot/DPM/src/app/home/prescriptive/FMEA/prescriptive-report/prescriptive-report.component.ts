@@ -4,7 +4,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import html2canvas from 'html2canvas';
 import jspdf, { jsPDF } from 'jspdf';
 import { MessageService } from 'primeng/api';
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument } from 'pdf-lib';
+import * as Chart from 'chart.js';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 
 @Component({
@@ -39,11 +40,14 @@ export class PrescriptiveReportComponent implements OnInit {
   public TypeMethodology: string = "";
   public TypeCurrentandfuture: string = "";
   public ParentAttachmentFile: string = ""
-
+  public ReportRCMType: string = ""
+  public NewTree: any;
+  public FCAPatternEnable: boolean = false
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
     private messageService: MessageService,
+    private changeDetectorRef: ChangeDetectorRef,
     private commonLoadingDirective: CommonLoadingDirective) {
   }
 
@@ -62,25 +66,6 @@ export class PrescriptiveReportComponent implements OnInit {
     this.BrowserURl = window.location.href.split('#')[0]
     this.data.Date = this.datepipe.transform(this.data.Date, 'dd/MM/YYYY')
     var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
-    var NewTree = JSON.parse(this.data.FMWithConsequenceTree)
-    NewTree[0].children[0].children[0].children.forEach((res: any) => {
-      for (let index = 0; index < this.attachmentRemark.length; index++) {
-        if (res.data.name == this.attachmentRemark[index].FunctionMode) {
-          var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
-          if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
-            res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
-            res.Remark = this.attachmentRemark[index].Remark
-          } else {
-            let obj = {}
-            obj['FM'] = res.data.name;
-            obj['Remark'] = this.attachmentRemark[index].Remark;
-            obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
-            this.PDFURL.push(obj)
-          }
-        }
-      }
-      this.AnnexuresTreeList.push([res]);
-    });
     ConsequenceTree[0].children[0].children[0].children = [];
     this.SingleFailuerTree = ConsequenceTree;
     this.data1 = JSON.parse(this.data.FMWithConsequenceTree)
@@ -198,8 +183,10 @@ export class PrescriptiveReportComponent implements OnInit {
       documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
       documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
       documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/Chart.min.css">';
       documentContent += '</head>';
-      documentContent += '<body onload="window.print()">' + printContents + '</body></html>'
+      documentContent += '<body onload="window.print()">' +
+        '<script  src="/dist/DPM/assets/css/Chart.min.js"></script>' + printContents + '</body></html>'
       popupWinindow.document.write(documentContent);
       popupWinindow.document.close();
       this.hide = false;
@@ -218,8 +205,177 @@ export class PrescriptiveReportComponent implements OnInit {
       if (this.PDFURL.length > 0) {
         this.ReportSelect1 = true
       }
+      this.changeDetectorRef.detectChanges();
+      this.GenerateTypeReport();
     } else {
       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Fields are missing' });
     }
   }
+
+  GenerateTypeReport() {
+    this.changeDetectorRef.detectChanges();
+    if (this.ReportRCMType == 'FMEA') {
+      this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
+      // this.NewTree[0].children[0].children[0].children.forEach((res: any) => {
+      this.NewTree[0].children[0].children[0].FMEA[0].children[0].children[0].children.forEach((res: any) => {
+        for (let index = 0; index < this.attachmentRemark.length; index++) {
+          if (res.data.name == this.attachmentRemark[index].FunctionMode) {
+            var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
+            this.FCAPatternEnable = false
+            this.changeDetectorRef.detectChanges()
+            if (extn.toLowerCase() == 'pdf') {
+              let obj = {}
+              obj['FM'] = res.data.name;
+              obj['Remark'] = this.attachmentRemark[index].Remark;
+              obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
+              this.PDFURL.push(obj)
+            }
+
+            if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
+              res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
+              res.Remark = this.attachmentRemark[index].Remark
+            } else if (extn.toLowerCase() == 'pdf') {
+              res.pdfPath = `${this.BrowserURl}${this.attachmentRemark[index].AttachmentDBPath}`;
+              res.pdfRemark = this.attachmentRemark[index].Remark
+            }
+          }
+        }
+        this.AnnexuresTreeList.push([res]);
+      });
+    } else if (this.ReportRCMType == 'FCA') {
+      var patternIds: any = []
+      for (let index = 0; index < this.attachmentRemark.length; index++) {
+        var id = "ViewPattern"
+        var i = index + 1
+        patternIds.push(`${id}${i}`)
+      }
+      this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
+      // this.NewTree[0].children[0].children[0].children.forEach((res: any) => {
+      this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
+        for (let index = 0; index < this.attachmentRemark.length; index++) {
+          if (res.data.name == this.attachmentRemark[index].FunctionMode) {
+            var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
+            this.FCAPatternEnable = true
+            this.changeDetectorRef.detectChanges()
+            res.Pattern = patternIds[index];
+            if (extn.toLowerCase() == 'pdf') {
+              let obj = {}
+              obj['FM'] = res.data.name;
+              obj['Remark'] = this.attachmentRemark[index].Remark;
+              obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
+              this.PDFURL.push(obj)
+            }
+
+            if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
+              res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
+              res.Remark = this.attachmentRemark[index].Remark
+            } else if (extn.toLowerCase() == 'pdf') {
+              res.pdfPath = `${this.BrowserURl}${this.attachmentRemark[index].AttachmentDBPath}`;
+              res.pdfRemark = this.attachmentRemark[index].Remark
+            }
+          }
+        }
+        this.AnnexuresTreeList.push([res]);
+        this.changeDetectorRef.detectChanges();
+        for (let index = 0; index < this.attachmentRemark.length; index++) {
+          var ChartId = patternIds[index]
+          var p = this.attachmentRemark[index].Pattern
+          if (p == 'Pattern 1') {
+            const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+            this.getChartTree(patternLabel1, patternData1, ChartId, p);
+          } else if (p == 'Pattern 2') {
+            const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+            this.getChartTree(patternLabel2, patternData2, ChartId, p);
+          } else if (p == 'Pattern 3') {
+            const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+            this.getChartTree(patternLabel3, patternData3, ChartId, p);
+          } else if (p == 'Pattern 4') {
+            const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+            this.getChartTree(patternLabel4, patternData4, ChartId, p);
+          } else if (p == 'Pattern 5') {
+            const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+            const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+            this.getChartTree(patternLabel5, patternData5, ChartId, p);
+          } else if (p == 'Pattern 6') {
+            const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+            this.getChartTree(patternLabel6, patternData6, ChartId, p);
+          }
+
+        }
+      });
+    }
+  }
+
+
+  private getChartTree(labels: any[], data: any[], id: string, title: string) {
+    let patternCharts = new Chart(id, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Time',
+          data: data,
+          fill: true,
+          borderColor: '#2196f3',
+          backgroundColor: '#2196f3',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
+        title: {
+          display: true,
+          text: title
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              beginAtZero: true,
+              display: false
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            }
+          }],
+          yAxes: [{
+            gridLines: {
+              display: true,
+              color: 'rgba(219,219,219,0.3)',
+              zeroLineColor: 'rgba(219,219,219,0.3)',
+              drawBorder: false,
+              lineWidth: 27,
+              zeroLineWidth: 1
+            },
+            ticks: {
+              beginAtZero: true,
+              display: false
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Failure probability'
+            }
+          }]
+        }
+      }
+    });
+    this.changeDetectorRef.detectChanges();
+  }
+
+
+
 }

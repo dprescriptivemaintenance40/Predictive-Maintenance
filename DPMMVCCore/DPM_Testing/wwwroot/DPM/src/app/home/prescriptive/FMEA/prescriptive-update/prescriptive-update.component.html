@@ -838,10 +838,10 @@
                     {{node.label}}
                 </ng-template>
             </p-organizationChart>
+
+            
         </div>
-        <br><br>
-
-
+        
         <div *ngIf="FCAViewTreeEnabled" class="col-md-12" style="overflow: scroll;">
             <label>You Have Selected this path</label>
             <button *ngIf="EnabledPatternUpdate" title="Save Pattern" label="save" type="button" class="btn btn-dark" (click)="SaveUpdatedPattern()">Save & Update</button><br>
@@ -857,6 +857,44 @@
                     {{node.label}}
                 </ng-template>
             </p-organizationChart>
+            <div>
+                <p-card>
+                    <div class="row">
+                        <div class="row col-md-12">
+                            <div class="col-md-2">
+                                <div class="col-md-12" style="width: 13em;height: 7em;">
+                                    <canvas id="pattern1"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12" style="width: 13em;height: 7em;" >
+                                    <canvas id="pattern2"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12" style="width: 13em;height: 7em;" >
+                                    <canvas id="pattern3"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12" style="width: 13em;height: 7em;" >
+                                    <canvas id="pattern4"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12" style="width: 13em;height: 7em;" >
+                                    <canvas id="pattern5"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="col-md-12" style="width: 13em;height: 7em;" >
+                                    <canvas id="pattern6"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
         </div>
     </p-card>
 </div>
@@ -958,6 +996,7 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div>
+                <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: left;" (click)="PatternUpdateCancel()" type="button" class="btn btn-dark">Cancel</button>
                 <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">ADD</button>
                 <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;" (click)="AddPatternToNewFM()" type="button" class="btn btn-dark">ADD Pattern</button>
             </div>
