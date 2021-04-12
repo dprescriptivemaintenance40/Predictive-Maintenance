@@ -283,6 +283,10 @@ namespace DPM.Controllers.Prescriptive
                 foreach (var item in collection)
                 {
                     item.Pattern = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].Pattern;
+                    item.FCACondition = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCACondition;
+                    item.FCAInterval = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCAInterval;
+                    item.FCAFFI = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCAFFI;
+                    item.FCAComment = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCAComment;
                     i = i + 1;
                     _context.Entry(item).State = EntityState.Modified;
                     await _context.SaveChangesAsync();

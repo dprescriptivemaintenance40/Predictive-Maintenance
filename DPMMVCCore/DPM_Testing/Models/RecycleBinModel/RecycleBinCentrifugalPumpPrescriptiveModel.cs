@@ -63,6 +63,10 @@ namespace DPM.Models.RecycleBinModel
         public int IsDeleted { get; set; }
         public string DeletedFMTree { get; set; }
         public string Pattern { get; set; }
+        public string FCACondition { get; set; }
+        public int FCAInterval { get; set; }
+        public string FCAFFI { get; set; }
+        public string FCAComment { get; set; }
 
         public RecycleBinCentrifugalPumpPrescriptiveModel RecycleBinCentrifugalPumpPrescriptiveModel { get; set; }
     }

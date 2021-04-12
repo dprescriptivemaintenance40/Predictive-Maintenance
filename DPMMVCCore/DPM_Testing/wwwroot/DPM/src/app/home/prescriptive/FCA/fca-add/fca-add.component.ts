@@ -48,6 +48,31 @@ export class FCAADDComponent implements OnInit {
   public data1Clone: any;
   public CFPPrescriptiveId: number = 0;
 
+  
+
+  
+  public interval: string = ""
+  public intervalValue: number = 0;
+   
+  public ffInterval: string = ""
+  public ffIntervalValue: number = 0;
+
+  public FewHours: string = "";
+  public Weeks: string = "";
+  public Month: string = "";
+  public TwoMonth: string = "";
+  public SixMonth: string = "";
+  public OneYear: string = "";
+  public TwoYear: string = "";
+
+  public FailuerRateMonth: string = "";
+  public FailuerRateThreeMonth: string = "";
+  public FailuerRateSixMonth: string = "";
+  public FailuerRateTwoYear: string = "";
+  public FailuerRateFiveYear: string = "";
+
+
+
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -564,12 +589,39 @@ export class FCAADDComponent implements OnInit {
               data: {
                 name: this.Pattern
               }
+            },
+            {
+              label: "Condition",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.FCACondition
+              }
+            },
+            {
+              label: "Interval",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.FCAInterval
+              }
+            },
+            {
+              label: "FFI",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.FCAFFInterval
+              }
             }
+            
           ]
         }
   
-  
-  
+        
         var FCATree = {
           label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
           type: "person",
@@ -580,9 +632,35 @@ export class FCAADDComponent implements OnInit {
           pattern: pattern,
           data: { name: "FCA" }
         }
-  
-  
 
+        let obj = {};
+        obj['FCACondition'] = this.FCACondition ;
+        obj['FCAInterval'] = this.FCAInterval;
+        obj['FCAFFI'] = this.FCAFFInterval
+        obj['FCAComment'] = this.FCAComment;
+
+        this.FCAData.push(obj)
+        this.FCAFFInterval = 0
+        this.FCAInterval = 0
+        this.FCAComment = []
+        this.FCACondition = []
+        this.FCAFreeText = ""
+        this.Vibration = ""
+        this.Noice = ""
+        this.Leakage = ""
+        this.PerformanceDrop = ""
+        this.TempratureChange = ""
+        this.EmmisionChange = ""
+        this.IncreaseLubricantConsumption = ""
+        this.Other = ""
+        this.HumanSenses = ""
+        this.ExistingInstumentation = ""
+        this.NewInstumentation = ""
+        this.ProcessCondtions = ""
+        this.SampleAnyalysis = ""
+        this.CommentFIEYN = ""
+        this.CommentFIEYN2 = ""
+        
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
           {
@@ -649,6 +727,33 @@ export class FCAADDComponent implements OnInit {
             data: {
               name: this.Pattern
             }
+          },
+          {
+            label: "Condition",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.FCACondition
+            }
+          },
+          {
+            label: "Interval",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.FCAInterval
+            }
+          },
+          {
+            label: "FFI",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.FCAFFInterval
+            }
           }
         ]
       }
@@ -666,6 +771,33 @@ export class FCAADDComponent implements OnInit {
         data: { name: "FCA" }
       }
 
+      let obj = {};
+        obj['FCACondition'] = this.FCACondition ;
+        obj['FCAInterval'] = this.FCAInterval;
+        obj['FCAFFI'] = this.FCAFFInterval
+        obj['FCAComment'] = this.FCAComment;
+
+        this.FCAData.push(obj)
+        this.FCAFFInterval = 0
+        this.FCAInterval = 0
+        this.FCAComment = []
+        this.FCACondition = []
+        this.FCAFreeText = ""
+        this.Vibration = ""
+        this.Noice = ""
+        this.Leakage = ""
+        this.PerformanceDrop = ""
+        this.TempratureChange = ""
+        this.EmmisionChange = ""
+        this.IncreaseLubricantConsumption = ""
+        this.Other = ""
+        this.HumanSenses = ""
+        this.ExistingInstumentation = ""
+        this.NewInstumentation = ""
+        this.ProcessCondtions = ""
+        this.SampleAnyalysis = ""
+        this.CommentFIEYN = ""
+        this.CommentFIEYN2 = ""
 
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
@@ -782,6 +914,10 @@ export class FCAADDComponent implements OnInit {
       obj['AttachmentFullPath'] = ""
       obj['Remark'] = ""
       obj['Pattern'] = this.data1Clone[0].children[0].children[0].children[index].children[0].data.name
+      obj['FCACondition'] = this.FCAData[index].FCACondition
+      obj['FCAInterval'] = this.FCAData[index].FCAInterval
+      obj['FCAFFI'] = this.FCAData[index].FCAFFI
+      obj['FCAComment'] = this.FCAData[index].FCAComment
       centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
@@ -846,6 +982,155 @@ public FCAViewEnabled : boolean = false
     const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
+  }
+
+  public FCAInterval : number = 0
+  public FCAComment : any = []
+  public FCACondition : any = []
+  public FCAFFInterval : number = 0
+
+  public FCAData : any = []
+  public FCAFreeText : string = ""
+  public Vibration : string = ""
+  public Noice : string = ""
+  public Leakage : string = ""
+  public PerformanceDrop : string = ""
+  public TempratureChange : string = ""
+  public EmmisionChange : string = ""
+  public IncreaseLubricantConsumption : string = ""
+  public Other : string = ""
+
+  public HumanSenses : string = ""
+  public ExistingInstumentation : string = ""
+  public NewInstumentation : string = ""
+  public ProcessCondtions : string = ""
+  public SampleAnyalysis : string = ""
+
+  public CommentFIEYN : string = ""
+  public CommentFIEYN2 : string = ""
+  
+  public Interval : boolean = true;
+  public Condition : boolean = true;
+  public FCAFFI : boolean = true;
+
+  IntervalSave(){
+   if(this.interval == 'Days'){
+     this.FCAInterval = this.intervalValue * 1 * 24
+   } else if(this.interval == 'Week'){ 
+     this.FCAInterval = this.intervalValue * 7 * 24
+   } else if(this.interval == 'Month'){ 
+     this.FCAInterval = this.intervalValue * 30 * 24
+   } else if(this.interval == 'Year'){ 
+     this.FCAInterval = this.intervalValue * 365 * 24
+   }
+
+  }
+
+  
+  ConditionFirst(){
+    if(this.Vibration != ""){
+      this.Vibration = "Vibration"
+      this.FCACondition.push(this.Vibration)
+   
+    }
+    if(this.Noice != ""){
+      this.Noice = "Noice"
+      this.FCACondition.push(this.Noice)
+      
+    }
+    if(this.Leakage != ""){
+      this.Leakage = "Leakage"
+      this.FCACondition.push(this.Leakage)
+      
+    }
+    if(this.PerformanceDrop != ""){
+      this.PerformanceDrop = "Performance Drop"
+      this.FCACondition.push(this.PerformanceDrop)
+      
+    }
+    if(this.TempratureChange != ""){
+      this.TempratureChange = "Temprature Change"
+      this.FCACondition.push(this.TempratureChange)
+     
+    }
+    if(this.EmmisionChange != ""){
+      this.EmmisionChange = "Emmision Change"
+      this.FCACondition.push(this.EmmisionChange)
+     
+    }
+    if(this.IncreaseLubricantConsumption != ""){
+      this.IncreaseLubricantConsumption = "Increase Lubricant Consumption"
+      this.FCACondition.push(this.IncreaseLubricantConsumption)
+     
+    }
+    if(this.Other != ""){
+      this.Other = "Other"
+      this.FCACondition.push(this.Other)
+    }
+    
+
+  }
+
+  ConditionSecond(){
+    if(this.HumanSenses != ""){
+      this.HumanSenses = "Human Senses"
+      this.FCACondition.push(this.HumanSenses)
+    
+    }
+    if(this.ExistingInstumentation != ""){
+      this.ExistingInstumentation = "Existing Instumentation(portable or fixed)"
+      this.FCACondition.push(this.ExistingInstumentation)
+    
+    }
+    if(this.NewInstumentation != ""){
+      this.NewInstumentation = "New Instumentation(portable or fixed)"
+      this.FCACondition.push(this.NewInstumentation)
+    
+    }
+    if(this.ProcessCondtions != ""){
+      this.ProcessCondtions = "Process Condtions"
+      this.FCACondition.push(this.ProcessCondtions)
+    }
+    if(this.SampleAnyalysis != ""){
+      this.SampleAnyalysis = "Sample Anyalysis"
+      this.FCACondition.push(this.SampleAnyalysis)
+    }
+    
+  }
+  
+  FFInterval(){
+    if(this.ffInterval == 'Days'){
+      this.FCAFFInterval = this.ffIntervalValue * 1 * 24
+    } else if(this.ffInterval == 'Week'){ 
+      this.FCAFFInterval = this.ffIntervalValue * 7 * 24
+    } else if(this.ffInterval == 'Month'){ 
+      this.FCAFFInterval = this.ffIntervalValue * 30 * 24
+    } else if(this.ffInterval == 'Year'){ 
+      this.FCAFFInterval = this.ffIntervalValue * 365 * 24
+    }
+  }
+
+  CommentThird(){
+    this.FCAComment.push(this.CommentFIEYN)
+  }
+
+  CommentFourth(){
+    this.FCAComment.push(this.CommentFIEYN2)
+  }
+
+ async FCAFreeTextSave(){
+    this.FCAComment.push(this.FCAFreeText)
+    this.changeDetectorRef.detectChanges()
+    const element = document.querySelector("#ModePatternTree")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+ async FCAFreeTextCancel(){
+    this.FCAFreeText = ""
+    this.changeDetectorRef.detectChanges()
+    const element = document.querySelector("#ModePatternTree")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  
   }
 
 }

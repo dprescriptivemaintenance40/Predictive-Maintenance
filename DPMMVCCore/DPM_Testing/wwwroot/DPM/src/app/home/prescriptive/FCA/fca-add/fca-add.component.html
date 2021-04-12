@@ -21,8 +21,11 @@
 </div>
 
 
-<div *ngIf="FailureModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
+<div *ngIf="FailureModePatternTree" id="ModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
     <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label>
+    <p-card>
+        <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
+    </p-card>
     <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -103,7 +106,7 @@
         <ng-template pTemplate="footer">
             <div>
                 <button label="Next" type="button" (click)="PatternBack()" class="btn btn-dark" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
-                <button label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add the Patterns" tooltipPosition="top"> <i class="fas fa-arrow-right"></i></button>
+                
             </div>
         </ng-template>
     </p-card>
@@ -138,3 +141,244 @@
         </p-organizationChart>
     </p-card>
 </div>
+
+<style>
+    .disableddiv{
+        pointer-events: none;
+        cursor: default;
+        text-decoration: none;
+        background-color: grey !important;
+    }
+</style>
+
+<div *ngIf="FailureModePatternTree">
+    <div class="card" style="margin: 20px;">
+    <p-card [ngClass]="{disableddiv: Pattern ==''}">
+        <ng-template pTemplate="subtitle">
+            <div class="input-group mb-3">
+                <label><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone
+                    for a period of time, would you expect this failuer to have happened.</b></label>
+                        <select [(ngModel)]="interval" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                        <option value="">Choose</option>
+                            <option value="Days" selected> Days</option>
+                            <option value="Week" selected> Week</option>
+                            <option value="Month" selected>Month</option>
+                            <option value="Year" selected>Year</option>
+                        </select>
+                       <input type="number" [(ngModel)]="intervalValue" name="Interval" class="form-control">        
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" style="float:right;" (click)="IntervalSave()"> <i class="fa fa-check" aria-hidden="true"></i>save</button><br>
+        </ng-template>
+             
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b>3. Are their any prior warnings before the failuer occure? Tick all that apply.
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm"><br>
+                    <p-card>
+                   Vibration<br>
+                   <td><input type="checkbox" [(ngModel)]="Vibration" value="Vibration" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                  <div class="col-sm"><br>
+                    <p-card>
+                    Noice<br>
+                    <td><input type="checkbox" [(ngModel)]="Noice" value="Noice" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Leakage<br>
+                    <td><input type="checkbox" [(ngModel)]="Leakage"  value="Leakage" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Performance drop<br>
+                    <td><input type="checkbox" [(ngModel)]="PerformanceDrop" value="Performance drop" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Temprature Change<br>
+                    <td><input type="checkbox" [(ngModel)]="TempratureChange" value="Temprature Change" name="name1" />&nbsp;</td>
+                    </p-card></div><br>
+                </div><br>
+               
+                <div class="row">
+                    <div class="col-sm-2"><br>
+                        <p-card>
+                        Emmision changes<br>
+                        <td><input type="checkbox" [(ngModel)]="EmmisionChange" value="Emmision changes" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm-2"><br>
+                        <p-card>
+                        Increase Lubricant Consumption<br>
+                        <td><input type="checkbox" [(ngModel)]="IncreaseLubricantConsumption" value="Increase Lubricant Consumption" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm-2"><br>
+                        <p-card>
+                        Other<br>
+                        <td><input type="checkbox" [(ngModel)]="Other" value=" Other" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm-2"> </div>
+                       <div class="col-sm-2"> </div>
+                  </div>
+             </div><br>
+        </ng-template>
+        <ng-template pTemplate="footer">
+        <button class="btn btn-dark" style="float:right;" (click)="ConditionFirst()"> <i class="fa fa-check" aria-hidden="true"></i>save</button><br>
+        </ng-template>     
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="subtitle">
+            <p><b>4. If their are any warning signs, can they be monitored? if so, how?
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                   Human Senses<br>
+                   <td><input type="checkbox" [(ngModel)]="HumanSenses" value=" Human Senses" name="name1" />&nbsp;</td>
+                  </div></div>
+                  <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Existing instumentation(portable or fixed)<br>
+                    <td><input type="checkbox" [(ngModel)]="ExistingInstumentation" value="Existing instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    New instumentation(portable or fixed)<br>
+                    <td><input type="checkbox" [(ngModel)]="NewInstumentation" value="New instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Process Condtions<br>
+                    <td><input type="checkbox" [(ngModel)]="ProcessCondtions" value="Process Condtions" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Sample Anyalysis<br>
+                    <td><input type="checkbox" [(ngModel)]="SampleAnyalysis" value="Sample Anyalysis" name="name1" />&nbsp;</td>
+                   </div></div>  
+                </div><br> 
+                 </div><br>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" style="float:right;" (click)="ConditionSecond()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+           
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="subtitle">
+            <div class="input-group mb-3">
+                <label><b>5. What is the likely interval between detacting a warning sign and the failuer happening?</b></label>   
+                <select [(ngModel)]="ffInterval" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                    <option value="">Choose</option>
+                        <option value="Days" selected> Days</option>
+                        <option value="Week" selected> Week</option>
+                        <option value="Month" selected>Month</option>
+                        <option value="year" selected>Year</option>
+                    </select>
+                   <input type="number" [(ngModel)]="ffIntervalValue" name="Interval" class="form-control">  
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" style="float:right;" (click)="FFInterval()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+           
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="subtitle">
+            <p><b>6. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-sm">
+                    Yes <td><input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is not Evident" name="name1" />&nbsp;</td>
+                </div>
+                <div class="col-sm">      
+                    No <td><input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is Evident" name="name1" />&nbsp;</td>
+                </div>
+                <div class="col-sm"></div> 
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" style="float:right;" (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+           
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b >7. Some of the failuer cannot avoided by maintenance. Would planned replacement or refurbishment
+                maintainace prevent or mitigate this failuer Mode?
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-sm">
+                    Yes <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment
+                        maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
+                </div>
+                <div class="col-sm">      
+                    No <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment
+                        maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
+                </div>
+                <div class="col-sm"></div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" style="float:right;" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+         
+        </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;">
+    <p-card >
+        <ng-template pTemplate="title">
+     
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b> 8. Do you have any comments regarding the failuer of this equipment or how the maintainace of the equipment
+                could be improved
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText"  id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" style="float:left;" (click)="FCAFreeTextCancel()"> <i class="fa fa-check" aria-hidden="true"></i>Cancel</button>
+         
+            <button class="btn btn-dark" style="float:right;" (click)="FCAFreeTextSave()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+         
+        </ng-template>
+    </p-card>
+    </div>
+</div> 
+
+
+
+
+
