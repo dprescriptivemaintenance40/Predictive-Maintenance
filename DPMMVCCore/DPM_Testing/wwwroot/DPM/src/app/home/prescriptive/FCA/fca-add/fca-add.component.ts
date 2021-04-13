@@ -886,6 +886,9 @@ export class FCAADDComponent implements OnInit {
 
     }
 
+    const element = document.querySelector("#PatternFailuerComments")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    
   }
 
 
@@ -983,6 +986,8 @@ export class FCAADDComponent implements OnInit {
       }, err => console.log(err.error)
     )
 
+    const element = document.querySelector("#PatternFailuerComments")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   }
 
@@ -995,9 +1000,8 @@ public FCAViewEnabled : boolean = false
     this.FCAViewEnabled = true
     this.changeDetectorRef.detectChanges();
     this.GetChartToView(this.FCAView[0].children[0].data.name)
-    const element = document.querySelector("#FCATreeShow")
+    const element = document.querySelector("#ScrollToFCATree1")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
   }
 
 
@@ -1084,7 +1088,8 @@ public FCAViewEnabled : boolean = false
   const element = document.querySelector("#Patternfailurewarning")
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
  }else{
-  alert("fill the data")
+  // alert("fill the data")
+  this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
  }
   }
 
@@ -1137,7 +1142,7 @@ public FCAViewEnabled : boolean = false
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
     else{
-      alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
 
   }
@@ -1172,7 +1177,7 @@ public FCAViewEnabled : boolean = false
       const element = document.querySelector("#PatternIntervalDeteacting")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
   
   }
@@ -1194,7 +1199,7 @@ public FCAViewEnabled : boolean = false
       const element = document.querySelector("#PatternFailuerEvident")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      alert("Fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
   
   }
@@ -1207,7 +1212,7 @@ public FCAViewEnabled : boolean = false
       const element = document.querySelector("#PatternFailuerMaintenance")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
     }else{
-      alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
   
   }
@@ -1220,7 +1225,7 @@ public FCAViewEnabled : boolean = false
       const element = document.querySelector("#PatternFailuerComments")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
  
   }

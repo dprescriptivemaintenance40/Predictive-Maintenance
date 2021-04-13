@@ -163,13 +163,13 @@
         <i class="fas fa-arrow-right"></i>
     </a>
 </div>
-<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow">
+<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow" id="FactorstoLocal">
     <p-card>
         <ng-template pTemplate="title">
             Failure Mode Effects
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Enter Failure Mode Effects for {{FMLSEffectModeName}}
+          <b>Enter Failure Mode Effects for {{FMLSEffectModeName}}</b>
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
@@ -381,7 +381,7 @@
         <button *ngIf="!(Pattern == '')" label="Back" type="button" style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button><br>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br>
        
-        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company" id="selectNodetoView" style="overflow: scroll;">
+        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company" id="selectNodetoView">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}
                     <a class="edit-org-bttn" *ngIf="node.viewFCA !== undefined && node.viewFCA" (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i class="fa fa-eye" aria-hidden="true"></i></a>
@@ -673,7 +673,6 @@
             {{node.label}}
         </ng-template>
     </p-organizationChart>
-
     <p-card>
         <ng-template pTemplate="title">
             Pattern For Failure Mode
@@ -1005,7 +1004,7 @@
     </p-card>
     </div>
     <div class="card" style="margin: 20px;" *ngIf ="FailuerComments" id="PatternFailuerComments" >
-        <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}" id="PatternFailuerCommentsScroll">
+        <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}">
         <ng-template pTemplate="title">
      
         </ng-template>
