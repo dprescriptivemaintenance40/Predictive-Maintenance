@@ -50,9 +50,9 @@ export class PrescriptiveDisplayComponent implements OnInit {
       this.FMTree = this.data[0].children[0].children[0].children
       for (let index = 0; index < this.FMTree.length; index++) {
         var l: string = ""
-        l = this.FMTree[index].children[0].data.name
+        l = this.FMTree[index].children[0].children[0].data.name
         var s: string = ""
-        s = this.FMTree[index].children[1].data.name
+        s = this.FMTree[index].children[0].children[1].data.name
 
         var DBPath = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
         var Remark = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].Remark
@@ -72,14 +72,14 @@ export class PrescriptiveDisplayComponent implements OnInit {
                 "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
                 "children": [
-                  { "label": this.FMTree[index].children[0].data.name, "icon": "pi pi-file" }
+                  { "label": this.FMTree[index].children[0].children[0].data.name, "icon": "pi pi-file" }
                 ]
               },
               {
                 "label": "System Effect", "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
                 "children": [
-                  { "label": this.FMTree[index].children[1].data.name, "icon": "pi pi-file" }
+                  { "label": this.FMTree[index].children[0].children[1].data.name, "icon": "pi pi-file" }
                 ]
               },
               {
@@ -131,11 +131,11 @@ export class PrescriptiveDisplayComponent implements OnInit {
       for (let index = 0; index < this.FMTree.length; index++) {
 
         var l: string = ""
-        l = this.FMTree[index].children[0].data.name
+        l = this.FMTree[index].children[0].children[0].data.name
         var s: string = ""
-        s = this.FMTree[index].children[1].data.name
+        s = this.FMTree[index].children[0].children[1].data.name
         var c: string = ""
-        c = this.FMTree[index].children[2].data.name
+        c = this.FMTree[index].children[0].children[2].data.name
 
         var DBPath = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].AttachmentDBPath
         var Remark = this.PrescriptiveRecords[this.counter].centrifugalPumpPrescriptiveFailureModes[index].Remark
@@ -156,21 +156,21 @@ export class PrescriptiveDisplayComponent implements OnInit {
                 "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
                 "children": [
-                  { "label": this.FMTree[index].children[0].data.name, "icon": "pi pi-file" }
+                  { "label": this.FMTree[index].children[0].children[0].data.name, "icon": "pi pi-file" }
                 ]
               },
               {
                 "label": "System Effect", "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
                 "children": [
-                  { "label": this.FMTree[index].children[1].data.name, "icon": "pi pi-file" }
+                  { "label": this.FMTree[index].children[0].children[1].data.name, "icon": "pi pi-file" }
                 ]
               },
               {
                 "label": "Consequence", "expandedIcon": "pi pi-folder-open",
                 "collapsedIcon": "pi pi-folder",
                 "children": [
-                  { "label": this.FMTree[index].children[2].data.name, "icon": "pi pi-file" }
+                  { "label": this.FMTree[index].children[0].children[2].data.name, "icon": "pi pi-file" }
                 ]
               },
               {
