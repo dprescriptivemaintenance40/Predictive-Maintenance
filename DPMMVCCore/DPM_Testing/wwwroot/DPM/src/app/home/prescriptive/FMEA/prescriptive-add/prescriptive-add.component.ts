@@ -20,6 +20,7 @@ import { OverlayPanel } from "primeng/overlaypanel";
   providers: [MessageService],
 })
 export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate {
+
   public MachineType: string = "";
   private FMCount: number = 0;
   private FMCount1: number = 0;
@@ -162,6 +163,60 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public FCAViewEnabled : boolean = false;
   public FCAView: any;
 
+  
+  public interval: string = ""
+  public intervalValue: number = 0;
+   
+  public ffInterval: string = ""
+  public ffIntervalValue: number = 0;
+
+  public FailuerRate: boolean = false
+  public FailureWarning: boolean = false
+  public WarningSign: boolean = false
+  public IntervalDeteacting: boolean = false
+  public FailuerEvident: boolean = false
+  public FailuerMaintenance: boolean = false
+  public FailuerComments: boolean = false
+
+ public failuerrate: boolean  = true
+ public failurewarning: boolean  = true
+ public warningsign: boolean = true
+ public intervaldeteacting: boolean  = true
+ public failuerevident: boolean  = true
+ public failuermaintenance: boolean  = true
+ public failuercomments: boolean  = true
+
+ 
+ public FCAInterval : number = 0
+ public FCAComment : any = []
+ public FCACondition : any = []
+ public FCAFFInterval : number = 0
+
+ public FCAData : any = []
+ public FCAFreeText : string = ""
+ public Vibration : string = ""
+ public Noice : string = ""
+ public Leakage : string = ""
+ public PerformanceDrop : string = ""
+ public TempratureChange : string = ""
+ public EmmisionChange : string = ""
+ public IncreaseLubricantConsumption : string = ""
+ public Other : string = ""
+
+ public HumanSenses : string = ""
+ public ExistingInstumentation : string = ""
+ public NewInstumentation : string = ""
+ public ProcessCondtions : string = ""
+ public SampleAnyalysis : string = ""
+
+ public CommentFIEYN : string = ""
+ public CommentFIEYN2 : string = ""
+ 
+ public Interval : boolean = true;
+ public Condition : boolean = true;
+ public FCAFFI : boolean = true;
+
+
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -298,7 +353,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         }
       )
     }
-
   }
 
   AttachmentDoneModal() {
@@ -578,7 +632,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Failure Modes' });
     }
   }
-  ADDFailuerEffect() {
+ async ADDFailuerEffect() {
     //&& this.dbPath.length > 0 
     if (this.failuerModeLocalEffects !== ''
       && this.failuerModeSystemEffects !== '' && this.DownTimeFactor !== 0
@@ -647,7 +701,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     } else {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields' });
     }
-
+    const element = document.querySelector("#scrollTop")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   UPDATEFailuerEffect() {
@@ -749,7 +804,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.PatternNextOnPrescriptiveTree = true;
       }, err => { console.log(err.err) }
     )
-
   }
 
   treeSave() {
@@ -884,6 +938,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.data1[0].children[0].children.forEach((res: any) => {
       res.FMEA = temp2
     })
+    const element = document.querySelector("#scrollToTop")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
 
@@ -921,7 +977,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.prescriptiveEffect = true;
     this.prescriptiveEffect1 = true
     this.prescriptiveTree = false;
-
   }
 
 
@@ -1690,6 +1745,191 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
   }
 
+  // PatternAdd() {
+  //   if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
+  //     if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
+  //       || this.Pattern === 'Pattern 6')
+  //       && this.PatternPath != "") {
+  //       var path, pattern
+  //       if (this.Pattern === 'Pattern 2' && this.PatternPath == "1") {
+  //         path = 1;
+  //         pattern = 'Pattern 2'
+  //       } else if (this.Pattern === 'Pattern 2' && this.PatternPath == "2") {
+  //         path = 2;
+  //         pattern = 'Pattern 2'
+  //       } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "1") {
+  //         path = 1;
+  //         pattern = 'Pattern 3'
+
+  //       } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "2") {
+  //         path = 2;
+  //         pattern = 'Pattern 3'
+
+  //       } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "1") {
+  //         path = 1;
+  //         pattern = 'Pattern 6'
+  //       } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
+  //         path = 2;
+  //         pattern = 'Pattern 6'
+  //       }
+
+  //       var FCATreeClone = {
+  //         label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+  //         type: "person",
+  //         styleClass: 'p-person',
+  //         editFCA: true,
+  //         expanded: true,
+  //         pattern: pattern,
+  //         nodePath: path,
+  //         data: { name: "FCA" },
+  //         children: [
+  //           {
+  //             label: "Pattern",
+  //             type: "person",
+  //             styleClass: 'p-person',
+  //             expanded: true,
+  //             data: {
+  //               name: this.Pattern
+  //             }
+  //           }
+  //         ]
+  //       }
+  
+  
+  
+  //       var FCATree = {
+  //         label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+  //         type: "person",
+  //         styleClass: 'p-person',
+  //         viewFCA: true,
+  //         FCAData: FCATreeClone,
+  //         nodePath: path,
+  //         pattern: pattern,
+  //         data: { name: "FCA" }
+  //       }
+  
+  
+
+  //       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+  //       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+  //         {
+  //           label: "Pattern",
+  //           type: "person",
+  //           styleClass: 'p-person',
+  //           expanded: true,
+  //           data: {
+  //             name: this.Pattern
+  //           }
+  //         }
+  //       )
+
+  //       this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
+  //       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
+  //         this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
+
+  //       }
+  //       this.PatternCounter = this.PatternCounter + 1
+  //       if (this.PatternCounter == this.data1[0].children[0].children[0].children.length) {
+  //         this.Pattern = ""
+  //         this.SaveFCAEnable = true
+  //       }
+  //       this.FailureModePatternTree = false;
+  //       this.prescriptiveTree = true
+  //       this.PatternPath = ""
+
+  //     } else {
+  //       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
+
+  //     }
+
+  //   } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
+
+  //     if (this.Pattern === 'Pattern 1') {
+  //       path = 0;
+  //       pattern = 'Pattern 1'
+
+  //     } else if (this.Pattern === 'Pattern 4') {
+  //       path = 0;
+  //       pattern = 'Pattern 4'
+
+  //     } else if (this.Pattern === 'Pattern 5') {
+  //       path = 0;
+  //       pattern = 'Pattern 5'
+
+  //     }
+      
+  //     var FCATree1Clone = {
+  //       label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+  //       type: "person",
+  //       styleClass: 'p-person',
+  //       editFCA: true,
+  //       expanded: true,
+  //       nodePath: path,
+  //       pattern: pattern,
+  //       data: { name: "FCA" },
+  //       children: [
+  //         {
+  //           label: "Pattern",
+  //           type: "person",
+  //           styleClass: 'p-person',
+  //           expanded: true,
+  //           data: {
+  //             name: this.Pattern
+  //           }
+  //         }
+  //       ]
+  //     }
+
+
+
+  //     var FCATree1 = {
+  //       label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
+  //       type: "person",
+  //       styleClass: 'p-person',
+  //       viewFCA: true,
+  //       FCAData: FCATree1Clone,
+  //       nodePath: path,
+  //       pattern: pattern,
+  //       data: { name: "FCA" }
+  //     }
+
+
+  //     this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+  //     this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+  //       {
+  //         label: "Pattern",
+  //         type: "person",
+  //         styleClass: 'p-person',
+  //         expanded: true,
+  //         data: {
+  //           name: this.Pattern
+  //         }
+  //       }
+  //     )
+
+
+
+  //     this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
+  //     if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
+  //       this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
+
+  //     }
+  //     this.PatternCounter = this.PatternCounter + 1
+  //     if (this.PatternCounter == this.data1[0].children[0].children[0].children.length) {
+  //       this.Pattern = ""
+  //       this.SaveFCAEnable = true
+  //     }
+  //     this.FailureModePatternTree = false;
+  //     this.prescriptiveTree = true
+  //   }
+  //   else {
+  //     this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
+
+  //   }
+
+  // }
+
+
   PatternAdd() {
     if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
       if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
@@ -1736,12 +1976,39 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
               data: {
                 name: this.Pattern
               }
+            },
+            {
+              label: "Condition",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.FCACondition
+              }
+            },
+            {
+              label: "Interval",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: `${this.FCAInterval}${" "}${"Hours"}`
+              }
+            },
+            {
+              label: "FFI",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: `${this.FCAFFInterval}${" "}${"Hours"}`
+              }
             }
+            
           ]
         }
   
-  
-  
+        
         var FCATree = {
           label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
           type: "person",
@@ -1752,9 +2019,55 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
           pattern: pattern,
           data: { name: "FCA" }
         }
-  
-  
 
+        let obj = {};
+        obj['FCACondition'] = this.FCACondition ;
+        obj['FCAInterval'] = this.FCAInterval;
+        obj['FCAFFI'] = this.FCAFFInterval
+        obj['FCAComment'] = this.FCAComment;
+
+        this.FCAData.push(obj)
+        this.FCAFFInterval = 0
+        this.FCAInterval = 0
+        this.FCAComment = []
+        this.FCACondition = []
+        this.FCAFreeText = ""
+        this.Vibration = ""
+        this.Noice = ""
+        this.Leakage = ""
+        this.PerformanceDrop = ""
+        this.TempratureChange = ""
+        this.EmmisionChange = ""
+        this.IncreaseLubricantConsumption = ""
+        this.Other = ""
+        this.HumanSenses = ""
+        this.ExistingInstumentation = ""
+        this.NewInstumentation = ""
+        this.ProcessCondtions = ""
+        this.SampleAnyalysis = ""
+        this.CommentFIEYN = ""
+        this.CommentFIEYN2 = ""
+        this.interval = ""
+        this.intervalValue = 0
+        this.ffInterval =""
+        this.ffIntervalValue = 0
+        this.failuerrate = true
+        this.failurewarning = true
+        this.warningsign = true
+        this.intervaldeteacting = true
+        this.failuerevident = true
+        this.failuermaintenance = true
+        this.failuercomments = true
+
+        this.FailuerRate = false
+        this.FailureWarning = false
+        this.WarningSign = false
+        this.IntervalDeteacting = false
+        this.FailuerEvident = false
+        this.FailuerMaintenance = false
+        this.FailuerComments = false
+   
+   
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
           {
@@ -1821,6 +2134,33 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             data: {
               name: this.Pattern
             }
+          },
+          {
+            label: "Condition",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.FCACondition
+            }
+          },
+          {
+            label: "Interval",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: `${this.FCAInterval}${" "}${"Hours"}`
+            }
+          },
+          {
+            label: "FFI",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: `${this.FCAFFInterval}${" "}${"Hours"}`
+            }
           }
         ]
       }
@@ -1838,6 +2178,53 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         data: { name: "FCA" }
       }
 
+      let obj = {};
+        obj['FCACondition'] = this.FCACondition ;
+        obj['FCAInterval'] = this.FCAInterval;
+        obj['FCAFFI'] = this.FCAFFInterval
+        obj['FCAComment'] = this.FCAComment;
+
+        this.FCAData.push(obj)
+        this.FCAFFInterval = 0
+        this.FCAInterval = 0
+        this.FCAComment = []
+        this.FCACondition = []
+        this.FCAFreeText = ""
+        this.Vibration = ""
+        this.Noice = ""
+        this.Leakage = ""
+        this.PerformanceDrop = ""
+        this.TempratureChange = ""
+        this.EmmisionChange = ""
+        this.IncreaseLubricantConsumption = ""
+        this.Other = ""
+        this.HumanSenses = ""
+        this.ExistingInstumentation = ""
+        this.NewInstumentation = ""
+        this.ProcessCondtions = ""
+        this.SampleAnyalysis = ""
+        this.CommentFIEYN = ""
+        this.CommentFIEYN2 = ""
+        this.interval = ""
+        this.intervalValue = 0
+        this.ffInterval =""
+        this.ffIntervalValue = 0
+        this.failuerrate = true
+        this.failurewarning = true
+        this.warningsign = true
+        this.intervaldeteacting = true
+        this.failuerevident = true
+        this.failuermaintenance = true
+        this.failuercomments = true
+
+        this.FailuerRate = false
+        this.FailureWarning = false
+        this.WarningSign = false
+        this.IntervalDeteacting = false
+        this.FailuerEvident = false
+        this.FailuerMaintenance = false
+        this.FailuerComments = false
+   
 
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
@@ -1870,8 +2257,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
 
-    }
-
+   }
+    
+  const element = document.querySelector("#PatternFailuerCommentsScroll")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
   }
 
 
@@ -1955,6 +2344,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['AttachmentFullPath'] = ""
       obj['Remark'] = ""
       obj['Pattern'] = this.data1Clone[0].children[0].children[0].children[index].children[0].data.name
+      obj['FCACondition'] = JSON.stringify(this.FCAData[index].FCACondition)
+      obj['FCAInterval'] = this.FCAData[index].FCAInterval
+      obj['FCAFFI'] = this.FCAData[index].FCAFFI
+      obj['FCAComment'] = JSON.stringify(this.FCAData[index].FCAComment)
       centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
@@ -1970,15 +2363,70 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
 
+
+  // SaveFCA() {
+  //   var temp: string = JSON.stringify(this.data1Clone)
+  //   var temp2 = JSON.parse(temp)
+  //   var centrifugalPumpOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+  //   this.data1[0].children[0].children.forEach((res: any) => {
+  //     res.FCA = temp2
+  //   })
+  //   centrifugalPumpOBJ.CFPPrescriptiveId = this.CFPPrescriptiveId
+  //   centrifugalPumpOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
+  //   centrifugalPumpOBJ.FCAAdded = "1";
+
+  //   for (let index = 0; index < this.data1[0].children[0].children[0].children.length; index++) {
+  //     let obj = {};
+  //     obj['CPPFMId'] = 0;
+  //     obj['CFPPrescriptiveId'] = 0;
+  //     obj['FunctionMode'] = "";
+  //     obj['LocalEffect'] = "";
+  //     obj['SystemEffect'] = "";
+  //     obj['Consequence'] = "";
+  //     obj['DownTimeFactor'] = 0;
+  //     obj['ScrapeFactor'] = 0
+  //     obj['SafetyFactor'] = 0
+  //     obj['ProtectionFactor'] = 0
+  //     obj['FrequencyFactor'] = 0
+  //     obj['CriticalityFactor'] = 0
+  //     obj['Rating'] = "";
+  //     obj['MaintainenancePractice'] = "";
+  //     obj['FrequencyMaintainenance'] = "";
+  //     obj['ConditionMonitoring'] = "";
+  //     obj['AttachmentDBPath'] = ""
+  //     obj['AttachmentFullPath'] = ""
+  //     obj['Remark'] = ""
+  //     obj['Pattern'] = this.data1Clone[0].children[0].children[0].children[index].children[0].data.name
+  //     obj['FCACondition'] = JSON.stringify(this.FCAData[index].FCACondition)
+  //     obj['FCAInterval'] = this.FCAData[index].FCAInterval
+  //     obj['FCAFFI'] = this.FCAData[index].FCAFFI
+  //     obj['FCAComment'] = JSON.stringify(this.FCAData[index].FCAComment)
+  //     centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+  //   }
+
+  //   this.http.put('api/PrescriptiveAPI/PrespectivePattern', centrifugalPumpOBJ).subscribe(
+  //     res => {
+  //       this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
+  //       this.SaveFCAEnable = false
+  //       this.router.navigateByUrl('/Home/Prescriptive/List');
+  //     }, err => console.log(err.error)
+  //   )
+
+
+  // }
+
+
   SelectNodeToView(p){
     this.FCAView = []
     this.FCAView.push(p.FCAData)
     this.FCAViewEnabled = true
     this.changeDetectorRef.detectChanges();
     this.GetChartToView(this.FCAView[0].children[0].data.name)
-    const element = document.querySelector("#FCATreeShow")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
+    // const element = document.querySelector("#FCATreeShow")
+    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const element = document.querySelector("#selectNodetoView")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    
   }
 
 
@@ -2113,6 +2561,196 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.changeDetectorRef.detectChanges();
   }
 
+  async PatternSave(){
+    this.FailuerRate = true
+    this.FailureWarning = true
+    this.FailureWarning = true
+    this.WarningSign = true
+    this.IntervalDeteacting = true
+    this.FailuerEvident = true
+    this.FailuerMaintenance = true
+    this.FailuerComments = true
+    this.FailureModePatternTree = true
+
+    this.changeDetectorRef.detectChanges()
+    this.failuerrate = !this.failuerrate; 
+    const element = document.querySelector("#PatternTree2")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  }
+  IntervalSave(){
+    if(this.interval == 'Days'){
+      this.FCAInterval = this.intervalValue * 1 * 24
+    } else if(this.interval == 'Week'){ 
+      this.FCAInterval = this.intervalValue * 7 * 24
+    } else if(this.interval == 'Month'){ 
+      this.FCAInterval = this.intervalValue * 30 * 24
+    } else if(this.interval == 'Year'){ 
+      this.FCAInterval = this.intervalValue * 365 * 24
+    }
+  if(this.interval.length> 0 && this.intervalValue >0){
+   this.changeDetectorRef.detectChanges()
+   this.failurewarning = !this.failurewarning;
+   
+   const element = document.querySelector("#Patternfailurewarning")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }else{
+  //  alert("fill the data")
+   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
+  }
+   }
+ 
+   
+   ConditionFirst(){
+     if(this.Vibration != ""){
+       this.Vibration = "Vibration"
+       this.FCACondition.push(this.Vibration)
+    
+     }
+     if(this.Noice != ""){
+       this.Noice = "Noice"
+       this.FCACondition.push(this.Noice)
+       
+     }
+     if(this.Leakage != ""){
+       this.Leakage = "Leakage"
+       this.FCACondition.push(this.Leakage)
+       
+     }
+     if(this.PerformanceDrop != ""){
+       this.PerformanceDrop = "Performance Drop"
+       this.FCACondition.push(this.PerformanceDrop)
+       
+     }
+     if(this.TempratureChange != ""){
+       this.TempratureChange = "Temprature Change"
+       this.FCACondition.push(this.TempratureChange)
+      
+     }
+     if(this.EmmisionChange != ""){
+       this.EmmisionChange = "Emmision Change"
+       this.FCACondition.push(this.EmmisionChange)
+      
+     }
+     if(this.IncreaseLubricantConsumption != ""){
+       this.IncreaseLubricantConsumption = "Increase Lubricant Consumption"
+       this.FCACondition.push(this.IncreaseLubricantConsumption)
+      
+     }
+     if(this.Other != ""){
+       this.Other = "Other"
+       this.FCACondition.push(this.Other)
+     }
+     if(this.Vibration.length >0 || this.Noice.length > 0 || this.Leakage.length >0 || this. PerformanceDrop.length > 0 || this.TempratureChange.length>0 || this.EmmisionChange.length>0 || this.IncreaseLubricantConsumption.length >0 || this.Other.length > 0){
+       this.changeDetectorRef.detectChanges()
+       this.warningsign = !this.warningsign;
+       
+     const element = document.querySelector("#PatternWarningSign")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }
+     else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
+     }
+ 
+   }
+ 
+   ConditionSecond(){
+     if(this.HumanSenses != ""){
+       this.HumanSenses = "Human Senses"
+       this.FCACondition.push(this.HumanSenses)
+     
+     }
+     if(this.ExistingInstumentation != ""){
+       this.ExistingInstumentation = "Existing Instumentation(portable or fixed)"
+       this.FCACondition.push(this.ExistingInstumentation)
+     
+     }
+     if(this.NewInstumentation != ""){
+       this.NewInstumentation = "New Instumentation(portable or fixed)"
+       this.FCACondition.push(this.NewInstumentation)
+     
+     }
+     if(this.ProcessCondtions != ""){
+       this.ProcessCondtions = "Process Condtions"
+       this.FCACondition.push(this.ProcessCondtions)
+     }
+     if(this.SampleAnyalysis != ""){
+       this.SampleAnyalysis = "Sample Anyalysis"
+       this.FCACondition.push(this.SampleAnyalysis)
+     }
+     if(this.HumanSenses.length >0 || this.ExistingInstumentation.length >0 || this.NewInstumentation.length >0|| this.ProcessCondtions.length >0||this.SampleAnyalysis.length >0){
+       this.changeDetectorRef.detectChanges()
+       this.intervaldeteacting = !this.intervaldeteacting;    
+       const element = document.querySelector("#PatternIntervalDeteacting")
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
+     }
+   
+   }
+   
+   FFInterval(){
+     if(this.ffInterval == 'Days'){
+       this.FCAFFInterval = this.ffIntervalValue * 1 * 24
+     } else if(this.ffInterval == 'Week'){ 
+       this.FCAFFInterval = this.ffIntervalValue * 7 * 24
+     } else if(this.ffInterval == 'Month'){ 
+       this.FCAFFInterval = this.ffIntervalValue * 30 * 24
+     } else if(this.ffInterval == 'Year'){ 
+       this.FCAFFInterval = this.ffIntervalValue * 365 * 24
+     }
+ 
+     if(this.ffInterval.length >0 && this.ffIntervalValue >0){
+       this.changeDetectorRef.detectChanges()
+       this.failuerevident = !this.failuerevident; 
+       const element = document.querySelector("#PatternFailuerEvident")
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
+     }
+   
+   }
+ 
+   CommentThird(){
+     this.FCAComment.push(this.CommentFIEYN)
+     if( this.CommentFIEYN.length>0 && this.CommentFIEYN.length>0){
+       this.changeDetectorRef.detectChanges()
+       this.failuermaintenance = !this.failuermaintenance;   
+       const element = document.querySelector("#PatternFailuerMaintenance")
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
+     }else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
+     }
+   
+   }
+ 
+   CommentFourth(){
+     this.FCAComment.push(this.CommentFIEYN2)
+     if( this.CommentFIEYN2.length>0 && this.CommentFIEYN2.length>0){
+       this.changeDetectorRef.detectChanges()
+       this.failuercomments = !this.failuercomments; 
+       const element = document.querySelector("#PatternFailuerComments")
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
+     }
+   }
+ 
+  async FCAFreeTextSave(){
+     this.FCAComment.push(this.FCAFreeText)
+     this.changeDetectorRef.detectChanges()
+     const element = document.querySelector("#ModePatternTree")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+   }
+ 
+  async FCAFreeTextCancel(){
+     this.FCAFreeText = ""
+     this.changeDetectorRef.detectChanges()
+     const element = document.querySelector("#ModePatternTree")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+   
+   }
+ 
 
 }
 

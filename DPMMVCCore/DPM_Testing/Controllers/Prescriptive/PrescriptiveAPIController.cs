@@ -564,6 +564,10 @@ namespace DPM.Controllers.Prescriptive
                 recycleChild.AttachmentFullPath = FailuerMode.AttachmentFullPath;
                 recycleChild.Remark = FailuerMode.Remark;
                 recycleChild.Pattern = FailuerMode.Pattern;
+                recycleChild.FCACondition = FailuerMode.FCACondition;
+                recycleChild.FCAInterval = FailuerMode.FCAInterval;
+                recycleChild.FCAFFI = FailuerMode.FCAFFI;
+                recycleChild.FCAComment = FailuerMode.FCAComment;
                 recycleChild.IsDeleted = 1;
                 recycleChild.DeletedFMTree = obj.FunctionFailure;
 
@@ -818,6 +822,7 @@ namespace DPM.Controllers.Prescriptive
                 recyclePM.CAttachmentDBPath = prescriptiveModel.CAttachmentDBPath;
                 recyclePM.CAttachmentFullPath = prescriptiveModel.CAttachmentFullPath;
                 recyclePM.CRemarks = prescriptiveModel.CRemarks;
+                recyclePM.FCAAdded = prescriptiveModel.FCAAdded;
                 recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes = null;
 
                 _context.recycleCentrifugalPumpModelData.Add(recyclePM);
@@ -850,6 +855,11 @@ namespace DPM.Controllers.Prescriptive
                     recycleChild.AttachmentDBPath = item.AttachmentDBPath;
                     recycleChild.AttachmentFullPath = item.AttachmentFullPath;
                     recycleChild.Remark = item.Remark;
+                    recycleChild.Pattern = item.Pattern;
+                    recycleChild.FCACondition = item.FCACondition;
+                    recycleChild.FCAInterval = item.FCAInterval;
+                    recycleChild.FCAFFI = item.FCAFFI;
+                    recycleChild.FCAComment = item.FCAComment;
                     recycleChild.IsDeleted = 0;
                     //recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
                     _context.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
