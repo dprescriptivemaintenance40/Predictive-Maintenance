@@ -353,7 +353,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         }
       )
     }
-
   }
 
   AttachmentDoneModal() {
@@ -702,6 +701,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     } else {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields' });
     }
+    const element = document.querySelector("#scrollTop")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   UPDATEFailuerEffect() {
@@ -937,6 +938,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.data1[0].children[0].children.forEach((res: any) => {
       res.FMEA = temp2
     })
+    const element = document.querySelector("#scrollToTop")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
 
@@ -2255,7 +2258,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
 
     }
-
   }
 
 
@@ -2417,9 +2419,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.FCAViewEnabled = true
     this.changeDetectorRef.detectChanges();
     this.GetChartToView(this.FCAView[0].children[0].data.name)
-    const element = document.querySelector("#FCATreeShow")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
+    // const element = document.querySelector("#FCATreeShow")
+    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const element = document.querySelector("#selectNodetoView")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    
   }
 
 
@@ -2552,6 +2556,24 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       }
     });
     this.changeDetectorRef.detectChanges();
+  }
+
+  async PatternSave(){
+    this.FailuerRate = true
+    this.FailureWarning = true
+    this.FailureWarning = true
+    this.WarningSign = true
+    this.IntervalDeteacting = true
+    this.FailuerEvident = true
+    this.FailuerMaintenance = true
+    this.FailuerComments = true
+    this.FailureModePatternTree = true
+
+    this.changeDetectorRef.detectChanges()
+    this.failuerrate = !this.failuerrate; 
+    const element = document.querySelector("#PatternTree2")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
   }
   IntervalSave(){
     if(this.interval == 'Days'){

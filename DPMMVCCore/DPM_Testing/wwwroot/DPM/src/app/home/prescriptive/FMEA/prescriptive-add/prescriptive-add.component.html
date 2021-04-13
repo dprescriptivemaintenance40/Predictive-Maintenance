@@ -278,7 +278,7 @@
     </div>
 </div>
 
-<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow" id="scrollTop">
+<div *ngIf="prescriptiveEffect" style="margin: 40px;" class="stepsdemo-content shadow" id="scrollToTop">
     <p-card>
         <ng-template pTemplate="title">
             Factors
@@ -381,7 +381,7 @@
         <button *ngIf="!(Pattern == '')" label="Back" type="button" style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button><br>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br>
        
-        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company" id="selectNodetoView" style="overflow: scroll;">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}
                     <a class="edit-org-bttn" *ngIf="node.viewFCA !== undefined && node.viewFCA" (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i class="fa fa-eye" aria-hidden="true"></i></a>
@@ -552,7 +552,6 @@
                     <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
 
                 </div>
-
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
@@ -591,8 +590,6 @@
 </div>
 
 
-
-
 <div class="modal fade" id="Consequences01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -613,7 +610,7 @@
     </div>
 </div>
 <div *ngIf="ViewPatterns" id="ScrollUpdateTreeView">
-    <p-card>
+    <p-card style="overflow: scroll;">
         <div class="row">
             <div class="col-6 .col-md-4">
                 <div class="col">
@@ -651,8 +648,9 @@
                         {{node.label}}
                     </ng-template>
                 </p-organizationChart>
-                  <!--<button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
-               <button label="Next"  style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-right"> Save</i></button>  -->
+                <ng-template pTemplate="footer">
+                 <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add FCA to Failure Mode" tooltipPosition="top">ADD</button>
+                </ng-template>
             </div>
         </div>
     </p-card>
@@ -660,8 +658,7 @@
 
 
 
-
-<div *ngIf="FailureModePatternTree" id="ScrollToFCATree" class="col-md-12" style="overflow: scroll;">
+<div *ngIf="FailureModePatternTree" id="ScrollToFCATree" class="col-md-12" style="overflow: scroll;" id="BottomTOTop">
     <small class="form-text text-muted"><h5>Add FCA for {{PatternFMName}}</h5></small>
     <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
     <p-organizationChart [value]="FCAdata1" selectionMode="single" styleClass="company">
@@ -747,20 +744,18 @@
             <div>
                 <!-- <button label="Next" type="button" (click)="PatternBack()" class="btn btn-dark">Back</button>
                 <button label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark">ADD</button> -->
-
                 <button class="btn btn-dark" (click)="PatternBack()" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <button *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="PatternAdd()" pTooltip=" Click To add the Patterns" tooltipPosition="top">
+                <!-- <button *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="PatternAdd()" pTooltip=" Click To add the Patterns" tooltipPosition="top">
                     <i class="fas fa-arrow-right"></i>
-                </button>
+                </button> -->
+                <button label="Next"  style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-right"> Add</i></button>
             </div>
         </ng-template>
     </p-card>
 
 </div>
-
-
 
 <div *ngIf="FCAViewEnabled">
     <p-card>
@@ -1009,8 +1004,8 @@
         </ng-template>
     </p-card>
     </div>
-    <div class="card" style="margin: 20px;" *ngIf ="FailuerComments" id="PatternFailuerComments">
-        <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}">
+    <div class="card" style="margin: 20px;" *ngIf ="FailuerComments" id="PatternFailuerComments" >
+        <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}" id="PatternFailuerCommentsScroll">
         <ng-template pTemplate="title">
      
         </ng-template>
