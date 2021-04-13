@@ -2257,7 +2257,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
 
-    }
+   }
+    
+  const element = document.querySelector("#PatternFailuerCommentsScroll")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
   }
 
 
@@ -2592,7 +2595,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
    const element = document.querySelector("#Patternfailurewarning")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }else{
-   alert("fill the data")
+  //  alert("fill the data")
+   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
   }
    }
  
@@ -2645,7 +2649,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }
      else{
-       alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
      }
  
    }
@@ -2680,7 +2684,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
        const element = document.querySelector("#PatternIntervalDeteacting")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
-       alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
      }
    
    }
@@ -2702,7 +2706,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
        const element = document.querySelector("#PatternFailuerEvident")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
-       alert("Fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
      }
    
    }
@@ -2715,7 +2719,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
        const element = document.querySelector("#PatternFailuerMaintenance")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
      }else{
-       alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
      }
    
    }
@@ -2728,9 +2732,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
        const element = document.querySelector("#PatternFailuerComments")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
-       alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please fill the data" })
      }
-  
    }
  
   async FCAFreeTextSave(){

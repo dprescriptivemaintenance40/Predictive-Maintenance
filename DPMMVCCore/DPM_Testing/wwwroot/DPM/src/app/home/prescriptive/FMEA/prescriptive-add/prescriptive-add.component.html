@@ -371,8 +371,8 @@
 </div>
 
 
-<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12">
-    <p-card [style]="{overflow: scroll}">
+<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style ="overflow: scroll;">
+    <p-card>
         <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
         <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
         <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top"><i class="pi pi-plus">Consequences</i></button>
@@ -609,8 +609,8 @@
         </div>
     </div>
 </div>
-<div *ngIf="ViewPatterns" id="ScrollUpdateTreeView">
-    <p-card style="overflow: scroll;">
+<div *ngIf="ViewPatterns" id="ScrollUpdateTreeView" style="overflow: scroll;">
+    <p-card >
         <div class="row">
             <div class="col-6 .col-md-4">
                 <div class="col">
@@ -757,7 +757,7 @@
 
 </div>
 
-<div *ngIf="FCAViewEnabled">
+<div *ngIf="FCAViewEnabled" style="overflow: scroll;">
     <p-card>
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAView()" pTooltip="Delete" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
