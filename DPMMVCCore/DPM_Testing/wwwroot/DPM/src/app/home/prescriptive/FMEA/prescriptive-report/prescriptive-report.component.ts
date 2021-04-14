@@ -53,21 +53,13 @@ export class PrescriptiveReportComponent implements OnInit {
 
   ngOnInit() {
     this.data = JSON.parse(localStorage.getItem('ReportObj'))
-    if (this.data.CAttachmentDBPath != null) {
-      var FileExt = this.getFileExtension(this.data.CAttachmentDBPath)
-      if (FileExt.toLowerCase() == 'pdf') {
-        let obj = {}
-        obj['Link'] = this.data.CAttachmentDBPath;
-        this.PDFURL.push(obj)
-      }
-    }
     this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes
     this.BrowserURl = window.location.href
     this.BrowserURl = window.location.href.split('#')[0]
     this.data.Date = this.datepipe.transform(this.data.Date, 'dd/MM/YYYY')
-    var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
-    ConsequenceTree[0].children[0].children[0].children = [];
-    this.SingleFailuerTree = ConsequenceTree;
+    // var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
+    // ConsequenceTree[0].children[0].children[0].children = [];
+    // this.SingleFailuerTree = ConsequenceTree;
     this.data1 = JSON.parse(this.data.FMWithConsequenceTree)
     this.data1[0].children[0].children[0].children.forEach(element => {
       element.data.name = ""
@@ -76,18 +68,15 @@ export class PrescriptiveReportComponent implements OnInit {
     this.change.detectChanges();
     this.FileUrl = this.attachmentRemark;
     console.log(this.FileUrl)
-    var str = this.data.centrifugalPumpPrescriptiveFailureModes[0].AttachmentDBPath
-    var remark = this.data.centrifugalPumpPrescriptiveFailureModes[0].Remark
-    this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(str);
-    var extension = this.getFileExtension(str);
-    if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
-      this.ImageEnable = true;
-    } else if (extension.toLowerCase() == 'pdf') {
-      this.ImageEnable = false;
-    }
-
-    console.log(extension)
-
+    // var str = this.data.centrifugalPumpPrescriptiveFailureModes[0].AttachmentDBPath
+    // var remark = this.data.centrifugalPumpPrescriptiveFailureModes[0].Remark
+    // this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(str);
+    // var extension = this.getFileExtension(str);
+    // if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
+    //   this.ImageEnable = true;
+    // } else if (extension.toLowerCase() == 'pdf') {
+    //   this.ImageEnable = false;
+    // }
 
   }
   async ngOnDestroy() {
@@ -101,8 +90,8 @@ export class PrescriptiveReportComponent implements OnInit {
 
   ReportBack(){
     this.prescriptveReportSelect = true;
-     this.ReportSelect = false
-     //this.ReportSelect1 = false
+    this.ReportSelect = false
+    this.ngOnInit()
   }
   public DownloadPDF() {
     if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
@@ -220,6 +209,17 @@ export class PrescriptiveReportComponent implements OnInit {
   GenerateTypeReport() {
     this.changeDetectorRef.detectChanges();
     if (this.ReportRCMType == 'FMEA') {
+      this.PDFURL=[]
+      this.AnnexuresTreeList = []
+        if (this.data.CAttachmentDBPath != null) {
+            var FileExt = this.getFileExtension(this.data.CAttachmentDBPath)
+            if (FileExt.toLowerCase() == 'pdf') {
+              let obj = {}
+              obj['Link'] = this.data.CAttachmentDBPath;
+              this.PDFURL.push(obj)
+            }
+          }
+      this.NewTree = [] 
       this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
       // this.NewTree[0].children[0].children[0].children.forEach((res: any) => {
       this.NewTree[0].children[0].children[0].FMEA[0].children[0].children[0].children.forEach((res: any) => {
@@ -254,6 +254,8 @@ export class PrescriptiveReportComponent implements OnInit {
         var i = index + 1
         patternIds.push(`${id}${i}`)
       }
+      this.NewTree = [] 
+      this.AnnexuresTreeList = []
       this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
       // this.NewTree[0].children[0].children[0].children.forEach((res: any) => {
       this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
