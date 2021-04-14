@@ -1,6 +1,6 @@
 <p-toast position="top-right"></p-toast>
 <p-card>
-    <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="viewEditNode">
+    <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="prescriptive">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
         <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()" pTooltip="If you Want to Update the tree Click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button>
         <p-organizationChart [value]="data1" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
@@ -810,7 +810,7 @@
 </div>
 
 
-<div *ngIf="FCAViewEnabled"id="viewFCA" >
+<div *ngIf="FCAViewEnabled" id="viewFCA" >
     <p-card>
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAUpdateView()" pTooltip="Close" tooltipPosition="top">
             <i class="far fa-times-circle "></i>

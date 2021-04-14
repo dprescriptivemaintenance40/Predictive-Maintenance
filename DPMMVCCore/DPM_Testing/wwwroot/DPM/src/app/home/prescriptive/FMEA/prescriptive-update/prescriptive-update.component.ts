@@ -1538,17 +1538,20 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FCAViewTreeEnabled = true
     this.FCAView = []
     this.FCAView.push(p.FCAData)
+    const element = document.querySelector("#viewFCAPatterns")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' })
     this.FCAViewEnabled = true
     this.FCAViewTreeEnabled = true
     this.changeDetectorRef.detectChanges();
     await this.GetChartToView(this.FCAView[0].children[0].data.name)
     await this.ColorPatternTreUpdate(p.pattern, p.nodePath)
     this.GetChartData();
-    const element = document.querySelector("#viewFCAPatterns")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' })
+   
 
-    // const element = document.querySelector("#ViewtoAddPattern")
-    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start'})
+
+    // const element = document.querySelector("#viewFCA")
+    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
   
   }
 
@@ -1672,7 +1675,7 @@ async SelectNodeToEdit(p){
  async CloseFCAUpdateView(){
   this.FCAViewEnabled = false
   this.FCAViewTreeEnabled = false
-  const element = document.querySelector("#viewEditNode")
+  const element = document.querySelector("#prescriptive")
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
