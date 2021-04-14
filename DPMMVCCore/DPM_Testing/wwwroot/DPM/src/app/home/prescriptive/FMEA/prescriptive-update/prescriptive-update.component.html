@@ -1,11 +1,11 @@
 <p-toast position="top-right"></p-toast>
 <p-card>
-    <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;">
+    <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="viewEditNode">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
         <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()" pTooltip="If you Want to Update the tree Click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button>
         <p-organizationChart [value]="data1" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
-                <div class="node-header p-corner-top" id="viewEditNode">
+                <div class="node-header p-corner-top">
                     {{node.label}}
                     <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)" pTooltip="Edit Node" tooltipPosition="top"><i class="pi pi-pencil"></i></a>
                     <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)" data-toggle="modal" data-target="#DeleteFailureMode" pTooltip="Delete Node" tooltipPosition="top"><i class="pi pi-times"></i></a>
@@ -810,14 +810,14 @@
 </div>
 
 
-<div *ngIf="FCAViewEnabled">
+<div *ngIf="FCAViewEnabled"id="viewFCA" >
     <p-card>
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAUpdateView()" pTooltip="Close" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
         </a>
         <div class="row"><br>
             <div class="col-md-3"></div>
-            <div class="col-md-6" id="viewEditNode">
+            <div class="col-md-6">
                 <div style="width: 13em;height: 7em; margin-left: 140px;">
                     <canvas id="ViewPattern"></canvas>
                 </div>
@@ -825,7 +825,7 @@
             <div class="col-md-3"></div>
         </div><br>
 
-        <div class="col-md-12" style="overflow: scroll;">
+        <div class="col-md-12" style="overflow: scroll;" id="viewFCA">
             <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
                 <ng-template let-node pTemplate="person">
                     <div class="node-header p-corner-top">{{node.label}}</div>
@@ -897,7 +897,7 @@
 </div>
 
 <div class="modal fade" id="UpdatePattern" tabindex="-1" role="dialog" aria-labelledby="ChangeFCA" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document" id="Viewpatternadd">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
@@ -917,7 +917,7 @@
 </div>
 
 <br><br>
-<div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;">
+<div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;" id="ViewtoAddPattern">
     <!-- <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label> -->
     <p-organizationChart [value]="FCAChangeData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
@@ -930,8 +930,8 @@
             {{node.label}}
         </ng-template>
     </p-organizationChart>
-
-    <p-card>
+    <div id="ViewPatternForEdit">
+    <p-card  id="PatternForFailureMode">
         <ng-template pTemplate="title">
             Pattern For Failure Mode
         </ng-template>
@@ -999,5 +999,6 @@
             </div>
         </ng-template>
     </p-card>
+    </div>
 
 </div>
