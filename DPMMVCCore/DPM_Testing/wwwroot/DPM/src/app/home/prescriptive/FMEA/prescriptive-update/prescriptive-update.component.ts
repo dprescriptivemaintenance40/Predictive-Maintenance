@@ -1651,16 +1651,17 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     } 
   }
 
- SelectNodeToEdit(p){
+async SelectNodeToEdit(p){
+  const element = document.querySelector("#viewEditNode")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
  }
 
- CloseFCAUpdateView(){
+ async CloseFCAUpdateView(){
   this.FCAViewEnabled = false
   this.FCAViewTreeEnabled = false
-  // const element = document.querySelector("#prescriptive")
+  // const element = document.querySelector("#viewEditNode")
   // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
 }
 
 UpdatePattern(){
@@ -1670,6 +1671,7 @@ UpdatePattern(){
   this.UpdatePatternAddEnable = true;
   this.changeDetectorRef.detectChanges();
   this.GetChartData();
+  
 }
  
  GetChartToView(p : string){
@@ -2040,7 +2042,7 @@ PatternUpdateAdd(){
 }
 
 public EnabledPatternUpdate : boolean = false
-SaveUpdatedPattern(){
+ SaveUpdatedPattern(){
     var CPObj : CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
     CPObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId;
     CPObj.FMWithConsequenceTree = JSON.stringify(this.data1)

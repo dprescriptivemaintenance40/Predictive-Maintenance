@@ -22,7 +22,7 @@
 
 <div *ngIf="FailureModePatternTree" id="ModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
     <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label>
-        <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
+        <!-- <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
     <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -370,10 +370,9 @@
             <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText"  id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark"  (click)="FCAFreeTextCancel()">Cancel</button>
-         
-            <button class="btn btn-dark" style="float:right;" (click)="FCAFreeTextSave()">Save</button>
-         
+            <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1"   (click)="FCAFreeTextCancel()">Cancel</button>
+            <button class="btn btn-dark" *ngIf="FCAFreeTextSave1"  style="float:right;" (click)="FCAFreeTextSave()">Save</button>
+            <button *ngIf="patternaddshow"  label="Next" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
         </ng-template>
     </p-card>
     </div>

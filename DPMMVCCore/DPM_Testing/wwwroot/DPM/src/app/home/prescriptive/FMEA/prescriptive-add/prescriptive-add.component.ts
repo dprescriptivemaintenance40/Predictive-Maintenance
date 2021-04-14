@@ -216,6 +216,12 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
  public Condition : boolean = true;
  public FCAFFI : boolean = true;
 
+ public FCAFreeTextCancel1: boolean  = true
+ public FCAFreeTextSave1: boolean  = true
+
+ public patternaddshow: boolean  = false
+
+ 
 
 
   constructor(private messageService: MessageService,
@@ -2076,8 +2082,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.FailuerEvident = false
         this.FailuerMaintenance = false
         this.FailuerComments = false
-   
-   
+      
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
           {
@@ -2234,6 +2239,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.FailuerEvident = false
         this.FailuerMaintenance = false
         this.FailuerComments = false
+        
    
 
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
@@ -2248,9 +2254,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
           }
         }
       )
-
-
-
       this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
         this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
@@ -2266,11 +2269,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
     else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
-
    }
-    
   // const element = document.querySelector("#PatternFailuerCommentsScroll")
-  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
+  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   const element = document.querySelector("#PatternFailuerComments")
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
   }
@@ -2738,6 +2739,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
    }
  
    CommentFourth(){
+    this.patternaddshow = false
      this.FCAComment.push(this.CommentFIEYN2)
      if( this.CommentFIEYN2.length>0 && this.CommentFIEYN2.length>0){
        this.changeDetectorRef.detectChanges()
@@ -2749,7 +2751,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
      }
    }
  
-  async FCAFreeTextSave(){
+  async FCAFreeTextSave(){   
+    this.FCAFreeTextCancel1 = false
+    this.FCAFreeTextSave1 = false
+    this.patternaddshow = true
      this.FCAComment.push(this.FCAFreeText)
      this.changeDetectorRef.detectChanges()
      const element = document.querySelector("#ModePatternTree")
@@ -2757,6 +2762,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
    }
  
   async FCAFreeTextCancel(){
+    this.FCAFreeTextCancel1 = false
+    this.FCAFreeTextSave1 = false
      this.FCAFreeText = ""
      this.changeDetectorRef.detectChanges()
      const element = document.querySelector("#ModePatternTree")

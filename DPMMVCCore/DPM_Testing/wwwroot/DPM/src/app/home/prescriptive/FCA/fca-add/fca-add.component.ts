@@ -69,6 +69,10 @@ export class FCAADDComponent implements OnInit {
  public failuerevident: boolean  = true
  public failuermaintenance: boolean  = true
  public failuercomments: boolean  = true
+
+ public FCAFreeTextCancel1: boolean  = true
+ public FCAFreeTextSave1: boolean  = true
+ public patternaddshow: boolean  = false
  
   constructor(private messageService: MessageService,
     public title: Title,
@@ -1218,6 +1222,7 @@ public FCAViewEnabled : boolean = false
   }
 
   CommentFourth(){
+    this.patternaddshow = false
     this.FCAComment.push(this.CommentFIEYN2)
     if( this.CommentFIEYN2.length>0 && this.CommentFIEYN2.length>0){
       this.changeDetectorRef.detectChanges()
@@ -1231,6 +1236,9 @@ public FCAViewEnabled : boolean = false
   }
 
  async FCAFreeTextSave(){
+  this.FCAFreeTextCancel1 = false
+  this.FCAFreeTextSave1 = false
+  this.patternaddshow = true
     this.FCAComment.push(this.FCAFreeText)
     this.changeDetectorRef.detectChanges()
     const element = document.querySelector("#ModePatternTree")

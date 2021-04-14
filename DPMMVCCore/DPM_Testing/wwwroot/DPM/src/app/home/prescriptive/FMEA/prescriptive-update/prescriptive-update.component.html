@@ -5,7 +5,7 @@
         <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()" pTooltip="If you Want to Update the tree Click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button>
         <p-organizationChart [value]="data1" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
-                <div class="node-header p-corner-top">
+                <div class="node-header p-corner-top" id="viewEditNode">
                     {{node.label}}
                     <a class="edit-org-bttn" *ngIf="node.edit !== undefined && node.edit" (click)="SelectNodeToUpdate(node)" pTooltip="Edit Node" tooltipPosition="top"><i class="pi pi-pencil"></i></a>
                     <a class="delete-org-bttn" *ngIf="node.delete !== undefined && node.delete" (click)="SelectNodeToDelete(node)" data-toggle="modal" data-target="#DeleteFailureMode" pTooltip="Delete Node" tooltipPosition="top"><i class="pi pi-times"></i></a>
@@ -815,15 +815,15 @@
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAUpdateView()" pTooltip="Close" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
         </a>
-        <div class="row">
+        <div class="row"><br>
             <div class="col-md-3"></div>
-            <div class="col-md-6">
+            <div class="col-md-6" id="viewEditNode">
                 <div style="width: 13em;height: 7em; margin-left: 140px;">
                     <canvas id="ViewPattern"></canvas>
                 </div>
             </div>
             <div class="col-md-3"></div>
-        </div>
+        </div><br>
 
         <div class="col-md-12" style="overflow: scroll;">
             <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
@@ -837,15 +837,12 @@
                 <ng-template let-node pTemplate="department" id="FCATreeShow">
                     {{node.label}}
                 </ng-template>
-            </p-organizationChart>
-
-            
+            </p-organizationChart>   
         </div>
         
-        <div *ngIf="FCAViewTreeEnabled" class="col-md-12" style="overflow: scroll;">
+        <div *ngIf="FCAViewTreeEnabled" class="col-md-12" style="overflow: scroll;" id="FCAViewTreeEnable">
             <label>You Have Selected this path</label>
             <button *ngIf="EnabledPatternUpdate" title="Save Pattern" label="save" type="button" class="btn btn-dark" (click)="SaveUpdatedPattern()">Save & Update</button><br>
-
             <p-organizationChart [value]="FCAdata1" styleClass="company">
                 <ng-template let-node pTemplate="person">
                     <div class="node-header p-corner-top">{{node.label}}</div>
@@ -996,7 +993,7 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div>
-                <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: left;" (click)="PatternUpdateCancel()" type="button" class="btn btn-dark">Cancel</button>
+                <button *ngIf="UpdatePatternAddEnable" label="Next"  (click)="PatternUpdateCancel()" type="button" class="btn btn-dark">Cancel</button>
                 <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">ADD</button>
                 <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;" (click)="AddPatternToNewFM()" type="button" class="btn btn-dark">ADD Pattern</button>
             </div>
