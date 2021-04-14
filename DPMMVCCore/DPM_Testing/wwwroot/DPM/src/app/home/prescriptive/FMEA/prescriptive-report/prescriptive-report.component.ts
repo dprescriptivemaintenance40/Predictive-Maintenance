@@ -101,8 +101,8 @@ export class PrescriptiveReportComponent implements OnInit {
 
   ReportBack(){
     this.prescriptveReportSelect = true;
-     this.ReportSelect = false
-     //this.ReportSelect1 = false
+    this.ReportSelect = false
+ 
   }
   public DownloadPDF() {
     if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
@@ -235,7 +235,6 @@ export class PrescriptiveReportComponent implements OnInit {
               obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
               this.PDFURL.push(obj)
             }
-
             if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
               res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
               res.Remark = this.attachmentRemark[index].Remark
@@ -270,7 +269,6 @@ export class PrescriptiveReportComponent implements OnInit {
               obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
               this.PDFURL.push(obj)
             }
-
             if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
               res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
               res.Remark = this.attachmentRemark[index].Remark

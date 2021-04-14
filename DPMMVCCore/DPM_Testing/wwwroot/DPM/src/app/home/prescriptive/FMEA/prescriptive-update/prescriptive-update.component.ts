@@ -212,7 +212,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     await localStorage.removeItem('PrescriptiveUpdateObject');
   }
 
-  SelectNodeToUpdate(p) {
+ async SelectNodeToUpdate(p) {
     console.log(p.data.name)
     console.log(p.label)
     this.UpdateModal = true;
@@ -226,6 +226,9 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'No Update For Function Failure' });
     } else if (p.label == "Local Effect" || p.label == "System Effect" || p.label == "Consequence") {
     } else { this.EditFailureMode(p) }
+    const element = document.querySelector("#PatternForFailureMode")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start'})
+   
   }
 
   CloseFailureModeUpdate() {
@@ -573,13 +576,16 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   closeLSmodal() {
     this.LSEdiv.style.display = 'none'
   }
-  AddFailureModeToTree() {
+ async AddFailureModeToTree() {
     this.getDropDownLookMasterData();
     this.FMdiv = document.getElementById("FailureModeUpdate")
     this.FMdiv.style.display = 'block'
     this.FailureModePatternTree = false;
     this.FCAViewTreeEnabled = false;
     this.FCAViewEnabled = false;
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#EditTheNode")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   ADDSingleFailureModeToTree() {
@@ -808,7 +814,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     
   }
 
-  AddPatternToNewFM(){
+ async AddPatternToNewFM(){
     if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
       if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
         || this.Pattern === 'Pattern 6')
@@ -903,10 +909,11 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.Pattern = ""
       this.AddFMPatternAddEnable = false;
       this.UpdatePatternAddEnable = false;
+      const element = document.querySelector("#ViewtoAddPattern")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start'})
     }
     else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
-
     }
   }
 
@@ -1521,6 +1528,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   PatternUpdateCancel(){
     this.FailureModePatternTree = false;
   }
+  
 
  async SelectNodeToView(p){
     this.FailureModePatternTree = false
@@ -1530,14 +1538,21 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FCAViewTreeEnabled = true
     this.FCAView = []
     this.FCAView.push(p.FCAData)
+    const element = document.querySelector("#viewFCAPatterns")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' })
     this.FCAViewEnabled = true
     this.FCAViewTreeEnabled = true
     this.changeDetectorRef.detectChanges();
     await this.GetChartToView(this.FCAView[0].children[0].data.name)
     await this.ColorPatternTreUpdate(p.pattern, p.nodePath)
-    const element = document.querySelector("#SelectedPath")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     this.GetChartData();
+   
+
+
+    // const element = document.querySelector("#viewFCA")
+    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  
   }
 
   ColorPatternTreUpdate(value , nodePath){
@@ -1651,25 +1666,31 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     } 
   }
 
- SelectNodeToEdit(p){
+async SelectNodeToEdit(p){
+  const element = document.querySelector("#ViewPatternForEdit")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' })
 
  }
 
- CloseFCAUpdateView(){
+ async CloseFCAUpdateView(){
   this.FCAViewEnabled = false
   this.FCAViewTreeEnabled = false
-  // const element = document.querySelector("#prescriptive")
-  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
+  const element = document.querySelector("#prescriptive")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-UpdatePattern(){
+async UpdatePattern(){
   this.FCAViewTreeEnabled = false
   this.FailureModePatternTree = true
   this.AddFMPatternAddEnable = false;
   this.UpdatePatternAddEnable = true;
   this.changeDetectorRef.detectChanges();
   this.GetChartData();
+  const element = document.querySelector("#ViewtoAddPattern")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start'}) 
+
+  // const element = document.querySelector("#ViewPatternForEdit")
+  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start'}) 
 }
  
  GetChartToView(p : string){
@@ -1986,7 +2007,7 @@ PatternUpdateBack(){
   this.FCAViewTreeEnabled = true
   this.ColorPatternTreUpdate(this.PatternBack, this.nodePath )
 }
-PatternUpdateAdd(){
+ async PatternUpdateAdd(){
   this.FCAView[0].children[0].data.name = this.Pattern
   this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].pattern = this.Pattern
   this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 0
@@ -2035,12 +2056,18 @@ PatternUpdateAdd(){
   }else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
     this.ColorPatternTreUpdate(this.Pattern, 0)
   }
+  this.changeDetectorRef.detectChanges();
+  // const element = document.querySelector("#FCAViewTreeEnable")
+  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
+  
+  const element = document.querySelector("#viewFCAPatterns")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start'})
   this.FailureModePatternTree = false;
   this.FCAViewTreeEnabled = true
 }
 
 public EnabledPatternUpdate : boolean = false
-SaveUpdatedPattern(){
+ async SaveUpdatedPattern(){
     var CPObj : CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
     CPObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId;
     CPObj.FMWithConsequenceTree = JSON.stringify(this.data1)
@@ -2074,7 +2101,6 @@ SaveUpdatedPattern(){
       }, err => { console.log(err.error)}
     )
 
-    
 }
 
 SelectPatternForFailureMode(value: string) {
