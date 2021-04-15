@@ -255,6 +255,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.title.setTitle('DPM | Prescriptive ');
     this.data1 = JSON.parse(localStorage.getItem('TestingOBj'))
     this.PatternTree()
+    // this.MSSFunction()
     setInterval(() => {
       this.dynamicDroppedPopup();
     }, 2000);
@@ -452,27 +453,46 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       })
   }
 
+ 
+    async GeneratePrescription() {
+        if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
 
+              this.http.get<any>('api/PrescriptiveAPI').subscribe(
+                res => {
+                  var check = 0;
+                  res.forEach(element => {
+                    if(element.TagNumber == this.TagNumber){
+                        check = 1;
+                    }
+                  });
+        
+                  if(check === 0){
+                    this.getDropDownLookMasterData();
+                    this.prescriptiveSelect = false;
+                    this.prescriptiveSteps = true;
+                    this.prescriptiveFuntion = true;
+                    this.prescriptiveFunctionFailure = false;
+                    this.prescriptiveFailureMode = false;
+                    this.prescriptiveEffect = false;
+                    this.prescriptiveEffect1 = false
+                    this.prescriptiveTree = false;
+                    this.activeIndex = 0;
+                  }else{
+                    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Tag Number is already Existing, if you want to add something you can update it from Assets List' });
+                  }
 
-  GeneratePrescription() {
-    if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
-      this.getDropDownLookMasterData();
-      this.prescriptiveSelect = false;
-      this.prescriptiveSteps = true;
-      this.prescriptiveFuntion = true;
-      this.prescriptiveFunctionFailure = false;
-      this.prescriptiveFailureMode = false;
-      this.prescriptiveEffect = false;
-      this.prescriptiveEffect1 = false
-      this.prescriptiveTree = false;
-      this.activeIndex = 0;
-    } else if (this.EquipmentType.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing' });
+                }, err => {
+                  console.log(err.error);
+                }
+              )
+            
+        } else if (this.EquipmentType.length == 0) {
+          this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Equipment Type is missing' });
 
-    } else if (this.TagNumber.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'TagNumber is missing' });
-    }
-  }
+        } else if (this.TagNumber.length == 0) {
+          this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'TagNumber is missing' });
+        }
+      }
 
   FunctionNext() {
     if (this.FunctionFluidType.length > 0 && this.FunctionRatedHead.length > 0 && this.FunctionPeriodType.length > 0) {
@@ -2771,6 +2791,129 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
    
    }
  
+  //  public MSSData : any=[
+  //   {
+  //     label: "Start",
+  //     type: "person",
+  //     styleClass: "p-person",
+  //     expanded: true,
+  //     data: {
+  //       name:
+  //         "Is their is an incipient Failuer condition for this failuer mode that can be particularly monitored  at relastic maintanance intervals?"
+  //     },
+  //     children: [ ]
+  //   }  
+  //  ]
+  //  public MSSDescription : string = ""
+  //  public MSSEnable : boolean = true
+  //  public MSSDesCardEnable : boolean = true 
+  //  public MSSdroppedYesNo : any;
+  //  public MSSdroppedData : any;
+
+  //  public MSSAllTreeData : any = [];
+  
+  
+  // MSSFunction(){
+  //   this.MSSAllTreeData = [
+  //     { 'id': 1 , 'des': 'Is their is an incipient Failuer condition for this failuer mode that can be particularly monitored  at relastic maintanance intervals ?'},
+  //     { 'id': 2 , 'des': 'Will an on condition maintanace task secuer an expectable risk level?'},
+  //     { 'id': 3 , 'des': 'On condition maintanace task B-OCM'},
+  //     { 'id': 4 , 'des': 'Is their an interval at which the failuer mode exhibits a rapid increase in the conditional probability of failure?'},
+  //     { 'id': 5 , 'des': ''}
+  //   ]
+
+  //   this.MSSDescription = this.MSSAllTreeData[0].des
+
+  // }
+
+  // MSSNext(){
+  //   this.MSSEnable = false
+  //   this.changeDetectorRef.detectChanges()
+  //   if(this.MSSDescription == this.MSSAllTreeData[0].des   && this.MSSdroppedData == 'YES' ){
+  //     let MSSChildYes = {
+  //       label: "Yes",
+  //       type: "person",
+  //       styleClass: "p-person",
+  //       expanded: true,
+  //       data: {
+  //         name: ''
+  //       }, 
+  //       children: [ ]
+  //    }
+  //     MSSChildYes.data.name = this.MSSAllTreeData[1].des
+  //     this.MSSData[0].children.push(MSSChildYes)
+  //     this.MSSDescription = this.MSSAllTreeData[1].des
+  //     this.changeDetectorRef.detectChanges()
+  //     this.MSSdroppedData =[]
+  //     this.MSSEnable = true
+  //   }else if(this.MSSDescription == this.MSSAllTreeData[1].des   && this.MSSdroppedData == 'YES' ){
+  //     let MSSChildYes = {
+  //       label: "Yes",
+  //       type: "person",
+  //       styleClass: "p-person",
+  //       expanded: true,
+  //       data: {
+  //         name: ''
+  //       }, 
+  //       children: [ ]
+  //    }
+  //    let MSSStratergy = {
+  //     label: "Stratergy",
+  //     type: "person",
+  //     styleClass: "p-person",
+  //     expanded: true,
+  //     data: {
+  //       name: ''
+  //     }
+  //  }
+  //     MSSChildYes.data.name = this.MSSAllTreeData[2].des
+  //     MSSStratergy.data.name = 'B-OCM'
+  //     this.MSSData[0].children[0].children.push(MSSChildYes)   
+  //     this.MSSData[0].children[0].children[0].children.push(MSSStratergy)  
+  //     this.MSSDescription = this.MSSAllTreeData[2].des
+  //     this.changeDetectorRef.detectChanges()
+  //     this.MSSdroppedData =[]
+  //     this.MSSEnable = true
+  //     this.MSSDesCardEnable =false
+  //   }else if(this.MSSDescription == this.MSSAllTreeData[1].des   && this.MSSdroppedData == 'NO' ){
+  //     let MSSChildNo = {
+  //       label: "No",
+  //       type: "person",
+  //       styleClass: "p-person",
+  //       expanded: true,
+  //       data: {
+  //         name: ''
+  //       }, 
+  //       children: [ ]
+  //    }
+  //     MSSChildNo.data.name = this.MSSAllTreeData[3].des
+  //     this.MSSData[0].children[0].children.push(MSSChildNo)
+  //     this.MSSDescription = this.MSSAllTreeData[3].des
+  //     this.changeDetectorRef.detectChanges()
+  //     this.MSSdroppedData =[]
+  //     this.MSSEnable = true
+  //   }
+
+  // }
+
+ 
+
+
+
+
+  //  dragStartM1(e, con4) {
+  //   this.MSSdroppedYesNo = con4;
+  // }
+
+  // dragEndM1(e) { }
+
+  // dropM1(e) {
+  //   if (this.MSSdroppedYesNo) {
+  //     this.MSSdroppedData = [];
+  //     this.MSSdroppedData.push(this.MSSdroppedYesNo);
+  //     this.MSSdroppedYesNo = null;
+  //   }
+  // }
 
 }
 

@@ -1025,3 +1025,51 @@
     </p-card>
     </div>
 </div> 
+
+<!-- <div *ngIf="MSSEnable">
+<p-organizationChart [value]="MSSData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+    <ng-template let-node pTemplate="person">
+        <div class="node-header p-corner-top">{{node.label}}</div>
+        <div class="node-content">
+            <div class="a">{{node.data.name}}</div>
+        </div>
+    </ng-template>
+    <ng-template let-node pTemplate="department">
+        {{node.label}}
+    </ng-template>
+</p-organizationChart>
+</div>
+
+<div *ngIf="MSSDesCardEnable" id="ScrollUpdateTree1" style="margin: 40px;" class="stepsdemo-content shadow">
+    <p-card>
+        <ng-template pTemplate="title">
+            MSS For
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Choose your MSS
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid p-formgrid p-grid">
+                <div style="margin-left: 20px;" class="p-fluid">
+                    <p>{{MSSDescription}} </p>
+                </div>
+                <div class="container">
+                    <div *ngFor="let mss of draggedConsequencesYesNO" class="border" pDraggable="mss" (onDragStart)="dragStartM1($event,mss)" (onDragEnd)="dragEndM1($event)">
+                        {{mss}}
+                    </div>
+                    <div class="drop" pDroppable="mss" (onDrop)="dropM1($event)">
+                        <div *ngFor="let c of MSSdroppedData">{{c}}</div>
+
+                    </div>
+                    <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            
+            <button  class="btn btn-dark" style="float: right;" (click)="MSSNext()" pTooltip=" Click To add " tooltipPosition="top">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </ng-template>
+    </p-card>
+</div> -->
