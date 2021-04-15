@@ -52,35 +52,28 @@ export class PrescriptiveReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data = JSON.parse(localStorage.getItem('ReportObj'))
-    this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes
-    this.BrowserURl = window.location.href
-    this.BrowserURl = window.location.href.split('#')[0]
-    this.data.Date = this.datepipe.transform(this.data.Date, 'dd/MM/YYYY')
-    // var ConsequenceTree = JSON.parse(this.data.FMWithConsequenceTree)
-    // ConsequenceTree[0].children[0].children[0].children = [];
-    // this.SingleFailuerTree = ConsequenceTree;
-    this.data1 = JSON.parse(this.data.FMWithConsequenceTree)
-    this.data1[0].children[0].children[0].children.forEach(element => {
-      element.data.name = ""
-      element.children = []
-    });
-    this.change.detectChanges();
-    this.FileUrl = this.attachmentRemark;
-    console.log(this.FileUrl)
-    // var str = this.data.centrifugalPumpPrescriptiveFailureModes[0].AttachmentDBPath
-    // var remark = this.data.centrifugalPumpPrescriptiveFailureModes[0].Remark
-    // this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(str);
-    // var extension = this.getFileExtension(str);
-    // if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
-    //   this.ImageEnable = true;
-    // } else if (extension.toLowerCase() == 'pdf') {
-    //   this.ImageEnable = false;
-    // }
+   this.RefreshTree()
 
   }
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
+  }
+
+
+  RefreshTree(){
+    this.data = JSON.parse(localStorage.getItem('ReportObj'));
+    this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes;
+    this.BrowserURl = window.location.href;
+    this.BrowserURl = window.location.href.split('#')[0];
+    this.data.Date = this.datepipe.transform(this.data.Date, 'dd/MM/YYYY');
+    this.data1 = JSON.parse(this.data.FMWithConsequenceTree);
+    this.data1[0].children[0].children[0].children.forEach(element => {
+      element.data.name = "";
+      element.children = [];
+    });
+    this.change.detectChanges();
+    this.FileUrl = this.attachmentRemark;
+    console.log(this.FileUrl);
   }
 
   getFileExtension(filename) {
@@ -91,7 +84,7 @@ export class PrescriptiveReportComponent implements OnInit {
   ReportBack(){
     this.prescriptveReportSelect = true;
     this.ReportSelect = false
-    this.ngOnInit()
+    this.RefreshTree()
   }
   public DownloadPDF() {
     if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
@@ -235,7 +228,6 @@ export class PrescriptiveReportComponent implements OnInit {
               obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
               this.PDFURL.push(obj)
             }
-
             if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
               res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
               res.Remark = this.attachmentRemark[index].Remark
@@ -272,7 +264,6 @@ export class PrescriptiveReportComponent implements OnInit {
               obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
               this.PDFURL.push(obj)
             }
-
             if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
               res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
               res.Remark = this.attachmentRemark[index].Remark
