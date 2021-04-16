@@ -1,3 +1,4 @@
+<div>
 <div class="container" style="margin-top: 10px;" *ngIf="ConsequenceA">
     <div class="card shadow mb-4">
         <div class="card-body">
@@ -9,31 +10,31 @@
     <div class="row">
         <div class="col"><br>
             <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;" >
-                <input type="radio"[(ngModel)]="AOCM" value="A-COM" name="name1" />&nbsp;
+                <input type="radio"[(ngModel)]="AOCM" value="ACOM" name="name1" />&nbsp;
                 <label> A-OCM</label>
             </div>
         </div>
         <div class="col"><br>
                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="ASO" value="A-SO" name="name1" />&nbsp;
+                    <input type="radio"[(ngModel)]="ASO" value="ASO" name="name1" />&nbsp;
                     <label> A-SO</label>
                 </div>
         </div>
         <div class="col"><br>
             <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                <input type="radio"[(ngModel)]="ASR" value="A-SR" name="name1" />&nbsp;
+                <input type="radio"[(ngModel)]="ASR" value="ASR" name="name1" />&nbsp;
                 <label> A-SR</label>
             </div>
         </div>
         <div class="col"><br>
             <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                <input type="radio"[(ngModel)]="AFFT" value="A-FFT" name="name1" />&nbsp;
+                <input type="radio"[(ngModel)]="AFFT" value="AFFT" name="name1" />&nbsp;
                 <label> A-FFT</label>
             </div>
         </div>
         <div class="col"><br>
             <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                <input type="radio"[(ngModel)]="AFromAbove" value="A-From Above" name="name1" />&nbsp;
+                <input type="radio"[(ngModel)]="AFromAbove" value="AFromAbove" name="name1" />&nbsp;
                 <label> From Above</label>
             </div>
         </div>
@@ -235,5 +236,6 @@
     </div>
 </div>
 </div>
-
+<button  label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveMSS()">Save MSS</button>
+</div>
 

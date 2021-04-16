@@ -1049,6 +1049,7 @@ public FCAViewEnabled : boolean = false
   public FCAInterval : number = 0
   public FCAComment : any = []
   public FCACondition : any = []
+
   public FCAFFInterval : number = 0
 
   public FCAData : any = []
