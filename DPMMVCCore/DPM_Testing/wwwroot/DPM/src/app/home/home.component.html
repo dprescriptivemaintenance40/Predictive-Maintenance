@@ -106,6 +106,7 @@
                     </a>
                 </li>
             </div>
+    
 
             <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
@@ -115,8 +116,15 @@
                     <a class="collapse-item" [routerLink]="['/Home/Prescriptive/Display']"> Display</a>
                 </div>
             </div>
-        </li>
 
+            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight">
+                <li>
+                    <a [routerLink]="['/Home/Prescriptive/MSSAdd']" class="nav-link collapsed" data-toggle="collapse" >
+                        <span>MSS</span>
+                    </a>
+                </li>
+            </div>
+        </li>
         <li class="nav-item">
             <a [routerLink]="[ '/Home/RecycleBin']" class="nav-link">
                 <i [routerLink]="[ '/Home/RecycleBin']"></i>
