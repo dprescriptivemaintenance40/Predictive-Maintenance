@@ -14,7 +14,6 @@ import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/
   providers: [MessageService]
 })
 export class MSSAddComponent implements OnInit {
-  
 
   public PrescriptiveTreeList : any = [];
   public TagList : any = [];
@@ -49,10 +48,8 @@ export class MSSAddComponent implements OnInit {
       this.SaveBtnEnable = false
     }else{
       this.getPrescriptiveRecords()
-    } 
-     
+    }    
     }
-
     async ngOnDestroy() {
     await localStorage.removeItem('MSSObject');
     }
@@ -63,8 +60,7 @@ export class MSSAddComponent implements OnInit {
       res => {
         this.PrescriptiveTreeList = res;
         res.forEach(element => {
-          this.TagList.push(element.TagNumber)
-          
+          this.TagList.push(element.TagNumber) 
         });
       }
     )
@@ -80,13 +76,12 @@ export class MSSAddComponent implements OnInit {
            this.SelectBoxEnabled = false
            this.SaveBtnEnable = false;
            this.AddBtnEnable = true;
-        }
-        
+        } 
       });
     }
   }
 
-  ADDMSS(){
+  async ADDMSS(){
    this.FailureModeName = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].FunctionMode
    this.ConsequenceBasedMSS = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].Consequence
    this.PrescriptiveTree = false
@@ -95,6 +90,8 @@ export class MSSAddComponent implements OnInit {
      this.SaveBtnEnable = true;
      this.AddBtnEnable = false;
    }
+   const element = document.querySelector("#GoToTheSaveMSS")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   ADDMSSToTree(){
@@ -116,15 +113,13 @@ export class MSSAddComponent implements OnInit {
         }
       ]
     } 
-
     this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(MSSTree)
     this.ConsequenceBasedMSS = ""  
     this.PrescriptiveTree = true 
-  
   }
 
 
-  SaveMSS(){
+ async SaveMSS(){
     var CPObj : CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
     CPObj.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId
     CPObj.FMWithConsequenceTree = JSON.stringify(this.TreeUptoFCA)
@@ -134,9 +129,10 @@ export class MSSAddComponent implements OnInit {
         this.router.navigateByUrl('/Home/Prescriptive/List')
       }, err => { 
         console.log(err.error)
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
-        
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' }); 
       }
     )
+    const element = document.querySelector("#GoToTheSaveMSS1")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 }

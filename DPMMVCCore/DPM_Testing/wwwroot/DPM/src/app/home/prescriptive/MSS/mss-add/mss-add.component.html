@@ -11,21 +11,18 @@
                         </select>
                 </div>
             </li>
-           
             <li class="list-group-item">
                 <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
             </li>
-
         </ul>
     </div>
 </div>
 
-<div *ngIf="PrescriptiveTree" style="overflow:scroll;" >
+<div *ngIf="PrescriptiveTree" style="overflow:scroll;" id="GoToTheSaveMSS">
 <p-card>
     <!-- <button class="btn btn-dark" style="float:left;" (click)="MSSBACK()" > <i class="pi pi-plus"></i>Back</button> &ensp; -->
     <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float:left;" (click)="ADDMSS()" > <i class="pi pi-plus"></i>MSS</button>
-    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()" > <i class="fa fa-check"></i>Save</button>
- 
+    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check"></i></button>
     <p-organizationChart [value]="TreeUptoFCA" selectionMode="single" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -40,15 +37,8 @@
 </p-card>
 </div>
 
-
-
-
-
-
-
-
-<div>
-<div class="container" style="margin-top: 10px;" *ngIf="ConsequenceBasedMSS == 'A' ">
+<div id="GoToTheSaveMSS1">
+<div class="container" style="margin-top: 10px;" *ngIf="ConsequenceBasedMSS == 'A'" >
     <div class="card shadow mb-4">
         <div class="card-body">
             <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 

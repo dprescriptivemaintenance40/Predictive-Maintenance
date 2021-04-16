@@ -22,7 +22,7 @@
 
 <div *ngIf="FailureModePatternTree" id="ModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
     <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label>
-        <!-- <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
+    <button *ngIf="patternaddshow" label="Next" style="float: right;"(click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
     <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -76,14 +76,14 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 6')" pTooltip="Patterns 6 is very common.The probability of failuer declines with the age to reach constatnt value. 
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 6')" pTooltip="Patterns 6 is very common.The probability of failuer declines with the age to reach constatnt value.
                             It is high when the component is new or just been rewarded,but then settles.Compression fittings and many electronic system,including computers, exhibit the patterns" tooltipPosition="right">
                                 <canvas id="pattern6"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
-       
+
                 <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
                     <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio" class="custom-control-input">
                     <label class="custom-control-label" for="customRadio1">Select Path</label>
@@ -104,7 +104,7 @@
             <div>
                 <button label="Back" type="button" (click)="PatternBack()" class="btn btn-dark" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
                 <button label="Next"  style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-right"> Save</i></button>
-                
+
             </div>
         </ng-template>
     </p-card>
@@ -124,8 +124,8 @@
                 </div>
             </div>
             <div class="col-md-3"></div>
-        </div>   
-       
+        </div>
+
         <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -147,8 +147,8 @@
         text-decoration: none;
          opacity: 0.5;
          padding:1px;
-        background-color:#777  
-       
+        background-color:#777
+
     }
 </style>
 
@@ -169,12 +169,12 @@
                         <option value="Month" selected>Month</option>
                         <option value="Year" selected>Year</option>
                     </select>
-                   <input type="number" [(ngModel)]="intervalValue" name="Interval" class="form-control">        
+                   <input type="number" [(ngModel)]="intervalValue" name="Interval" class="form-control">
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
             <button class="btn btn-dark" style="float:right;" (click)="IntervalSave()"> <i class="fa fa-check" aria-hidden="true" ></i>save</button><br>
-        </ng-template>      
+        </ng-template>
     </p-card>
     </div>
     <div class="card" style="margin: 20px;" *ngIf ="FailureWarning" id="Patternfailurewarning">
@@ -214,7 +214,7 @@
                     <td><input type="checkbox" [(ngModel)]="TempratureChange" value="Temprature Change" name="name1" />&nbsp;</td>
                     </p-card></div><br>
                 </div><br>
-               
+
                 <div class="row">
                     <div class="col-sm-2"><br>
                         <p-card>
@@ -238,7 +238,7 @@
         </ng-template>
         <ng-template pTemplate="footer">
         <button class="btn btn-dark" style="float:right;" (click)="ConditionFirst()"> <i class="fa fa-check" aria-hidden="true"></i>save</button><br>
-        </ng-template>     
+        </ng-template>
     </p-card>
     </div>
     <div class="card" style="margin: 20px;" *ngIf ="WarningSign" id="PatternWarningSign">
@@ -275,8 +275,8 @@
                         Sample Anyalysis<br>
                         <td><input type="checkbox" [(ngModel)]="SampleAnyalysis" value="Sample Anyalysis" name="name1" />&nbsp;</td>
                     </div>
-                   </div>  
-                </div> 
+                   </div>
+                </div>
           </div>
         </ng-template>
         <ng-template pTemplate="footer">
@@ -288,7 +288,7 @@
         <p-card [ngClass]=" {disableddiv: intervaldeteacting  ? true : false}" >
         <ng-template pTemplate="subtitle">
             <div class="input-group mb-3">
-                <label><b>5. What is the likely interval between detacting a warning sign and the failuer happening?</b></label>   
+                <label><b>5. What is the likely interval between detacting a warning sign and the failuer happening?</b></label>
                 <select [(ngModel)]="ffInterval" class="form-select"  class="form-control" placeholder="Failuer very likely">
                     <option value="">Choose</option>
                         <option value="Days" selected> Days</option>
@@ -296,7 +296,7 @@
                         <option value="Month" selected>Month</option>
                         <option value="year" selected>Year</option>
                     </select>
-                   <input type="number" [(ngModel)]="ffIntervalValue" name="Interval" class="form-control">  
+                   <input type="number" [(ngModel)]="ffIntervalValue" name="Interval" class="form-control">
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
@@ -316,14 +316,14 @@
                 <div class="col-sm">
                     Yes <td><input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is not Evident" name="name1" />&nbsp;</td>
                 </div>
-                <div class="col-sm">      
+                <div class="col-sm">
                     No <td><input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is Evident" name="name1" />&nbsp;</td>
                 </div>
-                <div class="col-sm"></div> 
+                <div class="col-sm"></div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark"  (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button> 
+            <button class="btn btn-dark"  (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
@@ -343,7 +343,7 @@
                     Yes <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment
                         maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
                 </div>
-                <div class="col-sm">      
+                <div class="col-sm">
                     No <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment
                         maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
                 </div>
@@ -352,14 +352,14 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <button class="btn btn-dark" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
-         
+
         </ng-template>
     </p-card>
     </div>
     <div class="card" style="margin: 20px;" *ngIf ="FailuerComments" id="PatternFailuerComments">
         <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}">
         <ng-template pTemplate="title">
-     
+
         </ng-template>
         <ng-template pTemplate="subtitle">
             <p><b> 8. Do you have any comments regarding the failuer of this equipment or how the maintainace of the equipment
@@ -372,11 +372,11 @@
         <ng-template pTemplate="footer">
             <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1"   (click)="FCAFreeTextCancel()">Cancel</button>
             <button class="btn btn-dark" *ngIf="FCAFreeTextSave1"  style="float:right;" (click)="FCAFreeTextSave()">Save</button>
-            <button *ngIf="patternaddshow"  label="Next" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
+            <!-- <button *ngIf="patternaddshow"  label="Next" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
         </ng-template>
     </p-card>
     </div>
-</div> 
+</div>
 
 
 

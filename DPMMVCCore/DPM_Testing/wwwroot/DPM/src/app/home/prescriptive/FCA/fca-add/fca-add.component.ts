@@ -73,6 +73,8 @@ export class FCAADDComponent implements OnInit {
  public FCAFreeTextCancel1: boolean  = true
  public FCAFreeTextSave1: boolean  = true
  public patternaddshow: boolean  = false
+ public PatternFailuerAll: boolean  = false
+ 
  
   constructor(private messageService: MessageService,
     public title: Title,
@@ -889,7 +891,6 @@ export class FCAADDComponent implements OnInit {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any Pattern" })
 
     }
-
     const element = document.querySelector("#PatternFailuerComments")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     
@@ -1223,7 +1224,7 @@ public FCAViewEnabled : boolean = false
   }
 
   CommentFourth(){
-    this.patternaddshow = false
+    // this.patternaddshow = false
     this.FCAComment.push(this.CommentFIEYN2)
     if( this.CommentFIEYN2.length>0 && this.CommentFIEYN2.length>0){
       this.changeDetectorRef.detectChanges()
@@ -1237,19 +1238,20 @@ public FCAViewEnabled : boolean = false
   }
 
  async FCAFreeTextSave(){
-  this.FCAFreeTextCancel1 = false
-  this.FCAFreeTextSave1 = false
+
+  this.PatternFailuerAll = true
   this.patternaddshow = true
     this.FCAComment.push(this.FCAFreeText)
     this.changeDetectorRef.detectChanges()
-    const element = document.querySelector("#ModePatternTree")
+    const element = document.querySelector("#ScrollToFCATree")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
  async FCAFreeTextCancel(){
+   this.PatternFailuerAll = true
     this.FCAFreeText = ""
     this.changeDetectorRef.detectChanges()
-    const element = document.querySelector("#ModePatternTree")
+    const element = document.querySelector("#PatternFailuerAllAdd")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   
   }
