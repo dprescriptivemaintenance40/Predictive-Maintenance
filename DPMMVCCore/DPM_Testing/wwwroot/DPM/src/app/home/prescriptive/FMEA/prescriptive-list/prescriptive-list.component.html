@@ -51,6 +51,7 @@
                             <th>Attachment</th>
                             <th>Report</th>
                             <th>Delete</th>
+                            <th>MSS</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
@@ -82,6 +83,12 @@
                             <td>
                                 <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><i class="pi pi-trash"></i></a>
                             </td>
+                            <td>
+                                <a style="color: green;" title="Update MSS Tree" (click)="getMSSData(p)" ><i class="pi pi-pencil"></i></a>
+                            </td>
+                            <!-- <td>
+                                <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" (click)="getMSSData(p)" title="Add MSS"><i class="pi pi-plus"></i></a>
+                            </td> -->
                         </tr>
                         <tr *ngIf="prescriptiveRecords.length == 0">
                             <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>

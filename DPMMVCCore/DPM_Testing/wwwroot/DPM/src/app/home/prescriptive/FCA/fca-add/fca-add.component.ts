@@ -15,7 +15,7 @@ import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/
   providers: [MessageService],
 })
 export class FCAADDComponent implements OnInit {
-
+  borderStyle = 'solid';
   public FCAdata1: TreeNode[];
   public FMPattern = ['Pattern 1', 'Pattern 2', 'Pattern 3', 'Pattern 4', 'Pattern 5', 'Pattern 6'];
   public Pattern: string = ""
