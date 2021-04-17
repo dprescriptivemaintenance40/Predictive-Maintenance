@@ -30,11 +30,12 @@
                             <col style="width:10em;">
                             <col style="width:6em;">
                             <col style="width:6em;">
+                            <col style="width:5em;">
                             <col style="width:14em;">
                             <col style="width:8em;">
                             <col style="width:6em;">
                             <col style="width:5em;">
-                            <col style="width:5em;">
+                           
                         </colgroup>
                     </ng-template>
                     <ng-template pTemplate="header">
@@ -48,11 +49,12 @@
                             <th>Criticality Factor</th>
                             <th>Rating</th>
                             <th>FCA</th>
+                            <th>MSS</th>
                             <th>Maintainenance Practice</th>
                             <th>Attachment</th>
                             <th>Report</th>
                             <th>Delete</th>
-                            <th>MSS</th>
+                          
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
@@ -72,6 +74,9 @@
                             <td>
                                 <a style="color: green;" [ngClass]="{disabled:p.FCAAdded == 1}" (click)="getFCAData(p)" title="Add FCA"><i class="pi pi-plus"></i></a>
                             </td>
+                            <td>
+                                <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" title="Update MSS Tree" (click)="getMSSData(p)" ><i class="pi pi-plus"></i></a>
+                            </td>
                             <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                             <td>
                                 <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>&nbsp;
@@ -84,9 +89,7 @@
                             <td>
                                 <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><i class="pi pi-trash"></i></a>
                             </td>
-                            <td>
-                                <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" title="Update MSS Tree" (click)="getMSSData(p)" ><i class="pi pi-plus"></i></a>
-                            </td>
+                           
                             <!-- <td>
                                 <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" (click)="getMSSData(p)" title="Add MSS"><i class="pi pi-plus"></i></a>
                             </td> -->
