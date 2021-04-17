@@ -163,7 +163,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public FCAViewEnabled : boolean = false;
   public FCAView: any;
 
-  
+  public PatternFailuerAll: boolean  = false
   public interval: string = ""
   public intervalValue: number = 0;
    
@@ -2752,21 +2752,21 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
    }
  
   async FCAFreeTextSave(){   
-    this.FCAFreeTextCancel1 = false
-    this.FCAFreeTextSave1 = false
+    // this.FCAFreeTextCancel1 = false
+    // this.FCAFreeTextSave1 = false
+    this.PatternFailuerAll = true
     this.patternaddshow = true
      this.FCAComment.push(this.FCAFreeText)
      this.changeDetectorRef.detectChanges()
-     const element = document.querySelector("#ModePatternTree")
+     const element = document.querySelector("#ScrollToFCATree")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
  
   async FCAFreeTextCancel(){
-    this.FCAFreeTextCancel1 = false
-    this.FCAFreeTextSave1 = false
+    this.PatternFailuerAll = true
      this.FCAFreeText = ""
      this.changeDetectorRef.detectChanges()
-     const element = document.querySelector("#ModePatternTree")
+     const element = document.querySelector("#ScrollToFCATree")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    
    }

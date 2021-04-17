@@ -9,6 +9,7 @@ import { PrescriptiveDisplayComponent } from "./FMEA/prescriptive-display/prescr
 import { PrescriptiveListComponent } from "./FMEA/prescriptive-list/prescriptive-list.component";
 import { PrescriptiveReportComponent } from "./FMEA/prescriptive-report/prescriptive-report.component";
 import { PrescriptiveUpdateComponent } from "./FMEA/prescriptive-update/prescriptive-update.component";
+import { MSSAddComponent } from "./MSS/mss-add/mss-add.component";
 import { PrescriptiveComponent } from "./prescriptive.component";
 
 @NgModule({
@@ -24,7 +25,8 @@ import { PrescriptiveComponent } from "./prescriptive.component";
                 { path: 'Consequences', component: PrescriptiveConsequencesComponent,  canDeactivate: [AuthGuard]  },
                 { path: 'Report', component: PrescriptiveReportComponent},
                 { path: 'List', component: PrescriptiveListComponent},
-                { path: 'FCAAdd', component: FCAADDComponent}
+                { path: 'FCAAdd', component: FCAADDComponent},
+                { path: 'MSSAdd', component: MSSAddComponent}
             ]
         }
     ])],

@@ -177,6 +177,11 @@ export class PrescriptiveListComponent implements OnInit {
     this.router.navigateByUrl('/Home/Prescriptive/FCAAdd');
   }
 
+  getMSSData(p){
+    localStorage.setItem('MSSObject',JSON.stringify(p))
+    this.router.navigateByUrl('/Home/Prescriptive/MSSAdd');
+  }
+
 
 
 

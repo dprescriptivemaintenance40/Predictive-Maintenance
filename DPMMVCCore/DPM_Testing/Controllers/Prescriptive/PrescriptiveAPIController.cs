@@ -68,6 +68,29 @@ namespace DPM.Controllers.Prescriptive
         }
 
 
+
+        [HttpGet]
+        [Route("GetPrescriptiveRecordsForMSS")]
+        public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetPrescriptiveRecordsForMSS()
+        {
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return await _context.PrescriptiveModelData.Where(a => a.UserId == userId && a.FCAAdded == "1" && (a.MSSAdded == null || a.MSSAdded == ""))
+                                                           .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                           .OrderBy(a => a.CFPPrescriptiveId)
+                                                           .ToListAsync();
+
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+
+
         [HttpPost]
         [Route("RestoreRecords")]
 
@@ -261,6 +284,34 @@ namespace DPM.Controllers.Prescriptive
 
         }
 
+
+        [HttpPut]
+        [Route("UpdatePrespectiveMSS")]
+        public async Task<IActionResult> PutUpdatePrespectiveMSS(CentrifugalPumpPrescriptiveModel prescriptiveModel)
+        {
+
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId && a.UserId == userId)
+                                                                                                                  .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                                                                                  .First();
+                centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+                centrifugalPumpPrescriptiveModel.MSSAdded = "1";
+
+                _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+
+        }
+
         [HttpPut]
         [Route("PrespectivePattern")]
         public async Task<IActionResult> PutPrespectivePattern(CentrifugalPumpPrescriptiveModel prescriptiveModel)
@@ -274,7 +325,7 @@ namespace DPM.Controllers.Prescriptive
                                                                                                                   .First();
                 centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
                 centrifugalPumpPrescriptiveModel.FCAAdded = prescriptiveModel.FCAAdded;
-                
+
                 _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
@@ -301,6 +352,7 @@ namespace DPM.Controllers.Prescriptive
             }
 
         }
+
 
 
         [HttpPut]

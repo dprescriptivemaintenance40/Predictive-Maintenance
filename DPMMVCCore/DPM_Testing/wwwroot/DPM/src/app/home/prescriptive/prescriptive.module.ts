@@ -10,6 +10,7 @@ import { PrescriptiveRoutingModule } from "./prescriptive.routing";
 import { PrescriptiveReportComponent } from './FMEA/prescriptive-report/prescriptive-report.component';
 import { PrescriptiveListComponent } from './FMEA/prescriptive-list/prescriptive-list.component';
 import { FCAADDComponent } from './FCA/fca-add/fca-add.component';
+import { MSSAddComponent } from './MSS/mss-add/mss-add.component';
 
 @NgModule({
     declarations: [PrescriptiveComponent,
@@ -21,6 +22,7 @@ import { FCAADDComponent } from './FCA/fca-add/fca-add.component';
         PrescriptiveReportComponent,
         PrescriptiveListComponent,
         FCAADDComponent,
+        MSSAddComponent,
     ],
     imports: [
         SharedModule,

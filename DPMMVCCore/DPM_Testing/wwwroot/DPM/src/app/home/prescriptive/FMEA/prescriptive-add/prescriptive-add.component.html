@@ -658,9 +658,9 @@
 
 
 
-<div *ngIf="FailureModePatternTree" id="ScrollToFCATree" class="col-md-12" style="overflow: scroll;" id="BottomTOTop">
+<div *ngIf="FailureModePatternTree"   class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
     <small class="form-text text-muted"><h5>Add FCA for {{PatternFMName}}</h5></small>
-    <!-- <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
+    <button *ngIf="patternaddshow" label="Next" style="float: right;"(click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
     <p-organizationChart [value]="FCAdata1" selectionMode="single" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}
@@ -1020,8 +1020,15 @@
             <button *ngIf="FCAFreeTextCancel1" class="btn btn-dark"  (click)="FCAFreeTextCancel()">Cancel</button>
             <button *ngIf="FCAFreeTextSave1"  class="btn btn-dark" style="float:right;" (click)="FCAFreeTextSave()">Save</button>
             <!-- <button *ngIf="CommentFIEYN2 !='' "  label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
-            <button *ngIf="patternaddshow" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top"><i class="pi pi-plus"> ADD</i></button>
+            <!-- <button *ngIf="patternaddshow" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top"><i class="pi pi-plus"> ADD</i></button> -->
         </ng-template>
     </p-card>
+    </div>
+    <div class="card" style="margin: 20px;" *ngIf ="PatternFailuerAll" id="PatternFailuerAllAdd">
+        <p-card *ngIf ="PatternFailuerAll">
+            <ng-template pTemplate="footer">
+                <button *ngIf="patternaddshow" label="Next" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
+            </ng-template>
+        </p-card>
     </div>
 </div> 
