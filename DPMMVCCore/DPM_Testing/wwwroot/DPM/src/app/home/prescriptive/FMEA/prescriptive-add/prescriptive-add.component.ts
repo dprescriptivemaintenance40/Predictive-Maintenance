@@ -827,7 +827,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       res => {
         console.log(res);
         this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-        // this.router.navigateByUrl('/Home/Prescriptive/List');
+        this.router.navigateByUrl('/Home/Prescriptive/List');
         this.SaveConcequencesEnable = false;
         this.PatternNextOnPrescriptiveTree = true;
       }, err => { console.log(err.err) }

@@ -74,6 +74,14 @@ export class FCAADDComponent implements OnInit {
  public FCAFreeTextSave1: boolean  = true
  public patternaddshow: boolean  = false
  public PatternFailuerAll: boolean  = false
+
+
+ public PrescriptiveTreeList : any = [];
+  public TagList : any = [];
+  public SelectedTagNumber : string = ""
+  public SelectedPrescriptiveTree : any = [];
+  public SelectBoxEnabled : boolean = false
+  
  
  
   constructor(private messageService: MessageService,
@@ -86,7 +94,9 @@ export class FCAADDComponent implements OnInit {
   ngOnInit() {
     var FCAData = JSON.parse(localStorage.getItem('FCAObject'))
     if (FCAData == null) {
-      this.router.navigateByUrl('/Home/Prescriptive/List')
+      this.SelectBoxEnabled = true;
+      this.prescriptiveTree = false;
+      this.getPrescriptiveRecords()
     } else {
       this.CFPPrescriptiveId = FCAData.CFPPrescriptiveId;
       this.data1 = JSON.parse(FCAData.FMWithConsequenceTree);
@@ -98,6 +108,35 @@ export class FCAADDComponent implements OnInit {
   }
   async ngOnDestroy() {
     await localStorage.removeItem('FCAObject');
+  }
+
+  getPrescriptiveRecords(){
+    this.SelectBoxEnabled = true;
+    this.http.get<any>('api/PrescriptiveAPI/GetPrescriptiveRecordsForFCA').subscribe(
+      res => {
+        this.PrescriptiveTreeList = res;
+        res.forEach(element => {
+          this.TagList.push(element.TagNumber) 
+        });
+      }
+    )
+  }
+
+  TagNumberSelect(){
+    if(this.SelectedTagNumber != ""){
+      this.PrescriptiveTreeList.forEach((res: any) => {
+        if(res.TagNumber === this.SelectedTagNumber){
+           this.SelectedPrescriptiveTree.push(res)
+           this.CFPPrescriptiveId = res.CFPPrescriptiveId;
+           this.data1 = JSON.parse(res.FMWithConsequenceTree)
+           this.data1Clone = this.data1[0].children[0].children[0].Consequence;
+           this.prescriptiveTree = true;
+           this.SelectBoxEnabled = false
+           this.PatternTree();
+           this.PatternNextOnPrescriptiveTree = true;
+        } 
+      });
+    }
   }
 
 
@@ -660,6 +699,49 @@ export class FCAADDComponent implements OnInit {
         obj['FCAComment'] = this.FCAComment;
 
         this.FCAData.push(obj)
+
+
+        this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+        this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+          {
+            label: "Pattern",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.Pattern
+            }
+          },
+          {
+            label: "Condition",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.FCACondition
+            }
+          },
+          {
+            label: "Interval",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: `${this.FCAInterval}${" "}${"Hours"}`
+            }
+          },
+          {
+            label: "FFI",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: `${this.FCAFFInterval}${" "}${"Hours"}`
+            }
+          }
+        )
+
+
         this.FCAFFInterval = 0
         this.FCAInterval = 0
         this.FCAComment = []
@@ -701,18 +783,7 @@ export class FCAADDComponent implements OnInit {
         this.FailuerComments = false
    
    
-        this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
-        this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
-          {
-            label: "Pattern",
-            type: "person",
-            styleClass: 'p-person',
-            expanded: true,
-            data: {
-              name: this.Pattern
-            }
-          }
-        )
+        
 
         this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
         if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
@@ -818,6 +889,48 @@ export class FCAADDComponent implements OnInit {
         obj['FCAComment'] = this.FCAComment;
 
         this.FCAData.push(obj)
+
+        
+      this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
+      this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
+        {
+          label: "Pattern",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.Pattern
+          }
+        },
+        {
+          label: "Condition",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.FCACondition
+          }
+        },
+        {
+          label: "Interval",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: `${this.FCAInterval}${" "}${"Hours"}`
+          }
+        },
+        {
+          label: "FFI",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: `${this.FCAFFInterval}${" "}${"Hours"}`
+          }
+        }
+      )
+
         this.FCAFFInterval = 0
         this.FCAInterval = 0
         this.FCAComment = []
@@ -858,22 +971,6 @@ export class FCAADDComponent implements OnInit {
         this.FailuerMaintenance = false
         this.FailuerComments = false
    
-
-      this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
-      this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
-        {
-          label: "Pattern",
-          type: "person",
-          styleClass: 'p-person',
-          expanded: true,
-          data: {
-            name: this.Pattern
-          }
-        }
-      )
-
-
-
       this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
         this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name

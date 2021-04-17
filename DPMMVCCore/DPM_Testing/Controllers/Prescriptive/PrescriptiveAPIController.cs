@@ -90,6 +90,28 @@ namespace DPM.Controllers.Prescriptive
         }
 
 
+        [HttpGet]
+        [Route("GetPrescriptiveRecordsForFCA")]
+        public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetPrescriptiveRecordsForFCA()
+        {
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return await _context.PrescriptiveModelData.Where(a => a.UserId == userId && a.FMWithConsequenceTree != "" && (a.FCAAdded == null || a.FCAAdded == ""))
+                                                           .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                           .OrderBy(a => a.CFPPrescriptiveId)
+                                                           .ToListAsync();
+
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+
+
 
         [HttpPost]
         [Route("RestoreRecords")]
