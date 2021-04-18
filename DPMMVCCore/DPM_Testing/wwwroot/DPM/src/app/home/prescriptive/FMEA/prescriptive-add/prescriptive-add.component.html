@@ -377,9 +377,9 @@
         <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
         <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top"><i class="pi pi-plus">Consequences</i></button>
         <button *ngIf="SaveConcequencesEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#Consequences01" data-toggle="modal"> Save Consequences</button>
-        <!-- <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
+        <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
         <button *ngIf="!(Pattern == '')" label="Back" type="button" style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button><br>
-        <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br> -->
+        <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br>
        
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company" id="selectNodetoView">
             <ng-template let-node pTemplate="person">
@@ -609,7 +609,7 @@
         </div>
     </div>
 </div>
-<!-- <div *ngIf="ViewPatterns" id="ScrollUpdateTreeView" style="overflow: scroll;">
+<div *ngIf="ViewPatterns" id="ScrollUpdateTreeView" style="overflow: scroll;">
     <p-card >
         <div class="row">
             <div class="col-6 .col-md-4">
@@ -649,15 +649,16 @@
                     </ng-template>
                 </p-organizationChart>
                 <ng-template pTemplate="footer">
+                 <!-- <button *ngIf="CommentFIEYN2 !='' " label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add FCA to Failure Mode" tooltipPosition="top">ADD</button> -->
                 </ng-template>
             </div>
         </div>
     </p-card>
-</div> -->
+</div>
 
 
 
-<!-- <div *ngIf="FailureModePatternTree"   class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
+<div *ngIf="FailureModePatternTree"   class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
     <small class="form-text text-muted"><h5>Add FCA for {{PatternFMName}}</h5></small>
     <button *ngIf="patternaddshow" label="Next" style="float: right;"(click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
     <p-organizationChart [value]="FCAdata1" selectionMode="single" styleClass="company">
@@ -740,17 +741,22 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div>
-                 <button class="btn btn-dark" (click)="PatternBack()" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top">
+                <!-- <button label="Next" type="button" (click)="PatternBack()" class="btn btn-dark">Back</button>
+                <button label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark">ADD</button> -->
+                <button class="btn btn-dark" (click)="PatternBack()" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top">
                     <i class="fas fa-arrow-left"></i>
                 </button>
+                <!-- <button *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="PatternAdd()" pTooltip=" Click To add the Patterns" tooltipPosition="top">
+                    <i class="fas fa-arrow-right"></i>
+                </button> -->
                 <button label="Next"  style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-right"> Add</i></button>
             </div>
         </ng-template>
     </p-card>
 
-</div> -->
+</div>
 
-<!-- <div *ngIf="FCAViewEnabled" style="overflow: scroll;">
+<div *ngIf="FCAViewEnabled" style="overflow: scroll;">
     <p-card>
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAView()" pTooltip="Delete" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
@@ -777,9 +783,9 @@
             </ng-template>
         </p-organizationChart>
     </p-card>
-</div> -->
+</div>
 
-<!-- 
+
 <style>
     .disableddiv{
         pointer-events: none;
@@ -790,9 +796,9 @@
         background-color:#777  
        
     }
-</style> -->
+</style>
 
-<!-- <div *ngIf="FailureModePatternTree" id="PatternTree2">
+<div *ngIf="FailureModePatternTree" id="PatternTree2">
     <div class="card" style="margin: 20px;" *ngIf="FailuerRate">
         <p-card  [ngClass]=" {disableddiv: failuerrate  ? true : false}">
        <ng-template pTemplate="subtitle">
@@ -921,7 +927,8 @@
           </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark"  (click)="ConditionSecond()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            <a class="btn btn-white" style="border:none" ></a>
+            <button class="btn btn-dark" style="float:right" (click)="ConditionSecond()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
@@ -941,7 +948,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" (click)="FFInterval()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            <a class="btn btn-white" style="border:none" > </a>
+            <button class="btn btn-dark" style="float:right" (click)="FFInterval()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
@@ -964,7 +972,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark"  (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button> 
+            <a class="btn btn-white" style="border:none" > </a>
+            <button class="btn btn-dark" style="float:right" (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button> 
         </ng-template>
     </p-card>
     </div>
@@ -992,7 +1001,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            <a class="btn btn-white" style="border:none" > </a>
+            <button class="btn btn-dark" style="float:right" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
          
         </ng-template>
     </p-card>
@@ -1012,13 +1022,13 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <button *ngIf="FCAFreeTextCancel1" class="btn btn-dark"  (click)="FCAFreeTextCancel()">Cancel</button>
-            <button *ngIf="FCAFreeTextSave1"  class="btn btn-dark" style="float:right;" (click)="FCAFreeTextSave()">Save</button> -->
+            <button *ngIf="FCAFreeTextSave1"  class="btn btn-dark" style="float:right;" (click)="FCAFreeTextSave()">Save</button>
             <!-- <button *ngIf="CommentFIEYN2 !='' "  label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
             <!-- <button *ngIf="patternaddshow" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top"><i class="pi pi-plus"> ADD</i></button> -->
-     <!--   </ng-template>
+        </ng-template>
     </p-card>
     </div>
-</div>  -->
+</div> 
 
 <!-- <div *ngIf="MSSEnable">
 <p-organizationChart [value]="MSSData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
