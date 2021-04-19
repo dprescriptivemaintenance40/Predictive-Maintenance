@@ -72,10 +72,10 @@
                             <td (click)="FailureModeTable(p)">{{p.ComponentCriticalityFactor}}</td>
                             <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
                             <td>
-                                <a style="color: green;" [ngClass]="{disabled:p.FCAAdded == 1}" (click)="getFCAData(p)" title="Add FCA"><i class="pi pi-plus"></i></a>
+                                <a style="color: green;" [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}" (click)="getFCAData(p)" title="Add FCA"><i class="pi pi-plus"></i></a>
                             </td>
                             <td>
-                                <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" title="Update MSS Tree" (click)="getMSSData(p)" ><i class="pi pi-plus"></i></a>
+                                <a style="color: green;" [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}" title="Update MSS Tree" (click)="getMSSData(p)" ><i class="pi pi-plus"></i></a>
                             </td>
                             <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
                             <td>

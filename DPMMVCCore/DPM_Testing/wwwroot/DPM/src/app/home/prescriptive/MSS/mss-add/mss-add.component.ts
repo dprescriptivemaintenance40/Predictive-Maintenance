@@ -103,7 +103,7 @@ export class MSSAddComponent implements OnInit {
       data: { name: "MSS" },
       children: [
         {
-          label: "Pattern",
+          label: "Stratergy",
           type: "person",
           styleClass: 'p-person',
           expanded: true,
