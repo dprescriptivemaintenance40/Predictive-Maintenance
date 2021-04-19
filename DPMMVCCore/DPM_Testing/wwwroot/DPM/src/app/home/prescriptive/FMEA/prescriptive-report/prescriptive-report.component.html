@@ -21,6 +21,7 @@
                     <label style="margin-right: 12px;">Select Report Type</label>
                     <select [ngModelOptions]="{standalone: true}" [(ngModel)]="ReportRCMType" class="form-select" class="form-control">
                         <option value="">Select Type</option>
+                          <option  value="RCM">RCM</option>
                           <option value="FMEA">FMEA</option>
                           <option value="FCA">FCA</option>
                           <option value="MSS" disabled>MSS</option>
@@ -132,6 +133,7 @@
             </div>
             <div id="div4" style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
+                    <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                     <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
                         <ng-template let-node pTemplate="person">
                             <div class="node-header p-corner-top">{{node.label}}</div>
