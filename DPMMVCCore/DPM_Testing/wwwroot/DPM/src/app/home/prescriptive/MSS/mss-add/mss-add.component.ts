@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { MessageService} from 'primeng/api';
+import { MessageService, TreeNode} from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 
@@ -28,7 +28,9 @@ export class MSSAddComponent implements OnInit {
   public FailureModeName : string = ""
   public ConsequenceBasedMSS : string = ""
   public MSSStratergy : string = ""
-
+  public data1Clone: any;
+  public CFPPrescriptiveId: number = 0;
+  public data1: any;
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -46,9 +48,13 @@ export class MSSAddComponent implements OnInit {
       this.PrescriptiveTree = true
       this.AddBtnEnable = true
       this.SaveBtnEnable = false
+      this.data1Clone = JSON.parse(MSSData.FMWithConsequenceTree);
+      this.data1Clone[0].children[0].children[0].children.forEach(element => {
+        element.children = [];
+      });
     }else{
-      this.getPrescriptiveRecords()
-    }    
+      this.getPrescriptiveRecords()  
+    }
     }
     async ngOnDestroy() {
     await localStorage.removeItem('MSSObject');
@@ -120,9 +126,15 @@ export class MSSAddComponent implements OnInit {
 
 
  async SaveMSS(){
+  var temp: string = JSON.stringify(this.data1Clone)
+  var temp2 = JSON.parse(temp)
     var CPObj : CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+    this.TreeUptoFCA[0].children[0].children.forEach((res: any) => {
+      res.MSS = temp2
+    })
     CPObj.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId
     CPObj.FMWithConsequenceTree = JSON.stringify(this.TreeUptoFCA)
+  
     this.http.put('api/PrescriptiveAPI/UpdatePrespectiveMSS', CPObj).subscribe(
       res =>{
         this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated MSS' });

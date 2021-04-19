@@ -29,6 +29,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public ImageEnable: boolean = true;
   public ReportSelect: boolean = false;
   public ReportSelect1: boolean = false;
+  public RCMReportSelect: boolean = false;
   public attachmentRemark: any = []
   public url: string = ""
   public fileUpload: string = "";
@@ -43,6 +44,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public ReportRCMType: string = ""
   public NewTree: any;
   public FCAPatternEnable: boolean = false
+  public MSSPatternEnable: boolean = false
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
@@ -84,6 +86,7 @@ export class PrescriptiveReportComponent implements OnInit {
   ReportBack(){
     this.prescriptveReportSelect = true;
     this.ReportSelect = false
+    this.RCMReportSelect = false
     this.RefreshTree()
   }
   public DownloadPDF() {
@@ -220,6 +223,8 @@ export class PrescriptiveReportComponent implements OnInit {
           if (res.data.name == this.attachmentRemark[index].FunctionMode) {
             var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
             this.FCAPatternEnable = false
+            this.MSSPatternEnable = false
+            this.RCMReportSelect = false
             this.changeDetectorRef.detectChanges()
             if (extn.toLowerCase() == 'pdf') {
               let obj = {}
@@ -249,12 +254,13 @@ export class PrescriptiveReportComponent implements OnInit {
       this.NewTree = [] 
       this.AnnexuresTreeList = []
       this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
-      // this.NewTree[0].children[0].children[0].children.forEach((res: any) => {
       this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
         for (let index = 0; index < this.attachmentRemark.length; index++) {
           if (res.data.name == this.attachmentRemark[index].FunctionMode) {
             var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
             this.FCAPatternEnable = true
+            this.MSSPatternEnable = false
+            this.RCMReportSelect = false
             this.changeDetectorRef.detectChanges()
             res.Pattern = patternIds[index];
             if (extn.toLowerCase() == 'pdf') {
@@ -303,12 +309,42 @@ export class PrescriptiveReportComponent implements OnInit {
             const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
             this.getChartTree(patternLabel6, patternData6, ChartId, p);
           }
-
         }
       });
     }
+    else if (this.ReportRCMType == 'MSS') {
+      this.PDFURL=[]
+      this.AnnexuresTreeList = []
+      this.NewTree = [] 
+      this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
+      this.NewTree[0].children[0].children[0].MSS[0].children[0].children[0].children.forEach((res: any) => {
+        for (let index = 0; index < this.attachmentRemark.length; index++) {
+          if (res.data.name == this.attachmentRemark[index].FunctionMode) {
+            var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
+            this.FCAPatternEnable = false
+            this.MSSPatternEnable = true
+            this.RCMReportSelect = false
+            this.changeDetectorRef.detectChanges()
+            if (extn.toLowerCase() == 'pdf') {
+              let obj = {}
+              obj['FM'] = res.data.name;
+              obj['Remark'] = this.attachmentRemark[index].Remark;
+              obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
+              this.PDFURL.push(obj)
+            }
+            if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
+              res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
+              res.Remark = this.attachmentRemark[index].Remark
+            } else if (extn.toLowerCase() == 'pdf') {
+              res.pdfPath = `${this.BrowserURl}${this.attachmentRemark[index].AttachmentDBPath}`;
+              res.pdfRemark = this.attachmentRemark[index].Remark
+            }
+          }
+        }
+        this.AnnexuresTreeList.push([res]);
+      });
+    }
   }
-
 
   private getChartTree(labels: any[], data: any[], id: string, title: string) {
     let patternCharts = new Chart(id, {

@@ -788,7 +788,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   SaveConsequences() {
-
     var temp: string = JSON.stringify(this.data1Clone)
     var temp2 = JSON.parse(temp)
     this.isNewEntity = false
