@@ -14,7 +14,7 @@ import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/
   providers: [MessageService]
 })
 export class MSSAddComponent implements OnInit {
-
+  public Pattern: string = ""
   public PrescriptiveTreeList : any = [];
   public TagList : any = [];
   public SelectedTagNumber : string = ""
@@ -100,7 +100,7 @@ export class MSSAddComponent implements OnInit {
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  ADDMSSToTree(){
+  ADDMSSToTree(){  
     var MSSTree = {
       label: this.MSSADDCounter,
       type: "person",
@@ -119,9 +119,21 @@ export class MSSAddComponent implements OnInit {
         }
       ]
     } 
+ 
     this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(MSSTree)
     this.ConsequenceBasedMSS = ""  
     this.PrescriptiveTree = true 
+    this.data1Clone[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(
+      {
+        label: "MSS",
+        type: "person",
+        styleClass: 'p-person',
+        expanded: true,
+        data: {
+          name: this.MSSStratergy
+        }
+      }
+    ) 
   }
 
 
