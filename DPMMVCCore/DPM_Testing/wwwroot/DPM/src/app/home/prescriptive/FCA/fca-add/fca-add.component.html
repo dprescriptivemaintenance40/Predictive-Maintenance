@@ -1,28 +1,8 @@
+
+
+
+
 <p-toast position="top-center"></p-toast>
-
-<div *ngIf="SelectBoxEnabled">
-    <div class="card shadow div-in-middle">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Select Tag Number to add FCA</b></li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">Tag Number</label>
-                    <select  class="form-select" [(ngModel)]="SelectedTagNumber"  class="form-control">
-                          <option value="">Choose..</option>
-                          <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
-                        </select>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
-            </li>
-        </ul>
-    </div>
-</div>
-
-
-
-
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-card>
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
@@ -304,7 +284,8 @@
           </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark"  (click)="ConditionSecond()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            <a class="btn btn-white" style="border:none" > </a>
+            <button class="btn btn-dark" style="float:right;"  (click)="ConditionSecond()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
@@ -324,7 +305,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" (click)="FFInterval()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            <a class="btn btn-white" style="border:none" > </a>
+            <button class="btn btn-dark" style="float:right;" (click)="FFInterval()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
@@ -347,7 +329,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark"  (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+            <a class="btn btn-white" style="border:none" > </a>
+            <button class="btn btn-dark" style="float:right;" (click)="CommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
@@ -375,8 +358,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
-
+            <a class="btn btn-white" style="border:none" > </a>
+            <button class="btn btn-dark " style="float:right;" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
         </ng-template>
     </p-card>
     </div>
