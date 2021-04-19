@@ -29,6 +29,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public ImageEnable: boolean = true;
   public ReportSelect: boolean = false;
   public ReportSelect1: boolean = false;
+  public RCMReportSelect: boolean = false;
   public attachmentRemark: any = []
   public url: string = ""
   public fileUpload: string = "";
@@ -43,6 +44,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public ReportRCMType: string = ""
   public NewTree: any;
   public FCAPatternEnable: boolean = false
+  public MSSPatternEnable: boolean = false
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
@@ -84,6 +86,7 @@ export class PrescriptiveReportComponent implements OnInit {
   ReportBack(){
     this.prescriptveReportSelect = true;
     this.ReportSelect = false
+    this.RCMReportSelect = false
     this.RefreshTree()
   }
   public DownloadPDF() {
@@ -187,6 +190,7 @@ export class PrescriptiveReportComponent implements OnInit {
     if (this.ChairPerson.length > 0 && this.Participants.length > 0) {
       this.prescriptveReportSelect = false
       this.ReportSelect = true
+      this.RCMReportSelect = true
       this.ChairPerson = this.ChairPerson.toUpperCase()
       this.Participants = this.Participants.toUpperCase()
       if (this.PDFURL.length > 0) {
@@ -220,6 +224,8 @@ export class PrescriptiveReportComponent implements OnInit {
           if (res.data.name == this.attachmentRemark[index].FunctionMode) {
             var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
             this.FCAPatternEnable = false
+            this.MSSPatternEnable = false
+            this.RCMReportSelect = false
             this.changeDetectorRef.detectChanges()
             if (extn.toLowerCase() == 'pdf') {
               let obj = {}
@@ -249,12 +255,13 @@ export class PrescriptiveReportComponent implements OnInit {
       this.NewTree = [] 
       this.AnnexuresTreeList = []
       this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
-      // this.NewTree[0].children[0].children[0].children.forEach((res: any) => {
       this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
         for (let index = 0; index < this.attachmentRemark.length; index++) {
           if (res.data.name == this.attachmentRemark[index].FunctionMode) {
             var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
             this.FCAPatternEnable = true
+            this.MSSPatternEnable = false
+            this.RCMReportSelect = false
             this.changeDetectorRef.detectChanges()
             res.Pattern = patternIds[index];
             if (extn.toLowerCase() == 'pdf') {
@@ -303,12 +310,47 @@ export class PrescriptiveReportComponent implements OnInit {
             const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
             this.getChartTree(patternLabel6, patternData6, ChartId, p);
           }
-
         }
       });
     }
+    else if (this.ReportRCMType == 'MSS') {
+      this.PDFURL=[]
+      this.AnnexuresTreeList = []
+      this.NewTree = [] 
+      this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
+      this.NewTree[0].children[0].children[0].MSS[0].children[0].children[0].children.forEach((res: any) => {
+        for (let index = 0; index < this.attachmentRemark.length; index++) {
+          if (res.data.name == this.attachmentRemark[index].FunctionMode) {
+            var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
+            this.FCAPatternEnable = false
+            this.MSSPatternEnable = true
+            this.RCMReportSelect = false
+            this.changeDetectorRef.detectChanges()
+            if (extn.toLowerCase() == 'pdf') {
+              let obj = {}
+              obj['FM'] = res.data.name;
+              obj['Remark'] = this.attachmentRemark[index].Remark;
+              obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
+              this.PDFURL.push(obj)
+            }
+            if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
+              res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
+              res.Remark = this.attachmentRemark[index].Remark
+            } else if (extn.toLowerCase() == 'pdf') {
+              res.pdfPath = `${this.BrowserURl}${this.attachmentRemark[index].AttachmentDBPath}`;
+              res.pdfRemark = this.attachmentRemark[index].Remark
+            }
+          }
+        }
+        this.AnnexuresTreeList.push([res]);
+      });
+    } else if (this.ReportRCMType == 'RCM'){
+      this.PDFURL=[]
+      this.AnnexuresTreeList = []
+      this.NewTree = [] 
+      this.ReportSelect = false;
+    }
   }
-
 
   private getChartTree(labels: any[], data: any[], id: string, title: string) {
     let patternCharts = new Chart(id, {
@@ -373,7 +415,27 @@ export class PrescriptiveReportComponent implements OnInit {
     });
     this.changeDetectorRef.detectChanges();
   }
-
-
-
+  RCMprintPage(){
+      this.hide = true;
+      this.change.detectChanges();
+      let popupWinindow;
+      let printContents = document.getElementById('RCMcontentToConvert').innerHTML;
+      popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+      popupWinindow.document.open();
+      let documentContent = "<html><head>";
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/Chart.min.css">';
+      documentContent += '</head>';
+      documentContent += '<body onload="window.print()">' +
+        '<script  src="/dist/DPM/assets/css/Chart.min.js"></script>' + printContents + '</body></html>'
+      popupWinindow.document.write(documentContent);
+      popupWinindow.document.close();
+      this.hide = false;
+      this.change.detectChanges();
+  }
 }
