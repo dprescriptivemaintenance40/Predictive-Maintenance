@@ -43,10 +43,6 @@ export class MSSAddComponent implements OnInit {
     var MSSData = JSON.parse(localStorage.getItem('MSSObject'))
     if(MSSData !== null) {
       this.TreeUptoFCA = JSON.parse(MSSData.FMWithConsequenceTree)
-      this.data1clone = JSON.parse(MSSData.FMWithConsequenceTree)
-      this.data1clone[0].children[0].children[0].children.forEach(element => {
-        element.children = [];
-      });
       this.SelectedPrescriptiveTree.push(MSSData)
       this.SelectBoxEnabled = false
       this.PrescriptiveTree = true
@@ -120,17 +116,6 @@ export class MSSAddComponent implements OnInit {
       ]
     } 
     this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(MSSTree)
-    this.data1clone[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(
-      {
-        label: "Stratergy",
-        type: "person",
-        styleClass: 'p-person',
-        expanded: true,
-        data: {
-          name: this.MSSStratergy
-        }
-      }
-    )
     this.ConsequenceBasedMSS = ""  
     this.PrescriptiveTree = true 
   }
@@ -139,11 +124,6 @@ export class MSSAddComponent implements OnInit {
  async SaveMSS(){
     var CPObj : CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
     CPObj.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId
-    var temp: string = JSON.stringify(this.data1clone)
-    var temp2 = JSON.parse(temp)
-    this.TreeUptoFCA[0].children[0].children.forEach((res: any) => {
-      res.MSS = temp2
-    })
     CPObj.FMWithConsequenceTree = JSON.stringify(this.TreeUptoFCA)
     this.http.put('api/PrescriptiveAPI/UpdatePrespectiveMSS', CPObj).subscribe(
       res =>{
