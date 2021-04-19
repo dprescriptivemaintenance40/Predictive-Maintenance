@@ -24,8 +24,7 @@
                           <option  value="RCM">RCM</option>
                           <option value="FMEA">FMEA</option>
                           <option value="FCA">FCA</option>
-                          <option value="MSS">MSS</option>
-                          <option value="RCM">RCM</option>    
+                          <option value="MSS">MSS</option>  
                       </select>
                 </div>
             </li>
@@ -40,7 +39,7 @@
     <div class="print">
         <a (click)="DownloadPDF()" title="Download FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: red;" class="pi pi-file-pdf"></i></a>
         <a (click)="printPage()" title="Print FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: rgb(26, 26, 226);" class="pi pi-print"></i></a>
-        <button style="margin: 20px;" class="btn btn-dark" (click)="ReportBack()"pTooltip=" Back to Select Report type" tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
+        <button style="margin: 20px;" class="btn btn-dark" (click)="ReportBack()" pTooltip=" Back to Select Report type" tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
     </div>
     <div style="margin: 20px;" id="contentToConvert">
         <div class="page">
@@ -161,7 +160,7 @@
                     <div class="div-in-middle" *ngIf="tree[0].pdfPath && ReportRCMType == 'FMEA'">
                         <label for="file" class="custom-label">Uploaded File</label>
                         <div id="file ">
-                            <a href={{tree[0].pdfPath}} download> Download Attachments </a> 
+                            <a href={{tree[0].pdfPath}} download> Download Attachments </a>
                         </div>
                     </div>
                     <div *ngIf="tree[0].pdfRemark && ReportRCMType == 'FMEA'" class="div-in-middle">
@@ -171,7 +170,7 @@
                             <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].pdfRemark}}</textarea>
                         </div>
                     </div>
-                    <div class="row" *ngIf="FCAPatternEnable && ReportRCMType == 'FCA'">
+                    <!-- <div class="row" *ngIf="FCAPatternEnable && ReportRCMType == 'FCA'">
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <div style="width: 13em;height: 7em; margin-left: 140px;">
@@ -179,7 +178,7 @@
                             </div>
                         </div>
                         <div class="col-md-3"></div>
-                    </div> 
+                    </div> -->
                     <div style="page-break-before: always;"></div>
                     <!-- <div class="row" *ngIf="MSSPatternEnable && ReportRCMType == 'MSS'">
                         <div class="col-md-3"></div>
@@ -201,7 +200,7 @@
     <div class="print">
         <!-- <a (click)="DownloadPDF()" title="Download FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: red;" class="pi pi-file-pdf"></i></a> -->
         <a (click)="RCMprintPage()" title="Print FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: rgb(26, 26, 226);" class="pi pi-print"></i></a>
-        <button style="margin: 20px;" class="btn btn-dark" (click)="ReportBack()"pTooltip=" Back to Select Report type" tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
+        <button style="margin: 20px;" class="btn btn-dark" (click)="ReportBack()" pTooltip=" Back to Select Report type" tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
     </div>
     <div style="margin: 20px;" id="RCMcontentToConvert">
         <div class="page">
@@ -218,43 +217,110 @@
             <div id="div1">
                 <h5><b>Summary </b></h5>
                 <p>
-                    Reliability Centered Maintenance (RCM) approach is the maintenance strategy based on statistical analysis of an asset given data. RCM combines all maintenance methods: 
+                    Reliability Centered Maintenance (RCM) approach is the maintenance strategy based on statistical analysis of an asset given data. RCM combines all maintenance methods:
                 </p>
                 <p>
-                    •	Preventive Maintenance. <br>
-                    •	Predictive Maintenance. <br>
-                    •	Run to failure <br>
-                    •	Proactive Maintenance                  
+                    • Preventive Maintenance. <br> • Predictive Maintenance. <br> • Run to failure <br> • Proactive Maintenance
                 </p>
                 <p>
-                    RCM combines all methods in a way to ensure equipment is being maintained in a cost-efficient way with reduced down-time and minimum environmental risks. 
+                    RCM combines all methods in a way to ensure equipment is being maintained in a cost-efficient way with reduced down-time and minimum environmental risks.
                 </p>
                 <p>
-                    This report is a technical statistical approach for asset owners and maintenance staff and can be used as a guideline to improve asset integrity and reliability.  
+                    This report is a technical statistical approach for asset owners and maintenance staff and can be used as a guideline to improve asset integrity and reliability.
                 </p>
-               
+
                 <h5><b>Introduction</b></h5>
                 <p>
                     RCM analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}. RCM is based on current data of the asset and considering the failure history &ensp;
-                   
+
                 </p>
                 <p>
                     This report generated by considering and answering below questions
                 </p>
                 <p>
-                    •	What is the function of equipment? <br>
-                    •	What are the possible failures to occur?  <br>
-                    •	What is the impact of failures?  <br>
-                    •	Which is the “best value for money” approach to reduce or even eliminate these failures? <br>                   
+                    • What is the function of equipment? <br> • What are the possible failures to occur? <br> • What is the impact of failures? <br> • Which is the “best value for money” approach to reduce or even eliminate these failures? <br>
                 </p>
                 <p>
-                    Initially the decision logic tree generated to determine the maintenance approach. The analysis of the tree is presented in spreadsheets where future maintenance tasks are generated. 
+                    Initially the decision logic tree generated to determine the maintenance approach. The analysis of the tree is presented in spreadsheets where future maintenance tasks are generated.
                 </p>
             </div>
-            <div  style="page-break-before: always;">
-                <h5><b>Decision Logic Tree </b></h5>  
-
-                <h5><b> RCM Worksheet Analysis </b></h5>  
+            <div id="div3" style="page-break-before: always;">
+                <h5><b>Decision Logic Tree </b></h5>
+                <p-organizationChart [value]="data1" selectionMode="single" styleClass="company">
+                    <ng-template let-node pTemplate="person">
+                        <div class="node-header p-corner-top">{{node.label}}</div>
+                        <div class="node-content" *ngIf="node.data.name !== ''">
+                            <div class="a">{{node.data.name}}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-node pTemplate="department">
+                        {{node.label}}
+                    </ng-template>
+                </p-organizationChart>
+            </div>
+            <div id="div4" style="page-break-before: always;">
+                <div *ngFor="let tree of AnnexuresTreeList">
+                    <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
+                    <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+                        <ng-template let-node pTemplate="person">
+                            <div class="node-header p-corner-top">{{node.label}}</div>
+                            <div class="node-content">
+                                <div class="a">{{node.data.name}}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-node pTemplate="department">
+                            {{node.label}}
+                        </ng-template>
+                    </p-organizationChart>
+                    <div class="div-in-middle" *ngIf="tree[0].imgPath && ReportRCMType == 'RCM' ">
+                        <label for="file" class="custom-label">Uploaded File</label>
+                        <div id="file ">
+                            <img width="100%" [src]="tree[0].imgPath">
+                        </div>
+                    </div>
+                    <div *ngIf="tree[0].Remark && ReportRCMType == 'RCM'" class="div-in-middle">
+                        <label for="remark" class="custom-label">Remark</label>
+                        <div id="remark">
+                            <span *ngIf="hide">{{tree[0].Remark}}</span>
+                            <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].Remark}}</textarea>
+                        </div>
+                    </div>
+                    <div class="div-in-middle" *ngIf="tree[0].pdfPath && ReportRCMType == 'RCM'">
+                        <label for="file" class="custom-label">Uploaded File</label>
+                        <div id="file ">
+                            <a href={{tree[0].pdfPath}} download> Download Attachments </a>
+                        </div>
+                    </div>
+                    <div *ngIf="tree[0].pdfRemark && ReportRCMType == 'RCM'" class="div-in-middle">
+                        <label for="remark" class="custom-label">Remark</label>
+                        <div id="remark">
+                            <span *ngIf="hide">{{tree[0].pdfRemark}}</span>
+                            <textarea *ngIf="!hide" class="custom-textarea" cols="60" rows="4">{{tree[0].pdfRemark}}</textarea>
+                        </div>
+                    </div>
+                    <!-- <div class="row" *ngIf="FCAPatternEnable && ReportRCMType == 'FCA'">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <div style="width: 13em;height: 7em; margin-left: 140px;">
+                                <canvas id={{tree[0].Pattern}}></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div> -->
+                    <div style="page-break-before: always;"></div>
+                    <!-- <div class="row" *ngIf="MSSPatternEnable && ReportRCMType == 'MSS'">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <div style="width: 13em;height: 7em; margin-left: 140px;">
+                                <canvas id={{tree[0].Pattern}}></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>  -->
+                </div>
+            </div>
+            <div style="page-break-before: always;">
+                <h5><b> RCM Worksheet Analysis </b></h5>
             </div>
         </div>
     </div>

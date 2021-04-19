@@ -61,7 +61,6 @@ export class PrescriptiveReportComponent implements OnInit {
     await localStorage.removeItem('ReportObj')
   }
 
-
   RefreshTree(){
     this.data = JSON.parse(localStorage.getItem('ReportObj'));
     this.attachmentRemark = this.data.centrifugalPumpPrescriptiveFailureModes;
@@ -208,7 +207,7 @@ export class PrescriptiveReportComponent implements OnInit {
     if(this.ReportRCMType == 'RCM'){
       this.PDFURL=[]
       this.AnnexuresTreeList = []
-
+      this.ReportSelect = false;
       if (this.data.CAttachmentDBPath != null) {
         var FileExt = this.getFileExtension(this.data.CAttachmentDBPath)
         if (FileExt.toLowerCase() == 'pdf') {
@@ -256,36 +255,36 @@ export class PrescriptiveReportComponent implements OnInit {
             res.labels = `${"FCA for "}${""}${res.data.name}`
             this.AnnexuresTreeList.push([res]);
             this.changeDetectorRef.detectChanges();
-            for (let index = 0; index < this.attachmentRemark.length; index++) {
-              var ChartId = patternIds1[index]
-              var p = this.attachmentRemark[index].Pattern
-              if (p == 'Pattern 1') {
-                const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-                const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
-                this.getChartTree(patternLabel1, patternData1, ChartId, p);
-              } else if (p == 'Pattern 2') {
-                const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-                const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
-                this.getChartTree(patternLabel2, patternData2, ChartId, p);
-              } else if (p == 'Pattern 3') {
-                const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-                const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
-                this.getChartTree(patternLabel3, patternData3, ChartId, p);
-              } else if (p == 'Pattern 4') {
-                const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-                const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
-                this.getChartTree(patternLabel4, patternData4, ChartId, p);
-              } else if (p == 'Pattern 5') {
-                const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
-                const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
-                this.getChartTree(patternLabel5, patternData5, ChartId, p);
-              } else if (p == 'Pattern 6') {
-                const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-                const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
-                this.getChartTree(patternLabel6, patternData6, ChartId, p);
-              }
+            // for (let index = 0; index < this.attachmentRemark.length; index++) {
+            //   var ChartId = patternIds1[index]
+            //   var p = this.attachmentRemark[index].Pattern
+            //   if (p == 'Pattern 1') {
+            //     const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            //     const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+            //     this.getChartTree(patternLabel1, patternData1, ChartId, p);
+            //   } else if (p == 'Pattern 2') {
+            //     const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            //     const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+            //     this.getChartTree(patternLabel2, patternData2, ChartId, p);
+            //   } else if (p == 'Pattern 3') {
+            //     const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            //     const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+            //     this.getChartTree(patternLabel3, patternData3, ChartId, p);
+            //   } else if (p == 'Pattern 4') {
+            //     const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            //     const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+            //     this.getChartTree(patternLabel4, patternData4, ChartId, p);
+            //   } else if (p == 'Pattern 5') {
+            //     const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+            //     const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+            //     this.getChartTree(patternLabel5, patternData5, ChartId, p);
+            //   } else if (p == 'Pattern 6') {
+            //     const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            //     const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+            //     this.getChartTree(patternLabel6, patternData6, ChartId, p);
+            //   }
     
-            }
+            // }
           });
         
         
@@ -372,35 +371,35 @@ export class PrescriptiveReportComponent implements OnInit {
         }
         this.AnnexuresTreeList.push([res]);
         this.changeDetectorRef.detectChanges();
-        for (let index = 0; index < this.attachmentRemark.length; index++) {
-          var ChartId = patternIds[index]
-          var p = this.attachmentRemark[index].Pattern
-          if (p == 'Pattern 1') {
-            const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
-            this.getChartTree(patternLabel1, patternData1, ChartId, p);
-          } else if (p == 'Pattern 2') {
-            const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
-            this.getChartTree(patternLabel2, patternData2, ChartId, p);
-          } else if (p == 'Pattern 3') {
-            const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
-            this.getChartTree(patternLabel3, patternData3, ChartId, p);
-          } else if (p == 'Pattern 4') {
-            const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
-            this.getChartTree(patternLabel4, patternData4, ChartId, p);
-          } else if (p == 'Pattern 5') {
-            const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
-            const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
-            this.getChartTree(patternLabel5, patternData5, ChartId, p);
-          } else if (p == 'Pattern 6') {
-            const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
-            this.getChartTree(patternLabel6, patternData6, ChartId, p);
-          }
-        }
+        // for (let index = 0; index < this.attachmentRemark.length; index++) {
+        //   var ChartId = patternIds[index]
+        //   var p = this.attachmentRemark[index].Pattern
+        //   if (p == 'Pattern 1') {
+        //     const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+        //     const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+        //     this.getChartTree(patternLabel1, patternData1, ChartId, p);
+        //   } else if (p == 'Pattern 2') {
+        //     const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+        //     const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+        //     this.getChartTree(patternLabel2, patternData2, ChartId, p);
+        //   } else if (p == 'Pattern 3') {
+        //     const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+        //     const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+        //     this.getChartTree(patternLabel3, patternData3, ChartId, p);
+        //   } else if (p == 'Pattern 4') {
+        //     const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+        //     const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+        //     this.getChartTree(patternLabel4, patternData4, ChartId, p);
+        //   } else if (p == 'Pattern 5') {
+        //     const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+        //     const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+        //     this.getChartTree(patternLabel5, patternData5, ChartId, p);
+        //   } else if (p == 'Pattern 6') {
+        //     const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+        //     const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+        //     this.getChartTree(patternLabel6, patternData6, ChartId, p);
+        //   }
+        // }
       });
     }
     else if (this.ReportRCMType == 'MSS') {
