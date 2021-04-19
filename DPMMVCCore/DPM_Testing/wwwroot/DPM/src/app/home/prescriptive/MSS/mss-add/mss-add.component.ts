@@ -96,6 +96,9 @@ export class MSSAddComponent implements OnInit {
      this.SaveBtnEnable = true;
      this.AddBtnEnable = false;
    }
+   this.data1Clone[0].children[0].children[0].children.forEach(element => {
+    element.children = [];
+  });
    const element = document.querySelector("#GoToTheSaveMSS")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
