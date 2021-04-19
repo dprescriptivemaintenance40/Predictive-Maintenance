@@ -24,8 +24,7 @@
                           <option value="FMEA">FMEA</option>
                           <option value="FCA">FCA</option>
                           <option value="MSS">MSS</option>
-                          <option value="RCM">RCM</option>  
-                          
+                          <option value="RCM">RCM</option>    
                       </select>
                 </div>
             </li>
@@ -195,21 +194,13 @@
         </div>
     </div>
 </div>
-<!-- <div *ngIf="ReportSelect1" class="card" style="margin: 20px;">
-    <div>
-        <h5><b>Attachments & Remarks </b></h5>
-        <span style="margin: 20px;">
-             <tr *ngFor = "let AR of PDFURL;let i = index">
-                 <th scope="row">{{i+1}}</th>
-                 Failure Modes: {{AR.FM}} 
-                 Remark: {{AR.Remark}}
-              <a href={{BrowserURl}}{{AR.AttachmentDBPath}} download> Download Attachments </a>
-               </tr>
-           </span>
-    </div>
-</div> -->
 
 <div *ngIf="RCMReportSelect" class="card" style="margin: 20px;">
+    <div class="print">
+        <!-- <a (click)="DownloadPDF()" title="Download FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: red;" class="pi pi-file-pdf"></i></a> -->
+        <a (click)="RCMprintPage()" title="Print FMEA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: rgb(26, 26, 226);" class="pi pi-print"></i></a>
+        <button style="margin: 20px;" class="btn btn-dark" (click)="ReportBack()"pTooltip=" Back to Select Report type" tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
+    </div>
     <div style="margin: 20px;" id="RCMcontentToConvert">
         <div class="page">
             <div class="text-center">
@@ -242,7 +233,7 @@
                
                 <h5><b>Introduction</b></h5>
                 <p>
-                    RCM analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}.RCM is based on current data of the asset and considering the failure history &ensp;
+                    RCM analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}. RCM is based on current data of the asset and considering the failure history &ensp;
                    
                 </p>
                 <p>

@@ -190,6 +190,7 @@ export class PrescriptiveReportComponent implements OnInit {
     if (this.ChairPerson.length > 0 && this.Participants.length > 0) {
       this.prescriptveReportSelect = false
       this.ReportSelect = true
+      this.RCMReportSelect = true
       this.ChairPerson = this.ChairPerson.toUpperCase()
       this.Participants = this.Participants.toUpperCase()
       if (this.PDFURL.length > 0) {
@@ -343,6 +344,11 @@ export class PrescriptiveReportComponent implements OnInit {
         }
         this.AnnexuresTreeList.push([res]);
       });
+    } else if (this.ReportRCMType == 'RCM'){
+      this.PDFURL=[]
+      this.AnnexuresTreeList = []
+      this.NewTree = [] 
+      this.ReportSelect = false;
     }
   }
 
@@ -409,7 +415,27 @@ export class PrescriptiveReportComponent implements OnInit {
     });
     this.changeDetectorRef.detectChanges();
   }
-
-
-
+  RCMprintPage(){
+      this.hide = true;
+      this.change.detectChanges();
+      let popupWinindow;
+      let printContents = document.getElementById('RCMcontentToConvert').innerHTML;
+      popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+      popupWinindow.document.open();
+      let documentContent = "<html><head>";
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
+      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/Chart.min.css">';
+      documentContent += '</head>';
+      documentContent += '<body onload="window.print()">' +
+        '<script  src="/dist/DPM/assets/css/Chart.min.js"></script>' + printContents + '</body></html>'
+      popupWinindow.document.write(documentContent);
+      popupWinindow.document.close();
+      this.hide = false;
+      this.change.detectChanges();
+  }
 }
