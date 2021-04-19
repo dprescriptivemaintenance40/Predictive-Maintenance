@@ -678,9 +678,7 @@ export class FCAADDComponent implements OnInit {
             }
             
           ]
-        }
-  
-        
+        } 
         var FCATree = {
           label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
           type: "person",
@@ -699,8 +697,6 @@ export class FCAADDComponent implements OnInit {
         obj['FCAComment'] = this.FCAComment;
 
         this.FCAData.push(obj)
-
-
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
           {
@@ -868,9 +864,6 @@ export class FCAADDComponent implements OnInit {
           }
         ]
       }
-
-
-
       var FCATree1 = {
         label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
         type: "person",
@@ -881,7 +874,6 @@ export class FCAADDComponent implements OnInit {
         pattern: pattern,
         data: { name: "FCA" }
       }
-
       let obj = {};
         obj['FCACondition'] = this.FCACondition ;
         obj['FCAInterval'] = this.FCAInterval;
@@ -889,8 +881,7 @@ export class FCAADDComponent implements OnInit {
         obj['FCAComment'] = this.FCAComment;
 
         this.FCAData.push(obj)
-
-        
+ 
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
         {
@@ -930,7 +921,6 @@ export class FCAADDComponent implements OnInit {
           }
         }
       )
-
         this.FCAFFInterval = 0
         this.FCAInterval = 0
         this.FCAComment = []

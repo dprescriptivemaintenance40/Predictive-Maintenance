@@ -101,8 +101,6 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
   }
 
 
-
-
   dragStartC1(e, con1) {
     this.droppedYesNo = con1;
   }
@@ -422,7 +420,6 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
   }
 
   ConsequenceTreeGeneration() {
-
     this.ConsequenceNode = [
       {
         label: "Concequences",
@@ -519,9 +516,6 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         ]
       }
     ];
-
-
-
   }
 
   SubmitConsequenceTree() {
