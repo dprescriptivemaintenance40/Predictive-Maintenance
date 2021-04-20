@@ -57,7 +57,7 @@
             <div id="div1">
                 <h5><b>Executive Summary </b></h5>
                 <p>
-                    This document provides guidance and insight into the analysis process for FMEA. Utilization of this analysis offers a mutual understating of the current condition of assets
+                    This document provides guidance and insight into the analysis process for {{ReportRCMType}} . Utilization of this analysis offers a mutual understating of the current condition of assets
                 </p>
                 <p>
                     This study was carried out by a dedicated engineering team and the results from this analysis are used to assist in finalizing and improving the system design and associated handling and testing procedures
@@ -66,17 +66,17 @@
                     It provides a formalize approach to technical issues and propose future actions to improve integrity and reliability of asset, minimize environmental risks and eliminate operational downtime.
                 </p>
                 <p>
-                    Part 1 introduces the system data along with engineers participated on the FMEA.
+                    Part 1 introduces the system data along with engineers participated on the {{ReportRCMType}} .
                 </p>
                 <p>
                     Part 2 is a detail description of the system including sub-assemblies and components and the steps followed to come up with the final result. Past and present data of the data was considered. Site visits attended and discussion with all relevant departments.
-                    FMEA analysis performed in line with the objectives and specificities.
+                    {{ReportRCMType}}  analysis performed in line with the objectives and specificities.
                 </p>
                 <p>
                     Part 3 are the future actions and recommendations
                 </p>
                 <p>
-                    Part 4 describes the conclusion and current actions the team come up with based on FMEA.
+                    Part 4 describes the conclusion and current actions the team come up with based on {{ReportRCMType}} .
                 </p>
 
                 <p>
@@ -84,14 +84,14 @@
                 </p>
                 <h5><b>Introduction</b></h5>
                 <p>
-                    FMEA analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}. FMEA finalized by using the current data of the asset and considering the failure history for a time domain of &ensp;
+                    {{ReportRCMType}}  analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No {{data.TagNumber}}. {{ReportRCMType}}  finalized by using the current data of the asset and considering the failure history for a time domain of &ensp;
                     <span *ngIf="hide">{{Time}}</span> <input type="text" *ngIf="!hide" class="custom-form-control" [(ngModel)]="Time" placeholder="Year/months *"> &ensp;
                 </p>
                 <p>
-                    An understanding of the system to be analyzed was essential prior to the development of a FMEA. Operation parameters of the system had to be considered out along with assets operational criticality. Typically, system block diagrams and many other system-modeling
+                    An understanding of the system to be analyzed was essential prior to the development of a {{ReportRCMType}} . Operation parameters of the system had to be considered out along with assets operational criticality. Typically, system block diagrams and many other system-modeling
                     techniques used to understand system hierarchies
                 </p>
-                <h5><b>FMEA Methodology</b></h5>
+                <h5><b>{{ReportRCMType}}  Methodology</b></h5>
                 <span *ngIf="hide">{{TypeMethodology}}</span>
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeMethodology" placeholder="Type Methodology *"></textarea>
                 <h5><b>Current and future actions</b></h5>
@@ -104,10 +104,10 @@
                     The objective of the task was to analyze the current condition of {{data.EquipmentType}} with Tag No {{data.TagNumber}}. and propose technical solutions to increase integrity and reliability of the asset .
                 </p>
                 <p>
-                    The reliability methodology was based on FMEA was developed in order to take into consideration the objectives and recommended actions to eliminate the failures.
+                    The reliability methodology was based on {{ReportRCMType}}  was developed in order to take into consideration the objectives and recommended actions to eliminate the failures.
                 </p>
                 <p>
-                    During FMEA a detail list of failure modes and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation.
+                    During {{ReportRCMType}}  a detail list of failure modes and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation.
                 </p>
                 <span>
                         <h6><b>Chair Person: {{ChairPerson}} </b></h6>

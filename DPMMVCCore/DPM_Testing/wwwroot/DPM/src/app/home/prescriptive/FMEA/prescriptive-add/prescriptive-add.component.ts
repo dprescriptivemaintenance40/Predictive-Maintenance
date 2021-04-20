@@ -304,13 +304,13 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
       }
     },
-    {
-      label: 'FCA',
-      command: (event: any) => {
-        this.activeIndex = 6;
+    // {
+    //   label: 'FCA',
+    //   command: (event: any) => {
+    //     this.activeIndex = 6;
 
-      }
-    }
+    //   }
+    // }
     ];
 
   }
@@ -1744,7 +1744,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   ADDFMToFCA() {
     this.prescriptiveTree = false
     this.FailureModePatternTree = true
-    this.activeIndex = 6
+    // this.activeIndex = 6
 
     this.PattenNode1 = 'p-person'
     this.PattenNode2 = 'p-person'

@@ -363,7 +363,7 @@
             <a class="btn btn-dark" (click)="ADDFailuerEffect()" pTooltip=" Add  Failure Mode with Local & System Effect" tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="UPDATEFailuerEffect()" pTooltip="Update Failure Effects" tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="UPDATEFailuerEffect()" pTooltip="Update" tooltipPosition="top">
                 <i class="fas fa-edit"></i>
             </a>
         </ng-template>
@@ -418,7 +418,7 @@
 </div>
 
 <!--    Consequences -->
-<div id="ScrollUpdateTree1" *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow">
+<div id="ScrollUpdateTree1" *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow" style="overflow: scroll;">
     <p-card>
         <ng-template pTemplate="title">
             Consequences for {{FMLSConsequenceName}}
@@ -566,7 +566,7 @@
 </div>
 
 
-<div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">
+<div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow" style="overflow: scroll;">
     <p-card>
         <span>
             <small class="form-text text-muted"><h5> Your {{FMLSConsequenceName}} Tree </h5></small>

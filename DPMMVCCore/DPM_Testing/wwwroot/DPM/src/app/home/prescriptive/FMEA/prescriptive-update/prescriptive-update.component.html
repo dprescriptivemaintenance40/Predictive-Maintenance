@@ -1,5 +1,5 @@
 <p-toast position="top-right"></p-toast>
-<p-card>
+<!-- <p-card > -->
     <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="prescriptive">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
         <button *ngIf="AddFailureMode" type="button" class="btn btn-secondary" (click)="AddFailureModeToTree()" pTooltip="If you Want to Update the tree Click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button>
@@ -20,7 +20,7 @@
             </ng-template>
         </p-organizationChart>
     </div>
-</p-card>
+<!-- </p-card> -->
 
 <div id="ScrollUpdateTree5" class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -365,14 +365,13 @@
 
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
-
                 </div>
 
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button label="Next" type="button" class="btn btn-dark" (click)="Consequence1Next()">Next</button>
-
+            <a class="btn btn-white" style="border:none" > </a>
+            <button label="Next" type="button" style="float:right" class="btn btn-dark" (click)="Consequence1Next()">Next</button>
         </ng-template>
     </p-card>
 </div>
