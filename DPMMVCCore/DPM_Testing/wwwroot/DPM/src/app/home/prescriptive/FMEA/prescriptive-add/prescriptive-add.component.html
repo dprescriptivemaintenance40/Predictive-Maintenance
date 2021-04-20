@@ -371,8 +371,9 @@
 </div>
 
 
-<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style ="overflow: scroll;">
-    <p-card>
+<!-- <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style ="overflow: scroll;"> -->
+    <div *ngIf="prescriptiveTree" id="prescriptive"  style ="overflow: scroll;">
+    <!-- <p-card> -->
         <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
         <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
         <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top"><i class="pi pi-plus">Consequences</i></button>
@@ -394,7 +395,7 @@
                 {{node.label}}
             </ng-template>
         </p-organizationChart>
-    </p-card>
+    <!-- </p-card> -->
 </div>
 
 <div class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
