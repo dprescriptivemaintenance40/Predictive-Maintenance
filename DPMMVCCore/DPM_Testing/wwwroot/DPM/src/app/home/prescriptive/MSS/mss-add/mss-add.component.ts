@@ -35,15 +35,23 @@ export class MSSAddComponent implements OnInit {
   public MSSTaskObj : any =[] 
   public AvailabilityY : string = ""
   public AvailabilityYN : string = ""
+  public AvailabilityN : string = ""
   public AvailabilityCheck: string = "";
-  public stoppageDays: string = "";
-  public stoppageDaysTime: string = "";
+ 
   public AvailabilityCalculations: boolean = false
   public AvailabilityYNCheck: boolean = false
   public AvailabilityTaskObj : any =[] 
-  
-  
 
+ public expectedAvailability: boolean = false
+ public AvailabilityPlantStoppage: boolean = false
+ public AvailabilityPlantStoppageTime: boolean = false
+
+
+ public stoppageDays: string = "";
+ public stoppageDaysValue: number = 0;
+ public stoppageDaysTime: string = "";
+ public stoppageDaysTimeValue: number = 0;
+  
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -155,7 +163,9 @@ async ADDMSSToTree() {
       }
     )
     this.AvailabilityYNCheck= false;
-    this.AvailabilityCalculations= false;
+    this.expectedAvailability= false;
+    this.AvailabilityPlantStoppage= false;
+    this.AvailabilityPlantStoppageTime= false;
     // Logic for Maintenance Tasks and Interval
     // first IF condition for Consequence A and B
    if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
@@ -292,24 +302,51 @@ async ADDMSSToTree() {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
     if(this.AvailabilityY == 'Yes'){
-      this.AvailabilityCalculations = true
-     }else{
-      this.AvailabilityCalculations = false
+      this.expectedAvailability = true
+      this.AvailabilityPlantStoppage = false
+      this.AvailabilityPlantStoppageTime = false
+     }else if(this.AvailabilityY == 'No') { 
+      this.expectedAvailability = false
+      this.AvailabilityPlantStoppage = true
+      this.AvailabilityPlantStoppageTime = true
      }
-     const element = document.querySelector("#AvailabilityScroll")
+     const element = document.querySelector("#PlantStoppage")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
 
- async AvailabilityData(){
-    if(this.AvailabilityCheck.length >0 && this.stoppageDays.length >0 && this.stoppageDays.length >0){
-      if(this.AvailabilityCheck == 'Yes'){
-      
-      }
+ async  AvailabilityYes(){
+     if(this.AvailabilityCheck.length >0){
 
-    }else{
-      alert("fill the data")
+     }else{
+       alert("Fill the data")
+     }
+   }
+
+ async StoppageDays(){
+    if(this.stoppageDays == 'Days'){
+       this.stoppageDaysValue * 1 * 24
+    } else if(this.stoppageDays == 'Week'){ 
+     this.stoppageDaysValue * 7 * 24
+    } else if(this.stoppageDays == 'Month'){ 
+     this.stoppageDaysValue * 30 * 24
+    } else if(this.stoppageDays == 'Year'){ 
+      this.stoppageDaysValue * 365 * 24
     }
-    const element = document.querySelector("#GoToTheSaveMSS")
-     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+    // const element = document.querySelector("#PlantStoppage")
+    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
+
+  async StoppageDuration(){
+    if(this.stoppageDaysTime == 'Days'){
+      this.stoppageDaysTimeValue * 1 * 24
+   } else if(this.stoppageDaysTime == 'Week'){ 
+    this.stoppageDaysTimeValue * 7 * 24
+   } else if(this.stoppageDaysTime == 'Month'){ 
+    this.stoppageDaysTimeValue * 30 * 24
+   } else if(this.stoppageDaysTime == 'Year'){ 
+     this.stoppageDaysTimeValue * 365 * 24
+   }
+     
+  }
 }
