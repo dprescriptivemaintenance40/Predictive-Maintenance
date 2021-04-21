@@ -31,6 +31,9 @@ export class MSSAddComponent implements OnInit {
   public data1Clone: any;
   public CFPPrescriptiveId: number = 0;
   public data1: any;
+
+  public MSSTaskObj : any =[] 
+
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -100,9 +103,6 @@ export class MSSAddComponent implements OnInit {
       this.SaveBtnEnable = true;
       this.AddBtnEnable = false;
     }
-    // this.data1Clone[0].children[0].children[0].children.forEach(element => {
-    //   element.children = [];
-    // });
     const element = document.querySelector("#GoToTheSaveMSS")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
@@ -141,6 +141,109 @@ export class MSSAddComponent implements OnInit {
         }
       }
     )
+
+    // Logic for Maintenance Tasks and Interval
+    // first IF condition for Consequence A and B
+   if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
+       || this.MSSStratergy == 'A-SR' ||  this.MSSStratergy == 'A-RED' || this.MSSStratergy == 'A-OFM'
+       || this.MSSStratergy == 'B-FFT'||  this.MSSStratergy == 'B-OCM' || this.MSSStratergy == 'B-SO'
+       || this.MSSStratergy == 'B-SR' ||  this.MSSStratergy == 'B-RED' || this.MSSStratergy == 'B-OFM' ){
+
+        if(this.MSSStratergy == 'A-OFM' ||     this.MSSStratergy == 'B-FFT'){
+          let obj = {}
+          obj['MSSMaintenanceInterval'] = 'Not Applicable'
+          obj['MSSMaintenanceTask'] = 'Not Applicable'
+          this.MSSTaskObj.push(obj)
+        } else{
+
+           var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
+           var ocmWeek : number = ocmHours.split(" ")[0]
+               ocmWeek = Math.round((ocmWeek / 24) / 7)
+
+            var strategy = this.MSSStratergy.split('-')[1];
+            let obj = {}
+            if(strategy == 'FFT'){
+              obj['MSSMaintenanceInterval'] = 'NA'
+              obj['MSSMaintenanceTask'] = 'NA'
+              this.MSSTaskObj.push(obj)
+
+            }else if(strategy == 'OCM'){
+              obj['MSSMaintenanceInterval'] = ocmWeek
+              obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+              this.MSSTaskObj.push(obj)
+
+            }else if(strategy == 'SO'){
+              obj['MSSMaintenanceInterval'] = 'NA'
+              obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+              this.MSSTaskObj.push(obj)
+
+            }else if(strategy == 'SR'){
+              obj['MSSMaintenanceInterval'] = 'NA'
+              obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+              this.MSSTaskObj.push(obj)
+
+            }else if(strategy == 'RED'){
+              obj['MSSMaintenanceInterval'] = 'NA'
+              obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+              this.MSSTaskObj.push(obj)
+
+            }
+        }  
+
+   }else if(this.MSSStratergy == 'C-FFT'    ||  this.MSSStratergy == 'C-OCM' || this.MSSStratergy == 'C-SO'
+             || this.MSSStratergy == 'C-SR' ||  this.MSSStratergy == 'C-RED' || this.MSSStratergy == 'C-OFM'
+             || this.MSSStratergy == 'D-FFT'||  this.MSSStratergy == 'D-OCM' || this.MSSStratergy == 'D-SO'
+             || this.MSSStratergy == 'D-SR' ||  this.MSSStratergy == 'D-RED' || this.MSSStratergy == 'D-OFM'
+             || this.MSSStratergy == 'E-FFT'||  this.MSSStratergy == 'E-OCM' || this.MSSStratergy == 'E-SO'
+             || this.MSSStratergy == 'E-SR' ||  this.MSSStratergy == 'E-RED' || this.MSSStratergy == 'E-OFM'){
+
+              if(this.MSSStratergy == 'C-FFT' ||     this.MSSStratergy == 'D-FFT'){
+                let obj = {}
+                obj['MSSMaintenanceInterval'] = 'Not Applicable'
+                obj['MSSMaintenanceTask'] = 'Not Applicable'
+                this.MSSTaskObj.push(obj)
+              } else{
+             
+                  var strategy = this.MSSStratergy.split('-')[1];
+                  let obj = {}
+
+                  if(strategy == 'FFT'){
+                    obj['MSSMaintenanceInterval'] = 'NA'
+                    obj['MSSMaintenanceTask'] = 'Function check'
+                    this.MSSTaskObj.push(obj)
+                  }else if(strategy == 'OCM'){
+                    obj['MSSMaintenanceInterval'] = 'NA'
+                    obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                    this.MSSTaskObj.push(obj)
+
+                  }else if(strategy == 'SO'){
+                    obj['MSSMaintenanceInterval'] = 'NA'
+                    obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                    this.MSSTaskObj.push(obj)
+
+                  }else if(strategy == 'SR'){
+                    obj['MSSMaintenanceInterval'] = 'NA'
+                    obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                    this.MSSTaskObj.push(obj)
+
+                  }else if(strategy == 'RED'){
+                    obj['MSSMaintenanceInterval'] = 'NA'
+                    obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                    this.MSSTaskObj.push(obj)
+
+                  }
+                  else if(strategy == 'OFM'){
+                    obj['MSSMaintenanceInterval'] = 'NA'
+                    obj['MSSMaintenanceTask'] = 'No Task'
+                    this.MSSTaskObj.push(obj)
+
+                  }
+            }
+   }
+
+
+
+
   }
 
 
