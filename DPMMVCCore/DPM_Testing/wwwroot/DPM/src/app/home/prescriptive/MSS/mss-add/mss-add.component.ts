@@ -120,7 +120,7 @@ export class MSSAddComponent implements OnInit {
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  ADDMSSToTree() {
+async ADDMSSToTree() {
     var MSSTree = {
       label: this.MSSADDCounter,
       type: "person",
@@ -252,12 +252,10 @@ export class MSSAddComponent implements OnInit {
             }
    }
 
-
    const element = document.querySelector("#Availability")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
 
   }
-
 
   async SaveMSS() {
     var temp: string = JSON.stringify(this.data1Clone)
@@ -281,6 +279,7 @@ export class MSSAddComponent implements OnInit {
     const element = document.querySelector("#GoToTheSaveMSS1")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+  
  async Availability(){
     if( this.AvailabilityY.length >0 && this.AvailabilityY.length >0){
       this.changeDetectorRef.detectChanges()
@@ -300,9 +299,7 @@ export class MSSAddComponent implements OnInit {
  async AvailabilityData(){
     if(this.AvailabilityCheck.length >0 && this.stoppageDays.length >0 && this.stoppageDays.length >0){
       if(this.AvailabilityCheck == 'Yes'){
-        // let obj = {}
-        //     obj['Availability'] = 'Not Applicable'
-        //     this.AvailabilityTaskObj.push(obj)
+      
       }
 
     }else{
