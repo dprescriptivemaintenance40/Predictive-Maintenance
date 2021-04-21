@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams, JsonpClientBackend } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, JsonpClientBackend } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as Chart from 'chart.js';
 import { OverlayPanel } from "primeng/overlaypanel";
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-prescriptive-add',
   templateUrl: './prescriptive-add.component.html',
@@ -2913,6 +2915,43 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   //     this.MSSdroppedYesNo = null;
   //   }
   // }
+
+public file : any;
+public arrayBuffer: any;
+public daysList: any;
+headers = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+}
+
+  Webal(event){
+      this.file = event.target.files[0];
+      let fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(this.file);
+      fileReader.onload = (e) => {
+        this.arrayBuffer = fileReader.result;
+        var data = new Uint8Array(this.arrayBuffer);
+        var arr = new Array();
+        for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+        var bstr = arr.join("");
+        var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+        var first_sheet_name = workbook.SheetNames[0];
+        var worksheet = workbook.Sheets[first_sheet_name];
+        console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
+        this.daysList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+        var Data : any = []
+        this.daysList.forEach(element => {
+          Data.push(element.Days)
+        });
+        this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), this.headers).subscribe(
+          res =>{
+
+          }, err => {console.log(err.error)}
+        )
+      }
+    
+  }
 
 }
 

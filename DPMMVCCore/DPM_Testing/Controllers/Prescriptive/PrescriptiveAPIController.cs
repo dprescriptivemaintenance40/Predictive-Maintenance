@@ -149,6 +149,60 @@ namespace DPM.Controllers.Prescriptive
         }
 
         [HttpPost]
+        [Route("WebalAlgo")]
+        public async Task<IActionResult> WebalAlgoritm([FromBody] int[] Days)
+        {
+            try
+            {
+                List<int> WebalDays = new List<int>();
+                List<int> Rank = new List<int>();
+                List<double> MedianRank = new List<double>();  // Median rank, percentage
+                List<double> MedianRankDays = new List<double>(); // ln (x)
+                List<double> MedianRankInverse = new List<double>(); // 1/(1-p)
+                List<double> Last = new List<double>(); // ln(ln(1/(1-p)))
+                int r = 1;
+                foreach (var item in Days)
+                {
+                    WebalDays.Add(item);
+                    Rank.Add(r);
+                    r = r + 1;
+                }
+                WebalDays.Sort();
+                int RankCount = Rank.Count();
+                foreach (var item in Rank)
+                {
+                    double median = (item - 0.3) / (RankCount + 0.4);
+                    MedianRank.Add(median);
+
+                }
+                foreach (var item in WebalDays)
+                {
+                    double medianDays = Math.Log(item);
+                    MedianRankDays.Add(medianDays);
+
+                }
+                foreach (var item in MedianRank)
+                {
+                    double medianInverse = 1 / (1 - item);
+                    MedianRankInverse.Add(medianInverse);
+
+                }
+                foreach (var item in MedianRankInverse)
+                {
+                    double l = Math.Log(Math.Log(item));
+                    Last.Add(l);
+
+                }
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+                [HttpPost]
         [Route("PostCentrifugalPumpPrescriptiveData")]
         public async Task<ActionResult<CentrifugalPumpPrescriptiveModel>> PostPrescriptive([FromBody] CentrifugalPumpPrescriptiveModel prescriptiveModel)
         {
