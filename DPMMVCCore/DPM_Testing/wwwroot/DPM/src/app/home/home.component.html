@@ -132,7 +132,7 @@
                 </li>
             </div>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="recycleBin">
             <a [routerLink]="[ '/Home/RecycleBin']" class="nav-link">
                 <i [routerLink]="[ '/Home/RecycleBin']"></i>
                 <i class="fas fa-trash"></i>
