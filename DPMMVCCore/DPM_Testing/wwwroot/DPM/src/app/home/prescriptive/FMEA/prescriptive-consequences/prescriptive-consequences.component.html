@@ -1,7 +1,7 @@
 <!-- <p-toast position="top-center"></p-toast> -->
 <div id="BackToNext"  style ="overflow: scroll;" >
     <!-- <p-card >  -->
-        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()"><i class="pi pi-arrow-right"></i></button> <br><br>
+        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()" pTooltip=" Add Consequences" tooltipPosition="top" ><i class="pi pi-arrow-right"></i></button> <br><br>
         <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#ConsequenceSubmitModal">Save Consequences</button><br><br>
 
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
