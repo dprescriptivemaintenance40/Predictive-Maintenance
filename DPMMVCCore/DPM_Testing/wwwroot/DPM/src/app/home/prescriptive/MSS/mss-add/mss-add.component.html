@@ -302,8 +302,8 @@
 <div class="card" style="margin: 20px;" *ngIf="AvailabilityCalculations" id="AvailabilityScroll">
  <p-card >
     <ng-template pTemplate="subtitle">
-        <p><b>You want to know Availability?
-        </b></p>
+        <!-- <p><b>You want to know Availability?
+        </b></p> -->
     </ng-template>
     <ng-template pTemplate="content">
         <p>
@@ -318,7 +318,7 @@
      
          <p><br>
              3. How long is your stoppage? &ensp;
-               <input type="text"  class="custom-form-control" [(ngModel)]="stoppageDaysTime" placeholder="Plant Stoppage Days" > &ensp;
+               <input type="text"  class="custom-form-control" [(ngModel)]="stoppageDaysTime" placeholder="Plant Stoppage Duration " > &ensp;
           </p>
     </ng-template>
     <ng-template pTemplate="footer">

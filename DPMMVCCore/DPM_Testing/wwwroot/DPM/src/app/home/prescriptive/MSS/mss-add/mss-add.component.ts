@@ -154,6 +154,8 @@ async ADDMSSToTree() {
         }
       }
     )
+    this.AvailabilityYNCheck= false;
+    this.AvailabilityCalculations= false;
     // Logic for Maintenance Tasks and Interval
     // first IF condition for Consequence A and B
    if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
@@ -276,6 +278,8 @@ async ADDMSSToTree() {
         this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
       }
     )
+    this.AvailabilityYNCheck= false;
+    this.AvailabilityCalculations= false;
     const element = document.querySelector("#GoToTheSaveMSS1")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
