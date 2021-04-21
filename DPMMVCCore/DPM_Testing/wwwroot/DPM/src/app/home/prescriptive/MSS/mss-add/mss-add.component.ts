@@ -31,8 +31,18 @@ export class MSSAddComponent implements OnInit {
   public data1Clone: any;
   public CFPPrescriptiveId: number = 0;
   public data1: any;
-
+  public FailuerEvident: boolean = false
   public MSSTaskObj : any =[] 
+  public AvailabilityY : string = ""
+  public AvailabilityYN : string = ""
+  public AvailabilityCheck: string = "";
+  public stoppageDays: string = "";
+  public stoppageDaysTime: string = "";
+  public AvailabilityCalculations: boolean = false
+  public AvailabilityYNCheck: boolean = false
+  public AvailabilityTaskObj : any =[] 
+  
+  
 
   constructor(private messageService: MessageService,
     public title: Title,
@@ -98,11 +108,14 @@ export class MSSAddComponent implements OnInit {
     this.FailureModeName = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].FunctionMode
     this.ConsequenceBasedMSS = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].Consequence
     this.PrescriptiveTree = false
+    this.AvailabilityYNCheck = true
+    this.AvailabilityCalculations = false
     this.MSSADDCounter = this.MSSADDCounter + 1
     if (this.MSSADDCounter == this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes.length) {
       this.SaveBtnEnable = true;
       this.AddBtnEnable = false;
     }
+  
     const element = document.querySelector("#GoToTheSaveMSS")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
@@ -141,7 +154,6 @@ export class MSSAddComponent implements OnInit {
         }
       }
     )
-
     // Logic for Maintenance Tasks and Interval
     // first IF condition for Consequence A and B
    if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
@@ -206,7 +218,6 @@ export class MSSAddComponent implements OnInit {
              
                   var strategy = this.MSSStratergy.split('-')[1];
                   let obj = {}
-
                   if(strategy == 'FFT'){
                     obj['MSSMaintenanceInterval'] = 'NA'
                     obj['MSSMaintenanceTask'] = 'Function check'
@@ -242,7 +253,8 @@ export class MSSAddComponent implements OnInit {
    }
 
 
-
+   const element = document.querySelector("#Availability")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
 
   }
 
@@ -269,4 +281,34 @@ export class MSSAddComponent implements OnInit {
     const element = document.querySelector("#GoToTheSaveMSS1")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+ async Availability(){
+    if( this.AvailabilityY.length >0 && this.AvailabilityY.length >0){
+      this.changeDetectorRef.detectChanges()
+    }else{
+      alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+    }
+    if(this.AvailabilityY == 'Yes'){
+      this.AvailabilityCalculations = true
+     }else{
+      this.AvailabilityCalculations = false
+     }
+     const element = document.querySelector("#AvailabilityScroll")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+   }
+
+ async AvailabilityData(){
+    if(this.AvailabilityCheck.length >0 && this.stoppageDays.length >0 && this.stoppageDays.length >0){
+      if(this.AvailabilityCheck == 'Yes'){
+        // let obj = {}
+        //     obj['Availability'] = 'Not Applicable'
+        //     this.AvailabilityTaskObj.push(obj)
+      }
+
+    }else{
+      alert("fill the data")
+    }
+    const element = document.querySelector("#GoToTheSaveMSS")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+   }
 }

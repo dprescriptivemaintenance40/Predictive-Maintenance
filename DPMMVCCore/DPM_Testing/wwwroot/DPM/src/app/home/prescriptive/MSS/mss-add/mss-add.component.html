@@ -271,9 +271,61 @@
         </div>
     </div> 
     <div>
-        <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+        <!-- <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button> -->
     </div>
 </div>
+</div>
+<div class="card" style="margin: 20px;"  *ngIf ="AvailabilityYNCheck" id="Availability">
+    <p-card >
+    <ng-template pTemplate="subtitle">
+        <p><b>1.You want to know Availability?
+        </b></p>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <div class="row">
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                Yes <td><input type="radio" [(ngModel)]="AvailabilityY" value="Yes" name="name1" />&nbsp;</td>
+            </div>
+            <div class="col-sm">
+                No <td><input type="radio" [(ngModel)]="AvailabilityY" value="No" name="name1" />&nbsp;</td>
+            </div>
+            <div class="col-sm"></div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <a class="btn btn-white" style="border:none" > </a>
+        <button class="btn btn-dark" style="float:right;" (click)="Availability()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+    </ng-template>
+</p-card>
+</div>
+<div class="card" style="margin: 20px;" *ngIf="AvailabilityCalculations" id="AvailabilityScroll">
+ <p-card >
+    <ng-template pTemplate="subtitle">
+        <p><b>1.You want to know Availability?
+        </b></p>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <p>
+            1. What is your expected Availability &ensp;
+             <input type="text"  class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability"> &ensp;
+         </p><br>
+     
+         <p>
+            2. How many days do you run your plant before taking stoppage? &ensp;
+              <input type="text"  class="custom-form-control" [(ngModel)]="stoppageDays" placeholder="Plant Stoppage Days"> &ensp;
+         </p><br>
+     
+         <p><br>
+             3. How long is your stoppage? &ensp;
+               <input type="text"  class="custom-form-control" [(ngModel)]="stoppageDaysTime" placeholder="Plant Stoppage Days" > &ensp;
+          </p>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <a class="btn btn-white" style="border:none"> </a>
+      <button class="btn btn-dark" style="float:right;" (click)="AvailabilityData()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+    </ng-template>
+</p-card>
 </div>
 </div>
 
