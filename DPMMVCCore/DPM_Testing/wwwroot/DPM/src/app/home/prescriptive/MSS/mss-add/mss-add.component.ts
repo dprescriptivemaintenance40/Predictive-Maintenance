@@ -51,6 +51,10 @@ export class MSSAddComponent implements OnInit {
  public stoppageDaysValue: number = 0;
  public stoppageDaysTime: string = "";
  public stoppageDaysTimeValue: number = 0;
+
+ public stoppageValue : number
+ public stoppageDuration : number
+
   
   constructor(private messageService: MessageService,
     public title: Title,
@@ -166,6 +170,12 @@ async ADDMSSToTree() {
     this.expectedAvailability= false;
     this.AvailabilityPlantStoppage= false;
     this.AvailabilityPlantStoppageTime= false;
+    this.AvailabilityY = ""
+    this.AvailabilityCheck = ""
+    this.stoppageDays = ""
+    this.stoppageDaysValue = 0
+    this.stoppageDaysTime = ""
+    this.stoppageDaysTimeValue = 0
     // Logic for Maintenance Tasks and Interval
     // first IF condition for Consequence A and B
    if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
@@ -322,31 +332,37 @@ async ADDMSSToTree() {
      }
    }
 
+
  async StoppageDays(){
     if(this.stoppageDays == 'Days'){
-       this.stoppageDaysValue * 1 * 24
+      this.stoppageValue = this.stoppageDaysValue * 1 
     } else if(this.stoppageDays == 'Week'){ 
-     this.stoppageDaysValue * 7 * 24
+      this.stoppageValue =  this.stoppageDaysValue * 7 
     } else if(this.stoppageDays == 'Month'){ 
-     this.stoppageDaysValue * 30 * 24
+      this.stoppageValue =  this.stoppageDaysValue * 30 
     } else if(this.stoppageDays == 'Year'){ 
-      this.stoppageDaysValue * 365 * 24
+      this.stoppageValue =  this.stoppageDaysValue * 365 
     }
-
+ 
     // const element = document.querySelector("#PlantStoppage")
     // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
 
   async StoppageDuration(){
-    if(this.stoppageDaysTime == 'Days'){
-      this.stoppageDaysTimeValue * 1 * 24
-   } else if(this.stoppageDaysTime == 'Week'){ 
-    this.stoppageDaysTimeValue * 7 * 24
-   } else if(this.stoppageDaysTime == 'Month'){ 
-    this.stoppageDaysTimeValue * 30 * 24
-   } else if(this.stoppageDaysTime == 'Year'){ 
-     this.stoppageDaysTimeValue * 365 * 24
-   }
-     
+    if (this.stoppageDaysTime == 'Days') {
+      this.stoppageDuration = this.stoppageDaysTimeValue * 1
+    } else if (this.stoppageDaysTime == 'Week') {
+      this.stoppageDuration = this.stoppageDaysTimeValue * 7
+    } else if (this.stoppageDaysTime == 'Month') {
+      this.stoppageDuration = this.stoppageDaysTimeValue * 30
+    } else if (this.stoppageDaysTime == 'Year') {
+      this.stoppageDuration = this.stoppageDaysTimeValue * 365
+    }
+ 
+   var Result = (1-(this.stoppageDuration / this.stoppageValue  ))*100
+   console.log(Result)
+
+
+  
   }
 }

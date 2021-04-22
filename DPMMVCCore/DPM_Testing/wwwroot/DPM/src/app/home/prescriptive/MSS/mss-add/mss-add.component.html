@@ -275,6 +275,9 @@
     </div>
 </div>
 </div>
+
+
+
 <div class="card" style="margin: 20px;"  *ngIf ="AvailabilityYNCheck" id="Availability">
     <p-card >
     <ng-template pTemplate="subtitle">
@@ -299,40 +302,12 @@
     </ng-template>
 </p-card>
 </div>
-<!-- <div class="card" style="margin: 20px;" *ngIf="AvailabilityCalculations" id="AvailabilityScroll">
- <p-card >
-    <ng-template pTemplate="subtitle">
-        <p><b>1.You want to know Availability?
-        </b></p>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <p>
-            1. What is your expected Availability &ensp;
-             <input type="text"  class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability"> &ensp;
-         </p><br>
-     
-         <p>
-            2. How many days do you run your plant before taking stoppage? &ensp;
-              <input type="text"  class="custom-form-control" [(ngModel)]="stoppageDays" placeholder="Plant Stoppage Days"> &ensp;
-         </p><br>
-     
-         <p><br>
-             3. How long is your stoppage? &ensp;
-               <input type="text"  class="custom-form-control" [(ngModel)]="stoppageDaysTime" placeholder="Plant Stoppage Days" > &ensp;
-          </p>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <a class="btn btn-white" style="border:none"> </a>
-      <button class="btn btn-dark" style="float:right;" (click)="AvailabilityData()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
-    </ng-template>
-</p-card>
-</div> -->
 
 <div class="card" style="margin: 20px;"  *ngIf="expectedAvailability" id="PlantStoppage">
     <p-card >
     <ng-template pTemplate="subtitle">
         <div class="input-group mb-3">
-            <label><b >1. What is your expected Availability : </b></label> &ensp;
+            <label><b >1. What is your expected Availability % : </b></label> &ensp;
             <input type="text"  class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability %">
         </div>
     </ng-template>
@@ -353,7 +328,7 @@
                 <option value="Days" selected> Days</option>
                 <option value="Week" selected> Week</option>
                 <option value="Month" selected>Month</option>
-                <option value="year" selected>Year</option>
+                <option value="Year" selected>Year</option>
             </select>
             <input type="number" [(ngModel)]="stoppageDaysValue" name="stoppage Days Value" class="form-control">
         </div>
@@ -375,7 +350,7 @@
                 <option value="Days" selected> Days</option>
                 <option value="Week" selected> Week</option>
                 <option value="Month" selected>Month</option>
-                <option value="year" selected>Year</option>
+                <option value="Year" selected>Year</option>
             </select>
             <input type="number" [(ngModel)]="stoppageDaysTimeValue"  name="stoppage Duration " class="form-control">
         </div>
