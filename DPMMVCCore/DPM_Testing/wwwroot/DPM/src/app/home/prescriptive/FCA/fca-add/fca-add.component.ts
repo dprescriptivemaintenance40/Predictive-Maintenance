@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -7,6 +7,7 @@ import * as Chart from 'chart.js';
 import { MessageService, TreeNode } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-fca-add',
@@ -76,13 +77,21 @@ export class FCAADDComponent implements OnInit {
  public PatternFailuerAll: boolean  = false
 
 
- public PrescriptiveTreeList : any = [];
+  public PrescriptiveTreeList : any = [];
   public TagList : any = [];
   public SelectedTagNumber : string = ""
   public SelectedPrescriptiveTree : any = [];
   public SelectBoxEnabled : boolean = false
   
- 
+  public file : any;
+  public arrayBuffer: any;
+  public daysList: any;
+  headers = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+
  
   constructor(private messageService: MessageService,
     public title: Title,
@@ -1342,5 +1351,37 @@ public FCAViewEnabled : boolean = false
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   
   }
+
+  public SafeUsefulLife : boolean = false
+  public SafeLife : number = 0
+  public UsefulLife : number = 0
+ 
+  Webal(event){
+    this.file = event.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(this.file);
+    fileReader.onload = (e) => {
+      this.arrayBuffer = fileReader.result;
+      var data = new Uint8Array(this.arrayBuffer);
+      var arr = new Array();
+      for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+      var bstr = arr.join("");
+      var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+      var first_sheet_name = workbook.SheetNames[0];
+      var worksheet = workbook.Sheets[first_sheet_name];
+      console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
+      this.daysList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+      var Data : any = []
+      this.daysList.forEach(element => {
+        Data.push(element.Days)
+      });
+      this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), this.headers).subscribe(
+        res =>{
+            var data =res;
+        }, err => {console.log(err.error)}
+      )
+    }
+  
+}
 
 }

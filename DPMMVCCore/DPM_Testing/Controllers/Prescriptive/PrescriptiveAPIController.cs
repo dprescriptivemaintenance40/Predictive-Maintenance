@@ -194,7 +194,47 @@ namespace DPM.Controllers.Prescriptive
 
                 }
 
-                return Ok();
+                List<double> xVals = new List<double>();
+                List<double> yVals = new List<double>();
+                xVals = Last;
+                yVals = MedianRankDays;
+
+                double sumOfX = 0;
+                double sumOfY = 0;
+                double sumOfXSq = 0;
+                double sumOfYSq = 0;
+                double sumCodeviates = 0;
+
+                for (var i = 0; i < xVals.Count(); i++)
+                {
+                    var x = xVals[i];
+                    var y = yVals[i];
+                    sumCodeviates += x * y;
+                    sumOfX += x;
+                    sumOfY += y;
+                    sumOfXSq += x * x;
+                    sumOfYSq += y * y;
+                }
+
+                var count = xVals.Count();
+                var ssX = sumOfXSq - ((sumOfX * sumOfX) / count);
+                var ssY = sumOfYSq - ((sumOfY * sumOfY) / count);
+
+                var rNumerator = (count * sumCodeviates) - (sumOfX * sumOfY);
+                var rDenom = (count * sumOfXSq - (sumOfX * sumOfX)) * (count * sumOfYSq - (sumOfY * sumOfY));
+                var sCo = sumCodeviates - ((sumOfX * sumOfY) / count);
+
+                var meanX = sumOfX / count;
+                var meanY = sumOfY / count;
+                var dblR = rNumerator / Math.Sqrt(rDenom);
+
+                var rSquared = dblR * dblR;
+                var yIntercept = meanY - ((sCo / ssX) * meanX);
+                var slope = sCo / ssX;
+                var alpha = Math.Exp(yIntercept) ;
+                var beta = 1 / slope;
+
+                return Ok(new { rSquared , alpha , beta });
             }
             catch (Exception)
             {
@@ -202,7 +242,7 @@ namespace DPM.Controllers.Prescriptive
             }
         }
 
-                [HttpPost]
+        [HttpPost]
         [Route("PostCentrifugalPumpPrescriptiveData")]
         public async Task<ActionResult<CentrifugalPumpPrescriptiveModel>> PostPrescriptive([FromBody] CentrifugalPumpPrescriptiveModel prescriptiveModel)
         {

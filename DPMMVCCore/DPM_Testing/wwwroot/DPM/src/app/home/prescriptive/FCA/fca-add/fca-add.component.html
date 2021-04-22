@@ -383,9 +383,45 @@
         </ng-template>
     </p-card>
     </div>
+    <div class="card" style="margin: 20px;" *ngIf ="SafeUsefulLife" id="PatternSafeUsefulLife">
+        <p-card [ngClass]=" {disableddiv: SafeUsefulLife  ? true : false}">
+        <ng-template pTemplate="title">
+
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b> 9: Provide Safe Life and Useful life for {{PatternFMName}}
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3">
+                    <label> Safe Life</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="SafeLife" name="safelife" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3">
+                    <label> Useful Life</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UsefulLife" name="usefullife" class="form-control">
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1"   (click)="FCAFreeTextCancel()">Cancel</button>
+            <button class="btn btn-dark" *ngIf="FCAFreeTextSave1"  style="float:right;" (click)="FCAFreeTextSave()">Save</button>
+            <!-- <button *ngIf="patternaddshow"  label="Next" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
+        </ng-template>
+    </p-card>
+    </div>
 </div>
 
+<div class="col-sm col-md-4 form-group">
+    <input type="file" class="form-control-file btn btn-secondary" (change)="Webal($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
-
+</div>
 
 
