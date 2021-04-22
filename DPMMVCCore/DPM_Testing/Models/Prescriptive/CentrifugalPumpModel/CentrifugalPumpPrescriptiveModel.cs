@@ -62,6 +62,10 @@ namespace DPM.Models.Prescriptive
         public int FCAInterval { get; set; }
         public string FCAFFI { get; set; }
         public string FCAComment { get; set; }
+        public decimal FCAAlpha { get; set; }
+        public decimal FCABeta { get; set; }
+        public decimal FCASafeLife { get; set; }
+        public decimal FCAUsefulLife { get; set; }
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
     }
 }

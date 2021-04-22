@@ -454,6 +454,10 @@ namespace DPM.Controllers.Prescriptive
                     item.FCAInterval = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCAInterval;
                     item.FCAFFI = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCAFFI;
                     item.FCAComment = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCAComment;
+                    item.FCAAlpha = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCAAlpha;
+                    item.FCABeta = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCABeta;
+                    item.FCASafeLife = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCASafeLife;
+                    item.FCAUsefulLife = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].FCAUsefulLife;
                     i = i + 1;
                     _context.Entry(item).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
@@ -1184,7 +1188,7 @@ namespace DPM.Controllers.Prescriptive
 
         [HttpGet]
         [Route("GetRecordsFromCPPM")]
-        public IActionResult GetRecords(int id)
+        public async Task<IActionResult> GetRecords(int id)
         {
             try
             {
