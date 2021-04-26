@@ -553,7 +553,7 @@ namespace DPM.Controllers.Prescriptive
                 var CentrifugalPumpPrescriptiveFailureModeData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
                 prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
 
-                var CFData = _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId).ToList();
+                var CFData = await _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId).ToListAsync();
 
                 foreach (var c in CFData)
                 {
@@ -867,7 +867,7 @@ namespace DPM.Controllers.Prescriptive
 
                 }
 
-                var CFData = _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == ParentId).ToList();
+                var CFData = await _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == ParentId).ToListAsync();
 
                 foreach (var c in CFData)
                 {

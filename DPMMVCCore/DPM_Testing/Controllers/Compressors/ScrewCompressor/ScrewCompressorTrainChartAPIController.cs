@@ -2,9 +2,11 @@
 using DPM_Testing.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DPM.Controllers.Compressors.ScrewCompressor
 {
@@ -22,7 +24,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
 
         [HttpGet]
         [Route("GetPreviousWeek")]
-        public IActionResult GetPreviousWeek()
+        public async Task<IActionResult> GetPreviousWeek()
         {
             try
             {
@@ -35,12 +37,12 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 DateTime previousMonday = dt.Date;
                 DateTime previousSunday = dt1.Date;
 
-                IQueryable<ScrewCompressorTrainClassificationModel>
-                           screwCompressorClassification =  _context.ScrewCompressureTrainClassifications
+                List<ScrewCompressorTrainClassificationModel>
+                           screwCompressorClassification = await  _context.ScrewCompressureTrainClassifications
                                                                   .Where(a => a.UserId == userId
                                                                       && ( a.InsertedDate >= previousMonday 
                                                                       && a.InsertedDate <= previousSunday))
-                                                                      .AsQueryable();
+                                                                      .ToListAsync();
                 var ClassificationData = screwCompressorClassification.ToList();
                 return Ok(ClassificationData);
 
@@ -56,7 +58,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
         [HttpGet("{id}")]
         [Route("ScrewTrainLastUpload")]
 
-        public IActionResult GetLastUpload(string LastUploadDate)
+        public async Task<IActionResult> GetLastUpload(string LastUploadDate)
         {
             try
             {
@@ -65,7 +67,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 DateTime dt = Convert.ToDateTime(LastUploadDate);
                 DateTime lastUpload = dt.Date;
 
-                IQueryable<ScrewCompressorTrainClassificationModel> screwCompressorClassification = _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId && a.InsertedDate == lastUpload).AsQueryable();
+                List<ScrewCompressorTrainClassificationModel> screwCompressorClassification = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId && a.InsertedDate == lastUpload).ToListAsync();
                 var ClassificationData = screwCompressorClassification.ToList();
                 return Ok(ClassificationData);
             }
@@ -79,7 +81,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
 
         [HttpGet]
         [Route("ScrewTrainPreviousMonth")]
-        public IActionResult GetPreviousMonth()
+        public async Task<IActionResult> GetPreviousMonth()
         { 
             DateTime d = DateTime.Now;
             d = d.AddMonths(-1);
@@ -88,12 +90,12 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
-                IQueryable<ScrewCompressorTrainClassificationModel> screwCompressorClassification = 
-                                                     _context.ScrewCompressureTrainClassifications
-                                                             .Where(a => a.UserId == userId 
-                                                                 && a.InsertedDate.Date.Year == Year
-                                                                 && a.InsertedDate.Date.Month == Month)
-                                                                .AsQueryable();
+                List<ScrewCompressorTrainClassificationModel> screwCompressorClassification = 
+                                                              await  _context.ScrewCompressureTrainClassifications
+                                                                     .Where(a => a.UserId == userId 
+                                                                         && a.InsertedDate.Date.Year == Year
+                                                                         && a.InsertedDate.Date.Month == Month)
+                                                                        .ToListAsync();
                 var ClassificationData = screwCompressorClassification.ToList();
                 return Ok(ClassificationData);
             }
