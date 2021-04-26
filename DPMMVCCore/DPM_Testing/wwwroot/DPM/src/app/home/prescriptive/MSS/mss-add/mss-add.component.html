@@ -39,10 +39,14 @@
 
 <div id="GoToTheSaveMSS1">
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'A'">
+<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'A'" id="Consequence">
     <p-card >
     <ng-template pTemplate="subtitle">
         <div class="card shadow mb-4">
+            <div>
+                <a class="btn btn-white" style="border:none" > </a>
+                <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+            </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
                         src="/dist/DPM/assets/MSS/A.JPG "alt="">
@@ -89,17 +93,21 @@
             </div>
         </div> 
     </ng-template>
-    <ng-template pTemplate="footer">
+    <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
         <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
-    </ng-template>
+    </ng-template> -->
 </p-card>
 </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'B'">
+<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'B'" id="Consequence" >
     <p-card >
     <ng-template pTemplate="subtitle">
         <div class="card shadow mb-4">
+            <div>
+                <a class="btn btn-white" style="border:none"> </a>
+                <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+            </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
                         src="/dist/DPM/assets/MSS/B.JPG "alt="">
@@ -140,17 +148,21 @@
             </div>
         </div> 
     </ng-template>
-    <ng-template pTemplate="footer">
+    <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
-    </ng-template>
+       <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button> 
+    </ng-template> -->
 </p-card>
 </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'C'">
+<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'C'" id="Consequence">
     <p-card >
     <ng-template pTemplate="subtitle">
         <div class="card shadow mb-4">
+            <div>
+                <a class="btn btn-white" style="border:none" > </a>
+                <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+            </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
                         src="/dist/DPM/assets/MSS/C.JPG "alt="">
@@ -191,17 +203,21 @@
             </div>
         </div> 
     </ng-template>
-    <ng-template pTemplate="footer">
+    <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
         <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
-    </ng-template>
+    </ng-template> -->
 </p-card>
 </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'D'">
+<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'D'" id="Consequence">
     <p-card >
     <ng-template pTemplate="subtitle">
         <div class="card shadow mb-4">
+            <div>
+                <a class="btn btn-white" style="border:none" > </a>
+                <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+            </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
                         src="/dist/DPM/assets/MSS/D.JPG "alt="">
@@ -242,18 +258,22 @@
             </div>
         </div> 
     </ng-template>
-    <ng-template pTemplate="footer">
+    <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
         <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
-    </ng-template>
+    </ng-template> -->
 </p-card>
 </div>
 
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'E'">
+<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'E'" id="Consequence">
     <p-card >
     <ng-template pTemplate="subtitle">
         <div class="card shadow mb-4">
+            <div>
+                <a class="btn btn-white" style="border:none" > </a>
+                <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+            </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
                         src="/dist/DPM/assets/MSS/E.JPG "alt="">
@@ -300,25 +320,23 @@
             </div>
         </div> 
     </ng-template>
-    <ng-template pTemplate="footer">
+    <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
         <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
-    </ng-template>
+    </ng-template> -->
 </p-card>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
+<style>
+    .disableddiv {
+      pointer-events: none;
+      cursor: default;
+      text-decoration: none;
+      opacity: 0.5;
+      padding: 1px;
+      background-color: #777
+    }
+  </style>
 <div class="card" style="margin: 20px;"  *ngIf ="AvailabilityYNCheck" id="Availability">
     <p-card   >
     <ng-template pTemplate="subtitle">
@@ -360,7 +378,7 @@
 </div>
 
 <div class="card" style="margin: 20px;"  *ngIf="AvailabilityPlantStoppage" id="PlantStoppage">
-    <p-card [ngClass]=" {disableddiv: PlantStoppage  ? true : false}">
+    <p-card>
     <ng-template pTemplate="subtitle">
         <div class="input-group mb-3">
             <label><b >How many days do you run your plant before taking stoppage? </b></label>

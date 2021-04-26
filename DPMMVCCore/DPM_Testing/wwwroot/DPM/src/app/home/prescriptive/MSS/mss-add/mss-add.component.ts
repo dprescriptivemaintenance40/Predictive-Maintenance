@@ -135,6 +135,7 @@ export class MSSAddComponent implements OnInit {
   }
 
 async ADDMSSToTree() {
+  if(this.AvailabilityY.length > 0  && this.AvailabilityY.length >0){
     var MSSTree = {
       label: this.MSSADDCounter,
       type: "person",
@@ -153,7 +154,6 @@ async ADDMSSToTree() {
         }
       ]
     }
-
     this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(MSSTree)
     this.ConsequenceBasedMSS = ""
     this.PrescriptiveTree = true
@@ -168,16 +168,23 @@ async ADDMSSToTree() {
         }
       }
     )
-    this.AvailabilityYNCheck= false;
-    this.expectedAvailability= false;
-    this.AvailabilityPlantStoppage= false;
-    this.AvailabilityPlantStoppageTime= false;
-    this.AvailabilityY = ""
-    this.AvailabilityCheck = ""
-    this.stoppageDays = ""
-    this.stoppageDaysValue = 0
-    this.stoppageDaysTime = ""
-    this.stoppageDaysTimeValue = 0
+      this.AvailabilityYNCheck= false;
+      this.expectedAvailability= false;
+      this.AvailabilityPlantStoppage= false;
+      this.AvailabilityPlantStoppageTime= false;
+      this.AvailabilityY = ""
+      this.AvailabilityCheck = ""
+      this.stoppageDays = ""
+      this.stoppageDaysValue = 0
+      this.stoppageDaysTime = ""
+      this.stoppageDaysTimeValue = 0
+      this.PlantStoppage = true
+      this.PlantStoppageTime = true
+    }else{
+      
+      alert("fill the data")
+    }
+  
     // Logic for Maintenance Tasks and Interval
     // first IF condition for Consequence A and B
    if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
@@ -332,8 +339,9 @@ async ADDMSSToTree() {
      }else{
        alert("Fill the data")
      }
+     const element = document.querySelector("#Consequence")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
-
 
  async StoppageDays(){
     if(this.stoppageDays == 'Days'){
@@ -363,8 +371,7 @@ async ADDMSSToTree() {
  
    var Result = (1-(this.stoppageDuration / this.stoppageValue  ))*100
    console.log(Result)
-
-
-  
+   const element = document.querySelector("#Consequence")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 }
