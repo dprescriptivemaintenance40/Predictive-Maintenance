@@ -21,10 +21,10 @@
                     <label style="margin-right: 12px;">Select Report Type</label>
                     <select [ngModelOptions]="{standalone: true}" [(ngModel)]="ReportRCMType" class="form-select" class="form-control">
                         <option value="">Select Type</option>
-                          <option  value="RCM">RCM</option>
+                          <option  value="RCM" [disabled]="data.MSSAdded != '1'">RCM</option>
                           <option value="FMEA">FMEA</option>
-                          <option value="FCA">FCA</option>
-                          <option value="MSS">MSS</option>  
+                          <option value="FCA" [disabled]="data.FCAAdded != '1'">FCA</option>
+                          <option value="MSS" [disabled]="data.MSSAdded != '1'">MSS</option>  
                       </select>
                 </div>
             </li>
@@ -132,6 +132,7 @@
             </div>
             <div id="div4" style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
+                    <div style="overflow: scroll;">
                     <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                     <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
                         <ng-template let-node pTemplate="person">
@@ -144,6 +145,7 @@
                             {{node.label}}
                         </ng-template>
                     </p-organizationChart>
+                    </div>
                     <div class="div-in-middle" *ngIf="tree[0].imgPath && ReportRCMType == 'FMEA' ">
                         <label for="file" class="custom-label">Uploaded File</label>
                         <div id="file ">

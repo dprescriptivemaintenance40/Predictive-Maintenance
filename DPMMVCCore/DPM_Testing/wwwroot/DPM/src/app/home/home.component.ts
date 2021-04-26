@@ -24,7 +24,8 @@ export class HomeComponent implements OnInit {
   public report: boolean = false;
   public prescriptive: boolean = false;
   public staticEquitment: boolean = false;
-
+  public recycleBin: boolean = false;
+  public prescriptiveConfiguration: boolean = false;
   constructor(public builder: FormBuilder,
     public http: HttpClient,
     public router: Router,
@@ -61,21 +62,37 @@ export class HomeComponent implements OnInit {
       this.centrifugalPumpData = true;
       this.report = true;
       this.prescriptive = true;
+      this.prescriptiveConfiguration = true;
       this.staticEquitment = true;
+      this.recycleBin = true
     } else if (this.user.UserType == 2) {
       this.centrifugalPump = true
       this.centrifugalPumpData = true;
       this.report = true;
       this.prescriptive = true;
+      this.prescriptiveConfiguration = false;
       this.screwCompressor = true;
       this.screwCompressorData = true;
       this.staticEquitment = true;
+      this.recycleBin = true
     }
     else if (this.user.UserType == 3) {
       this.centrifugalPump = true
       this.centrifugalPumpData = true;
       this.report = false;
       this.prescriptive = false;
+      this.prescriptiveConfiguration = false;
+      this.screwCompressor = false;
+      this.screwCompressorData = false;
+      this.staticEquitment = false;
+      this.recycleBin = false
+    }else if (this.user.UserType == 4) {
+      this.centrifugalPump = false
+      this.centrifugalPumpData = false;
+      this.report = false;
+      this.prescriptive = true;
+      this.prescriptiveConfiguration = false;
+      this.recycleBin = true
       this.screwCompressor = false;
       this.screwCompressorData = false;
       this.staticEquitment = false;

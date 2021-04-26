@@ -111,7 +111,7 @@
             <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" [routerLink]="['/Home/Prescriptive/List']">Assets List</a>
-                    <a class="collapse-item" [routerLink]="['/Home/Prescriptive/Configuration']">Configuration</a>
+                    <a *ngIf="prescriptiveConfiguration" class="collapse-item" [routerLink]="['/Home/Prescriptive/Configuration']">Configuration</a>
                     <a class="collapse-item" [routerLink]="['/Home/Prescriptive/ADD']"> ADD</a>
                     <a class="collapse-item" [routerLink]="['/Home/Prescriptive/Display']"> Display</a>
                 </div>
@@ -132,7 +132,7 @@
                 </li>
             </div>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="recycleBin">
             <a [routerLink]="[ '/Home/RecycleBin']" class="nav-link">
                 <i [routerLink]="[ '/Home/RecycleBin']"></i>
                 <i class="fas fa-trash"></i>
