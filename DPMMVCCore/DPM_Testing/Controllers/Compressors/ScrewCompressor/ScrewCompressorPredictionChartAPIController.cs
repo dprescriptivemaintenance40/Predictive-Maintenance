@@ -2,8 +2,11 @@
 using DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DPM.Controllers.Compressors.ScrewCompressor
 {
@@ -21,7 +24,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
 
         [HttpGet]
         [Route("GetPredictionPreviousWeek")]
-        public IActionResult GetPreviousWeek()
+        public async Task<IActionResult> GetPreviousWeek()
         {
             try
             {
@@ -35,13 +38,13 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 DateTime previousMonday = dt.Date;
                 DateTime previousSunday = dt1.Date;
 
-                IQueryable<ScrewCompressorPredictionModel>
-                           screwCompressorPrediction = _context.ScrewCompressurePredictionData
+                List<ScrewCompressorPredictionModel>
+                           screwCompressorPrediction = await _context.ScrewCompressurePredictionData
                                                                   .Where(a => a.UserId == userId
                                                                       && (a.InsertedDate >= previousMonday
                                                                       && a.InsertedDate <= previousSunday)
                                                                       && a.Prediction != null)
-                                                                      .AsQueryable();
+                                                                      .ToListAsync();
                 var predictionData = screwCompressorPrediction.ToList();
                 return Ok(predictionData);
 
@@ -57,7 +60,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
         [HttpGet("{id}")]
         [Route("ScrewPredictionLastUpload")]
 
-        public IActionResult GetLastUpload(string LastUploadDate)
+        public async Task<IActionResult> GetLastUpload(string LastUploadDate)
         {
             try
             {
@@ -66,7 +69,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 DateTime dt = Convert.ToDateTime(LastUploadDate);
                 DateTime lastUpload = dt.Date;
 
-                IQueryable<ScrewCompressorPredictionModel> screwCompressorPrediction = _context.ScrewCompressurePredictionData.Where(a => a.UserId == userId && a.InsertedDate == lastUpload && a.Prediction != null).AsQueryable();
+                List<ScrewCompressorPredictionModel> screwCompressorPrediction = await _context.ScrewCompressurePredictionData.Where(a => a.UserId == userId && a.InsertedDate == lastUpload && a.Prediction != null).ToListAsync();
                 var predictionData = screwCompressorPrediction.ToList();
                 return Ok(predictionData);
             }
@@ -80,7 +83,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
 
         [HttpGet]
         [Route("ScrewPredictionPreviousMonth")]
-        public IActionResult GetPreviousMonth()
+        public async Task<IActionResult> GetPreviousMonth()
         {
             DateTime d = DateTime.Now;
             d = d.AddMonths(-1);
@@ -89,13 +92,13 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
-                IQueryable<ScrewCompressorPredictionModel> screwCompressorPrediction =
-                                                     _context.ScrewCompressurePredictionData
+                List<ScrewCompressorPredictionModel> screwCompressorPrediction =
+                                                      await _context.ScrewCompressurePredictionData
                                                              .Where(a => a.UserId == userId
                                                                  && (a.InsertedDate.Date.Year == Year
                                                                  && a.InsertedDate.Date.Month == Month)
                                                                  && a.Prediction != null)
-                                                                .AsQueryable();
+                                                                .ToListAsync();
                 var predictionData = screwCompressorPrediction.ToList();
                 return Ok(predictionData);
             }

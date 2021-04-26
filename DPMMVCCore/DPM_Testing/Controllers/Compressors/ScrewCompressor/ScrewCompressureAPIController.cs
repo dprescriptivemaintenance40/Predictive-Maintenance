@@ -13,6 +13,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace DPM_Testing.Controllers
 {
@@ -29,12 +30,12 @@ namespace DPM_Testing.Controllers
             _context = context;
         }
 
-        public IActionResult GetClassification()
+        public async Task<IActionResult> GetClassification()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
-                IQueryable<ScrewCompressorTrainClassificationModel> screwCompressorClassification = _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).AsQueryable();
+                List<ScrewCompressorTrainClassificationModel> screwCompressorClassification = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).ToListAsync();
                 var ClassificationData = screwCompressorClassification.ToList();
                 return Ok(ClassificationData);
             }
@@ -47,7 +48,7 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("Configuration")]
-        public IActionResult PostConfiguration([FromBody] List<ScrewCompressorTrainModel> compressuredetails)
+        public async Task<IActionResult> PostConfiguration([FromBody] List<ScrewCompressorTrainModel> compressuredetails)
         {
              string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
@@ -66,7 +67,7 @@ namespace DPM_Testing.Controllers
                     item.UserId = userId;
                     item.TenantId = 1;
                     _context.ScrewCompressureTrainData.Add(item);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
                 }
                 return Ok(compressuredetails);
@@ -82,12 +83,12 @@ namespace DPM_Testing.Controllers
 
         [HttpGet]
         [Route("GetPrediction")]
-        public IActionResult GetPrediction()
+        public async Task<IActionResult> GetPrediction()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
-                IQueryable<ScrewCompressorPredictionModel> screwCompressorPredictions = _context.ScrewCompressurePredictionData.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).AsQueryable();
+                List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).ToListAsync();
                 var PredictionData = screwCompressorPredictions.ToList();
                 return Ok(PredictionData);
             }
@@ -99,11 +100,13 @@ namespace DPM_Testing.Controllers
         }
         [HttpGet]
         [Route("GetPredictionById")]
-        public IActionResult GetPredictionById(int PredictedId)
+        public async Task<IActionResult> GetPredictionById(int PredictedId)
         {
             try
             {
-                ScrewCompressorPredictionModel screwCompressorPredictions = _context.ScrewCompressurePredictionData.Where(a => a.PredictionId == PredictedId).AsQueryable().FirstOrDefault();
+               List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData.Where(a => a.PredictionId == PredictedId).ToListAsync();
+
+                //ScrewCompressorPredictionModel screwCompressorPredictions = _context.ScrewCompressurePredictionData.Where(a => a.PredictionId == PredictedId).AsQueryable().FirstOrDefault();
                 return Ok(screwCompressorPredictions);
             }
             catch (Exception exe)
@@ -115,7 +118,7 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("Prediction")]
-        public IActionResult PostPrediction([FromBody] List<ScrewCompressorPredictionModel> predictionDetails)
+        public async Task<IActionResult> PostPrediction([FromBody] List<ScrewCompressorPredictionModel> predictionDetails)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
@@ -133,7 +136,7 @@ namespace DPM_Testing.Controllers
                     item.UserId = userId;
                     item.TenantId = 1;
                     _context.ScrewCompressurePredictionData.Add(item);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                 }
                 return Ok(predictionDetails);
             }
@@ -146,7 +149,7 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("PredictionObj")]
-        public IActionResult PostPredictionObj([FromBody] ScrewCompressorPredictionModel predictionDetails)
+        public async Task<IActionResult> PostPredictionObj([FromBody] ScrewCompressorPredictionModel predictionDetails)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
@@ -163,7 +166,7 @@ namespace DPM_Testing.Controllers
                 predictionDetails.UserId = userId;
                 predictionDetails.Prediction = "pending";
                 _context.ScrewCompressurePredictionData.Add(predictionDetails);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return Ok(predictionDetails);
             }
             catch (Exception exe)
@@ -176,13 +179,13 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("ConfigurationChange")]
-        public IActionResult PostConfigurationChange(int Data)
+        public async Task<IActionResult> PostConfigurationChange(int Data)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
 
-                IQueryable<ScrewCompressorTrainModel> screwCompressorTrainData = _context.ScrewCompressureTrainData.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).AsQueryable();
+                List<ScrewCompressorTrainModel> screwCompressorTrainData = await _context.ScrewCompressureTrainData.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).ToListAsync();
                 var DetailData = screwCompressorTrainData.ToList();
                 foreach (var item in DetailData)
                 {
@@ -203,12 +206,12 @@ namespace DPM_Testing.Controllers
                     screwTrainData.TD2 = item.TD2;
                     _context.ScrewCompressureTrainData.Attach(screwTrainData);
                     _context.Entry(screwTrainData).State = EntityState.Modified;
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
                 }
 
 
-                IQueryable<ScrewCompressorTrainClassificationModel> screwCompressorTrainClassificationData = _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).AsQueryable();
+                List<ScrewCompressorTrainClassificationModel> screwCompressorTrainClassificationData = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).ToListAsync();
                 var classifydata = screwCompressorTrainClassificationData.ToList();
                 foreach (var item in classifydata)
                 {
@@ -217,7 +220,7 @@ namespace DPM_Testing.Controllers
                     var id = item.CompClassID;
                     screwTrainClassification = _context.ScrewCompressureTrainClassifications.Find(id);
                     _context.ScrewCompressureTrainClassifications.Remove(screwTrainClassification);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                 }
                 return NoContent();
             }

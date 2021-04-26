@@ -106,7 +106,7 @@ namespace DPM.Controllers.Pumps
 
         [HttpGet("{id}")]
         [Route("GetWeekDates")]
-        public IActionResult GetRecords(string FromDate, string ToDate)
+        public async Task<IActionResult> GetRecords(string FromDate, string ToDate)
         {
             try
             {
@@ -115,13 +115,12 @@ namespace DPM.Controllers.Pumps
                 DateTime d = Convert.ToDateTime(FromDate);
                 DateTime d1 = Convert.ToDateTime(ToDate);
 
-                IQueryable<CentrifugalPumpWeekDataModel> centrifugalPumpWeekDataModel =
-                                                     _context.CentrifugalPumpWeekDataModel
+                List<CentrifugalPumpWeekDataModel> centrifugalPumpWeekDataModel =
+                                                    await _context.CentrifugalPumpWeekDataModel
                                                              .Where(a => a.UserId == userId
                                                               && (a.Date >= d.Date
                                                               && a.Date <= d1.Date))
-
-                                                             .AsQueryable();
+                                                              .ToListAsync();
                 var data = centrifugalPumpWeekDataModel.ToList();
                 return Ok(data);
 
@@ -137,7 +136,7 @@ namespace DPM.Controllers.Pumps
 
         [HttpGet("{id}")]
         [Route("GetDailyDates")]
-        public IActionResult DailyDates(string FromDate, string ToDate)
+        public async Task<IActionResult> DailyDates(string FromDate, string ToDate)
         {
             try
             {
@@ -146,13 +145,12 @@ namespace DPM.Controllers.Pumps
                 DateTime d1 = Convert.ToDateTime(ToDate);
 
 
-                IQueryable<CentrifugalPumpModel> centrifugalPumpModel =
-                                                     _context.CentrifugalPumpModelData
+                List<CentrifugalPumpModel> centrifugalPumpModel =
+                                                     await _context.CentrifugalPumpModelData
                                                              .Where(a => a.UserId == userId
                                                               && (a.Date >= d.Date
                                                               && a.Date <= d1.Date))
-
-                                                             .AsQueryable();
+                                                              .ToListAsync();
                 var data = centrifugalPumpModel.ToList();
                 return Ok(data);
 

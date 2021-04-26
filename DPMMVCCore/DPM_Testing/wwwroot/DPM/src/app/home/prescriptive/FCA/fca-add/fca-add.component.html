@@ -41,19 +41,21 @@
 
 
 <div *ngIf="FailureModePatternTree" id="ModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
-    <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label>
-    <button *ngIf="patternaddshow" label="Next" style="float: right;"(click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
-    <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
-        <ng-template let-node pTemplate="person">
-            <div class="node-header p-corner-top">{{node.label}}</div>
-            <div class="node-content">
-                <div>{{node.data.name}}</div>
-            </div>
-        </ng-template>
-        <ng-template let-node pTemplate="department">
-            {{node.label}}
-        </ng-template>
-    </p-organizationChart>
+    <div style="overflow: scroll;">
+        <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label>
+        <button *ngIf="patternaddshow" label="Next" style="float: right;"(click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
+        <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
+   </div>
 
     <p-card >
         <ng-template pTemplate="title">
@@ -411,7 +413,7 @@
             </b></p>
         </ng-template>
         <ng-template pTemplate="content">
-            <div class="row" style="padding: 15px;">
+            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A' || ConsequenceFM == 'B' || ConsequenceFM == 'C' ">
                 <div class="col-md-3">
                     <label> Safe Life</label>
                 </div>
@@ -419,12 +421,43 @@
                     <input type="number" [(ngModel)]="SafeLife" name="safelife" class="form-control">
                 </div>
             </div>
-            <div class="row" style="padding: 15px;">
+            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D' || ConsequenceFM == 'E' ">
                 <div class="col-md-3">
                     <label> Useful Life</label>
                 </div>
                 <div class="col-md-3">
                     <input type="number" [(ngModel)]="UsefulLife" name="usefullife" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3">
+                    <label>Do you want webal analysis for alpha and beta</label>
+                    
+                </div>
+                <div class="col-sm">
+                    Yes <td><input type="radio" [(ngModel)]="WebalYN" value="YES" name="ABYN" />
+                </div>
+                <div class="col-sm">
+                    No <td><input type="radio" [(ngModel)]="WebalYN" value="No" name="ABYN" />
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="WebalYN == 'No'"  >
+                <small>Please provide values for alpha and beta</small>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="WebalYN == 'No'" >
+                <div class="col-md-3">
+                    <label>Alpha</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="alpha" name="WebalYN" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;"  *ngIf="WebalYN == 'No'">
+                <div class="col-md-3">
+                    <label>Beta</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="beta" name="WebalYN" class="form-control">
                 </div>
             </div>
         </ng-template>
@@ -433,7 +466,7 @@
          </ng-template>
     </p-card>
     </div>
-    <div class="card" style="margin: 20px;" *ngIf ="alphaBeta" id="alphaBeta">
+    <div class="card" style="margin: 20px;" *ngIf ="alphaBeta && WebalYN == 'YES' " id="alphaBeta">
         <p-card [ngClass]=" {disableddiv: alphaBeta  ? false : true}">
         <ng-template pTemplate="title">
 
@@ -441,7 +474,7 @@
         <ng-template pTemplate="subtitle">
             <p><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha, beta.
             </b></p>
-            <p><small>Note : Put just one column in Excel with column name 'Days'</small></p>
+            <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-dark" (click)="ExcelDownload()" title="Click here to get webal excel format" ><a class="pi pi-download"></a></button></small></p>
         </ng-template>
         <ng-template pTemplate="content">
             <div class="row" style="padding: 15px;">
