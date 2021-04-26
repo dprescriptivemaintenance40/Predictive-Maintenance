@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DPM.Controllers.Compressors.ScrewCompressor
 {
@@ -22,7 +23,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
 
         [HttpGet("{id}")]
         [Route("FuturePredictionMonth")]
-        public IActionResult GetFuturePredictionMonth(string FromDate, string ToDate)
+        public async Task<IActionResult> GetFuturePredictionMonth(string FromDate, string ToDate)
         {
       
             try
@@ -33,12 +34,12 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 DateTime futureFromDate = d.Date;
                 DateTime d1 = Convert.ToDateTime(ToDate);
                 DateTime futureToDate = d1.Date;
-                IQueryable<ScrewCompressorFuturePredictionModel> screwCompressorFuturePrediction =
-                                                     _context.ScrewCompressureFuturePrediction
-                                                             .Where(a => a.UserId == userId
-                                                              && (a.PredictedDate >= futureFromDate
-                                                              && a.PredictedDate <= futureToDate))
-                                                             .AsQueryable();
+                List<ScrewCompressorFuturePredictionModel> screwCompressorFuturePrediction =
+                                                           await _context.ScrewCompressureFuturePrediction
+                                                                 .Where(a => a.UserId == userId
+                                                                  && (a.PredictedDate >= futureFromDate
+                                                                  && a.PredictedDate <= futureToDate))
+                                                                 .ToListAsync();
                 var futurePredictionData = screwCompressorFuturePrediction.ToList();
                 return Ok(futurePredictionData);
             }
@@ -50,19 +51,19 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
 
         [HttpGet]
         [Route("FuturePredictionMovingAverage")]
-        public IActionResult GetMovngAverage()
+        public async Task<IActionResult> GetMovngAverage()
         {
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                IQueryable<ScrewCompressorPredictionModel> screwCompressors = _context.ScrewCompressurePredictionData
+                List<ScrewCompressorPredictionModel> screwCompressors = await _context.ScrewCompressurePredictionData
                                                                                 .Where(a => a.UserId == userId && string.IsNullOrEmpty(a.FuturePrediction))
                                                                                 .OrderBy(a => a.InsertedDate.Year)
                                                                                 .ThenBy(d => d.InsertedDate.Month)
                                                                                 .ThenBy(d => d.InsertedDate.Day)
-                                                                                .AsQueryable();
+                                                                                .ToListAsync();
 
-                var prediction = screwCompressors.ToList();
+                var prediction = screwCompressors.ToList(); ;
 
                 if (prediction.Count > 0)
                 {
@@ -97,7 +98,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                         item.FuturePrediction = "Done";
                         _context.ScrewCompressurePredictionData.Attach(item);
                         _context.Entry(item).State = EntityState.Modified;
-                        _context.SaveChanges();
+                        await _context.SaveChangesAsync();
 
 
                     }
@@ -136,7 +137,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                         screwcompressorFuturePrediction.TD2 = Convert.ToDecimal(string.Format("{0:F2}", (TD2 / 5)));
                         screwcompressorFuturePrediction.PredictedDate = DateList.Last();
                         _context.ScrewCompressureFuturePrediction.Add(screwcompressorFuturePrediction);
-                        _context.SaveChanges();
+                        await _context.SaveChangesAsync();
 
                     }
 
@@ -157,17 +158,17 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
 
         [HttpGet]
         [Route("GetFuturePredictionRecords")]
-        public IActionResult GetFuturePredictionRecords()
+        public async Task<IActionResult> GetFuturePredictionRecords()
         {
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                IQueryable<ScrewCompressorFuturePredictionModel> screwCompressorFuturePredictionModels = _context.ScrewCompressureFuturePrediction
+                List<ScrewCompressorFuturePredictionModel> screwCompressorFuturePredictionModels = await _context.ScrewCompressureFuturePrediction
                                                                                                                  .Where(a => a.UserId == userId)
                                                                                                                  .OrderBy(a => a.PredictedDate.Year)
                                                                                                                  .ThenBy(d => d.PredictedDate.Month)
                                                                                                                  .ThenBy(d => d.PredictedDate.Day)
-                                                                                                                 .AsQueryable();
+                                                                                                                 .ToListAsync();
                 var Data = screwCompressorFuturePredictionModels.ToList();
 
                 return Ok(Data);
@@ -181,17 +182,17 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
 
         [HttpGet]
         [Route("GetFuturePredictionRecordsById")]
-        public IActionResult GetFuturePredictionRecordsById(int SCFPId)
+        public async Task<IActionResult> GetFuturePredictionRecordsById(int SCFPId)
         {
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                IQueryable<ScrewCompressorFuturePredictionModel> screwCompressorFuturePredictionModels = _context.ScrewCompressureFuturePrediction
+                List<ScrewCompressorFuturePredictionModel> screwCompressorFuturePredictionModels = await _context.ScrewCompressureFuturePrediction
                                                                                                                  .Where(a => a.UserId == userId && a.SCFPId == SCFPId)
                                                                                                                  .OrderBy(a => a.PredictedDate.Year)
                                                                                                                  .ThenBy(d => d.PredictedDate.Month)
                                                                                                                  .ThenBy(d => d.PredictedDate.Day)
-                                                                                                                 .AsQueryable();
+                                                                                                                 .ToListAsync();
                 var Data = screwCompressorFuturePredictionModels.ToList();
 
                 return Ok(Data);
