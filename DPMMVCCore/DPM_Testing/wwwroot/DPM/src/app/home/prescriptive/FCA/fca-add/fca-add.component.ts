@@ -8,6 +8,7 @@ import { MessageService, TreeNode } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 import * as XLSX from 'xlsx';
+import { ExcelFormatService } from 'src/app/home/Services/excel-format.service';
 
 @Component({
   selector: 'app-fca-add',
@@ -121,7 +122,8 @@ public UsefulLife : number = 0
 public alphaBeta : boolean = false
 public alpha : number = 0
 public beta : number = 0
-
+public ConsequenceFM : string = ""
+public WebalYN : string = ""
   
   public file : any;
   public arrayBuffer: any;
@@ -136,6 +138,7 @@ public beta : number = 0
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
+    private excelFormatService : ExcelFormatService,
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef) { }
@@ -624,6 +627,12 @@ public beta : number = 0
     this.PatternFMName = this.data1[0].children[0].children[0].children[0].data.name;
     this.PatternNextOnPrescriptiveTree = false;
     this.GetChartData();
+    this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
+    if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' || this.ConsequenceFM == 'C'){
+       this.UsefulLife = 0;
+    }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'){
+       this.SafeLife = 0;
+    }
   }
   PatternBack() {
     this.prescriptiveTree = true
@@ -677,6 +686,32 @@ public beta : number = 0
         } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
           path = 2;
           pattern = 'Pattern 6'
+        }
+
+        let SUNode = {}
+
+        if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' || this.ConsequenceFM == 'C'){
+          this.UsefulLife = 0;
+           SUNode = {
+            label: "SafeLife",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.SafeLife
+            }
+          } 
+        }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'){
+          this.SafeLife = 0;
+           SUNode = {
+            label: "UsefulLife",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.UsefulLife
+            }
+          }
         }
 
         var FCATreeClone = {
@@ -743,24 +778,7 @@ public beta : number = 0
                 name: this.beta.toFixed(2)
               }
             },
-            {
-              label: "SafeLife",
-              type: "person",
-              styleClass: 'p-person',
-              expanded: true,
-              data: {
-                name: this.SafeLife
-              }
-            },
-            {
-              label: "UsefulLife",
-              type: "person",
-              styleClass: 'p-person',
-              expanded: true,
-              data: {
-                name: this.UsefulLife
-              }
-            }
+            SUNode,
             
           ]
         } 
@@ -842,24 +860,7 @@ public beta : number = 0
               name: this.beta.toFixed(2)
             }
           },
-          {
-            label: "SafeLife",
-            type: "person",
-            styleClass: 'p-person',
-            expanded: true,
-            data: {
-              name: this.SafeLife
-            }
-          },
-          {
-            label: "UsefulLife",
-            type: "person",
-            styleClass: 'p-person',
-            expanded: true,
-            data: {
-              name: this.UsefulLife
-            }
-          }
+          SUNode,
         )
 
 
@@ -909,6 +910,9 @@ public beta : number = 0
         this.UsefulLife = 0;
         this.alphaBeta = false;
         this.SafeUsefulLife = false;
+        this.ConsequenceFM = ""
+        this.WebalYN = ""
+        this.patternaddshow = false
    
         this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
         if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
@@ -943,6 +947,32 @@ public beta : number = 0
         path = 0;
         pattern = 'Pattern 5'
 
+      }
+
+      let SUNode = {}
+
+      if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' || this.ConsequenceFM == 'C'){
+         this.UsefulLife = 0;
+         SUNode = {
+          label: "SafeLife",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.SafeLife
+          }
+        } 
+      }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'){
+        this.SafeLife = 0
+         SUNode = {
+          label: "UsefulLife",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.UsefulLife
+          }
+        }
       }
       
       var FCATree1Clone = {
@@ -1009,24 +1039,7 @@ public beta : number = 0
               name: this.beta.toFixed(2)
             }
           },
-          {
-            label: "SafeLife",
-            type: "person",
-            styleClass: 'p-person',
-            expanded: true,
-            data: {
-              name: this.SafeLife
-            }
-          },
-          {
-            label: "UsefulLife",
-            type: "person",
-            styleClass: 'p-person',
-            expanded: true,
-            data: {
-              name: this.UsefulLife
-            }
-          }
+          SUNode,
         ]
       }
       var FCATree1 = {
@@ -1107,24 +1120,7 @@ public beta : number = 0
             name: this.beta.toFixed(2)
           }
         },
-        {
-          label: "SafeLife",
-          type: "person",
-          styleClass: 'p-person',
-          expanded: true,
-          data: {
-            name: this.SafeLife
-          }
-        },
-        {
-          label: "UsefulLife",
-          type: "person",
-          styleClass: 'p-person',
-          expanded: true,
-          data: {
-            name: this.UsefulLife
-          }
-        }
+        SUNode,
       )
         this.FCAFFInterval = 0
         this.FCAInterval = 0
@@ -1172,6 +1168,9 @@ public beta : number = 0
         this.UsefulLife = 0;
         this.alphaBeta = false;
         this.SafeUsefulLife = false;
+        this.ConsequenceFM = ""
+        this.WebalYN = ""
+        this.patternaddshow = false
    
       this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
@@ -1239,7 +1238,13 @@ public beta : number = 0
     this.FailureModePatternTree = true
     this.changeDetectorRef.detectChanges();
     this.GetChartData();
-  }
+    this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
+    if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' || this.ConsequenceFM == 'C'){
+       this.UsefulLife = 0;
+    }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'){
+       this.SafeLife = 0;
+    }
+   }
 
   public SaveFCAEnable: boolean = false
   SaveFCA() {
@@ -1563,11 +1568,24 @@ async SelectNodeToView(p){
 
 
 async SafeUsefulLifeSave(){
-  this.alphaBeta = true
-  this.changeDetectorRef.detectChanges();
-  const element = document.querySelector("#alphaBeta")
-  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
+  if(this.WebalYN == 'YES'  || this.WebalYN == 'No'){
+      if(this.WebalYN == 'YES'){
+        this.alphaBeta = true
+        this.alpha = 0;
+        this.beta = 0;
+        this.changeDetectorRef.detectChanges();
+        const element = document.querySelector("#alphaBeta")
+        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }else {
+        this.patternaddshow = true
+        this.changeDetectorRef.detectChanges();
+        const element = document.querySelector("#ScrollToFCATree")
+        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      
+      }
+  }else{
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please choose Yes or No for webal analysis"})
+  }
 }
 
 async alphaBetaSave(){
@@ -1576,6 +1594,11 @@ async alphaBetaSave(){
   const element = document.querySelector("#ScrollToFCATree")
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
+}
+
+ExcelDownload(){
+  var ColumnsData : any = ["Days"];
+  this.excelFormatService.GetExcelFormat( ColumnsData , 'Webal_Days_Format')
 }
 
 }
