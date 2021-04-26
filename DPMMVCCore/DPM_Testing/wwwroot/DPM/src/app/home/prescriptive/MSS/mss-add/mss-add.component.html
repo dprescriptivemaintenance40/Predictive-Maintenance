@@ -320,7 +320,7 @@
 
 
 <div class="card" style="margin: 20px;"  *ngIf ="AvailabilityYNCheck" id="Availability">
-    <p-card >
+    <p-card   >
     <ng-template pTemplate="subtitle">
         <p><b>1.You want to know Availability?
         </b></p>
@@ -360,7 +360,7 @@
 </div>
 
 <div class="card" style="margin: 20px;"  *ngIf="AvailabilityPlantStoppage" id="PlantStoppage">
-    <p-card >
+    <p-card [ngClass]=" {disableddiv: PlantStoppage  ? true : false}">
     <ng-template pTemplate="subtitle">
         <div class="input-group mb-3">
             <label><b >How many days do you run your plant before taking stoppage? </b></label>
@@ -381,8 +381,8 @@
 </p-card>
 </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="AvailabilityPlantStoppageTime">
-    <p-card >
+<div class="card" style="margin: 20px;"  *ngIf="AvailabilityPlantStoppageTime" id="PlantStoppagetime">
+    <p-card [ngClass]=" {disableddiv: PlantStoppageTime  ? true : false}">
     <ng-template pTemplate="subtitle">
         <div class="input-group mb-3">
             <label><b > How long is your stoppage? </b></label>

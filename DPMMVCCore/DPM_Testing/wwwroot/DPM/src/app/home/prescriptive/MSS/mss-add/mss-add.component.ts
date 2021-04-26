@@ -55,6 +55,8 @@ export class MSSAddComponent implements OnInit {
  public stoppageValue : number
  public stoppageDuration : number
 
+ public PlantStoppage: boolean  = true
+ public PlantStoppageTime: boolean  = true
   
   constructor(private messageService: MessageService,
     public title: Title,
@@ -324,7 +326,7 @@ async ADDMSSToTree() {
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
 
- async  AvailabilityYes(){
+ async AvailabilityYes(){
      if(this.AvailabilityCheck.length >0){
 
      }else{
@@ -343,9 +345,9 @@ async ADDMSSToTree() {
     } else if(this.stoppageDays == 'Year'){ 
       this.stoppageValue =  this.stoppageDaysValue * 365 
     }
- 
-    // const element = document.querySelector("#PlantStoppage")
-    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    this.PlantStoppageTime = !this.PlantStoppageTime;
+    const element = document.querySelector("#PlantStoppagetime")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
 
   async StoppageDuration(){
