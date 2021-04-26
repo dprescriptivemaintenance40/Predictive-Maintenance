@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -7,6 +7,7 @@ import * as Chart from 'chart.js';
 import { MessageService, TreeNode } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-fca-add',
@@ -76,13 +77,61 @@ export class FCAADDComponent implements OnInit {
  public PatternFailuerAll: boolean  = false
 
 
- public PrescriptiveTreeList : any = [];
+  public PrescriptiveTreeList : any = [];
   public TagList : any = [];
   public SelectedTagNumber : string = ""
   public SelectedPrescriptiveTree : any = [];
   public SelectBoxEnabled : boolean = false
+  public FCAView : any;
+public FCAViewEnabled : boolean = false
+
+public FCAInterval : number = 0
+public FCAComment : any = []
+public FCACondition : any = []
+
+public FCAFFInterval : number = 0
+
+public FCAData : any = []
+public FCAFreeText : string = ""
+public Vibration : string = ""
+public Noice : string = ""
+public Leakage : string = ""
+public PerformanceDrop : string = ""
+public TempratureChange : string = ""
+public EmmisionChange : string = ""
+public IncreaseLubricantConsumption : string = ""
+public Other : string = ""
+
+public HumanSenses : string = ""
+public ExistingInstumentation : string = ""
+public NewInstumentation : string = ""
+public ProcessCondtions : string = ""
+public SampleAnyalysis : string = ""
+
+public CommentFIEYN : string = ""
+public CommentFIEYN2 : string = ""
+
+public Interval : boolean = true;
+public Condition : boolean = true;
+public FCAFFI : boolean = true;
+public SafeUsefulLife : boolean = false
+public SafeLife : number = 0
+public UsefulLife : number = 0
+
+public alphaBeta : boolean = false
+public alpha : number = 0
+public beta : number = 0
+
   
- 
+  public file : any;
+  public arrayBuffer: any;
+  public daysList: any;
+  headers = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+
  
   constructor(private messageService: MessageService,
     public title: Title,
@@ -675,6 +724,42 @@ export class FCAADDComponent implements OnInit {
               data: {
                 name: `${this.FCAFFInterval}${" "}${"Hours"}`
               }
+            },
+            {
+              label: "Alpha",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.alpha.toFixed(2)
+              }
+            },
+            {
+              label: "Beta",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.beta.toFixed(2)
+              }
+            },
+            {
+              label: "SafeLife",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.SafeLife
+              }
+            },
+            {
+              label: "UsefulLife",
+              type: "person",
+              styleClass: 'p-person',
+              expanded: true,
+              data: {
+                name: this.UsefulLife
+              }
             }
             
           ]
@@ -695,6 +780,10 @@ export class FCAADDComponent implements OnInit {
         obj['FCAInterval'] = this.FCAInterval;
         obj['FCAFFI'] = this.FCAFFInterval
         obj['FCAComment'] = this.FCAComment;
+        obj['FCAAlpha'] = this.alpha.toFixed(2) ;
+        obj['FCABeta'] = this.beta.toFixed(2);
+        obj['FCASafeLife'] = this.SafeLife
+        obj['FCAUsefulLife'] = this.UsefulLife;
 
         this.FCAData.push(obj)
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
@@ -733,6 +822,42 @@ export class FCAADDComponent implements OnInit {
             expanded: true,
             data: {
               name: `${this.FCAFFInterval}${" "}${"Hours"}`
+            }
+          },
+          {
+            label: "Alpha",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.alpha.toFixed(2)
+            }
+          },
+          {
+            label: "Beta",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.beta.toFixed(2)
+            }
+          },
+          {
+            label: "SafeLife",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.SafeLife
+            }
+          },
+          {
+            label: "UsefulLife",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.UsefulLife
             }
           }
         )
@@ -777,10 +902,14 @@ export class FCAADDComponent implements OnInit {
         this.FailuerEvident = false
         this.FailuerMaintenance = false
         this.FailuerComments = false
+       
+        this.alpha = 0;
+        this.beta = 0;
+        this.SafeLife = 0
+        this.UsefulLife = 0;
+        this.alphaBeta = false;
+        this.SafeUsefulLife = false;
    
-   
-        
-
         this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
         if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
           this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
@@ -861,6 +990,42 @@ export class FCAADDComponent implements OnInit {
             data: {
               name: `${this.FCAFFInterval}${" "}${"Hours"}`
             }
+          },
+          {
+            label: "Alpha",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.alpha.toFixed(2)
+            }
+          },
+          {
+            label: "Beta",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.beta.toFixed(2)
+            }
+          },
+          {
+            label: "SafeLife",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.SafeLife
+            }
+          },
+          {
+            label: "UsefulLife",
+            type: "person",
+            styleClass: 'p-person',
+            expanded: true,
+            data: {
+              name: this.UsefulLife
+            }
           }
         ]
       }
@@ -879,6 +1044,10 @@ export class FCAADDComponent implements OnInit {
         obj['FCAInterval'] = this.FCAInterval;
         obj['FCAFFI'] = this.FCAFFInterval
         obj['FCAComment'] = this.FCAComment;
+        obj['FCAAlpha'] = this.alpha.toFixed(2) ;
+        obj['FCABeta'] = this.beta.toFixed(2);
+        obj['FCASafeLife'] = this.SafeLife
+        obj['FCAUsefulLife'] = this.UsefulLife;
 
         this.FCAData.push(obj)
  
@@ -918,6 +1087,42 @@ export class FCAADDComponent implements OnInit {
           expanded: true,
           data: {
             name: `${this.FCAFFInterval}${" "}${"Hours"}`
+          }
+        },
+        {
+          label: "Alpha",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.alpha.toFixed(2)
+          }
+        },
+        {
+          label: "Beta",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.beta.toFixed(2)
+          }
+        },
+        {
+          label: "SafeLife",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.SafeLife
+          }
+        },
+        {
+          label: "UsefulLife",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.UsefulLife
           }
         }
       )
@@ -960,6 +1165,13 @@ export class FCAADDComponent implements OnInit {
         this.FailuerEvident = false
         this.FailuerMaintenance = false
         this.FailuerComments = false
+
+        this.alpha = 0;
+        this.beta = 0;
+        this.SafeLife = 0
+        this.UsefulLife = 0;
+        this.alphaBeta = false;
+        this.SafeUsefulLife = false;
    
       this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
@@ -1067,6 +1279,10 @@ export class FCAADDComponent implements OnInit {
       obj['FCAInterval'] = this.FCAData[index].FCAInterval
       obj['FCAFFI'] = this.FCAData[index].FCAFFI
       obj['FCAComment'] = JSON.stringify(this.FCAData[index].FCAComment)
+      obj['FCAAlpha'] = this.FCAData[index].FCAAlpha;
+      obj['FCABeta'] = this.FCAData[index].FCABeta;
+      obj['FCASafeLife'] = this.FCAData[index].FCASafeLife
+      obj['FCAUsefulLife'] = this.FCAData[index].FCAUsefulLife
       centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
@@ -1083,10 +1299,9 @@ export class FCAADDComponent implements OnInit {
 
   }
 
-public FCAView : any;
-public FCAViewEnabled : boolean = false
 
- SelectNodeToView(p){
+
+async SelectNodeToView(p){
     this.FCAView = []
     this.FCAView.push(p.FCAData)
     this.FCAViewEnabled = true
@@ -1134,35 +1349,6 @@ public FCAViewEnabled : boolean = false
 
   }
 
-  public FCAInterval : number = 0
-  public FCAComment : any = []
-  public FCACondition : any = []
-
-  public FCAFFInterval : number = 0
-
-  public FCAData : any = []
-  public FCAFreeText : string = ""
-  public Vibration : string = ""
-  public Noice : string = ""
-  public Leakage : string = ""
-  public PerformanceDrop : string = ""
-  public TempratureChange : string = ""
-  public EmmisionChange : string = ""
-  public IncreaseLubricantConsumption : string = ""
-  public Other : string = ""
-
-  public HumanSenses : string = ""
-  public ExistingInstumentation : string = ""
-  public NewInstumentation : string = ""
-  public ProcessCondtions : string = ""
-  public SampleAnyalysis : string = ""
-
-  public CommentFIEYN : string = ""
-  public CommentFIEYN2 : string = ""
-  
-  public Interval : boolean = true;
-  public Condition : boolean = true;
-  public FCAFFI : boolean = true;
 
   IntervalSave(){
    if(this.interval == 'Days'){
@@ -1326,21 +1512,70 @@ public FCAViewEnabled : boolean = false
 
  async FCAFreeTextSave(){
 
-  this.PatternFailuerAll = true
-  this.patternaddshow = true
+    this.PatternFailuerAll = true
     this.FCAComment.push(this.FCAFreeText)
+    this.SafeUsefulLife = true;
     this.changeDetectorRef.detectChanges()
-    const element = document.querySelector("#ScrollToFCATree")
+    const element = document.querySelector("#SafeUsefulLife")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
  async FCAFreeTextCancel(){
-   this.PatternFailuerAll = true
+    this.PatternFailuerAll = true
     this.FCAFreeText = ""
-    this.changeDetectorRef.detectChanges()
-    const element = document.querySelector("#PatternFailuerAllAdd")
+    this.alphaBeta = true
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#alphaBeta")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  
+
   }
+
+ 
+  Webal(event){
+    this.file = event.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(this.file);
+    fileReader.onload = (e) => {
+      this.arrayBuffer = fileReader.result;
+      var data = new Uint8Array(this.arrayBuffer);
+      var arr = new Array();
+      for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+      var bstr = arr.join("");
+      var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+      var first_sheet_name = workbook.SheetNames[0];
+      var worksheet = workbook.Sheets[first_sheet_name];
+      console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
+      this.daysList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+      var Data : any = []
+      this.daysList.forEach(element => {
+        Data.push(element.Days)
+      });
+      this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), this.headers).subscribe(
+        res =>{
+            this.alpha =res.alpha;
+            this.beta =res.beta;
+            this.changeDetectorRef.detectChanges();
+        }, err => {console.log(err.error)}
+      )
+    }
+  
+}
+
+
+async SafeUsefulLifeSave(){
+  this.alphaBeta = true
+  this.changeDetectorRef.detectChanges();
+  const element = document.querySelector("#alphaBeta")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+}
+
+async alphaBetaSave(){
+  this.patternaddshow = true
+  this.changeDetectorRef.detectChanges();
+  const element = document.querySelector("#ScrollToFCATree")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+}
 
 }

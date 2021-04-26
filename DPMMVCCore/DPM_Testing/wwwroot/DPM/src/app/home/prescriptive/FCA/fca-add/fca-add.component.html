@@ -1,4 +1,22 @@
-
+<div *ngIf="SelectBoxEnabled">
+    <div class="card shadow div-in-middle">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Select Tag Number to add FCA</b></li>
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <label style=" margin-right: 12px;">Tag Number</label>
+                    <select  class="form-select" [(ngModel)]="SelectedTagNumber"  class="form-control">
+                          <option value="">Choose..</option>
+                          <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                        </select>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
+            </li>
+        </ul>
+    </div>
+</div>
 
 <p-toast position="top-center"></p-toast>
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
@@ -115,6 +133,7 @@
 
 <div *ngIf="FCAViewEnabled" id="ScrollToFCATree1">
     <p-card>
+        <div style="overflow: scroll">
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseView()" pTooltip="Delete" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
         </a>
@@ -139,6 +158,7 @@
                 {{node.label}}
             </ng-template>
         </p-organizationChart>
+    </div>
     </p-card>
 </div>
 
@@ -381,8 +401,69 @@
         </ng-template>
     </p-card>
     </div>
-</div>
+    <div class="card" style="margin: 20px;" *ngIf ="SafeUsefulLife" id="SafeUsefulLife">
+        <p-card [ngClass]=" {disableddiv: SafeUsefulLife  ? false : true}">
+        <ng-template pTemplate="title">
 
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b> 9: Provide Safe Life and Useful life for {{PatternFMName}}
+            </b></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3">
+                    <label> Safe Life</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="SafeLife" name="safelife" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3">
+                    <label> Useful Life</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UsefulLife" name="usefullife" class="form-control">
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" style="float:right;" (click)="SafeUsefulLifeSave()">Save</button>
+         </ng-template>
+    </p-card>
+    </div>
+    <div class="card" style="margin: 20px;" *ngIf ="alphaBeta" id="alphaBeta">
+        <p-card [ngClass]=" {disableddiv: alphaBeta  ? false : true}">
+        <ng-template pTemplate="title">
+
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            <p><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha, beta.
+            </b></p>
+            <p><small>Note : Put just one column in Excel with column name 'Days'</small></p>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <div class="row" style="padding: 15px;">
+                <div class="col-sm col-md-4 form-group">
+                    <input type="file" class="form-control-file btn btn-secondary" (change)="Webal($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;">
+                <label>Alpha  :  {{alpha  | number : '1.0-2' }}</label>
+            </div>
+            <div class="row" style="padding: 15px;">
+                <label>Beta : {{beta  | number : '1.0-2' }}</label>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button class="btn btn-dark" style="float:right;" (click)="alphaBetaSave()">Save</button>
+            
+        </ng-template>
+    </p-card>
+    </div>
+</div>
 
 
 
