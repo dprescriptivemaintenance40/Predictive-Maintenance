@@ -829,7 +829,7 @@
             <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
                 <ng-template let-node pTemplate="person">
                     <div class="node-header p-corner-top">{{node.label}}</div>
-                    <a class="editFCA-org-bttn" pTooltip="Select Node To edit" data-toggle="modal" data-target="#UpdatePattern" tooltipPosition="top" *ngIf="node.editFCA !== undefined && node.editFCA" (click)="SelectNodeToEdit(node)" pTooltip="Edit Node" tooltipPosition="top"><i class="pi pi-pencil"></i></a>
+                    <a class="editFCA-org-bttn" pTooltip="Select Node To edit" data-toggle="modal" (click)="CompleteUpdateFCA(node)" data-target="#UpdatePattern" tooltipPosition="top" *ngIf="node.editFCA !== undefined && node.editFCA" (click)="SelectNodeToEdit(node)" pTooltip="Edit Node" tooltipPosition="top"><i class="pi pi-pencil"></i></a>
                     <div class="node-content">
                         <div>{{node.data.name}}</div>
                     </div>
@@ -1001,4 +1001,189 @@
     </p-card>
     </div>
 
+</div>
+<div style="padding: 15px;">
+    <p-card>
+        <ng-template pTemplate="title">
+            <label>Update FCA</label>
+        </ng-template>
+
+        <ng-template pTemplate="content">
+            <div class="row" style="padding: 15px;">
+                <label>1. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone for a period of time, would you expect this failuer to have happened.</label>
+              <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <select  class="form-select"  class="form-control" >
+                            <option value="">Choose</option>
+                                <option value="Days" selected> Days</option>
+                                <option value="Week" selected> Week</option>
+                                <option value="Month" selected>Month</option>
+                                <option value="Year" selected>Year</option>
+                            </select>
+                            </div>
+                  </div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-5">
+                    <input type="number"  name="Interval" class="form-control">
+                  
+                  </div>
+              </div>
+            </div>
+
+            <div class="row" style="padding: 15px;">
+                <label>2. Are their any prior warnings before the failuer occure? Tick all that apply.</label>
+              <div class="row">
+                <div class="row" >
+                    <div class="col-sm"><br>
+                    <p-card>
+                   Vibration<br>
+                   <td><input type="checkbox" value="Vibration" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                  <div class="col-sm"><br>
+                    <p-card>
+                    Noice<br>
+                    <td><input type="checkbox"  value="Noice" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Leakage<br>
+                    <td><input type="checkbox" value="Leakage" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Performance drop<br>
+                    <td><input type="checkbox" value="Performance drop" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Temprature Change<br>
+                    <td><input type="checkbox" value="Temprature Change" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                    <div class="col-sm"><br>
+                     <p-card>
+                        Emmision changes<br>
+                        <td><input type="checkbox"  value="Emmision changes" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm"><br>
+                        <p-card>
+                        Increase Lubricant Consumption<br>
+                        <td><input type="checkbox"  value="Increase Lubricant Consumption" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm"><br>
+                        <p-card>
+                        Other<br>
+                        <td><input type="checkbox"  value=" Other" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                  </div>
+             </div>
+            </div>
+
+
+            <div class="row" style="padding: 15px;">
+                <label>3. If their are any warning signs, can they be monitored? if so, how?</label>
+                 <div class="row">
+                    <div class="col-sm"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                   Human Senses<br>
+                   <td><input type="checkbox"  value=" Human Senses" name="name1" />&nbsp;</td>
+                  </div></div>
+                  <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Existing instumentation (portable or fixed)<br>
+                    <td><input type="checkbox"  value="Existing instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    New instumentation (portable or fixed)<br>
+                    <td><input type="checkbox"  value="New instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Process Condtions<br>
+                    <td><input type="checkbox"  value="Process Condtions" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        Sample Anyalysis<br>
+                        <td><input type="checkbox" value="Sample Anyalysis" name="name1" />&nbsp;</td>
+                    </div>
+                   </div>
+                </div>
+            
+            </div>
+
+            <div class="row" style="padding: 15px;">
+                <label>4. What is the likely interval between detacting a warning sign and the failuer happening?</label>
+              <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <select  class="form-select"  class="form-control" >
+                            <option value="">Choose</option>
+                                <option value="Days" selected> Days</option>
+                                <option value="Week" selected> Week</option>
+                                <option value="Month" selected>Month</option>
+                                <option value="Year" selected>Year</option>
+                            </select>
+                            </div>
+                  </div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-5">
+                    <input type="number"  name="Interval" class="form-control">
+                  
+                  </div>
+              </div>
+            </div>
+
+
+            <div class="row" style="padding: 15px;">
+                
+                <div class="row">
+                    <div class="col-md-7">
+                        <label>5. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        Yes <td><input type="radio"  value="Failure is not Evident" name="name1" />&nbsp;</td>
+                    </div>
+                    <div class="col-md-2">
+                        No <td><input type="radio" value="Failure is Evident" name="name1" />&nbsp;</td>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            
+            </div>
+
+            <div class="row" style="padding: 15px;">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label>6. Some of the failuer cannot avoided by maintenance. Would planned replacement or refurbishment
+                            maintainace prevent or mitigate this failuer Mode?
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        Yes <td><input type="radio"  value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
+                    </div>
+                    <div class="col-md-2">
+                        No <td><input type="radio" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="row" style="padding: 15px;">
+                    <label>7. Do you have any comments regarding the failuer of this equipment or how the maintainace of the equipment
+                            could be improved</label>
+                </div>
+                <div class="row" style="padding-top:5px; padding-left:15px; padding-right:15px;">
+                    <textarea class="form-control custom-textarea" id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
+        
+                </div>
+            </div>
+
+
+        </ng-template>
+
+    </p-card>
 </div>

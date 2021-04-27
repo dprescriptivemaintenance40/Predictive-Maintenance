@@ -2232,6 +2232,76 @@ SelectPatternForFailureMode(value: string) {
 
 }
 
+public UpdateFCAFFInterval : number = 0
+public UpdateFCAInterval : number  = 0
+public UpdateFCAComment : any= []
+public UpdateFCACondition : any= []
+public UpdateFCAFreeText : string = ""
+public UpdateVibration : string = ""
+public UpdateNoice : string = ""
+public UpdateLeakage : string = ""
+public UpdatePerformanceDrop : string = ""
+public UpdateTempratureChange : string = ""
+public UpdateEmmisionChange : string = ""
+public UpdateIncreaseLubricantConsumption : string = ""
+public UpdateOther : string = ""
+public UpdateHumanSenses : string = ""
+public UpdateExistingInstumentation : string = ""
+public UpdateNewInstumentation : string = ""
+public UpdateProcessCondtions : string = ""
+public UpdateSampleAnyalysis : string = ""
+public UpdateCommentFIEYN : string = ""
+public UpdateCommentFIEYN2 : string = ""
+public Updateinterval : string = ""
+public UpdateintervalValue : number  = 0
+public UpdateffInterval : string =""
+public UpdateffIntervalValue : number  = 0
+
+CompleteUpdateFCA(p){
+ console.log(p.label)
+ var FMName , LocalEffect , SystemEffect, Consequence;
+ 
+ this.data1[0].children[0].children[0].children.forEach(element => {
+    if (element.label === p.label){
+      FMName = element.data.name;
+      LocalEffect  = element.children[0].children[0].data.name
+      SystemEffect = element.children[0].children[1].data.name
+      Consequence  = element.children[0].children[2].data.name
+
+      var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence)
+      var FCAComment = JSON.parse(UpdateData.FCAComment)
+      var FCAUpdateConditions = JSON.parse(UpdateData.FCAUpdateConditions)
+      var FCAUpdateIntervals = JSON.parse(UpdateData.FCAUpdateIntervals)
+      this.UpdateFCAFFInterval = 0
+      this.UpdateFCAInterval = 0
+      this.UpdateFCAComment = []
+      this.UpdateFCACondition = []
+      this.UpdateFCAFreeText = ""
+      this.UpdateVibration = ""
+      this.UpdateNoice = ""
+      this.UpdateLeakage = ""
+      this.UpdatePerformanceDrop = ""
+      this.UpdateTempratureChange = ""
+      this.UpdateEmmisionChange = ""
+      this.UpdateIncreaseLubricantConsumption = ""
+      this.UpdateOther = ""
+      this.UpdateHumanSenses = ""
+      this.UpdateExistingInstumentation = ""
+      this.UpdateNewInstumentation = ""
+      this.UpdateProcessCondtions = ""
+      this.UpdateSampleAnyalysis = ""
+      this.UpdateCommentFIEYN = ""
+      this.UpdateCommentFIEYN2 = ""
+      this.Updateinterval = ""
+      this.UpdateintervalValue = 0
+      this.UpdateffInterval =""
+      this.UpdateffIntervalValue = 0
+    }
+ })
+
+
+}
+
 
 
   dragStartC1(e, con1) {
