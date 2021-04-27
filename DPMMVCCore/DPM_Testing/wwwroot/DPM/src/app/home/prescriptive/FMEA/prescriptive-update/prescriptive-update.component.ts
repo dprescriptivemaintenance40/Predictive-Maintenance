@@ -171,6 +171,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public PatternPathEnable: boolean = false;
   public PatternPath: string;
   public FailureModePatternTree: boolean = false;
+  public MSSViewShow: boolean = false;
+  
   public FCAChangeData: any
   public PatternBack: string;
   private nodePath: number = 0;
@@ -242,9 +244,46 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public ADDFCAFreeTextSave1: boolean  = true
   public ADDpatternaddshow: boolean  = false
   public ADDPatternFailuerAll: boolean  = false
+
   public file : any;
   public arrayBuffer: any;
   public daysList: any;
+  public ADDMSSView: boolean  = false
+  public ADDMSSAvailabilityY : string = ""
+  public MSSAvailabilityYN : string = ""
+  public MSSAvailabilityN : string = ""
+  public ADDMSSAvailabilityCheck: number = 0;
+
+  public MSSAvailabilityCalculations: boolean = false
+  public ADDMSSAvailabilityYNCheck: boolean = false
+  public MSSAvailabilityTaskObj : any =[]
+
+ public ADDMSSexpectedAvailability: boolean = false
+ public ADDMSSAvailabilityPlantStoppage: boolean = false
+ public ADDMSSAvailabilityPlantStoppageTime: boolean = false
+
+ public MSSAvailabilityResult : number = 0
+ public ADDMSSstoppageDays: string = "";
+ public ADDMSSstoppageDaysValue: number = 0;
+ public ADDMSSstoppageDaysTime: string = "";
+ public ADDMSSstoppageDaysTimeValue: number = 0;
+
+ public MSSstoppageValue : number
+ public MSSstoppageDuration : number
+
+ public PlantStoppage: boolean  = true
+ public PlantStoppageTime: boolean  = true
+ public MSSLibraryData : any = []
+ public ConsequenceBasedMSS: string = ""
+ public MSSADDCounter: number = 0
+ public MSSStratergy: string = ""
+ public TreeUptoFCA: any = [];
+ public data1Clone: any;
+ public MSSTaskObj : any =[]
+ public SelectedPrescriptiveTree: any = [];
+ public FailureModeName: string = ""
+ public AddBtnEnable: boolean = true
+ public SaveBtnEnable: boolean = false
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -287,6 +326,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       mode.delete = true;
     });
     this.FMTree = this.data1[0].children[0].children[0].children
+    var MSSData = JSON.parse(localStorage.getItem('MSSObject'))
+     this.SelectedPrescriptiveTree.push(MSSData)
+    //  this.TreeUptoFCA = JSON.parse(MSSData.FMWithConsequenceTree)
+    //   this.data1Clone = JSON.parse(MSSData.FMWithConsequenceTree);
   }
 
   async ngOnDestroy() {
@@ -663,8 +706,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FMdiv = document.getElementById("FailureModeUpdate")
     this.FMdiv.style.display = 'block'
     this.FailureModePatternTree = false;
+    this.MSSViewShow =false
     this.FCAViewTreeEnabled = false;
     this.FCAViewEnabled = false;
+    this.MSSViewEnabled = false;
     this.changeDetectorRef.detectChanges();
     const element = document.querySelector("#EditTheNode")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -744,7 +789,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
             data: {
               name: this.Pattern
             }
-          }, 
+          },
           {
             label: "Condition",
             type: "person",
@@ -790,7 +835,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
               name: this.ADDbeta.toFixed(2)
             }
           },
-         
+
         ]
       }
       var FCATree = {
@@ -889,6 +934,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         name: this.finalConsequence
       }
     }
+    this.ConsequenceBasedMSS =this.finalConsequence
+    this.prescriptiveTree = false; 
+    this.ADDMSSAvailabilityYNCheck = true
+    this.MSSAvailabilityCalculations = false
     this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(CNode)
     this.data1[0].children[0].children[0].children[index - 1].children[0].children.push(CNode)
     this.Consequences1 = false
@@ -935,6 +984,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.UpdatePatternAddEnable = false;
     this.AddFMMSSAddEnable = true;
     this.UpdateMSSAddEnable = false
+     this.MSSViewEnabled = false;
     this.changeDetectorRef.detectChanges();
     this.PatternTree()
     this.GetChartData();
@@ -985,7 +1035,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.pattern = this.Pattern
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name = this.Pattern
-  
+
         this.prescriptiveTree = true
         this.FinalUpdate = true;
         this.FailureModePatternTree = false;
@@ -995,9 +1045,13 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.UpdatePatternAddEnable = false;
         this.AddFMMSSAddEnable = false
         this.UpdateMSSAddEnable = false
+        this.MSSViewEnabled = true
+        this.ADDMSSView = true
+        this.MSSViewShow = true;
+        this.prescriptiveTree = false
+
       } else {
         this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
-
       }
 
     } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
@@ -1042,6 +1096,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.UpdatePatternAddEnable = false;
       this.UpdateMSSAddEnable = false
       this.AddFMMSSAddEnable = false;
+      this.MSSViewEnabled = true
       const element = document.querySelector("#ViewtoAddPattern")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
@@ -1069,16 +1124,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     Data['AttachmentFullPath'] = this.ADDUpdatedAttachmentInFMFullPath
     Data['Remark'] = this.Remark
     Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name
-    // Data['FCACondition'] = this.ADDCondition
-    // Data['FCAInterval'] = this.ADDInterval
-    // Data['FCAFFI'] = this.ADDffInterval
-    // Data['FCAComment'] = this.ADDffInterval
-    // Data['FCAAlpha'] = this.ADDffInterval
-    // Data['FCABeta'] = this.ADDSafeLife
-    // Data['FCASafeLife'] = this.ADDSafeLife
-    // Data['FCAUsefulLife'] = this.ADDUsefulLife
-
-    // Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
     this.Remark = ""
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
@@ -1678,6 +1723,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.PatternBack = p.pattern;
     this.nodePath = p.nodePath;
     this.FCAViewEnabled = true
+    this.MSSViewEnabled = true
     this.FCAViewTreeEnabled = true
     this.FCAView = []
     this.FCAView.push(p.FCAData)
@@ -1685,6 +1731,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' })
     this.FCAViewEnabled = true
     this.FCAViewTreeEnabled = true
+    this.MSSViewEnabled = true
     this.changeDetectorRef.detectChanges();
     await this.GetChartToView(this.FCAView[0].children[0].data.name)
     await this.ColorPatternTreUpdate(p.pattern, p.nodePath)
@@ -2197,7 +2244,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     }
     this.changeDetectorRef.detectChanges();
     // const element = document.querySelector("#FCAViewTreeEnable")
-    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
+    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
     const element = document.querySelector("#viewFCAPatterns")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -2375,7 +2422,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
        this.ADDFailuerComments = true
        this.ADDSafeUsefulLife = true
        this.ADDalphaBeta = true
-    
+
 
     // const element = document.querySelector("#ScrollToFCATree")
     // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -2464,8 +2511,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   async CloseMSSUpdateView() {
     this.MSSViewEnabled = false
     this.MSSViewTreeEnabled = false
-    // const element = document.querySelector("#prescriptive")
-    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
   }
   async UpdateMSSPattern() {
     this.FCAViewTreeEnabled = false
@@ -2473,34 +2518,25 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.AddFMMSSAddEnable = false;
     this.UpdateMSSAddEnable = true
     this.changeDetectorRef.detectChanges();
-    // const element = document.querySelector("#ViewtoAddPattern")
-    //  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start'}) 
-
   }
   MSSUpdateCancel() {
     this.FailureModeMSSPatternTree = false;
   }
-  MSSUpdateAdd() {
 
-  }
-  AddMSSToNewFM() {
-
-  }
-  
   ADDIntervalSave(){
     if(this.ADDinterval == 'Days'){
       this.FCAInterval = this.ADDintervalValue * 1 * 24
-    } else if(this.ADDinterval == 'Week'){ 
+    } else if(this.ADDinterval == 'Week'){
       this.FCAInterval = this.ADDintervalValue * 7 * 24
-    } else if(this.ADDinterval == 'Month'){ 
+    } else if(this.ADDinterval == 'Month'){
       this.FCAInterval = this.ADDintervalValue * 30 * 24
-    } else if(this.ADDinterval == 'Year'){ 
+    } else if(this.ADDinterval == 'Year'){
       this.FCAInterval = this.ADDintervalValue * 365 * 24
     }
   if(this.ADDinterval.length> 0 && this.ADDintervalValue >0){
    this.changeDetectorRef.detectChanges()
    this.ADDfailurewarning = !this.ADDfailurewarning;
-   
+
    const element = document.querySelector("#Patternfailurewarning")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }else{
@@ -2508,43 +2544,43 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
   }
    }
- 
-   
+
+
    ADDConditionFirst(){
      if(this.ADDVibration != ""){
        this.ADDVibration = "Vibration"
        this.FCACondition.push(this.ADDVibration)
-    
+
      }
      if(this.ADDNoice != ""){
        this.ADDNoice = "Noice"
        this.FCACondition.push(this.ADDNoice)
-       
+
      }
      if(this.ADDLeakage != ""){
        this.ADDLeakage = "Leakage"
        this.FCACondition.push(this.ADDLeakage)
-       
+
      }
      if(this.ADDPerformanceDrop != ""){
        this.ADDPerformanceDrop = "Performance Drop"
        this.FCACondition.push(this.ADDPerformanceDrop)
-       
+
      }
      if(this.ADDTempratureChange != ""){
        this.ADDTempratureChange = "Temprature Change"
        this.FCACondition.push(this.ADDTempratureChange)
-      
+
      }
      if(this.ADDEmmisionChange != ""){
        this.ADDEmmisionChange = "Emmision Change"
        this.FCACondition.push(this.ADDEmmisionChange)
-      
+
      }
      if(this.ADDIncreaseLubricantConsumption != ""){
        this.ADDIncreaseLubricantConsumption = "Increase Lubricant Consumption"
        this.FCACondition.push(this.ADDIncreaseLubricantConsumption)
-      
+
      }
      if(this.ADDOther != ""){
        this.ADDOther = "Other"
@@ -2553,31 +2589,31 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
      if(this.ADDVibration.length >0 || this.ADDNoice.length > 0 || this.ADDLeakage.length >0 || this.ADDPerformanceDrop.length > 0 || this.ADDTempratureChange.length>0 || this.ADDEmmisionChange.length>0 || this.ADDIncreaseLubricantConsumption.length >0 || this.ADDOther.length > 0){
        this.changeDetectorRef.detectChanges()
        this.ADDwarningsign = !this.ADDwarningsign;
-       
+
      const element = document.querySelector("#PatternWarningSign")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }
      else{
        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
      }
- 
+
    }
- 
+
    ADDConditionSecond(){
      if(this.ADDHumanSenses != ""){
        this.ADDHumanSenses = "Human Senses"
        this.FCACondition.push(this.ADDHumanSenses)
-     
+
      }
      if(this.ADDExistingInstumentation != ""){
        this.ADDExistingInstumentation = "Existing Instumentation(portable or fixed)"
        this.FCACondition.push(this.ADDExistingInstumentation)
-     
+
      }
      if(this.ADDNewInstumentation != ""){
        this.ADDNewInstumentation = "New Instumentation(portable or fixed)"
        this.FCACondition.push(this.ADDNewInstumentation)
-     
+
      }
      if(this.ADDProcessCondtions != ""){
        this.ADDProcessCondtions = "Process Condtions"
@@ -2589,66 +2625,65 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
      }
      if(this.ADDHumanSenses.length >0 || this.ADDExistingInstumentation.length >0 || this.ADDNewInstumentation.length >0|| this.ADDProcessCondtions.length >0||this.ADDSampleAnyalysis.length >0){
        this.changeDetectorRef.detectChanges()
-       this.ADDintervaldeteacting = !this.ADDintervaldeteacting;    
+       this.ADDintervaldeteacting = !this.ADDintervaldeteacting;
        const element = document.querySelector("#PatternIntervalDeteacting")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
      }
-   
+
    }
-   
+
    ADDFFInterval(){
      if(this.ADDffInterval == 'Days'){
        this.FCAFFInterval = this.ADDffIntervalValue * 1 * 24
-     } else if(this.ADDffInterval == 'Week'){ 
+     } else if(this.ADDffInterval == 'Week'){
        this.FCAFFInterval = this.ADDffIntervalValue * 7 * 24
-     } else if(this.ADDffInterval == 'Month'){ 
+     } else if(this.ADDffInterval == 'Month'){
        this.FCAFFInterval = this.ADDffIntervalValue * 30 * 24
-     } else if(this.ADDffInterval == 'Year'){ 
+     } else if(this.ADDffInterval == 'Year'){
        this.FCAFFInterval = this.ADDffIntervalValue * 365 * 24
      }
- 
+
      if(this.ADDffInterval.length >0 && this.ADDffIntervalValue >0){
        this.changeDetectorRef.detectChanges()
-       this.ADDfailuerevident = !this.ADDfailuerevident; 
+       this.ADDfailuerevident = !this.ADDfailuerevident;
        const element = document.querySelector("#PatternFailuerEvident")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
      }
-   
+
    }
- 
+
    ADDCommentThird(){
      this.FCAComment.push(this.ADDCommentFIEYN)
      if( this.ADDCommentFIEYN.length>0 && this.ADDCommentFIEYN.length>0){
        this.changeDetectorRef.detectChanges()
-       this.ADDfailuermaintenance = !this.ADDfailuermaintenance;   
+       this.ADDfailuermaintenance = !this.ADDfailuermaintenance;
        const element = document.querySelector("#PatternFailuerMaintenance")
-       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
      }
-   
+
    }
- 
+
    ADDCommentFourth(){
      // this.patternaddshow = false
      this.FCAComment.push(this.ADDCommentFIEYN2)
      if( this.ADDCommentFIEYN2.length>0 && this.ADDCommentFIEYN2.length>0){
        this.changeDetectorRef.detectChanges()
-       this.ADDfailuercomments = !this.ADDfailuercomments; 
+       this.ADDfailuercomments = !this.ADDfailuercomments;
        const element = document.querySelector("#PatternFailuerComments")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
      }
-  
+
    }
- 
+
   async ADDFCAFreeTextSave(){
- 
      this.ADDPatternFailuerAll = true
      this.FCAComment.push(this.ADDFCAFreeText)
      this.ADDSafeUsefulLife = true;
@@ -2656,7 +2691,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
      const element = document.querySelector("#SafeUsefulLife")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
- 
+
   async ADDFCAFreeTextCancel(){
      this.ADDPatternFailuerAll = true
      this.ADDFCAFreeText = ""
@@ -2664,10 +2699,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
      this.changeDetectorRef.detectChanges();
      const element = document.querySelector("#alphaBeta")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
- 
    }
- 
-  
+
    ADDWebal(event){
      this.file = event.target.files[0];
      let fileReader = new FileReader();
@@ -2695,10 +2728,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
          }, err => {console.log(err.error)}
        )
      }
-   
+
  }
- 
- 
+
+
  async ADDSafeUsefulLifeSave(){
    if(this.ADDWebalYN == 'YES'  || this.ADDWebalYN == 'No'){
        if(this.ADDWebalYN == 'YES'){
@@ -2713,25 +2746,266 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
          this.changeDetectorRef.detectChanges();
          const element = document.querySelector("#ScrollToFCATree")
          if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-       
+
        }
    }else{
      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please choose Yes or No for webal analysis"})
    }
  }
- 
+
  async ADDalphaBetaSave(){
    this.ADDpatternaddshow = true
    this.changeDetectorRef.detectChanges();
    const element = document.querySelector("#ScrollToFCATree")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
- 
+
  }
- 
+
  ExcelDownload(){
    var ColumnsData : any = ["Days"];
    this.excelFormatService.GetExcelFormat( ColumnsData , 'Webal_Days_Format')
  }
- 
+
+ async Availability(){
+  if( this.ADDMSSAvailabilityY == 'Yes' || this.ADDMSSAvailabilityY == 'No'){
+    this.changeDetectorRef.detectChanges()
+
+    if(this.ADDMSSAvailabilityY == 'Yes'){
+      this.ADDMSSexpectedAvailability = true
+      this.ADDMSSAvailabilityPlantStoppage = false
+      this.ADDMSSAvailabilityPlantStoppageTime = false
+     }else if(this.ADDMSSAvailabilityY == 'No') {
+      this.ADDMSSexpectedAvailability = false
+      this.ADDMSSAvailabilityPlantStoppage = true
+      this.ADDMSSAvailabilityPlantStoppageTime = true
+     }
+     this.changeDetectorRef.detectChanges()
+     const element = document.querySelector("#PlantStoppage")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }else{
+    alert("fill the data")
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+  }
+
+ }
+
+async AvailabilityYes(){
+   if(this.ADDMSSAvailabilityCheck != 0){
+
+   }else{
+     alert("Fill the data")
+   }
+   const element = document.querySelector("#Consequence")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ }
+
+async StoppageDays(){
+  if(this.ADDMSSstoppageDays == 'Days'){
+    this.MSSstoppageValue = this.ADDMSSstoppageDaysValue * 1
+  } else if(this.ADDMSSstoppageDays == 'Week'){
+    this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 7
+  } else if(this.ADDMSSstoppageDays == 'Month'){
+    this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 30
+  } else if(this.ADDMSSstoppageDays == 'Year'){
+    this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 365
+  }
+  this.PlantStoppageTime = !this.PlantStoppageTime;
+  const element = document.querySelector("#PlantStoppagetime")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ }
+
+async StoppageDuration(){
+  if (this.ADDMSSstoppageDaysTime == 'Days') {
+    this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 1
+  } else if (this.ADDMSSstoppageDaysTime == 'Week') {
+    this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 7
+  } else if (this.ADDMSSstoppageDaysTime == 'Month') {
+    this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 30
+  } else if (this.ADDMSSstoppageDaysTime == 'Year') {
+    this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 365
+  }
+ this.MSSAvailabilityResult = (1-(this.MSSstoppageDuration / this.MSSstoppageValue  ))*100
+ const element = document.querySelector("#Consequence")
+ if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+}
+
+async ADDMSSToTree() {
+  this.MSSViewEnabled = true
+  if(this.ADDMSSAvailabilityY.length > 0  && this.ADDMSSAvailabilityY.length >0){
+    var MSSTree = {
+      label: this.MSSADDCounter,
+      type: "person",
+      styleClass: 'p-person',
+      expanded: true,
+      data: { name: "MSS" },
+      children: [
+        {
+          label: "Stratergy",
+          type: "person",
+          styleClass: 'p-person',
+          expanded: true,
+          data: {
+            name: this.MSSStratergy
+          }
+        }
+      ]
+    }
+    this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(MSSTree)
+    this.ConsequenceBasedMSS = ""
+    this.prescriptiveTree = true
+
+    this.data1Clone[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(
+      {
+        label: "MSS",
+        type: "person",
+        styleClass: 'p-person',
+        expanded: true,
+        data: {
+          name: this.MSSStratergy
+        }
+      }
+    )
+
+        if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
+        || this.MSSStratergy == 'A-SR' ||  this.MSSStratergy == 'A-RED' || this.MSSStratergy == 'A-OFM'
+        || this.MSSStratergy == 'B-FFT'||  this.MSSStratergy == 'B-OCM' || this.MSSStratergy == 'B-SO'
+        || this.MSSStratergy == 'B-SR' ||  this.MSSStratergy == 'B-RED' || this.MSSStratergy == 'B-OFM' ){
+
+          if(this.MSSStratergy == 'A-OFM' ||     this.MSSStratergy == 'B-FFT'){
+            let obj = {}
+            obj['MSSMaintenanceInterval'] = 'Not Applicable'
+            obj['MSSMaintenanceTask'] = 'Not Applicable'
+            obj['MSSStartergy'] = this.MSSStratergy
+            this.MSSTaskObj.push(obj)
+          } else{
+
+            var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
+            var ocmWeek : number = ocmHours.split(" ")[0]
+                ocmWeek = Math.round((ocmWeek / 24) / 7)
+
+            var availablility: number = 0;
+              if(this.MSSAvailabilityResult == 0){
+                  availablility = this.ADDMSSAvailabilityCheck
+              }
+              if(this.MSSAvailabilityResult != 0){
+                availablility = this.MSSAvailabilityResult
+              }
+              var strategy = this.MSSStratergy.split('-')[1];
+              let obj = {}
+              if(strategy == 'FFT'){
+                obj['MSSMaintenanceInterval'] = availablility;
+                obj['MSSMaintenanceTask'] = 'Function Check'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
+
+              }else if(strategy == 'OCM'){
+                obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}`
+                obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
+
+              }else if(strategy == 'SO'){
+                obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
+                obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
+
+              }else if(strategy == 'SR'){
+                obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
+                obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
+
+              }else if(strategy == 'RED'){
+                obj['MSSMaintenanceInterval'] = 'NA'
+                obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
+
+              }
+          }
+
+      }else if(this.MSSStratergy == 'C-FFT'    ||  this.MSSStratergy == 'C-OCM' || this.MSSStratergy == 'C-SO'
+              || this.MSSStratergy == 'C-SR' ||  this.MSSStratergy == 'C-RED' || this.MSSStratergy == 'C-OFM'
+              || this.MSSStratergy == 'D-FFT'||  this.MSSStratergy == 'D-OCM' || this.MSSStratergy == 'D-SO'
+              || this.MSSStratergy == 'D-SR' ||  this.MSSStratergy == 'D-RED' || this.MSSStratergy == 'D-OFM'
+              || this.MSSStratergy == 'E-FFT'||  this.MSSStratergy == 'E-OCM' || this.MSSStratergy == 'E-SO'
+              || this.MSSStratergy == 'E-SR' ||  this.MSSStratergy == 'E-RED' || this.MSSStratergy == 'E-OFM'){
+
+                if(this.MSSStratergy == 'C-FFT' ||     this.MSSStratergy == 'D-FFT'){
+                  let obj = {}
+                  obj['MSSMaintenanceInterval'] = 'Not Applicable'
+                  obj['MSSMaintenanceTask'] = 'Not Applicable'
+                  obj['MSSStartergy'] = this.MSSStratergy
+                  this.MSSTaskObj.push(obj)
+                } else{
+
+                    var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
+                    var ocmWeek : number = ocmHours.split(" ")[0]
+                    ocmWeek = Math.round((ocmWeek / 24) / 7)
+
+                    var strategy = this.MSSStratergy.split('-')[1];
+                    let obj = {}
+                    if(strategy == 'FFT'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'Function check'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+                    }else if(strategy == 'OCM'){
+                      obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}`
+                      obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }else if(strategy == 'SO'){
+                      obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
+                      obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }else if(strategy == 'SR'){
+                      obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
+                      obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }else if(strategy == 'RED'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }
+                    else if(strategy == 'OFM'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'No Task'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }
+              }
+      }
+      this.prescriptiveTree = true
+      const element = document.querySelector("#Availability")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+      // this.MSSAvailabilityYNCheck= false;
+      // this.MSSexpectedAvailability= false;
+      // this.MSSAvailabilityPlantStoppage= false;
+      // this.MSSAvailabilityPlantStoppageTime= false;
+      // this.MSSAvailabilityY = ""
+      // this.MSSAvailabilityCheck = 0
+      // this.MSSstoppageDays = ""
+      // this.MSSstoppageDaysValue = 0
+      // this.MSSstoppageDaysTime = ""
+      // this.MSSstoppageDaysTimeValue = 0
+      // this.PlantStoppage = true
+      // this.PlantStoppageTime = true
+    }else{
+
+      alert("fill the data")
+    }
+  } 
 }
 
