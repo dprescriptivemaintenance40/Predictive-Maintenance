@@ -628,9 +628,9 @@ public WebalYN : string = ""
     this.PatternNextOnPrescriptiveTree = false;
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
-    if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' || this.ConsequenceFM == 'C'){
+    if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' ){
        this.UsefulLife = 0;
-    }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'){
+    }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C'){
        this.SafeLife = 0;
     }
   }
@@ -690,7 +690,7 @@ public WebalYN : string = ""
 
         let SUNode = {}
 
-        if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' || this.ConsequenceFM == 'C'){
+        if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' ){
           this.UsefulLife = 0;
            SUNode = {
             label: "SafeLife",
@@ -701,7 +701,7 @@ public WebalYN : string = ""
               name: this.SafeLife
             }
           } 
-        }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'){
+        }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'|| this.ConsequenceFM == 'C'){
           this.SafeLife = 0;
            SUNode = {
             label: "UsefulLife",
@@ -951,7 +951,7 @@ public WebalYN : string = ""
 
       let SUNode = {}
 
-      if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' || this.ConsequenceFM == 'C'){
+      if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B'){
          this.UsefulLife = 0;
          SUNode = {
           label: "SafeLife",
@@ -962,7 +962,7 @@ public WebalYN : string = ""
             name: this.SafeLife
           }
         } 
-      }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'){
+      }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C'){
         this.SafeLife = 0
          SUNode = {
           label: "UsefulLife",
@@ -1239,9 +1239,9 @@ public WebalYN : string = ""
     this.changeDetectorRef.detectChanges();
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
-    if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' || this.ConsequenceFM == 'C'){
+    if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' ){
        this.UsefulLife = 0;
-    }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'){
+    }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'|| this.ConsequenceFM == 'C'){
        this.SafeLife = 0;
     }
    }
