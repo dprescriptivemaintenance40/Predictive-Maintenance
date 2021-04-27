@@ -216,10 +216,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div>
-                                <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#AttachmentModalAdd"> <i class="fa fa-paperclip" aria-hidden="true"></i></button>
-                                <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModalAdd"> <i class="fa fa-comment" aria-hidden="true"></i></button>
-                            </div> -->
                         </div>
                     </div>
                     <br>
@@ -501,7 +497,7 @@
             <small class="form-text text-muted"><h4> Your {{LSFailureMode}} Tree </h4></small>
         </span>
         <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()">Back</button>&nbsp;&nbsp;
-        <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button>
+        <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button><br><br>
         <button *ngIf="ConsequenceTreeEditConsequenceEnable" title="Edit Consequences" label="Back" type="button" class="btn btn-dark" (click)="EditConsequenceToTree()"><i class="pi pi-pencil"></i> Consequences</button><br>
         <p-organizationChart [value]="ConsequenceNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -563,10 +559,6 @@
                             <label for="exampleFormControlTextarea2">System Effect</label>
                             <textarea class="form-control custom-textarea" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeSystemEffect" id="exampleFormControlTextarea2" rows="3"></textarea>
                         </div>
-                        <!-- <div>
-                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark"  data-toggle="modal" data-target="#AttachmentModalUpdate"> <i class="fa fa-paperclip" aria-hidden="true" pTooltip="Add Attachments" tooltipPosition="top"></i></button>
-                            <button label="Next" style="margin: 20px" type="button" class="btn btn-dark" data-toggle="modal" data-target="#CommentModal"> <i class="fa fa-comment" aria-hidden="true"  pTooltip="Add Remarks" tooltipPosition="top"></i></button>
-                        </div> -->
                         <div style="margin-top: 20px;">
                             <div class="row">
                                 <div class="col-md-6">
@@ -787,8 +779,6 @@
     </div>
 </div>
 
-
-
 <div class="modal fade" id="ChangeConsequence" tabindex="-1" role="dialog" aria-labelledby="ChangeConsequence" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -889,6 +879,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row col-md-12">
+
+                        </div>
                     </div>
                 </p-card>
             </div>
@@ -917,6 +910,17 @@
 </div>
 
 <br><br>
+<style>
+    .disableddiv{
+        pointer-events: none;
+        cursor: default;
+        text-decoration: none;
+         opacity: 0.5;
+         padding:1px;
+        background-color:#777
+
+    }
+</style>
 <div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;" id="ViewtoAddPattern">
     <!-- <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label> -->
     <p-organizationChart [value]="FCAChangeData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
@@ -973,6 +977,328 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row col-md-12">
+                        <div *ngIf="ADDFailureModePatternTree" id="PatternTree2">
+                            <div class="card" style="margin: 20px;" *ngIf="ADDFailuerRate">
+                                <p-card >
+                               <ng-template pTemplate="subtitle">
+                                    <p><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone
+                                        for a period of time, would you expect this failuer to have happened.
+                                    </b></p>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <div class="input-group mb-3">
+                                        <select [(ngModel)]="ADDinterval" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                                            <option value="">Choose</option>
+                                                <option value="Days" selected> Days</option>
+                                                <option value="Week" selected> Week</option>
+                                                <option value="Month" selected>Month</option>
+                                                <option value="Year" selected>Year</option>
+                                            </select>
+                                           <input type="number" [(ngModel)]="ADDintervalValue" name="Interval" class="form-control">
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <button class="btn btn-dark" style="float:right;" (click)="ADDIntervalSave()"> <i class="fa fa-check" aria-hidden="true" ></i>save</button><br>
+                                </ng-template>
+                            </p-card>
+                            </div>
+                            <div class="card" style="margin: 20px;" *ngIf ="ADDFailureWarning" id="Patternfailurewarning">
+                            <p-card  [ngClass]=" {disableddiv: ADDfailurewarning  ? true : false}">
+                                <ng-template pTemplate="title">
+                                </ng-template>
+                                <ng-template pTemplate="subtitle">
+                                    <p><b>3. Are their any prior warnings before the failuer occure? Tick all that apply.
+                                    </b></p>
+                                </ng-template>
+                                <ng-template pTemplate="content" >
+                                    <div class="container">
+                                        <div class="row" >
+                                            <div class="col-sm"><br>
+                                            <p-card>
+                                           Vibration<br>
+                                           <td><input type="checkbox" [(ngModel)]="ADDVibration" value="Vibration" name="name1" />&nbsp;</td>
+                                            </p-card></div>
+                                          <div class="col-sm"><br>
+                                            <p-card>
+                                            Noice<br>
+                                            <td><input type="checkbox" [(ngModel)]="ADDNoice" value="Noice" name="name1" />&nbsp;</td>
+                                            </p-card></div>
+                                           <div class="col-sm"><br>
+                                            <p-card>
+                                            Leakage<br>
+                                            <td><input type="checkbox" [(ngModel)]="ADDLeakage"  value="Leakage" name="name1" />&nbsp;</td>
+                                            </p-card></div>
+                                           <div class="col-sm"><br>
+                                            <p-card>
+                                            Performance drop<br>
+                                            <td><input type="checkbox" [(ngModel)]="ADDPerformanceDrop" value=" Performance drop" name="name1" />&nbsp;</td>
+                                            </p-card></div>
+                                           <div class="col-sm"><br>
+                                            <p-card>
+                                            Temprature Change<br>
+                                            <td><input type="checkbox" [(ngModel)]="ADDTempratureChange" value=" Temprature Change" name="name1" />&nbsp;</td>
+                                            </p-card></div><br>
+                                        </div><br>
+                        
+                                        <div class="row">
+                                            <div class="col-sm-2"><br>
+                                                <p-card>
+                                                Emmision changes<br>
+                                                <td><input type="checkbox" [(ngModel)]="ADDEmmisionChange" value=" Emmision changes" name="name1" />&nbsp;</td>
+                                                </p-card></div>
+                                               <div class="col-sm-2"><br>
+                                                <p-card>
+                                                Increase Lubricant Consumption<br>
+                                                <td><input type="checkbox" [(ngModel)]="ADDIncreaseLubricantConsumption" value=" Increase Lubricant Consumption" name="name1" />&nbsp;</td>
+                                                </p-card></div>
+                                               <div class="col-sm-2"><br>
+                                                <p-card>
+                                                Other<br>
+                                                <td><input type="checkbox" [(ngModel)]="ADDOther" value=" Other" name="name1" />&nbsp;</td>
+                                                </p-card></div>
+                                               <div class="col-sm-2"> </div>
+                                               <div class="col-sm-2"> </div>
+                                          </div>
+                                     </div><br>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                <button class="btn btn-dark" style="float:right;" (click)="ADDConditionFirst()"> <i class="fa fa-check" aria-hidden="true"></i>save</button><br>
+                                </ng-template>
+                            </p-card>
+                            </div>
+                            <div class="card" style="margin: 20px;" *ngIf ="ADDWarningSign" id="PatternWarningSign">
+                                <p-card [ngClass]=" {disableddiv: ADDwarningsign  ? true : false}">
+                                <ng-template pTemplate="subtitle">
+                                    <p><b>4. If their are any warning signs, can they be monitored? if so, how?
+                                    </b></p>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-sm"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                           Human Senses<br>
+                                           <td><input type="checkbox" [(ngModel)]="ADDHumanSenses" value=" Human Senses" name="name1" />&nbsp;</td>
+                                          </div></div>
+                                          <div class="col-sm"><br>
+                                            <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                            Existing instumentation(portable or fixed)<br>
+                                            <td><input type="checkbox" [(ngModel)]="ADDExistingInstumentation" value=" Existing instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                                           </div></div>
+                                           <div class="col-sm"><br>
+                                            <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                            New instumentation(portable or fixed)<br>
+                                            <td><input type="checkbox" [(ngModel)]="ADDNewInstumentation" value=" New instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                                           </div></div>
+                                           <div class="col-sm"><br>
+                                            <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                            Process Condtions<br>
+                                            <td><input type="checkbox" [(ngModel)]="ADDProcessCondtions" value=" Process Condtions" name="name1" />&nbsp;</td>
+                                           </div></div>
+                                           <div class="col-sm"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                Sample Anyalysis<br>
+                                                <td><input type="checkbox" [(ngModel)]="ADDSampleAnyalysis" value=" Sample Anyalysis" name="name1" />&nbsp;</td>
+                                            </div>
+                                           </div>
+                                        </div>
+                                  </div>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <a class="btn btn-white" style="border:none" > </a>
+                                    <button class="btn btn-dark" style="float:right;"  (click)="ADDConditionSecond()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+                                </ng-template>
+                            </p-card>
+                            </div>
+                            <div class="card" style="margin: 20px;" *ngIf ="ADDIntervalDeteacting" id="PatternIntervalDeteacting">
+                                <p-card [ngClass]=" {disableddiv: ADDintervaldeteacting  ? true : false}" >
+                                <ng-template pTemplate="subtitle">
+                                    <div class="input-group mb-3">
+                                        <label><b>5. What is the likely interval between detacting a warning sign and the failuer happening?</b></label>
+                                        <select [(ngModel)]="ADDffInterval" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                                            <option value="">Choose</option>
+                                                <option value="Days" selected> Days</option>
+                                                <option value="Week" selected> Week</option>
+                                                <option value="Month" selected>Month</option>
+                                                <option value="year" selected>Year</option>
+                                            </select>
+                                           <input type="number" [(ngModel)]="ADDffIntervalValue" name="Add Interval" class="form-control">
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <a class="btn btn-white" style="border:none" > </a>
+                                    <button class="btn btn-dark" style="float:right;" (click)="ADDFFInterval()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+                                </ng-template>
+                            </p-card>
+                            </div>
+                            <div class="card" style="margin: 20px;" *ngIf ="ADDFailuerEvident" id="PatternFailuerEvident">
+                                <p-card [ngClass]=" {disableddiv: ADDfailuerevident  ? true : false}" >
+                                <ng-template pTemplate="subtitle">
+                                    <p><b>6. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
+                                    </b></p>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <div class="row">
+                                        <div class="col-sm"></div>
+                                        <div class="col-sm">
+                                            Yes <td><input type="radio" [(ngModel)]="ADDCommentFIEYN" value=" Failure is not Evident" name="name1" />&nbsp;</td>
+                                        </div>
+                                        <div class="col-sm">
+                                            No <td><input type="radio" [(ngModel)]="ADDCommentFIEYN" value=" Failure is Evident" name="name1" />&nbsp;</td>
+                                        </div>
+                                        <div class="col-sm"></div>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <a class="btn btn-white" style="border:none" > </a>
+                                    <button class="btn btn-dark" style="float:right;" (click)="ADDCommentThird()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+                                </ng-template>
+                            </p-card>
+                            </div>
+                            <div class="card" style="margin: 20px;" *ngIf ="ADDFailuerMaintenance" id="PatternFailuerMaintenance">
+                                <p-card [ngClass]=" {disableddiv: ADDfailuermaintenance ? true : false}">
+                                <ng-template pTemplate="title">
+                                </ng-template>
+                                <ng-template pTemplate="subtitle">
+                                    <p><b >7. Some of the failuer cannot avoided by maintenance. Would planned replacement or refurbishment
+                                        maintainace prevent or mitigate this failuer Mode?
+                                    </b></p>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <div class="row">
+                                        <div class="col-sm"></div>
+                                        <div class="col-sm">
+                                            Yes <td><input type="radio" [(ngModel)]="ADDCommentFIEYN2" value=" planned replacement or refurbishment
+                                                maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
+                                        </div>
+                                        <div class="col-sm">
+                                            No <td><input type="radio" [(ngModel)]="ADDCommentFIEYN2" value=" planned replacement or refurbishment
+                                                maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
+                                        </div>
+                                        <div class="col-sm"></div>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <a class="btn btn-white" style="border:none" > </a>
+                                    <button class="btn btn-dark " style="float:right;" (click)="ADDCommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+                                </ng-template>
+                            </p-card>
+                            </div>
+                            <div class="card" style="margin: 20px;" *ngIf ="ADDFailuerComments" id="PatternFailuerComments">
+                                <p-card [ngClass]=" {disableddiv: ADDfailuercomments  ? true : false}">
+                                <ng-template pTemplate="title">
+                        
+                                </ng-template>
+                                <ng-template pTemplate="subtitle">
+                                    <p><b> 8. Do you have any comments regarding the failuer of this equipment or how the maintainace of the equipment
+                                        could be improved
+                                    </b></p>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <textarea class="form-control custom-textarea" [(ngModel)]="ADDFCAFreeText"  id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <button class="btn btn-dark" *ngIf="ADDFCAFreeTextCancel1"   (click)="ADDFCAFreeTextCancel()">Cancel</button>
+                                    <button class="btn btn-dark" *ngIf="ADDFCAFreeTextSave1"  style="float:right;" (click)="ADDFCAFreeTextSave()">Save</button>
+                                </ng-template>
+                            </p-card>
+                            </div>
+                            <div class="card" style="margin: 20px;" *ngIf ="ADDSafeUsefulLife" id="SafeUsefulLife">
+                                <p-card [ngClass]=" {disableddiv: ADDSafeUsefulLife  ? false : true}">
+                                <ng-template pTemplate="title">
+                        
+                                </ng-template>
+                                <ng-template pTemplate="subtitle">
+                                    <p><b> 9: Provide Safe Life and Useful life for {{PatternFMName}}
+                                    </b></p>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A' || ConsequenceFM == 'B' || ConsequenceFM == 'C' ">
+                                        <div class="col-md-3">
+                                            <label> Safe Life</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" [(ngModel)]="ADDSafeLife" name=" safelife" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D' || ConsequenceFM == 'E' ">
+                                        <div class="col-md-3">
+                                            <label> Useful Life</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" [(ngModel)]="ADDUsefulLife" name=" usefullife" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 15px;">
+                                        <div class="col-md-3">
+                                            <label>Do you want webal analysis for alpha and beta</label>
+                                            
+                                        </div>
+                                        <div class="col-sm">
+                                            Yes <td><input type="radio" [(ngModel)]="ADDWebalYN" value="YES" name="ABYN" />
+                                        </div>
+                                        <div class="col-sm">
+                                            No <td><input type="radio" [(ngModel)]="ADDWebalYN" value="No" name="ABYN" />
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 15px;" *ngIf="ADDWebalYN == 'No'"  >
+                                        <small>Please provide values for alpha and beta</small>
+                                    </div>
+                                    <div class="row" style="padding: 15px;" *ngIf="ADDWebalYN == 'No'" >
+                                        <div class="col-md-3">
+                                            <label>Alpha</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" [(ngModel)]="ADDalpha" name=" WebalYN" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 15px;"  *ngIf="ADDWebalYN == 'No'">
+                                        <div class="col-md-3">
+                                            <label>Beta</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" [(ngModel)]="ADDbeta" name=" WebalYN" class="form-control">
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <button class="btn btn-dark" style="float:right;" (click)="ADDSafeUsefulLifeSave()">Save</button>
+                                 </ng-template>
+                            </p-card>
+                            </div>
+                            <div class="card" style="margin: 20px;" *ngIf ="ADDalphaBeta && ADDWebalYN == 'YES' " id="alphaBeta">
+                                <p-card [ngClass]=" {disableddiv: ADDalphaBeta  ? false : true}">
+                                <ng-template pTemplate="title">
+                        
+                                </ng-template>
+                                <ng-template pTemplate="subtitle">
+                                    <p><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha, beta.
+                                    </b></p>
+                                    <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-dark" (click)="ADDExcelDownload()" title="Click here to get webal excel format" ><a class="pi pi-download"></a></button></small></p>
+                                </ng-template>
+                                <ng-template pTemplate="content">
+                                    <div class="row" style="padding: 15px;">
+                                        <div class="col-sm col-md-4 form-group">
+                                            <input type="file" class="form-control-file btn btn-secondary" (change)="ADDWebal($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 15px;">
+                                        <label>Alpha  :  {{ADDalpha  | number : '1.0-2' }}</label>
+                                    </div>
+                                    <div class="row" style="padding: 15px;">
+                                        <label>Beta : {{ADDbeta  | number : '1.0-2' }}</label>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <button class="btn btn-dark" style="float:right;" (click)="ADDalphaBetaSave()">Save</button>
+                                    
+                                </ng-template>
+                            </p-card>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
@@ -995,10 +1321,119 @@
             <div>
                 <button *ngIf="UpdatePatternAddEnable" label="Next"  (click)="PatternUpdateCancel()" type="button" class="btn btn-dark">Cancel</button>
                 <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">ADD</button>
+                <a class="btn btn-white" style="border:none" > </a>
                 <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;" (click)="AddPatternToNewFM()" type="button" class="btn btn-dark">ADD Pattern</button>
             </div>
         </ng-template>
     </p-card>
     </div>
-
 </div>
+
+
+
+
+
+ <div *ngIf="MSSViewEnabled" id="viewMSS" >
+    <p-card>
+        <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseMSSUpdateView()" pTooltip="Close" tooltipPosition="top">
+            <i class="far fa-times-circle "></i>
+        </a>
+        <div class="col-md-12" style="overflow: scroll;" id="viewMSSPatterns">
+            <!-- <p-organizationChart [value]="TreeUptoFCA" selectionMode="single" styleClass="company">
+                <ng-template let-node pTemplate="person">
+                    <div class="node-header p-corner-top">{{node.label}}</div>
+                    <div class="node-content">
+                        <div>{{node.data.name}}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-node pTemplate="department"  id ="FCATreeShow">
+                    {{node.label}}
+                </ng-template>
+            </p-organizationChart>    -->
+        </div>    
+        <div *ngIf="MSSViewTreeEnabled" class="col-md-12" style="overflow: scroll;" id="FCAViewTreeEnable">
+            <label>You Have Selected this path</label>
+            <button *ngIf="EnabledPatternUpdate" title="Save Pattern" label="save" type="button" class="btn btn-dark" (click)="SaveUpdatedPattern()">Save & Update</button><br>
+            <p-organizationChart [value]="FCAdata1" styleClass="company">
+                <ng-template let-node pTemplate="person">
+                    <div class="node-header p-corner-top">{{node.label}}</div>
+                    <div class="node-content">
+                        <div>{{node.data.name}}</div>
+                    </div>
+                </ng-template>
+                <ng-template id="SelectedPath" let-node pTemplate="department">
+                    {{node.label}}
+                </ng-template>
+            </p-organizationChart>
+            <div>
+                <p-card>
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                        </div>
+                      
+                    </div>
+                </p-card>
+            </div>
+        </div>
+        
+    </p-card>
+</div>
+
+
+<div class="modal fade" id="UpdateMSSPattern" tabindex="-1" role="dialog" aria-labelledby="ChangeMSS" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" id="Viewpatternadd">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Change the MSS 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="UpdateMSSPattern()">Change</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br>
+<div *ngIf="FailureModeMSSPatternTree" class="col-md-12" style="overflow: scroll;" id="ViewtoAddMSSPattern">
+    <p-organizationChart [value]="FCAChangeData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+        <ng-template let-node pTemplate="person">
+            <div class="node-header p-corner-top">{{node.label}}</div>
+            <div class="node-content">
+                <div>{{node.data.name}}</div>
+            </div>
+        </ng-template>
+        <ng-template let-node pTemplate="department">
+            {{node.label}}
+        </ng-template>
+    </p-organizationChart>
+    <div id="ViewPatternForEdit">
+    <p-card >
+        <ng-template pTemplate="title">
+            Pattern For Failure Mode
+        </ng-template>
+        <ng-template pTemplate="subtitle">
+            Enter Pattern for {{PatternFMName}}
+        </ng-template>
+        <ng-template pTemplate="content">
+           
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div>
+                <button *ngIf="UpdateMSSAddEnable" label="Next"  (click)="PatternUpdateCancel()" type="button" class="btn btn-dark">Cancel</button>
+                <button *ngIf="UpdateMSSAddEnable" label="Next" style="float: right;" (click)="MSSUpdateAdd()" type="button" class="btn btn-dark">ADD</button>
+                <a class="btn btn-white" style="border:none" > </a>
+                <button *ngIf="AddFMMSSAddEnable" label="Next" style="float: right;" (click)="AddMSSToNewFM()" type="button" class="btn btn-dark">ADD Pattern</button>
+            </div>
+        </ng-template>
+    </p-card>
+    </div>
+</div>  -->
+
