@@ -340,17 +340,17 @@
 <div class="card" style="margin: 20px;"  *ngIf ="AvailabilityYNCheck" id="Availability">
     <p-card   >
     <ng-template pTemplate="subtitle">
-        <p><b>1.You want to know Availability?
+        <p><b>1.Do you have Availability percentage?
         </b></p>
     </ng-template>
     <ng-template pTemplate="content">
         <div class="row">
             <div class="col-sm"></div>
             <div class="col-sm">
-                Yes <td><input type="radio" [(ngModel)]="AvailabilityY" value="Yes" name="name1" />&nbsp;</td>
+                Yes <td><input type="radio" [(ngModel)]="AvailabilityY" value="Yes" name="AvailabilityYNCheck" />&nbsp;</td>
             </div>
             <div class="col-sm">
-                No <td><input type="radio" [(ngModel)]="AvailabilityY" value="No" name="name1" />&nbsp;</td>
+                No <td><input type="radio" [(ngModel)]="AvailabilityY" value="No" name="AvailabilityYNCheck" />&nbsp;</td>
             </div>
             <div class="col-sm"></div>
         </div>
@@ -366,8 +366,8 @@
     <p-card >
     <ng-template pTemplate="subtitle">
         <div class="input-group mb-3">
-            <label><b >1. What is your expected Availability % : </b></label> &ensp;
-            <input type="text"  class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability %">
+            <label><b >1. What is your accepted Availability % : </b></label> &ensp;
+            <input type="number"  class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability percentage">
         </div>
     </ng-template>
     <ng-template pTemplate="footer">

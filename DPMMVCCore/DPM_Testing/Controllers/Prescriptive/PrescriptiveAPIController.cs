@@ -409,14 +409,25 @@ namespace DPM.Controllers.Prescriptive
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId && a.UserId == userId)
+                List<CentrifugalPumpPrescriptiveModel> centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId && a.UserId == userId)
                                                                                                                   .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
-                                                                                                                  .First();
-                centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
-                centrifugalPumpPrescriptiveModel.MSSAdded = "1";
+                                                                                                                  .ToListAsync();
+                centrifugalPumpPrescriptiveModel[0].FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
+                centrifugalPumpPrescriptiveModel[0].MSSAdded = "1";
 
-                _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
+                _context.Entry(centrifugalPumpPrescriptiveModel[0]).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+                int i = 0;
+                var collection = centrifugalPumpPrescriptiveModel[0].centrifugalPumpPrescriptiveFailureModes.ToList();
+                foreach (var item in collection)
+                {
+                    item.MSSMaintenanceInterval = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSMaintenanceInterval;
+                    item.MSSMaintenanceTask = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSMaintenanceTask;
+                    item.MSSStartergy = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSStartergy;
+                    _context.Entry(item).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    i = i + 1;
+                }
 
                 return Ok();
             }

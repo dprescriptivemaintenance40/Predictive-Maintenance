@@ -66,6 +66,9 @@ namespace DPM.Models.Prescriptive
         public decimal FCABeta { get; set; }
         public decimal FCASafeLife { get; set; }
         public decimal FCAUsefulLife { get; set; }
+        public string MSSMaintenanceInterval { get; set; }
+        public string MSSStartergy { get; set; }
+        public string MSSMaintenanceTask { get; set; }
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
     }
 }
