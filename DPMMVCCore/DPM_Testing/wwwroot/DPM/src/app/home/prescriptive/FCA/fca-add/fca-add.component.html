@@ -18,8 +18,6 @@
     </div>
 </div>
 
-
-
 <p-toast position="top-center"></p-toast>
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-card>
@@ -415,7 +413,7 @@
             </b></p>
         </ng-template>
         <ng-template pTemplate="content">
-            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A' || ConsequenceFM == 'B' || ConsequenceFM == 'C' ">
+            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A' || ConsequenceFM == 'B' ">
                 <div class="col-md-3">
                     <label> Safe Life</label>
                 </div>
@@ -423,7 +421,7 @@
                     <input type="number" [(ngModel)]="SafeLife" name="safelife" class="form-control">
                 </div>
             </div>
-            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D' || ConsequenceFM == 'E' ">
+            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D' || ConsequenceFM == 'E' || ConsequenceFM == 'C' ">
                 <div class="col-md-3">
                     <label> Useful Life</label>
                 </div>
