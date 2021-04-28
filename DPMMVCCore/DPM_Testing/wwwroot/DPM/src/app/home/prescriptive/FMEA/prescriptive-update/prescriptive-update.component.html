@@ -116,9 +116,8 @@
                         <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                             <div *ngFor="let c of dropedMode" class="row">
                                 <div style="word-wrap: break-word;float:left;">{{c?.Description}}</div>
-                                <div style="float:right; margin-left: 5px;">
-                                    <a class="cell-icon-button cdk-close" style="color: black;"
-                                        (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                                <div style="float:right; margin-left: 15px;">
+                                    <a class="cell-icon-button cdk-close" style="color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                         <i class="far fa-times-circle "></i>
                                     </a>
                                 </div>
@@ -407,10 +406,10 @@
                     </div>
                     <div class="drop" pDroppable="con1" (onDrop)="dropC1($event)">
                         <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}
-                            <a class="cell-icon-button cdk-close" style="float:right;color: black;"
+                            <!-- <a class="cell-icon-button cdk-close" style="float:right;color: black;"
                                 (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                 <i class="far fa-times-circle "></i>
-                            </a>
+                            </a> -->
                         </div>
 
                     </div>
@@ -450,10 +449,10 @@
                     </div>
                     <div class="drop" pDroppable="con2" (onDrop)="dropC2($event)">
                         <div *ngFor="let c of dropedConsequenceEffectFailureMode">{{c}}
-                            <a class="cell-icon-button cdk-close" style="float:right;color: black;"
+                            <!-- <a class="cell-icon-button cdk-close" style="float:right;color: black;"
                                 (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                 <i class="far fa-times-circle "></i>
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
@@ -493,10 +492,10 @@
                     </div>
                     <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
                         <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}
-                            <a class="cell-icon-button cdk-close" style="float:right;color: black;"
+                            <!-- <a class="cell-icon-button cdk-close" style="float:right;color: black;"
                                 (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                 <i class="far fa-times-circle "></i>
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List </small> <br>
@@ -534,10 +533,10 @@
                     </div>
                     <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
                         <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}
-                            <a class="cell-icon-button cdk-close" style="float:right;color: black;"
+                            <!-- <a class="cell-icon-button cdk-close" style="float:right;color: black;"
                                 (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                 <i class="far fa-times-circle "></i>
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List or you can type
@@ -622,10 +621,10 @@
                             <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                                 <div *ngFor="let c of dropedMode">
                                     <span>{{c?.Description}}</span>
-                                    <a class="cell-icon-button cdk-close" style="float:right;color: black;"
+                                    <!-- <a class="cell-icon-button cdk-close" style="float:right;color: black;"
                                         (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                         <i class="far fa-times-circle fa-2x"></i>
-                                    </a>
+                                    </a> -->
                                 </div>
                             </div>
                             <small class="form-text text-muted">Drag and Drop here, from above List </small>
@@ -1551,6 +1550,10 @@
 <div *ngIf="MSSViewEnabled" id="viewMSS">
         <div >
             <!-- <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check"></i></button> -->
+            <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseMSSUpdateView()"
+            pTooltip="Close" tooltipPosition="top">
+            <i class="far fa-times-circle "></i>
+        </a>
             <p-card>
                 <div class="row">
                     <div class="col-md-12">
