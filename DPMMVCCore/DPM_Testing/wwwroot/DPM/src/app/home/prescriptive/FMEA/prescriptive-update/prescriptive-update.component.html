@@ -1,4 +1,5 @@
 <p-toast position="top-right"></p-toast>
+<div id="MainScroll">
 <p-card>
     <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="prescriptive">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px"
@@ -30,7 +31,7 @@
         </p-organizationChart>
     </div>
 </p-card>
-
+</div>
 <div id="ScrollUpdateTree5" class="modal fade" id="treeModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -1560,8 +1561,7 @@
                                         <div class="card shadow mb-4">
                                             <div>
                                                 <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;"
-                                                    (click)="ADDMSSToTree()">save</button>
+                                                <button class="btn btn-dark" style="float:right;"(click)="ADDMSSToTree()">save</button>
                                             </div>
                                             <div class="card-body">
                                                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"

@@ -1217,6 +1217,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.UpdateMSSAddEnable = false
       this.AddFMMSSAddEnable = false;
       this.MSSViewEnabled = true
+      this.prescriptiveTree = false
       const element = document.querySelector("#ViewtoAddPattern")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
@@ -1843,7 +1844,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.PatternBack = p.pattern;
     this.nodePath = p.nodePath;
     this.FCAViewEnabled = true
-    this.MSSViewEnabled = true
+    this.MSSViewEnabled = false
     this.FCAViewTreeEnabled = true
     this.FCAView = []
     this.FCAView.push(p.FCAData)
@@ -2804,6 +2805,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
    }
 
   async ADDFCAFreeTextSave(){
+    this.ADDfailuercomments = !this.ADDfailuercomments;
      this.ADDPatternFailuerAll = true
      this.FCAComment.push(this.ADDFCAFreeText)
      this.ADDSafeUsefulLife = true;
@@ -2951,8 +2953,9 @@ async StoppageDuration(){
 }
 
 async ADDMSSToTree() {
+  var index = this.FMTree.length
     let MSSTree = {
-      label:  this.MSSADDCounter,
+      label:  index,
       type: "person",
       styleClass: 'p-person',
       expanded: true,
@@ -2969,19 +2972,7 @@ async ADDMSSToTree() {
         }
       ]
     }
-
-   this.data1[0].children[0].children[0].children[ this.MSSADDCounter-1].push(MSSTree)
-    // this.data1Clone[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(
-    //   {
-    //     label: "MSS",
-    //     type: "person",
-    //     styleClass: 'p-person',
-    //     expanded: true,
-    //     data: {
-    //       name: this.MSSStratergy
-    //     }
-    //   }
-    // )
+    this.data1[0].children[0].children[0].children[index - 1].children.push(MSSTree)
 
         if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
         || this.MSSStratergy == 'A-SR' ||  this.MSSStratergy == 'A-RED' || this.MSSStratergy == 'A-OFM'
@@ -2996,8 +2987,9 @@ async ADDMSSToTree() {
             this.MSSTaskObj.push(obj)
           } else{
 
-            var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
-            var ocmWeek : number = ocmHours.split(" ")[0]
+            // var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
+            var ocmweek:number  = this.FCAInterval
+            // var ocmWeek : number = ocmHours.split(" ")[0]
                 ocmWeek = Math.round((ocmWeek / 24) / 7)
 
             var availablility: number = 0;
@@ -3022,13 +3014,14 @@ async ADDMSSToTree() {
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'SO'){
-                obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
+                //  obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
+                obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                 obj['MSSStartergy'] = this.MSSStratergy
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'SR'){
-                obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
+                // obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                 obj['MSSStartergy'] = this.MSSStratergy
                 this.MSSTaskObj.push(obj)
@@ -3057,10 +3050,11 @@ async ADDMSSToTree() {
                   this.MSSTaskObj.push(obj)
                 } else{
 
-                    var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
-                    var ocmWeek : number = ocmHours.split(" ")[0]
-                    ocmWeek = Math.round((ocmWeek / 24) / 7)
-
+                    //  var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
+                     var ocmHours : number = this.FCAFFInterval
+                    //  var ocmWeek : number = ocmHours.split(" ")[0]
+                   var ocmWeek = Math.round((ocmHours / 24) / 7)
+                 
                     var strategy = this.MSSStratergy.split('-')[1];
                     let obj = {}
                     if(strategy == 'FFT'){
@@ -3075,13 +3069,13 @@ async ADDMSSToTree() {
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SO'){
-                      obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
+                      // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.MSSStratergy
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SR'){
-                      obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
+                      // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.MSSStratergy
                       this.MSSTaskObj.push(obj)
@@ -3103,21 +3097,9 @@ async ADDMSSToTree() {
               }
       }
       this.prescriptiveTree = true
-      const element = document.querySelector("#Availability")
+      const element = document.querySelector("#MainScroll")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-      // this.MSSAvailabilityYNCheck= false;
-      // this.MSSexpectedAvailability= false;
-      // this.MSSAvailabilityPlantStoppage= false;
-      // this.MSSAvailabilityPlantStoppageTime= false;
-      // this.MSSAvailabilityY = ""
-      // this.MSSAvailabilityCheck = 0
-      // this.MSSstoppageDays = ""
-      // this.MSSstoppageDaysValue = 0
-      // this.MSSstoppageDaysTime = ""
-      // this.MSSstoppageDaysTimeValue = 0
-      // this.PlantStoppage = true
-      // this.PlantStoppageTime = true
+      this.MSSViewEnabled = false
 
   } 
 }
