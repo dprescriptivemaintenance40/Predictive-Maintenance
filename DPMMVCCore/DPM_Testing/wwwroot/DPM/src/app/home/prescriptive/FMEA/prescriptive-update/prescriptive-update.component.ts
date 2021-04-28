@@ -2776,12 +2776,13 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
      }
 
    }
-
+  public SafeUsefulLife:boolean = true;
    ADDCommentThird(){
      this.FCAComment.push(this.ADDCommentFIEYN)
+     this.ADDfailuermaintenance = !this.ADDfailuermaintenance;
+     
      if( this.ADDCommentFIEYN.length>0 && this.ADDCommentFIEYN.length>0){
        this.changeDetectorRef.detectChanges()
-       this.ADDfailuermaintenance = !this.ADDfailuermaintenance;
        const element = document.querySelector("#PatternFailuerMaintenance")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
@@ -2805,11 +2806,12 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
    }
 
   async ADDFCAFreeTextSave(){
-    this.ADDfailuercomments = !this.ADDfailuercomments;
+ 
      this.ADDPatternFailuerAll = true
      this.FCAComment.push(this.ADDFCAFreeText)
      this.ADDSafeUsefulLife = true;
      this.changeDetectorRef.detectChanges()
+     this.SafeUsefulLife = !this.SafeUsefulLife;
      const element = document.querySelector("#SafeUsefulLife")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
