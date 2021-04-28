@@ -1539,7 +1539,7 @@
                         (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">ADD</button>
                     <a class="btn btn-white" style="border:none"> </a>
                     <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;"
-                        (click)="AddPatternToNewFM()" type="button" class="btn btn-dark">ADD Pattern</button>
+                        (click)="AddPatternToNewFM()" type="button" class="btn btn-dark">ADD FCA</button>
                 </div>
             </ng-template>
         </p-card>
@@ -1549,6 +1549,7 @@
 
 <div *ngIf="MSSViewEnabled" id="viewMSS">
         <div >
+            <!-- <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check"></i></button> -->
             <p-card>
                 <div class="row">
                     <div class="col-md-12">

@@ -327,10 +327,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     });
     this.FMTree = this.data1[0].children[0].children[0].children
     var MSSData = JSON.parse(localStorage.getItem('MSSObject'))
-     this.SelectedPrescriptiveTree.push(MSSData)
-    //  this.TreeUptoFCA = JSON.parse(MSSData.FMWithConsequenceTree)
-    //   this.data1Clone = JSON.parse(MSSData.FMWithConsequenceTree);
-  }
+    }
+  
 
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveUpdateObject');
@@ -992,6 +990,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
 
   async AddPatternToNewFM() {
+   
     if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
       if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
         || this.Pattern === 'Pattern 6')
@@ -1019,7 +1018,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           pattern = 'Pattern 6'
         }
 
-        var Pattern = {
+        let Pattern = {
           label: "Pattern",
           type: "person",
           styleClass: "p-person",
@@ -1028,13 +1027,73 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
             name: this.Pattern
           }
         }
+        if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+          let UsefulLife = {
+            label: "UsefulLife",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+              name: this.ADDUsefulLife
+            }
+          }
+          this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
+       }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+          let SafeLife = {
+            label: "SafeLife",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+              name: this.ADDSafeLife
+            }
+          }
+          this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
+       }
+       let Condition = {
+        label: "Pattern",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.FCACondition
+        }
+      }
+      let Interval = {
+        label: "Pattern",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.FCAInterval
+        }
+      }
+      let FFI = {
+        label: "Pattern",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.FCAFFInterval
+        }
+      }
 
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Interval)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.pattern = this.Pattern
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name = this.Pattern
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[1].data.name = `${this.FCACondition}${" "}${"Hours"}`
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[2].data.name =`${this.FCAInterval}${" "}${"Hours"}`
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha.toFixed(2)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta.toFixed(2)
+        
+        
 
         this.prescriptiveTree = true
         this.FinalUpdate = true;
@@ -1070,7 +1129,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
       }
 
-      var Pattern2nd = {
+     
+      let Pattern = {
         label: "Pattern",
         type: "person",
         styleClass: "p-person",
@@ -1079,14 +1139,74 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           name: this.Pattern
         }
       }
+      if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+        let UsefulLife = {
+          label: "UsefulLife",
+          type: "person",
+          styleClass: "p-person",
+          expanded: true,
+          data: {
+            name: this.ADDUsefulLife
+          }
+        }
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
+     }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+        let SafeLife = {
+          label: "SafeLife",
+          type: "person",
+          styleClass: "p-person",
+          expanded: true,
+          data: {
+            name: this.ADDSafeLife
+          }
+        }
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
+     }
+     let Condition = {
+      label: "Pattern",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.FCACondition
+      }
+    }
+    let Interval = {
+      label: "Pattern",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.FCAInterval
+      }
+    }
+    let FFI = {
+      label: "Pattern",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.FCAFFInterval
+      }
+    }
 
-      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern2nd)
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[0].pattern = this.Pattern;
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[0].nodePath = path;
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Interval)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.pattern = this.Pattern
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name = this.Pattern
-
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[1].data.name = `${this.FCACondition}${" "}${"Hours"}`
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[2].data.name =`${this.FCAInterval}${" "}${"Hours"}`
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta
+      
+      
+      
       this.prescriptiveTree = true
       this.FinalUpdate = true;
       this.FailureModePatternTree = false;
@@ -2831,10 +2951,8 @@ async StoppageDuration(){
 }
 
 async ADDMSSToTree() {
-  this.MSSViewEnabled = true
-  if(this.ADDMSSAvailabilityY.length > 0  && this.ADDMSSAvailabilityY.length >0){
-    var MSSTree = {
-      label: this.MSSADDCounter,
+    let MSSTree = {
+      label:  this.MSSADDCounter,
       type: "person",
       styleClass: 'p-person',
       expanded: true,
@@ -2851,21 +2969,19 @@ async ADDMSSToTree() {
         }
       ]
     }
-    this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(MSSTree)
-    this.ConsequenceBasedMSS = ""
-    this.prescriptiveTree = true
 
-    this.data1Clone[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(
-      {
-        label: "MSS",
-        type: "person",
-        styleClass: 'p-person',
-        expanded: true,
-        data: {
-          name: this.MSSStratergy
-        }
-      }
-    )
+   this.data1[0].children[0].children[0].children[ this.MSSADDCounter-1].push(MSSTree)
+    // this.data1Clone[0].children[0].children[0].children[this.MSSADDCounter - 1].children.push(
+    //   {
+    //     label: "MSS",
+    //     type: "person",
+    //     styleClass: 'p-person',
+    //     expanded: true,
+    //     data: {
+    //       name: this.MSSStratergy
+    //     }
+    //   }
+    // )
 
         if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
         || this.MSSStratergy == 'A-SR' ||  this.MSSStratergy == 'A-RED' || this.MSSStratergy == 'A-OFM'
@@ -3002,10 +3118,7 @@ async ADDMSSToTree() {
       // this.MSSstoppageDaysTimeValue = 0
       // this.PlantStoppage = true
       // this.PlantStoppageTime = true
-    }else{
 
-      alert("fill the data")
-    }
   } 
 }
 
