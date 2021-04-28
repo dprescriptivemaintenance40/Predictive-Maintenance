@@ -29,7 +29,6 @@ export class PrescriptiveReportComponent implements OnInit {
   public ImageEnable: boolean = true;
   public ReportSelect: boolean = false;
   public ReportSelect1: boolean = false;
-  public RCMReportSelect: boolean = false;
   public attachmentRemark: any = []
   public url: string = ""
   public fileUpload: string = "";
@@ -44,7 +43,6 @@ export class PrescriptiveReportComponent implements OnInit {
   public ReportRCMType: string = ""
   public NewTree: any;
   public FCAPatternEnable: boolean = false
-  public MSSPatternEnable: boolean = false
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
@@ -60,6 +58,7 @@ export class PrescriptiveReportComponent implements OnInit {
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
   }
+
 
   RefreshTree(){
     this.data = JSON.parse(localStorage.getItem('ReportObj'));
@@ -85,7 +84,6 @@ export class PrescriptiveReportComponent implements OnInit {
   ReportBack(){
     this.prescriptveReportSelect = true;
     this.ReportSelect = false
-    this.RCMReportSelect = false
     this.RefreshTree()
   }
   public DownloadPDF() {
@@ -189,7 +187,6 @@ export class PrescriptiveReportComponent implements OnInit {
     if (this.ChairPerson.length > 0 && this.Participants.length > 0) {
       this.prescriptveReportSelect = false
       this.ReportSelect = true
-      this.RCMReportSelect = true
       this.ChairPerson = this.ChairPerson.toUpperCase()
       this.Participants = this.Participants.toUpperCase()
       if (this.PDFURL.length > 0) {
@@ -204,97 +201,7 @@ export class PrescriptiveReportComponent implements OnInit {
 
   GenerateTypeReport() {
     this.changeDetectorRef.detectChanges();
-    if(this.ReportRCMType == 'RCM'){
-      this.PDFURL=[]
-      this.AnnexuresTreeList = []
-      this.ReportSelect = false;
-      if (this.data.CAttachmentDBPath != null) {
-        var FileExt = this.getFileExtension(this.data.CAttachmentDBPath)
-        if (FileExt.toLowerCase() == 'pdf') {
-          let obj = {}
-          obj['Link'] = this.data.CAttachmentDBPath;
-          this.PDFURL.push(obj)
-        }
-      }
-        this.NewTree = [] 
-        this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
-        this.NewTree[0].children[0].children[0].FMEA[0].children[0].children[0].children.forEach((res: any) => {
-          res.labels = `${"FMEA for "}${""}${res.data.name}`
-          for (let index = 0; index < this.attachmentRemark.length; index++) {
-            if (res.data.name == this.attachmentRemark[index].FunctionMode) {
-              var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
-              this.FCAPatternEnable = false
-              this.changeDetectorRef.detectChanges()
-              if (extn.toLowerCase() == 'pdf') {
-                let obj = {}
-                obj['FM'] = res.data.name;
-                obj['Remark'] = this.attachmentRemark[index].Remark;
-                obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
-                this.PDFURL.push(obj)
-              }
-              if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
-                res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
-                res.Remark = this.attachmentRemark[index].Remark
-              } else if (extn.toLowerCase() == 'pdf') {
-                res.pdfPath = `${this.BrowserURl}${this.attachmentRemark[index].AttachmentDBPath}`;
-                res.pdfRemark = this.attachmentRemark[index].Remark
-              }
-            }
-          }
-          this.AnnexuresTreeList.push([res]);
-        });
-
-          var patternIds1: any = []
-          for (let index = 0; index < this.attachmentRemark.length; index++) {
-            var id = "ViewPattern"
-            var i = index + 1
-            patternIds1.push(`${id}${i}`)
-          }
-
-          this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
-            res.labels = `${"FCA for "}${""}${res.data.name}`
-            this.AnnexuresTreeList.push([res]);
-            this.changeDetectorRef.detectChanges();
-            // for (let index = 0; index < this.attachmentRemark.length; index++) {
-            //   var ChartId = patternIds1[index]
-            //   var p = this.attachmentRemark[index].Pattern
-            //   if (p == 'Pattern 1') {
-            //     const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            //     const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
-            //     this.getChartTree(patternLabel1, patternData1, ChartId, p);
-            //   } else if (p == 'Pattern 2') {
-            //     const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            //     const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
-            //     this.getChartTree(patternLabel2, patternData2, ChartId, p);
-            //   } else if (p == 'Pattern 3') {
-            //     const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            //     const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
-            //     this.getChartTree(patternLabel3, patternData3, ChartId, p);
-            //   } else if (p == 'Pattern 4') {
-            //     const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            //     const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
-            //     this.getChartTree(patternLabel4, patternData4, ChartId, p);
-            //   } else if (p == 'Pattern 5') {
-            //     const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
-            //     const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
-            //     this.getChartTree(patternLabel5, patternData5, ChartId, p);
-            //   } else if (p == 'Pattern 6') {
-            //     const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-            //     const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
-            //     this.getChartTree(patternLabel6, patternData6, ChartId, p);
-            //   }
-    
-            // }
-          });
-        
-        
-          this.NewTree[0].children[0].children[0].MSS[0].children[0].children[0].children.forEach((res: any) => {
-            res.labels = `${"MSS for "}${""}${res.data.name}`
-            this.AnnexuresTreeList.push([res]);
-          });
-
-
-    } else if (this.ReportRCMType == 'FMEA') {
+    if (this.ReportRCMType == 'FMEA') {
       this.PDFURL=[]
       this.AnnexuresTreeList = []
         if (this.data.CAttachmentDBPath != null) {
@@ -313,8 +220,6 @@ export class PrescriptiveReportComponent implements OnInit {
           if (res.data.name == this.attachmentRemark[index].FunctionMode) {
             var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
             this.FCAPatternEnable = false
-            this.MSSPatternEnable = false
-            this.RCMReportSelect = false
             this.changeDetectorRef.detectChanges()
             if (extn.toLowerCase() == 'pdf') {
               let obj = {}
@@ -344,13 +249,12 @@ export class PrescriptiveReportComponent implements OnInit {
       this.NewTree = [] 
       this.AnnexuresTreeList = []
       this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
+      // this.NewTree[0].children[0].children[0].children.forEach((res: any) => {
       this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
         for (let index = 0; index < this.attachmentRemark.length; index++) {
           if (res.data.name == this.attachmentRemark[index].FunctionMode) {
             var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
             this.FCAPatternEnable = true
-            this.MSSPatternEnable = false
-            this.RCMReportSelect = false
             this.changeDetectorRef.detectChanges()
             res.Pattern = patternIds[index];
             if (extn.toLowerCase() == 'pdf') {
@@ -371,75 +275,40 @@ export class PrescriptiveReportComponent implements OnInit {
         }
         this.AnnexuresTreeList.push([res]);
         this.changeDetectorRef.detectChanges();
-        // for (let index = 0; index < this.attachmentRemark.length; index++) {
-        //   var ChartId = patternIds[index]
-        //   var p = this.attachmentRemark[index].Pattern
-        //   if (p == 'Pattern 1') {
-        //     const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-        //     const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
-        //     this.getChartTree(patternLabel1, patternData1, ChartId, p);
-        //   } else if (p == 'Pattern 2') {
-        //     const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-        //     const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
-        //     this.getChartTree(patternLabel2, patternData2, ChartId, p);
-        //   } else if (p == 'Pattern 3') {
-        //     const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-        //     const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
-        //     this.getChartTree(patternLabel3, patternData3, ChartId, p);
-        //   } else if (p == 'Pattern 4') {
-        //     const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-        //     const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
-        //     this.getChartTree(patternLabel4, patternData4, ChartId, p);
-        //   } else if (p == 'Pattern 5') {
-        //     const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
-        //     const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
-        //     this.getChartTree(patternLabel5, patternData5, ChartId, p);
-        //   } else if (p == 'Pattern 6') {
-        //     const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
-        //     const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
-        //     this.getChartTree(patternLabel6, patternData6, ChartId, p);
-        //   }
-        // }
-      });
-    }
-    else if (this.ReportRCMType == 'MSS') {
-      this.PDFURL=[]
-      this.AnnexuresTreeList = []
-      this.NewTree = [] 
-      this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
-      this.NewTree[0].children[0].children[0].MSS[0].children[0].children[0].children.forEach((res: any) => {
         for (let index = 0; index < this.attachmentRemark.length; index++) {
-          if (res.data.name == this.attachmentRemark[index].FunctionMode) {
-            var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
-            this.FCAPatternEnable = false
-            this.MSSPatternEnable = true
-            this.RCMReportSelect = false
-            this.changeDetectorRef.detectChanges()
-            if (extn.toLowerCase() == 'pdf') {
-              let obj = {}
-              obj['FM'] = res.data.name;
-              obj['Remark'] = this.attachmentRemark[index].Remark;
-              obj['Link'] = this.attachmentRemark[index].AttachmentDBPath;
-              this.PDFURL.push(obj)
-            }
-            if (extn.toLowerCase() == 'jpg' || extn.toLowerCase() == 'jpeg' || extn.toLowerCase() == 'png') {
-              res.imgPath = this.sanitizer.bypassSecurityTrustResourceUrl(this.attachmentRemark[index].AttachmentDBPath);
-              res.Remark = this.attachmentRemark[index].Remark
-            } else if (extn.toLowerCase() == 'pdf') {
-              res.pdfPath = `${this.BrowserURl}${this.attachmentRemark[index].AttachmentDBPath}`;
-              res.pdfRemark = this.attachmentRemark[index].Remark
-            }
+          var ChartId = patternIds[index]
+          var p = this.attachmentRemark[index].Pattern
+          if (p == 'Pattern 1') {
+            const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
+            this.getChartTree(patternLabel1, patternData1, ChartId, p);
+          } else if (p == 'Pattern 2') {
+            const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
+            this.getChartTree(patternLabel2, patternData2, ChartId, p);
+          } else if (p == 'Pattern 3') {
+            const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
+            this.getChartTree(patternLabel3, patternData3, ChartId, p);
+          } else if (p == 'Pattern 4') {
+            const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
+            this.getChartTree(patternLabel4, patternData4, ChartId, p);
+          } else if (p == 'Pattern 5') {
+            const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
+            const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+            this.getChartTree(patternLabel5, patternData5, ChartId, p);
+          } else if (p == 'Pattern 6') {
+            const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
+            const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
+            this.getChartTree(patternLabel6, patternData6, ChartId, p);
           }
+
         }
-        this.AnnexuresTreeList.push([res]);
       });
-    } else if (this.ReportRCMType == 'RCM'){
-      this.PDFURL=[]
-      this.AnnexuresTreeList = []
-      this.NewTree = [] 
-      this.ReportSelect = false;
     }
   }
+
 
   private getChartTree(labels: any[], data: any[], id: string, title: string) {
     let patternCharts = new Chart(id, {
@@ -504,27 +373,7 @@ export class PrescriptiveReportComponent implements OnInit {
     });
     this.changeDetectorRef.detectChanges();
   }
-  RCMprintPage(){
-      this.hide = true;
-      this.change.detectChanges();
-      let popupWinindow;
-      let printContents = document.getElementById('RCMcontentToConvert').innerHTML;
-      popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-      popupWinindow.document.open();
-      let documentContent = "<html><head>";
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
-      documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/Chart.min.css">';
-      documentContent += '</head>';
-      documentContent += '<body onload="window.print()">' +
-        '<script  src="/dist/DPM/assets/css/Chart.min.js"></script>' + printContents + '</body></html>'
-      popupWinindow.document.write(documentContent);
-      popupWinindow.document.close();
-      this.hide = false;
-      this.change.detectChanges();
-  }
+
+
+
 }
