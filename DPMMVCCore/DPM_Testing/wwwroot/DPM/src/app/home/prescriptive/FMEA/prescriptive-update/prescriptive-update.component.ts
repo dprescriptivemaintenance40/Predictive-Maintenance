@@ -2991,8 +2991,10 @@ async ADDMSSToTree() {
 
             // var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
             var ocmweek:number  = this.FCAInterval
+            var result = (ocmweek/ 24)
+            var a= result/7
             // var ocmWeek : number = ocmHours.split(" ")[0]
-                ocmWeek = Math.round((ocmWeek / 24) / 7)
+           //  ocmWeek = Math.round((ocmWeek / 24) / 7)
 
             var availablility: number = 0;
               if(this.MSSAvailabilityResult == 0){
@@ -3010,7 +3012,7 @@ async ADDMSSToTree() {
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'OCM'){
-                obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}`
+                obj['MSSMaintenanceInterval'] = `${a}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                 obj['MSSStartergy'] = this.MSSStratergy
                 this.MSSTaskObj.push(obj)
@@ -3053,9 +3055,13 @@ async ADDMSSToTree() {
                 } else{
 
                     //  var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
-                     var ocmHours : number = this.FCAFFInterval
-                    //  var ocmWeek : number = ocmHours.split(" ")[0]
-                   var ocmWeek = Math.round((ocmHours / 24) / 7)
+                    //  var ocmHours : number = this.FCAFFInterval
+                    //   // var ocmWeek : number = ocmHours.split(" ")[0]
+                    //   var ocmWeek = Math.round((ocmHours / 24) / 7)
+                      var ocmHours:number  = this.FCAFFInterval
+                      var result = (ocmHours/ 24)
+                      var x= result/7
+                    
                  
                     var strategy = this.MSSStratergy.split('-')[1];
                     let obj = {}
@@ -3065,19 +3071,21 @@ async ADDMSSToTree() {
                       obj['MSSStartergy'] = this.MSSStratergy
                       this.MSSTaskObj.push(obj)
                     }else if(strategy == 'OCM'){
-                      obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}`
+                      obj['MSSMaintenanceInterval'] = `${x}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.MSSStratergy
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SO'){
                       // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
+                      obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.MSSStratergy
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SR'){
                       // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
+                      obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.MSSStratergy
                       this.MSSTaskObj.push(obj)
