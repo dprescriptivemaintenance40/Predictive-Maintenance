@@ -1252,15 +1252,14 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     Data['AttachmentFullPath'] = this.ADDUpdatedAttachmentInFMFullPath
     Data['Remark'] = this.Remark
     Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name
-    Data['Condition'] = this.FCACondition
-    Data['Interval'] = this.FCAInterval
-    Data['FFI'] = this.FCAFFInterval
-    Data['Alpha'] = this.ADDalpha
-    Data['Beta'] = this.ADDbeta
-    Data['UsefulLife'] = this.ADDUsefulLife
-    Data['SafeLife'] = this.ADDSafeLife
+    Data['FCACondition'] = JSON.stringify(this.FCACondition)
+    Data['FCAInterval'] = this.FCAInterval
+    Data['FCAFFI'] = this.FCAFFInterval
+    Data['FCAAlpha'] = this.ADDalpha
+    Data['FCABeta'] = this.ADDbeta
+    Data['FCAUsefulLife'] = this.ADDUsefulLife
+    Data['FCASafeLife'] = this.ADDSafeLife
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
-    this.Remark = ""
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
     this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {
