@@ -845,8 +845,20 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         data: { name: "FCA" }
       }
 
+      let MSSTREE = {
+        label: index + 1,
+        type: "person",
+        styleClass: 'p-person',
+        editMSS: true,
+        data: { name: this.LSFailureMode  },
+        children: []
+
+      }
+
       this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children.push(FMEA)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.push(FCAFMEA)
+      this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children.push(MSSTREE)
+  //  this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children [ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.length  ].children.push(strategy)
       this.data1[0].children[0].children[0].children.push(AddFMEA)
       this.data1[0].children[0].children[0].children[index].children.push(FCATree)
       var temp: any = this.data1
@@ -1259,6 +1271,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     Data['FCABeta'] = this.ADDbeta
     Data['FCAUsefulLife'] = this.ADDUsefulLife
     Data['FCASafeLife'] = this.ADDSafeLife
+    Data['FCAComment'] = JSON.stringify(this.FCAComment)
+    Data['MSSMaintenanceInterval'] = this.MSSTaskObj[0].MSSMaintenanceInterval
+    Data['MSSStartergy'] = this.MSSTaskObj[0].MSSStartergy
+    Data['MSSMaintenanceTask'] = this.MSSTaskObj[0].MSSMaintenanceTask
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
     this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
