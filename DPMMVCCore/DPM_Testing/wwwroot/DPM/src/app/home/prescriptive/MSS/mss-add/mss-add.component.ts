@@ -164,6 +164,7 @@ async ADDMSSToTree() {
       type: "person",
       styleClass: 'p-person',
       expanded: true,
+      editMSS: true,
       data: { name: "MSS" },
       children: [
         {
@@ -225,30 +226,35 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = availablility;
                 obj['MSSMaintenanceTask'] = 'Function Check'
                 obj['MSSStartergy'] = this.MSSStratergy
+                obj['MSSAvailability'] = availablility
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'OCM'){
                 obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
                 obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                 obj['MSSStartergy'] = this.MSSStratergy
+                obj['MSSAvailability'] = availablility
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'SO'){
                 obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}` 
                 obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                 obj['MSSStartergy'] = this.MSSStratergy
+                obj['MSSAvailability'] = availablility
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'SR'){
                 obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}` 
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                 obj['MSSStartergy'] = this.MSSStratergy
+                obj['MSSAvailability'] = availablility
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'RED'){
                 obj['MSSMaintenanceInterval'] = 'NA'
                 obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                 obj['MSSStartergy'] = this.MSSStratergy
+                obj['MSSAvailability'] = availablility
                 this.MSSTaskObj.push(obj)
 
               }
@@ -272,6 +278,11 @@ async ADDMSSToTree() {
                     var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
                     var ocmWeek : number = ocmHours.split(" ")[0]
                     ocmWeek = Math.round((ocmWeek / 24) / 7)
+
+                    var availablility: number = 0;
+                    if(this.AvailabilityResult == 0){
+                        availablility = this.AvailabilityCheck
+                    }
               
                     var strategy = this.MSSStratergy.split('-')[1];
                     let obj = {}
@@ -279,29 +290,34 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Function check'
                       obj['MSSStartergy'] = this.MSSStratergy
+                      obj['MSSAvailability'] = availablility
                       this.MSSTaskObj.push(obj)
                     }else if(strategy == 'OCM'){
                       obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.MSSStratergy
+                      obj['MSSAvailability'] = availablility
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SO'){
                       obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.MSSStratergy
+                      obj['MSSAvailability'] = availablility
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SR'){
                       obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`  
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.MSSStratergy
+                      obj['MSSAvailability'] = availablility
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'RED'){
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                       obj['MSSStartergy'] = this.MSSStratergy
+                      obj['MSSAvailability'] = availablility
                       this.MSSTaskObj.push(obj)
 
                     }
@@ -309,6 +325,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'No Task'
                       obj['MSSStartergy'] = this.MSSStratergy
+                      obj['MSSAvailability'] = availablility
                       this.MSSTaskObj.push(obj)
 
                     }

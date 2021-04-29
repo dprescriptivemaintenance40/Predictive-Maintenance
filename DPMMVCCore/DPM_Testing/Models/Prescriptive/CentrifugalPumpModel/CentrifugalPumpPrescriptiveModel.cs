@@ -69,6 +69,7 @@ namespace DPM.Models.Prescriptive
         public string FCAUpdateIntervals { get; set; }
         public string FCAUpdateConditions { get; set; }
         public string MSSMaintenanceInterval { get; set; }
+        public decimal MSSAvailability { get; set; }
         public string MSSStartergy { get; set; }
         public string MSSMaintenanceTask { get; set; }
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
