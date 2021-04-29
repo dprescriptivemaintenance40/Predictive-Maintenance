@@ -679,6 +679,8 @@ namespace DPM.Controllers.Prescriptive
                 centrifugalPumpPrescriptiveModelData.CMaintainenancePractice = prescriptiveModel.CMaintainenancePractice;
                 centrifugalPumpPrescriptiveModelData.CFrequencyMaintainenance = prescriptiveModel.CFrequencyMaintainenance;
                 centrifugalPumpPrescriptiveModelData.CConditionMonitoring = prescriptiveModel.CConditionMonitoring;
+                centrifugalPumpPrescriptiveModelData.FCAAdded = prescriptiveModel.FCAAdded;
+                centrifugalPumpPrescriptiveModelData.MSSAdded = prescriptiveModel.MSSAdded;
                 _context.Entry(centrifugalPumpPrescriptiveModelData).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();

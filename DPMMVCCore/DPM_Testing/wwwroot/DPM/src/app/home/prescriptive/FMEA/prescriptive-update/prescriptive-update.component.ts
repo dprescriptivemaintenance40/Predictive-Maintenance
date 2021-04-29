@@ -267,7 +267,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
  public ADDMSSstoppageDaysValue: number = 0;
  public ADDMSSstoppageDaysTime: string = "";
  public ADDMSSstoppageDaysTimeValue: number = 0;
-
+ public MSSTreeButton : boolean = false 
  public MSSstoppageValue : number
  public MSSstoppageDuration : number
 
@@ -1245,6 +1245,13 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     Data['AttachmentFullPath'] = this.ADDUpdatedAttachmentInFMFullPath
     Data['Remark'] = this.Remark
     Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name
+    Data['Condition'] = this.FCACondition
+    Data['Interval'] = this.FCAInterval
+    Data['FFI'] = this.FCAFFInterval
+    Data['Alpha'] = this.ADDalpha
+    Data['Beta'] = this.ADDbeta
+    Data['UsefulLife'] = this.ADDUsefulLife
+    Data['SafeLife'] = this.ADDSafeLife
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
     this.Remark = ""
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
@@ -1850,9 +1857,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FCAView.push(p.FCAData)
     const element = document.querySelector("#viewFCAPatterns")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' })
-    this.FCAViewEnabled = true
+    // this.FCAViewEnabled = true
     this.FCAViewTreeEnabled = true
-    this.MSSViewEnabled = true
     this.changeDetectorRef.detectChanges();
     await this.GetChartToView(this.FCAView[0].children[0].data.name)
     await this.ColorPatternTreUpdate(p.pattern, p.nodePath)
@@ -2820,6 +2826,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
      this.ADDPatternFailuerAll = true
      this.ADDFCAFreeText = ""
      this.ADDalphaBeta = true
+     this.SafeUsefulLife = !this.SafeUsefulLife;
      this.changeDetectorRef.detectChanges();
      const element = document.querySelector("#alphaBeta")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -2895,10 +2902,13 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.changeDetectorRef.detectChanges()
 
     if(this.ADDMSSAvailabilityY == 'Yes'){
+      // this.MSSTreeButton = true
       this.ADDMSSexpectedAvailability = true
       this.ADDMSSAvailabilityPlantStoppage = false
       this.ADDMSSAvailabilityPlantStoppageTime = false
+
      }else if(this.ADDMSSAvailabilityY == 'No') {
+      // this.MSSTreeButton = true
       this.ADDMSSexpectedAvailability = false
       this.ADDMSSAvailabilityPlantStoppage = true
       this.ADDMSSAvailabilityPlantStoppageTime = true
@@ -2919,6 +2929,7 @@ async AvailabilityYes(){
    }else{
      alert("Fill the data")
    }
+   this.MSSTreeButton = true
    const element = document.querySelector("#Consequence")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
  }
@@ -2949,6 +2960,7 @@ async StoppageDuration(){
     this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 365
   }
  this.MSSAvailabilityResult = (1-(this.MSSstoppageDuration / this.MSSstoppageValue  ))*100
+ this.MSSTreeButton = true
  const element = document.querySelector("#Consequence")
  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
@@ -3106,6 +3118,7 @@ async ADDMSSToTree() {
                     }
               }
       }
+      this.MSSTreeButton = true
       this.prescriptiveTree = true
       const element = document.querySelector("#MainScroll")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })

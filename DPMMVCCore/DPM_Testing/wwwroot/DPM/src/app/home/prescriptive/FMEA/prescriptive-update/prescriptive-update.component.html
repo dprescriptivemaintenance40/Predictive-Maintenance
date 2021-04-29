@@ -1097,6 +1097,23 @@
                                     <canvas id="pattern6"></canvas>
                                 </div>
                             </div>
+                            
+                    <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                        <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio"
+                            class="custom-control-input">
+                        <label class="custom-control-label" for="customRadio1">Select Path</label>
+                        <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
+                            <i class="fas fa-circle"></i>
+                        </a>
+                    </div>
+                    <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                        <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio"
+                            class="custom-control-input">
+                        <label class="custom-control-label" for="customRadio2">Select Path</label>
+                        <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(212, 218, 211);"
+                            class="fas fa-circle">
+                        </a>
+                    </div>
                         </div>
                         <div class="row col-md-12">
                             <div *ngIf="ADDFailureModePatternTree" id="PatternTree2">
@@ -1404,7 +1421,7 @@
 
                                         </ng-template>
                                         <ng-template pTemplate="subtitle">
-                                            <p><b> 9: Provide Safe Life and Useful life for {{PatternFMName}}
+                                            <p><b> 9: Provide Safe Life and Useful life for {{PatternFMName}} Consequence:{{ConsequenceBasedMSS}}
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content">
@@ -1512,23 +1529,6 @@
                         </div>
                     </div>
 
-                    <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
-                        <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio"
-                            class="custom-control-input">
-                        <label class="custom-control-label" for="customRadio1">Select Path</label>
-                        <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
-                            <i class="fas fa-circle"></i>
-                        </a>
-                    </div>
-                    <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
-                        <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio"
-                            class="custom-control-input">
-                        <label class="custom-control-label" for="customRadio2">Select Path</label>
-                        <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(212, 218, 211);"
-                            class="fas fa-circle">
-                        </a>
-                    </div>
-
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
@@ -1550,10 +1550,10 @@
 <div *ngIf="MSSViewEnabled" id="viewMSS">
         <div >
             <!-- <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check"></i></button> -->
-            <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseMSSUpdateView()"
+            <!-- <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseMSSUpdateView()"
             pTooltip="Close" tooltipPosition="top">
             <i class="far fa-times-circle "></i>
-        </a>
+        </a> -->
             <p-card>
                 <div class="row">
                     <div class="col-md-12">
@@ -1564,7 +1564,7 @@
                                         <div class="card shadow mb-4">
                                             <div>
                                                 <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;"(click)="ADDMSSToTree()">ADD MSS</button>
+                                                <button class="btn btn-dark" *ngIf="MSSTreeButton" style="float:right;"(click)="ADDMSSToTree()">ADD MSS</button>
                                             </div>
                                             <div class="card-body">
                                                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
@@ -1628,7 +1628,7 @@
                                         <div class="card shadow mb-4">
                                             <div>
                                                 <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;"(click)="ADDMSSToTree()">ADD MSS</button>
+                                                <button class="btn btn-dark" style="float:right;" *ngIf="MSSTreeButton" (click)="ADDMSSToTree()">ADD MSS</button>
                                             </div>
                                             <div class="card-body">
                                                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
@@ -1685,7 +1685,7 @@
                                         <div class="card shadow mb-4">
                                             <div>
                                                 <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">ADD MSS</button>
+                                                <button class="btn btn-dark" style="float:right;" *ngIf="MSSTreeButton"  (click)="ADDMSSToTree()">ADD MSS</button>
                                             </div>
                                             <div class="card-body">
                                                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
@@ -1742,7 +1742,7 @@
                                         <div class="card shadow mb-4">
                                             <div>
                                                 <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">ADD MSS</button>
+                                                <button class="btn btn-dark" style="float:right;"*ngIf="MSSTreeButton"  (click)="ADDMSSToTree()">ADD MSS</button>
                                             </div>
                                             <div class="card-body">
                                                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
@@ -1799,8 +1799,7 @@
                                         <div class="card shadow mb-4">
                                             <div>
                                                 <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;"
-                                                    (click)="ADDMSSToTree()">save</button>
+                                                <button class="btn btn-dark" style="float:right;"*ngIf="MSSTreeButton" (click)="ADDMSSToTree()">save</button>
                                             </div>
                                             <div class="card-body">
                                                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
