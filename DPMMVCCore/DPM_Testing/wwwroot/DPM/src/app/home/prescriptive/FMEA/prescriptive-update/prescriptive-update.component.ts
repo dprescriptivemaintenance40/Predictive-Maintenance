@@ -3038,6 +3038,7 @@ async ADDMSSToTree() {
 
               }else if(strategy == 'SR'){
                 // obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
+                obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                 obj['MSSStartergy'] = this.MSSStratergy
                 this.MSSTaskObj.push(obj)
@@ -3065,7 +3066,6 @@ async ADDMSSToTree() {
                   obj['MSSStartergy'] = this.MSSStratergy
                   this.MSSTaskObj.push(obj)
                 } else{
-
                     //  var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
                     //  var ocmHours : number = this.FCAFFInterval
                     //   // var ocmWeek : number = ocmHours.split(" ")[0]
