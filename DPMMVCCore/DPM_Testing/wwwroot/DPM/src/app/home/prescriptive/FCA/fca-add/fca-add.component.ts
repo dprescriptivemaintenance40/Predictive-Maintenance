@@ -1433,99 +1433,44 @@ async SelectNodeToView(p){
       this.Vibration = "Vibration"
       Vibration = "Vibration"
       this.FCACondition.push(this.Vibration)
-      
-      this.UpdateFCACondition.push({Vibration})
-      this.UpdateFCACondition.push({Noice})
-      this.UpdateFCACondition.push({Leakage})
-      this.UpdateFCACondition.push({PerformanceDrop})
-      this.UpdateFCACondition.push({TempratureChange})
-      this.UpdateFCACondition.push({EmmisionChange})
-      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
-      this.UpdateFCACondition.push({Other})
     }
     if(this.Noice != ""){
       this.Noice = "Noice"
       Noice = "Noice"
       this.FCACondition.push(this.Noice)
-      this.UpdateFCACondition.push({Vibration})
-      this.UpdateFCACondition.push({Noice})
-      this.UpdateFCACondition.push({Leakage})
-      this.UpdateFCACondition.push({PerformanceDrop})
-      this.UpdateFCACondition.push({TempratureChange})
-      this.UpdateFCACondition.push({EmmisionChange})
-      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
-      this.UpdateFCACondition.push({Other})
     }
     if(this.Leakage != ""){
       this.Leakage = "Leakage"
       this.FCACondition.push(this.Leakage)
       Leakage = "Leakage"
-      this.UpdateFCACondition.push({Vibration})
-      this.UpdateFCACondition.push({Noice})
-      this.UpdateFCACondition.push({Leakage})
-      this.UpdateFCACondition.push({PerformanceDrop})
-      this.UpdateFCACondition.push({TempratureChange})
-      this.UpdateFCACondition.push({EmmisionChange})
-      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
-      this.UpdateFCACondition.push({Other})
       
     }
     if(this.PerformanceDrop != ""){
       this.PerformanceDrop = "Performance Drop"
       this.FCACondition.push(this.PerformanceDrop)
       PerformanceDrop = "Performance Drop"
-      this.UpdateFCACondition.push({Vibration})
-      this.UpdateFCACondition.push({Noice})
-      this.UpdateFCACondition.push({Leakage})
-      this.UpdateFCACondition.push({PerformanceDrop})
-      this.UpdateFCACondition.push({TempratureChange})
-      this.UpdateFCACondition.push({EmmisionChange})
-      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
-      this.UpdateFCACondition.push({Other})
     }
     if(this.TempratureChange != ""){
       this.TempratureChange = "Temprature Change"
       this.FCACondition.push(this.TempratureChange)
       TempratureChange = "Temprature Change"
-      this.UpdateFCACondition.push({Vibration})
-      this.UpdateFCACondition.push({Noice})
-      this.UpdateFCACondition.push({Leakage})
-      this.UpdateFCACondition.push({PerformanceDrop})
-      this.UpdateFCACondition.push({TempratureChange})
-      this.UpdateFCACondition.push({EmmisionChange})
-      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
-      this.UpdateFCACondition.push({Other})
     }
     if(this.EmmisionChange != ""){
       this.EmmisionChange = "Emmision Change"
       this.FCACondition.push(this.EmmisionChange)
       EmmisionChange = "Emmision Change"
-      this.UpdateFCACondition.push({Vibration})
-      this.UpdateFCACondition.push({Noice})
-      this.UpdateFCACondition.push({Leakage})
-      this.UpdateFCACondition.push({PerformanceDrop})
-      this.UpdateFCACondition.push({TempratureChange})
-      this.UpdateFCACondition.push({EmmisionChange})
-      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
-      this.UpdateFCACondition.push({Other})
     }
     if(this.IncreaseLubricantConsumption != ""){
       this.IncreaseLubricantConsumption = "Increase Lubricant Consumption"
       this.FCACondition.push(this.IncreaseLubricantConsumption)
       IncreaseLubricantConsumption = "Increase Lubricant Consumption"
-      this.UpdateFCACondition.push({Vibration})
-      this.UpdateFCACondition.push({Noice})
-      this.UpdateFCACondition.push({Leakage})
-      this.UpdateFCACondition.push({PerformanceDrop})
-      this.UpdateFCACondition.push({TempratureChange})
-      this.UpdateFCACondition.push({EmmisionChange})
-      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
-      this.UpdateFCACondition.push({Other})
     }
     if(this.Other != ""){
       this.Other = "Other"
       this.FCACondition.push(this.Other)
       Other = "Other"
+    }
+    
       this.UpdateFCACondition.push({Vibration})
       this.UpdateFCACondition.push({Noice})
       this.UpdateFCACondition.push({Leakage})
@@ -1534,8 +1479,7 @@ async SelectNodeToView(p){
       this.UpdateFCACondition.push({EmmisionChange})
       this.UpdateFCACondition.push({IncreaseLubricantConsumption})
       this.UpdateFCACondition.push({Other})
-    }
-    
+      
       this.changeDetectorRef.detectChanges()
       this.warningsign = !this.warningsign;
       
@@ -1561,55 +1505,38 @@ async SelectNodeToView(p){
       this.HumanSenses = "Human Senses"
       HumanSenses = "Human Senses"
       this.FCACondition.push(this.HumanSenses)
-      this.UpdateFCACondition.push({HumanSenses})
-      this.UpdateFCACondition.push({ExistingInstumentation})
-      this.UpdateFCACondition.push({NewInstumentation})
-      this.UpdateFCACondition.push({ProcessCondtions})
-      this.UpdateFCACondition.push({SampleAnyalysis})
     
     }
     if(this.ExistingInstumentation != ""){
       this.ExistingInstumentation = "Existing Instumentation(portable or fixed)"
       ExistingInstumentation = "Existing Instumentation(portable or fixed)"
       this.FCACondition.push(this.ExistingInstumentation)
-      this.UpdateFCACondition.push({HumanSenses})
-      this.UpdateFCACondition.push({ExistingInstumentation})
-      this.UpdateFCACondition.push({NewInstumentation})
-      this.UpdateFCACondition.push({ProcessCondtions})
-      this.UpdateFCACondition.push({SampleAnyalysis})
     
     }
     if(this.NewInstumentation != ""){
       this.NewInstumentation = "New Instumentation(portable or fixed)"
       NewInstumentation = "New Instumentation(portable or fixed)"
       this.FCACondition.push(this.NewInstumentation)
-      this.UpdateFCACondition.push({HumanSenses})
-      this.UpdateFCACondition.push({ExistingInstumentation})
-      this.UpdateFCACondition.push({NewInstumentation})
-      this.UpdateFCACondition.push({ProcessCondtions})
-      this.UpdateFCACondition.push({SampleAnyalysis})
     
     }
     if(this.ProcessCondtions != ""){
       this.ProcessCondtions = "Process Condtions"
       ProcessCondtions = "Process Condtions"
       this.FCACondition.push(this.ProcessCondtions)
-      this.UpdateFCACondition.push({HumanSenses})
-      this.UpdateFCACondition.push({ExistingInstumentation})
-      this.UpdateFCACondition.push({NewInstumentation})
-      this.UpdateFCACondition.push({ProcessCondtions})
-      this.UpdateFCACondition.push({SampleAnyalysis})
     }
     if(this.SampleAnyalysis != ""){
       this.SampleAnyalysis = "Sample Anyalysis"
       SampleAnyalysis = "Sample Anyalysis"
       this.FCACondition.push(this.SampleAnyalysis)
-      this.UpdateFCACondition.push({HumanSenses})
-      this.UpdateFCACondition.push({ExistingInstumentation})
-      this.UpdateFCACondition.push({NewInstumentation})
-      this.UpdateFCACondition.push({ProcessCondtions})
-      this.UpdateFCACondition.push({SampleAnyalysis})
     }
+
+    
+    this.UpdateFCACondition.push({HumanSenses})
+    this.UpdateFCACondition.push({ExistingInstumentation})
+    this.UpdateFCACondition.push({NewInstumentation})
+    this.UpdateFCACondition.push({ProcessCondtions})
+    this.UpdateFCACondition.push({SampleAnyalysis})
+
       this.changeDetectorRef.detectChanges()
       this.intervaldeteacting = !this.intervaldeteacting;    
       const element = document.querySelector("#PatternIntervalDeteacting")

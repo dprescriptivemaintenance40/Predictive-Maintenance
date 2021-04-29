@@ -994,7 +994,7 @@
         <ng-template pTemplate="footer">
             <div>
                 <button *ngIf="UpdatePatternAddEnable" label="Next"  (click)="PatternUpdateCancel()" type="button" class="btn btn-dark">Cancel</button>
-                <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">ADD</button>
+                
                 <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;" (click)="AddPatternToNewFM()" type="button" class="btn btn-dark">ADD Pattern</button>
             </div>
         </ng-template>
@@ -1002,7 +1002,7 @@
     </div>
 
 </div>
-<div style="padding: 15px;">
+<div *ngIf="FCAUpdatePageEnable" style="padding: 15px;">
     <p-card>
         <ng-template pTemplate="title">
             <label>Update FCA</label>
@@ -1014,7 +1014,7 @@
               <div class="row">
                   <div class="col-md-6">
                     <div class="input-group mb-3">
-                        <select  class="form-select"  class="form-control" >
+                        <select [(ngModel)]="Updateinterval" class="form-select"  class="form-control" >
                             <option value="">Choose</option>
                                 <option value="Days" selected> Days</option>
                                 <option value="Week" selected> Week</option>
@@ -1025,7 +1025,7 @@
                   </div>
                   <div class="col-md-1"></div>
                   <div class="col-md-5">
-                    <input type="number"  name="Interval" class="form-control">
+                    <input type="number" [(ngModel)]="UpdateintervalValue" name="Interval" class="form-control">
                   
                   </div>
               </div>
@@ -1038,42 +1038,42 @@
                     <div class="col-sm"><br>
                     <p-card>
                    Vibration<br>
-                   <td><input type="checkbox" value="Vibration" name="name1" />&nbsp;</td>
+                   <td><input type="checkbox" [(ngModel)]="UpdateVibration" value="Vibration" name="name1" />&nbsp;</td>
                     </p-card></div>
                   <div class="col-sm"><br>
                     <p-card>
                     Noice<br>
-                    <td><input type="checkbox"  value="Noice" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" [(ngModel)]="UpdateNoice"  value="Noice" name="name1" />&nbsp;</td>
                     </p-card></div>
                    <div class="col-sm"><br>
                     <p-card>
                     Leakage<br>
-                    <td><input type="checkbox" value="Leakage" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" [(ngModel)]="UpdateLeakage" value="Leakage" name="name1" />&nbsp;</td>
                     </p-card></div>
                    <div class="col-sm"><br>
                     <p-card>
                     Performance drop<br>
-                    <td><input type="checkbox" value="Performance drop" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" [(ngModel)]="UpdatePerformanceDrop" value="Performance drop" name="name1" />&nbsp;</td>
                     </p-card></div>
                    <div class="col-sm"><br>
                     <p-card>
                     Temprature Change<br>
-                    <td><input type="checkbox" value="Temprature Change" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" [(ngModel)]="UpdateTempratureChange" value="Temprature Change" name="name1" />&nbsp;</td>
                     </p-card></div>
                     <div class="col-sm"><br>
                      <p-card>
                         Emmision changes<br>
-                        <td><input type="checkbox"  value="Emmision changes" name="name1" />&nbsp;</td>
+                        <td><input type="checkbox" [(ngModel)]="UpdateEmmisionChange"  value="Emmision changes" name="name1" />&nbsp;</td>
                         </p-card></div>
                        <div class="col-sm"><br>
                         <p-card>
                         Increase Lubricant Consumption<br>
-                        <td><input type="checkbox"  value="Increase Lubricant Consumption" name="name1" />&nbsp;</td>
+                        <td><input type="checkbox" [(ngModel)]="UpdateIncreaseLubricantConsumption" value="Increase Lubricant Consumption" name="name1" />&nbsp;</td>
                         </p-card></div>
                        <div class="col-sm"><br>
                         <p-card>
                         Other<br>
-                        <td><input type="checkbox"  value=" Other" name="name1" />&nbsp;</td>
+                        <td><input type="checkbox" [(ngModel)]="UpdateOther" value=" Other" name="name1" />&nbsp;</td>
                         </p-card></div>
                   </div>
              </div>
@@ -1086,27 +1086,27 @@
                     <div class="col-sm"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                    Human Senses<br>
-                   <td><input type="checkbox"  value=" Human Senses" name="name1" />&nbsp;</td>
+                   <td><input type="checkbox" [(ngModel)]="UpdateHumanSenses" value=" Human Senses" name="name1" />&nbsp;</td>
                   </div></div>
                   <div class="col-sm"><br>
                     <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                     Existing instumentation (portable or fixed)<br>
-                    <td><input type="checkbox"  value="Existing instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" [(ngModel)]="UpdateExistingInstumentation"  value="Existing instumentation(portable or fixed)" name="name1" />&nbsp;</td>
                    </div></div>
                    <div class="col-sm"><br>
                     <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                     New instumentation (portable or fixed)<br>
-                    <td><input type="checkbox"  value="New instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" [(ngModel)]="UpdateNewInstumentation"  value="New instumentation(portable or fixed)" name="name1" />&nbsp;</td>
                    </div></div>
                    <div class="col-sm"><br>
                     <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                     Process Condtions<br>
-                    <td><input type="checkbox"  value="Process Condtions" name="name1" />&nbsp;</td>
+                    <td><input type="checkbox" [(ngModel)]="UpdateProcessCondtions"  value="Process Condtions" name="name1" />&nbsp;</td>
                    </div></div>
                    <div class="col-sm"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                         Sample Anyalysis<br>
-                        <td><input type="checkbox" value="Sample Anyalysis" name="name1" />&nbsp;</td>
+                        <td><input type="checkbox" [(ngModel)]="UpdateSampleAnyalysis" value="Sample Anyalysis" name="name1" />&nbsp;</td>
                     </div>
                    </div>
                 </div>
@@ -1118,7 +1118,7 @@
               <div class="row">
                   <div class="col-md-6">
                     <div class="input-group mb-3">
-                        <select  class="form-select"  class="form-control" >
+                        <select [(ngModel)]="UpdateffInterval" class="form-select"  class="form-control" >
                             <option value="">Choose</option>
                                 <option value="Days" selected> Days</option>
                                 <option value="Week" selected> Week</option>
@@ -1129,7 +1129,7 @@
                   </div>
                   <div class="col-md-1"></div>
                   <div class="col-md-5">
-                    <input type="number"  name="Interval" class="form-control">
+                    <input type="number" [(ngModel)]="UpdateffIntervalValue" name="Interval" class="form-control">
                   
                   </div>
               </div>
@@ -1144,10 +1144,10 @@
                         </label>
                     </div>
                     <div class="col-md-2">
-                        Yes <td><input type="radio"  value="Failure is not Evident" name="name1" />&nbsp;</td>
+                        Yes <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN"  value="Failure is not Evident" name="name1" />&nbsp;</td>
                     </div>
                     <div class="col-md-2">
-                        No <td><input type="radio" value="Failure is Evident" name="name1" />&nbsp;</td>
+                        No <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN" value="Failure is Evident" name="name1" />&nbsp;</td>
                     </div>
                     <div class="col-sm"></div>
                 </div>
@@ -1162,10 +1162,10 @@
                         </label>
                     </div>
                     <div class="col-md-2">
-                        Yes <td><input type="radio"  value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
+                        Yes <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
                     </div>
                     <div class="col-md-2">
-                        No <td><input type="radio" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
+                        No <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
                     </div>
                     <div class="col-sm"></div>
                 </div>
@@ -1177,9 +1177,76 @@
                             could be improved</label>
                 </div>
                 <div class="row" style="padding-top:5px; padding-left:15px; padding-right:15px;">
-                    <textarea class="form-control custom-textarea" id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
+                    <textarea [(ngModel)]="UpdateFCAFreeText" class="form-control custom-textarea" id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
         
                 </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="!UpdateSafeLife == 0">
+                <div class="col-md-3">
+                    <label> Safe Life</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateFinalSafeUsefulLife" name="safelife" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="!UpdateUsefulLife == 0">
+                <div class="col-md-3">
+                    <label> Useful Life</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateFinalSafeUsefulLife" name="usefullife" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == '' || UpdateWebalYN == 'No' " >
+                <div class="col-md-3">
+                    <label>Alpha</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateAlpha" name="UpdateWebalYN" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;"  *ngIf="UpdateWebalYN == '' || UpdateWebalYN == 'No' ">
+                <div class="col-md-3">
+                    <label>Beta</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateBeta" name="UpdateWebalYN" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3">
+                    <label>Do you want new alpha and beta values using webal or you can directly change alpha and beta values from the above</label>
+                    
+                </div>
+                <div class="col-sm">
+                    Yes <td><input type="radio" [(ngModel)]="UpdateWebalYN" value="YES" name="ABYN" />
+                </div>
+                <div class="col-sm">
+                    No <td><input type="radio" [(ngModel)]="UpdateWebalYN" value="No" name="ABYN" />
+                </div>
+            </div>
+
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
+                <label> Provide List of Days for Failure Mode in excel format to calculate alpha, beta.
+                </label>
+                <p><small>Note : Put just one column in Excel with column name 'Days'</small></p>
+            </div>
+            
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
+                <div class="col-sm col-md-4 form-group">
+                    <input type="file" class="form-control-file btn btn-secondary" (change)="UpdateWebal($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
+                <label>Alpha  :  {{UpdateAlpha  | number : '1.0-2' }}</label>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
+                <label>Beta : {{UpdateBeta  | number : '1.0-2' }}</label>
+            </div>
+            
+            <div class="row" style="padding: 15px;">
+                <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">Update</button>
             </div>
 
 
