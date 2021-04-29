@@ -849,7 +849,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         label: index + 1,
         type: "person",
         styleClass: 'p-person',
-        expanded: true,
         editMSS: true,
         data: { name: this.LSFailureMode  },
         children: [
@@ -1121,6 +1120,24 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           name: this.ADDbeta
         }
       }
+      let Safelife = {
+        label: "Safelife",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.ADDSafeLife
+        }
+      }
+      let Usefullife = {
+        label: "Usefullife",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.ADDUsefulLife
+        }
+      }
 
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
@@ -1128,6 +1145,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Safelife)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Usefullife)
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
@@ -1253,6 +1272,24 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         name: this.ADDbeta
       }
     }
+    let Safelife = {
+      label: "Safelife",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.ADDSafeLife
+      }
+    }
+    let Usefullife = {
+      label: "Usefullife",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.ADDUsefulLife
+      }
+    }
 
 
 
@@ -1262,6 +1299,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Safelife)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Usefullife)
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
