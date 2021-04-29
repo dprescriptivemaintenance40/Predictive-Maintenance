@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -9,6 +9,7 @@ import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescripti
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
 import * as Chart from 'chart.js';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-prescriptive-update',
@@ -196,6 +197,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   };
 
   ngOnInit() {
+    this.getData()
+  }
+
+  getData(){
     this.CPPrescriptiveUpdateData = JSON.parse(localStorage.getItem('PrescriptiveUpdateObject'))
     this.data1 = JSON.parse(this.CPPrescriptiveUpdateData.FMWithConsequenceTree)
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
@@ -1681,6 +1686,7 @@ async SelectNodeToEdit(p){
 
 async UpdatePattern(){
   this.FCAViewTreeEnabled = false
+  this.FCAUpdatePageEnable = true
   this.FailureModePatternTree = true
   this.AddFMPatternAddEnable = false;
   this.UpdatePatternAddEnable = true;
@@ -2007,16 +2013,218 @@ PatternUpdateBack(){
   this.FCAViewTreeEnabled = true
   this.ColorPatternTreUpdate(this.PatternBack, this.nodePath )
 }
+
+ public UpdateFinalFCACondition : any = [] 
+ public UpdateFinalFCAInterval : number = 0; 
+ public UpdateFinalFCAFFIInterval : number = 0;
+ public UpdateFinalSafeUsefulLife : number = 0; 
+ public UpdateSafeLife : number = 0; 
+ public UpdateUsefulLife : number = 0; 
+ public UpdateFCAConditionsFINAL : any = []
+ public UpdateFCAIntervalsFINAL : any = []
+ public UpdateFCACommentFINAL : any = []
+ public UpdateWebalYN : string =""
  async PatternUpdateAdd(){
+  var FCAIntervalDWY : any, FCAIntervalDWYValues : any;
+  if(this.Updateinterval == 'Days'){ 
+    FCAIntervalDWY = 'Days';
+    FCAIntervalDWYValues = this.UpdateintervalValue;
+    this.UpdateFCAIntervalsFINAL.push({FCAIntervalDWY}) 
+    this.UpdateFCAIntervalsFINAL.push({FCAIntervalDWYValues})
+    this.UpdateFinalFCAInterval = this.UpdateintervalValue * 1 * 24
+  } else if(this.Updateinterval == 'Week'){ 
+    FCAIntervalDWY = 'Week';
+    FCAIntervalDWYValues = this.UpdateintervalValue;
+    this.UpdateFCAIntervalsFINAL.push({FCAIntervalDWY}) 
+    this.UpdateFCAIntervalsFINAL.push({FCAIntervalDWYValues})
+    this.UpdateFinalFCAInterval = this.UpdateintervalValue * 7 * 24
+  } else if(this.Updateinterval == 'Month'){ 
+    FCAIntervalDWY = 'Month';
+    FCAIntervalDWYValues = this.UpdateintervalValue;
+    this.UpdateFCAIntervalsFINAL.push({FCAIntervalDWY}) 
+    this.UpdateFCAIntervalsFINAL.push({FCAIntervalDWYValues})
+    this.UpdateFinalFCAInterval = this.UpdateintervalValue * 30 * 24
+  } else if(this.Updateinterval == 'Year'){ 
+    FCAIntervalDWY = 'Year';
+    FCAIntervalDWYValues = this.UpdateintervalValue;
+    this.UpdateFCAIntervalsFINAL.push({FCAIntervalDWY}) 
+    this.UpdateFCAIntervalsFINAL.push({FCAIntervalDWYValues}) 
+    this.UpdateFinalFCAInterval = this.UpdateintervalValue * 365 * 24
+  }
+
+  var FCAFFIIntervalDWY : any, FCAFFIIntervalDWYValues : any;
+  if(this.UpdateffInterval == 'Days'){ 
+    FCAFFIIntervalDWY = 'Days';
+    FCAFFIIntervalDWYValues = this.UpdateffIntervalValue;
+    this.UpdateFCAIntervalsFINAL.push({FCAFFIIntervalDWY}) 
+    this.UpdateFCAIntervalsFINAL.push({FCAFFIIntervalDWYValues})
+    this.UpdateFinalFCAFFIInterval = this.UpdateffIntervalValue * 1 * 24
+  } else if(this.UpdateffInterval == 'Week'){ 
+    FCAFFIIntervalDWY = 'Week';
+    FCAFFIIntervalDWYValues = this.UpdateffIntervalValue;
+    this.UpdateFCAIntervalsFINAL.push({FCAFFIIntervalDWY}) 
+    this.UpdateFCAIntervalsFINAL.push({FCAFFIIntervalDWYValues})
+    this.UpdateFinalFCAFFIInterval = this.UpdateffIntervalValue * 7 * 24
+  } else if(this.UpdateffInterval == 'Month'){ 
+    FCAFFIIntervalDWY = 'Month';
+    FCAFFIIntervalDWYValues = this.UpdateffIntervalValue;
+    this.UpdateFCAIntervalsFINAL.push({FCAFFIIntervalDWY}) 
+    this.UpdateFCAIntervalsFINAL.push({FCAFFIIntervalDWYValues})
+    this.UpdateFinalFCAFFIInterval = this.UpdateffIntervalValue * 30 * 24
+  } else if(this.UpdateffInterval == 'Year'){  
+    FCAFFIIntervalDWY = 'Year';
+    FCAFFIIntervalDWYValues = this.UpdateffIntervalValue;
+    this.UpdateFCAIntervalsFINAL.push({FCAFFIIntervalDWY}) 
+    this.UpdateFCAIntervalsFINAL.push({FCAFFIIntervalDWYValues})
+    this.UpdateFinalFCAFFIInterval = this.UpdateffIntervalValue * 365 * 24
+  }
+
+  var Vibration : string = "", Noice : string = "", Leakage : string = "",
+  PerformanceDrop : string = "", TempratureChange : string = "",
+  EmmisionChange : string = "", IncreaseLubricantConsumption : string = "", 
+  Other: string = "";
+  
+  Vibration = this.UpdateVibration
+  Noice = this.UpdateNoice
+  Leakage = this.UpdateLeakage
+  PerformanceDrop = this.UpdatePerformanceDrop
+  TempratureChange = this.UpdateTempratureChange
+  EmmisionChange = this.UpdateEmmisionChange
+  IncreaseLubricantConsumption = this.UpdateIncreaseLubricantConsumption
+  Other = this.UpdateOther
+
+  if(this.UpdateVibration != ""){
+  this.UpdateVibration = "Vibration"
+  Vibration = "Vibration"
+  this.UpdateFinalFCACondition.push(this.UpdateVibration)
+  }
+  if(this.UpdateNoice != ""){
+  this.UpdateNoice = "Noice"
+  Noice = "Noice"
+  this.UpdateFinalFCACondition.push(this.UpdateNoice)
+  }
+  if(this.UpdateLeakage != ""){
+  this.UpdateLeakage = "Leakage"
+  this.UpdateFinalFCACondition.push(this.UpdateLeakage)
+  Leakage = "Leakage"
+
+  }
+  if(this.UpdatePerformanceDrop != ""){
+  this.UpdatePerformanceDrop = "Performance Drop"
+  this.UpdateFinalFCACondition.push(this.UpdatePerformanceDrop)
+  PerformanceDrop = "Performance Drop"
+  }
+  if(this.UpdateTempratureChange != ""){
+  this.UpdateTempratureChange = "Temprature Change"
+  this.UpdateFinalFCACondition.push(this.UpdateTempratureChange)
+  TempratureChange = "Temprature Change"
+  }
+  if(this.UpdateEmmisionChange != ""){
+  this.UpdateEmmisionChange = "Emmision Change"
+  this.UpdateFinalFCACondition.push(this.UpdateEmmisionChange)
+  EmmisionChange = "Emmision Change"
+  }
+  if(this.UpdateIncreaseLubricantConsumption != ""){
+  this.UpdateIncreaseLubricantConsumption = "Increase Lubricant Consumption"
+  this.UpdateFinalFCACondition.push(this.UpdateIncreaseLubricantConsumption)
+  IncreaseLubricantConsumption = "Increase Lubricant Consumption"
+  }
+  if(this.UpdateOther != ""){
+  this.UpdateOther = "Other"
+  this.UpdateFinalFCACondition.push(this.UpdateOther)
+  Other = "Other"
+  }
+
+this.UpdateFCAConditionsFINAL.push({Vibration})
+this.UpdateFCAConditionsFINAL.push({Noice})
+this.UpdateFCAConditionsFINAL.push({Leakage})
+this.UpdateFCAConditionsFINAL.push({PerformanceDrop})
+this.UpdateFCAConditionsFINAL.push({TempratureChange})
+this.UpdateFCAConditionsFINAL.push({EmmisionChange})
+this.UpdateFCAConditionsFINAL.push({IncreaseLubricantConsumption})
+this.UpdateFCAConditionsFINAL.push({Other})
+
+var HumanSenses : string = "",  ExistingInstumentation : string = "",  NewInstumentation : string = "",  ProcessCondtions : string = "",  SampleAnyalysis : string = ""
+HumanSenses = this.UpdateHumanSenses
+ExistingInstumentation = this.UpdateExistingInstumentation
+NewInstumentation = this.UpdateNewInstumentation
+ProcessCondtions = this.UpdateProcessCondtions
+SampleAnyalysis = this.UpdateSampleAnyalysis
+if(this.UpdateHumanSenses != ""){
+this.UpdateHumanSenses = "Human Senses"
+HumanSenses = "Human Senses"
+this.UpdateFinalFCACondition.push(this.UpdateHumanSenses)
+
+}
+if(this.UpdateExistingInstumentation != ""){
+this.UpdateExistingInstumentation = "Existing Instumentation(portable or fixed)"
+ExistingInstumentation = "Existing Instumentation(portable or fixed)"
+this.UpdateFinalFCACondition.push(this.UpdateExistingInstumentation)
+
+}
+if(this.UpdateNewInstumentation != ""){
+this.UpdateNewInstumentation = "New Instumentation(portable or fixed)"
+NewInstumentation = "New Instumentation(portable or fixed)"
+this.UpdateFinalFCACondition.push(this.UpdateNewInstumentation)
+
+}
+if(this.UpdateProcessCondtions != ""){
+this.UpdateProcessCondtions = "Process Condtions"
+ProcessCondtions = "Process Condtions"
+this.UpdateFinalFCACondition.push(this.UpdateProcessCondtions)
+}
+if(this.UpdateSampleAnyalysis != ""){
+this.UpdateSampleAnyalysis = "Sample Anyalysis"
+SampleAnyalysis = "Sample Anyalysis"
+this.UpdateFinalFCACondition.push(this.UpdateSampleAnyalysis)
+}
+
+
+this.UpdateFCAConditionsFINAL.push({HumanSenses})
+this.UpdateFCAConditionsFINAL.push({ExistingInstumentation})
+this.UpdateFCAConditionsFINAL.push({NewInstumentation})
+this.UpdateFCAConditionsFINAL.push({ProcessCondtions})
+this.UpdateFCAConditionsFINAL.push({SampleAnyalysis})
+
+if(this.UpdateSafeLife != 0 ){
+  this.UpdateSafeLife = this.UpdateFinalSafeUsefulLife
+}else if(this.UpdateUsefulLife != 0 ){
+  this.UpdateUsefulLife = this.UpdateFinalSafeUsefulLife
+}
+
+this.UpdateFCACommentFINAL.push(this.UpdateCommentFIEYN)
+this.UpdateFCACommentFINAL.push(this.UpdateCommentFIEYN2)
+this.UpdateFCACommentFINAL.push(this.UpdateFCAFreeText)
+
+  this.FCAUpdatePageEnable = false
   this.FCAView[0].children[0].data.name = this.Pattern
+  this.FCAView[0].children[1].data.name = this.UpdateFinalFCACondition
+  this.FCAView[0].children[2].data.name = this.UpdateFinalFCAInterval
+  this.FCAView[0].children[3].data.name = this.UpdateFinalFCAFFIInterval
+  this.FCAView[0].children[4].data.name = this.UpdateAlpha.toFixed(2)
+  this.FCAView[0].children[5].data.name = this.UpdateBeta.toFixed(2)
+  this.FCAView[0].children[6].data.name = this.UpdateFinalSafeUsefulLife
   this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].pattern = this.Pattern
   this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 0
   this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[0].data.name = this.Pattern
+  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].data.name = this.UpdateFinalFCACondition
+  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[2].data.name = this.UpdateFinalFCAInterval
+  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[3].data.name = this.UpdateFinalFCAFFIInterval
+  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[4].data.name = this.UpdateAlpha.toFixed(2)
+  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[5].data.name = this.UpdateBeta.toFixed(2)
+  this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label -1].children[6].data.name = this.UpdateFinalSafeUsefulLife
+  this.FCAViewEnabled = false
+  this.FCAViewTreeEnabled = false
+  this.changeDetectorRef.detectChanges()
+  this.FCAViewEnabled = true
+  this.FCAViewTreeEnabled = true
+ 
   this.FCAView[0].pattern = this.Pattern
   this.FCAView[0].nodePath = 0
   this.EnabledPatternUpdate = true;
   this.AddFMPatternAddEnable = false;
   this.UpdatePatternAddEnable = false;
+
   if (this.Pattern == 'Pattern 1') {
     const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
@@ -2076,6 +2284,16 @@ public EnabledPatternUpdate : boolean = false
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach(element => {
       if(element.data.name == FM && element.label == this.FCAView[0].label){
         element.children[0].data.name = this.Pattern
+        element.children[1].data.name = this.UpdateFinalFCACondition
+        element.children[2].data.name = this.UpdateFinalFCAInterval
+        element.children[3].data.name = this.UpdateFinalFCAFFIInterval
+        element.children[4].data.name = this.UpdateAlpha
+        element.children[5].data.name = this.UpdateBeta
+        if(this.UpdateSafeLife != 0){
+          element.children[6].data.name = this.UpdateSafeLife
+        }else if(this.UpdateUsefulLife != 0){
+        element.children[6].data.name = this.UpdateUsefulLife
+        }
       }
     })
     
@@ -2091,6 +2309,16 @@ public EnabledPatternUpdate : boolean = false
     this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.forEach(element => {
           if(element.FunctionMode == FM && element.LocalEffect == LE && element.SystemEffect == SE && element.Consequence == Con){
             element.Pattern = this.Pattern
+            element.FCACondition = JSON.stringify(this.UpdateFinalFCACondition)
+            element.FCAInterval = this.UpdateFinalFCAInterval
+            element.FCAFFI = this.UpdateFinalFCAFFIInterval
+            element.FCAAlpha = this.UpdateAlpha
+            element.FCABeta = this.UpdateBeta
+            element.FCASafeLife = this.UpdateSafeLife
+            element.FCAUsefulLife = this.UpdateUsefulLife
+            element.FCAUpdateIntervals = JSON.stringify(this.UpdateFCAIntervalsFINAL)
+            element.FCAUpdateConditions = JSON.stringify(this.UpdateFCAConditionsFINAL)
+            element.FCAComment = JSON.stringify(this.UpdateFCACommentFINAL)
             CPObj.centrifugalPumpPrescriptiveFailureModes.push(element)
           }
     });
@@ -2232,6 +2460,327 @@ SelectPatternForFailureMode(value: string) {
 
 }
 
+public UpdateFCAFreeText : string = ""
+public UpdateVibration : string = ""
+public UpdateNoice : string = ""
+public UpdateLeakage : string = ""
+public UpdatePerformanceDrop : string = ""
+public UpdateTempratureChange : string = ""
+public UpdateEmmisionChange : string = ""
+public UpdateIncreaseLubricantConsumption : string = ""
+public UpdateOther : string = ""
+public UpdateHumanSenses : string = ""
+public UpdateExistingInstumentation : string = ""
+public UpdateNewInstumentation : string = ""
+public UpdateProcessCondtions : string = ""
+public UpdateSampleAnyalysis : string = ""
+public UpdateCommentFIEYN : string = ""
+public UpdateCommentFIEYN2 : string = ""
+public Updateinterval : string = ""
+public UpdateintervalValue : number  = 0
+public UpdateffInterval : string =""
+public UpdateffIntervalValue : number  = 0
+public FCAUpdatePageEnable : boolean = false
+
+public UpdateAlpha : number = 0
+public UpdateBeta : number = 0
+
+CompleteUpdateFCA(p){
+ console.log(p.label)
+ var FMName , LocalEffect , SystemEffect, Consequence;
+ 
+ this.data1[0].children[0].children[0].children.forEach(element => {
+    if (element.label === p.label){
+      FMName = element.data.name;
+      LocalEffect  = element.children[0].children[0].data.name
+      SystemEffect = element.children[0].children[1].data.name
+      Consequence  = element.children[0].children[2].data.name
+
+      var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence)
+      var FCAComment = JSON.parse(UpdateData.FCAComment)
+      var FCAUpdateConditions = JSON.parse(UpdateData.FCAUpdateConditions)
+      var FCAUpdateIntervals = JSON.parse(UpdateData.FCAUpdateIntervals)
+      
+      
+      this.UpdateAlpha = UpdateData.FCAAlpha
+      this.UpdateBeta = UpdateData.FCABeta
+      this.UpdateSafeLife = UpdateData.FCASafeLife
+      if(this.UpdateSafeLife != 0){
+        this.UpdateFinalSafeUsefulLife = this.UpdateSafeLife
+      }
+      this.UpdateUsefulLife = UpdateData.FCAUsefulLife
+      
+      if(this.UpdateUsefulLife != 0){
+        this.UpdateFinalSafeUsefulLife = this.UpdateUsefulLife
+      }
+      this.UpdateVibration = FCAUpdateConditions[0].Vibration
+      this.UpdateNoice = FCAUpdateConditions[1].Noice
+      this.UpdateLeakage = FCAUpdateConditions[2].Leakage
+      this.UpdatePerformanceDrop = FCAUpdateConditions[3].PerformanceDrop
+      this.UpdateTempratureChange = FCAUpdateConditions[4].TempratureChange
+      this.UpdateEmmisionChange = FCAUpdateConditions[5].EmmisionChange
+      this.UpdateIncreaseLubricantConsumption = FCAUpdateConditions[6].IncreaseLubricantConsumption
+      this.UpdateOther = FCAUpdateConditions[7].Other
+      this.UpdateHumanSenses = FCAUpdateConditions[8].HumanSenses
+      this.UpdateExistingInstumentation = FCAUpdateConditions[9].ExistingInstumentation
+      this.UpdateNewInstumentation = FCAUpdateConditions[10].NewInstumentation
+      this.UpdateProcessCondtions = FCAUpdateConditions[11].ProcessCondtions
+      this.UpdateSampleAnyalysis = FCAUpdateConditions[12].SampleAnyalysis
+
+      this.UpdateCommentFIEYN = FCAComment[0]
+      this.UpdateCommentFIEYN2 = FCAComment[1]
+      this.UpdateFCAFreeText = FCAComment[2]
+
+      this.Updateinterval = FCAUpdateIntervals[0].FCAIntervalDWY
+      this.UpdateintervalValue = FCAUpdateIntervals[1].FCAIntervalDWYValues
+      this.UpdateffInterval = FCAUpdateIntervals[2].FCAFFIIntervalDWY
+      this.UpdateffIntervalValue =  FCAUpdateIntervals[3].FCAFFIIntervalDWYValues
+    }
+ })
+
+
+}
+
+
+UpdateWebal(event){
+  var file = event.target.files[0];
+  let fileReader = new FileReader();
+  fileReader.readAsArrayBuffer(file);
+  fileReader.onload = (e) => {
+    var arrayBuffer : any = fileReader.result;
+    var data = new Uint8Array(arrayBuffer);
+    var arr = new Array();
+    for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+    var bstr = arr.join("");
+    var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+    var first_sheet_name = workbook.SheetNames[0];
+    var worksheet = workbook.Sheets[first_sheet_name];
+    console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
+    var daysList : any = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+    var Data : any = []
+    daysList.forEach(element => {
+      Data.push(element.Days)
+    });
+    var headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), headers).subscribe(
+      res =>{
+          var ab : any = res;
+          this.UpdateAlpha =ab.alpha;
+          this.UpdateBeta =ab.beta;
+          this.changeDetectorRef.detectChanges();
+      }, err => {console.log(err.error)}
+    )
+  }
+
+}
+
+public UpdateMSSConsequence : string =""
+  public UpdateMSSImagePath : string = ""
+  public UpdateMSSImageFlag : boolean = false
+  public UpdateMSSImageValues : any = []
+  public UpdateMSSTaskObj : any = []
+  public UpdatedMSSStartegy : string = ""
+  private UpdateMSSTreeLabel : number = 0
+  private UpdateMSSAvailability : number = 0
+  SelectNodeToEditMSS(p){
+    this.UpdateMSSTreeLabel = p.label
+   this.UpdatedMSSStartegy = p.children[0].data.name
+   this.UpdateMSSConsequence = this.UpdatedMSSStartegy.split('-')[0]
+   var Data : any, FMName, LocalEffect, SystemEffect, Consequence;
+   if(this.UpdateMSSConsequence == 'A'){
+    Data = ['A-OCM', 'A-SO', 'A-SR', 'A-FFT', 'A-FromAbove', 'A-RED']
+    this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/A.JPG"
+   }else if(this.UpdateMSSConsequence == 'B'){
+    Data = ['B-OCM', 'B-SO', 'B-SR', 'B-FromAbove', 'B-RED']
+      this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/B.JPG"
+   }else if(this.UpdateMSSConsequence == 'C'){
+    Data = ['C-OCM', 'C-SO', 'C-SR', 'C-OFM', 'C-RED']
+    this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/C.JPG"
+  }else if(this.UpdateMSSConsequence == 'D'){
+    Data = ['D-OCM', 'D-SO', 'D-SR','D-OFM', 'D-RED']
+    this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/D.JPG"
+  }else if(this.UpdateMSSConsequence == 'E'){
+    Data = ['E-OCM', 'E-SO', 'E-SR', 'E-FFT', 'E-OFM', 'E-RED']
+    this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/E.JPG"
+ }
+    this.UpdateMSSImageValues = Data;
+
+
+    this.data1[0].children[0].children[0].children.forEach(element => {
+      if (element.label === p.label){
+        FMName = element.data.name;
+        LocalEffect  = element.children[0].children[0].data.name
+        SystemEffect = element.children[0].children[1].data.name
+        Consequence  = element.children[0].children[2].data.name
+  
+        var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence)
+        this.UpdateMSSAvailability = UpdateData.MSSAvailability
+     
+      }
+    })
+
+    this.changeDetectorRef.detectChanges()
+    this.UpdateMSSImageFlag = true
+  }
+
+  UpdateMSSToTree(){
+    this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[2].children[0].data.name = this.UpdatedMSSStartegy
+    this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[0].data.name = this.UpdatedMSSStartegy
+ 
+    if(this.UpdatedMSSStartegy == 'A-FFT'    ||  this.UpdatedMSSStartegy == 'A-OCM' || this.UpdatedMSSStartegy == 'A-SO'
+        || this.UpdatedMSSStartegy == 'A-SR' ||  this.UpdatedMSSStartegy == 'A-RED' || this.UpdatedMSSStartegy == 'A-OFM'
+        || this.UpdatedMSSStartegy == 'B-FFT'||  this.UpdatedMSSStartegy == 'B-OCM' || this.UpdatedMSSStartegy == 'B-SO'
+        || this.UpdatedMSSStartegy == 'B-SR' ||  this.UpdatedMSSStartegy == 'B-RED' || this.UpdatedMSSStartegy == 'B-OFM' ){
+
+          if(this.UpdatedMSSStartegy == 'A-OFM' ||     this.UpdatedMSSStartegy == 'B-FFT'){
+            let obj = {}
+            obj['MSSMaintenanceInterval'] = 'Not Applicable'
+            obj['MSSMaintenanceTask'] = 'Not Applicable'
+            obj['MSSStartergy'] = this.UpdatedMSSStartegy
+            this.UpdateMSSTaskObj.push(obj)
+          } else{
+
+            var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
+            var ocmWeek : number = ocmHours.split(" ")[0]
+                ocmWeek = Math.round((ocmWeek / 24) / 7)
+
+            
+              var strategy = this.UpdatedMSSStartegy.split('-')[1];
+              let obj = {}
+              if(strategy == 'FFT'){
+                obj['MSSMaintenanceInterval'] = this.UpdateMSSAvailability;
+                obj['MSSMaintenanceTask'] = 'Function Check'
+                obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                obj['MSSAvailability'] = this.UpdateMSSAvailability
+                this.UpdateMSSTaskObj.push(obj)
+
+              }else if(strategy == 'OCM'){
+                obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
+                obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                obj['MSSAvailability'] = this.UpdateMSSAvailability
+                this.UpdateMSSTaskObj.push(obj)
+
+              }else if(strategy == 'SO'){
+                obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}` 
+                obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                obj['MSSAvailability'] = this.UpdateMSSAvailability
+                this.UpdateMSSTaskObj.push(obj)
+
+              }else if(strategy == 'SR'){
+                obj['MSSMaintenanceInterval'] = `${ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}` 
+                obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                obj['MSSAvailability'] = this.UpdateMSSAvailability
+                this.UpdateMSSTaskObj.push(obj)
+
+              }else if(strategy == 'RED'){
+                obj['MSSMaintenanceInterval'] = 'NA'
+                obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                obj['MSSAvailability'] = this.UpdateMSSAvailability
+                this.UpdateMSSTaskObj.push(obj)
+
+              }
+          }  
+
+      }else if(  this.UpdatedMSSStartegy == 'C-FFT'||  this.UpdatedMSSStartegy == 'C-OCM' || this.UpdatedMSSStartegy == 'C-SO'
+              || this.UpdatedMSSStartegy == 'C-SR' ||  this.UpdatedMSSStartegy == 'C-RED' || this.UpdatedMSSStartegy == 'C-OFM'
+              || this.UpdatedMSSStartegy == 'D-FFT'||  this.UpdatedMSSStartegy == 'D-OCM' || this.UpdatedMSSStartegy == 'D-SO'
+              || this.UpdatedMSSStartegy == 'D-SR' ||  this.UpdatedMSSStartegy == 'D-RED' || this.UpdatedMSSStartegy == 'D-OFM'
+              || this.UpdatedMSSStartegy == 'E-FFT'||  this.UpdatedMSSStartegy == 'E-OCM' || this.UpdatedMSSStartegy == 'E-SO'
+              || this.UpdatedMSSStartegy == 'E-SR' ||  this.UpdatedMSSStartegy == 'E-RED' || this.UpdatedMSSStartegy == 'E-OFM'){
+
+                if(this.UpdatedMSSStartegy == 'C-FFT' ||     this.UpdatedMSSStartegy == 'D-FFT'){
+                  let obj = {}
+                  obj['MSSMaintenanceInterval'] = 'Not Applicable'
+                  obj['MSSMaintenanceTask'] = 'Not Applicable'
+                  obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                  this.UpdateMSSTaskObj.push(obj)
+                } else{
+
+                    var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
+                    var ocmWeek : number = ocmHours.split(" ")[0]
+                    ocmWeek = Math.round((ocmWeek / 24) / 7)
+
+                   
+              
+                    var strategy = this.UpdatedMSSStartegy.split('-')[1];
+                    let obj = {}
+                    if(strategy == 'FFT'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'Function check'
+                      obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      this.UpdateMSSTaskObj.push(obj)
+                    }else if(strategy == 'OCM'){
+                      obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
+                      obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                      obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      this.UpdateMSSTaskObj.push(obj)
+
+                    }else if(strategy == 'SO'){
+                      obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}` 
+                      obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                      obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      this.UpdateMSSTaskObj.push(obj)
+
+                    }else if(strategy == 'SR'){
+                      obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}`  
+                      obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                      obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      this.UpdateMSSTaskObj.push(obj)
+
+                    }else if(strategy == 'RED'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                      obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      this.UpdateMSSTaskObj.push(obj)
+
+                    }
+                    else if(strategy == 'OFM'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'No Task'
+                      obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      this.UpdateMSSTaskObj.push(obj)
+
+                    }
+              }
+      }
+ 
+      var CPObj: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+      CPObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId
+      CPObj.FMWithConsequenceTree = JSON.stringify(this.data1)
+      this.UpdateMSSTaskObj.forEach(element => {
+        element.CPPFMId = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].CPPFMId
+      
+      });
+      CPObj.centrifugalPumpPrescriptiveFailureModes = this.UpdateMSSTaskObj
+      this.http.put<any>('api/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate', CPObj).subscribe(
+        res =>{
+         this.UpdateMSSImageFlag = false
+         this.prescriptiveTree = false
+         this.changeDetectorRef.detectChanges()
+         this.prescriptiveTree = true
+         localStorage.removeItem('PrescriptiveUpdateObject');
+         localStorage.setItem('PrescriptiveUpdateObject', JSON.stringify(res.centrifugalPumpPrescriptiveModel[0]))
+         this.getData();
+        //  this.router.navigateByUrl('/Home/Prescriptive/List') 
+         this.messageService.add({ severity: 'info', summary:'Info', detail: 'Successfully updated'})
+        }, err => { console.log(err.error)}
+      )
+  }
+
 
 
   dragStartC1(e, con1) {
@@ -2264,9 +2813,7 @@ SelectPatternForFailureMode(value: string) {
       this.droppedYesNo1 = null;
     }
   }
-
-
-
+  
   dragStartC3(e, con3) {
     this.droppedYesNo2 = con3;
   }
