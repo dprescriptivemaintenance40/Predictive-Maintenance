@@ -1052,7 +1052,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           }
         }
         if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
-          this.ADDSafeLife = 0;
           let SafeLife  = {
             label: "SafeLife",
             type: "person",
@@ -1064,7 +1063,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           }
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
        }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
-        this.ADDUsefulLife = 0;
         let UsefulLife = {
             label: "UsefulLife",
             type: "person",
