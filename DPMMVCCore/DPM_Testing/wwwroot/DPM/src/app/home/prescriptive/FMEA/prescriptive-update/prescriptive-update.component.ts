@@ -849,9 +849,21 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         label: index + 1,
         type: "person",
         styleClass: 'p-person',
+        expanded: true,
         editMSS: true,
         data: { name: this.LSFailureMode  },
-        children: []
+        children: [
+          // {
+          //   label: "Stratorgy",
+          //   type: "person",
+          //   styleClass: 'p-person',
+          //   expanded: true,
+          //   data: {
+          //     name: this.MSSStratergy
+          //   }
+          // },
+
+        ]
 
       }
 
@@ -998,12 +1010,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.changeDetectorRef.detectChanges();
     this.PatternTree()
     this.GetChartData();
-    if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
-      this.ADDUsefulLife = 0;
-   }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
-      this.ADDSafeLife = 0;
-   }
-
 
   }
 
@@ -1046,6 +1052,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           }
         }
         if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+          this.ADDSafeLife = 0;
           let SafeLife  = {
             label: "SafeLife",
             type: "person",
@@ -1057,6 +1064,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           }
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
        }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+        this.ADDUsefulLife = 0;
         let UsefulLife = {
             label: "UsefulLife",
             type: "person",
@@ -1069,7 +1077,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
        }
        let Condition = {
-        label: "Pattern",
+        label: "Condition",
         type: "person",
         styleClass: "p-person",
         expanded: true,
@@ -1078,7 +1086,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       }
       let Interval = {
-        label: "Pattern",
+        label: "Interval",
         type: "person",
         styleClass: "p-person",
         expanded: true,
@@ -1087,7 +1095,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       }
       let FFI = {
-        label: "Pattern",
+        label: "FFI",
         type: "person",
         styleClass: "p-person",
         expanded: true,
@@ -1095,11 +1103,31 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           name: this.FCAFFInterval
         }
       }
+      let Alpha = {
+        label: "Alpha",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.ADDalpha
+        }
+      }
+      let Beta = {
+        label: "Beta",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.ADDbeta
+        }
+      }
 
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Interval)
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
@@ -1207,12 +1235,33 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         name: this.FCAFFInterval
       }
     }
+    let Alpha = {
+      label: "Alpha",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.ADDalpha
+      }
+    }
+    let Beta = {
+      label: "Beta",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.ADDbeta
+      }
+    }
+
 
 
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Interval)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
+      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
@@ -3137,11 +3186,24 @@ async ADDMSSToTree() {
                     }
               }
       }
+
+      let MSSStrategy = {
+        label: "Strategy",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.MSSStratergy,
+        }
+      }
+      this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children [ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.length  ].children.push(MSSStrategy)
+
       this.MSSTreeButton = true
       this.prescriptiveTree = true
       const element = document.querySelector("#MainScroll")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
       this.MSSViewEnabled = false
+
 
   } 
 }
