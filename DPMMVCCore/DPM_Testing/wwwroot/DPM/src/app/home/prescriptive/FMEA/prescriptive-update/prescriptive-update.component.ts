@@ -849,6 +849,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         label: index + 1,
         type: "person",
         styleClass: 'p-person',
+        expanded: true,
         editMSS: true,
         data: { name: this.LSFailureMode  },
         children: [
@@ -1157,7 +1158,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha.toFixed(2)
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta.toFixed(2)
-        
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
         
 
         this.prescriptiveTree = true
@@ -1311,6 +1313,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
       
       
       
