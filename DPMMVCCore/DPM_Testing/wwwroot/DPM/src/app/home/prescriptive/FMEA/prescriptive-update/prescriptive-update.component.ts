@@ -986,6 +986,12 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.changeDetectorRef.detectChanges();
     this.PatternTree()
     this.GetChartData();
+    if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+      this.ADDUsefulLife = 0;
+   }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+      this.ADDSafeLife = 0;
+   }
+
 
   }
 
@@ -1028,27 +1034,27 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           }
         }
         if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
-          let UsefulLife = {
-            label: "UsefulLife",
-            type: "person",
-            styleClass: "p-person",
-            expanded: true,
-            data: {
-              name: this.ADDUsefulLife
-            }
-          }
-          this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
-       }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
-          let SafeLife = {
+          let SafeLife  = {
             label: "SafeLife",
             type: "person",
             styleClass: "p-person",
             expanded: true,
             data: {
-              name: this.ADDSafeLife
+              name: this.ADDSafeLife    
             }
           }
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
+       }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+        let UsefulLife = {
+            label: "UsefulLife",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+              name:  this.ADDUsefulLife
+            }
+          }
+          this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
        }
        let Condition = {
         label: "Pattern",
@@ -1189,6 +1195,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         name: this.FCAFFInterval
       }
     }
+
 
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
@@ -1999,6 +2006,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.AddFMMSSAddEnable = false;
     this.changeDetectorRef.detectChanges();
     this.GetChartData();
+    
     const element = document.querySelector("#ViewtoAddPattern")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
@@ -2589,8 +2597,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     }
   }
 
-
-
   dragStartC3(e, con3) {
     this.droppedYesNo2 = con3;
   }
@@ -2612,7 +2618,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
 
   dragEndC4(e) { }
-
 
   dropC4(e) {
     if (this.droppedYesNo3) {
@@ -2882,6 +2887,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
    }else{
      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please choose Yes or No for webal analysis"})
    }
+
  }
 
  async ADDalphaBetaSave(){

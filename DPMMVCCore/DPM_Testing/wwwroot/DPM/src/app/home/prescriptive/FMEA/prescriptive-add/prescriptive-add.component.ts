@@ -587,8 +587,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         ]
       } 
     ];
- 
- 
   }
 
   FailureModeDropped(c) {

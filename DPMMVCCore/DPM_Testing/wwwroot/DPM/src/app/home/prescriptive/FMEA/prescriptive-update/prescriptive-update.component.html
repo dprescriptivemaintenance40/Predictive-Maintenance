@@ -1425,7 +1425,7 @@
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content">
-                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A' || ConsequenceFM == 'B' ">
+                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceBasedMSS == 'A' || ConsequenceBasedMSS == 'B' ">
                                                 <div class="col-md-3">
                                                     <label> Safe Life</label>
                                                 </div>
@@ -1433,7 +1433,7 @@
                                                     <input type="number" [(ngModel)]="ADDSafeLife" name="safelife" class="form-control">
                                                 </div>
                                             </div>
-                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D' || ConsequenceFM == 'E' || ConsequenceFM == 'C' ">
+                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceBasedMSS == 'D' || ConsequenceBasedMSS == 'E' || ConsequenceBasedMSS == 'C' ">
                                                 <div class="col-md-3">
                                                     <label> Useful Life</label>
                                                 </div>
