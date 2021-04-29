@@ -197,6 +197,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   };
 
   ngOnInit() {
+    this.getData()
+  }
+
+  getData(){
     this.CPPrescriptiveUpdateData = JSON.parse(localStorage.getItem('PrescriptiveUpdateObject'))
     this.data1 = JSON.parse(this.CPPrescriptiveUpdateData.FMWithConsequenceTree)
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
@@ -2280,6 +2284,16 @@ public EnabledPatternUpdate : boolean = false
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach(element => {
       if(element.data.name == FM && element.label == this.FCAView[0].label){
         element.children[0].data.name = this.Pattern
+        element.children[1].data.name = this.UpdateFinalFCACondition
+        element.children[2].data.name = this.UpdateFinalFCAInterval
+        element.children[3].data.name = this.UpdateFinalFCAFFIInterval
+        element.children[4].data.name = this.UpdateAlpha
+        element.children[5].data.name = this.UpdateBeta
+        if(this.UpdateSafeLife != 0){
+          element.children[6].data.name = this.UpdateSafeLife
+        }else if(this.UpdateUsefulLife != 0){
+        element.children[6].data.name = this.UpdateUsefulLife
+        }
       }
     })
     
@@ -2752,9 +2766,16 @@ public UpdateMSSConsequence : string =""
       
       });
       CPObj.centrifugalPumpPrescriptiveFailureModes = this.UpdateMSSTaskObj
-      this.http.put('api/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate', CPObj).subscribe(
+      this.http.put<any>('api/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate', CPObj).subscribe(
         res =>{
-         this.UpdateMSSImageFlag = false 
+         this.UpdateMSSImageFlag = false
+         this.prescriptiveTree = false
+         this.changeDetectorRef.detectChanges()
+         this.prescriptiveTree = true
+         localStorage.removeItem('PrescriptiveUpdateObject');
+         localStorage.setItem('PrescriptiveUpdateObject', JSON.stringify(res.centrifugalPumpPrescriptiveModel[0]))
+         this.getData();
+        //  this.router.navigateByUrl('/Home/Prescriptive/List') 
          this.messageService.add({ severity: 'info', summary:'Info', detail: 'Successfully updated'})
         }, err => { console.log(err.error)}
       )

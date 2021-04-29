@@ -482,7 +482,7 @@ namespace DPM.Controllers.Prescriptive
                     }
                 }
 
-                return Ok();
+                return Ok(new { centrifugalPumpPrescriptiveModel });
             }
             catch (Exception exe)
             {
