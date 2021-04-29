@@ -3073,8 +3073,6 @@ async ADDMSSToTree() {
                       var ocmHours:number  = this.FCAFFInterval
                       var result = (ocmHours/ 24)
                       var x= result/7
-                    
-                 
                     var strategy = this.MSSStratergy.split('-')[1];
                     let obj = {}
                     if(strategy == 'FFT'){

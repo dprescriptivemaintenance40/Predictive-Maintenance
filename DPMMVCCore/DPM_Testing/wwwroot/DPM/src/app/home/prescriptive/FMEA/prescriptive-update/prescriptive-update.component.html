@@ -1425,24 +1425,20 @@
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content">
-                                            <div class="row" style="padding: 15px;"
-                                                *ngIf="ConsequenceFM == 'A' || ConsequenceFM == 'B' || ConsequenceFM == 'C' ">
+                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A' || ConsequenceFM == 'B' ">
                                                 <div class="col-md-3">
                                                     <label> Safe Life</label>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <input type="number" [(ngModel)]="ADDSafeLife" name=" safelife"
-                                                        class="form-control">
+                                                    <input type="number" [(ngModel)]="ADDSafeLife" name="safelife" class="form-control">
                                                 </div>
                                             </div>
-                                            <div class="row" style="padding: 15px;"
-                                                *ngIf="ConsequenceFM == 'D' || ConsequenceFM == 'E' ">
+                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D' || ConsequenceFM == 'E' || ConsequenceFM == 'C' ">
                                                 <div class="col-md-3">
                                                     <label> Useful Life</label>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <input type="number" [(ngModel)]="ADDUsefulLife" name=" usefullife"
-                                                        class="form-control">
+                                                    <input type="number" [(ngModel)]="ADDUsefulLife" name="usefullife" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row" style="padding: 15px;">
