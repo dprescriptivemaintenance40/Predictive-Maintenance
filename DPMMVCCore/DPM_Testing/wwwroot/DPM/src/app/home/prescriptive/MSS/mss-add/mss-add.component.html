@@ -19,8 +19,7 @@
 </div>
 
 <div *ngIf="PrescriptiveTree" style="overflow:scroll;" id="GoToTheSaveMSS">
-<p-card>
-    <!-- <button class="btn btn-dark" style="float:left;" (click)="MSSBACK()" > <i class="pi pi-plus"></i>Back</button> &ensp; -->
+<!-- <p-card> -->
     <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float:left;" (click)="ADDMSS()" > <i class="pi pi-plus"></i>MSS</button>
     <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check"></i></button>
     <p-organizationChart [value]="TreeUptoFCA" selectionMode="single" styleClass="company">
@@ -34,7 +33,7 @@
             {{node.label}}
         </ng-template>
     </p-organizationChart>
-</p-card>
+<!-- </p-card> -->
 </div>
 
 <div id="GoToTheSaveMSS1">
@@ -93,10 +92,6 @@
             </div>
         </div> 
     </ng-template>
-    <!-- <ng-template pTemplate="footer">
-        <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
-    </ng-template> -->
 </p-card>
 </div>
 

@@ -26,6 +26,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   private FMCount: number = 0;
   private FMCount1: number = 0;
   private FMLSConsequenceName: string = "";
+  public WholeFunction: string = "";
   private activeIndex: number;
   public InsertLSEffect: any;
   public failureModeDataBind: any;
@@ -435,7 +436,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
     this.http.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
       res => {
-        console.log(res)
+        // console.log(res)
         this.dropDownData = res;
 
         this.dropDownData.forEach(element => {
@@ -496,7 +497,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       }
 
   FunctionNext() {
-    if (this.FunctionFluidType.length > 0 && this.FunctionRatedHead.length > 0 && this.FunctionPeriodType.length > 0) {
+    if (this.FunctionFluidType.length > 0 && this.FunctionRatedHead.length > 0 && this.FunctionPeriodType.length > 0 || this.WholeFunction.length >0) {
       this.prescriptiveFuntion = false;
       this.prescriptiveFunctionFailure = true;
       this.activeIndex = 1;
@@ -509,7 +510,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
     } else if (this.FunctionPeriodType.length == 0) {
       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'PeriodType is missing' });
-
     }
   }
 
@@ -568,15 +568,13 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     } else {
       funFailure = this.dropedFailure[0].Description
     }
-
-
     this.data1 = [
       {
         label: "Function",
         type: "person",
         styleClass: "p-person",
         expanded: true,
-        data: { name: "Fluid Type : " + this.FunctionFluidType + ", " + "Rated Head : " + this.FunctionRatedHead + " m " + ", " + "Duration Of : " + this.FunctionPeriodType + " days" },
+        data: { name: "Fluid Type : " + this.FunctionFluidType + ", " + "Rated Head : " + this.FunctionRatedHead + " m " + ", " + "Duration Of : " + this.FunctionPeriodType + " days"},
         children: [
           {
             label: "Function Failure",
@@ -587,9 +585,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             children: this.InsertLSEffect
           }
         ]
-      }
+      } 
     ];
-
   }
 
   FailureModeDropped(c) {
@@ -825,7 +822,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
     this.http.put('api/PrescriptiveAPI/CFPrescriptiveAdd', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {
-        console.log(res);
+        // console.log(res);
         this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
         this.router.navigateByUrl('/Home/Prescriptive/List');
         this.SaveConcequencesEnable = false;
@@ -871,7 +868,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
     this.http.post('api/PrescriptiveAPI/PostCentrifugalPumpPrescriptiveData', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {
-        console.log(res);
+        // console.log(res);
         this.treeResponseData = res;
         localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
         this.prescriptiveTreeNextEnable = true

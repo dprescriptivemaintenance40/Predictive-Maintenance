@@ -152,7 +152,6 @@ export class MSSAddComponent implements OnInit {
       this.SaveBtnEnable = true;
       this.AddBtnEnable = false;
     }
-  
     const element = document.querySelector("#GoToTheSaveMSS")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }

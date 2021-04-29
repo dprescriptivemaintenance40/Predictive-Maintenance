@@ -20,7 +20,7 @@
 
 <p-toast position="top-center"></p-toast>
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
-    <p-card>
+    <!-- <p-card> -->
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
         <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()" pTooltip="Select To Add FCA" tooltipPosition="top"><i class="pi pi-plus">Add FCA</i></button>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button>
@@ -36,7 +36,7 @@
                 {{node.label}}
             </ng-template>
         </p-organizationChart>
-    </p-card>
+    <!-- </p-card> -->
 </div>
 
 
@@ -462,6 +462,7 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
+            <a class="btn btn-white" style="border:none" > </a>
             <button class="btn btn-dark" style="float:right;" (click)="SafeUsefulLifeSave()">Save</button>
          </ng-template>
     </p-card>
@@ -491,6 +492,7 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
+            <a class="btn btn-white" style="border:none" > </a>
             <button class="btn btn-dark" style="float:right;" (click)="alphaBetaSave()">Save</button>
             
         </ng-template>
