@@ -284,6 +284,32 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
  public ADDFCAUpdateConditions: string = ""
  public UpdateFCACondition : any = []
 public UpdateFCAIntervals : any = []
+
+
+public UpdateFCAFreeText : string = ""
+public UpdateVibration : string = ""
+public UpdateNoice : string = ""
+public UpdateLeakage : string = ""
+public UpdatePerformanceDrop : string = ""
+public UpdateTempratureChange : string = ""
+public UpdateEmmisionChange : string = ""
+public UpdateIncreaseLubricantConsumption : string = ""
+public UpdateOther : string = ""
+public UpdateHumanSenses : string = ""
+public UpdateExistingInstumentation : string = ""
+public UpdateNewInstumentation : string = ""
+public UpdateProcessCondtions : string = ""
+public UpdateSampleAnyalysis : string = ""
+public UpdateCommentFIEYN : string = ""
+public UpdateCommentFIEYN2 : string = ""
+public Updateinterval : string = ""
+public UpdateintervalValue : number  = 0
+public UpdateffInterval : string =""
+public UpdateffIntervalValue : number  = 0
+public FCAUpdatePageEnable : boolean = false
+
+public UpdateAlpha : number = 0
+public UpdateBeta : number = 0
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -1154,6 +1180,7 @@ async AddPatternToNewFM() {
         }
       }
       if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+        this.ADDUsefulLife = 0;
         let SafeLife  = {
           label: "SafeLife",
           type: "person",
@@ -1165,13 +1192,14 @@ async AddPatternToNewFM() {
         }
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
      }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+      this.ADDSafeLife = 0;
       let UsefulLife = {
           label: "UsefulLife",
           type: "person",
           styleClass: "p-person",
           expanded: true,
           data: {
-            name:  this.ADDUsefulLife
+            name: this.ADDUsefulLife
           }
         }
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
@@ -1221,6 +1249,7 @@ async AddPatternToNewFM() {
         name: this.ADDbeta
       }
     }
+   
     let Safelife = {
       label: "Safelife",
       type: "person",
@@ -1274,6 +1303,13 @@ async AddPatternToNewFM() {
       this.ADDMSSView = true
       this.MSSViewShow = true;
       this.prescriptiveTree = false
+
+      this.ADDalpha = 0;
+        this.ADDbeta = 0;
+        this.ADDSafeLife = 0
+        this.ADDUsefulLife = 0;
+        this.ADDalphaBeta = false;
+        this.ADDSafeUsefulLife = false;
 
     } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
@@ -2993,30 +3029,6 @@ SelectPatternForFailureMode(value: string) {
 
 }
 
-public UpdateFCAFreeText : string = ""
-public UpdateVibration : string = ""
-public UpdateNoice : string = ""
-public UpdateLeakage : string = ""
-public UpdatePerformanceDrop : string = ""
-public UpdateTempratureChange : string = ""
-public UpdateEmmisionChange : string = ""
-public UpdateIncreaseLubricantConsumption : string = ""
-public UpdateOther : string = ""
-public UpdateHumanSenses : string = ""
-public UpdateExistingInstumentation : string = ""
-public UpdateNewInstumentation : string = ""
-public UpdateProcessCondtions : string = ""
-public UpdateSampleAnyalysis : string = ""
-public UpdateCommentFIEYN : string = ""
-public UpdateCommentFIEYN2 : string = ""
-public Updateinterval : string = ""
-public UpdateintervalValue : number  = 0
-public UpdateffInterval : string =""
-public UpdateffIntervalValue : number  = 0
-public FCAUpdatePageEnable : boolean = false
-
-public UpdateAlpha : number = 0
-public UpdateBeta : number = 0
 
 CompleteUpdateFCA(p){
  console.log(p.label)
