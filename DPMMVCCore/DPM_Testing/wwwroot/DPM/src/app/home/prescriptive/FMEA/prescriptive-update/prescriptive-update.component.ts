@@ -1179,31 +1179,7 @@ async AddPatternToNewFM() {
           name: this.Pattern
         }
       }
-      if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
-        this.ADDUsefulLife = 0;
-        let SafeLife  = {
-          label: "SafeLife",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.ADDSafeLife    
-          }
-        }
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
-     }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
-      this.ADDSafeLife = 0;
-      let UsefulLife = {
-          label: "UsefulLife",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.ADDUsefulLife
-          }
-        }
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
-     }
+      
      let Condition = {
       label: "Condition",
       type: "person",
@@ -1249,25 +1225,6 @@ async AddPatternToNewFM() {
         name: this.ADDbeta
       }
     }
-   
-    let Safelife = {
-      label: "Safelife",
-      type: "person",
-      styleClass: "p-person",
-      expanded: true,
-      data: {
-        name: this.ADDSafeLife
-      }
-    }
-    let Usefullife = {
-      label: "Usefullife",
-      type: "person",
-      styleClass: "p-person",
-      expanded: true,
-      data: {
-        name: this.ADDUsefulLife
-      }
-    }
 
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
@@ -1275,8 +1232,36 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
-      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Safelife)
-      this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Usefullife)
+
+        if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+          this.ADDUsefulLife = 0;
+          let SafeLife  = {
+            label: "SafeLife",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+              name: this.ADDSafeLife    
+            }
+          }
+          this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(SafeLife)
+          this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
+      }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+        this.ADDSafeLife = 0;
+        let UsefulLife = {
+            label: "UsefulLife",
+            type: "person",
+            styleClass: "p-person",
+            expanded: true,
+            data: {
+              name: this.ADDUsefulLife
+            }
+          }
+          
+          this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(UsefulLife)
+          this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
+      }
+      
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
@@ -1341,29 +1326,7 @@ async AddPatternToNewFM() {
         name: this.Pattern
       }
     }
-    if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
-      let UsefulLife = {
-        label: "UsefulLife",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.ADDUsefulLife
-        }
-      }
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
-   }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
-      let SafeLife = {
-        label: "SafeLife",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.ADDSafeLife
-        }
-      }
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
-   }
+    
    let Condition = {
     label: "Pattern",
     type: "person",
@@ -1409,26 +1372,7 @@ async AddPatternToNewFM() {
       name: this.ADDbeta
     }
   }
-  let Safelife = {
-    label: "Safelife",
-    type: "person",
-    styleClass: "p-person",
-    expanded: true,
-    data: {
-      name: this.ADDSafeLife
-    }
-  }
-  let Usefullife = {
-    label: "Usefullife",
-    type: "person",
-    styleClass: "p-person",
-    expanded: true,
-    data: {
-      name: this.ADDUsefulLife
-    }
-  }
-
-
+  
 
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
@@ -1436,8 +1380,37 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
-    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Safelife)
-    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Usefullife)
+
+      if( this.ConsequenceBasedMSS == 'C' || this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' ){
+        this.ADDSafeLife = 0;
+        let UsefulLife = {
+          label: "UsefulLife",
+          type: "person",
+          styleClass: "p-person",
+          expanded: true,
+          data: {
+            name: this.ADDUsefulLife
+          }
+        }
+        
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(UsefulLife)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
+    }else if(this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B'){
+      this.ADDUsefulLife = 0; 
+      let SafeLife = {
+          label: "SafeLife",
+          type: "person",
+          styleClass: "p-person",
+          expanded: true,
+          data: {
+            name: this.ADDSafeLife
+          }
+        }
+        
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(SafeLife)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
+    }
+    
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
