@@ -80,7 +80,7 @@
 
 
 
-<div class="FailureModeUpdate modal" id="FailureModeUpdate" tabindex="-1" role="dialog">
+<div style="overflow: scroll;" class="FailureModeUpdate modal" id="FailureModeUpdate" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -92,7 +92,7 @@
             </div>
             <div class="FailureModeUpdate modal-body">
                 <div class="container-fluid">
-                    <div class="container">
+                    <div style="overflow: scroll;" class="container">
                         <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                             {{func.Description}}
                         </div>
@@ -1002,300 +1002,6 @@
     </div>
 
 </div> -->
-<div *ngIf="FCAUpdatePageEnable" style="padding: 15px;">
-    <p-card>
-        <ng-template pTemplate="title">
-            <label>Update FCA</label>
-        </ng-template>
-
-        <ng-template pTemplate="content">
-            <div class="row" style="padding: 15px;">
-                <label>1. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone for a period of time, would you expect this failuer to have happened.</label>
-              <div class="row">
-                  <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <select [(ngModel)]="Updateinterval" class="form-select"  class="form-control" >
-                            <option value="">Choose</option>
-                                <option value="Days" selected> Days</option>
-                                <option value="Week" selected> Week</option>
-                                <option value="Month" selected>Month</option>
-                                <option value="Year" selected>Year</option>
-                            </select>
-                            </div>
-                  </div>
-                  <div class="col-md-1"></div>
-                  <div class="col-md-5">
-                    <input type="number" [(ngModel)]="UpdateintervalValue" name="Interval" class="form-control">
-                  
-                  </div>
-              </div>
-            </div>
-
-            <div class="row" style="padding: 15px;">
-                <label>2. Are their any prior warnings before the failuer occure? Tick all that apply.</label>
-              <div class="row">
-                <div class="row" >
-                    <div class="col-sm"><br>
-                    <p-card>
-                   Vibration<br>
-                   <td><input type="checkbox" [(ngModel)]="UpdateVibration" value="Vibration" name="name1" />&nbsp;</td>
-                    </p-card></div>
-                  <div class="col-sm"><br>
-                    <p-card>
-                    Noice<br>
-                    <td><input type="checkbox" [(ngModel)]="UpdateNoice"  value="Noice" name="name1" />&nbsp;</td>
-                    </p-card></div>
-                   <div class="col-sm"><br>
-                    <p-card>
-                    Leakage<br>
-                    <td><input type="checkbox" [(ngModel)]="UpdateLeakage" value="Leakage" name="name1" />&nbsp;</td>
-                    </p-card></div>
-                   <div class="col-sm"><br>
-                    <p-card>
-                    Performance drop<br>
-                    <td><input type="checkbox" [(ngModel)]="UpdatePerformanceDrop" value="Performance drop" name="name1" />&nbsp;</td>
-                    </p-card></div>
-                   <div class="col-sm"><br>
-                    <p-card>
-                    Temprature Change<br>
-                    <td><input type="checkbox" [(ngModel)]="UpdateTempratureChange" value="Temprature Change" name="name1" />&nbsp;</td>
-                    </p-card></div>
-                    <div class="col-sm"><br>
-                     <p-card>
-                        Emmision changes<br>
-                        <td><input type="checkbox" [(ngModel)]="UpdateEmmisionChange"  value="Emmision changes" name="name1" />&nbsp;</td>
-                        </p-card></div>
-                       <div class="col-sm"><br>
-                        <p-card>
-                        Increase Lubricant Consumption<br>
-                        <td><input type="checkbox" [(ngModel)]="UpdateIncreaseLubricantConsumption" value="Increase Lubricant Consumption" name="name1" />&nbsp;</td>
-                        </p-card></div>
-                       <div class="col-sm"><br>
-                        <p-card>
-                        Other<br>
-                        <td><input type="checkbox" [(ngModel)]="UpdateOther" value=" Other" name="name1" />&nbsp;</td>
-                        </p-card></div>
-                  </div>
-             </div>
-            </div>
-
-
-            <div class="row" style="padding: 15px;">
-                <label>3. If their are any warning signs, can they be monitored? if so, how?</label>
-                 <div class="row">
-                    <div class="col-sm"><br>
-                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                   Human Senses<br>
-                   <td><input type="checkbox" [(ngModel)]="UpdateHumanSenses" value=" Human Senses" name="name1" />&nbsp;</td>
-                  </div></div>
-                  <div class="col-sm"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    Existing instumentation (portable or fixed)<br>
-                    <td><input type="checkbox" [(ngModel)]="UpdateExistingInstumentation"  value="Existing instumentation(portable or fixed)" name="name1" />&nbsp;</td>
-                   </div></div>
-                   <div class="col-sm"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    New instumentation (portable or fixed)<br>
-                    <td><input type="checkbox" [(ngModel)]="UpdateNewInstumentation"  value="New instumentation(portable or fixed)" name="name1" />&nbsp;</td>
-                   </div></div>
-                   <div class="col-sm"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    Process Condtions<br>
-                    <td><input type="checkbox" [(ngModel)]="UpdateProcessCondtions"  value="Process Condtions" name="name1" />&nbsp;</td>
-                   </div></div>
-                   <div class="col-sm"><br>
-                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                        Sample Anyalysis<br>
-                        <td><input type="checkbox" [(ngModel)]="UpdateSampleAnyalysis" value="Sample Anyalysis" name="name1" />&nbsp;</td>
-                    </div>
-                   </div>
-                </div>
-            
-            </div>
-
-            <div class="row" style="padding: 15px;">
-                <label>4. What is the likely interval between detacting a warning sign and the failuer happening?</label>
-              <div class="row">
-                  <div class="col-md-6">
-                    <div class="input-group mb-3">
-                        <select [(ngModel)]="UpdateffInterval" class="form-select"  class="form-control" >
-                            <option value="">Choose</option>
-                                <option value="Days" selected> Days</option>
-                                <option value="Week" selected> Week</option>
-                                <option value="Month" selected>Month</option>
-                                <option value="Year" selected>Year</option>
-                            </select>
-                            </div>
-                  </div>
-                  <div class="col-md-1"></div>
-                  <div class="col-md-5">
-                    <input type="number" [(ngModel)]="UpdateffIntervalValue" name="Interval" class="form-control">
-                  
-                  </div>
-              </div>
-            </div>
-
-
-            <div class="row" style="padding: 15px;">
-                
-                <div class="row">
-                    <div class="col-md-7">
-                        <label>5. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
-                        </label>
-                    </div>
-                    <div class="col-md-2">
-                        Yes <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN"  value="Failure is not Evident" name="name1" />&nbsp;</td>
-                    </div>
-                    <div class="col-md-2">
-                        No <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN" value="Failure is Evident" name="name1" />&nbsp;</td>
-                    </div>
-                    <div class="col-sm"></div>
-                </div>
-            
-            </div>
-
-            <div class="row" style="padding: 15px;">
-                <div class="row">
-                    <div class="col-md-8">
-                        <label>6. Some of the failuer cannot avoided by maintenance. Would planned replacement or refurbishment
-                            maintainace prevent or mitigate this failuer Mode?
-                        </label>
-                    </div>
-                    <div class="col-md-2">
-                        Yes <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
-                    </div>
-                    <div class="col-md-2">
-                        No <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
-                    </div>
-                    <div class="col-sm"></div>
-                </div>
-            </div>
-
-            <div>
-                <div class="row" style="padding: 15px;">
-                    <label>7. Do you have any comments regarding the failuer of this equipment or how the maintainace of the equipment
-                            could be improved</label>
-                </div>
-                <div class="row" style="padding-top:5px; padding-left:15px; padding-right:15px;">
-                    <textarea [(ngModel)]="UpdateFCAFreeText" class="form-control custom-textarea" id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
-        
-                </div>
-            </div>
-            <div class="row" style="padding: 15px;" *ngIf="!UpdateSafeLife == 0">
-                <div class="col-md-3">
-                    <label> Safe Life</label>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" [(ngModel)]="UpdateFinalSafeUsefulLife" name="safelife" class="form-control">
-                </div>
-            </div>
-            <div class="row" style="padding: 15px;" *ngIf="!UpdateUsefulLife == 0">
-                <div class="col-md-3">
-                    <label> Useful Life</label>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" [(ngModel)]="UpdateFinalSafeUsefulLife" name="usefullife" class="form-control">
-                </div>
-            </div>
-            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == '' || UpdateWebalYN == 'No' " >
-                <div class="col-md-3">
-                    <label>Alpha</label>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" [(ngModel)]="UpdateAlpha" name="UpdateWebalYN" class="form-control">
-                </div>
-            </div>
-            <div class="row" style="padding: 15px;"  *ngIf="UpdateWebalYN == '' || UpdateWebalYN == 'No' ">
-                <div class="col-md-3">
-                    <label>Beta</label>
-                </div>
-                <div class="col-md-3">
-                    <input type="number" [(ngModel)]="UpdateBeta" name="UpdateWebalYN" class="form-control">
-                </div>
-            </div>
-            <div class="row" style="padding: 15px;">
-                <div class="col-md-3">
-                    <label>Do you want new alpha and beta values using webal or you can directly change alpha and beta values from the above</label>
-                    
-                </div>
-                <div class="col-sm">
-                    Yes <td><input type="radio" [(ngModel)]="UpdateWebalYN" value="YES" name="ABYN" />
-                </div>
-                <div class="col-sm">
-                    No <td><input type="radio" [(ngModel)]="UpdateWebalYN" value="No" name="ABYN" />
-                </div>
-            </div>
-
-            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
-                <label> Provide List of Days for Failure Mode in excel format to calculate alpha, beta.
-                </label>
-                <p><small>Note : Put just one column in Excel with column name 'Days'</small></p>
-            </div>
-            
-            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
-                <div class="col-sm col-md-4 form-group">
-                    <input type="file" class="form-control-file btn btn-secondary" (change)="UpdateWebal($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                
-                </div>
-            </div>
-            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
-                <label>Alpha  :  {{UpdateAlpha  | number : '1.0-2' }}</label>
-            </div>
-            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
-                <label>Beta : {{UpdateBeta  | number : '1.0-2' }}</label>
-            </div>
-            
-            <div class="row" style="padding: 15px;">
-                <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">Update</button>
-            </div>
-
-
-        </ng-template>
-
-    </p-card>
-</div>
-<style>
-    img-fluid {
-            max-width: 83%;
-            height: fit-content;
-        }
-</style>
-
-<div class="card" style="margin: 20px;"  *ngIf="UpdateMSSImageFlag" id="Consequence">
-    <p-card >
-    <ng-template pTemplate="subtitle">
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <img class="img-fluid px-3 px-sm-4" 
-                        src="{{UpdateMSSImagePath}}"alt="">
-            </div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="row">
-            <div class="col" *ngFor="let a of UpdateMSSImageValues" ><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                    <input type="radio"[(ngModel)]="UpdatedMSSStartegy" value="{{a}}" name="name1" />&nbsp;
-                    <label> {{a}}</label>
-                </div>
-            </div>
-        </div> 
-        <div class="row">
-            <div class="col">
-                <label>Availability % </label>
-            </div>
-            <div class="col">
-                <input type="number" [(ngModel)]="UpdateMSSAvailability" name="availability" class="form-control" id="availability">
-            </div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="UpdateMSSToTree()">Update MSS</button>
-    </ng-template>
-</p-card>
-</div>
-
 
 <div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;" id="ViewtoAddPattern">
     <p-organizationChart [value]="FCAChangeData" selectionMode="single" [(selection)]="selectedNode"
@@ -1359,14 +1065,14 @@
                                 </div>
                             </div>
                             
-                    <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                    <!-- <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
                         <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio"
                             class="custom-control-input">
                         <label class="custom-control-label" for="customRadio1">Select Path</label>
                         <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
                             <i class="fas fa-circle"></i>
                         </a>
-                    </div>
+                    </div> -->
                     <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
                         <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio"
                             class="custom-control-input">
@@ -2222,3 +1928,301 @@
             </p-card>
         </div>
 </div> 
+
+
+
+<div *ngIf="FCAUpdatePageEnable" style="padding: 15px;">
+    <p-card>
+        <ng-template pTemplate="title">
+            <label>Update FCA</label>
+        </ng-template>
+
+        <ng-template pTemplate="content">
+            <div class="row" style="padding: 15px;">
+                <label>1. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone for a period of time, would you expect this failuer to have happened.</label>
+              <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <select [(ngModel)]="Updateinterval" class="form-select"  class="form-control" >
+                            <option value="">Choose</option>
+                                <option value="Days" selected> Days</option>
+                                <option value="Week" selected> Week</option>
+                                <option value="Month" selected>Month</option>
+                                <option value="Year" selected>Year</option>
+                            </select>
+                            </div>
+                  </div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-5">
+                    <input type="number" [(ngModel)]="UpdateintervalValue" name="Interval" class="form-control">
+                  
+                  </div>
+              </div>
+            </div>
+
+            <div class="row" style="padding: 15px;">
+                <label>2. Are their any prior warnings before the failuer occure? Tick all that apply.</label>
+              <div class="row">
+                <div class="row" >
+                    <div class="col-sm"><br>
+                    <p-card>
+                   Vibration<br>
+                   <td><input type="checkbox" [(ngModel)]="UpdateVibration" value="Vibration" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                  <div class="col-sm"><br>
+                    <p-card>
+                    Noice<br>
+                    <td><input type="checkbox" [(ngModel)]="UpdateNoice"  value="Noice" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Leakage<br>
+                    <td><input type="checkbox" [(ngModel)]="UpdateLeakage" value="Leakage" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Performance drop<br>
+                    <td><input type="checkbox" [(ngModel)]="UpdatePerformanceDrop" value="Performance drop" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                   <div class="col-sm"><br>
+                    <p-card>
+                    Temprature Change<br>
+                    <td><input type="checkbox" [(ngModel)]="UpdateTempratureChange" value="Temprature Change" name="name1" />&nbsp;</td>
+                    </p-card></div>
+                    <div class="col-sm"><br>
+                     <p-card>
+                        Emmision changes<br>
+                        <td><input type="checkbox" [(ngModel)]="UpdateEmmisionChange"  value="Emmision changes" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm"><br>
+                        <p-card>
+                        Increase Lubricant Consumption<br>
+                        <td><input type="checkbox" [(ngModel)]="UpdateIncreaseLubricantConsumption" value="Increase Lubricant Consumption" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                       <div class="col-sm"><br>
+                        <p-card>
+                        Other<br>
+                        <td><input type="checkbox" [(ngModel)]="UpdateOther" value=" Other" name="name1" />&nbsp;</td>
+                        </p-card></div>
+                  </div>
+             </div>
+            </div>
+
+
+            <div class="row" style="padding: 15px;">
+                <label>3. If their are any warning signs, can they be monitored? if so, how?</label>
+                 <div class="row">
+                    <div class="col-sm"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                   Human Senses<br>
+                   <td><input type="checkbox" [(ngModel)]="UpdateHumanSenses" value=" Human Senses" name="name1" />&nbsp;</td>
+                  </div></div>
+                  <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Existing instumentation (portable or fixed)<br>
+                    <td><input type="checkbox" [(ngModel)]="UpdateExistingInstumentation"  value="Existing instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    New instumentation (portable or fixed)<br>
+                    <td><input type="checkbox" [(ngModel)]="UpdateNewInstumentation"  value="New instumentation(portable or fixed)" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                    Process Condtions<br>
+                    <td><input type="checkbox" [(ngModel)]="UpdateProcessCondtions"  value="Process Condtions" name="name1" />&nbsp;</td>
+                   </div></div>
+                   <div class="col-sm"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        Sample Anyalysis<br>
+                        <td><input type="checkbox" [(ngModel)]="UpdateSampleAnyalysis" value="Sample Anyalysis" name="name1" />&nbsp;</td>
+                    </div>
+                   </div>
+                </div>
+            
+            </div>
+
+            <div class="row" style="padding: 15px;">
+                <label>4. What is the likely interval between detacting a warning sign and the failuer happening?</label>
+              <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <select [(ngModel)]="UpdateffInterval" class="form-select"  class="form-control" >
+                            <option value="">Choose</option>
+                                <option value="Days" selected> Days</option>
+                                <option value="Week" selected> Week</option>
+                                <option value="Month" selected>Month</option>
+                                <option value="Year" selected>Year</option>
+                            </select>
+                            </div>
+                  </div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-5">
+                    <input type="number" [(ngModel)]="UpdateffIntervalValue" name="Interval" class="form-control">
+                  
+                  </div>
+              </div>
+            </div>
+
+
+            <div class="row" style="padding: 15px;">
+                
+                <div class="row">
+                    <div class="col-md-7">
+                        <label>5. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        Yes <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN"  value="Failure is not Evident" name="name1" />&nbsp;</td>
+                    </div>
+                    <div class="col-md-2">
+                        No <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN" value="Failure is Evident" name="name1" />&nbsp;</td>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            
+            </div>
+
+            <div class="row" style="padding: 15px;">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label>6. Some of the failuer cannot avoided by maintenance. Would planned replacement or refurbishment
+                            maintainace prevent or mitigate this failuer Mode?
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        Yes <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
+                    </div>
+                    <div class="col-md-2">
+                        No <td><input type="radio" [(ngModel)]="UpdateCommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="row" style="padding: 15px;">
+                    <label>7. Do you have any comments regarding the failuer of this equipment or how the maintainace of the equipment
+                            could be improved</label>
+                </div>
+                <div class="row" style="padding-top:5px; padding-left:15px; padding-right:15px;">
+                    <textarea [(ngModel)]="UpdateFCAFreeText" class="form-control custom-textarea" id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
+        
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="!UpdateSafeLife == 0">
+                <div class="col-md-3">
+                    <label> Safe Life</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateFinalSafeUsefulLife" name="safelife" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="!UpdateUsefulLife == 0">
+                <div class="col-md-3">
+                    <label> Useful Life</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateFinalSafeUsefulLife" name="usefullife" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == '' || UpdateWebalYN == 'No' " >
+                <div class="col-md-3">
+                    <label>Alpha</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateAlpha" name="UpdateWebalYN" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;"  *ngIf="UpdateWebalYN == '' || UpdateWebalYN == 'No' ">
+                <div class="col-md-3">
+                    <label>Beta</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateBeta" name="UpdateWebalYN" class="form-control">
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;">
+                <div class="col-md-3">
+                    <label>Do you want new alpha and beta values using webal or you can directly change alpha and beta values from the above</label>
+                    
+                </div>
+                <div class="col-sm">
+                    Yes <td><input type="radio" [(ngModel)]="UpdateWebalYN" value="YES" name="ABYN" />
+                </div>
+                <div class="col-sm">
+                    No <td><input type="radio" [(ngModel)]="UpdateWebalYN" value="No" name="ABYN" />
+                </div>
+            </div>
+
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
+                <label> Provide List of Days for Failure Mode in excel format to calculate alpha, beta.
+                </label>
+                <p><small>Note : Put just one column in Excel with column name 'Days'</small></p>
+            </div>
+            
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
+                <div class="col-sm col-md-4 form-group">
+                    <input type="file" class="form-control-file btn btn-secondary" (change)="UpdateWebal($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                
+                </div>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
+                <label>Alpha  :  {{UpdateAlpha  | number : '1.0-2' }}</label>
+            </div>
+            <div class="row" style="padding: 15px;" *ngIf="UpdateWebalYN == 'YES'">
+                <label>Beta : {{UpdateBeta  | number : '1.0-2' }}</label>
+            </div>
+            
+            <div class="row" style="padding: 15px;">
+                <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">Update</button>
+            </div>
+
+
+        </ng-template>
+
+    </p-card>
+</div>
+<style>
+    img-fluid {
+            max-width: 83%;
+            height: fit-content;
+        }
+</style>
+
+<div class="card" style="margin: 20px;"  *ngIf="UpdateMSSImageFlag" id="Consequence">
+    <p-card >
+    <ng-template pTemplate="subtitle">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <img class="img-fluid px-3 px-sm-4" 
+                        src="{{UpdateMSSImagePath}}"alt="">
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <div class="row">
+            <div class="col" *ngFor="let a of UpdateMSSImageValues" ><br>
+                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                    <input type="radio"[(ngModel)]="UpdatedMSSStartegy" value="{{a}}" name="name1" />&nbsp;
+                    <label> {{a}}</label>
+                </div>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col">
+                <label>Availability % </label>
+            </div>
+            <div class="col">
+                <input type="number" [(ngModel)]="UpdateMSSAvailability" name="availability" class="form-control" id="availability">
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <a class="btn btn-white" style="border:none" > </a>
+        <button class="btn btn-dark" style="float:right;" (click)="UpdateMSSToTree()">Update MSS</button>
+    </ng-template>
+</p-card>
+</div>
+
+

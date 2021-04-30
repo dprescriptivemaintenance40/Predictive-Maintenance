@@ -2880,6 +2880,8 @@ public EnabledPatternUpdate : boolean = false
 
 SelectPatternForFailureMode(value: string) {
   this.Pattern = value;
+  this.ADDFailureModePatternTree = true
+  this.changeDetectorRef.detectChanges();
   this.changeDetectorRef.detectChanges();
   this.PattenNode1 = 'p-person'
   this.PattenNode2 = 'p-person'
@@ -3001,7 +3003,6 @@ SelectPatternForFailureMode(value: string) {
     this.PatternPath = ""
     this.changeDetectorRef.detectChanges();
   }
-
   // const element = document.querySelector("#ScrollToFCATree")
   // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
