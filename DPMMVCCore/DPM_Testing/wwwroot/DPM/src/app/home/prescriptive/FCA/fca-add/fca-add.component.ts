@@ -1369,11 +1369,9 @@ async SelectNodeToView(p){
 
   }
 
-
   IntervalSave(){
     var FCAIntervalDWY : any, FCAIntervalDWYValues : any;
     if(this.interval != "" &&  this.intervalValue != 0){
-
    if(this.interval == 'Days'){
      FCAIntervalDWY = 'Days';
      FCAIntervalDWYValues = this.intervalValue;

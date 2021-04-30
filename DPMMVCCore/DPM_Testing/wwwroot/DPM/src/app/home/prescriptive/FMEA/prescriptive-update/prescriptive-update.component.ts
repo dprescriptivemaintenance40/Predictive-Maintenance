@@ -280,6 +280,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
  public MSSViewEnabled: boolean = false
  public MSSViewTreeEnabled: boolean = false
  public MSSViewShow: boolean = false;
+ public ADDFCAUpdateIntervals: string = ""
+ public ADDFCAUpdateConditions: string = ""
+ public UpdateFCACondition : any = []
+public UpdateFCAIntervals : any = []
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -1112,7 +1116,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
 
 async AddPatternToNewFM() {
-   
+
   if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
     if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
       || this.Pattern === 'Pattern 6')
@@ -1430,38 +1434,6 @@ async AddPatternToNewFM() {
   }
 }
 
-  // UpdateChanges() {
-  //   this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1);
-  //   this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
-  //   var Data = {}
-  //   Data['CPPFMId'] = 0
-  //   Data['CFPPrescriptiveId'] = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
-  //   Data['FunctionMode'] = this.LSFailureMode
-  //   Data['LocalEffect'] = this.failuerModeLocalEffects
-  //   Data['SystemEffect'] = this.failuerModeSystemEffects
-  //   Data['Consequence'] = this.finalConsequence
-  //   Data['DownTimeFactor'] = this.ADDDownTimeFactor
-  //   Data['ScrapeFactor'] = this.ADDScrapeFactor
-  //   Data['SafetyFactor'] = this.ADDSafetyFactor
-  //   Data['ProtectionFactor'] = this.ADDProtectionFactor
-  //   Data['FrequencyFactor'] = this.ADDFrequencyFactor
-  //   Data['AttachmentDBPath'] = this.ADDUpdatedAttachmentInFMDBPath
-  //   Data['AttachmentFullPath'] = this.ADDUpdatedAttachmentInFMFullPath
-  //   Data['Remark'] = this.Remark
-  //   Data['Pattern'] = this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length -1].children[1].FCAData.children[0].data.name
-  //   this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
-  //   this.Remark = ""
-  //   this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
-  //   this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
-  //     res => {
-  //       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Successfully updated' });
-  //       this.FinalUpdate = false;
-  //       this.AddFailureMode = true;
-  //       this.router.navigateByUrl('/Home/Prescriptive/List')
-  //     }
-  //   )
-
-  // }
   UpdateChanges() {
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1);
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
@@ -1492,6 +1464,8 @@ async AddPatternToNewFM() {
     Data['MSSMaintenanceInterval'] = this.MSSTaskObj[0].MSSMaintenanceInterval
     Data['MSSStartergy'] = this.MSSTaskObj[0].MSSStartergy
     Data['MSSMaintenanceTask'] = this.MSSTaskObj[0].MSSMaintenanceTask
+    Data['FCAUpdateIntervals'] = JSON.stringify(this.UpdateFCAIntervals)
+    Data['FCAUpdateConditions'] = JSON.stringify(this.UpdateFCACondition)
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
     this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
@@ -3433,71 +3407,116 @@ public UpdateMSSConsequence : string =""
   }
 
   ADDIntervalSave(){
-    if(this.ADDinterval == 'Days'){
-      this.FCAInterval = this.ADDintervalValue * 1 * 24
-    } else if(this.ADDinterval == 'Week'){
-      this.FCAInterval = this.ADDintervalValue * 7 * 24
-    } else if(this.ADDinterval == 'Month'){
-      this.FCAInterval = this.ADDintervalValue * 30 * 24
-    } else if(this.ADDinterval == 'Year'){
-      this.FCAInterval = this.ADDintervalValue * 365 * 24
-    }
-  if(this.ADDinterval.length> 0 && this.ADDintervalValue >0){
-   this.changeDetectorRef.detectChanges()
-   this.ADDfailurewarning = !this.ADDfailurewarning;
+  var FCAIntervalDWY : any, FCAIntervalDWYValues : any;
+  if(this.ADDinterval != "" &&  this.ADDintervalValue != 0){
+ if(this.ADDinterval == 'Days'){
+   FCAIntervalDWY = 'Days';
+   FCAIntervalDWYValues = this.ADDintervalValue;
+   this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
+   this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
+   this.FCAInterval = this.ADDintervalValue * 1 * 24
+ } else if(this.ADDinterval == 'Week'){ 
+   this.FCAInterval = this.ADDintervalValue * 7 * 24
+   FCAIntervalDWY = 'Week';
+   FCAIntervalDWYValues = this.ADDintervalValue;
+   this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
+   this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
+ } else if(this.ADDinterval == 'Month'){ 
+   FCAIntervalDWY = 'Month';
+   FCAIntervalDWYValues = this.ADDintervalValue;
+   this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
+   this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
+   this.FCAInterval = this.ADDintervalValue * 30 * 24
+ } else if(this.ADDinterval == 'Year'){ 
+   FCAIntervalDWY = 'Year';
+   FCAIntervalDWYValues = this.ADDintervalValue;
+   this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
+   this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
+   this.FCAInterval = this.ADDintervalValue * 365 * 24
+ }
 
-   const element = document.querySelector("#Patternfailurewarning")
-   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }else{
-   // alert("fill the data")
-   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-  }
+this.changeDetectorRef.detectChanges()
+this.ADDfailurewarning = !this.ADDfailurewarning;
+
+const element = document.querySelector("#Patternfailurewarning")
+if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}else{
+// alert("fill the data")
+this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+}
    }
 
 
    ADDConditionFirst(){
-     if(this.ADDVibration != ""){
-       this.ADDVibration = "Vibration"
-       this.FCACondition.push(this.ADDVibration)
+    if(this.ADDVibration != "" || this.ADDNoice != "" || this.ADDLeakage != "" || this. ADDPerformanceDrop != "" || this.ADDTempratureChange != "" || this.ADDEmmisionChange != "" || this.ADDIncreaseLubricantConsumption != "" || this.ADDOther ){
 
-     }
-     if(this.ADDNoice != ""){
-       this.ADDNoice = "Noice"
-       this.FCACondition.push(this.ADDNoice)
+      var Vibration : string = "", Noice : string = "", Leakage : string = "",
+          PerformanceDrop : string = "", TempratureChange : string = "",
+          EmmisionChange : string = "", IncreaseLubricantConsumption : string = "", 
+          Other: string = "";
+          
+          Vibration = this.ADDVibration
+          Noice = this.ADDNoice
+          Leakage = this.ADDLeakage
+          PerformanceDrop = this.ADDPerformanceDrop
+          TempratureChange = this.ADDTempratureChange
+          EmmisionChange = this.ADDEmmisionChange
+          IncreaseLubricantConsumption = this.ADDIncreaseLubricantConsumption
+          Other = this.ADDOther
 
-     }
-     if(this.ADDLeakage != ""){
-       this.ADDLeakage = "Leakage"
-       this.FCACondition.push(this.ADDLeakage)
-
-     }
-     if(this.ADDPerformanceDrop != ""){
-       this.ADDPerformanceDrop = "Performance Drop"
-       this.FCACondition.push(this.ADDPerformanceDrop)
-
-     }
-     if(this.ADDTempratureChange != ""){
-       this.ADDTempratureChange = "Temprature Change"
-       this.FCACondition.push(this.ADDTempratureChange)
-
-     }
-     if(this.ADDEmmisionChange != ""){
-       this.ADDEmmisionChange = "Emmision Change"
-       this.FCACondition.push(this.ADDEmmisionChange)
-
-     }
-     if(this.ADDIncreaseLubricantConsumption != ""){
-       this.ADDIncreaseLubricantConsumption = "Increase Lubricant Consumption"
-       this.FCACondition.push(this.ADDIncreaseLubricantConsumption)
-
-     }
-     if(this.ADDOther != ""){
-       this.ADDOther = "Other"
-       this.FCACondition.push(this.ADDOther)
-     }
-     if(this.ADDVibration.length >0 || this.ADDNoice.length > 0 || this.ADDLeakage.length >0 || this.ADDPerformanceDrop.length > 0 || this.ADDTempratureChange.length>0 || this.ADDEmmisionChange.length>0 || this.ADDIncreaseLubricantConsumption.length >0 || this.ADDOther.length > 0){
-       this.changeDetectorRef.detectChanges()
-       this.ADDwarningsign = !this.ADDwarningsign;
+    if(this.ADDVibration != ""){
+      this.ADDVibration = "Vibration"
+      Vibration = "Vibration"
+      this.FCACondition.push(this.ADDVibration)
+    }
+    if(this.ADDNoice != ""){
+      this.ADDNoice = "Noice"
+      Noice = "Noice"
+      this.FCACondition.push(this.ADDNoice)
+    }
+    if(this.ADDLeakage != ""){
+      this.ADDLeakage = "Leakage"
+      this.FCACondition.push(this.ADDLeakage)
+      Leakage = "Leakage"
+      
+    }
+    if(this.ADDPerformanceDrop != ""){
+      this.ADDPerformanceDrop = "Performance Drop"
+      this.FCACondition.push(this.ADDPerformanceDrop)
+      PerformanceDrop = "Performance Drop"
+    }
+    if(this.ADDTempratureChange != ""){
+      this.ADDTempratureChange = "Temprature Change"
+      this.FCACondition.push(this.ADDTempratureChange)
+      TempratureChange = "Temprature Change"
+    }
+    if(this.ADDEmmisionChange != ""){
+      this.ADDEmmisionChange = "Emmision Change"
+      this.FCACondition.push(this.ADDEmmisionChange)
+      EmmisionChange = "Emmision Change"
+    }
+    if(this.ADDIncreaseLubricantConsumption != ""){
+      this.ADDIncreaseLubricantConsumption = "Increase Lubricant Consumption"
+      this.FCACondition.push(this.ADDIncreaseLubricantConsumption)
+      IncreaseLubricantConsumption = "Increase Lubricant Consumption"
+    }
+    if(this.ADDOther != ""){
+      this.ADDOther = "Other"
+      this.FCACondition.push(this.ADDOther)
+      Other = "Other"
+    }
+    
+      this.UpdateFCACondition.push({Vibration})
+      this.UpdateFCACondition.push({Noice})
+      this.UpdateFCACondition.push({Leakage})
+      this.UpdateFCACondition.push({PerformanceDrop})
+      this.UpdateFCACondition.push({TempratureChange})
+      this.UpdateFCACondition.push({EmmisionChange})
+      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
+      this.UpdateFCACondition.push({Other})
+      
+      this.changeDetectorRef.detectChanges()
+      this.ADDwarningsign = !this.ADDwarningsign;
 
      const element = document.querySelector("#PatternWarningSign")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -3509,59 +3528,99 @@ public UpdateMSSConsequence : string =""
    }
 
    ADDConditionSecond(){
-     if(this.ADDHumanSenses != ""){
-       this.ADDHumanSenses = "Human Senses"
-       this.FCACondition.push(this.ADDHumanSenses)
+    if(this.ADDHumanSenses != ""|| this.ADDExistingInstumentation  != "" || this.ADDNewInstumentation  != "" || this.ADDProcessCondtions  != "" ||this.ADDSampleAnyalysis  != ""){
+    
+      var HumanSenses : string = "",  ExistingInstumentation : string = "",  NewInstumentation : string = "",  ProcessCondtions : string = "",  SampleAnyalysis : string = ""
+          HumanSenses = this.ADDHumanSenses
+          ExistingInstumentation = this.ADDExistingInstumentation
+          NewInstumentation = this.ADDNewInstumentation
+          ProcessCondtions = this.ADDProcessCondtions
+          SampleAnyalysis = this.ADDSampleAnyalysis
+      if(this.ADDHumanSenses != ""){
+      this.ADDHumanSenses = "Human Senses"
+      HumanSenses = "Human Senses"
+      this.FCACondition.push(this.ADDHumanSenses)
+    
+    }
+    if(this.ADDExistingInstumentation != ""){
+      this.ADDExistingInstumentation = "Existing Instumentation(portable or fixed)"
+      ExistingInstumentation = "Existing Instumentation(portable or fixed)"
+      this.FCACondition.push(this.ADDExistingInstumentation)
+    
+    }
+    if(this.ADDNewInstumentation != ""){
+      this.ADDNewInstumentation = "New Instumentation(portable or fixed)"
+      NewInstumentation = "New Instumentation(portable or fixed)"
+      this.FCACondition.push(this.ADDNewInstumentation)
+    
+    }
+    if(this.ADDProcessCondtions != ""){
+      this.ADDProcessCondtions = "Process Condtions"
+      ProcessCondtions = "Process Condtions"
+      this.FCACondition.push(this.ADDProcessCondtions)
+    }
+    if(this.ADDSampleAnyalysis != ""){
+      this.ADDSampleAnyalysis = "Sample Anyalysis"
+      SampleAnyalysis = "Sample Anyalysis"
+      this.FCACondition.push(this.ADDSampleAnyalysis)
+    }
 
-     }
-     if(this.ADDExistingInstumentation != ""){
-       this.ADDExistingInstumentation = "Existing Instumentation(portable or fixed)"
-       this.FCACondition.push(this.ADDExistingInstumentation)
+    
+    this.UpdateFCACondition.push({HumanSenses})
+    this.UpdateFCACondition.push({ExistingInstumentation})
+    this.UpdateFCACondition.push({NewInstumentation})
+    this.UpdateFCACondition.push({ProcessCondtions})
+    this.UpdateFCACondition.push({SampleAnyalysis})
 
-     }
-     if(this.ADDNewInstumentation != ""){
-       this.ADDNewInstumentation = "New Instumentation(portable or fixed)"
-       this.FCACondition.push(this.ADDNewInstumentation)
-
-     }
-     if(this.ADDProcessCondtions != ""){
-       this.ADDProcessCondtions = "Process Condtions"
-       this.FCACondition.push(this.ADDProcessCondtions)
-     }
-     if(this.ADDSampleAnyalysis != ""){
-       this.ADDSampleAnyalysis = "Sample Anyalysis"
-       this.FCACondition.push(this.ADDSampleAnyalysis)
-     }
-     if(this.ADDHumanSenses.length >0 || this.ADDExistingInstumentation.length >0 || this.ADDNewInstumentation.length >0|| this.ADDProcessCondtions.length >0||this.ADDSampleAnyalysis.length >0){
-       this.changeDetectorRef.detectChanges()
-       this.ADDintervaldeteacting = !this.ADDintervaldeteacting;
-       const element = document.querySelector("#PatternIntervalDeteacting")
-       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-     }else{
-       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-     }
+      this.changeDetectorRef.detectChanges()
+      this.ADDintervaldeteacting = !this.ADDintervaldeteacting;    
+      const element = document.querySelector("#PatternIntervalDeteacting")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+    }
 
    }
 
    ADDFFInterval(){
-     if(this.ADDffInterval == 'Days'){
-       this.FCAFFInterval = this.ADDffIntervalValue * 1 * 24
-     } else if(this.ADDffInterval == 'Week'){
-       this.FCAFFInterval = this.ADDffIntervalValue * 7 * 24
-     } else if(this.ADDffInterval == 'Month'){
-       this.FCAFFInterval = this.ADDffIntervalValue * 30 * 24
-     } else if(this.ADDffInterval == 'Year'){
-       this.FCAFFInterval = this.ADDffIntervalValue * 365 * 24
-     }
+    var FCAFFIIntervalDWY : any, FCAFFIIntervalDWYValues : any;
 
-     if(this.ADDffInterval.length >0 && this.ADDffIntervalValue >0){
-       this.changeDetectorRef.detectChanges()
-       this.ADDfailuerevident = !this.ADDfailuerevident;
-       const element = document.querySelector("#PatternFailuerEvident")
-       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-     }else{
-       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-     }
+    if(this.ADDffInterval != "" &&  this.ADDffIntervalValue != 0){
+
+    if(this.ADDffInterval == 'Days'){
+      FCAFFIIntervalDWY = 'Days';
+      FCAFFIIntervalDWYValues = this.ADDffIntervalValue;
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
+      this.FCAFFInterval = this.ADDffIntervalValue * 1 * 24
+    } else if(this.ADDffInterval == 'Week'){ 
+      FCAFFIIntervalDWY = 'Week';
+      FCAFFIIntervalDWYValues = this.ADDffIntervalValue;
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
+      this.FCAFFInterval = this.ADDffIntervalValue * 7 * 24
+    } else if(this.ADDffInterval == 'Month'){ 
+      FCAFFIIntervalDWY = 'Month';
+      FCAFFIIntervalDWYValues = this.ADDffIntervalValue;
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
+      this.FCAFFInterval = this.ADDffIntervalValue * 30 * 24
+    } else if(this.ADDffInterval == 'Year'){ 
+      FCAFFIIntervalDWY = 'Year';
+      FCAFFIIntervalDWYValues = this.ADDffIntervalValue;
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
+      this.FCAFFInterval = this.ADDffIntervalValue * 365 * 24
+    }
+
+   
+      this.changeDetectorRef.detectChanges()
+      this.ADDfailuerevident = !this.ADDfailuerevident; 
+      const element = document.querySelector("#PatternFailuerEvident")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+    }
 
    }
   public SafeUsefulLife:boolean = true;
