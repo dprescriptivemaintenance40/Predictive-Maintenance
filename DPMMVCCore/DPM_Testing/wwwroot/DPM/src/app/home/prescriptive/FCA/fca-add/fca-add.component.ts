@@ -1588,7 +1588,6 @@ async SelectNodeToView(p){
   }
 
   CommentThird(){
-    
     if( this.CommentFIEYN.length>0){
       this.FCAComment.push(this.CommentFIEYN)
       this.changeDetectorRef.detectChanges()
@@ -1616,7 +1615,6 @@ async SelectNodeToView(p){
   }
 
  async FCAFreeTextSave(){
-
     this.PatternFailuerAll = true
     this.FCAComment.push(this.FCAFreeText)
     this.SafeUsefulLife = true;

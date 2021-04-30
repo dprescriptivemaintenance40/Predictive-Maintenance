@@ -1195,7 +1195,7 @@ async AddPatternToNewFM() {
       styleClass: "p-person",
       expanded: true,
       data: {
-        name: this.FCAInterval
+      name: `${this.FCAInterval}${" "}${"Hours"}`
       }
     }
     let FFI = {
@@ -1204,7 +1204,7 @@ async AddPatternToNewFM() {
       styleClass: "p-person",
       expanded: true,
       data: {
-        name: this.FCAFFInterval
+        name: `${this.FCAFFInterval}${" "}${"Hours"}`
       }
     }
     let Alpha = {
@@ -1269,7 +1269,7 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name = this.Pattern
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[1].data.name = `${this.FCACondition}${" "}${"Hours"}`
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[2].data.name =`${this.FCAInterval}${" "}${"Hours"}`
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = `${this.FCAFFInterval}${" "}${"Hours"}`
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha.toFixed(2)
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta.toFixed(2)
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
@@ -1288,13 +1288,6 @@ async AddPatternToNewFM() {
       this.ADDMSSView = true
       this.MSSViewShow = true;
       this.prescriptiveTree = false
-
-      this.ADDalpha = 0;
-        this.ADDbeta = 0;
-        this.ADDSafeLife = 0
-        this.ADDUsefulLife = 0;
-        this.ADDalphaBeta = false;
-        this.ADDSafeUsefulLife = false;
 
     } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
@@ -1328,7 +1321,7 @@ async AddPatternToNewFM() {
     }
     
    let Condition = {
-    label: "Pattern",
+    label: "Condition",
     type: "person",
     styleClass: "p-person",
     expanded: true,
@@ -1337,21 +1330,21 @@ async AddPatternToNewFM() {
     }
   }
   let Interval = {
-    label: "Pattern",
+    label: "Interval",
     type: "person",
     styleClass: "p-person",
     expanded: true,
     data: {
-      name: this.FCAInterval
+      name: `${this.FCAInterval}${" "}${"Hours"}`
     }
   }
   let FFI = {
-    label: "Pattern",
+    label: "FFI",
     type: "person",
     styleClass: "p-person",
     expanded: true,
     data: {
-      name: this.FCAFFInterval
+      name: `${this.FCAFFInterval}${" "}${"Hours"}`
     }
   }
   let Alpha = {
@@ -1418,7 +1411,7 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name = this.Pattern
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[1].data.name = `${this.FCACondition}${" "}${"Hours"}`
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[2].data.name =`${this.FCAInterval}${" "}${"Hours"}`
-    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
+    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name =`${this.FCAFFInterval}${" "}${"Hours"}`
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
