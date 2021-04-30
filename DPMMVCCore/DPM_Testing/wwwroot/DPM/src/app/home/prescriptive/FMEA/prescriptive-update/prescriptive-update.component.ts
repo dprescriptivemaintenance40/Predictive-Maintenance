@@ -226,7 +226,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public ADDFCAFFI: boolean = true;
   public ADDSafeUsefulLife: boolean = false
   public ADDSafeLife: number = 0
-  public ADDUsefulLife: number = 0
+  public ADDUsefulLife: number =0
   public ADDFCAFreeText : string = ""
   public ADDalphaBeta: boolean = false
   public ADDalpha: number = 0
@@ -1234,7 +1234,7 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
 
         if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
-          this.ADDUsefulLife = 0;
+          // this.ADDUsefulLife = 0;
           let SafeLife  = {
             label: "SafeLife",
             type: "person",
@@ -1246,8 +1246,10 @@ async AddPatternToNewFM() {
           }
           this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(SafeLife)
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
+          this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
+
       }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
-        this.ADDSafeLife = 0;
+        // this.ADDSafeLife = 0;
         let UsefulLife = {
             label: "UsefulLife",
             type: "person",
@@ -1260,6 +1262,7 @@ async AddPatternToNewFM() {
           
           this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(UsefulLife)
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
+          this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
       }
       
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
@@ -1272,8 +1275,8 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = `${this.FCAFFInterval}${" "}${"Hours"}`
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha.toFixed(2)
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta.toFixed(2)
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
+     
+    
 
       
       this.prescriptiveTree = true
@@ -1378,7 +1381,7 @@ async AddPatternToNewFM() {
    
 
       if( this.ConsequenceBasedMSS == 'C' || this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' ){
-        this.ADDSafeLife = 0;
+        // this.ADDSafeLife = 0;
         let UsefulLife = {
           label: "UsefulLife",
           type: "person",
@@ -1388,11 +1391,13 @@ async AddPatternToNewFM() {
             name: this.ADDUsefulLife
           }
         }
-        
+     
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(UsefulLife)
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
+
     }else if(this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B'){
-      this.ADDUsefulLife = 0; 
+      // this.ADDUsefulLife = 0; 
       let SafeLife = {
           label: "SafeLife",
           type: "person",
@@ -1402,9 +1407,10 @@ async AddPatternToNewFM() {
             name: this.ADDSafeLife
           }
         }
-        
+
         this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(SafeLife)
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
     }
     
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
@@ -1417,8 +1423,8 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name =`${this.FCAFFInterval}${" "}${"Hours"}`
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta
-    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
-    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
+   
+
     
     this.prescriptiveTree = true
     this.FinalUpdate = true;
