@@ -1274,6 +1274,7 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta.toFixed(2)
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
+
       
       this.prescriptiveTree = true
       this.FinalUpdate = true;
@@ -1365,6 +1366,7 @@ async AddPatternToNewFM() {
       name: this.ADDbeta
     }
   }
+
   
 
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
@@ -1373,6 +1375,7 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
+   
 
       if( this.ConsequenceBasedMSS == 'C' || this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' ){
         this.ADDSafeLife = 0;
@@ -1414,8 +1417,8 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name =`${this.FCAFFInterval}${" "}${"Hours"}`
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta
-    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
+    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
     
     this.prescriptiveTree = true
     this.FinalUpdate = true;
