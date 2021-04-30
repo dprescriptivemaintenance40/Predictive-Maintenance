@@ -112,6 +112,17 @@ export class RecycleBinComponent implements OnInit {
           obj['AttachmentFullPath'] = data.AttachmentFullPath;
           obj['Remark'] = data.Remark;
           obj['Pattern'] = data.Pattern;
+          obj['FCACondition'] = data.FCACondition
+          obj['FCAInterval'] = data.FCAInterval
+          obj['FCAFFI'] = data.FCAFFI
+          obj['FCAAlpha'] = data.FCAAlpha
+          obj['FCABeta'] = data.FCABeta
+          obj['FCAUsefulLife'] = data.FCAUsefulLife
+          obj['FCASafeLife'] = data.FCASafeLife
+          obj['FCAComment'] = data.FCAComment
+          obj['MSSMaintenanceInterval'] = data.MSSMaintenanceInterval
+          obj['MSSStartergy'] = data.MSSStartergy
+          obj['MSSMaintenanceTask'] = data.MSSMaintenanceTask
           this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
           this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = DataToRestore.CFPPrescriptiveId;
           this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = FMWithConsequenceTree
@@ -163,6 +174,8 @@ export class RecycleBinComponent implements OnInit {
       this.centrifugalPumpPrescriptiveOBJ.CAttachmentDBPath = data.CAttachmentDBPath
       this.centrifugalPumpPrescriptiveOBJ.CAttachmentFullPath = data.CAttachmentFullPath
       this.centrifugalPumpPrescriptiveOBJ.CRemarks = data.CRemarks
+      this.centrifugalPumpPrescriptiveOBJ.FCAAdded = data.FCAAdded
+      this.centrifugalPumpPrescriptiveOBJ.MSSAdded = data.MSSAdded
 
       for (let index = 0; index < data.restoreCentrifugalPumpPrescriptiveFailureModes.length; index++) {
         let obj = {}
@@ -186,7 +199,17 @@ export class RecycleBinComponent implements OnInit {
         obj['AttachmentFullPath'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath;
         obj['Remark'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].Remark;
         obj['Pattern'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].Pattern;
-
+        obj['FCACondition'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].FCACondition
+        obj['FCAInterval'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].FCAInterval
+        obj['FCAFFI'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].FCAFFI
+        obj['FCAAlpha'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].FCAAlpha
+        obj['FCABeta'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].FCABeta
+        obj['FCAUsefulLife'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].FCAUsefulLife
+        obj['FCASafeLife'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].FCASafeLife
+        obj['FCAComment'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].FCAComment
+        obj['MSSMaintenanceInterval'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].MSSMaintenanceInterval
+        obj['MSSStartergy'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].MSSStartergy
+        obj['MSSMaintenanceTask'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].MSSMaintenanceTask
         this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj);
       }
 

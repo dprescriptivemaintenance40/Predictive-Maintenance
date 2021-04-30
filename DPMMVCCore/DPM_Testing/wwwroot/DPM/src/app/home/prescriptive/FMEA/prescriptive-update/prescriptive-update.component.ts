@@ -1536,6 +1536,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   
 
  async SelectNodeToView(p){
+    this.UpdateMSSImageFlag = false;
     this.FailureModePatternTree = false
     this.PatternBack = p.pattern;
     this.nodePath = p.nodePath;
@@ -1690,6 +1691,7 @@ async UpdatePattern(){
   this.FailureModePatternTree = true
   this.AddFMPatternAddEnable = false;
   this.UpdatePatternAddEnable = true;
+  this.UpdateMSSImageFlag = false;
   this.changeDetectorRef.detectChanges();
   this.GetChartData();
   const element = document.querySelector("#ViewtoAddPattern")
@@ -2587,6 +2589,9 @@ public UpdateMSSConsequence : string =""
   private UpdateMSSTreeLabel : number = 0
   private UpdateMSSAvailability : number = 0
   SelectNodeToEditMSS(p){
+    this.FCAUpdatePageEnable = false
+    this.FailureModePatternTree = false
+    this.FCAViewEnabled = false
     this.UpdateMSSTreeLabel = p.label
    this.UpdatedMSSStartegy = p.children[0].data.name
    this.UpdateMSSConsequence = this.UpdatedMSSStartegy.split('-')[0]
