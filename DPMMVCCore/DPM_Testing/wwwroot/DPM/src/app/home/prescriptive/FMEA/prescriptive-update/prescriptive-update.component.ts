@@ -172,7 +172,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public PatternPath: string;
   public FailureModePatternTree: boolean = false;
   public MSSViewShow: boolean = false;
-
+  
   public FCAChangeData: any
   public PatternBack: string;
   private nodePath: number = 0;
@@ -221,10 +221,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public ADDProcessCondtions: string = ""
   public ADDSampleAnyalysis: string = ""
 
-  public FCAInterval: number = 0
-  public FCAComment: any = []
-  public FCACondition: any = []
-  public FCAFFInterval: number = 0
+  public FCAInterval : number = 0
+  public FCAComment : any = []
+  public FCACondition : any = []
+  public FCAFFInterval : number = 0
 
   public ADDCommentFIEYN: string = ""
   public ADDCommentFIEYN2: string = ""
@@ -234,56 +234,56 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public ADDSafeUsefulLife: boolean = false
   public ADDSafeLife: number = 0
   public ADDUsefulLife: number = 0
-  public ADDFCAFreeText: string = ""
+  public ADDFCAFreeText : string = ""
   public ADDalphaBeta: boolean = false
   public ADDalpha: number = 0
   public ADDbeta: number = 0
   public ADDConsequenceFM: string = ""
   public ADDWebalYN: string = ""
-  public ADDFCAFreeTextCancel1: boolean = true
-  public ADDFCAFreeTextSave1: boolean = true
-  public ADDpatternaddshow: boolean = false
-  public ADDPatternFailuerAll: boolean = false
+  public ADDFCAFreeTextCancel1: boolean  = true
+  public ADDFCAFreeTextSave1: boolean  = true
+  public ADDpatternaddshow: boolean  = false
+  public ADDPatternFailuerAll: boolean  = false
 
-  public file: any;
+  public file : any;
   public arrayBuffer: any;
   public daysList: any;
-  public ADDMSSView: boolean = false
-  public ADDMSSAvailabilityY: string = ""
-  public MSSAvailabilityYN: string = ""
-  public MSSAvailabilityN: string = ""
+  public ADDMSSView: boolean  = false
+  public ADDMSSAvailabilityY : string = ""
+  public MSSAvailabilityYN : string = ""
+  public MSSAvailabilityN : string = ""
   public ADDMSSAvailabilityCheck: number = 0;
 
   public MSSAvailabilityCalculations: boolean = false
   public ADDMSSAvailabilityYNCheck: boolean = false
-  public MSSAvailabilityTaskObj: any = []
+  public MSSAvailabilityTaskObj : any =[]
 
-  public ADDMSSexpectedAvailability: boolean = false
-  public ADDMSSAvailabilityPlantStoppage: boolean = false
-  public ADDMSSAvailabilityPlantStoppageTime: boolean = false
+ public ADDMSSexpectedAvailability: boolean = false
+ public ADDMSSAvailabilityPlantStoppage: boolean = false
+ public ADDMSSAvailabilityPlantStoppageTime: boolean = false
 
-  public MSSAvailabilityResult: number = 0
-  public ADDMSSstoppageDays: string = "";
-  public ADDMSSstoppageDaysValue: number = 0;
-  public ADDMSSstoppageDaysTime: string = "";
-  public ADDMSSstoppageDaysTimeValue: number = 0;
-  public MSSTreeButton: boolean = false
-  public MSSstoppageValue: number
-  public MSSstoppageDuration: number
+ public MSSAvailabilityResult : number = 0
+ public ADDMSSstoppageDays: string = "";
+ public ADDMSSstoppageDaysValue: number = 0;
+ public ADDMSSstoppageDaysTime: string = "";
+ public ADDMSSstoppageDaysTimeValue: number = 0;
+ public MSSTreeButton : boolean = false 
+ public MSSstoppageValue : number
+ public MSSstoppageDuration : number
 
-  public PlantStoppage: boolean = true
-  public PlantStoppageTime: boolean = true
-  public MSSLibraryData: any = []
-  public ConsequenceBasedMSS: string = ""
-  public MSSADDCounter: number = 0
-  public MSSStratergy: string = ""
-  public TreeUptoFCA: any = [];
-  public data1Clone: any;
-  public MSSTaskObj: any = []
-  public SelectedPrescriptiveTree: any = [];
-  public FailureModeName: string = ""
-  public AddBtnEnable: boolean = true
-  public SaveBtnEnable: boolean = false
+ public PlantStoppage: boolean  = true
+ public PlantStoppageTime: boolean  = true
+ public MSSLibraryData : any = []
+ public ConsequenceBasedMSS: string = ""
+ public MSSADDCounter: number = 0
+ public MSSStratergy: string = ""
+ public TreeUptoFCA: any = [];
+ public data1Clone: any;
+ public MSSTaskObj : any =[]
+ public SelectedPrescriptiveTree: any = [];
+ public FailureModeName: string = ""
+ public AddBtnEnable: boolean = true
+ public SaveBtnEnable: boolean = false
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -298,7 +298,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     public commonLoadingDirective: CommonLoadingDirective,
     private router: Router,
     private http: HttpClient,
-    private excelFormatService: ExcelFormatService,
+    private excelFormatService : ExcelFormatService,
     private changeDetectorRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer) { }
   private isNewEntity: boolean = false;
@@ -316,10 +316,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   };
 
   ngOnInit() {
-    this.getData()
-  }
-
-  getData() {
     this.CPPrescriptiveUpdateData = JSON.parse(localStorage.getItem('PrescriptiveUpdateObject'))
     this.data1 = JSON.parse(this.CPPrescriptiveUpdateData.FMWithConsequenceTree)
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
@@ -331,8 +327,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     });
     this.FMTree = this.data1[0].children[0].children[0].children
     var MSSData = JSON.parse(localStorage.getItem('MSSObject'))
-  }
-
+    }
+  
 
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveUpdateObject');
@@ -708,7 +704,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FMdiv = document.getElementById("FailureModeUpdate")
     this.FMdiv.style.display = 'block'
     this.FailureModePatternTree = false;
-    this.MSSViewShow = false
+    this.MSSViewShow =false
     this.FCAViewTreeEnabled = false;
     this.FCAViewEnabled = false;
     this.MSSViewEnabled = false;
@@ -855,7 +851,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         styleClass: 'p-person',
         expanded: true,
         editMSS: true,
-        data: { name: this.LSFailureMode },
+        data: { name: this.LSFailureMode  },
         children: [
           // {
           //   label: "Stratorgy",
@@ -874,7 +870,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children.push(FMEA)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.push(FCAFMEA)
       this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children.push(MSSTREE)
-      //  this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children [ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.length  ].children.push(strategy)
+  //  this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children [ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.length  ].children.push(strategy)
       this.data1[0].children[0].children[0].children.push(AddFMEA)
       this.data1[0].children[0].children[0].children[index].children.push(FCATree)
       var temp: any = this.data1
@@ -960,8 +956,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         name: this.finalConsequence
       }
     }
-    this.ConsequenceBasedMSS = this.finalConsequence
-    this.prescriptiveTree = false;
+    this.ConsequenceBasedMSS =this.finalConsequence
+    this.prescriptiveTree = false; 
     this.ADDMSSAvailabilityYNCheck = true
     this.MSSAvailabilityCalculations = false
     this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(CNode)
@@ -1010,7 +1006,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.UpdatePatternAddEnable = false;
     this.AddFMMSSAddEnable = true;
     this.UpdateMSSAddEnable = false
-    this.MSSViewEnabled = false;
+     this.MSSViewEnabled = false;
     this.changeDetectorRef.detectChanges();
     this.PatternTree()
     this.GetChartData();
@@ -1018,7 +1014,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
 
   async AddPatternToNewFM() {
-
+   
     if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
       if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
         || this.Pattern === 'Pattern 6')
@@ -1055,184 +1051,31 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
             name: this.Pattern
           }
         }
-        if (this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B') {
-          let SafeLife = {
+        if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+          let SafeLife  = {
             label: "SafeLife",
             type: "person",
             styleClass: "p-person",
             expanded: true,
             data: {
-              name: this.ADDSafeLife
+              name: this.ADDSafeLife    
             }
           }
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
-        } else if (this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C') {
-          let UsefulLife = {
+       }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+        let UsefulLife = {
             label: "UsefulLife",
             type: "person",
             styleClass: "p-person",
             expanded: true,
             data: {
-              name: this.ADDUsefulLife
+              name:  this.ADDUsefulLife
             }
           }
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
-        }
-        let Condition = {
-          label: "Condition",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.FCACondition
-          }
-        }
-        let Interval = {
-          label: "Interval",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.FCAInterval
-          }
-        }
-        let FFI = {
-          label: "FFI",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.FCAFFInterval
-          }
-        }
-        let Alpha = {
-          label: "Alpha",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.ADDalpha
-          }
-        }
-        let Beta = {
-          label: "Beta",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.ADDbeta
-          }
-        }
-        let Safelife = {
-          label: "Safelife",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.ADDSafeLife
-          }
-        }
-        let Usefullife = {
-          label: "Usefullife",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.ADDUsefulLife
-          }
-        }
-
-        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
-        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
-        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Interval)
-        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
-        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
-        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
-        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Safelife)
-        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Usefullife)
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.pattern = this.Pattern
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name = this.Pattern
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[1].data.name = `${this.FCACondition}${" "}${"Hours"}`
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[2].data.name = `${this.FCAInterval}${" "}${"Hours"}`
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha.toFixed(2)
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta.toFixed(2)
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
-
-
-        this.prescriptiveTree = true
-        this.FinalUpdate = true;
-        this.FailureModePatternTree = false;
-        this.PatternPath = ""
-        this.Pattern = ""
-        this.AddFMPatternAddEnable = false;
-        this.UpdatePatternAddEnable = false;
-        this.AddFMMSSAddEnable = false
-        this.UpdateMSSAddEnable = false
-        this.MSSViewEnabled = true
-        this.ADDMSSView = true
-        this.MSSViewShow = true;
-        this.prescriptiveTree = false
-
-      } else {
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
-      }
-
-    } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
-
-      if (this.Pattern === 'Pattern 1') {
-        path = 0;
-        pattern = 'Pattern 1'
-
-      } else if (this.Pattern === 'Pattern 4') {
-        path = 0;
-        pattern = 'Pattern 4'
-
-      } else if (this.Pattern === 'Pattern 5') {
-        path = 0;
-        pattern = 'Pattern 5'
-
-      }
-
-
-      let Pattern = {
-        label: "Pattern",
-        type: "person",
-        styleClass: "p-person",
-        expanded: true,
-        data: {
-          name: this.Pattern
-        }
-      }
-      if (this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B') {
-        let UsefulLife = {
-          label: "UsefulLife",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.ADDUsefulLife
-          }
-        }
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
-      } else if (this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C') {
-        let SafeLife = {
-          label: "SafeLife",
-          type: "person",
-          styleClass: "p-person",
-          expanded: true,
-          data: {
-            name: this.ADDSafeLife
-          }
-        }
-        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
-      }
-      let Condition = {
-        label: "Pattern",
+       }
+       let Condition = {
+        label: "Condition",
         type: "person",
         styleClass: "p-person",
         expanded: true,
@@ -1241,7 +1084,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       }
       let Interval = {
-        label: "Pattern",
+        label: "Interval",
         type: "person",
         styleClass: "p-person",
         expanded: true,
@@ -1250,7 +1093,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       }
       let FFI = {
-        label: "Pattern",
+        label: "FFI",
         type: "person",
         styleClass: "p-person",
         expanded: true,
@@ -1295,6 +1138,159 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       }
 
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Condition)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Interval)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(FFI)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Safelife)
+        this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Usefullife)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].pattern = this.Pattern;
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].nodePath = path;
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.nodePath = path
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.pattern = this.Pattern
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name = this.Pattern
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[1].data.name = `${this.FCACondition}${" "}${"Hours"}`
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[2].data.name =`${this.FCAInterval}${" "}${"Hours"}`
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha.toFixed(2)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta.toFixed(2)
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
+        
+
+        this.prescriptiveTree = true
+        this.FinalUpdate = true;
+        this.FailureModePatternTree = false;
+        this.PatternPath = ""
+        this.Pattern = ""
+        this.AddFMPatternAddEnable = false;
+        this.UpdatePatternAddEnable = false;
+        this.AddFMMSSAddEnable = false
+        this.UpdateMSSAddEnable = false
+        this.MSSViewEnabled = true
+        this.ADDMSSView = true
+        this.MSSViewShow = true;
+        this.prescriptiveTree = false
+
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
+      }
+
+    } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
+
+      if (this.Pattern === 'Pattern 1') {
+        path = 0;
+        pattern = 'Pattern 1'
+
+      } else if (this.Pattern === 'Pattern 4') {
+        path = 0;
+        pattern = 'Pattern 4'
+
+      } else if (this.Pattern === 'Pattern 5') {
+        path = 0;
+        pattern = 'Pattern 5'
+
+      }
+
+     
+      let Pattern = {
+        label: "Pattern",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.Pattern
+        }
+      }
+      if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+        let UsefulLife = {
+          label: "UsefulLife",
+          type: "person",
+          styleClass: "p-person",
+          expanded: true,
+          data: {
+            name: this.ADDUsefulLife
+          }
+        }
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
+     }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+        let SafeLife = {
+          label: "SafeLife",
+          type: "person",
+          styleClass: "p-person",
+          expanded: true,
+          data: {
+            name: this.ADDSafeLife
+          }
+        }
+        this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
+     }
+     let Condition = {
+      label: "Pattern",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.FCACondition
+      }
+    }
+    let Interval = {
+      label: "Pattern",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.FCAInterval
+      }
+    }
+    let FFI = {
+      label: "Pattern",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.FCAFFInterval
+      }
+    }
+    let Alpha = {
+      label: "Alpha",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.ADDalpha
+      }
+    }
+    let Beta = {
+      label: "Beta",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.ADDbeta
+      }
+    }
+    let Safelife = {
+      label: "Safelife",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.ADDSafeLife
+      }
+    }
+    let Usefullife = {
+      label: "Usefullife",
+      type: "person",
+      styleClass: "p-person",
+      expanded: true,
+      data: {
+        name: this.ADDUsefulLife
+      }
+    }
+
 
 
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Pattern)
@@ -1311,15 +1307,15 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.pattern = this.Pattern
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[0].data.name = this.Pattern
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[1].data.name = `${this.FCACondition}${" "}${"Hours"}`
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[2].data.name = `${this.FCAInterval}${" "}${"Hours"}`
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[2].data.name =`${this.FCAInterval}${" "}${"Hours"}`
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = this.FCAFFInterval
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
-
-
-
+      
+      
+      
       this.prescriptiveTree = true
       this.FinalUpdate = true;
       this.FailureModePatternTree = false;
@@ -2115,7 +2111,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.AddFMMSSAddEnable = false;
     this.changeDetectorRef.detectChanges();
     this.GetChartData();
-
+    
     const element = document.querySelector("#ViewtoAddPattern")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
@@ -2429,217 +2425,24 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
     this.getChartTree(patternLabel6, patternData6, 'pattern6', 'Pattern 6');
   }
-  public UpdateFinalFCACondition: any = []
-  public UpdateFinalFCAInterval: number = 0;
-  public UpdateFinalFCAFFIInterval: number = 0;
-  public UpdateFinalSafeUsefulLife: number = 0;
-  public UpdateSafeLife: number = 0;
-  public UpdateUsefulLife: number = 0;
-  public UpdateFCAConditionsFINAL: any = []
-  public UpdateFCAIntervalsFINAL: any = []
-  public UpdateFCACommentFINAL: any = []
-  public UpdateWebalYN: string = ""
+
+  PatternUpdateBack() {
+    this.FailureModePatternTree = false;
+    this.FCAViewTreeEnabled = true
+    this.ColorPatternTreUpdate(this.PatternBack, this.nodePath)
+  }
   async PatternUpdateAdd() {
-    var FCAIntervalDWY: any, FCAIntervalDWYValues: any;
-    if (this.Updateinterval == 'Days') {
-      FCAIntervalDWY = 'Days';
-      FCAIntervalDWYValues = this.UpdateintervalValue;
-      this.UpdateFCAIntervalsFINAL.push({ FCAIntervalDWY })
-      this.UpdateFCAIntervalsFINAL.push({ FCAIntervalDWYValues })
-      this.UpdateFinalFCAInterval = this.UpdateintervalValue * 1 * 24
-    } else if (this.Updateinterval == 'Week') {
-      FCAIntervalDWY = 'Week';
-      FCAIntervalDWYValues = this.UpdateintervalValue;
-      this.UpdateFCAIntervalsFINAL.push({ FCAIntervalDWY })
-      this.UpdateFCAIntervalsFINAL.push({ FCAIntervalDWYValues })
-      this.UpdateFinalFCAInterval = this.UpdateintervalValue * 7 * 24
-    } else if (this.Updateinterval == 'Month') {
-      FCAIntervalDWY = 'Month';
-      FCAIntervalDWYValues = this.UpdateintervalValue;
-      this.UpdateFCAIntervalsFINAL.push({ FCAIntervalDWY })
-      this.UpdateFCAIntervalsFINAL.push({ FCAIntervalDWYValues })
-      this.UpdateFinalFCAInterval = this.UpdateintervalValue * 30 * 24
-    } else if (this.Updateinterval == 'Year') {
-      FCAIntervalDWY = 'Year';
-      FCAIntervalDWYValues = this.UpdateintervalValue;
-      this.UpdateFCAIntervalsFINAL.push({ FCAIntervalDWY })
-      this.UpdateFCAIntervalsFINAL.push({ FCAIntervalDWYValues })
-      this.UpdateFinalFCAInterval = this.UpdateintervalValue * 365 * 24
-    }
-
-    var FCAFFIIntervalDWY: any, FCAFFIIntervalDWYValues: any;
-    if (this.UpdateffInterval == 'Days') {
-      FCAFFIIntervalDWY = 'Days';
-      FCAFFIIntervalDWYValues = this.UpdateffIntervalValue;
-      this.UpdateFCAIntervalsFINAL.push({ FCAFFIIntervalDWY })
-      this.UpdateFCAIntervalsFINAL.push({ FCAFFIIntervalDWYValues })
-      this.UpdateFinalFCAFFIInterval = this.UpdateffIntervalValue * 1 * 24
-    } else if (this.UpdateffInterval == 'Week') {
-      FCAFFIIntervalDWY = 'Week';
-      FCAFFIIntervalDWYValues = this.UpdateffIntervalValue;
-      this.UpdateFCAIntervalsFINAL.push({ FCAFFIIntervalDWY })
-      this.UpdateFCAIntervalsFINAL.push({ FCAFFIIntervalDWYValues })
-      this.UpdateFinalFCAFFIInterval = this.UpdateffIntervalValue * 7 * 24
-    } else if (this.UpdateffInterval == 'Month') {
-      FCAFFIIntervalDWY = 'Month';
-      FCAFFIIntervalDWYValues = this.UpdateffIntervalValue;
-      this.UpdateFCAIntervalsFINAL.push({ FCAFFIIntervalDWY })
-      this.UpdateFCAIntervalsFINAL.push({ FCAFFIIntervalDWYValues })
-      this.UpdateFinalFCAFFIInterval = this.UpdateffIntervalValue * 30 * 24
-    } else if (this.UpdateffInterval == 'Year') {
-      FCAFFIIntervalDWY = 'Year';
-      FCAFFIIntervalDWYValues = this.UpdateffIntervalValue;
-      this.UpdateFCAIntervalsFINAL.push({ FCAFFIIntervalDWY })
-      this.UpdateFCAIntervalsFINAL.push({ FCAFFIIntervalDWYValues })
-      this.UpdateFinalFCAFFIInterval = this.UpdateffIntervalValue * 365 * 24
-    }
-
-    var Vibration: string = "", Noice: string = "", Leakage: string = "",
-      PerformanceDrop: string = "", TempratureChange: string = "",
-      EmmisionChange: string = "", IncreaseLubricantConsumption: string = "",
-      Other: string = "";
-
-    Vibration = this.UpdateVibration
-    Noice = this.UpdateNoice
-    Leakage = this.UpdateLeakage
-    PerformanceDrop = this.UpdatePerformanceDrop
-    TempratureChange = this.UpdateTempratureChange
-    EmmisionChange = this.UpdateEmmisionChange
-    IncreaseLubricantConsumption = this.UpdateIncreaseLubricantConsumption
-    Other = this.UpdateOther
-
-    if (this.UpdateVibration != "") {
-      this.UpdateVibration = "Vibration"
-      Vibration = "Vibration"
-      this.UpdateFinalFCACondition.push(this.UpdateVibration)
-    }
-    if (this.UpdateNoice != "") {
-      this.UpdateNoice = "Noice"
-      Noice = "Noice"
-      this.UpdateFinalFCACondition.push(this.UpdateNoice)
-    }
-    if (this.UpdateLeakage != "") {
-      this.UpdateLeakage = "Leakage"
-      this.UpdateFinalFCACondition.push(this.UpdateLeakage)
-      Leakage = "Leakage"
-
-    }
-    if (this.UpdatePerformanceDrop != "") {
-      this.UpdatePerformanceDrop = "Performance Drop"
-      this.UpdateFinalFCACondition.push(this.UpdatePerformanceDrop)
-      PerformanceDrop = "Performance Drop"
-    }
-    if (this.UpdateTempratureChange != "") {
-      this.UpdateTempratureChange = "Temprature Change"
-      this.UpdateFinalFCACondition.push(this.UpdateTempratureChange)
-      TempratureChange = "Temprature Change"
-    }
-    if (this.UpdateEmmisionChange != "") {
-      this.UpdateEmmisionChange = "Emmision Change"
-      this.UpdateFinalFCACondition.push(this.UpdateEmmisionChange)
-      EmmisionChange = "Emmision Change"
-    }
-    if (this.UpdateIncreaseLubricantConsumption != "") {
-      this.UpdateIncreaseLubricantConsumption = "Increase Lubricant Consumption"
-      this.UpdateFinalFCACondition.push(this.UpdateIncreaseLubricantConsumption)
-      IncreaseLubricantConsumption = "Increase Lubricant Consumption"
-    }
-    if (this.UpdateOther != "") {
-      this.UpdateOther = "Other"
-      this.UpdateFinalFCACondition.push(this.UpdateOther)
-      Other = "Other"
-    }
-
-    this.UpdateFCAConditionsFINAL.push({ Vibration })
-    this.UpdateFCAConditionsFINAL.push({ Noice })
-    this.UpdateFCAConditionsFINAL.push({ Leakage })
-    this.UpdateFCAConditionsFINAL.push({ PerformanceDrop })
-    this.UpdateFCAConditionsFINAL.push({ TempratureChange })
-    this.UpdateFCAConditionsFINAL.push({ EmmisionChange })
-    this.UpdateFCAConditionsFINAL.push({ IncreaseLubricantConsumption })
-    this.UpdateFCAConditionsFINAL.push({ Other })
-
-    var HumanSenses: string = "", ExistingInstumentation: string = "", NewInstumentation: string = "", ProcessCondtions: string = "", SampleAnyalysis: string = ""
-    HumanSenses = this.UpdateHumanSenses
-    ExistingInstumentation = this.UpdateExistingInstumentation
-    NewInstumentation = this.UpdateNewInstumentation
-    ProcessCondtions = this.UpdateProcessCondtions
-    SampleAnyalysis = this.UpdateSampleAnyalysis
-    if (this.UpdateHumanSenses != "") {
-      this.UpdateHumanSenses = "Human Senses"
-      HumanSenses = "Human Senses"
-      this.UpdateFinalFCACondition.push(this.UpdateHumanSenses)
-
-    }
-    if (this.UpdateExistingInstumentation != "") {
-      this.UpdateExistingInstumentation = "Existing Instumentation(portable or fixed)"
-      ExistingInstumentation = "Existing Instumentation(portable or fixed)"
-      this.UpdateFinalFCACondition.push(this.UpdateExistingInstumentation)
-
-    }
-    if (this.UpdateNewInstumentation != "") {
-      this.UpdateNewInstumentation = "New Instumentation(portable or fixed)"
-      NewInstumentation = "New Instumentation(portable or fixed)"
-      this.UpdateFinalFCACondition.push(this.UpdateNewInstumentation)
-
-    }
-    if (this.UpdateProcessCondtions != "") {
-      this.UpdateProcessCondtions = "Process Condtions"
-      ProcessCondtions = "Process Condtions"
-      this.UpdateFinalFCACondition.push(this.UpdateProcessCondtions)
-    }
-    if (this.UpdateSampleAnyalysis != "") {
-      this.UpdateSampleAnyalysis = "Sample Anyalysis"
-      SampleAnyalysis = "Sample Anyalysis"
-      this.UpdateFinalFCACondition.push(this.UpdateSampleAnyalysis)
-    }
-
-
-    this.UpdateFCAConditionsFINAL.push({ HumanSenses })
-    this.UpdateFCAConditionsFINAL.push({ ExistingInstumentation })
-    this.UpdateFCAConditionsFINAL.push({ NewInstumentation })
-    this.UpdateFCAConditionsFINAL.push({ ProcessCondtions })
-    this.UpdateFCAConditionsFINAL.push({ SampleAnyalysis })
-
-    if (this.UpdateSafeLife != 0) {
-      this.UpdateSafeLife = this.UpdateFinalSafeUsefulLife
-    } else if (this.UpdateUsefulLife != 0) {
-      this.UpdateUsefulLife = this.UpdateFinalSafeUsefulLife
-    }
-
-    this.UpdateFCACommentFINAL.push(this.UpdateCommentFIEYN)
-    this.UpdateFCACommentFINAL.push(this.UpdateCommentFIEYN2)
-    this.UpdateFCACommentFINAL.push(this.UpdateFCAFreeText)
-
-    this.FCAUpdatePageEnable = false
     this.FCAView[0].children[0].data.name = this.Pattern
-    this.FCAView[0].children[1].data.name = this.UpdateFinalFCACondition
-    this.FCAView[0].children[2].data.name = this.UpdateFinalFCAInterval
-    this.FCAView[0].children[3].data.name = this.UpdateFinalFCAFFIInterval
-    this.FCAView[0].children[4].data.name = this.UpdateAlpha.toFixed(2)
-    this.FCAView[0].children[5].data.name = this.UpdateBeta.toFixed(2)
-    this.FCAView[0].children[6].data.name = this.UpdateFinalSafeUsefulLife
     this.data1[0].children[0].children[0].children[this.FCAView[0].label - 1].children[1].pattern = this.Pattern
     this.data1[0].children[0].children[0].children[this.FCAView[0].label - 1].children[1].nodePath = 0
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label - 1].children[0].data.name = this.Pattern
-    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label - 1].children[1].data.name = this.UpdateFinalFCACondition
-    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label - 1].children[2].data.name = this.UpdateFinalFCAInterval
-    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label - 1].children[3].data.name = this.UpdateFinalFCAFFIInterval
-    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label - 1].children[4].data.name = this.UpdateAlpha.toFixed(2)
-    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label - 1].children[5].data.name = this.UpdateBeta.toFixed(2)
-    this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.FCAView[0].label - 1].children[6].data.name = this.UpdateFinalSafeUsefulLife
-    this.FCAViewEnabled = false
-    this.FCAViewTreeEnabled = false
-    this.changeDetectorRef.detectChanges()
-    this.FCAViewEnabled = true
-    this.FCAViewTreeEnabled = true
-
     this.FCAView[0].pattern = this.Pattern
     this.FCAView[0].nodePath = 0
     this.EnabledPatternUpdate = true;
     this.AddFMPatternAddEnable = false;
     this.UpdatePatternAddEnable = false;
-
+    this.UpdateMSSAddEnable = false
+    this.AddFMMSSAddEnable = false;
     if (this.Pattern == 'Pattern 1') {
       const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
       const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
@@ -2699,16 +2502,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach(element => {
       if (element.data.name == FM && element.label == this.FCAView[0].label) {
         element.children[0].data.name = this.Pattern
-        element.children[1].data.name = this.UpdateFinalFCACondition
-        element.children[2].data.name = this.UpdateFinalFCAInterval
-        element.children[3].data.name = this.UpdateFinalFCAFFIInterval
-        element.children[4].data.name = this.UpdateAlpha
-        element.children[5].data.name = this.UpdateBeta
-        if (this.UpdateSafeLife != 0) {
-          element.children[6].data.name = this.UpdateSafeLife
-        } else if (this.UpdateUsefulLife != 0) {
-          element.children[6].data.name = this.UpdateUsefulLife
-        }
       }
     })
 
@@ -2724,16 +2517,6 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.forEach(element => {
       if (element.FunctionMode == FM && element.LocalEffect == LE && element.SystemEffect == SE && element.Consequence == Con) {
         element.Pattern = this.Pattern
-        element.FCACondition = JSON.stringify(this.UpdateFinalFCACondition)
-        element.FCAInterval = this.UpdateFinalFCAInterval
-        element.FCAFFI = this.UpdateFinalFCAFFIInterval
-        element.FCAAlpha = this.UpdateAlpha
-        element.FCABeta = this.UpdateBeta
-        element.FCASafeLife = this.UpdateSafeLife
-        element.FCAUsefulLife = this.UpdateUsefulLife
-        element.FCAUpdateIntervals = JSON.stringify(this.UpdateFCAIntervalsFINAL)
-        element.FCAUpdateConditions = JSON.stringify(this.UpdateFCAConditionsFINAL)
-        element.FCAComment = JSON.stringify(this.UpdateFCACommentFINAL)
         CPObj.centrifugalPumpPrescriptiveFailureModes.push(element)
       }
     });
@@ -2869,342 +2652,21 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.PatternPath = ""
       this.changeDetectorRef.detectChanges();
     }
-    this.ADDFailureModePatternTree = true
-    this.ADDFailuerRate = true
-    this.ADDFailureWarning = true
-    this.ADDWarningSign = true
-    this.ADDIntervalDeteacting = true
-    this.ADDFailuerEvident = true
-    this.ADDFailuerMaintenance = true
-    this.ADDFailuerComments = true
-    this.ADDSafeUsefulLife = true
-    this.ADDalphaBeta = true
+       this.ADDFailureModePatternTree = true
+       this.ADDFailuerRate = true
+       this.ADDFailureWarning = true
+       this.ADDWarningSign = true
+       this.ADDIntervalDeteacting = true
+       this.ADDFailuerEvident = true
+       this.ADDFailuerMaintenance = true
+       this.ADDFailuerComments = true
+       this.ADDSafeUsefulLife = true
+       this.ADDalphaBeta = true
 
 
     // const element = document.querySelector("#ScrollToFCATree")
     // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-  }
-
-  public UpdateFCAFreeText: string = ""
-  public UpdateVibration: string = ""
-  public UpdateNoice: string = ""
-  public UpdateLeakage: string = ""
-  public UpdatePerformanceDrop: string = ""
-  public UpdateTempratureChange: string = ""
-  public UpdateEmmisionChange: string = ""
-  public UpdateIncreaseLubricantConsumption: string = ""
-  public UpdateOther: string = ""
-  public UpdateHumanSenses: string = ""
-  public UpdateExistingInstumentation: string = ""
-  public UpdateNewInstumentation: string = ""
-  public UpdateProcessCondtions: string = ""
-  public UpdateSampleAnyalysis: string = ""
-  public UpdateCommentFIEYN: string = ""
-  public UpdateCommentFIEYN2: string = ""
-  public Updateinterval: string = ""
-  public UpdateintervalValue: number = 0
-  public UpdateffInterval: string = ""
-  public UpdateffIntervalValue: number = 0
-  public FCAUpdatePageEnable: boolean = false
-
-  public UpdateAlpha: number = 0
-  public UpdateBeta: number = 0
-
-  CompleteUpdateFCA(p) {
-    console.log(p.label)
-    var FMName, LocalEffect, SystemEffect, Consequence;
-
-    this.data1[0].children[0].children[0].children.forEach(element => {
-      if (element.label === p.label) {
-        FMName = element.data.name;
-        LocalEffect = element.children[0].children[0].data.name
-        SystemEffect = element.children[0].children[1].data.name
-        Consequence = element.children[0].children[2].data.name
-
-        var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence)
-        var FCAComment = JSON.parse(UpdateData.FCAComment)
-        var FCAUpdateConditions = JSON.parse(UpdateData.FCAUpdateConditions)
-        var FCAUpdateIntervals = JSON.parse(UpdateData.FCAUpdateIntervals)
-
-
-        this.UpdateAlpha = UpdateData.FCAAlpha
-        this.UpdateBeta = UpdateData.FCABeta
-        this.UpdateSafeLife = UpdateData.FCASafeLife
-        if (this.UpdateSafeLife != 0) {
-          this.UpdateFinalSafeUsefulLife = this.UpdateSafeLife
-        }
-        this.UpdateUsefulLife = UpdateData.FCAUsefulLife
-
-        if (this.UpdateUsefulLife != 0) {
-          this.UpdateFinalSafeUsefulLife = this.UpdateUsefulLife
-        }
-        this.UpdateVibration = FCAUpdateConditions[0].Vibration
-        this.UpdateNoice = FCAUpdateConditions[1].Noice
-        this.UpdateLeakage = FCAUpdateConditions[2].Leakage
-        this.UpdatePerformanceDrop = FCAUpdateConditions[3].PerformanceDrop
-        this.UpdateTempratureChange = FCAUpdateConditions[4].TempratureChange
-        this.UpdateEmmisionChange = FCAUpdateConditions[5].EmmisionChange
-        this.UpdateIncreaseLubricantConsumption = FCAUpdateConditions[6].IncreaseLubricantConsumption
-        this.UpdateOther = FCAUpdateConditions[7].Other
-        this.UpdateHumanSenses = FCAUpdateConditions[8].HumanSenses
-        this.UpdateExistingInstumentation = FCAUpdateConditions[9].ExistingInstumentation
-        this.UpdateNewInstumentation = FCAUpdateConditions[10].NewInstumentation
-        this.UpdateProcessCondtions = FCAUpdateConditions[11].ProcessCondtions
-        this.UpdateSampleAnyalysis = FCAUpdateConditions[12].SampleAnyalysis
-
-        this.UpdateCommentFIEYN = FCAComment[0]
-        this.UpdateCommentFIEYN2 = FCAComment[1]
-        this.UpdateFCAFreeText = FCAComment[2]
-
-        this.Updateinterval = FCAUpdateIntervals[0].FCAIntervalDWY
-        this.UpdateintervalValue = FCAUpdateIntervals[1].FCAIntervalDWYValues
-        this.UpdateffInterval = FCAUpdateIntervals[2].FCAFFIIntervalDWY
-        this.UpdateffIntervalValue = FCAUpdateIntervals[3].FCAFFIIntervalDWYValues
-      }
-    })
-
-
-  }
-
-
-  UpdateWebal(event) {
-    var file = event.target.files[0];
-    let fileReader = new FileReader();
-    fileReader.readAsArrayBuffer(file);
-    fileReader.onload = (e) => {
-      var arrayBuffer: any = fileReader.result;
-      var data = new Uint8Array(arrayBuffer);
-      var arr = new Array();
-      for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-      var bstr = arr.join("");
-      var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
-      var first_sheet_name = workbook.SheetNames[0];
-      var worksheet = workbook.Sheets[first_sheet_name];
-      console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
-      var daysList: any = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      var Data: any = []
-      daysList.forEach(element => {
-        Data.push(element.Days)
-      });
-      var headers = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      }
-      this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), headers).subscribe(
-        res => {
-          var ab: any = res;
-          this.UpdateAlpha = ab.alpha;
-          this.UpdateBeta = ab.beta;
-          this.changeDetectorRef.detectChanges();
-        }, err => { console.log(err.error) }
-      )
-    }
-
-  }
-
-  public UpdateMSSConsequence: string = ""
-  public UpdateMSSImagePath: string = ""
-  public UpdateMSSImageFlag: boolean = false
-  public UpdateMSSImageValues: any = []
-  public UpdateMSSTaskObj: any = []
-  public UpdatedMSSStartegy: string = ""
-  private UpdateMSSTreeLabel: number = 0
-  private UpdateMSSAvailability: number = 0
-  SelectNodeToEditMSS(p) {
-    this.UpdateMSSTreeLabel = p.label
-    this.UpdatedMSSStartegy = p.children[0].data.name
-    this.UpdateMSSConsequence = this.UpdatedMSSStartegy.split('-')[0]
-    var Data: any, FMName, LocalEffect, SystemEffect, Consequence;
-    if (this.UpdateMSSConsequence == 'A') {
-      Data = ['A-OCM', 'A-SO', 'A-SR', 'A-FFT', 'A-FromAbove', 'A-RED']
-      this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/A.JPG"
-    } else if (this.UpdateMSSConsequence == 'B') {
-      Data = ['B-OCM', 'B-SO', 'B-SR', 'B-FromAbove', 'B-RED']
-      this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/B.JPG"
-    } else if (this.UpdateMSSConsequence == 'C') {
-      Data = ['C-OCM', 'C-SO', 'C-SR', 'C-OFM', 'C-RED']
-      this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/C.JPG"
-    } else if (this.UpdateMSSConsequence == 'D') {
-      Data = ['D-OCM', 'D-SO', 'D-SR', 'D-OFM', 'D-RED']
-      this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/D.JPG"
-    } else if (this.UpdateMSSConsequence == 'E') {
-      Data = ['E-OCM', 'E-SO', 'E-SR', 'E-FFT', 'E-OFM', 'E-RED']
-      this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/E.JPG"
-    }
-    this.UpdateMSSImageValues = Data;
-
-
-    this.data1[0].children[0].children[0].children.forEach(element => {
-      if (element.label === p.label) {
-        FMName = element.data.name;
-        LocalEffect = element.children[0].children[0].data.name
-        SystemEffect = element.children[0].children[1].data.name
-        Consequence = element.children[0].children[2].data.name
-
-        var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence)
-        this.UpdateMSSAvailability = UpdateData.MSSAvailability
-
-      }
-    })
-
-    this.changeDetectorRef.detectChanges()
-    this.UpdateMSSImageFlag = true
-  }
-
-  UpdateMSSToTree() {
-    this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[2].children[0].data.name = this.UpdatedMSSStartegy
-    this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[0].data.name = this.UpdatedMSSStartegy
-
-    if (this.UpdatedMSSStartegy == 'A-FFT' || this.UpdatedMSSStartegy == 'A-OCM' || this.UpdatedMSSStartegy == 'A-SO'
-      || this.UpdatedMSSStartegy == 'A-SR' || this.UpdatedMSSStartegy == 'A-RED' || this.UpdatedMSSStartegy == 'A-OFM'
-      || this.UpdatedMSSStartegy == 'B-FFT' || this.UpdatedMSSStartegy == 'B-OCM' || this.UpdatedMSSStartegy == 'B-SO'
-      || this.UpdatedMSSStartegy == 'B-SR' || this.UpdatedMSSStartegy == 'B-RED' || this.UpdatedMSSStartegy == 'B-OFM') {
-
-      if (this.UpdatedMSSStartegy == 'A-OFM' || this.UpdatedMSSStartegy == 'B-FFT') {
-        let obj = {}
-        obj['MSSMaintenanceInterval'] = 'Not Applicable'
-        obj['MSSMaintenanceTask'] = 'Not Applicable'
-        obj['MSSStartergy'] = this.UpdatedMSSStartegy
-        this.UpdateMSSTaskObj.push(obj)
-      } else {
-
-        var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
-        var ocmWeek: number = ocmHours.split(" ")[0]
-        ocmWeek = Math.round((ocmWeek / 24) / 7)
-
-
-        var strategy = this.UpdatedMSSStartegy.split('-')[1];
-        let obj = {}
-        if (strategy == 'FFT') {
-          obj['MSSMaintenanceInterval'] = this.UpdateMSSAvailability;
-          obj['MSSMaintenanceTask'] = 'Function Check'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        } else if (strategy == 'OCM') {
-          obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        } else if (strategy == 'SO') {
-          obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        } else if (strategy == 'SR') {
-          obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        } else if (strategy == 'RED') {
-          obj['MSSMaintenanceInterval'] = 'NA'
-          obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        }
-      }
-
-    } else if (this.UpdatedMSSStartegy == 'C-FFT' || this.UpdatedMSSStartegy == 'C-OCM' || this.UpdatedMSSStartegy == 'C-SO'
-      || this.UpdatedMSSStartegy == 'C-SR' || this.UpdatedMSSStartegy == 'C-RED' || this.UpdatedMSSStartegy == 'C-OFM'
-      || this.UpdatedMSSStartegy == 'D-FFT' || this.UpdatedMSSStartegy == 'D-OCM' || this.UpdatedMSSStartegy == 'D-SO'
-      || this.UpdatedMSSStartegy == 'D-SR' || this.UpdatedMSSStartegy == 'D-RED' || this.UpdatedMSSStartegy == 'D-OFM'
-      || this.UpdatedMSSStartegy == 'E-FFT' || this.UpdatedMSSStartegy == 'E-OCM' || this.UpdatedMSSStartegy == 'E-SO'
-      || this.UpdatedMSSStartegy == 'E-SR' || this.UpdatedMSSStartegy == 'E-RED' || this.UpdatedMSSStartegy == 'E-OFM') {
-
-      if (this.UpdatedMSSStartegy == 'C-FFT' || this.UpdatedMSSStartegy == 'D-FFT') {
-        let obj = {}
-        obj['MSSMaintenanceInterval'] = 'Not Applicable'
-        obj['MSSMaintenanceTask'] = 'Not Applicable'
-        obj['MSSStartergy'] = this.UpdatedMSSStartegy
-        this.UpdateMSSTaskObj.push(obj)
-      } else {
-
-        var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
-        var ocmWeek: number = ocmHours.split(" ")[0]
-        ocmWeek = Math.round((ocmWeek / 24) / 7)
-
-
-
-        var strategy = this.UpdatedMSSStartegy.split('-')[1];
-        let obj = {}
-        if (strategy == 'FFT') {
-          obj['MSSMaintenanceInterval'] = 'NA'
-          obj['MSSMaintenanceTask'] = 'Function check'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-        } else if (strategy == 'OCM') {
-          obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        } else if (strategy == 'SO') {
-          obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        } else if (strategy == 'SR') {
-          obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        } else if (strategy == 'RED') {
-          obj['MSSMaintenanceInterval'] = 'NA'
-          obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        }
-        else if (strategy == 'OFM') {
-          obj['MSSMaintenanceInterval'] = 'NA'
-          obj['MSSMaintenanceTask'] = 'No Task'
-          obj['MSSStartergy'] = this.UpdatedMSSStartegy
-          obj['MSSAvailability'] = this.UpdateMSSAvailability
-          this.UpdateMSSTaskObj.push(obj)
-
-        }
-      }
-    }
-
-    var CPObj: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
-    CPObj.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
-    CPObj.FMWithConsequenceTree = JSON.stringify(this.data1)
-    this.UpdateMSSTaskObj.forEach(element => {
-      element.CPPFMId = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].CPPFMId
-
-    });
-    CPObj.centrifugalPumpPrescriptiveFailureModes = this.UpdateMSSTaskObj
-    this.http.put<any>('api/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate', CPObj).subscribe(
-      res => {
-        this.UpdateMSSImageFlag = false
-        this.prescriptiveTree = false
-        this.changeDetectorRef.detectChanges()
-        this.prescriptiveTree = true
-        localStorage.removeItem('PrescriptiveUpdateObject');
-        localStorage.setItem('PrescriptiveUpdateObject', JSON.stringify(res.centrifugalPumpPrescriptiveModel[0]))
-        this.getData();
-        //  this.router.navigateByUrl('/Home/Prescriptive/List') 
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Successfully updated' })
-      }, err => { console.log(err.error) }
-    )
   }
 
 
@@ -3239,6 +2701,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       this.droppedYesNo1 = null;
     }
   }
+
   dragStartC3(e, con3) {
     this.droppedYesNo2 = con3;
   }
@@ -3297,327 +2760,327 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.FailureModeMSSPatternTree = false;
   }
 
-  ADDIntervalSave() {
-    if (this.ADDinterval == 'Days') {
+  ADDIntervalSave(){
+    if(this.ADDinterval == 'Days'){
       this.FCAInterval = this.ADDintervalValue * 1 * 24
-    } else if (this.ADDinterval == 'Week') {
+    } else if(this.ADDinterval == 'Week'){
       this.FCAInterval = this.ADDintervalValue * 7 * 24
-    } else if (this.ADDinterval == 'Month') {
+    } else if(this.ADDinterval == 'Month'){
       this.FCAInterval = this.ADDintervalValue * 30 * 24
-    } else if (this.ADDinterval == 'Year') {
+    } else if(this.ADDinterval == 'Year'){
       this.FCAInterval = this.ADDintervalValue * 365 * 24
     }
-    if (this.ADDinterval.length > 0 && this.ADDintervalValue > 0) {
-      this.changeDetectorRef.detectChanges()
-      this.ADDfailurewarning = !this.ADDfailurewarning;
+  if(this.ADDinterval.length> 0 && this.ADDintervalValue >0){
+   this.changeDetectorRef.detectChanges()
+   this.ADDfailurewarning = !this.ADDfailurewarning;
 
-      const element = document.querySelector("#Patternfailurewarning")
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      // alert("fill the data")
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-    }
+   const element = document.querySelector("#Patternfailurewarning")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }else{
+   // alert("fill the data")
+   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
   }
+   }
 
 
-  ADDConditionFirst() {
-    if (this.ADDVibration != "") {
-      this.ADDVibration = "Vibration"
-      this.FCACondition.push(this.ADDVibration)
+   ADDConditionFirst(){
+     if(this.ADDVibration != ""){
+       this.ADDVibration = "Vibration"
+       this.FCACondition.push(this.ADDVibration)
 
-    }
-    if (this.ADDNoice != "") {
-      this.ADDNoice = "Noice"
-      this.FCACondition.push(this.ADDNoice)
+     }
+     if(this.ADDNoice != ""){
+       this.ADDNoice = "Noice"
+       this.FCACondition.push(this.ADDNoice)
 
-    }
-    if (this.ADDLeakage != "") {
-      this.ADDLeakage = "Leakage"
-      this.FCACondition.push(this.ADDLeakage)
+     }
+     if(this.ADDLeakage != ""){
+       this.ADDLeakage = "Leakage"
+       this.FCACondition.push(this.ADDLeakage)
 
-    }
-    if (this.ADDPerformanceDrop != "") {
-      this.ADDPerformanceDrop = "Performance Drop"
-      this.FCACondition.push(this.ADDPerformanceDrop)
+     }
+     if(this.ADDPerformanceDrop != ""){
+       this.ADDPerformanceDrop = "Performance Drop"
+       this.FCACondition.push(this.ADDPerformanceDrop)
 
-    }
-    if (this.ADDTempratureChange != "") {
-      this.ADDTempratureChange = "Temprature Change"
-      this.FCACondition.push(this.ADDTempratureChange)
+     }
+     if(this.ADDTempratureChange != ""){
+       this.ADDTempratureChange = "Temprature Change"
+       this.FCACondition.push(this.ADDTempratureChange)
 
-    }
-    if (this.ADDEmmisionChange != "") {
-      this.ADDEmmisionChange = "Emmision Change"
-      this.FCACondition.push(this.ADDEmmisionChange)
+     }
+     if(this.ADDEmmisionChange != ""){
+       this.ADDEmmisionChange = "Emmision Change"
+       this.FCACondition.push(this.ADDEmmisionChange)
 
-    }
-    if (this.ADDIncreaseLubricantConsumption != "") {
-      this.ADDIncreaseLubricantConsumption = "Increase Lubricant Consumption"
-      this.FCACondition.push(this.ADDIncreaseLubricantConsumption)
+     }
+     if(this.ADDIncreaseLubricantConsumption != ""){
+       this.ADDIncreaseLubricantConsumption = "Increase Lubricant Consumption"
+       this.FCACondition.push(this.ADDIncreaseLubricantConsumption)
 
-    }
-    if (this.ADDOther != "") {
-      this.ADDOther = "Other"
-      this.FCACondition.push(this.ADDOther)
-    }
-    if (this.ADDVibration.length > 0 || this.ADDNoice.length > 0 || this.ADDLeakage.length > 0 || this.ADDPerformanceDrop.length > 0 || this.ADDTempratureChange.length > 0 || this.ADDEmmisionChange.length > 0 || this.ADDIncreaseLubricantConsumption.length > 0 || this.ADDOther.length > 0) {
-      this.changeDetectorRef.detectChanges()
-      this.ADDwarningsign = !this.ADDwarningsign;
+     }
+     if(this.ADDOther != ""){
+       this.ADDOther = "Other"
+       this.FCACondition.push(this.ADDOther)
+     }
+     if(this.ADDVibration.length >0 || this.ADDNoice.length > 0 || this.ADDLeakage.length >0 || this.ADDPerformanceDrop.length > 0 || this.ADDTempratureChange.length>0 || this.ADDEmmisionChange.length>0 || this.ADDIncreaseLubricantConsumption.length >0 || this.ADDOther.length > 0){
+       this.changeDetectorRef.detectChanges()
+       this.ADDwarningsign = !this.ADDwarningsign;
 
-      const element = document.querySelector("#PatternWarningSign")
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-    else {
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-    }
+     const element = document.querySelector("#PatternWarningSign")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }
+     else{
+       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+     }
 
-  }
+   }
 
-  ADDConditionSecond() {
-    if (this.ADDHumanSenses != "") {
-      this.ADDHumanSenses = "Human Senses"
-      this.FCACondition.push(this.ADDHumanSenses)
+   ADDConditionSecond(){
+     if(this.ADDHumanSenses != ""){
+       this.ADDHumanSenses = "Human Senses"
+       this.FCACondition.push(this.ADDHumanSenses)
 
-    }
-    if (this.ADDExistingInstumentation != "") {
-      this.ADDExistingInstumentation = "Existing Instumentation(portable or fixed)"
-      this.FCACondition.push(this.ADDExistingInstumentation)
+     }
+     if(this.ADDExistingInstumentation != ""){
+       this.ADDExistingInstumentation = "Existing Instumentation(portable or fixed)"
+       this.FCACondition.push(this.ADDExistingInstumentation)
 
-    }
-    if (this.ADDNewInstumentation != "") {
-      this.ADDNewInstumentation = "New Instumentation(portable or fixed)"
-      this.FCACondition.push(this.ADDNewInstumentation)
+     }
+     if(this.ADDNewInstumentation != ""){
+       this.ADDNewInstumentation = "New Instumentation(portable or fixed)"
+       this.FCACondition.push(this.ADDNewInstumentation)
 
-    }
-    if (this.ADDProcessCondtions != "") {
-      this.ADDProcessCondtions = "Process Condtions"
-      this.FCACondition.push(this.ADDProcessCondtions)
-    }
-    if (this.ADDSampleAnyalysis != "") {
-      this.ADDSampleAnyalysis = "Sample Anyalysis"
-      this.FCACondition.push(this.ADDSampleAnyalysis)
-    }
-    if (this.ADDHumanSenses.length > 0 || this.ADDExistingInstumentation.length > 0 || this.ADDNewInstumentation.length > 0 || this.ADDProcessCondtions.length > 0 || this.ADDSampleAnyalysis.length > 0) {
-      this.changeDetectorRef.detectChanges()
-      this.ADDintervaldeteacting = !this.ADDintervaldeteacting;
-      const element = document.querySelector("#PatternIntervalDeteacting")
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-    }
+     }
+     if(this.ADDProcessCondtions != ""){
+       this.ADDProcessCondtions = "Process Condtions"
+       this.FCACondition.push(this.ADDProcessCondtions)
+     }
+     if(this.ADDSampleAnyalysis != ""){
+       this.ADDSampleAnyalysis = "Sample Anyalysis"
+       this.FCACondition.push(this.ADDSampleAnyalysis)
+     }
+     if(this.ADDHumanSenses.length >0 || this.ADDExistingInstumentation.length >0 || this.ADDNewInstumentation.length >0|| this.ADDProcessCondtions.length >0||this.ADDSampleAnyalysis.length >0){
+       this.changeDetectorRef.detectChanges()
+       this.ADDintervaldeteacting = !this.ADDintervaldeteacting;
+       const element = document.querySelector("#PatternIntervalDeteacting")
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }else{
+       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+     }
 
-  }
+   }
 
-  ADDFFInterval() {
-    if (this.ADDffInterval == 'Days') {
-      this.FCAFFInterval = this.ADDffIntervalValue * 1 * 24
-    } else if (this.ADDffInterval == 'Week') {
-      this.FCAFFInterval = this.ADDffIntervalValue * 7 * 24
-    } else if (this.ADDffInterval == 'Month') {
-      this.FCAFFInterval = this.ADDffIntervalValue * 30 * 24
-    } else if (this.ADDffInterval == 'Year') {
-      this.FCAFFInterval = this.ADDffIntervalValue * 365 * 24
-    }
+   ADDFFInterval(){
+     if(this.ADDffInterval == 'Days'){
+       this.FCAFFInterval = this.ADDffIntervalValue * 1 * 24
+     } else if(this.ADDffInterval == 'Week'){
+       this.FCAFFInterval = this.ADDffIntervalValue * 7 * 24
+     } else if(this.ADDffInterval == 'Month'){
+       this.FCAFFInterval = this.ADDffIntervalValue * 30 * 24
+     } else if(this.ADDffInterval == 'Year'){
+       this.FCAFFInterval = this.ADDffIntervalValue * 365 * 24
+     }
 
-    if (this.ADDffInterval.length > 0 && this.ADDffIntervalValue > 0) {
-      this.changeDetectorRef.detectChanges()
-      this.ADDfailuerevident = !this.ADDfailuerevident;
-      const element = document.querySelector("#PatternFailuerEvident")
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-    }
+     if(this.ADDffInterval.length >0 && this.ADDffIntervalValue >0){
+       this.changeDetectorRef.detectChanges()
+       this.ADDfailuerevident = !this.ADDfailuerevident;
+       const element = document.querySelector("#PatternFailuerEvident")
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }else{
+       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+     }
 
-  }
-  public SafeUsefulLife: boolean = true;
-  ADDCommentThird() {
-    this.FCAComment.push(this.ADDCommentFIEYN)
-    this.ADDfailuermaintenance = !this.ADDfailuermaintenance;
+   }
+  public SafeUsefulLife:boolean = true;
+   ADDCommentThird(){
+     this.FCAComment.push(this.ADDCommentFIEYN)
+     this.ADDfailuermaintenance = !this.ADDfailuermaintenance;
+     
+     if( this.ADDCommentFIEYN.length>0 && this.ADDCommentFIEYN.length>0){
+       this.changeDetectorRef.detectChanges()
+       const element = document.querySelector("#PatternFailuerMaintenance")
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }else{
+       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+     }
 
-    if (this.ADDCommentFIEYN.length > 0 && this.ADDCommentFIEYN.length > 0) {
-      this.changeDetectorRef.detectChanges()
-      const element = document.querySelector("#PatternFailuerMaintenance")
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-    }
+   }
 
-  }
+   ADDCommentFourth(){
+     // this.patternaddshow = false
+     this.FCAComment.push(this.ADDCommentFIEYN2)
+     if( this.ADDCommentFIEYN2.length>0 && this.ADDCommentFIEYN2.length>0){
+       this.changeDetectorRef.detectChanges()
+       this.ADDfailuercomments = !this.ADDfailuercomments;
+       const element = document.querySelector("#PatternFailuerComments")
+       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     }else{
+       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+     }
 
-  ADDCommentFourth() {
-    // this.patternaddshow = false
-    this.FCAComment.push(this.ADDCommentFIEYN2)
-    if (this.ADDCommentFIEYN2.length > 0 && this.ADDCommentFIEYN2.length > 0) {
-      this.changeDetectorRef.detectChanges()
-      this.ADDfailuercomments = !this.ADDfailuercomments;
-      const element = document.querySelector("#PatternFailuerComments")
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-    }
+   }
 
-  }
+  async ADDFCAFreeTextSave(){
+ 
+     this.ADDPatternFailuerAll = true
+     this.FCAComment.push(this.ADDFCAFreeText)
+     this.ADDSafeUsefulLife = true;
+     this.changeDetectorRef.detectChanges()
+     this.SafeUsefulLife = !this.SafeUsefulLife;
+     const element = document.querySelector("#SafeUsefulLife")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+   }
 
-  async ADDFCAFreeTextSave() {
+  async ADDFCAFreeTextCancel(){
+     this.ADDPatternFailuerAll = true
+     this.ADDFCAFreeText = ""
+     this.ADDalphaBeta = true
+     this.SafeUsefulLife = !this.SafeUsefulLife;
+     this.changeDetectorRef.detectChanges();
+     const element = document.querySelector("#alphaBeta")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+   }
 
-    this.ADDPatternFailuerAll = true
-    this.FCAComment.push(this.ADDFCAFreeText)
-    this.ADDSafeUsefulLife = true;
+   ADDWebal(event){
+     this.file = event.target.files[0];
+     let fileReader = new FileReader();
+     fileReader.readAsArrayBuffer(this.file);
+     fileReader.onload = (e) => {
+       this.arrayBuffer = fileReader.result;
+       var data = new Uint8Array(this.arrayBuffer);
+       var arr = new Array();
+       for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+       var bstr = arr.join("");
+       var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+       var first_sheet_name = workbook.SheetNames[0];
+       var worksheet = workbook.Sheets[first_sheet_name];
+       console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
+       this.daysList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+       var Data : any = []
+       this.daysList.forEach(element => {
+         Data.push(element.Days)
+       });
+       this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), this.headers).subscribe(
+         res =>{
+             this.ADDalpha =res.alpha;
+             this.ADDbeta =res.beta;
+             this.changeDetectorRef.detectChanges();
+         }, err => {console.log(err.error)}
+       )
+     }
+
+ }
+
+
+ async ADDSafeUsefulLifeSave(){
+   if(this.ADDWebalYN == 'YES'  || this.ADDWebalYN == 'No'){
+       if(this.ADDWebalYN == 'YES'){
+         this.ADDalphaBeta = true
+         this.ADDalpha = 0;
+         this.ADDbeta = 0;
+         this.changeDetectorRef.detectChanges();
+         const element = document.querySelector("#alphaBeta")
+         if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+       }else {
+         this.ADDpatternaddshow = true
+         this.changeDetectorRef.detectChanges();
+         const element = document.querySelector("#ScrollToFCATree")
+         if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+       }
+   }else{
+     this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please choose Yes or No for webal analysis"})
+   }
+
+ }
+
+ async ADDalphaBetaSave(){
+   this.ADDpatternaddshow = true
+   this.changeDetectorRef.detectChanges();
+   const element = document.querySelector("#ScrollToFCATree")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+ }
+
+ ExcelDownload(){
+   var ColumnsData : any = ["Days"];
+   this.excelFormatService.GetExcelFormat( ColumnsData , 'Webal_Days_Format')
+ }
+
+ async Availability(){
+  if( this.ADDMSSAvailabilityY == 'Yes' || this.ADDMSSAvailabilityY == 'No'){
     this.changeDetectorRef.detectChanges()
-    this.SafeUsefulLife = !this.SafeUsefulLife;
-    const element = document.querySelector("#SafeUsefulLife")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+    if(this.ADDMSSAvailabilityY == 'Yes'){
+      // this.MSSTreeButton = true
+      this.ADDMSSexpectedAvailability = true
+      this.ADDMSSAvailabilityPlantStoppage = false
+      this.ADDMSSAvailabilityPlantStoppageTime = false
+
+     }else if(this.ADDMSSAvailabilityY == 'No') {
+      // this.MSSTreeButton = true
+      this.ADDMSSexpectedAvailability = false
+      this.ADDMSSAvailabilityPlantStoppage = true
+      this.ADDMSSAvailabilityPlantStoppageTime = true
+     }
+     this.changeDetectorRef.detectChanges()
+     const element = document.querySelector("#PlantStoppage")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }else{
+    alert("fill the data")
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
   }
 
-  async ADDFCAFreeTextCancel() {
-    this.ADDPatternFailuerAll = true
-    this.ADDFCAFreeText = ""
-    this.ADDalphaBeta = true
-    this.SafeUsefulLife = !this.SafeUsefulLife;
-    this.changeDetectorRef.detectChanges();
-    const element = document.querySelector("#alphaBeta")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ }
+
+async AvailabilityYes(){
+   if(this.ADDMSSAvailabilityCheck != 0){
+
+   }else{
+     alert("Fill the data")
+   }
+   this.MSSTreeButton = true
+   const element = document.querySelector("#Consequence")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ }
+
+async StoppageDays(){
+  if(this.ADDMSSstoppageDays == 'Days'){
+    this.MSSstoppageValue = this.ADDMSSstoppageDaysValue * 1
+  } else if(this.ADDMSSstoppageDays == 'Week'){
+    this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 7
+  } else if(this.ADDMSSstoppageDays == 'Month'){
+    this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 30
+  } else if(this.ADDMSSstoppageDays == 'Year'){
+    this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 365
   }
+  this.PlantStoppageTime = !this.PlantStoppageTime;
+  const element = document.querySelector("#PlantStoppagetime")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ }
 
-  ADDWebal(event) {
-    this.file = event.target.files[0];
-    let fileReader = new FileReader();
-    fileReader.readAsArrayBuffer(this.file);
-    fileReader.onload = (e) => {
-      this.arrayBuffer = fileReader.result;
-      var data = new Uint8Array(this.arrayBuffer);
-      var arr = new Array();
-      for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-      var bstr = arr.join("");
-      var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
-      var first_sheet_name = workbook.SheetNames[0];
-      var worksheet = workbook.Sheets[first_sheet_name];
-      console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
-      this.daysList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      var Data: any = []
-      this.daysList.forEach(element => {
-        Data.push(element.Days)
-      });
-      this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), this.headers).subscribe(
-        res => {
-          this.ADDalpha = res.alpha;
-          this.ADDbeta = res.beta;
-          this.changeDetectorRef.detectChanges();
-        }, err => { console.log(err.error) }
-      )
-    }
-
+async StoppageDuration(){
+  if (this.ADDMSSstoppageDaysTime == 'Days') {
+    this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 1
+  } else if (this.ADDMSSstoppageDaysTime == 'Week') {
+    this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 7
+  } else if (this.ADDMSSstoppageDaysTime == 'Month') {
+    this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 30
+  } else if (this.ADDMSSstoppageDaysTime == 'Year') {
+    this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 365
   }
+ this.MSSAvailabilityResult = (1-(this.MSSstoppageDuration / this.MSSstoppageValue  ))*100
+ this.MSSTreeButton = true
+ const element = document.querySelector("#Consequence")
+ if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
+}
 
-  async ADDSafeUsefulLifeSave() {
-    if (this.ADDWebalYN == 'YES' || this.ADDWebalYN == 'No') {
-      if (this.ADDWebalYN == 'YES') {
-        this.ADDalphaBeta = true
-        this.ADDalpha = 0;
-        this.ADDbeta = 0;
-        this.changeDetectorRef.detectChanges();
-        const element = document.querySelector("#alphaBeta")
-        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      } else {
-        this.ADDpatternaddshow = true
-        this.changeDetectorRef.detectChanges();
-        const element = document.querySelector("#ScrollToFCATree")
-        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-      }
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please choose Yes or No for webal analysis" })
-    }
-
-  }
-
-  async ADDalphaBetaSave() {
-    this.ADDpatternaddshow = true
-    this.changeDetectorRef.detectChanges();
-    const element = document.querySelector("#ScrollToFCATree")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-  }
-
-  ExcelDownload() {
-    var ColumnsData: any = ["Days"];
-    this.excelFormatService.GetExcelFormat(ColumnsData, 'Webal_Days_Format')
-  }
-
-  async Availability() {
-    if (this.ADDMSSAvailabilityY == 'Yes' || this.ADDMSSAvailabilityY == 'No') {
-      this.changeDetectorRef.detectChanges()
-
-      if (this.ADDMSSAvailabilityY == 'Yes') {
-        // this.MSSTreeButton = true
-        this.ADDMSSexpectedAvailability = true
-        this.ADDMSSAvailabilityPlantStoppage = false
-        this.ADDMSSAvailabilityPlantStoppageTime = false
-
-      } else if (this.ADDMSSAvailabilityY == 'No') {
-        // this.MSSTreeButton = true
-        this.ADDMSSexpectedAvailability = false
-        this.ADDMSSAvailabilityPlantStoppage = true
-        this.ADDMSSAvailabilityPlantStoppageTime = true
-      }
-      this.changeDetectorRef.detectChanges()
-      const element = document.querySelector("#PlantStoppage")
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      alert("fill the data")
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
-    }
-
-  }
-
-  async AvailabilityYes() {
-    if (this.ADDMSSAvailabilityCheck != 0) {
-
-    } else {
-      alert("Fill the data")
-    }
-    this.MSSTreeButton = true
-    const element = document.querySelector("#Consequence")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
-  async StoppageDays() {
-    if (this.ADDMSSstoppageDays == 'Days') {
-      this.MSSstoppageValue = this.ADDMSSstoppageDaysValue * 1
-    } else if (this.ADDMSSstoppageDays == 'Week') {
-      this.MSSstoppageValue = this.ADDMSSstoppageDaysValue * 7
-    } else if (this.ADDMSSstoppageDays == 'Month') {
-      this.MSSstoppageValue = this.ADDMSSstoppageDaysValue * 30
-    } else if (this.ADDMSSstoppageDays == 'Year') {
-      this.MSSstoppageValue = this.ADDMSSstoppageDaysValue * 365
-    }
-    this.PlantStoppageTime = !this.PlantStoppageTime;
-    const element = document.querySelector("#PlantStoppagetime")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
-  async StoppageDuration() {
-    if (this.ADDMSSstoppageDaysTime == 'Days') {
-      this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 1
-    } else if (this.ADDMSSstoppageDaysTime == 'Week') {
-      this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 7
-    } else if (this.ADDMSSstoppageDaysTime == 'Month') {
-      this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 30
-    } else if (this.ADDMSSstoppageDaysTime == 'Year') {
-      this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 365
-    }
-    this.MSSAvailabilityResult = (1 - (this.MSSstoppageDuration / this.MSSstoppageValue)) * 100
-    this.MSSTreeButton = true
-    const element = document.querySelector("#Consequence")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-  }
-
-  async ADDMSSToTree() {
-    var index = this.FMTree.length
+async ADDMSSToTree() {
+  var index = this.FMTree.length
     let MSSTree = {
-      label: index,
+      label:  index,
       type: "person",
       styleClass: 'p-person',
       expanded: true,
@@ -3636,153 +3099,153 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     }
     this.data1[0].children[0].children[0].children[index - 1].children.push(MSSTree)
 
-    if (this.MSSStratergy == 'A-FFT' || this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
-      || this.MSSStratergy == 'A-SR' || this.MSSStratergy == 'A-RED' || this.MSSStratergy == 'A-OFM'
-      || this.MSSStratergy == 'B-FFT' || this.MSSStratergy == 'B-OCM' || this.MSSStratergy == 'B-SO'
-      || this.MSSStratergy == 'B-SR' || this.MSSStratergy == 'B-RED' || this.MSSStratergy == 'B-OFM') {
+        if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
+        || this.MSSStratergy == 'A-SR' ||  this.MSSStratergy == 'A-RED' || this.MSSStratergy == 'A-OFM'
+        || this.MSSStratergy == 'B-FFT'||  this.MSSStratergy == 'B-OCM' || this.MSSStratergy == 'B-SO'
+        || this.MSSStratergy == 'B-SR' ||  this.MSSStratergy == 'B-RED' || this.MSSStratergy == 'B-OFM' ){
 
-      if (this.MSSStratergy == 'A-OFM' || this.MSSStratergy == 'B-FFT') {
-        let obj = {}
-        obj['MSSMaintenanceInterval'] = 'Not Applicable'
-        obj['MSSMaintenanceTask'] = 'Not Applicable'
-        obj['MSSStartergy'] = this.MSSStratergy
-        this.MSSTaskObj.push(obj)
-      } else {
+          if(this.MSSStratergy == 'A-OFM' ||     this.MSSStratergy == 'B-FFT'){
+            let obj = {}
+            obj['MSSMaintenanceInterval'] = 'Not Applicable'
+            obj['MSSMaintenanceTask'] = 'Not Applicable'
+            obj['MSSStartergy'] = this.MSSStratergy
+            this.MSSTaskObj.push(obj)
+          } else{
 
-        // var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
-        var ocmweek: number = this.FCAInterval
-        var result = (ocmweek / 24)
-        var a = result / 7
-        // var ocmWeek : number = ocmHours.split(" ")[0]
-        //  ocmWeek = Math.round((ocmWeek / 24) / 7)
+            // var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
+            var ocmweek:number  = this.FCAInterval
+            var result = (ocmweek/ 24)
+            var a= result/7
+            // var ocmWeek : number = ocmHours.split(" ")[0]
+           //  ocmWeek = Math.round((ocmWeek / 24) / 7)
 
-        var availablility: number = 0;
-        if (this.MSSAvailabilityResult == 0) {
-          availablility = this.ADDMSSAvailabilityCheck
-        }
-        if (this.MSSAvailabilityResult != 0) {
-          availablility = this.MSSAvailabilityResult
-        }
-        var strategy = this.MSSStratergy.split('-')[1];
-        let obj = {}
-        if (strategy == 'FFT') {
-          obj['MSSMaintenanceInterval'] = availablility;
-          obj['MSSMaintenanceTask'] = 'Function Check'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
+            var availablility: number = 0;
+              if(this.MSSAvailabilityResult == 0){
+                  availablility = this.ADDMSSAvailabilityCheck
+              }
+              if(this.MSSAvailabilityResult != 0){
+                availablility = this.MSSAvailabilityResult
+              }
+              var strategy = this.MSSStratergy.split('-')[1];
+              let obj = {}
+              if(strategy == 'FFT'){
+                obj['MSSMaintenanceInterval'] = availablility;
+                obj['MSSMaintenanceTask'] = 'Function Check'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
 
-        } else if (strategy == 'OCM') {
-          obj['MSSMaintenanceInterval'] = `${a}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
+              }else if(strategy == 'OCM'){
+                obj['MSSMaintenanceInterval'] = `${a}${" "}${"Week"}`
+                obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
 
-        } else if (strategy == 'SO') {
-          //  obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
-          obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
+              }else if(strategy == 'SO'){
+                //  obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
+                obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
+                obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
 
-        } else if (strategy == 'SR') {
-          // obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
-          obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
+              }else if(strategy == 'SR'){
+                // obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
+                obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
+                obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
 
-        } else if (strategy == 'RED') {
-          obj['MSSMaintenanceInterval'] = 'NA'
-          obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
+              }else if(strategy == 'RED'){
+                obj['MSSMaintenanceInterval'] = 'NA'
+                obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                obj['MSSStartergy'] = this.MSSStratergy
+                this.MSSTaskObj.push(obj)
 
-        }
+              }
+          }
+
+      }else if(this.MSSStratergy == 'C-FFT'    ||  this.MSSStratergy == 'C-OCM' || this.MSSStratergy == 'C-SO'
+              || this.MSSStratergy == 'C-SR' ||  this.MSSStratergy == 'C-RED' || this.MSSStratergy == 'C-OFM'
+              || this.MSSStratergy == 'D-FFT'||  this.MSSStratergy == 'D-OCM' || this.MSSStratergy == 'D-SO'
+              || this.MSSStratergy == 'D-SR' ||  this.MSSStratergy == 'D-RED' || this.MSSStratergy == 'D-OFM'
+              || this.MSSStratergy == 'E-FFT'||  this.MSSStratergy == 'E-OCM' || this.MSSStratergy == 'E-SO'
+              || this.MSSStratergy == 'E-SR' ||  this.MSSStratergy == 'E-RED' || this.MSSStratergy == 'E-OFM'){
+
+                if(this.MSSStratergy == 'C-FFT' ||     this.MSSStratergy == 'D-FFT'){
+                  let obj = {}
+                  obj['MSSMaintenanceInterval'] = 'Not Applicable'
+                  obj['MSSMaintenanceTask'] = 'Not Applicable'
+                  obj['MSSStartergy'] = this.MSSStratergy
+                  this.MSSTaskObj.push(obj)
+                } else{
+                    //  var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
+                    //  var ocmHours : number = this.FCAFFInterval
+                    //   // var ocmWeek : number = ocmHours.split(" ")[0]
+                    //   var ocmWeek = Math.round((ocmHours / 24) / 7)
+                      var ocmHours:number  = this.FCAFFInterval
+                      var result = (ocmHours/ 24)
+                      var x= result/7
+                    var strategy = this.MSSStratergy.split('-')[1];
+                    let obj = {}
+                    if(strategy == 'FFT'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'Function check'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+                    }else if(strategy == 'OCM'){
+                      obj['MSSMaintenanceInterval'] = `${x}${" "}${"Week"}`
+                      obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }else if(strategy == 'SO'){
+                      // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
+                      obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
+                      obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }else if(strategy == 'SR'){
+                      // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
+                      obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
+                      obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }else if(strategy == 'RED'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }
+                    else if(strategy == 'OFM'){
+                      obj['MSSMaintenanceInterval'] = 'NA'
+                      obj['MSSMaintenanceTask'] = 'No Task'
+                      obj['MSSStartergy'] = this.MSSStratergy
+                      this.MSSTaskObj.push(obj)
+
+                    }
+              }
       }
 
-    } else if (this.MSSStratergy == 'C-FFT' || this.MSSStratergy == 'C-OCM' || this.MSSStratergy == 'C-SO'
-      || this.MSSStratergy == 'C-SR' || this.MSSStratergy == 'C-RED' || this.MSSStratergy == 'C-OFM'
-      || this.MSSStratergy == 'D-FFT' || this.MSSStratergy == 'D-OCM' || this.MSSStratergy == 'D-SO'
-      || this.MSSStratergy == 'D-SR' || this.MSSStratergy == 'D-RED' || this.MSSStratergy == 'D-OFM'
-      || this.MSSStratergy == 'E-FFT' || this.MSSStratergy == 'E-OCM' || this.MSSStratergy == 'E-SO'
-      || this.MSSStratergy == 'E-SR' || this.MSSStratergy == 'E-RED' || this.MSSStratergy == 'E-OFM') {
-
-      if (this.MSSStratergy == 'C-FFT' || this.MSSStratergy == 'D-FFT') {
-        let obj = {}
-        obj['MSSMaintenanceInterval'] = 'Not Applicable'
-        obj['MSSMaintenanceTask'] = 'Not Applicable'
-        obj['MSSStartergy'] = this.MSSStratergy
-        this.MSSTaskObj.push(obj)
-      } else {
-        //  var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
-        //  var ocmHours : number = this.FCAFFInterval
-        //   // var ocmWeek : number = ocmHours.split(" ")[0]
-        //   var ocmWeek = Math.round((ocmHours / 24) / 7)
-        var ocmHours: number = this.FCAFFInterval
-        var result = (ocmHours / 24)
-        var x = result / 7
-        var strategy = this.MSSStratergy.split('-')[1];
-        let obj = {}
-        if (strategy == 'FFT') {
-          obj['MSSMaintenanceInterval'] = 'NA'
-          obj['MSSMaintenanceTask'] = 'Function check'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
-        } else if (strategy == 'OCM') {
-          obj['MSSMaintenanceInterval'] = `${x}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
-
-        } else if (strategy == 'SO') {
-          // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
-          obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
-
-        } else if (strategy == 'SR') {
-          // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
-          obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
-          obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
-
-        } else if (strategy == 'RED') {
-          obj['MSSMaintenanceInterval'] = 'NA'
-          obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
-
-        }
-        else if (strategy == 'OFM') {
-          obj['MSSMaintenanceInterval'] = 'NA'
-          obj['MSSMaintenanceTask'] = 'No Task'
-          obj['MSSStartergy'] = this.MSSStratergy
-          this.MSSTaskObj.push(obj)
-
+      let MSSStrategy = {
+        label: "Strategy",
+        type: "person",
+        styleClass: "p-person",
+        expanded: true,
+        data: {
+          name: this.MSSStratergy,
         }
       }
-    }
+      this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children [ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.length  ].children.push(MSSStrategy)
 
-    let MSSStrategy = {
-      label: "Strategy",
-      type: "person",
-      styleClass: "p-person",
-      expanded: true,
-      data: {
-        name: this.MSSStratergy,
-      }
-    }
-    this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children[this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.length].children.push(MSSStrategy)
-
-    this.MSSTreeButton = true
-    this.prescriptiveTree = true
-    const element = document.querySelector("#MainScroll")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    this.MSSViewEnabled = false
+      this.MSSTreeButton = true
+      this.prescriptiveTree = true
+      const element = document.querySelector("#MainScroll")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      this.MSSViewEnabled = false
 
 
-  }
+  } 
 }
 
