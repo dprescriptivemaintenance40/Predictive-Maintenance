@@ -1054,6 +1054,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         name: this.finalConsequence
       }
     }
+    this.ConsequenceBasedMSS =this.finalConsequence
+    this.prescriptiveTree = false; 
+    this.ADDMSSAvailabilityYNCheck = true
+    this.MSSAvailabilityCalculations = false
     this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children[index - 1].children.push(CNode)
     this.data1[0].children[0].children[0].children[index - 1].children[0].children.push(CNode)
     this.Consequences1 = false
@@ -1104,7 +1108,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.changeDetectorRef.detectChanges();
     this.PatternTree()
     this.GetChartData();
-    
+
   }
 
 async AddPatternToNewFM() {
@@ -1253,7 +1257,6 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
       
-
       this.prescriptiveTree = true
       this.FinalUpdate = true;
       this.FailureModePatternTree = false;
@@ -1407,8 +1410,6 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
-    
-    
     
     this.prescriptiveTree = true
     this.FinalUpdate = true;
@@ -3003,6 +3004,16 @@ SelectPatternForFailureMode(value: string) {
     this.PatternPath = ""
     this.changeDetectorRef.detectChanges();
   }
+  this.ADDFailureModePatternTree = true
+  this.ADDFailuerRate = true
+  this.ADDFailureWarning = true
+  this.ADDWarningSign = true
+  this.ADDIntervalDeteacting = true
+  this.ADDFailuerEvident = true
+  this.ADDFailuerMaintenance = true
+  this.ADDFailuerComments = true
+  this.ADDSafeUsefulLife = true
+  this.ADDalphaBeta = true
   // const element = document.querySelector("#ScrollToFCATree")
   // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 

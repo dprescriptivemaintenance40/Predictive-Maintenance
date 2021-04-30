@@ -480,9 +480,7 @@
                         </div>
                     </div>
                     <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
-
                 </div>
-
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
@@ -491,7 +489,7 @@
 
         </ng-template>
     </p-card>
-</div>
+</div><br><br>
 
 <div *ngIf="ConsequencesTree" class="col-md-12 stepsdemo-content shadow">
     <p-card>
@@ -502,7 +500,7 @@
             <small class="form-text text-muted"><h4> Your {{LSFailureMode}} Tree </h4></small>
         </span>
         <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()">Back</button>&nbsp;&nbsp;
-        <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button>
+        <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button><br><br>
         <button *ngIf="ConsequenceTreeEditConsequenceEnable" title="Edit Consequences" label="Back" type="button" class="btn btn-dark" (click)="EditConsequenceToTree()"><i class="pi pi-pencil"></i> Consequences</button><br>
         <p-organizationChart [value]="ConsequenceNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -1065,14 +1063,14 @@
                                 </div>
                             </div>
                             
-                    <!-- <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
+                    <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
                         <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio"
                             class="custom-control-input">
                         <label class="custom-control-label" for="customRadio1">Select Path</label>
                         <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
                             <i class="fas fa-circle"></i>
                         </a>
-                    </div> -->
+                    </div>
                     <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
                         <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio"
                             class="custom-control-input">
