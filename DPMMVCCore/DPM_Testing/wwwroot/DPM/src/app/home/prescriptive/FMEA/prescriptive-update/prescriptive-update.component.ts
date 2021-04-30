@@ -1272,8 +1272,8 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name = `${this.FCAFFInterval}${" "}${"Hours"}`
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha.toFixed(2)
       this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta.toFixed(2)
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
-      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
+      this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
       
       this.prescriptiveTree = true
       this.FinalUpdate = true;
@@ -1414,8 +1414,8 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[3].data.name =`${this.FCAFFInterval}${" "}${"Hours"}`
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[4].data.name = this.ADDalpha
     this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDbeta
-    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDSafeLife
-    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[5].data.name = this.ADDUsefulLife
+    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
+    this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
     
     this.prescriptiveTree = true
     this.FinalUpdate = true;
@@ -1460,8 +1460,8 @@ async AddPatternToNewFM() {
     Data['FCAFFI'] = this.FCAFFInterval
     Data['FCAAlpha'] = this.ADDalpha
     Data['FCABeta'] = this.ADDbeta
-    Data['FCAUsefulLife'] = this.ADDUsefulLife
     Data['FCASafeLife'] = this.ADDSafeLife
+    Data['FCAUsefulLife'] = this.ADDUsefulLife
     Data['FCAComment'] = JSON.stringify(this.FCAComment)
     Data['MSSMaintenanceInterval'] = this.MSSTaskObj[0].MSSMaintenanceInterval
     Data['MSSStartergy'] = this.MSSTaskObj[0].MSSStartergy
@@ -2214,7 +2214,7 @@ async UpdatePattern(){
   this.FCAUpdatePageEnable = true
   this.FailureModePatternTree = true
   this.AddFMPatternAddEnable = false;
-  this.UpdatePatternAddEnable = true;
+  // this.UpdatePatternAddEnable = true;
   this.UpdateMSSImageFlag = false;
   this.changeDetectorRef.detectChanges();
   this.GetChartData();
