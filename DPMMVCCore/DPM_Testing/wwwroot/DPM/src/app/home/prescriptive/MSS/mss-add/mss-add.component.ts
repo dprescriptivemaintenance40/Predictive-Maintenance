@@ -163,6 +163,7 @@ async ADDMSSToTree() {
       type: "person",
       styleClass: 'p-person',
       expanded: true,
+      editMSS : true,
       data: { name: "MSS" },
       children: [
         {
