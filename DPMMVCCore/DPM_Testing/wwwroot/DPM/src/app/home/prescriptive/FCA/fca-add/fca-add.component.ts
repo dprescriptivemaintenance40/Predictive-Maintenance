@@ -124,7 +124,10 @@ public alpha : number = 0
 public beta : number = 0
 public ConsequenceFM : string = ""
 public WebalYN : string = ""
-  
+
+public UpdateFCACondition : any = []
+public UpdateFCAIntervals : any = []
+
   public file : any;
   public arrayBuffer: any;
   public daysList: any;
@@ -802,6 +805,11 @@ public WebalYN : string = ""
         obj['FCABeta'] = this.beta.toFixed(2);
         obj['FCASafeLife'] = this.SafeLife
         obj['FCAUsefulLife'] = this.UsefulLife;
+        obj['FCAUpdateIntervals'] = this.UpdateFCAIntervals;
+        obj['FCAUpdateConditions'] = this.UpdateFCACondition;
+
+        this.UpdateFCACondition = []
+        this.UpdateFCAIntervals = []
 
         this.FCAData.push(obj)
         this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
@@ -1061,6 +1069,11 @@ public WebalYN : string = ""
         obj['FCABeta'] = this.beta.toFixed(2);
         obj['FCASafeLife'] = this.SafeLife
         obj['FCAUsefulLife'] = this.UsefulLife;
+        obj['FCAUpdateIntervals'] = this.UpdateFCAIntervals;
+        obj['FCAUpdateConditions'] = this.UpdateFCACondition;
+
+        this.UpdateFCACondition = []
+        this.UpdateFCAIntervals = []
 
         this.FCAData.push(obj)
  
@@ -1288,6 +1301,8 @@ public WebalYN : string = ""
       obj['FCABeta'] = this.FCAData[index].FCABeta;
       obj['FCASafeLife'] = this.FCAData[index].FCASafeLife
       obj['FCAUsefulLife'] = this.FCAData[index].FCAUsefulLife
+      obj['FCAUpdateIntervals'] = JSON.stringify(this.FCAData[index].FCAUpdateIntervals)
+      obj['FCAUpdateConditions'] = JSON.stringify(this.FCAData[index].FCAUpdateConditions)
       centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
@@ -1356,16 +1371,35 @@ async SelectNodeToView(p){
 
 
   IntervalSave(){
+    var FCAIntervalDWY : any, FCAIntervalDWYValues : any;
+    if(this.interval != "" &&  this.intervalValue != 0){
+
    if(this.interval == 'Days'){
+     FCAIntervalDWY = 'Days';
+     FCAIntervalDWYValues = this.intervalValue;
+     this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
+     this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
      this.FCAInterval = this.intervalValue * 1 * 24
    } else if(this.interval == 'Week'){ 
      this.FCAInterval = this.intervalValue * 7 * 24
+     FCAIntervalDWY = 'Week';
+     FCAIntervalDWYValues = this.intervalValue;
+     this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
+     this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
    } else if(this.interval == 'Month'){ 
+     FCAIntervalDWY = 'Month';
+     FCAIntervalDWYValues = this.intervalValue;
+     this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
+     this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
      this.FCAInterval = this.intervalValue * 30 * 24
    } else if(this.interval == 'Year'){ 
+     FCAIntervalDWY = 'Year';
+     FCAIntervalDWYValues = this.intervalValue;
+     this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
+     this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
      this.FCAInterval = this.intervalValue * 365 * 24
    }
- if(this.interval.length> 0 && this.intervalValue >0){
+ 
   this.changeDetectorRef.detectChanges()
   this.failurewarning = !this.failurewarning;
   
@@ -1379,46 +1413,73 @@ async SelectNodeToView(p){
 
   
   ConditionFirst(){
+    if(this.Vibration != "" || this.Noice != "" || this.Leakage != "" || this. PerformanceDrop != "" || this.TempratureChange != "" || this.EmmisionChange != "" || this.IncreaseLubricantConsumption != "" || this.Other ){
+
+      var Vibration : string = "", Noice : string = "", Leakage : string = "",
+          PerformanceDrop : string = "", TempratureChange : string = "",
+          EmmisionChange : string = "", IncreaseLubricantConsumption : string = "", 
+          Other: string = "";
+          
+          Vibration = this.Vibration
+          Noice = this.Noice
+          Leakage = this.Leakage
+          PerformanceDrop = this.PerformanceDrop
+          TempratureChange = this.TempratureChange
+          EmmisionChange = this.EmmisionChange
+          IncreaseLubricantConsumption = this.IncreaseLubricantConsumption
+          Other = this.Other
+
     if(this.Vibration != ""){
       this.Vibration = "Vibration"
+      Vibration = "Vibration"
       this.FCACondition.push(this.Vibration)
-   
     }
     if(this.Noice != ""){
       this.Noice = "Noice"
+      Noice = "Noice"
       this.FCACondition.push(this.Noice)
-      
     }
     if(this.Leakage != ""){
       this.Leakage = "Leakage"
       this.FCACondition.push(this.Leakage)
+      Leakage = "Leakage"
       
     }
     if(this.PerformanceDrop != ""){
       this.PerformanceDrop = "Performance Drop"
       this.FCACondition.push(this.PerformanceDrop)
-      
+      PerformanceDrop = "Performance Drop"
     }
     if(this.TempratureChange != ""){
       this.TempratureChange = "Temprature Change"
       this.FCACondition.push(this.TempratureChange)
-     
+      TempratureChange = "Temprature Change"
     }
     if(this.EmmisionChange != ""){
       this.EmmisionChange = "Emmision Change"
       this.FCACondition.push(this.EmmisionChange)
-     
+      EmmisionChange = "Emmision Change"
     }
     if(this.IncreaseLubricantConsumption != ""){
       this.IncreaseLubricantConsumption = "Increase Lubricant Consumption"
       this.FCACondition.push(this.IncreaseLubricantConsumption)
-     
+      IncreaseLubricantConsumption = "Increase Lubricant Consumption"
     }
     if(this.Other != ""){
       this.Other = "Other"
       this.FCACondition.push(this.Other)
+      Other = "Other"
     }
-    if(this.Vibration.length >0 || this.Noice.length > 0 || this.Leakage.length >0 || this. PerformanceDrop.length > 0 || this.TempratureChange.length>0 || this.EmmisionChange.length>0 || this.IncreaseLubricantConsumption.length >0 || this.Other.length > 0){
+    
+      this.UpdateFCACondition.push({Vibration})
+      this.UpdateFCACondition.push({Noice})
+      this.UpdateFCACondition.push({Leakage})
+      this.UpdateFCACondition.push({PerformanceDrop})
+      this.UpdateFCACondition.push({TempratureChange})
+      this.UpdateFCACondition.push({EmmisionChange})
+      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
+      this.UpdateFCACondition.push({Other})
+      
       this.changeDetectorRef.detectChanges()
       this.warningsign = !this.warningsign;
       
@@ -1432,30 +1493,50 @@ async SelectNodeToView(p){
   }
 
   ConditionSecond(){
-    if(this.HumanSenses != ""){
+    if(this.HumanSenses != ""|| this.ExistingInstumentation  != "" || this.NewInstumentation  != "" || this.ProcessCondtions  != "" ||this.SampleAnyalysis  != ""){
+    
+      var HumanSenses : string = "",  ExistingInstumentation : string = "",  NewInstumentation : string = "",  ProcessCondtions : string = "",  SampleAnyalysis : string = ""
+          HumanSenses = this.HumanSenses
+          ExistingInstumentation = this.ExistingInstumentation
+          NewInstumentation = this.NewInstumentation
+          ProcessCondtions = this.ProcessCondtions
+          SampleAnyalysis = this.SampleAnyalysis
+      if(this.HumanSenses != ""){
       this.HumanSenses = "Human Senses"
+      HumanSenses = "Human Senses"
       this.FCACondition.push(this.HumanSenses)
     
     }
     if(this.ExistingInstumentation != ""){
       this.ExistingInstumentation = "Existing Instumentation(portable or fixed)"
+      ExistingInstumentation = "Existing Instumentation(portable or fixed)"
       this.FCACondition.push(this.ExistingInstumentation)
     
     }
     if(this.NewInstumentation != ""){
       this.NewInstumentation = "New Instumentation(portable or fixed)"
+      NewInstumentation = "New Instumentation(portable or fixed)"
       this.FCACondition.push(this.NewInstumentation)
     
     }
     if(this.ProcessCondtions != ""){
       this.ProcessCondtions = "Process Condtions"
+      ProcessCondtions = "Process Condtions"
       this.FCACondition.push(this.ProcessCondtions)
     }
     if(this.SampleAnyalysis != ""){
       this.SampleAnyalysis = "Sample Anyalysis"
+      SampleAnyalysis = "Sample Anyalysis"
       this.FCACondition.push(this.SampleAnyalysis)
     }
-    if(this.HumanSenses.length >0 || this.ExistingInstumentation.length >0 || this.NewInstumentation.length >0|| this.ProcessCondtions.length >0||this.SampleAnyalysis.length >0){
+
+    
+    this.UpdateFCACondition.push({HumanSenses})
+    this.UpdateFCACondition.push({ExistingInstumentation})
+    this.UpdateFCACondition.push({NewInstumentation})
+    this.UpdateFCACondition.push({ProcessCondtions})
+    this.UpdateFCACondition.push({SampleAnyalysis})
+
       this.changeDetectorRef.detectChanges()
       this.intervaldeteacting = !this.intervaldeteacting;    
       const element = document.querySelector("#PatternIntervalDeteacting")
@@ -1467,17 +1548,37 @@ async SelectNodeToView(p){
   }
   
   FFInterval(){
+    var FCAFFIIntervalDWY : any, FCAFFIIntervalDWYValues : any;
+
+    if(this.ffInterval != "" &&  this.ffIntervalValue != 0){
+
     if(this.ffInterval == 'Days'){
+      FCAFFIIntervalDWY = 'Days';
+      FCAFFIIntervalDWYValues = this.ffIntervalValue;
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
       this.FCAFFInterval = this.ffIntervalValue * 1 * 24
     } else if(this.ffInterval == 'Week'){ 
+      FCAFFIIntervalDWY = 'Week';
+      FCAFFIIntervalDWYValues = this.ffIntervalValue;
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
       this.FCAFFInterval = this.ffIntervalValue * 7 * 24
     } else if(this.ffInterval == 'Month'){ 
+      FCAFFIIntervalDWY = 'Month';
+      FCAFFIIntervalDWYValues = this.ffIntervalValue;
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
       this.FCAFFInterval = this.ffIntervalValue * 30 * 24
     } else if(this.ffInterval == 'Year'){ 
+      FCAFFIIntervalDWY = 'Year';
+      FCAFFIIntervalDWYValues = this.ffIntervalValue;
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
+      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
       this.FCAFFInterval = this.ffIntervalValue * 365 * 24
     }
 
-    if(this.ffInterval.length >0 && this.ffIntervalValue >0){
+   
       this.changeDetectorRef.detectChanges()
       this.failuerevident = !this.failuerevident; 
       const element = document.querySelector("#PatternFailuerEvident")
@@ -1489,8 +1590,9 @@ async SelectNodeToView(p){
   }
 
   CommentThird(){
-    this.FCAComment.push(this.CommentFIEYN)
-    if( this.CommentFIEYN.length>0 && this.CommentFIEYN.length>0){
+    
+    if( this.CommentFIEYN.length>0){
+      this.FCAComment.push(this.CommentFIEYN)
       this.changeDetectorRef.detectChanges()
       this.failuermaintenance = !this.failuermaintenance;   
       const element = document.querySelector("#PatternFailuerMaintenance")
