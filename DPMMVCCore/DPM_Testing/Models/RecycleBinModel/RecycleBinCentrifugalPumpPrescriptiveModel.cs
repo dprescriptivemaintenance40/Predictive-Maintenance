@@ -31,6 +31,7 @@ namespace DPM.Models.RecycleBinModel
         public string CAttachmentFullPath { get; set; }
         public string CRemarks { get; set; }
         public string FCAAdded { get; set; }
+        public string MSSAdded { get; set; }
         public List<RestoreCentrifugalPumpPrescriptiveFailureMode> restoreCentrifugalPumpPrescriptiveFailureModes { get; set; }
 
     }
@@ -67,6 +68,16 @@ namespace DPM.Models.RecycleBinModel
         public int FCAInterval { get; set; }
         public string FCAFFI { get; set; }
         public string FCAComment { get; set; }
+        public decimal FCAAlpha { get; set; }
+        public decimal FCABeta { get; set; }
+        public decimal FCASafeLife { get; set; }
+        public decimal FCAUsefulLife { get; set; }
+        public string FCAUpdateIntervals { get; set; }
+        public string FCAUpdateConditions { get; set; }
+        public string MSSMaintenanceInterval { get; set; }
+        public decimal MSSAvailability { get; set; }
+        public string MSSStartergy { get; set; }
+        public string MSSMaintenanceTask { get; set; }
 
         public RecycleBinCentrifugalPumpPrescriptiveModel RecycleBinCentrifugalPumpPrescriptiveModel { get; set; }
     }
