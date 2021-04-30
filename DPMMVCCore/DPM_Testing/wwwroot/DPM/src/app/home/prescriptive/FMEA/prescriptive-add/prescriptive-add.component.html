@@ -74,22 +74,22 @@
             Function Failure
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Choose your Function Failure
+            Type your Function Failure
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid p-formgrid p-grid">
                 <div class="container">
-                    <div *ngFor="let fun of functionfailure" class="border" pDraggable="fun" (onDragStart)="dragStart($event,fun)" (onDragEnd)="dragEnd($event)">
+                    <!-- <div *ngFor="let fun of functionfailure" class="border" pDraggable="fun" (onDragStart)="dragStart($event,fun)" (onDragEnd)="dragEnd($event)">
                         {{fun.Description}}
                     </div>
                     <div class="drop" pDroppable="fun" (onDrop)="drop($event)">
                         <div *ngFor="let c of dropedFailure">{{c?.Description}}</div>
 
                     </div>
-                    <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
+                    <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br> -->
 
                     <div>
-                        <input type="text" class="form-control" [(ngModel)]="functionFailuerInput" (change)="FunctionFailuerInput($event)" placeholder="Type Function Failure">
+                        <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="functionFailuerInput" (change)="FunctionFailuerInput($event)" placeholder="Type Function Failure"></textarea>
                     </div>
                 </div>
 
@@ -117,10 +117,11 @@
         <ng-template pTemplate="content">
             <div class="p-fluid p-formgrid p-grid">
                 <div class="container">
-                    <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
-                        {{func.Description}}
-                    </div>
-
+                    <div style="overflow: scroll; height:20rem; ">
+                        <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
+                            {{func.Description}}
+                        </div>
+                   </div>
                     <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                         <div *ngFor="let c of dropedMode">
                             <span>{{c?.Description}} </span>

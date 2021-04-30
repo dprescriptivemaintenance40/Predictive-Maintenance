@@ -19,6 +19,8 @@ export class CentrifugalPumpPrescriptiveModel{
     public CAttachmentDBPath : string = ""
     public CAttachmentFullPath : string = ""
     public CRemarks : string = ""
+    public FCAAdded : string = ""
+    public MSSAdded : string = ""
 
     public centrifugalPumpPrescriptiveFailureModes: any = []
 
