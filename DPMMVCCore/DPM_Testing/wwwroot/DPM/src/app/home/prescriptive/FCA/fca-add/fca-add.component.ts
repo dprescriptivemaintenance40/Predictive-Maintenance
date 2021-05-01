@@ -1369,11 +1369,9 @@ async SelectNodeToView(p){
 
   }
 
-
   IntervalSave(){
     var FCAIntervalDWY : any, FCAIntervalDWYValues : any;
     if(this.interval != "" &&  this.intervalValue != 0){
-
    if(this.interval == 'Days'){
      FCAIntervalDWY = 'Days';
      FCAIntervalDWYValues = this.intervalValue;
@@ -1590,7 +1588,6 @@ async SelectNodeToView(p){
   }
 
   CommentThird(){
-    
     if( this.CommentFIEYN.length>0){
       this.FCAComment.push(this.CommentFIEYN)
       this.changeDetectorRef.detectChanges()
@@ -1618,7 +1615,6 @@ async SelectNodeToView(p){
   }
 
  async FCAFreeTextSave(){
-
     this.PatternFailuerAll = true
     this.FCAComment.push(this.FCAFreeText)
     this.SafeUsefulLife = true;
