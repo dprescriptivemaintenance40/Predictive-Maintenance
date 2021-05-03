@@ -694,11 +694,12 @@ public UpdateBeta : number = 0
 
   SaveFunction() {
     this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FluidType
-    this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.RatedHead
-    this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.PeriodType
+    // this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.RatedHead
+    // this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.PeriodType
 
 
-    var FunctionTree: string = "Fluid Type : " + this.FluidType + ", Rated Head : " + this.RatedHead + " m," + " Duration Of :" + this.PeriodType + " days"
+    // var FunctionTree: string = "Fluid Type : " + this.FluidType + ", Rated Head : " + this.RatedHead + " m," + " Duration Of :" + this.PeriodType + " days"
+    var FunctionTree: string = "Function Type : " + this.FluidType 
     this.data1[0].data.name = FunctionTree
     this.data2[0].data.name = FunctionTree
 
@@ -3059,7 +3060,7 @@ CompleteUpdateFCA(p){
       this.UpdateffIntervalValue =  FCAUpdateIntervals[3].FCAFFIIntervalDWYValues
     }
  })
-
+this.ADDWarningSign = false
 
 }
 

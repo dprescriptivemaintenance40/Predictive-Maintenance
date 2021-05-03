@@ -49,12 +49,15 @@
         <ng-template pTemplate="content">
             <div class="p-fluid">
                 <p>
-                    To supply &ensp;
-                    <input type="text" class="custom-form-control" [(ngModel)]="FunctionFluidType" placeholder="e.g thermal fluid">m<sup>3</sup>/h flow with rated head &ensp;
-                    <input type="text" class="custom-form-control" [(ngModel)]="FunctionRatedHead" placeholder="e.g xxx"> m (within -10% variation) continuously for a period of &ensp;<br> &ensp;
+                    <!-- To supply &ensp; -->
+                    <!-- <input type="text" class="custom-form-control" [(ngModel)]="FunctionFluidType" placeholder="e.g thermal fluid">m<sup>3</sup>/h flow with rated head &ensp; -->
+                    <!-- <input type="text" class="custom-form-control" [(ngModel)]="FunctionRatedHead" placeholder="e.g xxx"> m (within -10% variation) continuously for a period of &ensp;<br> &ensp;
                     <br>
-                    <input type="text" class="custom-form-control" [(ngModel)]="FunctionPeriodType" placeholder="e.g  60 days"> at a stretch, with equipemt operating within recommended parameters.
+                    <input type="text" class="custom-form-control" [(ngModel)]="FunctionPeriodType" placeholder="e.g  60 days"> at a stretch, with equipemt operating within recommended parameters. -->
                 </p>
+                <div>
+                    <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FunctionFluidType"  placeholder="Type Function "></textarea>
+                </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">

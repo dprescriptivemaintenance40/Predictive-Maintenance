@@ -582,8 +582,8 @@ namespace DPM.Controllers.Prescriptive
             CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
             centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.FindAsync(prescriptiveModel.CFPPrescriptiveId);
             centrifugalPumpPrescriptiveModel.FunctionFluidType = prescriptiveModel.FunctionFluidType;
-            centrifugalPumpPrescriptiveModel.FunctionRatedHead = prescriptiveModel.FunctionRatedHead;
-            centrifugalPumpPrescriptiveModel.FunctionPeriodType = prescriptiveModel.FunctionPeriodType;
+            //centrifugalPumpPrescriptiveModel.FunctionRatedHead = prescriptiveModel.FunctionRatedHead;
+            //centrifugalPumpPrescriptiveModel.FunctionPeriodType = prescriptiveModel.FunctionPeriodType;
             centrifugalPumpPrescriptiveModel.FailureModeWithLSETree = prescriptiveModel.FailureModeWithLSETree;
             centrifugalPumpPrescriptiveModel.FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
 
@@ -1046,8 +1046,8 @@ namespace DPM.Controllers.Prescriptive
                 recyclePM.EquipmentType = prescriptiveModel.EquipmentType;
                 recyclePM.TagNumber = prescriptiveModel.TagNumber;
                 recyclePM.FunctionFluidType = prescriptiveModel.FunctionFluidType;
-                recyclePM.FunctionRatedHead = prescriptiveModel.FunctionRatedHead;
-                recyclePM.FunctionPeriodType = prescriptiveModel.FunctionPeriodType;
+                //recyclePM.FunctionRatedHead = prescriptiveModel.FunctionRatedHead;
+                //recyclePM.FunctionPeriodType = prescriptiveModel.FunctionPeriodType;
                 recyclePM.FunctionFailure = prescriptiveModel.FunctionFailure;
                 recyclePM.Date = prescriptiveModel.Date;
                 recyclePM.FailureModeWithLSETree = prescriptiveModel.FailureModeWithLSETree;

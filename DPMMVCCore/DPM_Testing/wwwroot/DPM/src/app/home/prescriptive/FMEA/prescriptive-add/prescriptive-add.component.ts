@@ -496,7 +496,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       }
 
   FunctionNext() {
-    if (this.FunctionFluidType.length > 0 && this.FunctionRatedHead.length > 0 && this.FunctionPeriodType.length > 0) {
+    // if (this.FunctionFluidType.length > 0 && this.FunctionRatedHead.length > 0 && this.FunctionPeriodType.length > 0) {
+      if (this.FunctionFluidType.length > 0 || this.FunctionRatedHead.length > 0 || this.FunctionPeriodType.length > 0) {
       this.prescriptiveFuntion = false;
       this.prescriptiveFunctionFailure = true;
       this.activeIndex = 1;
@@ -576,7 +577,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         type: "person",
         styleClass: "p-person",
         expanded: true,
-        data: { name: "Fluid Type : " + this.FunctionFluidType + ", " + "Rated Head : " + this.FunctionRatedHead + " m " + ", " + "Duration Of : " + this.FunctionPeriodType + " days" },
+        // data: { name: "Fluid Type : " + this.FunctionFluidType + ", " + "Rated Head : " + this.FunctionRatedHead + " m " + ", " + "Duration Of : " + this.FunctionPeriodType + " days" },
+        data: { name: "Function : " + this.FunctionFluidType },
         children: [
           {
             label: "Function Failure",
