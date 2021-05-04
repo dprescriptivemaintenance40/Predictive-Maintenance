@@ -7,6 +7,7 @@ import { MessageService, TreeNode } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 import * as XLSX from 'xlsx';
+import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
 
 @Component({
   selector: 'app-mss-add',
@@ -65,7 +66,8 @@ export class MSSAddComponent implements OnInit {
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
-    private changeDetectorRef: ChangeDetectorRef) { }
+    private changeDetectorRef: ChangeDetectorRef,
+    private prescriptiveBLService : PrescriptiveBLService) { }
 
   ngOnInit() {
     this.title.setTitle('DPM | MSS');
@@ -91,9 +93,9 @@ export class MSSAddComponent implements OnInit {
   }
 
   getMSSLibraryData(){
-    this.http.get('dist/DPM/assets/MSS_Library/MSS_Library.xlsx', {responseType: 'blob'}).subscribe((data: any) => {
+    this.prescriptiveBLService.GetMSSLibrary().subscribe((res: any) => {
       let fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(data);
+      fileReader.readAsArrayBuffer(res);
       fileReader.onload = (e) => {
         var arrayBuffer : any = fileReader.result;
         var data = new Uint8Array(arrayBuffer);
@@ -112,8 +114,9 @@ export class MSSAddComponent implements OnInit {
 
   getPrescriptiveRecords() {
     this.SelectBoxEnabled = true;
-    this.http.get<any>('api/PrescriptiveAPI/GetPrescriptiveRecordsForMSS').subscribe(
-      res => {
+    var url : string =  this.prescriptiveBLService.PrescriptiveRecordsForMSS
+    this.prescriptiveBLService.getWithoutParameters(url).subscribe(
+      (res: any) => {
         this.PrescriptiveTreeList = res;
         res.forEach(element => {
           this.TagList.push(element.TagNumber)
@@ -368,8 +371,8 @@ async ADDMSSToTree() {
     CPObj.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId
     CPObj.FMWithConsequenceTree = JSON.stringify(this.TreeUptoFCA)
     CPObj.centrifugalPumpPrescriptiveFailureModes = this.MSSTaskObj
-
-    this.http.put('api/PrescriptiveAPI/UpdatePrespectiveMSS', CPObj).subscribe(
+    var url : string =  this.prescriptiveBLService.MSSSave
+    this.prescriptiveBLService.PutData(url, CPObj).subscribe(
       res => {
         this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated MSS' });
         this.router.navigateByUrl('/Home/Prescriptive/List')
