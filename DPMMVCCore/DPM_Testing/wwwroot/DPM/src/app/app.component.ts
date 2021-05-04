@@ -8,6 +8,13 @@ import { Component, OnDestroy } from '@angular/core';
 export class AppComponent implements OnDestroy {
   title = 'DPM';
 
+  constructor() {
+    // window.addEventListener('beforeunload', (e) => {
+    //   e.preventDefault();
+    //   e.returnValue = '';
+    // });
+  }
+
   ngOnDestroy() {
     localStorage.clear();
   }

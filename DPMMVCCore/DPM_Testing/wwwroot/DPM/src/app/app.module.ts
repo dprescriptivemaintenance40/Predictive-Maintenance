@@ -15,6 +15,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { UserService } from './home/Services/user.services';
 import { ScrewCompressorService } from './home/Services/ScrewCompressorService';
 import { DashboardChartService } from './home/Services/dashboard_Chart.service';
+import { ConfigModule } from './shared/config.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { DashboardChartService } from './home/Services/dashboard_Chart.service';
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    ConfigModule.init()
   ],
   bootstrap: [AppComponent]
 })
