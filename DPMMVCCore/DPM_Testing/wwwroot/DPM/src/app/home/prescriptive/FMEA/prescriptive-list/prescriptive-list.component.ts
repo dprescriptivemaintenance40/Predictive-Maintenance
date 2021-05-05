@@ -30,6 +30,8 @@ export class PrescriptiveListComponent implements OnInit {
   public Table1: boolean = true;
   public Table2: boolean = false;
   public FailureModeDataTabe2: any;
+  public Table3: boolean = false;
+  public FailureModeDataTabe3: any;
   FMWithConsequenceTree : boolean = false;
 
   constructor(public http: HttpClient,
@@ -103,6 +105,9 @@ export class PrescriptiveListComponent implements OnInit {
   BackToTable1() {
     this.Table1 = true
     this.Table2 = false
+    this.Table3 = false
+    this.FailureModeDataTabe3 = []
+    this.FailureModeDataTabe2 = []
   }
 
  
@@ -183,7 +188,12 @@ export class PrescriptiveListComponent implements OnInit {
   }
 
 
-
+  getMSSTable(p){
+    this.FailureModeDataTabe3 = p.centrifugalPumpPrescriptiveFailureModes
+    this.Table3 = true
+    this.Table2 = false
+    this.Table1 = false
+  }
 
 
 }
