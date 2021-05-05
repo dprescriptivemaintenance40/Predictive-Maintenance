@@ -20,6 +20,8 @@ export class PrescriptiveBLService {
     public FCAWebal : string= '/PrescriptiveAPI/WebalAlgo'
     public MSSSave : string= '/PrescriptiveAPI/UpdatePrespectiveMSS'
     public FMEAConfiguration : string= '/PrescriptiveLookupMasterAPI'
+    public FMEAListSingleDelete : string= '/PrescriptiveAPI/DeletePrespectiveModel'
+    public FMEAParentAttachments : string= '/PrescriptiveAPI/CompontentAttachment'
     
 
     constructor(private prescriptiveDLService: PrescriptiveDLService) {}

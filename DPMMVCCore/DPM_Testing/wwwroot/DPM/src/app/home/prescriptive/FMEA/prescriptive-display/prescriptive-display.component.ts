@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { TreeNode } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
+import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
 
 @Component({
   selector: 'app-prescriptive-display',
@@ -25,11 +26,17 @@ export class PrescriptiveDisplayComponent implements OnInit {
   public ImageEnable: boolean = false;
 
   constructor(private http: HttpClient,
-    public commonLoadingDirective: CommonLoadingDirective) { }
+    public commonLoadingDirective: CommonLoadingDirective,
+    private prescriptiveBLService : PrescriptiveBLService) { }
 
   ngOnInit() {
+    this.fetchRecords();
+  }
+
+  fetchRecords(){
     this.commonLoadingDirective.showLoading(true, "Please wait...");
-    this.http.get('api/PrescriptiveAPI').subscribe(
+    var url : string =  this.prescriptiveBLService.FMEATagCheck
+    this.prescriptiveBLService.getWithoutParameters(url).subscribe(
       res => {
         this.PrescriptiveRecords = res;
         if (this.PrescriptiveRecords.length > 0) {
