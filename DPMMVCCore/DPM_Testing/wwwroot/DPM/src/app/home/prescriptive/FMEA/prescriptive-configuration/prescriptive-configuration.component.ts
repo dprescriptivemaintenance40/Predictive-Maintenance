@@ -1,8 +1,9 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
-import { PrescriptiveConfigurationService } from './prescriptive-configuration.service';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 
 @Component({
   selector: 'app-prescriptive-configuration',
@@ -21,9 +22,9 @@ export class PrescriptiveConfigurationComponent implements OnInit {
   public EquipmentTypePump: boolean = false;
 
   constructor(public fb: FormBuilder,
-    public prescriptiveLookUpService: PrescriptiveConfigurationService,
     public title: Title,
-    private prescriptiveBLService: PrescriptiveBLService) {
+    private prescriptiveBLService: CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) {
 
   }
 
@@ -32,7 +33,8 @@ export class PrescriptiveConfigurationComponent implements OnInit {
     this.getPrescriptiveLookupMasterList();
   }
   private getPrescriptiveLookupMasterList() {
-    this.prescriptiveBLService.getPrescriptiveLookupMasterList()
+    var url : string =  this.prescriptiveContantAPI.FMEAConfiguration
+    this.prescriptiveBLService.getWithoutParameters(url)
       .subscribe(res => {
         if (res == []) {
           this.prescriptiveLookUpForm();
@@ -82,28 +84,34 @@ export class PrescriptiveConfigurationComponent implements OnInit {
   }
 
   recordSubmit(fg: FormGroup) {
-    if (fg.value.prescriptiveLookupMasterId == 0)
-      this.prescriptiveLookUpService.postPrescriptiveLookupMaster(fg.value).subscribe(
+    if (fg.value.prescriptiveLookupMasterId == 0){
+      var url : string =  this.prescriptiveContantAPI.FMEAConfiguration
+      this.prescriptiveBLService.postWithoutHeaders(url, fg.value).subscribe(
         (res: any) => {
           fg.patchValue({ prescriptiveLookupMasterId: res.prescriptiveLookupMasterId });
           this.showNotification('insert');
         });
-    else
-      this.prescriptiveLookUpService.putPrescriptiveLookupMaster(fg.value).subscribe(
+      }   
+    else{
+      var url : string =  this.prescriptiveContantAPI.FMEAConfiguration
+      this.prescriptiveBLService.PutData(url,fg.value).subscribe(
         (res: any) => {
           this.showNotification('update');
         });
+    }   
   }
 
   onDelete(prescriptiveLookupMasterId, i) {
     if (prescriptiveLookupMasterId == 0)
       this.prescriptiveLookUpForms.removeAt(i);
-    else if (confirm('Are you sure to delete this record ?'))
-      this.prescriptiveLookUpService.deletePrescriptiveLookupMaster(prescriptiveLookupMasterId).subscribe(
+    else if (confirm('Are you sure to delete this record ?')){
+      var url : string =  this.prescriptiveContantAPI.FMEAConfiguration
+      this.prescriptiveBLService.DeleteWithID(url, prescriptiveLookupMasterId).subscribe(
         res => {
           this.prescriptiveLookUpForms.removeAt(i);
           this.showNotification('delete');
         });
+      }
   }
 
   showNotification(category) {

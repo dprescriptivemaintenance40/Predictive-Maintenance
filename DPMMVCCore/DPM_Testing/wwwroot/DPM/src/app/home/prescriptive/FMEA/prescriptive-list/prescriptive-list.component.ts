@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 
 @Component({
   selector: 'app-prescriptive-list',
@@ -40,7 +42,9 @@ export class PrescriptiveListComponent implements OnInit {
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
     public changeDetectorRef: ChangeDetectorRef,
-    public sanitizer: DomSanitizer) { }
+    public sanitizer: DomSanitizer,
+    private prescriptiveBLService : CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
 
   ngOnInit() {
     this.getPrescriptiveRecords();
@@ -49,7 +53,8 @@ export class PrescriptiveListComponent implements OnInit {
 
 
   getPrescriptiveRecords() {
-    this.http.get('api/PrescriptiveAPI').subscribe(
+    var url : string =  this.prescriptiveContantAPI.FMEATagCheck
+    this.prescriptiveBLService.getWithoutParameters(url).subscribe(
       res => {
         this.prescriptiveRecords = res
       }, err => {
@@ -75,9 +80,10 @@ export class PrescriptiveListComponent implements OnInit {
   }
 
   SoftDeletePrescriptiveRecords() {
-
-    this.http.delete('api/PrescriptiveAPI/DeletePrespectiveModel?id=' + this.CFPPrescriptiveId)
-      .subscribe(res => {
+    var url : string =  this.prescriptiveContantAPI.FMEAListSingleDelete
+    const params = new HttpParams()
+         .set("id", this.CFPPrescriptiveId)
+    this.prescriptiveBLService.DeleteWithParam(url, params).subscribe(res => {
         this.getPrescriptiveRecords();
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted Successfully' });
       }, err => {

@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
 import { MessageService, TreeNode } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { CanComponentDeactivate } from 'src/app/auth.guard';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescriptive-model';
 
 @Component({
@@ -67,7 +69,10 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     public commonLoadingDirective: CommonLoadingDirective,
     private router: Router,
     private http: HttpClient,
-    private changeDetectorRef:ChangeDetectorRef) { }
+    private changeDetectorRef:ChangeDetectorRef,
+    private prescriptiveBLService: CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
+
   private isNewEntity: boolean = false;
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
@@ -552,8 +557,8 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
 
     }
-
-    this.http.put('api/PrescriptiveAPI/CFPrescriptiveAdd', this.centrifugalPumpPrescriptiveOBJ).subscribe(
+    var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
+    this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ ).subscribe(
       res => {
         console.log(res);
         this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Successfully Done' });

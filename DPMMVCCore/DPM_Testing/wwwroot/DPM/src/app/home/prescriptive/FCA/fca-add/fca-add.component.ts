@@ -9,6 +9,8 @@ import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.di
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 import * as XLSX from 'xlsx';
 import { ExcelFormatService } from 'src/app/home/Services/excel-format.service';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({
   selector: 'app-fca-add',
@@ -144,7 +146,9 @@ public UpdateFCAIntervals : any = []
     private excelFormatService : ExcelFormatService,
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
-    private changeDetectorRef: ChangeDetectorRef) { }
+    private changeDetectorRef: ChangeDetectorRef,
+    private prescriptiveBLService : CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
 
   ngOnInit() {
     var FCAData = JSON.parse(localStorage.getItem('FCAObject'))
@@ -165,16 +169,17 @@ public UpdateFCAIntervals : any = []
     await localStorage.removeItem('FCAObject');
   }
 
-  getPrescriptiveRecords(){
+ async getPrescriptiveRecords(){
     this.SelectBoxEnabled = true;
-    this.http.get<any>('api/PrescriptiveAPI/GetPrescriptiveRecordsForFCA').subscribe(
-      res => {
-        this.PrescriptiveTreeList = res;
-        res.forEach(element => {
+    var url : string =  this.prescriptiveContantAPI.PrescriptiveRecordsForFCA
+    await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
+      (res : any) => {
+        this.PrescriptiveTreeList = res
+        if(this.PrescriptiveTreeList.length != 0){
+          this.PrescriptiveTreeList.forEach(element => {
           this.TagList.push(element.TagNumber) 
-        });
-      }
-    )
+          });
+       }})    
   }
 
   TagNumberSelect(){
@@ -1305,8 +1310,8 @@ public UpdateFCAIntervals : any = []
       obj['FCAUpdateConditions'] = JSON.stringify(this.FCAData[index].FCAUpdateConditions)
       centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
-
-    this.http.put('api/PrescriptiveAPI/PrespectivePattern', centrifugalPumpOBJ).subscribe(
+    var url : string =  this.prescriptiveContantAPI.FCASave
+    this.prescriptiveBLService.PutData(url, centrifugalPumpOBJ).subscribe(
       res => {
         this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
         this.SaveFCAEnable = false
@@ -1653,14 +1658,15 @@ async SelectNodeToView(p){
       this.daysList.forEach(element => {
         Data.push(element.Days)
       });
-      this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), this.headers).subscribe(
-        res =>{
+     var url : string =  this.prescriptiveContantAPI.FCAWebal
+     this.prescriptiveBLService.postWithHeaders(url, Data).subscribe(
+        (res: any) =>{
             this.alpha =res.alpha;
             this.beta =res.beta;
             this.changeDetectorRef.detectChanges();
         }, err => {console.log(err.error)}
       )
-    }
+  } 
   
 }
 
