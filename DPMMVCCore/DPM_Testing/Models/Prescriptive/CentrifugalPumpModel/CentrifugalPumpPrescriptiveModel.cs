@@ -15,8 +15,8 @@ namespace DPM.Models.Prescriptive
         public string EquipmentType { get; set; }
         public string TagNumber { get; set; }
         public string FunctionFluidType { get; set; }
-        public string FunctionRatedHead { get; set; }
-        public string FunctionPeriodType { get; set; }
+        //public string FunctionRatedHead { get; set; }
+        //public string FunctionPeriodType { get; set; }
         public string FunctionFailure { get; set; }
         public DateTime Date { get; set; }
         public string FailureModeWithLSETree { get; set; }
