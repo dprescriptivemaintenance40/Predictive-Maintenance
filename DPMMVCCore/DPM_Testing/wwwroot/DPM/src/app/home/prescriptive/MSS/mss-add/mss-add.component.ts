@@ -39,7 +39,7 @@ export class MSSAddComponent implements OnInit {
   public AvailabilityYN : string = ""
   public AvailabilityN : string = ""
   public AvailabilityCheck: number = 0;
- 
+  public AddMSSSave: boolean = false
   public AvailabilityCalculations: boolean = false
   public AvailabilityYNCheck: boolean = false
   public AvailabilityTaskObj : any =[] 
@@ -60,7 +60,7 @@ export class MSSAddComponent implements OnInit {
  public PlantStoppage: boolean  = true
  public PlantStoppageTime: boolean  = true
  public MSSLibraryData : any = []
-  
+ public MSSLibraryJsonData : any = [] 
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -72,6 +72,7 @@ export class MSSAddComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle('DPM | MSS');
     this.getMSSLibraryData();
+    this.getMSSLibraryDataInJSon();
     var MSSData = JSON.parse(localStorage.getItem('MSSObject'))
     if (MSSData !== null) {
       this.TreeUptoFCA = JSON.parse(MSSData.FMWithConsequenceTree)
@@ -90,6 +91,14 @@ export class MSSAddComponent implements OnInit {
   }
   async ngOnDestroy() {
     await localStorage.removeItem('MSSObject');
+  }
+
+  getMSSLibraryDataInJSon(){
+    this.http.get<any>('dist/DPM/assets/MSS_Library/mss_library.json').subscribe(
+      res => {
+       this.MSSLibraryJsonData = res;
+      }, error =>{ console.log(error.error)}
+    )
   }
 
   getMSSLibraryData(){
@@ -197,6 +206,23 @@ async ADDMSSToTree() {
     )
 
 
+      var availablility: number = 0;
+      if(this.AvailabilityResult == 0){
+          availablility = this.AvailabilityCheck
+      }
+      if(this.AvailabilityResult != 0){
+        availablility = this.AvailabilityResult
+      }
+             
+
+      var FMName = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].data.name ;
+      var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
+      var MTBF = dataFromLibrary.mtbf;
+     // var log : number = (((availablility/100)/0.5)-1);
+      var LN =  Math.log((2*(availablility/100))-1) 
+      var INTERVAl : number =  -(MTBF*LN) 
+      var intervalWeek = INTERVAl/36;
+
           // Logic for Maintenance Tasks and Interval
           // first IF condition for Consequence A and B
         if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
@@ -216,18 +242,20 @@ async ADDMSSToTree() {
             var ocmWeek : number = ocmHours.split(" ")[0]
                 ocmWeek = Math.round((ocmWeek / 24) / 7)
 
-            var availablility: number = 0;
-              if(this.AvailabilityResult == 0){
-                  availablility = this.AvailabilityCheck
-              }
-              if(this.AvailabilityResult != 0){
-                availablility = this.AvailabilityResult
-              }
+             
+
               var strategy = this.MSSStratergy.split('-')[1];
               let obj = {}
+            if(this.MSSStratergy == 'A-FFT'){
+              obj['MSSMaintenanceInterval'] = `${intervalWeek} weeks`;
+              obj['MSSMaintenanceTask'] = 'Function Check'
+              obj['MSSStartergy'] = this.MSSStratergy
+              obj['MSSAvailability'] = availablility
+              this.MSSTaskObj.push(obj)
+            }else{
               if(strategy == 'FFT'){
-                obj['MSSMaintenanceInterval'] = availablility;
-                obj['MSSMaintenanceTask'] = 'Function Check'
+                obj['MSSMaintenanceInterval'] = 'Not Applicable';
+                obj['MSSMaintenanceTask'] = 'Not Applicable'
                 obj['MSSStartergy'] = this.MSSStratergy
                 obj['MSSAvailability'] = availablility
                 this.MSSTaskObj.push(obj)
@@ -261,6 +289,7 @@ async ADDMSSToTree() {
                 this.MSSTaskObj.push(obj)
 
               }
+            }
           }  
 
       }else if(this.MSSStratergy == 'C-FFT'    ||  this.MSSStratergy == 'C-OCM' || this.MSSStratergy == 'C-SO'
@@ -281,11 +310,6 @@ async ADDMSSToTree() {
                     var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
                     var ocmWeek : number = ocmHours.split(" ")[0]
                     ocmWeek = Math.round((ocmWeek / 24) / 7)
-
-                    var availablility: number = 0;
-                    if(this.AvailabilityResult == 0){
-                        availablility = this.AvailabilityCheck
-                    }
               
                     var strategy = this.MSSStratergy.split('-')[1];
                     let obj = {}
@@ -346,12 +370,15 @@ async ADDMSSToTree() {
       this.AvailabilityPlantStoppageTime= false;
       this.AvailabilityY = ""
       this.AvailabilityCheck = 0
+      this.AvailabilityResult = 0
       this.stoppageDays = ""
+      this.MSSStratergy = ""
       this.stoppageDaysValue = 0
       this.stoppageDaysTime = ""
       this.stoppageDaysTimeValue = 0
       this.PlantStoppage = true
       this.PlantStoppageTime = true
+      this.AddMSSSave = false
     }else{
       
       alert("fill the data")
@@ -412,12 +439,13 @@ async ADDMSSToTree() {
 
  async AvailabilityYes(){
      if(this.AvailabilityCheck != 0){
-
+      this.AddMSSSave = true
+      const element = document.querySelector("#Consequence")
+     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
        alert("Fill the data")
      }
-     const element = document.querySelector("#Consequence")
-     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+     
    }
 
  async StoppageDays(){
@@ -445,7 +473,7 @@ async ADDMSSToTree() {
     } else if (this.stoppageDaysTime == 'Year') {
       this.stoppageDuration = this.stoppageDaysTimeValue * 365
     }
- 
+   this.AddMSSSave = true
    this.AvailabilityResult = (1-(this.stoppageDuration / this.stoppageValue  ))*100
    const element = document.querySelector("#Consequence")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
