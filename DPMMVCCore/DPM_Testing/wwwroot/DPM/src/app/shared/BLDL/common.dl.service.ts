@@ -58,8 +58,12 @@ export class CommonDLService {
     //#region  Put API's
 
     //Dynamic PUT
-    public PutData(url: string, data: any){
-        return this.http.put(`${this.URL}${url}`, data)
+    public PutData(url: string, data: any, id?:number){
+        if(id){
+            return this.http.put(`${this.URL}${url}/${id}`, data) 
+        }else{
+            return this.http.put(`${this.URL}${url}`, data)
+        }
     }
 
 
