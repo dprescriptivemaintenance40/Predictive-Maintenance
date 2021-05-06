@@ -5,6 +5,8 @@ import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { MessageService } from 'primeng/api';
 import { ConfigService } from 'src/app/shared/config.service';
+import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 @Component({
   selector: 'app-train',
   templateUrl: './train.component.html',
@@ -40,7 +42,9 @@ export class TrainComponent implements OnInit {
     public title: Title,
     public messageService: MessageService,
     public commonLoadingDirective: CommonLoadingDirective,
-    private configService: ConfigService) { }
+    private configService: ConfigService,
+    private screwCompressorAPIName : SCConstantsAPI,
+    private screwCompressorMethod : CommonBLService) { }
 
 
   ngOnInit() {
@@ -50,8 +54,10 @@ export class TrainComponent implements OnInit {
   getScrewCompressureList() {
     this.compListWithClassification = [];
     this.loading = true;
-    this.http.get<any>("api/ScrewCompressureAPI")
-      .subscribe(res => {
+    const url : string = this.screwCompressorAPIName.getTrainList
+    this.screwCompressorMethod.getWithoutParameters(url)
+   // this.http.get<any>("api/ScrewCompressureAPI")
+      .subscribe((res: any) => {
         if (res.length > 0) {
           this.compListWithClassification = res;
           console.log(this.compListWithClassification);
@@ -93,7 +99,9 @@ export class TrainComponent implements OnInit {
     const file = event.target.files[0];
     var formData: FormData = new FormData();
     formData.append('files', file);
-    this.http.post('api/ScrewCompressureAPI/UploadCSV', formData).subscribe(
+    const url : string = this.screwCompressorAPIName.UploadCSV
+    this.screwCompressorMethod.postWithoutHeaders(url, formData).subscribe(
+   // this.http.post('api/ScrewCompressureAPI/UploadCSV', formData).subscribe(
       res =>
         alert(res)
 
@@ -118,7 +126,9 @@ export class TrainComponent implements OnInit {
       this.CompDetailList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
       this.loading = true;
       this.commonLoadingDirective.showLoading(true, "Please wait to get the uploaded rules....");
-      this.http.post<any>('api/ScrewCompressureAPI/Configuration', JSON.stringify(this.CompDetailList), this.headers)
+      const url : string = this.screwCompressorAPIName.TrainAddData;
+      this.screwCompressorMethod.postWithHeaders(url, this.CompDetailList)
+    //  this.http.post<any>('api/ScrewCompressureAPI/Configuration', JSON.stringify(this.CompDetailList), this.headers)
         .subscribe(async res => {
           await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=dpm`, { responseType: 'text' })
             .subscribe(res => {
@@ -146,7 +156,9 @@ export class TrainComponent implements OnInit {
       //this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Wait for some time ', sticky: true });
       this.commonLoadingDirective.showLoading(true, "Please wait to get the configured rules....");
       this.loading = true;
-      this.http.post("api/ScrewCompressureAPI/ConfigurationChange", Data)
+      const url : string = this.screwCompressorAPIName.ChangeInConfiguration;
+      this.screwCompressorMethod.postWithoutHeaders(url, Data)
+     // this.http.post("api/ScrewCompressureAPI/ConfigurationChange", Data)
         .subscribe(async res => {
           await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=dpm`, { responseType: 'text' })
             .subscribe(res => {

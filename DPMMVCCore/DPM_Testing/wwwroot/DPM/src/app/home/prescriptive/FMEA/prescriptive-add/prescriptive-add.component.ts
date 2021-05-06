@@ -13,7 +13,8 @@ import { Observable } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as Chart from 'chart.js';
 import { OverlayPanel } from "primeng/overlaypanel";
-import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({
   selector: 'app-prescriptive-add',
@@ -233,7 +234,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef,
-    private prescriptiveBLService : PrescriptiveBLService) { }
+    private prescriptiveBLService : CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
 
 
 
@@ -326,7 +328,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         formData.append('file', fileToUpload, fileToUpload.name);
         formData.append('removePath', !!filedata ? filedata.dbPath : "");
         this.fileUpload = fileToUpload.name;
-        var url : string =  this.prescriptiveBLService.FMEAFileUpload
+        var url : string =  this.prescriptiveContantAPI.FMEAFileUpload
         this.prescriptiveBLService.postWithoutHeaders(url,formData)
           .subscribe((res: any) => {
             this.dbPath = res.dbPath;
@@ -348,7 +350,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     if (this.fullPath.length > 4) {
       const params = new HttpParams()
         .set("fullPath", this.fullPath)
-      var url : string =  this.prescriptiveBLService.FMEADeleteFileUpload
+      var url : string =  this.prescriptiveContantAPI.FMEADeleteFileUpload
       this.prescriptiveBLService.DeleteWithParam(url,params).subscribe(
         res => {
           this.fileUpload = ""
@@ -428,7 +430,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     const params = new HttpParams()
       .set('MachineType', this.MachineType)
       .set('EquipmentType', this.EquipmentType)
-    var url : string = this.prescriptiveBLService.FMEADropdownData;
+    var url : string = this.prescriptiveContantAPI.FMEADropdownData;
     this.prescriptiveBLService.getWithParameters( url ,params).subscribe(
       res => {
         console.log(res)
@@ -454,7 +456,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     async GeneratePrescription() {
         if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
 
-              var url : string =  this.prescriptiveBLService.FMEATagCheck
+              var url : string =  this.prescriptiveContantAPI.FMEATagCheck
           await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
                 (res: any) => {
                   var check = 0;
@@ -819,7 +821,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
-  var url : string =  this.prescriptiveBLService.FMEASaveConsequence
+  var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
   this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
      res => {
         console.log(res);
@@ -865,7 +867,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 
-  var url :string =  this.prescriptiveBLService.FMEATreeSave
+  var url :string =  this.prescriptiveContantAPI.FMEATreeSave
   this.prescriptiveBLService.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
     .subscribe(
       res => {

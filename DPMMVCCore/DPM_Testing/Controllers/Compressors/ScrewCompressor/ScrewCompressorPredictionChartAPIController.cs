@@ -57,7 +57,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet]
         [Route("ScrewPredictionLastUpload")]
 
         public async Task<IActionResult> GetLastUpload(string LastUploadDate)

@@ -9,7 +9,8 @@ import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.di
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 import * as XLSX from 'xlsx';
 import { ExcelFormatService } from 'src/app/home/Services/excel-format.service';
-import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({
   selector: 'app-fca-add',
@@ -146,7 +147,8 @@ public UpdateFCAIntervals : any = []
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef,
-    private prescriptiveBLService : PrescriptiveBLService) { }
+    private prescriptiveBLService : CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
 
   ngOnInit() {
     var FCAData = JSON.parse(localStorage.getItem('FCAObject'))
@@ -169,7 +171,7 @@ public UpdateFCAIntervals : any = []
 
  async getPrescriptiveRecords(){
     this.SelectBoxEnabled = true;
-    var url : string =  this.prescriptiveBLService.PrescriptiveRecordsForFCA
+    var url : string =  this.prescriptiveContantAPI.PrescriptiveRecordsForFCA
     await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
       (res : any) => {
         this.PrescriptiveTreeList = res
@@ -1308,7 +1310,7 @@ public UpdateFCAIntervals : any = []
       obj['FCAUpdateConditions'] = JSON.stringify(this.FCAData[index].FCAUpdateConditions)
       centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
-    var url : string =  this.prescriptiveBLService.FCASave
+    var url : string =  this.prescriptiveContantAPI.FCASave
     this.prescriptiveBLService.PutData(url, centrifugalPumpOBJ).subscribe(
       res => {
         this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
@@ -1656,7 +1658,7 @@ async SelectNodeToView(p){
       this.daysList.forEach(element => {
         Data.push(element.Days)
       });
-     var url : string =  this.prescriptiveBLService.FCAWebal
+     var url : string =  this.prescriptiveContantAPI.FCAWebal
      this.prescriptiveBLService.postWithHeaders(url, Data).subscribe(
         (res: any) =>{
             this.alpha =res.alpha;

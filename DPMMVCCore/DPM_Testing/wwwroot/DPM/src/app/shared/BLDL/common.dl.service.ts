@@ -5,7 +5,7 @@ import { ConfigService } from "src/app/shared/config.service";
 @Injectable({
     providedIn: 'root'
 })
-export class PrescriptiveDLService {
+export class CommonDLService {
     private headers = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'

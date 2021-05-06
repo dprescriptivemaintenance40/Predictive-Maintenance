@@ -99,9 +99,10 @@ namespace DPM_Testing.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> PutAddRuleModel(String Id, RegisterUser model)
         {
+            string id = model.Id;
             var user = await _userManager.FindByIdAsync(Id);
             user.UserName = model.UserName;
             user.Lastname = model.Lastname;

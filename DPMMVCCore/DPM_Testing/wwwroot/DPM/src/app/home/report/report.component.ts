@@ -6,6 +6,9 @@ import { UserService } from '../Services/user.services';
 import { Title } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
+import { SCConstantsAPI } from '../Compressor/ScrewCompressor/shared/ScrewCompressorAPI.service';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { ProfileConstantAPI } from '../profile/profileAPI.service';
 
 @Component({
   selector: 'app-report',
@@ -74,14 +77,25 @@ export class ReportComponent implements OnInit {
     public service: UserService,
     public messageService: MessageService,
     public title: Title,
-    public commonLoadingDirective: CommonLoadingDirective) {
+    public commonLoadingDirective: CommonLoadingDirective,
+    private screwCompressorAPIName : SCConstantsAPI,
+    private screwCompressorMethod : CommonBLService,
+    private profileAPIName : ProfileConstantAPI) {
 
   }
 
   ngOnInit() {
     this.title.setTitle('DPM | Report');
+    this.GetRecords();
+
+  }
+
+
+  GetRecords(){
     this.commonLoadingDirective.showLoading(true, 'Report is getting generated.');
-    this.http.get<any>("api/ScrewCompressureAPI")
+    const url : string = this.screwCompressorAPIName.getTrainList
+    this.screwCompressorMethod.getWithoutParameters(url)
+   // this.http.get<any>("api/ScrewCompressureAPI")
       .subscribe(res => {
         this.classificationDetails = res;
         this.commonLoadingDirective.showLoading(false, '');
@@ -91,7 +105,8 @@ export class ReportComponent implements OnInit {
         }
       );
     this.commonLoadingDirective.showLoading(false, '');
-    this.service.getUserProfile()
+    const url11 = this.profileAPIName.ProfileAPI
+    this.screwCompressorMethod.getWithoutParameters(url11)
       .subscribe(
         res => {
           this.user = res;
@@ -103,8 +118,9 @@ export class ReportComponent implements OnInit {
         },
       );
 
-
-    this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
+    const url2 : string = this.screwCompressorAPIName.getPredictedList;
+    this.screwCompressorMethod.getWithoutParameters(url2)
+  //  this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
       .subscribe(res => {
         this.screwWithPredictionDetails = res;
         if (this.screwWithPredictionDetails.length == 0) {
@@ -121,7 +137,6 @@ export class ReportComponent implements OnInit {
         this.commonLoadingDirective.showLoading(false, '');
         console.log(err.error);
       });
-
 
 
   }

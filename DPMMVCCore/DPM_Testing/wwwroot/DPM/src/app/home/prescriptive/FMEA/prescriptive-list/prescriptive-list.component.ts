@@ -3,8 +3,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
-import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 
 @Component({
   selector: 'app-prescriptive-list',
@@ -42,7 +43,8 @@ export class PrescriptiveListComponent implements OnInit {
     public commonLoadingDirective: CommonLoadingDirective,
     public changeDetectorRef: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
-    private prescriptiveBLService : PrescriptiveBLService) { }
+    private prescriptiveBLService : CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
 
   ngOnInit() {
     this.getPrescriptiveRecords();
@@ -51,7 +53,7 @@ export class PrescriptiveListComponent implements OnInit {
 
 
   getPrescriptiveRecords() {
-    var url : string =  this.prescriptiveBLService.FMEATagCheck
+    var url : string =  this.prescriptiveContantAPI.FMEATagCheck
     this.prescriptiveBLService.getWithoutParameters(url).subscribe(
       res => {
         this.prescriptiveRecords = res
@@ -78,7 +80,7 @@ export class PrescriptiveListComponent implements OnInit {
   }
 
   SoftDeletePrescriptiveRecords() {
-    var url : string =  this.prescriptiveBLService.FMEAListSingleDelete
+    var url : string =  this.prescriptiveContantAPI.FMEAListSingleDelete
     const params = new HttpParams()
          .set("id", this.CFPPrescriptiveId)
     this.prescriptiveBLService.DeleteWithParam(url, params).subscribe(res => {

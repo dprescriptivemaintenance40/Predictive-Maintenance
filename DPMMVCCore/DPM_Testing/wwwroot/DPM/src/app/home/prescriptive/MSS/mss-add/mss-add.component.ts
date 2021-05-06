@@ -7,7 +7,8 @@ import { MessageService, TreeNode } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 import * as XLSX from 'xlsx';
-import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({
   selector: 'app-mss-add',
@@ -67,7 +68,8 @@ export class MSSAddComponent implements OnInit {
     public commonLoadingDirective: CommonLoadingDirective,
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef,
-    private prescriptiveBLService : PrescriptiveBLService) { }
+    private prescriptiveBLService : CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
 
   ngOnInit() {
     this.title.setTitle('DPM | MSS');
@@ -123,7 +125,7 @@ export class MSSAddComponent implements OnInit {
 
   getPrescriptiveRecords() {
     this.SelectBoxEnabled = true;
-    var url : string =  this.prescriptiveBLService.PrescriptiveRecordsForMSS
+    var url : string =  this.prescriptiveContantAPI.PrescriptiveRecordsForMSS
     this.prescriptiveBLService.getWithoutParameters(url).subscribe(
       (res: any) => {
         this.PrescriptiveTreeList = res;
@@ -221,7 +223,7 @@ async ADDMSSToTree() {
      // var log : number = (((availablility/100)/0.5)-1);
       var LN =  Math.log((2*(availablility/100))-1) 
       var INTERVAl : number =  -(MTBF*LN) 
-      var intervalWeek = INTERVAl/36;
+      var intervalWeek = INTERVAl/48;
 
           // Logic for Maintenance Tasks and Interval
           // first IF condition for Consequence A and B
@@ -398,7 +400,7 @@ async ADDMSSToTree() {
     CPObj.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId
     CPObj.FMWithConsequenceTree = JSON.stringify(this.TreeUptoFCA)
     CPObj.centrifugalPumpPrescriptiveFailureModes = this.MSSTaskObj
-    var url : string =  this.prescriptiveBLService.MSSSave
+    var url : string =  this.prescriptiveContantAPI.MSSSave
     this.prescriptiveBLService.PutData(url, CPObj).subscribe(
       res => {
         this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated MSS' });

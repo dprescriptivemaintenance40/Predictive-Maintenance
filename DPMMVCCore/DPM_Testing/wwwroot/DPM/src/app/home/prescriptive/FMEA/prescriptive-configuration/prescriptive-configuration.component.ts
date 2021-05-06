@@ -2,7 +2,8 @@ import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 
 @Component({
   selector: 'app-prescriptive-configuration',
@@ -22,7 +23,8 @@ export class PrescriptiveConfigurationComponent implements OnInit {
 
   constructor(public fb: FormBuilder,
     public title: Title,
-    private prescriptiveBLService: PrescriptiveBLService) {
+    private prescriptiveBLService: CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) {
 
   }
 
@@ -31,7 +33,7 @@ export class PrescriptiveConfigurationComponent implements OnInit {
     this.getPrescriptiveLookupMasterList();
   }
   private getPrescriptiveLookupMasterList() {
-    var url : string =  this.prescriptiveBLService.FMEAConfiguration
+    var url : string =  this.prescriptiveContantAPI.FMEAConfiguration
     this.prescriptiveBLService.getWithoutParameters(url)
       .subscribe(res => {
         if (res == []) {
@@ -83,7 +85,7 @@ export class PrescriptiveConfigurationComponent implements OnInit {
 
   recordSubmit(fg: FormGroup) {
     if (fg.value.prescriptiveLookupMasterId == 0){
-      var url : string =  this.prescriptiveBLService.FMEAConfiguration
+      var url : string =  this.prescriptiveContantAPI.FMEAConfiguration
       this.prescriptiveBLService.postWithoutHeaders(url, fg.value).subscribe(
         (res: any) => {
           fg.patchValue({ prescriptiveLookupMasterId: res.prescriptiveLookupMasterId });
@@ -91,7 +93,7 @@ export class PrescriptiveConfigurationComponent implements OnInit {
         });
       }   
     else{
-      var url : string =  this.prescriptiveBLService.FMEAConfiguration
+      var url : string =  this.prescriptiveContantAPI.FMEAConfiguration
       this.prescriptiveBLService.PutData(url,fg.value).subscribe(
         (res: any) => {
           this.showNotification('update');
@@ -103,7 +105,7 @@ export class PrescriptiveConfigurationComponent implements OnInit {
     if (prescriptiveLookupMasterId == 0)
       this.prescriptiveLookUpForms.removeAt(i);
     else if (confirm('Are you sure to delete this record ?')){
-      var url : string =  this.prescriptiveBLService.FMEAConfiguration
+      var url : string =  this.prescriptiveContantAPI.FMEAConfiguration
       this.prescriptiveBLService.DeleteWithID(url, prescriptiveLookupMasterId).subscribe(
         res => {
           this.prescriptiveLookUpForms.removeAt(i);

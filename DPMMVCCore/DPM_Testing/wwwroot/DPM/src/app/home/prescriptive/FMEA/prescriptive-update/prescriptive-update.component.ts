@@ -11,6 +11,8 @@ import { Observable } from 'rxjs';
 import * as Chart from 'chart.js';
 import { ExcelFormatService } from 'src/app/home/Services/excel-format.service';
 import * as XLSX from 'xlsx';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({
   selector: 'app-prescriptive-update',
@@ -326,7 +328,10 @@ public UpdateBeta : number = 0
     private http: HttpClient,
     private excelFormatService : ExcelFormatService,
     private changeDetectorRef: ChangeDetectorRef,
-    private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    private prescriptiveBLService : CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
+
   private isNewEntity: boolean = false;
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.isNewEntity) {
@@ -451,7 +456,9 @@ public UpdateBeta : number = 0
     this.EditdbPathURL = ""
     const params = new HttpParams()
       .set("fullPath", this.UpdatedAttachmentInFMFullPath)
-    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
+    var url : string =  this.prescriptiveContantAPI.FMEADeleteFileUpload;
+    this.prescriptiveBLService.DeleteWithParam(url, params).subscribe()
+  //  this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
     this.UpdatedAttachmentInFMDBPath = "";
     this.UpdatedAttachmentInFMFullPath = "";
 
@@ -474,7 +481,9 @@ public UpdateBeta : number = 0
         formData.append('file', fileToUpload, fileToUpload.name);
         formData.append('removePath', !!filedata ? filedata.dbPath : "");
         this.fileUpload = fileToUpload.name;
-        this.http.post('api/PrescriptiveAPI/UploadFile', formData)
+        var url : string =  this.prescriptiveContantAPI.FMEAFileUpload;
+        this.prescriptiveBLService.postWithoutHeaders(url, formData)
+      //  this.http.post('api/PrescriptiveAPI/UploadFile', formData)
           .subscribe((res: any) => {
             this.dbPath = res.dbPath;
             this.EditdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(this.dbPath);
@@ -512,7 +521,9 @@ public UpdateBeta : number = 0
         const formData = new FormData();
         formData.append('file', fileToUpload, fileToUpload.name);
         formData.append('removePath', !!filedata ? filedata.dbPath : "");
-        this.http.post('api/PrescriptiveAPI/UploadFile', formData)
+        var url : string =  this.prescriptiveContantAPI.FMEAFileUpload;
+        this.prescriptiveBLService.postWithoutHeaders(url, formData)
+      //  this.http.post('api/PrescriptiveAPI/UploadFile', formData)
           .subscribe((res: any) => {
             // this.dbPath = res.dbPath;
             this.ADDdbPathURL = this.sanitizer.bypassSecurityTrustResourceUrl(res.dbPath);
@@ -547,7 +558,9 @@ public UpdateBeta : number = 0
     this.ADDdbPathURL = ""
     const params = new HttpParams()
       .set("fullPath", this.ADDUpdatedAttachmentInFMFullPath)
-    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
+    var url : string =  this.prescriptiveContantAPI.FMEADeleteFileUpload
+    this.prescriptiveBLService.DeleteWithParam(url, params).subscribe()
+  //  this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
     this.ADDUpdatedAttachmentInFMDBPath = "";
     this.ADDUpdatedAttachmentInFMFullPath = "";
 
@@ -614,7 +627,9 @@ public UpdateBeta : number = 0
   CloseAttachmentModalUpdate() {
     const params = new HttpParams()
       .set("fullPath", this.fullPathUpdate)
-    this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
+    var url : string =  this.prescriptiveContantAPI.FMEADeleteFileUpload
+    this.prescriptiveBLService.DeleteWithParam(url, params).subscribe()
+    //this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
 
   }
 
@@ -678,7 +693,9 @@ public UpdateBeta : number = 0
     obj['Remark'] = this.Remark
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     this.Remark = ""
-    this.http.put('api/PrescriptiveAPI/EditConsequenceTree', this.centrifugalPumpPrescriptiveOBJ).subscribe(
+    var url : string =  this.prescriptiveContantAPI.SaveFailureModeUpdate
+    this.prescriptiveBLService.PutData(url, this.centrifugalPumpPrescriptiveOBJ).subscribe(
+   // this.http.put('api/PrescriptiveAPI/EditConsequenceTree', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {
         console.log(res)
         this.FailureModediv.style.display = 'none'
@@ -705,8 +722,9 @@ public UpdateBeta : number = 0
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data2)
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId;
-
-    this.http.put('api/PrescriptiveAPI/FunctionUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
+    var url : string =  this.prescriptiveContantAPI.SaveFunction;
+    this.prescriptiveBLService.PutData(url, this.centrifugalPumpPrescriptiveOBJ).subscribe(
+ //   this.http.put('api/PrescriptiveAPI/FunctionUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {
         console.log(res)
         this.Functiondiv.style.display = 'none'
@@ -1019,7 +1037,10 @@ public UpdateBeta : number = 0
     if (this.fullPath.length > 4) {
       const params = new HttpParams()
         .set("fullPath", this.fullPath)
-      this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe(
+      
+    var url : string =  this.prescriptiveContantAPI.FMEADeleteFileUpload
+    this.prescriptiveBLService.DeleteWithParam(url, params).subscribe(
+   //   this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe(
         res => {
           this.fileUpload = ""
           this.fileAttachmentEnable = false
@@ -1479,7 +1500,9 @@ async AddPatternToNewFM() {
     Data['FCAUpdateConditions'] = JSON.stringify(this.UpdateFCACondition)
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(Data)
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.CPPrescriptiveUpdateData.CFPPrescriptiveId
-    this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
+    var url : string =  this.prescriptiveContantAPI.UpdateChanges;
+    this.prescriptiveBLService.PutData(url, this.centrifugalPumpPrescriptiveOBJ).subscribe(
+  //  this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ).subscribe(
       res => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Successfully updated' });
         this.FinalUpdate = false;
@@ -1496,8 +1519,9 @@ async AddPatternToNewFM() {
     const params = new HttpParams()
       .set('MachineType', this.MachineType)
       .set('EquipmentType', this.EquipmentType)
-
-    this.http.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
+    var url : string =  this.prescriptiveContantAPI.FMEADropdownData;
+    this.prescriptiveBLService.getWithParameters(url, params).subscribe(
+  //  this.http.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
       res => {
         console.log(res)
         this.dropDownData = res;
@@ -1887,7 +1911,10 @@ async AddPatternToNewFM() {
     let obj = {}
     obj['CPPFMId'] = id
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
-    this.http.put('api/PrescriptiveAPI/FailureModeDelete', this.centrifugalPumpPrescriptiveOBJ).subscribe(res => {
+    var url : string =  this.prescriptiveContantAPI.DeleteFailureModeFrommTree;
+    this.prescriptiveBLService.PutData(url, this.centrifugalPumpPrescriptiveOBJ).subscribe(
+  //  this.http.put('api/PrescriptiveAPI/FailureModeDelete', this.centrifugalPumpPrescriptiveOBJ).subscribe(
+    res => {
       console.log(res)
       this.FinalDelete = false;
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Delete Successfully' });
@@ -2857,8 +2884,9 @@ public EnabledPatternUpdate : boolean = false
             CPObj.centrifugalPumpPrescriptiveFailureModes.push(element)
           }
     });
-
-    this.http.put('api/PrescriptiveAPI/UpdatePrespectivePattern', CPObj).subscribe(
+    var url : string =  this.prescriptiveContantAPI.SaveUpdatedPattern;
+    this.prescriptiveBLService.PutData(url, CPObj).subscribe(
+  //  this.http.put('api/PrescriptiveAPI/UpdatePrespectivePattern', CPObj).subscribe(
       res => {
         this.router.navigateByUrl('/Home/Prescriptive/List')
       }, err => { console.log(err.error)}
@@ -3088,7 +3116,9 @@ UpdateWebal(event){
         'Content-Type': 'application/json'
       })
     }
-    this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), headers).subscribe(
+    var url : string =  this.prescriptiveContantAPI.FCAWebal;
+    this.prescriptiveBLService.postWithHeaders(url, Data).subscribe(
+  //  this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), headers).subscribe(
       res =>{
           var ab : any = res;
           this.UpdateAlpha =ab.alpha;
@@ -3292,8 +3322,10 @@ public UpdateMSSConsequence : string =""
       
       });
       CPObj.centrifugalPumpPrescriptiveFailureModes = this.UpdateMSSTaskObj
-      this.http.put<any>('api/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate', CPObj).subscribe(
-        res =>{
+      var url : string =  this.prescriptiveContantAPI.UpdateMSSToTree;
+      this.prescriptiveBLService.PutData(url, CPObj).subscribe(
+    //  this.http.put<any>('api/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate', CPObj).subscribe(
+        (res: any) =>{
          this.UpdateMSSImageFlag = false
          this.prescriptiveTree = false
          this.changeDetectorRef.detectChanges()
@@ -3684,8 +3716,10 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
        this.daysList.forEach(element => {
          Data.push(element.Days)
        });
-       this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), this.headers).subscribe(
-         res =>{
+       var url : string =  this.prescriptiveContantAPI.FCAWebal;
+       this.prescriptiveBLService.postWithHeaders(url, Data).subscribe(
+      // this.http.post<any>('api/PrescriptiveAPI/WebalAlgo', JSON.stringify(Data), this.headers).subscribe(
+         (res: any) =>{
              this.ADDalpha =res.alpha;
              this.ADDbeta =res.beta;
              this.changeDetectorRef.detectChanges();
