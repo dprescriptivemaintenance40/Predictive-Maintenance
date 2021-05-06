@@ -160,8 +160,6 @@ export class RecycleBinComponent implements OnInit {
       this.centrifugalPumpPrescriptiveOBJ.EquipmentType = data.EquipmentType
       this.centrifugalPumpPrescriptiveOBJ.TagNumber = data.TagNumber
       this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = data.FunctionFluidType
-      this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = data.FunctionRatedHead
-      this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = data.FunctionPeriodType
       this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = data.FunctionFailure
       this.centrifugalPumpPrescriptiveOBJ.Date = data.Date
       this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = data.FailureModeWithLSETree
