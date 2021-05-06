@@ -53,7 +53,9 @@ export class HomeComponent implements OnInit {
   }
 
   video(){
-   this.Video= true
+   this.Video= true  
+  //  const element = document.querySelector("#VideoShow")
+  //  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }
   UserData() {
     if (localStorage.getItem('userObject') != null) {
