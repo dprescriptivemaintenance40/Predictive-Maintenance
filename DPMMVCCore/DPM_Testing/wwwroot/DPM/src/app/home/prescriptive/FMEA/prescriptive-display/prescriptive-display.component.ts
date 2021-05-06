@@ -230,7 +230,7 @@ export class PrescriptiveDisplayComponent implements OnInit {
         "data": "Work Folder",
         "expandedIcon": "pi pi-folder-open",
         "collapsedIcon": "pi pi-folder",
-        "children": [{ "label": `Function : ${this.PrescriptiveRecords[this.counter].FunctionFluidType}`}, {
+        "children": [{ "label": "Fluid Type : " + this.PrescriptiveRecords[this.counter].FunctionFluidType + ", " + "Rated Head : " + this.PrescriptiveRecords[this.counter].FunctionRatedHead + " m " + ", " + "Duration Of : " + this.PrescriptiveRecords[this.counter].FunctionPeriodType + " days" }, {
           "label": "Function Failure",
           "data": "Home Folder",
           "expandedIcon": "pi pi-folder-open",

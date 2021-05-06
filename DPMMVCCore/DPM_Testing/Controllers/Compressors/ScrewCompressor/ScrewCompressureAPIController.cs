@@ -104,8 +104,10 @@ namespace DPM_Testing.Controllers
         {
             try
             {
-               ScrewCompressorPredictionModel screwCompressorPredictions = await _context.ScrewCompressurePredictionData.FirstOrDefaultAsync(a => a.PredictionId == PredictedId);
-               return Ok(screwCompressorPredictions);
+               List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData.Where(a => a.PredictionId == PredictedId).ToListAsync();
+
+                //ScrewCompressorPredictionModel screwCompressorPredictions = _context.ScrewCompressurePredictionData.Where(a => a.PredictionId == PredictedId).AsQueryable().FirstOrDefault();
+                return Ok(screwCompressorPredictions);
             }
             catch (Exception exe)
             {
