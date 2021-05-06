@@ -4,7 +4,6 @@ using EmailService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,11 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace DPM_Testing
 {
@@ -63,14 +58,14 @@ namespace DPM_Testing
                 .Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailSender, EmailSender>();
-            
-         //   services.AddAutoMapper(typeof(Startup));
-         services.AddControllersWithViews().AddNewtonsoftJson(
-            options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+
+            //   services.AddAutoMapper(typeof(Startup));
+            services.AddControllersWithViews().AddNewtonsoftJson(
+               options =>
+               {
+                   options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                   options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+               });
 
             services.AddControllers().AddJsonOptions(options =>
                     {
@@ -90,7 +85,7 @@ namespace DPM_Testing
             //               }));
 
             services.AddControllersWithViews();
-            
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -139,11 +134,11 @@ namespace DPM_Testing
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
- 
+
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthorization();
-           
+
             app.UseCors("MyAllowSpecificOrigins");
             app.UseHttpsRedirection();
 

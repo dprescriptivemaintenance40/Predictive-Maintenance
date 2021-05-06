@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { PrescriptiveBLService } from '../../Shared/prescritpive.bl.service';
 import { PrescriptiveConfigurationService } from './prescriptive-configuration.service';
 
 @Component({
@@ -12,31 +13,33 @@ export class PrescriptiveConfigurationComponent implements OnInit {
 
 
   prescriptiveLookUpForms: FormArray = this.fb.array([]);
-  
+
   public notification = null;
   public MachineTypeSelect: any;
-  public EquipmentTypeSelect : boolean = true;
-  public EquipmentTypeCompressor : boolean = false;
-  public EquipmentTypePump : boolean = false;
+  public EquipmentTypeSelect: boolean = true;
+  public EquipmentTypeCompressor: boolean = false;
+  public EquipmentTypePump: boolean = false;
 
   constructor(public fb: FormBuilder,
-              public prescriptiveLookUpService: PrescriptiveConfigurationService,
-              public title: Title) {
-     
-     }
+    public prescriptiveLookUpService: PrescriptiveConfigurationService,
+    public title: Title,
+    private prescriptiveBLService: PrescriptiveBLService) {
+
+  }
 
   ngOnInit() {
     this.title.setTitle('DPM | Prescriptive Configuration');
-    this.prescriptiveLookUpService.getPrescriptiveLookupMasterList().subscribe(
-      res => {
-    
-        if (res == []){
+    this.getPrescriptiveLookupMasterList();
+  }
+  private getPrescriptiveLookupMasterList() {
+    this.prescriptiveBLService.getPrescriptiveLookupMasterList()
+      .subscribe(res => {
+        if (res == []) {
           this.prescriptiveLookUpForm();
         }
         else {
-        
           (res as []).forEach((prescriptiveLookUpModel: any) => {
-            
+
             this.prescriptiveLookUpForms.push(this.fb.group({
               prescriptiveLookupMasterId: [prescriptiveLookUpModel.PrescriptiveLookupMasterId],
               // tagNumber: [prescriptiveLookUpModel.TagNumber, Validators.required],
@@ -46,22 +49,23 @@ export class PrescriptiveConfigurationComponent implements OnInit {
               description: [prescriptiveLookUpModel.Description, Validators.required]
             }));
           });
-          this.EquipmentTypeSelect = false 
+          this.EquipmentTypeSelect = false
           this.EquipmentTypePump = true
         }
-      }
-    );
+      }, err => {
+        console.log(err.error);
+      });
   }
 
-  SelectMachineType(fg: FormGroup){
-    if(fg.value.machineType == 'Pump'){
+  SelectMachineType(fg: FormGroup) {
+    if (fg.value.machineType == 'Pump') {
       this.EquipmentTypePump = true;
       this.EquipmentTypeCompressor = false;
-      this.EquipmentTypeSelect  = false;
-    }else{
+      this.EquipmentTypeSelect = false;
+    } else {
       this.EquipmentTypePump = false;
       this.EquipmentTypeCompressor = true;
-      this.EquipmentTypeSelect  = false;
+      this.EquipmentTypeSelect = false;
     }
   }
 

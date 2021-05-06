@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { MessageService } from 'primeng/api';
-import { environment } from 'src/environments/environment.prod';
+import { ConfigService } from 'src/app/shared/config.service';
 @Component({
   selector: 'app-train',
   templateUrl: './train.component.html',
@@ -39,15 +39,13 @@ export class TrainComponent implements OnInit {
   constructor(public http: HttpClient,
     public title: Title,
     public messageService: MessageService,
-    public commonLoadingDirective: CommonLoadingDirective) { }
+    public commonLoadingDirective: CommonLoadingDirective,
+    private configService: ConfigService) { }
 
 
   ngOnInit() {
     this.title.setTitle('DPM | Screw Train');
     this.getScrewCompressureList();
-    // setInterval(() => {
-    //   this.getScrewCompressureList();
-    // }, 10000);
   }
   getScrewCompressureList() {
     this.compListWithClassification = [];
@@ -122,7 +120,7 @@ export class TrainComponent implements OnInit {
       this.commonLoadingDirective.showLoading(true, "Please wait to get the uploaded rules....");
       this.http.post<any>('api/ScrewCompressureAPI/Configuration', JSON.stringify(this.CompDetailList), this.headers)
         .subscribe(async res => {
-          await this.http.get(`${environment.ruleengineurl}name=dpm`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=dpm`, { responseType: 'text' })
             .subscribe(res => {
               this.getScrewCompressureList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
@@ -150,7 +148,7 @@ export class TrainComponent implements OnInit {
       this.loading = true;
       this.http.post("api/ScrewCompressureAPI/ConfigurationChange", Data)
         .subscribe(async res => {
-          await this.http.get(`${environment.ruleengineurl}name=dpm`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=dpm`, { responseType: 'text' })
             .subscribe(res => {
               this.getScrewCompressureList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });

@@ -6,8 +6,8 @@ import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.di
 import * as XLSX from 'xlsx';
 import { ScrewCompressorPredictionModel } from '../configuration/screw-compressor-prediction.model';
 import { MessageService } from 'primeng/api';
-import { environment } from 'src/environments/environment.prod';
 import { DatePipe } from '@angular/common';
+import { ConfigService } from 'src/app/shared/config.service';
 
 @Component({
   selector: 'app-prediction',
@@ -55,7 +55,8 @@ export class PredictionComponent implements OnInit {
     public http: HttpClient,
     public messageService: MessageService,
     public commonLoadingDirective: CommonLoadingDirective,
-    public datepipe: DatePipe) { }
+    public datepipe: DatePipe,
+    private configService: ConfigService) { }
 
 
   ngOnInit() {
@@ -153,7 +154,7 @@ export class PredictionComponent implements OnInit {
       this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
       this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
         .subscribe(async res => {
-          await this.http.get(`${environment.prediction}name=prediction`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
             .subscribe(res => {
               this.getPredictedList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
@@ -221,7 +222,7 @@ export class PredictionComponent implements OnInit {
       .subscribe(async res => {
         this.configurationObj = res;
         this.PridictedId = res.PredictionId;
-        await this.http.get(`${environment.prediction}name=prediction`, { responseType: 'text' })
+        await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
           .subscribe(res => {
             this.getPredictedById(this.PridictedId);
             this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
@@ -297,7 +298,7 @@ export class PredictionComponent implements OnInit {
     this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage')
       .subscribe(async res => {
         if (res === 1) {
-          await this.http.get(`${environment.prediction}name=futureprediction`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=futureprediction`, { responseType: 'text' })
             .subscribe(res => {
               this.getFuturePredictionRecords();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
