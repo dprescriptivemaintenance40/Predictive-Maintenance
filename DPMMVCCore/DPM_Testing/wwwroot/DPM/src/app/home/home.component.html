@@ -152,6 +152,16 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
+                    <div class="container">
+                        <p-overlayPanel #panel>
+                            <div style=" margin-right: 3px;width: 70rem;">
+                                <video width="1100" height="600" controls *ngIf="Video">
+                                    <source src="dist/DPM/assets/Prescriptive1.mp4" type="video/mp4">
+                                  </video>
+                            </div>
+                        </p-overlayPanel>
+                        <a (click)="panel.show($event)" (click)="video()" style="color: black;"><i class="fas fa-video">video</i></a> 
+                      </div>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -204,7 +214,6 @@
                             </a>
                         </div>
                     </li>
-
                 </ul>
 
             </nav>

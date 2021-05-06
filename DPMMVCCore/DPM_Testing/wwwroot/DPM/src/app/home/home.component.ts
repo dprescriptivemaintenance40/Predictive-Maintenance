@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   public prescriptive: boolean = false;
   public staticEquitment: boolean = false;
   public recycleBin: boolean = false;
+  public Video: boolean = false;
   public prescriptiveConfiguration: boolean = false;
   constructor(public builder: FormBuilder,
     public http: HttpClient,
@@ -51,6 +52,9 @@ export class HomeComponent implements OnInit {
     this.UserData()
   }
 
+  video(){
+   this.Video= true
+  }
   UserData() {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
