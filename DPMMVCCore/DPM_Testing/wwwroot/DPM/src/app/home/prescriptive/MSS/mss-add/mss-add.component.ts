@@ -220,10 +220,9 @@ async ADDMSSToTree() {
       var FMName = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].data.name ;
       var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
       var MTBF = dataFromLibrary.mtbf;
-     // var log : number = (((availablility/100)/0.5)-1);
       var LN =  Math.log((2*(availablility/100))-1) 
       var INTERVAl : number =  -(MTBF*LN) 
-      var intervalWeek = INTERVAl/48;
+      var intervalWeek = (INTERVAl*365)/7;
 
           // Logic for Maintenance Tasks and Interval
           // first IF condition for Consequence A and B
@@ -236,6 +235,7 @@ async ADDMSSToTree() {
             let obj = {}
             obj['MSSMaintenanceInterval'] = 'Not Applicable'
             obj['MSSMaintenanceTask'] = 'Not Applicable'
+            obj['MSSAvailability'] = availablility
             obj['MSSStartergy'] = this.MSSStratergy
             this.MSSTaskObj.push(obj)
           } else{
@@ -249,7 +249,7 @@ async ADDMSSToTree() {
               var strategy = this.MSSStratergy.split('-')[1];
               let obj = {}
             if(this.MSSStratergy == 'A-FFT'){
-              obj['MSSMaintenanceInterval'] = `${intervalWeek} weeks`;
+              obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
               obj['MSSMaintenanceTask'] = 'Function Check'
               obj['MSSStartergy'] = this.MSSStratergy
               obj['MSSAvailability'] = availablility
@@ -305,6 +305,7 @@ async ADDMSSToTree() {
                   let obj = {}
                   obj['MSSMaintenanceInterval'] = 'Not Applicable'
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
+                  obj['MSSAvailability'] = availablility
                   obj['MSSStartergy'] = this.MSSStratergy
                   this.MSSTaskObj.push(obj)
                 } else{
