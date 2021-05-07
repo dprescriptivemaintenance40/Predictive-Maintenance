@@ -10,7 +10,6 @@ import { CentrifugalPumpComponent } from "./Pump/centrifugal-pump/centrifugal-pu
 import { ReportComponent } from "./report/report.component";
 import { UserService } from "./Services/user.services";
 import { ProfileService } from "./Services/ProfileService";
-import { ScrewCompressorService } from "./Services/ScrewCompressorService";
 import { EventEmitterService } from "./Services/event-emitter.service";
 import { ExcelFormatService } from "./Services/excel-format.service";
 import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
@@ -29,7 +28,7 @@ import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
         HomeRoutingModule,       
         SharedModule
     ],
-    providers: [UserService,ProfileService,ScrewCompressorService,EventEmitterService,ExcelFormatService],
+    providers: [UserService,ProfileService,EventEmitterService,ExcelFormatService],
     bootstrap: [HomeComponent]
 })
 export class HomeModule {

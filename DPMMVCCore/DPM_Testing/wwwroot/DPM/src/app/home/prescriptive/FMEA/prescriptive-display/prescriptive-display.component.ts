@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { TreeNode } from 'primeng/api';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 
 @Component({
   selector: 'app-prescriptive-display',
@@ -25,11 +27,18 @@ export class PrescriptiveDisplayComponent implements OnInit {
   public ImageEnable: boolean = false;
 
   constructor(private http: HttpClient,
-    public commonLoadingDirective: CommonLoadingDirective) { }
+    public commonLoadingDirective: CommonLoadingDirective,
+    private prescriptiveBLService : CommonBLService,
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
 
   ngOnInit() {
+    this.fetchRecords();
+  }
+
+  fetchRecords(){
     this.commonLoadingDirective.showLoading(true, "Please wait...");
-    this.http.get('api/PrescriptiveAPI').subscribe(
+    var url : string =  this.prescriptiveContantAPI.FMEATagCheck
+    this.prescriptiveBLService.getWithoutParameters(url).subscribe(
       res => {
         this.PrescriptiveRecords = res;
         if (this.PrescriptiveRecords.length > 0) {
@@ -230,7 +239,7 @@ export class PrescriptiveDisplayComponent implements OnInit {
         "data": "Work Folder",
         "expandedIcon": "pi pi-folder-open",
         "collapsedIcon": "pi pi-folder",
-        "children": [{ "label": "Fluid Type : " + this.PrescriptiveRecords[this.counter].FunctionFluidType + ", " + "Rated Head : " + this.PrescriptiveRecords[this.counter].FunctionRatedHead + " m " + ", " + "Duration Of : " + this.PrescriptiveRecords[this.counter].FunctionPeriodType + " days" }, {
+        "children": [{ "label": `Function : ${this.PrescriptiveRecords[this.counter].FunctionFluidType}` }, {
           "label": "Function Failure",
           "data": "Home Folder",
           "expandedIcon": "pi pi-folder-open",

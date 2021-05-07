@@ -7,6 +7,8 @@ import * as XLSX from 'xlsx';
 import { ExcelFormatService } from '../../Services/excel-format.service';
 import { HttpParams } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { CentrifugalPumpConstantAPI } from './centrifugal-pump.API';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({
   selector: 'app-centrifugal-pump',
@@ -110,7 +112,9 @@ export class CentrifugalPumpComponent implements OnInit {
     public messageService: MessageService,
     public datepipe: DatePipe,
     private excelFormatService : ExcelFormatService,
-    public commonLoadingDirective: CommonLoadingDirective) {
+    public commonLoadingDirective: CommonLoadingDirective,
+    private CPAPIName : CentrifugalPumpConstantAPI,
+    private CPAPIMethod : CommonBLService) {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
     }
@@ -121,7 +125,10 @@ export class CentrifugalPumpComponent implements OnInit {
    this.GetDailyData()
   }
 GetDailyData(){
-  this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpDailyData').subscribe(res => {
+  const url : string = this.CPAPIName.DailyData;
+  this.CPAPIMethod.getWithoutParameters(url)
+ // this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpDailyData')
+  .subscribe(res => {
     this.centrifugalPump = res
    this.UniqueDate( this.centrifugalPump)
 
@@ -131,7 +138,9 @@ GetDailyData(){
   PostCentrifugalPumpDailydata(obj){
     this.commonLoadingDirective.showLoading(true, "Please wait....");
     this.loading = true;
-    this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpDailyData', JSON.stringify(obj), this.headers)
+    const url : string = this.CPAPIName.PostCentrifugalPumpDailydata;
+    this.CPAPIMethod.postWithHeaders(url, obj)
+   // this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpDailyData', JSON.stringify(obj), this.headers)
     .subscribe(res => {
       this.centrifugalPump = res
       this.commonLoadingDirective.showLoading(false, "");
@@ -148,7 +157,10 @@ GetDailyData(){
   PostCentrifugalPumpWeekdata(obj){
     this.commonLoadingDirective.showLoading(true, "Please wait....");
     this.loading = true;
-    this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpWeekData', JSON.stringify(obj),this.headers).subscribe(
+    const url :string = this.CPAPIName.PostCentrifugalPumpWeekdata;
+    this.CPAPIMethod.postWithHeaders(url, obj)
+   // this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpWeekData', JSON.stringify(obj),this.headers)
+    .subscribe(
       res =>{ 
         this.centrifugalPumpWeekList = res
         this.loading = false;
@@ -159,7 +171,10 @@ GetDailyData(){
   }
 
   GetCentrifugalPumpWeekdata(){
-    this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpWeekData').subscribe(
+    const url : string = this.CPAPIName.GetCentrifugalPumpWeekdata;
+    this.CPAPIMethod.getWithoutParameters(url)
+   // this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpWeekData')
+    .subscribe(
       res =>{ 
         this.centrifugalPumpWeekList = res
        var weekDate = this.UniqueDate(this.centrifugalPumpWeekList)
@@ -286,18 +301,24 @@ GetDailyData(){
   GetCentrifugapPumpUniqueDate(e) {
     if(this.DailyWeekMode == 'daily'){
       const params = new HttpParams()
-      .set("FromDate",this.FromDate )
-      .set("ToDate",this.ToDate)
-      this.http.get('api/CenterifugalPumpAPI/GetDailyDates',{params}).subscribe(res =>{
+            .set("FromDate",this.FromDate )
+            .set("ToDate",this.ToDate)
+      const url : string = this.CPAPIName.GetDailyDates;
+      this.CPAPIMethod.getWithParameters(url, params) 
+     // this.http.get('api/CenterifugalPumpAPI/GetDailyDates',{params})
+      .subscribe(res =>{
           console.log(res)
           this.centrifugalPump = res
          
       })
     }else if (this.DailyWeekMode == 'week'){
       const params = new HttpParams()
-      .set( "FromDate",this.FromDate )
-      .set(  "ToDate",this.ToDate)
-      this.http.get('api/CenterifugalPumpAPI/GetWeekDates',{params}).subscribe(res =>{
+            .set( "FromDate",this.FromDate )
+            .set(  "ToDate",this.ToDate)
+      const url : string = this.CPAPIName.GetWeekDates;
+      this.CPAPIMethod.getWithParameters(url, params)
+     // this.http.get('api/CenterifugalPumpAPI/GetWeekDates',{params})
+      .subscribe(res =>{
           console.log(res)
           this.centrifugalPumpWeekList =res  
       })

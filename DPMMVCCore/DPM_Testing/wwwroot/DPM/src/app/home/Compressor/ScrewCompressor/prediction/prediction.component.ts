@@ -8,6 +8,8 @@ import { ScrewCompressorPredictionModel } from '../configuration/screw-compresso
 import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { ConfigService } from 'src/app/shared/config.service';
+import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Component({
   selector: 'app-prediction',
@@ -56,7 +58,9 @@ export class PredictionComponent implements OnInit {
     public messageService: MessageService,
     public commonLoadingDirective: CommonLoadingDirective,
     public datepipe: DatePipe,
-    private configService: ConfigService) { }
+    private configService: ConfigService,
+    private screwCompressorAPIName : SCConstantsAPI,
+    private screwCompressorMethod : CommonBLService) { }
 
 
   ngOnInit() {
@@ -110,7 +114,9 @@ export class PredictionComponent implements OnInit {
   getPredictedList() {
     this.screwWithPrediction = [];
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
-    this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
+    var url : string = this.screwCompressorAPIName.getPredictedList;
+    this.screwCompressorMethod.getWithoutParameters(url)
+  //  this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
       .subscribe(res => {
         this.screwWithPrediction = res;
         this.commonLoadingDirective.showLoading(false, "");
@@ -122,8 +128,12 @@ export class PredictionComponent implements OnInit {
 
   getPredictedById(PredictedId) {
     this.showNotification("")
-    this.http.get<any>('api/ScrewCompressureAPI/GetPredictionById?PredictedId=' + PredictedId, this.headers)
-      .subscribe(res => {
+    const params = new HttpParams()
+          .set('id', PredictedId)
+     var url : string = this.screwCompressorAPIName.getPredictionById
+     this.screwCompressorMethod.getWithParameters(url, params)
+  //  this.http.get<any>('api/ScrewCompressureAPI/GetPredictionById?PredictedId=' + PredictedId, this.headers)
+      .subscribe((res: any) => {
         this.showNotification(res.Prediction)
         this.commonLoadingDirective.showLoading(false, "");
       }, err => {
@@ -152,7 +162,9 @@ export class PredictionComponent implements OnInit {
       var first_sheet_name = workbook.SheetNames[0];
       var worksheet = workbook.Sheets[first_sheet_name];
       this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
-      this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
+      var url : string =  this.screwCompressorAPIName.PredictionData;
+      this.screwCompressorMethod.postWithHeaders(url, XLSX.utils.sheet_to_json(worksheet, { raw: true }))
+     // this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
         .subscribe(async res => {
           await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
             .subscribe(res => {
@@ -218,8 +230,10 @@ export class PredictionComponent implements OnInit {
     this.configurationObj.UserId = "";
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
     this.configurationObj.InsertedDate = moment().format("YYYY-MM-DD");
-    this.http.post<any>('api/ScrewCompressureAPI/PredictionObj', this.configurationObj, this.headers)
-      .subscribe(async res => {
+    var url : string =  this.screwCompressorAPIName.Prediction
+    this.screwCompressorMethod.postWithoutHeaders(url, this.configurationObj)
+   // this.http.post<any>('api/ScrewCompressureAPI/PredictionObj', this.configurationObj, this.headers)
+      .subscribe(async (res : any) => {
         this.configurationObj = res;
         this.PridictedId = res.PredictionId;
         await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
@@ -295,7 +309,9 @@ export class PredictionComponent implements OnInit {
     this.futurePredictionDate = "";
     this.futurePredictionDataTableList = [];
     this.commonLoadingDirective.showLoading(true, "Please wait until future prediction to be done...");
-    this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage')
+    var url : string =  this.screwCompressorAPIName.FuturePrediction
+    this.screwCompressorMethod.getWithoutParameters(url)
+  //  this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage')
       .subscribe(async res => {
         if (res === 1) {
           await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=futureprediction`, { responseType: 'text' })
@@ -315,8 +331,11 @@ export class PredictionComponent implements OnInit {
 
   getFuturePredictionRecords() {
     this.commonLoadingDirective.showLoading(true, "Fetching Records...");
-    this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/GetFuturePredictionRecords').subscribe(
-      res => {
+    var url : string =  this.screwCompressorAPIName.getFuturePredictionRecords;
+    this.screwCompressorMethod.getWithoutParameters(url)
+   // this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/GetFuturePredictionRecords')
+    .subscribe(
+      (res: any) => {
         this.futurePredictionList = res;
         var Dates: any = [];
         if (res.length > 0) {
@@ -345,7 +364,9 @@ export class PredictionComponent implements OnInit {
       const params = new HttpParams()
         .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
         .set('ToDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'));
-      this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
+      var url : string =  this.screwCompressorAPIName.FuturePredictionDates;
+      this.screwCompressorMethod.getWithParameters(url, params)
+   // this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
         .subscribe(
           res => {
             this.futurePredictionDataTableList = null;
@@ -365,10 +386,12 @@ export class PredictionComponent implements OnInit {
     } else if (this.futurePredictionDate == 'After a week') {
 
       this.commonLoadingDirective.showLoading(true, "Fetching Records...");
-      const params = new HttpParams()
+      const params2 = new HttpParams()
         .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
         .set('ToDate', moment(this.futurePredictionDatesList[6], 'DD/MM/YYYY').format('YYYY-MM-DD'));
-      this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
+      var url2 : string =  this.screwCompressorAPIName.FuturePredictionDates;
+      this.screwCompressorMethod.getWithParameters(url2, params2)
+   // this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
         .subscribe(
           res => {
             this.futurePredictionDataTableList = null;
@@ -388,10 +411,12 @@ export class PredictionComponent implements OnInit {
     } else if (this.futurePredictionDate == 'After 15 Days') {
 
       this.commonLoadingDirective.showLoading(true, "Fetching Records...");
-      const params = new HttpParams()
+      const params3 = new HttpParams()
         .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
         .set('ToDate', moment(this.futurePredictionDatesList[14], 'DD/MM/YYYY').format('YYYY-MM-DD'));
-      this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
+      var url3 : string =  this.screwCompressorAPIName.FuturePredictionDates;
+      this.screwCompressorMethod.getWithParameters(url3, params3)
+  //  this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
         .subscribe(
           res => {
             this.futurePredictionDataTableList = null;
@@ -411,10 +436,12 @@ export class PredictionComponent implements OnInit {
 
     } else if (this.futurePredictionDate == 'After 30 Days') {
       this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
-      const params = new HttpParams()
+      const params4 = new HttpParams()
         .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
         .set('ToDate', moment(this.futurePredictionDatesList[this.futurePredictionDatesList.length - 1], 'DD/MM/YYYY').format('YYYY-MM-DD'));
-      this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
+      var url4 : string =  this.screwCompressorAPIName.FuturePredictionDates;
+      this.screwCompressorMethod.getWithParameters(url4, params4)
+  // this.http.get('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth', { params })
         .subscribe(
           res => {
             this.futurePredictionDataTableList = null;

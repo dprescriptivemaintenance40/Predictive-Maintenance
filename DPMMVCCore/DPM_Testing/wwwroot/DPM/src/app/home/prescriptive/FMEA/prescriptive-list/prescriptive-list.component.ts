@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
+import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 
 @Component({
   selector: 'app-prescriptive-list',
@@ -32,7 +34,7 @@ export class PrescriptiveListComponent implements OnInit {
   public FailureModeDataTabe2: any;
   public Table3: boolean = false;
   public FailureModeDataTabe3: any;
-  FMWithConsequenceTree : boolean = false;
+  FMWithConsequenceTree: boolean = false;
 
   constructor(public http: HttpClient,
     public title: Title,
@@ -40,7 +42,9 @@ export class PrescriptiveListComponent implements OnInit {
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
     public changeDetectorRef: ChangeDetectorRef,
-    public sanitizer: DomSanitizer) { }
+    public sanitizer: DomSanitizer,
+    private commonBLService: CommonBLService,
+    private prescriptiveContantAPI: PrescriptiveContantAPI) { }
 
   ngOnInit() {
     this.getPrescriptiveRecords();
@@ -49,13 +53,14 @@ export class PrescriptiveListComponent implements OnInit {
 
 
   getPrescriptiveRecords() {
-    this.http.get('api/PrescriptiveAPI').subscribe(
-      res => {
+    var url: string = this.prescriptiveContantAPI.FMEATagCheck
+    this.commonBLService.getWithoutParameters(url)
+      .subscribe(res => {
         this.prescriptiveRecords = res
       }, err => {
         console.log(err.err);
       }
-    )
+      )
   }
 
   UpdatePrescriptiveRecords(p) {
@@ -75,8 +80,10 @@ export class PrescriptiveListComponent implements OnInit {
   }
 
   SoftDeletePrescriptiveRecords() {
-
-    this.http.delete('api/PrescriptiveAPI/DeletePrespectiveModel?id=' + this.CFPPrescriptiveId)
+    var url: string = this.prescriptiveContantAPI.FMEAListSingleDelete
+    const params = new HttpParams()
+      .set("id", this.CFPPrescriptiveId)
+    this.commonBLService.DeleteWithParam(url, params)
       .subscribe(res => {
         this.getPrescriptiveRecords();
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted Successfully' });
@@ -110,7 +117,7 @@ export class PrescriptiveListComponent implements OnInit {
     this.FailureModeDataTabe2 = []
   }
 
- 
+
   public uploadFile(event) {
     if (event.target.files.length > 0) {
       if (event.target.files[0].type === 'application/pdf'
@@ -135,9 +142,9 @@ export class PrescriptiveListComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.CAttachmentFile);
     formData.append('CRemarks', this.CRemarks);
-    formData.append('removePath',this.fileToUpload)
+    formData.append('removePath', this.fileToUpload);
 
-    this.http.put(`api/PrescriptiveAPI/CompontentAttachment?id=${this.ParentId}`, formData)
+    this.commonBLService.PutData(this.prescriptiveContantAPI.FMEAParentAttachments, formData, this.ParentId)
       .subscribe(res => {
         this.getPrescriptiveRecords();
         this.UploadFileDataResponse = res;
@@ -172,23 +179,23 @@ export class PrescriptiveListComponent implements OnInit {
     this.fileAttachmentEnable = false
     this.fileToUpload = []
   }
-  FMEAReports(p){
-   localStorage.setItem('ReportObj',JSON.stringify(p))
+  FMEAReports(p) {
+    localStorage.setItem('ReportObj', JSON.stringify(p))
   }
 
 
-  getFCAData(p){
-    localStorage.setItem('FCAObject',JSON.stringify(p))
+  getFCAData(p) {
+    localStorage.setItem('FCAObject', JSON.stringify(p))
     this.router.navigateByUrl('/Home/Prescriptive/FCAAdd');
   }
 
-  getMSSData(p){
-    localStorage.setItem('MSSObject',JSON.stringify(p))
+  getMSSData(p) {
+    localStorage.setItem('MSSObject', JSON.stringify(p))
     this.router.navigateByUrl('/Home/Prescriptive/MSSAdd');
   }
 
 
-  getMSSTable(p){
+  getMSSTable(p) {
     this.FailureModeDataTabe3 = p.centrifugalPumpPrescriptiveFailureModes
     this.Table3 = true
     this.Table2 = false

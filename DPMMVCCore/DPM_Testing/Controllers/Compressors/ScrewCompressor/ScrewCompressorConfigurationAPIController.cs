@@ -40,9 +40,10 @@ namespace DPM_Testing.Controllers
             return addRuleModel;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddRuleModel(int id, ScrewCompressorConfigurationModel addRuleModel)
+        [HttpPut]
+        public async Task<IActionResult> PutAddRuleModel(ScrewCompressorConfigurationModel addRuleModel)
         {
+            int id = addRuleModel.AddRuleId;
             if (id != addRuleModel.AddRuleId)
             {
                 return BadRequest();

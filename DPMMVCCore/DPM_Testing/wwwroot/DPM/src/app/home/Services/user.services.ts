@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
+import { LoginRegistrationConstantAPI } from 'src/app/login-registration/login-registration.API';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private fb: FormBuilder, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private http: HttpClient, 
+       private LoginAPIName : LoginRegistrationConstantAPI, private LoginMethod : CommonBLService) { }
   readonly BaseURI = 'https://localhost:44331/api';
 
   
@@ -48,16 +51,19 @@ export class UserService {
       Company: this.formModel.value.Company,
       Password: this.formModel.value.Passwords.Password
     };
-    return this.http.post('api/RegistrationAPI/Register', body);
+    const url : string = this.LoginAPIName.RegisterAPI;
+   
+    return  this.LoginMethod.postWithoutHeaders(url, body)
   }
 
   login(formData) {
-    return this.http.post('api/RegistrationAPI/Login', formData);
+    const url : string = this.LoginAPIName.LoginAPI;
+    return  this.LoginMethod.postWithoutHeaders(url, formData)
   }
 
-  getUserProfile() {
-    return this.http.get('api/UserProfileAPI');
-  }
+  // getUserProfile() {
+  //   return this.http.get('api/UserProfileAPI');
+  // }
 
   
 }

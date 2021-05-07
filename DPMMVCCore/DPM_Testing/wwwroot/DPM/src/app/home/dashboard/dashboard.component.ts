@@ -8,6 +8,9 @@ import "chartjs-plugin-streaming";
 import { MessageService } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { Router } from "@angular/router";
+import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
+import { SCConstantsAPI } from "../Compressor/ScrewCompressor/shared/ScrewCompressorAPI.service";
+import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
 
 @Component({
   selector: 'app-dashboard',
@@ -93,7 +96,10 @@ export class DashboardComponent {
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
     public changeDetectorRef: ChangeDetectorRef,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer,
+    private dashboardAPIName : SCConstantsAPI,
+    private prescriptiveAPIName : PrescriptiveContantAPI,
+    private dashboardMethod : CommonBLService) {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
     }
@@ -165,7 +171,9 @@ export class DashboardComponent {
   }
 
   getScrewTrainPreviousMonthList() {
-    this.http.get('api/ScrewCompressorTrainChartAPI/ScrewTrainPreviousMonth').subscribe(
+    const url : string = this.dashboardAPIName.ScrewTrainPreviousMonthList;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.ScrewTrainPreviousMonthList = res;
         if (this.ScrewTrainPreviousMonthList.length > 0) {
@@ -185,11 +193,17 @@ export class DashboardComponent {
   }
 
   getScrewTrainLastUploadList() {
-    let headers = new HttpHeaders()
-    headers.append('Content-Type', 'application/json');
-    headers.append('LastUploadDate', this.ScrewTrainLastUploadDate);
-    let params = new HttpParams().append('LastUploadDate', this.ScrewTrainLastUploadDate)
-    this.http.get('api/ScrewCompressorTrainChartAPI/ScrewTrainLastUpload', { headers: headers, params }).subscribe(
+    // let headers = new HttpHeaders()
+    // headers.append('Content-Type', 'application/json');
+    // headers.append('LastUploadDate', this.ScrewTrainLastUploadDate);
+    // let params = new HttpParams().append('LastUploadDate', this.ScrewTrainLastUploadDate)
+    // const url : string = this.dashboardAPIName.ScrewTrainLastUploadList;
+    const params = new HttpParams()
+          .set('LastUploadDate', this.ScrewTrainLastUploadDate)
+    const url : string = this.dashboardAPIName.ScrewTrainLastUploadList
+    this.dashboardMethod.getWithParameters(url, params)
+  //  this.http.get('api/ScrewCompressorTrainChartAPI/ScrewTrainLastUpload', { headers: headers, params })
+  .subscribe(
       res => {
         this.ScrewTrainLastUploadList = res;
 
@@ -212,7 +226,9 @@ export class DashboardComponent {
 
 
   getScrewTrainPreviousWeek() {
-    this.http.get('api/ScrewCompressorTrainChartAPI/GetPreviousWeek').subscribe(
+    const url : string = this.dashboardAPIName.ScrewTrainPreviousWeek;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.ScrewTrainPreviousWeekList = res;
 
@@ -233,8 +249,9 @@ export class DashboardComponent {
 
 
   getScrewTrainUniqueDateOfUploadFromDB() {
-
-    this.http.get<any>(this.url).subscribe(
+    const url : string = this.dashboardAPIName.ScrewCompressorDataList;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.ScrewTrainDateList = res;
 
@@ -272,9 +289,10 @@ export class DashboardComponent {
 
 
   getScrewPredictionUniqueDateOfUploadFromDB() {
-
-    this.http.get<any>(this.url + '/GetPrediction').subscribe(
-      res => {
+    const url : string = this.dashboardAPIName.PredictionDataList;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
+      (res: any) => {
         this.ScrewPredictionDateList = res;
 
         if (res.length > 0) {
@@ -312,8 +330,9 @@ export class DashboardComponent {
 
 
   getScrewTrainTillFirstUploadList() {
-
-    this.http.get<any>(this.url).subscribe(
+    const url : string = this.dashboardAPIName.ScrewCompressorDataList;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.screwTrainList = res;
 
@@ -342,7 +361,9 @@ export class DashboardComponent {
 
   getScrewPredictionPreviousMonthList() {
 
-    this.http.get('api/ScrewCompressorPredictionChartAPI/ScrewPredictionPreviousMonth').subscribe(
+    const url : string = this.dashboardAPIName.ScrewPredictionPreviousMonthList;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.ScrewPredictionPreviousMonthList = res;
 
@@ -365,12 +386,17 @@ export class DashboardComponent {
   }
 
   getScrewPredictionLastUploadList() {
-    let headers = new HttpHeaders()
-    headers.append('Content-Type', 'application/json');
-    headers.append('LastUploadDate', this.ScrewPredictionLastUploadDate);
-    let params = new HttpParams().append('LastUploadDate', this.ScrewPredictionLastUploadDate)
-    // var LastUploadDate : string = this.ScrewTrainLastUploadDate
-    this.http.get('api/ScrewCompressorPredictionChartAPI/ScrewPredictionLastUpload', { headers: headers, params }).subscribe(
+    // let headers = new HttpHeaders()
+    // headers.append('Content-Type', 'application/json');
+    // headers.append('LastUploadDate', this.ScrewPredictionLastUploadDate);
+    // let params = new HttpParams().append('LastUploadDate', this.ScrewPredictionLastUploadDate)
+    // // var LastUploadDate : string = this.ScrewTrainLastUploadDate
+    const params = new HttpParams()
+          .set('LastUploadDate', this.ScrewPredictionLastUploadDate)
+    const url : string = this.dashboardAPIName.ScrewPredictionLastUploadList;
+    this.dashboardMethod.getWithParameters(url, params)
+ //   this.http.get('api/ScrewCompressorPredictionChartAPI/ScrewPredictionLastUpload', { params })
+   .subscribe(
       res => {
         this.ScrewPredictionLastUploadList = res;
 
@@ -395,7 +421,9 @@ export class DashboardComponent {
 
 
   getScrewPredictionPreviousWeek() {
-    this.http.get('api/ScrewCompressorPredictionChartAPI/GetPredictionPreviousWeek').subscribe(
+    const url : string = this.dashboardAPIName.ScrewPredictionPreviousWeek;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.ScrewPredictionPreviousWeekList = res;
 
@@ -418,7 +446,9 @@ export class DashboardComponent {
 
 
   getScrewPredictionTillFirstUploadList() {
-    this.http.get<any>(this.url + '/GetPrediction').subscribe(
+    const url : string = this.dashboardAPIName.PredictionDataList;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.screwPredictionList = res;
 
@@ -1019,7 +1049,9 @@ export class DashboardComponent {
   }
 
   getPrescriptiveRecords() {
-    this.http.get('api/PrescriptiveAPI').subscribe(
+    const url : string = this.prescriptiveAPIName.FMEATagCheck;
+    this.dashboardMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.prescriptiveRecords = res;
         this.getTreeStructure(this.prescriptiveRecords[0]);
@@ -1053,8 +1085,10 @@ export class DashboardComponent {
   }
 
   SoftDeletePrescriptiveRecords() {
-
-    this.http.delete('api/PrescriptiveAPI/DeletePrespectiveModel?id=' + this.CFPPrescriptiveId)
+    const params = new HttpParams()
+          .set('id', this.CFPPrescriptiveId)
+    const url : string = this.prescriptiveAPIName.FMEAListSingleDelete;
+    this.dashboardMethod.DeleteWithParam(url, params)
       .subscribe(res => {
         this.getPrescriptiveRecords();
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted Successfully' });
@@ -1123,7 +1157,7 @@ export class DashboardComponent {
     formData.append('file', this.CAttachmentFile);
     formData.append('CRemarks', this.CRemarks);
     formData.append('removePath', this.fileToUpload)
-
+    
     this.http.put(`api/PrescriptiveAPI/CompontentAttachment?id=${this.ParentId}`, formData)
       .subscribe(res => {
         this.getPrescriptiveRecords();

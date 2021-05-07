@@ -5,6 +5,8 @@ import { UserService } from '../Services/user.services';
 import { Title } from '@angular/platform-browser';
 import {MessageService} from 'primeng/api';
 import { HttpEventType } from '@angular/common/http';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { ProfileConstantAPI } from './profileAPI.service';
 
 
 @Component({
@@ -30,12 +32,16 @@ export class ProfileComponent implements OnInit {
               private service : UserService,
               private messageService: MessageService,
               private title: Title,
+              private profileAPIName : ProfileConstantAPI,
+              private profileMethod : CommonBLService,
                ) { }
 
 
   ngOnInit() {
     this.title.setTitle('DPM | Profile');
-   this.service.getUserProfile().subscribe(
+    const url = this.profileAPIName.ProfileAPI
+    this.profileMethod.getWithoutParameters(url)
+    .subscribe(
       res => {
         this.user = res;
         this.user.ImageUrl = this.user.ImageUrl == null?"dist/DPM/assets/img/undraw_profile.svg":this.user.ImageUrl;
@@ -60,7 +66,10 @@ export class ProfileComponent implements OnInit {
   }
 
     onUpdate(fg: FormGroup){
-      this.http.put('api/UserProfile/' + fg.value.Id, fg.value).subscribe(
+      const url : string =  this.profileAPIName.ProfileAPI
+      this.profileMethod.PutData(url , fg.value)
+    //  this.http.put('api/UserProfile/' + fg.value.Id, fg.value)
+      .subscribe(
         (res: any) => {
         this.messageService.add({severity:'info',  detail: 'Wait for some time ', sticky: true});
         });
@@ -78,7 +87,10 @@ export class ProfileComponent implements OnInit {
         PhoneNumber:this.user.PhoneNumber
         
     }
-    this.http.put('api/UserProfileAPI/' + data.Id, data).subscribe(
+    const url : string = this.profileAPIName.ProfileAPI
+    this.profileMethod.PutData(url, data)
+   // this.http.put('api/UserProfileAPI/' + data.Id, data)
+    .subscribe(
       res=>{
         this.user=res
       }
@@ -94,16 +106,21 @@ export class ProfileComponent implements OnInit {
     const formData = new FormData();
     
     formData.append('file', fileToUpload, fileToUpload.name);
-    this.http.post('api/UserProfileAPI/UploadImage', formData, {reportProgress: true, observe: 'events'})
+    const url : string = this.profileAPIName.UploadImage;
+    this.profileMethod.postWithoutHeaders(url, formData)
+   // this.http.post('api/UserProfileAPI/UploadImage', formData, {reportProgress: true, observe: 'events'})
       .subscribe(res => {
-        if (res.type === HttpEventType.UploadProgress){
-          this.progress = Math.round(100 * res.loaded / res.total);
-          this.userProfile = res;
-        }
-        else if (res.type === HttpEventType.Response) {
-          this.messageService.add({severity:'success',  detail: 'Image Upload successfully ', sticky: true});
-          this.onUploadFinished.emit(res.body);
-        }
+        // if (res.type === HttpEventType.UploadProgress){
+        //   this.progress = Math.round(100 * res.loaded / res.total);
+        //   this.userProfile = res;
+        // }
+        // else if (res.type === HttpEventType.Response) {
+        //   this.messageService.add({severity:'success',  detail: 'Image Upload successfully ', sticky: true});
+        //   this.onUploadFinished.emit(res.body);
+        // }
+        this.userProfile = res;
+        this.messageService.add({severity:'success',  detail: 'Image Upload successfully ', sticky: true});
+         
       });
  
   }

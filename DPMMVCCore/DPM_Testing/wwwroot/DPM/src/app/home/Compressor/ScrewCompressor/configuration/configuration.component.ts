@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, Validators, FormGroup } from '@angular/forms';
 
 import { Title } from '@angular/platform-browser';
-import { ScrewCompressorService } from 'src/app/home/Services/ScrewCompressorService';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
 
 @Component({
   selector: 'app-configuration',
@@ -25,14 +26,16 @@ export class ConfigurationComponent {
   public enableImage =true;  
   public CancelImage=false;
   constructor(public fb: FormBuilder,
-              public addRulseService: ScrewCompressorService,
+              private screwCompressorAPIName : SCConstantsAPI,
+              private screwCompressorMethod : CommonBLService,
               public title: Title) {
      
      }
 
   ngOnInit() {
     this.title.setTitle('DPM | Screw Configuration');
-    this.addRulseService.getAddRuleList().subscribe(
+    var url : string = this.screwCompressorAPIName.ADDRuleAPI;
+    this.screwCompressorMethod.getWithoutParameters(url).subscribe(
       res => {
         if (res == [])
           this.addRuleForm();
@@ -82,28 +85,33 @@ export class ConfigurationComponent {
   }
 
   recordSubmit(fg: FormGroup) {
-    if (fg.value.addRuleId == 0)
-      this.addRulseService.postAddRule(fg.value).subscribe(
+    if (fg.value.addRuleId == 0){
+      var url : string =  this.screwCompressorAPIName.ADDRuleAPI;
+      this.screwCompressorMethod.postWithoutHeaders(url, fg.value).subscribe(
         (res: any) => {
           fg.patchValue({ addRuleId: res.addRuleId });
           this.showNotification('insert');
         });
-    else
-      this.addRulseService.putAddRule(fg.value).subscribe(
+    }else{
+      var url : string =  this.screwCompressorAPIName.ADDRuleAPI;
+      this.screwCompressorMethod.PutData(url, fg.value).subscribe(
         (res: any) => {
           this.showNotification('update');
         });
+    }    
   }
 
   onDelete(addRuleId, i) {
     if (addRuleId == 0)
       this.addRuleForms.removeAt(i);
-    else if (confirm('Are you sure to delete this record ?'))
-      this.addRulseService.deleteAddRule(addRuleId).subscribe(
+    else if (confirm('Are you sure to delete this record ?')){
+      var url :string =  this.screwCompressorAPIName.ADDRuleAPI;
+      this.screwCompressorMethod.DeleteWithID(url, addRuleId).subscribe(
         res => {
           this.addRuleForms.removeAt(i);
           this.showNotification('delete');
         });
+    }    
   }
 
   showNotification(category) {

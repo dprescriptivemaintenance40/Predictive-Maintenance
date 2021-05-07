@@ -73,9 +73,10 @@ namespace DPM.Controllers.Prescriptive
             return CreatedAtAction("GetLookupMassterModel", new { id = lookupMasterModel.PrescriptiveLookupMasterId }, lookupMasterModel);
         }
         
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLookupMassterModel(int id, PrescriptiveLookupMasterModel lookupMasterModel)
+        [HttpPut]
+        public async Task<IActionResult> PutLookupMassterModel(PrescriptiveLookupMasterModel lookupMasterModel)
         {
+            int id = lookupMasterModel.PrescriptiveLookupMasterId;
             if (id != lookupMasterModel.PrescriptiveLookupMasterId)
             {
                 return BadRequest();
