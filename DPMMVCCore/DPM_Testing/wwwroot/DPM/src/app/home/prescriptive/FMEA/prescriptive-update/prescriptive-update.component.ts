@@ -3677,15 +3677,19 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
 
    }
 
-  async ADDFCAFreeTextSave(){
- 
-     this.ADDPatternFailuerAll = true
-     this.FCAComment.push(this.ADDFCAFreeText)
-     this.ADDSafeUsefulLife = true;
-     this.changeDetectorRef.detectChanges()
-     this.SafeUsefulLife = !this.SafeUsefulLife;
-     const element = document.querySelector("#SafeUsefulLife")
-     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  async ADDFCAFreeTextSave() {
+    if (this.ADDFCAFreeText.length > 0) {
+      this.ADDPatternFailuerAll = true
+      this.FCAComment.push(this.ADDFCAFreeText)
+      this.ADDSafeUsefulLife = true;
+      this.changeDetectorRef.detectChanges()
+      this.SafeUsefulLife = !this.SafeUsefulLife;
+      const element = document.querySelector("#SafeUsefulLife")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" })
+    }
+
    }
 
   async ADDFCAFreeTextCancel(){
