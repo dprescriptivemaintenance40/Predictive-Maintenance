@@ -223,7 +223,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
  public FCAFreeTextSave1: boolean  = true
 
  public patternaddshow: boolean  = false
-
+ public FunctionFailure : string = ""
  
 
 
@@ -513,6 +513,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
   }
 
+
   FunctionFailuerInput(e) {
     this.dropedFailure.pop();
     this.dropedFailure.push(this.functionFailuerInput);
@@ -524,28 +525,36 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.activeIndex = 0;
   }
   FunctionFailureNext() {
-    if (this.dropedFailure.length > 0) {
-      this.functionFailuerInput = []
-    }
-    if (this.dropedFailure.length > 0 && this.functionFailuerInput.length > 1) {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Data overloaded on both fields, please select any one option' });
-    } else if (this.dropedFailure.length == 0 && this.functionFailuerInput.length > 0) {
-      this.prescriptiveFunctionFailure = false;
-      this.prescriptiveFailureMode = true;
-      this.activeIndex = 2;
+    // if (this.dropedFailure.length > 0) {
+    //   this.functionFailuerInput = []
+    // }
+    // if (this.dropedFailure.length > 0 && this.functionFailuerInput.length > 1) {
+    //   this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Data overloaded on both fields, please select any one option' });
+    // } else if (this.dropedFailure.length == 0 && this.functionFailuerInput.length > 0) {
+    //   this.prescriptiveFunctionFailure = false;
+    //   this.prescriptiveFailureMode = true;
+    //   this.activeIndex = 2;
 
-    } else if (this.dropedFailure.length > 0 && this.functionFailuerInput.length == 0) {
-      this.prescriptiveFunctionFailure = false;
-      this.prescriptiveFailureMode = true;
-      this.activeIndex = 2;
+    // } else if (this.dropedFailure.length > 0 && this.functionFailuerInput.length == 0) {
+    //   this.prescriptiveFunctionFailure = false;
+    //   this.prescriptiveFailureMode = true;
+    //   this.activeIndex = 2;
 
-    } else if (this.dropedFailure.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Function failure' });
-    } else if (this.dropedFailure.length == 1) {
+    // } else if (this.dropedFailure.length == 0) {
+    //   this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Function failure' });
+    // } else if (this.dropedFailure.length == 1) {
+    //   this.prescriptiveFunctionFailure = false;
+    //   this.prescriptiveFailureMode = true;
+    //   this.activeIndex = 2;
+    // }
+    if(this.FunctionFailure.length>0){
       this.prescriptiveFunctionFailure = false;
       this.prescriptiveFailureMode = true;
       this.activeIndex = 2;
+    }else{
+      alert("fun")
     }
+ 
   }
 
   FailuerModeInput($event) {
@@ -562,12 +571,12 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
   GenrationTree() {
-    var funFailure;
-    if (this.dropedFailure[0].Description == undefined) {
-      funFailure = this.dropedFailure[0]
-    } else {
-      funFailure = this.dropedFailure[0].Description
-    }
+    // var funFailure;
+    // if (this.dropedFailure[0].Description == undefined) {
+    //   funFailure = this.dropedFailure[0]
+    // } else {
+    //   funFailure = this.dropedFailure[0].Description
+    // }
 
 
     this.data1 = [
@@ -577,14 +586,14 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         styleClass: "p-person",
         expanded: true,
         // data: { name: "Fluid Type : " + this.FunctionFluidType + ", " + "Rated Head : " + this.FunctionRatedHead + " m " + ", " + "Duration Of : " + this.FunctionPeriodType + " days" },
-        data: { name: "Function : " + this.FunctionFluidType },
+        data: { name: this.FunctionFluidType },
         children: [
           {
             label: "Function Failure",
             type: "person",
             styleClass: "p-person",
             expanded: true,
-            data: { name: funFailure },
+            data: {  name: this.FunctionFailure},
             children: this.InsertLSEffect
           }
         ]
@@ -848,7 +857,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FunctionFluidType
     this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.FunctionRatedHead
     this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType
-    this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.dropedFailure[0].Description
+    this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.FunctionFailure
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};

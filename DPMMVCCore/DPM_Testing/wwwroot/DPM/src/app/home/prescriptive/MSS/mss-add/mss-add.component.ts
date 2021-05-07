@@ -172,6 +172,7 @@ export class MSSAddComponent implements OnInit {
   }
 
 async ADDMSSToTree() {
+  if(this.MSSStratergy.length >0){
   if(this.AvailabilityY.length > 0  && this.AvailabilityY.length >0){
     var MSSTree = {
       label: this.MSSADDCounter,
@@ -206,8 +207,9 @@ async ADDMSSToTree() {
         }
       }
     )
-
-
+  }else{
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Fill the data" }) 
+  }
       var availablility: number = 0;
       if(this.AvailabilityResult == 0){
           availablility = this.AvailabilityCheck
@@ -215,8 +217,6 @@ async ADDMSSToTree() {
       if(this.AvailabilityResult != 0){
         availablility = this.AvailabilityResult
       }
-             
-
       var FMName = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].data.name ;
       var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
       var MTBF = dataFromLibrary.mtbf;
@@ -243,9 +243,6 @@ async ADDMSSToTree() {
             var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
             var ocmWeek : number = ocmHours.split(" ")[0]
                 ocmWeek = Math.round((ocmWeek / 24) / 7)
-
-             
-
               var strategy = this.MSSStratergy.split('-')[1];
               let obj = {}
             if(this.MSSStratergy == 'A-FFT'){
@@ -364,9 +361,6 @@ async ADDMSSToTree() {
 
       const element = document.querySelector("#Availability")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
-
-
-
       this.AvailabilityYNCheck= false;
       this.expectedAvailability= false;
       this.AvailabilityPlantStoppage= false;

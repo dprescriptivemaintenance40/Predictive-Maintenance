@@ -19,10 +19,9 @@
 </div>
 
 <div *ngIf="PrescriptiveTree" style="overflow:scroll;" id="GoToTheSaveMSS">
-<p-card>
     <!-- <button class="btn btn-dark" style="float:left;" (click)="MSSBACK()" > <i class="pi pi-plus"></i>Back</button> &ensp; -->
     <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float:left;" (click)="ADDMSS()" > <i class="pi pi-plus"></i>MSS</button>
-    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check"></i></button>
+    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check">Save</i></button>
     <p-organizationChart [value]="TreeUptoFCA" selectionMode="single" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -34,7 +33,6 @@
             {{node.label}}
         </ng-template>
     </p-organizationChart>
-</p-card>
 </div>
 
 <div id="GoToTheSaveMSS1">
@@ -45,7 +43,7 @@
         <div class="card shadow mb-4">
             <div>
                 <a class="btn btn-white" style="border:none" > </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
             </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
@@ -106,7 +104,7 @@
         <div class="card shadow mb-4">
             <div>
                 <a class="btn btn-white" style="border:none"> </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
             </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
@@ -161,7 +159,7 @@
         <div class="card shadow mb-4">
             <div>
                 <a class="btn btn-white" style="border:none" > </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
             </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
@@ -216,7 +214,7 @@
         <div class="card shadow mb-4">
             <div>
                 <a class="btn btn-white" style="border:none" > </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
             </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
@@ -272,7 +270,7 @@
         <div class="card shadow mb-4">
             <div>
                 <a class="btn btn-white" style="border:none" > </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
+                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
             </div>
             <div class="card-body">
                 <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
@@ -357,7 +355,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="Availability()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+        <button class="btn btn-dark" style="float:right;" (click)="Availability()"> <i class="fa fa-check" aria-hidden="true"></i></button>
     </ng-template>
 </p-card>
 </div>
@@ -372,7 +370,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
-        <button *ngIf="AvailabilityCheck !=0" class="btn btn-dark" style="float:right;" (click)="AvailabilityYes()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+        <button *ngIf="AvailabilityCheck !=0" class="btn btn-dark" style="float:right;" (click)="AvailabilityYes()"> <i class="fa fa-check" aria-hidden="true"></i></button>
     </ng-template>
 </p-card>
 </div>
@@ -394,7 +392,7 @@
         </ng-template>
     <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="StoppageDays()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+        <button class="btn btn-dark" style="float:right;" (click)="StoppageDays()"> <i class="fa fa-check" aria-hidden="true"></i></button>
     </ng-template>
 </p-card>
 </div>
@@ -416,7 +414,7 @@
         </ng-template>
     <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="StoppageDuration()"> <i class="fa fa-check" aria-hidden="true"></i>save</button>
+        <button class="btn btn-dark" style="float:right;" (click)="StoppageDuration()"> <i class="fa fa-check" aria-hidden="true"></i></button>
     </ng-template>
 </p-card>
 </div>

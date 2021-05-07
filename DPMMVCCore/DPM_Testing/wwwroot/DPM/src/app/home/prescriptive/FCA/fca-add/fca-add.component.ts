@@ -651,21 +651,24 @@ public UpdateFCAIntervals : any = []
   }
 
   async PatternSave(){
-    this.FailuerRate = true
-    this.FailureWarning = true
-    this.FailureWarning = true
-    this.WarningSign = true
-    this.IntervalDeteacting = true
-    this.FailuerEvident = true
-    this.FailuerMaintenance = true
-    this.FailuerComments = true
-    this.FailureModePatternTree = true
-
-    this.changeDetectorRef.detectChanges()
-    this.failuerrate = !this.failuerrate; 
-    const element = document.querySelector("#PatternTree2")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
+    if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'|| this.Pattern === 'Pattern 4'|| this.Pattern === 'Pattern 5'|| this.Pattern === 'Pattern 6') {
+      this.FailuerRate = true
+      this.FailureWarning = true
+      this.FailureWarning = true
+      this.WarningSign = true
+      this.IntervalDeteacting = true
+      this.FailuerEvident = true
+      this.FailuerMaintenance = true
+      this.FailuerComments = true
+      this.FailureModePatternTree = true
+      this.changeDetectorRef.detectChanges()
+      this.failuerrate = !this.failuerrate; 
+      const element = document.querySelector("#PatternTree2")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select One of these Pattern" })
+    }
+   
   }
 
   PatternAdd() {
@@ -1409,7 +1412,6 @@ async SelectNodeToView(p){
   const element = document.querySelector("#Patternfailurewarning")
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
  }else{
-  // alert("fill the data")
   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
  }
   }
@@ -1620,12 +1622,17 @@ async SelectNodeToView(p){
   }
 
  async FCAFreeTextSave(){
+   if(this.FCAFreeText.length >0){
     this.PatternFailuerAll = true
     this.FCAComment.push(this.FCAFreeText)
     this.SafeUsefulLife = true;
-    this.changeDetectorRef.detectChanges()
+    this.changeDetectorRef.detectChanges()  
     const element = document.querySelector("#SafeUsefulLife")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+   }else{
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" }) 
+   }
+ 
   }
 
  async FCAFreeTextCancel(){
