@@ -586,7 +586,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         styleClass: "p-person",
         expanded: true,
         // data: { name: "Fluid Type : " + this.FunctionFluidType + ", " + "Rated Head : " + this.FunctionRatedHead + " m " + ", " + "Duration Of : " + this.FunctionPeriodType + " days" },
-        data: { name: "Function : " + this.FunctionFluidType },
+        data: { name: this.FunctionFluidType },
         children: [
           {
             label: "Function Failure",
