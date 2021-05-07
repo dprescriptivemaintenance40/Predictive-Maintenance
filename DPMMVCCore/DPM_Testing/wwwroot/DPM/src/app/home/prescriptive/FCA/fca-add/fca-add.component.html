@@ -20,7 +20,6 @@
 
 <p-toast position="top-center"></p-toast>
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
-    <p-card>
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
         <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()" pTooltip="Select To Add FCA" tooltipPosition="top"><i class="pi pi-plus">Add FCA</i></button>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button>
@@ -36,13 +35,12 @@
                 {{node.label}}
             </ng-template>
         </p-organizationChart>
-    </p-card>
 </div>
 
 
 <div *ngIf="FailureModePatternTree" id="ModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
     <div style="overflow: scroll;">
-        <label class="form-text text-muted">Add FCA for {{PatternFMName}}</label>
+        <label class="form-text text-muted"><h5>Add FCA for {{PatternFMName}}</h5></label>
         <button *ngIf="patternaddshow" label="Next" style="float: right;"(click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
         <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
@@ -125,7 +123,7 @@
         <ng-template pTemplate="footer">
             <div>
                 <button label="Back" type="button" (click)="PatternBack()" class="btn btn-dark" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
-                <button label="Next"  style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-right"> Save</i></button>
+                <button label="Next"  style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-down"> Save</i></button>
 
             </div>
         </ng-template>
@@ -396,7 +394,7 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1"   (click)="FCAFreeTextCancel()">Cancel</button>
-            <button class="btn btn-dark" *ngIf="FCAFreeTextSave1"  style="float:right;" (click)="FCAFreeTextSave()">Save</button>
+            <button class="btn btn-dark" *ngIf="FCAFreeTextSave1"  style="float:right;" (click)="FCAFreeTextSave()"><i class="fa fa-check" aria-hidden="true" ></i>Save</button>
             <!-- <button *ngIf="patternaddshow"  label="Next" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
         </ng-template>
     </p-card>
@@ -460,7 +458,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <button class="btn btn-dark" style="float:right;" (click)="SafeUsefulLifeSave()">Save</button>
+            <a class="btn btn-white" style="border:none" > </a>
+            <button class="btn btn-dark" style="float:right;" (click)="SafeUsefulLifeSave()"><i class="fa fa-check" aria-hidden="true" ></i>Save</button>
          </ng-template>
     </p-card>
     </div>
@@ -490,7 +489,7 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <a class="btn btn-white" style="border:none" > </a>
-            <button class="btn btn-dark" style="float:right;" (click)="alphaBetaSave()">Save</button>   
+            <button class="btn btn-dark" style="float:right;" (click)="alphaBetaSave()"><i class="fa fa-check" aria-hidden="true" ></i>Save</button>   
         </ng-template>
     </p-card>
     </div>
