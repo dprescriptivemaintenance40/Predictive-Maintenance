@@ -593,7 +593,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
             type: "person",
             styleClass: "p-person",
             expanded: true,
-            data: {  name: "Function Failure : " +  this.FunctionFailure},
+            data: {  name: this.FunctionFailure},
             children: this.InsertLSEffect
           }
         ]
