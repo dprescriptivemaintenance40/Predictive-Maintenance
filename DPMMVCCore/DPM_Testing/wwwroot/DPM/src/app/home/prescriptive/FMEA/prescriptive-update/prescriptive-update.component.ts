@@ -3840,6 +3840,7 @@ async StoppageDuration(){
 }
 
 async ADDMSSToTree() {
+  if(this.MSSStratergy.length>0){
   var index = this.FMTree.length
     let MSSTree = {
       label:  index,
@@ -3873,14 +3874,9 @@ async ADDMSSToTree() {
             obj['MSSStartergy'] = this.MSSStratergy
             this.MSSTaskObj.push(obj)
           } else{
-
-            // var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
             var ocmweek:number  = this.FCAInterval
             var result = (ocmweek/ 24)
             var a= result/7
-            // var ocmWeek : number = ocmHours.split(" ")[0]
-           //  ocmWeek = Math.round((ocmWeek / 24) / 7)
-
             var availablility: number = 0;
               if(this.MSSAvailabilityResult == 0){
                   availablility = this.ADDMSSAvailabilityCheck
@@ -3939,10 +3935,6 @@ async ADDMSSToTree() {
                   obj['MSSStartergy'] = this.MSSStratergy
                   this.MSSTaskObj.push(obj)
                 } else{
-                    //  var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
-                    //  var ocmHours : number = this.FCAFFInterval
-                    //   // var ocmWeek : number = ocmHours.split(" ")[0]
-                    //   var ocmWeek = Math.round((ocmHours / 24) / 7)
                       var ocmHours:number  = this.FCAFFInterval
                       var result = (ocmHours/ 24)
                       var x= result/7
@@ -3960,14 +3952,12 @@ async ADDMSSToTree() {
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SO'){
-                      // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.MSSStratergy
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SR'){
-                      // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.MSSStratergy
@@ -4006,7 +3996,9 @@ async ADDMSSToTree() {
       const element = document.querySelector("#MainScroll")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
       this.MSSViewEnabled = false
-
+    }else{
+      alert("Add Data")
+    }
 
   } 
 }
