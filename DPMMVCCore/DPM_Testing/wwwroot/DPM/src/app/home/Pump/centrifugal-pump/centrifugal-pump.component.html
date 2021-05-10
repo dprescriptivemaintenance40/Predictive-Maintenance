@@ -77,11 +77,30 @@
     </div>
 </div>
 
-<div style="padding: 5px;" *ngIf = "CentrifugalPumpWeekData">
+<div style="padding: 5px; overflow:scroll; text-align:center;" *ngIf = "CentrifugalPumpWeekData">
     <div class="card">
         <p-table id="exportexcel" [value]="centrifugalPumpWeekList" [columns]="centrifugalPumpColumnsWeekData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
             [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
             <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:7em;">
+                    <col style="width:5em;">
+                    <col style="width:5em;">
+                    <col style="width:5em;">
+                    <col style="width:5em;">
+                    <col style="width:5em;">
+                    <col style="width:7em;">
+                    <col style="width:7em;">
+                    <col style="width:7em;">
+                    <col style="width:5em;">
+                    <col style="width:5em;">
+                    <col style="width:5em;">
+                    <col style="width:5em;">
+                    <col style="width:6em;">
+                    <col style="width:5em;">
+                    <col style="width:5em;">
+                    <col style="width:14em;">
+                </colgroup>
                 <ng-template pTemplate="colgroup" let-columns>
                     <colgroup>
                         <col *ngFor="let col of columns" [style]="{width: col.width}">
