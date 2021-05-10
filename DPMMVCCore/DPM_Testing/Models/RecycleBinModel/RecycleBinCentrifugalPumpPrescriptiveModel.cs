@@ -78,6 +78,7 @@ namespace DPM.Models.RecycleBinModel
         public decimal MSSAvailability { get; set; }
         public string MSSStartergy { get; set; }
         public string MSSMaintenanceTask { get; set; }
+        public string MSSIntervalSelectionCriteria { get; set; }
 
         public RecycleBinCentrifugalPumpPrescriptiveModel RecycleBinCentrifugalPumpPrescriptiveModel { get; set; }
     }
