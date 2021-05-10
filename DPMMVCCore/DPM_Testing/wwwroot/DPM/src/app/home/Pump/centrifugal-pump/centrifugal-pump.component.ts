@@ -33,7 +33,7 @@ export class CentrifugalPumpComponent implements OnInit {
   public filelist: any;
   public arrayBuffer: any;
   public user: any = [];
-  public DailyWeekMode : string;
+  public DailyWeekMode : string = "daily";
   public CentrifugalPumpDailyData : boolean = true;
   public CentrifugalPumpWeekData : boolean = false;
   private pumpcolumns: any = [
@@ -125,6 +125,7 @@ export class CentrifugalPumpComponent implements OnInit {
    this.GetDailyData()
   }
 GetDailyData(){
+  this.DailyWeekMode = 'daily'
   const url : string = this.CPAPIName.DailyData;
   this.CPAPIMethod.getWithoutParameters(url)
  // this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpDailyData')
@@ -208,7 +209,7 @@ GetDailyData(){
       var worksheet = workbook.Sheets[first_sheet_name];
       console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
       this.centrifugalPumpList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      if(this.DailyWeekMode.length == 0){
+      if(this.DailyWeekMode === ""){
           this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please Select Daily or week mode', sticky: true });
       }else if(this.DailyWeekMode == 'daily'){
         this.PostCentrifugalPumpDailydata(this.centrifugalPumpList )
