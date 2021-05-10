@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { CommonLoadingDirective } from '../shared/Loading/common-loading.directive';
 import { UserService } from './Services/user.services';
 import { EventEmitterService } from './Services/event-emitter.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +33,10 @@ export class HomeComponent implements OnInit {
     public service: UserService,
     public messageService: MessageService,
     public eventEmitterService: EventEmitterService,
-    public commonLoadingDirective: CommonLoadingDirective) { }
+    public commonLoadingDirective: CommonLoadingDirective,
+    private title: Title) {
+    this.title.setTitle('Login | Dynamic Prescriptive Maintenence');
+  }
 
 
   ngOnInit() {
@@ -86,7 +90,7 @@ export class HomeComponent implements OnInit {
       this.screwCompressorData = false;
       this.staticEquitment = false;
       this.recycleBin = false
-    }else if (this.user.UserType == 4) {
+    } else if (this.user.UserType == 4) {
       this.centrifugalPump = false
       this.centrifugalPumpData = false;
       this.report = false;

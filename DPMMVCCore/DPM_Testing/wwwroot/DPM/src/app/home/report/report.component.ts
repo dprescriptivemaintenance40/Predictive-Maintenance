@@ -17,7 +17,7 @@ import { ProfileConstantAPI } from '../profile/profileAPI.service';
   providers: [MessageService]
 })
 
-export class ReportComponent implements OnInit {
+export class ReportComponent {
   public closeResult: string;
 
   public reportVisible: boolean = false;
@@ -28,7 +28,7 @@ export class ReportComponent implements OnInit {
   public classificationDetails: any = []
   public user: any = [];
   public companyDetail: any = []
-  public TagNumber: string="";
+  public TagNumber: string = "";
   public EquipmentType: string = "";
   public Date = new Date();
   public DOA = new Date();
@@ -78,24 +78,19 @@ export class ReportComponent implements OnInit {
     public messageService: MessageService,
     public title: Title,
     public commonLoadingDirective: CommonLoadingDirective,
-    private screwCompressorAPIName : SCConstantsAPI,
-    private screwCompressorMethod : CommonBLService,
-    private profileAPIName : ProfileConstantAPI) {
-
-  }
-
-  ngOnInit() {
-    this.title.setTitle('DPM | Report');
+    private screwCompressorAPIName: SCConstantsAPI,
+    private screwCompressorMethod: CommonBLService,
+    private profileAPIName: ProfileConstantAPI) {
+    this.title.setTitle('Report | Dynamic Prescriptive Maintenence');
     this.GetRecords();
 
   }
 
-
-  GetRecords(){
+  GetRecords() {
     this.commonLoadingDirective.showLoading(true, 'Report is getting generated.');
-    const url : string = this.screwCompressorAPIName.getTrainList
+    const url: string = this.screwCompressorAPIName.getTrainList
     this.screwCompressorMethod.getWithoutParameters(url)
-   // this.http.get<any>("api/ScrewCompressureAPI")
+      // this.http.get<any>("api/ScrewCompressureAPI")
       .subscribe(res => {
         this.classificationDetails = res;
         this.commonLoadingDirective.showLoading(false, '');
@@ -118,9 +113,9 @@ export class ReportComponent implements OnInit {
         },
       );
 
-    const url2 : string = this.screwCompressorAPIName.getPredictedList;
+    const url2: string = this.screwCompressorAPIName.getPredictedList;
     this.screwCompressorMethod.getWithoutParameters(url2)
-  //  this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
+      //  this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
       .subscribe(res => {
         this.screwWithPredictionDetails = res;
         if (this.screwWithPredictionDetails.length == 0) {
@@ -169,228 +164,228 @@ export class ReportComponent implements OnInit {
 
 
   public GenerateReport() {
-    if(this.TagNumber.length == 0 || this.EquipmentType.length == 0){
+    if (this.TagNumber.length == 0 || this.EquipmentType.length == 0) {
       alert("Fill Data in all Fields")
-    }else{
-    this.reportVisible = true;
-    this.reportHide = false;
-    console.log(this.TagNumber)
-    console.log(this.EquipmentType)
-
-    /// ************************************OUTPUT OF REPORT************************************************
-
-    /// ------------------Assets Current Condition Calculation--------------------------------------
-
-
-    var countKey = Object.keys(this.classificationDetails).length;
-    console.log(countKey);// find number of length of json object
-    this.totalCount = countKey
-    console.log('total count', this.totalCount)
-
-    var uniqueNames = [];
-    var uniqueObj = [];
-
-    for (var i = 0; i < this.classificationDetails.length; i++) {
-
-      if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
-        uniqueObj.push(this.classificationDetails[i])
-        uniqueNames.push(this.classificationDetails[i].Classification);
-      }
-
-    }
-
-    console.log("unique count :", uniqueObj)
-    console.log("unique name :", uniqueNames)
-
-    var result: any = [];
-
-    if (this.classificationDetails != 0) {
-
-      this.classificationDetails.forEach(function (o) {
-        Object.keys(o).forEach(function (k) {
-          result[k] = result[k] || {};
-          result[k][o[k]] = (result[k][o[k]] || 0) + 1;
-        });
-      });
-      this.incipient = result.Classification.incipient;
-      if (this.incipient == undefined) {
-        this.incipient = 0;
-      }
-      this.degrade = result.Classification.degrade;
-      if (this.degrade == undefined) {
-        this.degrade = 0;
-      }
-      this.normal = result.Classification.normal;
-      if (this.normal == undefined) {
-        this.normal = 0;
-      }
-      console.log('Normal Count :', this.normal)
-      console.log('Incipient Count', this.incipient)
-      console.log('Degrade Count :', this.degrade)
-
-
-      /// percentage calculation
-
-      this.normalpercentage = this.normal / this.totalCount * 100
-      console.log('Normal Percentage : ', this.normalpercentage);
-
-      this.incipientPerentage = this.incipient / this.totalCount * 100
-      console.log('Incipient Percentage : ', this.incipientPerentage)
-
-      this.degradePercentage = this.degrade / this.totalCount * 100
-      console.log('Degrade Percentage : ', this.degradePercentage)
-
-
-      // Asset current condition  = ACC
-
-      var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
-      console.log(ACCCalculation);
-
-      if (ACCCalculation == NaN) {
-        ACCCalculation = 0;
-      }
-
-      this.finalACCCalculation = parseFloat(ACCCalculation);
-
-
-
-    }
-
-    //---------------------END of Assets Current Condition Calculation -------------------------
-
-
-
-
-    //---------------------Start Of Assets Forecast Condition Calculations------------------------------------------
-
-
-
-
-    // AssestForecastPerformance = AFP
-    var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
-    console.log(AFPcountKey);// find number of length of json object
-    this.AFPtotalCount = AFPcountKey
-    console.log('AFP total count', this.AFPtotalCount)
-
-    var AFPuniqueNames = [];
-    var AFPuniqueObj = [];
-
-    for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
-
-      if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
-        AFPuniqueObj.push(this.screwWithPredictionDetails[i])
-        AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
-      }
-
-    }
-
-    console.log("AFP unique count :", AFPuniqueObj)
-
-
-    var result: any = [];
-
-    if (this.screwWithPredictionDetails.length != 0) {
-
-
-      this.screwWithPredictionDetails.forEach(function (o) {
-        Object.keys(o).forEach(function (k) {
-          result[k] = result[k] || {};
-          result[k][o[k]] = (result[k][o[k]] || 0) + 1;
-        });
-      });
-
-      this.AFPincipient = result.Prediction.incipient;
-      if (this.AFPincipient == undefined) {
-        this.AFPincipient = 0;
-      }
-      this.AFPdegrade = result.Prediction.degrade;
-      if (this.AFPdegrade == undefined) {
-        this.AFPdegrade = 0;
-      }
-      this.AFPnormal = result.Prediction.normal;
-      if (this.AFPnormal == undefined) {
-        this.AFPnormal = 0;
-      }
-      console.log('AFP Normal Count :', this.AFPnormal)
-      console.log('AFP Incipient Count', this.AFPincipient)
-      console.log('AFP Degrade Count :', this.AFPdegrade)
-
-
-      // Assets Forecast Condition is combination of Assets Current Condition plus total count of
-      // of normal incipient and degrade in prediction
-      // AFPnormal, AFPincipient, AFPdegrade is of Prediction
-      // normal, incipient, degrade is of Train or Assets Current Condition
-
-
-      this.FinalAFPnormal = (this.AFPnormal + this.normal);
-      this.FinalAFPincipient = (this.AFPincipient + this.incipient);
-      this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
-
-      this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
-
-
-
-      this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
-      console.log('AFP Normal Percentage : ', this.AFPnormalpercentage);
-
-      this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
-      console.log('AFP Incipient Percentage : ', this.AFPincipientPerentage)
-
-      this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
-      console.log('AFP Degrade Percentage : ', this.AFPdegradePercentage)
-
-      /// 
-
-      var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
-
-      this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
-      console.log(this.FinalAFCCalcuation);
-      if (AFCCalcuation == NaN) {
-        this.FinalAFCCalcuation = 0;
-      }
-      this.messageService.add({ severity: 'success', summary: 'success', detail: ' To Download Report, Click Download Report Button ' });
-
     } else {
-      // this.messageService.add({severity:'warning',  detail: 'Prediction have not done yet, Asset Forecast will not Generate ', sticky: true});
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Prediction have not done yet, Asset Forecast will not Generate ' });
+      this.reportVisible = true;
+      this.reportHide = false;
+      console.log(this.TagNumber)
+      console.log(this.EquipmentType)
+
+      /// ************************************OUTPUT OF REPORT************************************************
+
+      /// ------------------Assets Current Condition Calculation--------------------------------------
+
+
+      var countKey = Object.keys(this.classificationDetails).length;
+      console.log(countKey);// find number of length of json object
+      this.totalCount = countKey
+      console.log('total count', this.totalCount)
+
+      var uniqueNames = [];
+      var uniqueObj = [];
+
+      for (var i = 0; i < this.classificationDetails.length; i++) {
+
+        if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
+          uniqueObj.push(this.classificationDetails[i])
+          uniqueNames.push(this.classificationDetails[i].Classification);
+        }
+
+      }
+
+      console.log("unique count :", uniqueObj)
+      console.log("unique name :", uniqueNames)
+
+      var result: any = [];
+
+      if (this.classificationDetails != 0) {
+
+        this.classificationDetails.forEach(function (o) {
+          Object.keys(o).forEach(function (k) {
+            result[k] = result[k] || {};
+            result[k][o[k]] = (result[k][o[k]] || 0) + 1;
+          });
+        });
+        this.incipient = result.Classification.incipient;
+        if (this.incipient == undefined) {
+          this.incipient = 0;
+        }
+        this.degrade = result.Classification.degrade;
+        if (this.degrade == undefined) {
+          this.degrade = 0;
+        }
+        this.normal = result.Classification.normal;
+        if (this.normal == undefined) {
+          this.normal = 0;
+        }
+        console.log('Normal Count :', this.normal)
+        console.log('Incipient Count', this.incipient)
+        console.log('Degrade Count :', this.degrade)
+
+
+        /// percentage calculation
+
+        this.normalpercentage = this.normal / this.totalCount * 100
+        console.log('Normal Percentage : ', this.normalpercentage);
+
+        this.incipientPerentage = this.incipient / this.totalCount * 100
+        console.log('Incipient Percentage : ', this.incipientPerentage)
+
+        this.degradePercentage = this.degrade / this.totalCount * 100
+        console.log('Degrade Percentage : ', this.degradePercentage)
+
+
+        // Asset current condition  = ACC
+
+        var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
+        console.log(ACCCalculation);
+
+        if (ACCCalculation == NaN) {
+          ACCCalculation = 0;
+        }
+
+        this.finalACCCalculation = parseFloat(ACCCalculation);
+
+
+
+      }
+
+      //---------------------END of Assets Current Condition Calculation -------------------------
+
+
+
+
+      //---------------------Start Of Assets Forecast Condition Calculations------------------------------------------
+
+
+
+
+      // AssestForecastPerformance = AFP
+      var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
+      console.log(AFPcountKey);// find number of length of json object
+      this.AFPtotalCount = AFPcountKey
+      console.log('AFP total count', this.AFPtotalCount)
+
+      var AFPuniqueNames = [];
+      var AFPuniqueObj = [];
+
+      for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
+
+        if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
+          AFPuniqueObj.push(this.screwWithPredictionDetails[i])
+          AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
+        }
+
+      }
+
+      console.log("AFP unique count :", AFPuniqueObj)
+
+
+      var result: any = [];
+
+      if (this.screwWithPredictionDetails.length != 0) {
+
+
+        this.screwWithPredictionDetails.forEach(function (o) {
+          Object.keys(o).forEach(function (k) {
+            result[k] = result[k] || {};
+            result[k][o[k]] = (result[k][o[k]] || 0) + 1;
+          });
+        });
+
+        this.AFPincipient = result.Prediction.incipient;
+        if (this.AFPincipient == undefined) {
+          this.AFPincipient = 0;
+        }
+        this.AFPdegrade = result.Prediction.degrade;
+        if (this.AFPdegrade == undefined) {
+          this.AFPdegrade = 0;
+        }
+        this.AFPnormal = result.Prediction.normal;
+        if (this.AFPnormal == undefined) {
+          this.AFPnormal = 0;
+        }
+        console.log('AFP Normal Count :', this.AFPnormal)
+        console.log('AFP Incipient Count', this.AFPincipient)
+        console.log('AFP Degrade Count :', this.AFPdegrade)
+
+
+        // Assets Forecast Condition is combination of Assets Current Condition plus total count of
+        // of normal incipient and degrade in prediction
+        // AFPnormal, AFPincipient, AFPdegrade is of Prediction
+        // normal, incipient, degrade is of Train or Assets Current Condition
+
+
+        this.FinalAFPnormal = (this.AFPnormal + this.normal);
+        this.FinalAFPincipient = (this.AFPincipient + this.incipient);
+        this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
+
+        this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
+
+
+
+        this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
+        console.log('AFP Normal Percentage : ', this.AFPnormalpercentage);
+
+        this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
+        console.log('AFP Incipient Percentage : ', this.AFPincipientPerentage)
+
+        this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
+        console.log('AFP Degrade Percentage : ', this.AFPdegradePercentage)
+
+        /// 
+
+        var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
+
+        this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
+        console.log(this.FinalAFCCalcuation);
+        if (AFCCalcuation == NaN) {
+          this.FinalAFCCalcuation = 0;
+        }
+        this.messageService.add({ severity: 'success', summary: 'success', detail: ' To Download Report, Click Download Report Button ' });
+
+      } else {
+        // this.messageService.add({severity:'warning',  detail: 'Prediction have not done yet, Asset Forecast will not Generate ', sticky: true});
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Prediction have not done yet, Asset Forecast will not Generate ' });
+      }
+      //----------------------End of Of Assets Forecast Condition Calculations-----------------------------------------
+
+
+
+
+
+      //Initially Forecast and ACC same
+      //======================
+      // var b: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
+      // console.log(b);
+
+      ///=======END=======
+      var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
+      console.log(LMH)
+      var HSECES: any = [(0 * 1) + (1 * 10)]
+      console.log(HSECES)
+      var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
+      console.log(CRIT)
+
+      this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
+        parseFloat(LMH) + parseFloat(HSECES)
+        + parseFloat(CRIT)];
+
+      this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
+
+      console.log(this.PerformanceNumber);
+      if (this.PerformanceNumber > 10) {
+        this.DAB = "Y"
+      } else {
+        this.DAB = "N"
+      }
+
+
+      // ******************************End of OUTPUT REPORT*******************************
+
     }
-    //----------------------End of Of Assets Forecast Condition Calculations-----------------------------------------
-
-
-
-
-
-    //Initially Forecast and ACC same
-    //======================
-    // var b: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
-    // console.log(b);
-
-    ///=======END=======
-    var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
-    console.log(LMH)
-    var HSECES: any = [(0 * 1) + (1 * 10)]
-    console.log(HSECES)
-    var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
-    console.log(CRIT)
-
-    this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
-      parseFloat(LMH) + parseFloat(HSECES)
-      + parseFloat(CRIT)];
-
-    this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
-
-    console.log(this.PerformanceNumber);
-    if (this.PerformanceNumber > 10) {
-      this.DAB = "Y"
-    } else {
-      this.DAB = "N"
-    }
-
-
-    // ******************************End of OUTPUT REPORT*******************************
-
   }
-}
 
 
   public DownloadPDF() {

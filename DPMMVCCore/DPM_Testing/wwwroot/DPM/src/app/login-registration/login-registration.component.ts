@@ -33,7 +33,7 @@ export class LoginRegistrationComponent {
 
   ngOnInit() {
 
-    this.title.setTitle('DPM | Login');
+    this.title.setTitle('Login | Dynamic Prescriptive Maintenence');
     this.service.formModel.reset();
 
     if (localStorage.getItem('token') != null) {

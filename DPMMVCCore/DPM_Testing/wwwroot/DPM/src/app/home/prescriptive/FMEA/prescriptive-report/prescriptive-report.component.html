@@ -49,7 +49,7 @@
             <div class="sidebar-brand-icon col-sm-2">
 
                 <div class="image-container">
-                    <img width="100%" src="dist/DPM/assets/img/Logo_final.jpg" alt="">
+                    <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                 </div>
 
             </div>
@@ -133,18 +133,18 @@
             <div id="div4" style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
                     <div style="overflow: scroll;">
-                    <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
-                    <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
-                        <ng-template let-node pTemplate="person">
-                            <div class="node-header p-corner-top">{{node.label}}</div>
-                            <div class="node-content">
-                                <div class="a">{{node.data.name}}</div>
-                            </div>
-                        </ng-template>
-                        <ng-template let-node pTemplate="department">
-                            {{node.label}}
-                        </ng-template>
-                    </p-organizationChart>
+                        <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
+                        <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+                            <ng-template let-node pTemplate="person">
+                                <div class="node-header p-corner-top">{{node.label}}</div>
+                                <div class="node-content">
+                                    <div class="a">{{node.data.name}}</div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-node pTemplate="department">
+                                {{node.label}}
+                            </ng-template>
+                        </p-organizationChart>
                     </div>
                     <div class="div-in-middle" *ngIf="tree[0].imgPath && ReportRCMType == 'FMEA' ">
                         <label for="file" class="custom-label">Uploaded File</label>
@@ -212,7 +212,7 @@
             <div class="sidebar-brand-icon col-sm-2">
 
                 <div class="image-container">
-                    <img width="100%" src="dist/DPM/assets/img/Logo_final.jpg" alt="">
+                    <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                 </div>
 
             </div>

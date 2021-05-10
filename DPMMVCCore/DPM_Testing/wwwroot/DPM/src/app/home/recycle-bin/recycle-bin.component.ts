@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
@@ -23,8 +24,11 @@ export class RecycleBinComponent implements OnInit {
   constructor(private http: HttpClient,
     private commonLoadingDirective: CommonLoadingDirective,
     private messageService: MessageService,
-    private recycleAPIName : RecycleBinConstantAPI,
-    private recycleMethod : CommonBLService) { }
+    private recycleAPIName: RecycleBinConstantAPI,
+    private recycleMethod: CommonBLService,
+    private title: Title) {
+    this.title.setTitle('Recycle Bin | Dynamic Prescriptive Maintenence');
+  }
 
   ngOnInit() {
     this.getCentrifugalPumpRecycleChildData();
@@ -33,9 +37,9 @@ export class RecycleBinComponent implements OnInit {
 
 
   getCentrifugalPumpRecycleChildData() {
-    const url : string = this.recycleAPIName.RecycleBinChildData;
+    const url: string = this.recycleAPIName.RecycleBinChildData;
     this.recycleMethod.getWithoutParameters(url)
-   // this.http.get('api/PrescriptiveAPI/CFRecycleDataForChild')
+      // this.http.get('api/PrescriptiveAPI/CFRecycleDataForChild')
       .subscribe((res: any) => {
         for (let index = 0; index < res.length; index++) {
           let obj = {};
@@ -71,9 +75,9 @@ export class RecycleBinComponent implements OnInit {
 
   getCentrifugalPumpRecycleWholeData() {
     this.commonLoadingDirective.showLoading(true, 'Almost done...');
-    const url : string = this.recycleAPIName.RecycleBinWholeData;
+    const url: string = this.recycleAPIName.RecycleBinWholeData;
     this.recycleMethod.getWithoutParameters(url)
-   // this.http.get('api/PrescriptiveAPI/CFRecycleWholeData')
+      // this.http.get('api/PrescriptiveAPI/CFRecycleWholeData')
       .subscribe(
         res => {
           this.RecycleCentrifugalPumpWholeData = res;
@@ -92,10 +96,10 @@ export class RecycleBinComponent implements OnInit {
       LSToRestore.children.splice(2, 1)
       var indexAtTreeRestore = FMToRestore.label - 1;
       const params = new HttpParams()
-            .set('id',data.CFPPrescriptiveId)
-      const url : string = this.recycleAPIName.RestoreDataGetById;
+        .set('id', data.CFPPrescriptiveId)
+      const url: string = this.recycleAPIName.RestoreDataGetById;
       this.recycleMethod.getWithParameters(url, params)
-     // this.http.get('api/PrescriptiveAPI/GetPrescriptiveById?id=' + data.CFPPrescriptiveId)
+        // this.http.get('api/PrescriptiveAPI/GetPrescriptiveById?id=' + data.CFPPrescriptiveId)
         .subscribe((res: any) => {
           const DataToRestore = res;
           var consTree: any = [], LSTree: any = []
@@ -140,18 +144,18 @@ export class RecycleBinComponent implements OnInit {
           this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = FMWithConsequenceTree
           this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = FailureModeWithLSETree
 
-          const url : string = this.recycleAPIName.RestoreChild;
+          const url: string = this.recycleAPIName.RestoreChild;
           this.recycleMethod.PutData(url, this.centrifugalPumpPrescriptiveOBJ)
-         // this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ)
+            // this.http.put('api/PrescriptiveAPI/FunctionModeAndConsequenceUpdate', this.centrifugalPumpPrescriptiveOBJ)
             .subscribe(
               (res: any) => {
                 this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully restored' });
                 const params = new HttpParams()
                   .set("RCPPMId", data.RCPPMId)
                   .set("RCPFMId", data.RCPFMId)
-                const url : string = this.recycleAPIName.DeleteWholeData;
+                const url: string = this.recycleAPIName.DeleteWholeData;
                 this.recycleMethod.DeleteWithParam(url, params)
-               // this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
+                  // this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
                   .subscribe(res => {
                     this.getCentrifugalPumpRecycleChildData();
                     this.messageService.add({ severity: 'success', summary: 'success', detail: 'Failure Mode Removed from Recycle Bin' });
@@ -227,9 +231,9 @@ export class RecycleBinComponent implements OnInit {
         this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj);
       }
 
-      const url : string = this.recycleAPIName.RestoreWholeData;
-      this.recycleMethod.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ) 
-     // this.http.post('api/PrescriptiveAPI/RestoreRecords', this.centrifugalPumpPrescriptiveOBJ)
+      const url: string = this.recycleAPIName.RestoreWholeData;
+      this.recycleMethod.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
+        // this.http.post('api/PrescriptiveAPI/RestoreRecords', this.centrifugalPumpPrescriptiveOBJ)
         .subscribe(
           res => {
             this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Restored Records' });
@@ -247,9 +251,9 @@ export class RecycleBinComponent implements OnInit {
     const params = new HttpParams()
       .set("RCPPMId", RCPPMId)
       .set("RCPFMId", RCPFMId)
-    const url : string = this.recycleAPIName.DeleteWholeData;
+    const url: string = this.recycleAPIName.DeleteWholeData;
     this.recycleMethod.DeleteWithParam(url, params)
-   // this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
+      // this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
       .subscribe(
         res => {
           this.getCentrifugalPumpRecycleWholeData();
@@ -264,23 +268,23 @@ export class RecycleBinComponent implements OnInit {
       const params = new HttpParams()
         .set("RCPPMId", "0")
         .set("RCPFMId", data.RCPFMId)
-     const url : string = this.recycleAPIName.DeleteWholeData;
-     this.recycleMethod.DeleteWithParam(url, params)
-     // this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
-     .subscribe(
-        res => {
-          this.getCentrifugalPumpRecycleChildData();
-          this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Deleted' });
-        }, err => { console.log(err.err); this.getCentrifugalPumpRecycleChildData(); }
-      )
+      const url: string = this.recycleAPIName.DeleteWholeData;
+      this.recycleMethod.DeleteWithParam(url, params)
+        // this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
+        .subscribe(
+          res => {
+            this.getCentrifugalPumpRecycleChildData();
+            this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Deleted' });
+          }, err => { console.log(err.err); this.getCentrifugalPumpRecycleChildData(); }
+        )
 
 
       if (data.AttachmentFullPath.length > 4) {
         const params = new HttpParams()
           .set("fullPath", data.AttachmentFullPath)
-       const url : string = this.recycleAPIName.DeleteAttachment;
-       this.recycleMethod.DeleteWithParam(url, params).subscribe()
-      //  this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
+        const url: string = this.recycleAPIName.DeleteAttachment;
+        this.recycleMethod.DeleteWithParam(url, params).subscribe()
+        //  this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe()
 
       }
 
@@ -290,16 +294,16 @@ export class RecycleBinComponent implements OnInit {
         var fullPath = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].AttachmentFullPath
         const params = new HttpParams()
           .set("fullPath", fullPath);
-        const url : string = this.recycleAPIName.DeleteAttachment;
-        this.recycleMethod.DeleteWithParam(url, params).subscribe()   
-       // this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe();
+        const url: string = this.recycleAPIName.DeleteAttachment;
+        this.recycleMethod.DeleteWithParam(url, params).subscribe()
+        // this.http.delete('api/PrescriptiveAPI/UpdateFileUpload', { params }).subscribe();
       }
       const params = new HttpParams()
         .set("RCPPMId", data.RCPPMId)
         .set("RCPFMId", "0");
-      const url : string = this.recycleAPIName.DeleteWholeData;
+      const url: string = this.recycleAPIName.DeleteWholeData;
       this.recycleMethod.DeleteWithParam(url, params)
-     // this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
+        // this.http.delete('api/PrescriptiveAPI/DeleteRecycleWholeData', { params })
         .subscribe((res: any) => {
           this.getCentrifugalPumpRecycleWholeData();
           this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Deleted' });

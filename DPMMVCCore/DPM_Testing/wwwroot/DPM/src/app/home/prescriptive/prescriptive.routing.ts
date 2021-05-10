@@ -11,6 +11,7 @@ import { PrescriptiveReportComponent } from "./FMEA/prescriptive-report/prescrip
 import { PrescriptiveUpdateComponent } from "./FMEA/prescriptive-update/prescriptive-update.component";
 import { MSSAddComponent } from "./MSS/mss-add/mss-add.component";
 import { PrescriptiveComponent } from "./prescriptive.component";
+import { RCAComponent } from "./RCA/rca.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -26,7 +27,8 @@ import { PrescriptiveComponent } from "./prescriptive.component";
                 { path: 'Report', component: PrescriptiveReportComponent},
                 { path: 'List', component: PrescriptiveListComponent},
                 { path: 'FCAAdd', component: FCAADDComponent},
-                { path: 'MSSAdd', component: MSSAddComponent}
+                { path: 'MSSAdd', component: MSSAddComponent},
+                { path: 'RCA', component: RCAComponent}
             ]
         }
     ])],
