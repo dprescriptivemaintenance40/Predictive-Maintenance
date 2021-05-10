@@ -26,7 +26,7 @@ export class RCAComponent {
     files: TreeNode[];
 
     selectedFile: any;
-
+    public Treeshow: boolean= false;
     public itemCount: number = 100;
 
     constructor() {
@@ -80,6 +80,7 @@ export class RCAComponent {
 
         return false;
     }
-
-
+    AddRCA(){}
+    UpdateRCA(){}
+    RCAReport(){}
 }

@@ -1,3 +1,34 @@
-<div style="overflow: scroll;">
-    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
+<!--  
+<div class="card" style="margin: 20px;">
+<div class="bs-example" style="margin: 20px;">
+    <ul class="nav nav-tabs">
+        <li class="list-group-item">
+            <button class="btn btn-dark" (click)="AddRCA()">Add</button>
+        </li>
+        <li class="list-group-item">
+            <button class="btn btn-dark" (click)="UpdateRCA()">Update</button>
+        </li>
+        <li class="list-group-item">
+            <button class="btn btn-dark" (click)="RCAReport()">Report</button>
+        </li>
+    </ul>
 </div>
+</div> 
+<div style="overflow: scroll;" *ngIf="Treeshow">
+    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
+</div>-->
+
+<div class="card"  style="margin: 20px;">
+    <p-tabView>
+      <p-tabPanel header="Add" ><br>
+        <div style="overflow: scroll;" >
+            <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Update">
+      </p-tabPanel>
+      <p-tabPanel header="Report">
+  
+      </p-tabPanel>
+    </p-tabView>
+  </div>

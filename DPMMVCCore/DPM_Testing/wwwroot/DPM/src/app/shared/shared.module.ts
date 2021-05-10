@@ -24,6 +24,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
 import {TooltipModule} from 'primeng/tooltip';
+import { TabViewModule } from 'primeng/tabview';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
@@ -75,6 +76,7 @@ import {TooltipModule} from 'primeng/tooltip';
         SafePipe,
         DialogModule,
         OverlayPanelModule,
+        TabViewModule,
         TooltipModule]
 })
 export class SharedModule {
