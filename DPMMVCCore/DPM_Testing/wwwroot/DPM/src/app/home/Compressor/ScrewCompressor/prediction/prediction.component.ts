@@ -129,11 +129,10 @@ export class PredictionComponent implements OnInit {
   getPredictedById(PredictedId) {
     this.showNotification("")
     const params = new HttpParams()
-          .set('id', PredictedId)
+          .set("PredictedId", PredictedId)
      var url : string = this.screwCompressorAPIName.getPredictionById
      this.screwCompressorMethod.getWithParameters(url, params)
-  //  this.http.get<any>('api/ScrewCompressureAPI/GetPredictionById?PredictedId=' + PredictedId, this.headers)
-      .subscribe((res: any) => {
+     .subscribe((res: any) => {
         this.showNotification(res.Prediction)
         this.commonLoadingDirective.showLoading(false, "");
       }, err => {
