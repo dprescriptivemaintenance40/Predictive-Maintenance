@@ -47,8 +47,8 @@
 
 
 <br>
-<div style="padding: 5px;" *ngIf = "CentrifugalPumpDailyData">
-    <div class="card">
+<div style="padding: 5px; overflow: scroll;" *ngIf = "CentrifugalPumpDailyData">
+    <p-card>
         <p-table id="exportexcel" [value]="centrifugalPump" [columns]="centrifugalPumpColumns" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
             [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
             <ng-template pTemplate="colgroup">
@@ -74,11 +74,11 @@
                 </tr>
             </ng-template>
         </p-table>
-    </div>
+    </p-card>
 </div>
 
 <div style="padding: 5px; overflow:scroll; text-align:center;" *ngIf = "CentrifugalPumpWeekData">
-    <div class="card">
+    <p-card>
         <p-table id="exportexcel" [value]="centrifugalPumpWeekList" [columns]="centrifugalPumpColumnsWeekData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
             [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
             <ng-template pTemplate="colgroup">
@@ -123,7 +123,7 @@
                 </tr>
             </ng-template>
         </p-table>
-    </div>
+    </p-card>
 </div>
 
 <p-toast position="top-center"></p-toast>
