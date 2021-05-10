@@ -335,15 +335,23 @@
       background-color: #777
     }
   </style>
-<div class="card" style="margin: 20px;"  *ngIf ="AvailabilityYNCheck" id="Availability">
+<div class="card" style="margin: 20px;" *ngIf="AvailabilityYNCheck" id="Availability">
     <p-card   >
     <ng-template pTemplate="subtitle">
-        <p><b>1.Do you have Availability percentage?
+        <p><b>1.Fill the following data
         </b></p>
     </ng-template>
     <ng-template pTemplate="content">
-        <div class="row">
-            <div class="col-sm"></div>
+        <div class="row" style="padding: 15px;">
+            <label>Enter MSS Interval Selection Criteria</label>
+        </div>
+        <div class="row" style="padding: 15px;">
+                <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="MSSIntervalSelectionCriteria"  placeholder="Type MSS Interval Selection Criteria" required></textarea>
+         </div>
+        <div class="row" style="padding: 15px;">
+            <label>Do you have Availability percentage? </label>
+        </div>
+        <div class="row" style="padding: 15px;">
             <div class="col-sm">
                 Yes <td><input type="radio" [(ngModel)]="AvailabilityY" value="Yes" name="AvailabilityYNCheck" />&nbsp;</td>
             </div>

@@ -57,7 +57,7 @@ export class MSSAddComponent implements OnInit {
 
  public stoppageValue : number
  public stoppageDuration : number
-
+ public MSSIntervalSelectionCriteria : string = ""
  public PlantStoppage: boolean  = true
  public PlantStoppageTime: boolean  = true
  public MSSLibraryData : any = []
@@ -237,6 +237,7 @@ async ADDMSSToTree() {
             obj['MSSMaintenanceTask'] = 'Not Applicable'
             obj['MSSAvailability'] = availablility
             obj['MSSStartergy'] = this.MSSStratergy
+            obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
             this.MSSTaskObj.push(obj)
           } else{
 
@@ -250,6 +251,7 @@ async ADDMSSToTree() {
               obj['MSSMaintenanceTask'] = 'Function Check'
               obj['MSSStartergy'] = this.MSSStratergy
               obj['MSSAvailability'] = availablility
+              obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
               this.MSSTaskObj.push(obj)
             }else{
               if(strategy == 'FFT'){
@@ -257,6 +259,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceTask'] = 'Not Applicable'
                 obj['MSSStartergy'] = this.MSSStratergy
                 obj['MSSAvailability'] = availablility
+                obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'OCM'){
@@ -264,6 +267,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                 obj['MSSStartergy'] = this.MSSStratergy
                 obj['MSSAvailability'] = availablility
+                obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'SO'){
@@ -271,6 +275,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                 obj['MSSStartergy'] = this.MSSStratergy
                 obj['MSSAvailability'] = availablility
+                obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'SR'){
@@ -278,6 +283,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                 obj['MSSStartergy'] = this.MSSStratergy
                 obj['MSSAvailability'] = availablility
+                obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'RED'){
@@ -285,6 +291,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                 obj['MSSStartergy'] = this.MSSStratergy
                 obj['MSSAvailability'] = availablility
+                obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
               }
@@ -304,6 +311,7 @@ async ADDMSSToTree() {
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
                   obj['MSSAvailability'] = availablility
                   obj['MSSStartergy'] = this.MSSStratergy
+                  obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                   this.MSSTaskObj.push(obj)
                 } else{
 
@@ -318,12 +326,14 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceTask'] = 'Function check'
                       obj['MSSStartergy'] = this.MSSStratergy
                       obj['MSSAvailability'] = availablility
+                      obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
                     }else if(strategy == 'OCM'){
                       obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.MSSStratergy
                       obj['MSSAvailability'] = availablility
+                      obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SO'){
@@ -331,6 +341,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.MSSStratergy
                       obj['MSSAvailability'] = availablility
+                      obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'SR'){
@@ -338,6 +349,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.MSSStratergy
                       obj['MSSAvailability'] = availablility
+                      obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
                     }else if(strategy == 'RED'){
@@ -345,6 +357,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                       obj['MSSStartergy'] = this.MSSStratergy
                       obj['MSSAvailability'] = availablility
+                      obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
                     }
@@ -353,6 +366,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceTask'] = 'No Task'
                       obj['MSSStartergy'] = this.MSSStratergy
                       obj['MSSAvailability'] = availablility
+                      obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
                     }
@@ -376,6 +390,7 @@ async ADDMSSToTree() {
       this.PlantStoppage = true
       this.PlantStoppageTime = true
       this.AddMSSSave = false
+      this.MSSIntervalSelectionCriteria = ""
     }else{
       
       alert("fill the data")
@@ -412,7 +427,7 @@ async ADDMSSToTree() {
   }
   
  async Availability(){
-    if( this.AvailabilityY == 'Yes' || this.AvailabilityY == 'No'){
+    if( this.MSSIntervalSelectionCriteria != "" && (this.AvailabilityY == 'Yes' || this.AvailabilityY == 'No')){
       this.changeDetectorRef.detectChanges()
 
       if(this.AvailabilityY == 'Yes'){
