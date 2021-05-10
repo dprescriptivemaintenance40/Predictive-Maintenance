@@ -33,7 +33,7 @@ export class CentrifugalPumpComponent implements OnInit {
   public filelist: any;
   public arrayBuffer: any;
   public user: any = [];
-  public DailyWeekMode : string;
+  public DailyWeekMode : string = "daily";
   public CentrifugalPumpDailyData : boolean = true;
   public CentrifugalPumpWeekData : boolean = false;
   private pumpcolumns: any = [
@@ -50,7 +50,7 @@ export class CentrifugalPumpComponent implements OnInit {
   ]
 
   public centrifugalPumpColumns: any = [
-    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
+    { field: 'TagNumber', header: 'Tag Number', width: '15em' },
     { field: 'PI025', header: 'PI025', width: '7em' },
     { field: 'PI022', header: 'PI022', width: '7em' },
     { field: 'PI023', header: 'PI023', width: '7em' },
@@ -82,23 +82,23 @@ export class CentrifugalPumpComponent implements OnInit {
     'Date'
   ]
   public centrifugalPumpColumnsWeekData: any = [
-    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
+    { field: 'TagNumber', header: 'Tag Number', width: '12em' },
     { field: 'OneH', header: 'OneH', width: '7em' },
     { field: 'OneV', header: 'OneV', width: '7em' },
     { field: 'TwoH', header: 'TwoH', width: '7em' },
     { field: 'TwoV', header: 'TwoV', width: '7em' },
     { field: 'TwoA', header: 'TwoA', width: '7em' },
-    { field: 'ThreeH', header: 'ThreeH', width: '7em' },
-    { field: 'ThreeV', header: 'ThreeV', width: '7em' },
-    { field: 'ThreeA', header: 'ThreeA', width: '7em' },
-    { field: 'FourH', header: 'FourH', width: '7em' },
-    { field: 'FourV', header: 'FourV', width: '7em' },
+    { field: 'ThreeH', header: 'ThreeH', width: '9em' },
+    { field: 'ThreeV', header: 'ThreeV', width: '9em' },
+    { field: 'ThreeA', header: 'ThreeA', width: '9em' },
+    { field: 'FourH', header: 'FourH', width: '9em' },
+    { field: 'FourV', header: 'FourV', width: '9em' },
     { field: 'OneT', header: 'OneT', width: '7em' },
     { field: 'TwoT', header: 'TwoT', width: '7em' },
-    { field: 'ThreeT', header: 'ThreeT', width: '7em' },
-    { field: 'FourT', header: 'FourT', width: '7em' },
+    { field: 'ThreeT', header: 'ThreeT', width: '9em' },
+    { field: 'FourT', header: 'FourT', width: '9em' },
     { field: 'AMP', header: 'AMP', width: '7em' },
-    { field: 'Date', header: 'Date', width: '10em' },
+    { field: 'Date', header: 'Date', width: '6em' },
   ]
 
   headers = {
@@ -125,6 +125,7 @@ export class CentrifugalPumpComponent implements OnInit {
    this.GetDailyData()
   }
 GetDailyData(){
+  this.DailyWeekMode = 'daily'
   const url : string = this.CPAPIName.DailyData;
   this.CPAPIMethod.getWithoutParameters(url)
  // this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpDailyData')
@@ -208,7 +209,7 @@ GetDailyData(){
       var worksheet = workbook.Sheets[first_sheet_name];
       console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
       this.centrifugalPumpList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      if(this.DailyWeekMode.length == 0){
+      if(this.DailyWeekMode === ""){
           this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please Select Daily or week mode', sticky: true });
       }else if(this.DailyWeekMode == 'daily'){
         this.PostCentrifugalPumpDailydata(this.centrifugalPumpList )
