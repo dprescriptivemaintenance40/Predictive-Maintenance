@@ -50,7 +50,7 @@ export class CentrifugalPumpComponent implements OnInit {
   ]
 
   public centrifugalPumpColumns: any = [
-    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
+    { field: 'TagNumber', header: 'Tag Number', width: '15em' },
     { field: 'PI025', header: 'PI025', width: '7em' },
     { field: 'PI022', header: 'PI022', width: '7em' },
     { field: 'PI023', header: 'PI023', width: '7em' },
@@ -82,23 +82,23 @@ export class CentrifugalPumpComponent implements OnInit {
     'Date'
   ]
   public centrifugalPumpColumnsWeekData: any = [
-    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
+    { field: 'TagNumber', header: 'Tag Number', width: '12em' },
     { field: 'OneH', header: 'OneH', width: '7em' },
     { field: 'OneV', header: 'OneV', width: '7em' },
     { field: 'TwoH', header: 'TwoH', width: '7em' },
     { field: 'TwoV', header: 'TwoV', width: '7em' },
     { field: 'TwoA', header: 'TwoA', width: '7em' },
-    { field: 'ThreeH', header: 'ThreeH', width: '7em' },
-    { field: 'ThreeV', header: 'ThreeV', width: '7em' },
-    { field: 'ThreeA', header: 'ThreeA', width: '7em' },
-    { field: 'FourH', header: 'FourH', width: '7em' },
-    { field: 'FourV', header: 'FourV', width: '7em' },
+    { field: 'ThreeH', header: 'ThreeH', width: '9em' },
+    { field: 'ThreeV', header: 'ThreeV', width: '9em' },
+    { field: 'ThreeA', header: 'ThreeA', width: '9em' },
+    { field: 'FourH', header: 'FourH', width: '9em' },
+    { field: 'FourV', header: 'FourV', width: '9em' },
     { field: 'OneT', header: 'OneT', width: '7em' },
     { field: 'TwoT', header: 'TwoT', width: '7em' },
-    { field: 'ThreeT', header: 'ThreeT', width: '7em' },
-    { field: 'FourT', header: 'FourT', width: '7em' },
+    { field: 'ThreeT', header: 'ThreeT', width: '9em' },
+    { field: 'FourT', header: 'FourT', width: '9em' },
     { field: 'AMP', header: 'AMP', width: '7em' },
-    { field: 'Date', header: 'Date', width: '10em' },
+    { field: 'Date', header: 'Date', width: '6em' },
   ]
 
   headers = {
