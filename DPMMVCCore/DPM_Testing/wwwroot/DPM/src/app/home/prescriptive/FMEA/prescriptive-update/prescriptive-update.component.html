@@ -1823,11 +1823,20 @@
                             <div class="card" style="margin: 20px;" *ngIf="ADDMSSAvailabilityYNCheck" id="Availability">
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
-                                        <p><b>1.Do you have Availability percentage?
+                                        <p><b>1.Fill the data
                                             </b></p>
                                     </ng-template>
                                     <ng-template pTemplate="content">
-                                        <div class="row">
+                                        <div class="row" style="padding: 15px;">
+                                            <label>Enter MSS Interval Selection Criteria</label>
+                                        </div>
+                                        <div class="row" style="padding: 15px;">
+                                            <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="ADDMSSIntervalSelectionCriteria"  placeholder="Type MSS Interval Selection Criteria" required></textarea>
+                                     </div>
+                                        <div class="row" style="padding: 15px;">
+                                            <label>Do you have Availability percentage?</label>
+                                        </div>
+                                        <div class="row" style="padding: 15px;">
                                             <div class="col-sm"></div>
                                             <div class="col-sm">
                                                 Yes <td><input type="radio" [(ngModel)]="ADDMSSAvailabilityY" value="Yes"
@@ -2206,6 +2215,15 @@
                 </div>
             </div>
         </div> 
+        <div class="row">
+            <div class="col">
+                <label>MSS Interval Selection Criteria</label>
+            </div>
+            <div class="col">
+                <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="UpdateMSSIntervalSelectionCriteria"  placeholder="Type MSS Interval Selection Criteria" required></textarea>
+      
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <label>Availability % </label>

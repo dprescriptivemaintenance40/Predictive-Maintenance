@@ -157,22 +157,28 @@
                             <col style="width:10em;">
                             <col style="width:10em;">
                             <col style="width:10em;">
+                            <col style="width:10em;">
+                            <col style="width:15em;">
                         </colgroup>
                     </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Sr. No</th>
+                            <th>Failure Mode</th>
                             <th>Maintenance Strategy</th>
                             <th>Maintenance Interval</th>
                             <th>Maintainenance Practice</th>
+                            <th>Interval Selection Criteria</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                         <tr>
                             <td>{{rowIndex + 1}}</td>
+                            <td>{{p.FunctionMode}}</td>
                             <td>{{p.MSSStartergy}}</td>
                             <td>{{p.MSSMaintenanceInterval}}</td>
                             <td>{{p.MSSMaintenanceTask}}</td>
+                            <td>{{p.MSSIntervalSelectionCriteria}}</td>
                         </tr>
                         <!-- <tr *ngIf="FailureModeDataTabe2.length == 0">
                             <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>

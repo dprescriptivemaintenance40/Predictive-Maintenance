@@ -72,6 +72,7 @@ namespace DPM.Models.Prescriptive
         public decimal MSSAvailability { get; set; }
         public string MSSStartergy { get; set; }
         public string MSSMaintenanceTask { get; set; }
+        public string MSSIntervalSelectionCriteria { get; set; }
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
     }
 }
