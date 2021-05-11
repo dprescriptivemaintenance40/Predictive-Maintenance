@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import { MessageService} from 'primeng/api';
 import { RCAModel } from './rca-model'
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
+import { HttpClient } from "@angular/common/http";
+import { Router } from '@angular/router';
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -33,17 +35,20 @@ export class RCAComponent {
     public UpdateTreeshow: boolean= false;
     public itemCount: number = 100;
     public TagNumber: string = "";
+    public UserId: string = ""; 
     public SelectBoxEnabled: boolean = true
     public SelectUpdateBoxEnabled: boolean = true
     public SelectedTagNumber : string = ""
     public RCARecords: any = [];
     public cancel: boolean  = false
-    public add: boolean  = false
     public update: boolean  = false
+    public save: boolean  = false
     public rcaOBJ: RCAModel = new RCAModel();
 
     constructor(private messageService: MessageService,
-                public commonLoadingDirective: CommonLoadingDirective,) {
+                public commonLoadingDirective: CommonLoadingDirective,
+                private http: HttpClient,
+                public router: Router,) {
        
             this.files = [{
             id: this.itemCount,
@@ -60,6 +65,7 @@ export class RCAComponent {
         }];
     }
     ngOnInit() {
+        localStorage.setItem('RCATestingOBj', JSON.stringify(this.files))    
     }
     async ngOnDestroy() {
         await localStorage.removeItem('RCATestingOBj');
@@ -113,7 +119,7 @@ export class RCAComponent {
         this.Treeshow= true;
         this.SelectBoxEnabled = false
         this.cancel= true;
-        this.add= true;
+        this.save= true
         }else{
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Add Tag number" })  
         }
@@ -121,26 +127,26 @@ export class RCAComponent {
     Cancel(){
         this.files[0].children=[]  
     }
-    Add(){
-        var temp: string = JSON.stringify(this.files)
-        var temp2 = JSON.parse(temp) 
-        this.files[0].children.forEach((res: any) => {
-            res.RCA = temp2
-          })
-          localStorage.setItem('RCATestingOBj', JSON.stringify(this.files))
-          
+
+    Save(){
+    this.rcaOBJ.RCAID = 0;
+    this.rcaOBJ.UserId = this.UserId;
+    this.rcaOBJ.TagNumber = this.TagNumber
+    this.rcaOBJ.RCACompletionPercentage = 60
+    this.rcaOBJ.RCATree = JSON.stringify(this.files)
+    this.http.post<any>('api/RCAAPI/SaveNewRCA',this.rcaOBJ)
+     .subscribe(
+        res => {
+            console.log(res);
+            this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
+        }, error =>{ console.log(error.error)}
+      )
     }
 
     UpdateTagNumberSelect(){
         this.UpdateTreeshow= true;
         this.SelectUpdateBoxEnabled = false
         this.update = true
-        // if (this.SelectedTagNumber.length > 0) {
-        //      this.UpdateTreeshow= true;
-        //     this.SelectUpdateBoxEnabled = false
-        //     }else{
-        //         this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Add Tag number" })  
-        //     }
     }
     UpdateaddTreeRow(event) {
         this.itemCount++;
@@ -160,4 +166,5 @@ export class RCAComponent {
     UpdateRCA(){
 
     }
+
 }
