@@ -20,7 +20,7 @@ export interface TreeNode<T = any> {
     key?: string;
 }
 @Component({
-    templateUrl: './rca.component.html'
+    templateUrl: './rca.component.html',
 })
 export class RCAComponent {
     files: TreeNode[];
@@ -28,7 +28,12 @@ export class RCAComponent {
     selectedFile: any;
     public Treeshow: boolean= false;
     public itemCount: number = 100;
-
+    public SelectedTagNumber: string = ""
+    public PrescriptiveTreeList: any = [];
+    public SelectedPrescriptiveTree: any = [];
+    public SelectBoxEnabled: boolean = true
+    public TreeUptoFCA: any = [];
+    public data1Clone: any;
     constructor() {
         this.files = [{
             id: this.itemCount,
@@ -80,7 +85,10 @@ export class RCAComponent {
 
         return false;
     }
-    AddRCA(){}
-    UpdateRCA(){}
-    RCAReport(){}
+
+    TagNumberSelect() {
+        this.Treeshow= true;
+        this.SelectBoxEnabled = false
+       
+    }
 }

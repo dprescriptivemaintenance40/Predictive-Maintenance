@@ -1,34 +1,37 @@
-<!--  
-<div class="card" style="margin: 20px;">
-<div class="bs-example" style="margin: 20px;">
-    <ul class="nav nav-tabs">
-        <li class="list-group-item">
-            <button class="btn btn-dark" (click)="AddRCA()">Add</button>
-        </li>
-        <li class="list-group-item">
-            <button class="btn btn-dark" (click)="UpdateRCA()">Update</button>
-        </li>
-        <li class="list-group-item">
-            <button class="btn btn-dark" (click)="RCAReport()">Report</button>
-        </li>
-    </ul>
-</div>
-</div> 
-<div style="overflow: scroll;" *ngIf="Treeshow">
-    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
-</div>-->
+<style>
 
-<div class="card"  style="margin: 20px;">
+</style>
+<div *ngIf="SelectBoxEnabled">
+    <div class="card shadow div-in-middle">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Select Tag Number to add RCA</b></li>
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <label style=" margin-right: 12px;">Tag Number</label>
+                    <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                        <option value="">Choose..</option>
+                        <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                    </select>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="card" style="margin: 20px;" *ngIf="Treeshow">
     <p-tabView>
-      <p-tabPanel header="Add" ><br>
-        <div style="overflow: scroll;" >
-            <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
-        </div>
-      </p-tabPanel>
-      <p-tabPanel header="Update">
-      </p-tabPanel>
-      <p-tabPanel header="Report">
-  
-      </p-tabPanel>
+        <p-tabPanel header="Display" headerStyleClass="redText" [headerStyle]='{"color": "black"}'>
+            <!-- <span class="redText">tab text should have been red, too...</span>  -->
+        </p-tabPanel>
+        <p-tabPanel header="Add"><br>
+            <div style="overflow: scroll;">
+                <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
+                    (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Update">
+        </p-tabPanel>
     </p-tabView>
-  </div>
+</div>
