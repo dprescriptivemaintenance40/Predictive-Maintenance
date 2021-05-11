@@ -435,6 +435,7 @@ namespace DPM.Controllers.Prescriptive
                     item.MSSMaintenanceTask = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSMaintenanceTask;
                     item.MSSStartergy = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSStartergy;
                     item.MSSAvailability = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSAvailability;
+                    item.MSSIntervalSelectionCriteria = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSIntervalSelectionCriteria;
                     _context.Entry(item).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                     i = i + 1;
@@ -477,6 +478,7 @@ namespace DPM.Controllers.Prescriptive
                         item.MSSMaintenanceTask = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSMaintenanceTask;
                         item.MSSStartergy = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSStartergy;
                         item.MSSAvailability = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSAvailability;
+                        item.MSSIntervalSelectionCriteria = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSIntervalSelectionCriteria;
                         _context.Entry(item).State = EntityState.Modified;
                         await _context.SaveChangesAsync();
                     }

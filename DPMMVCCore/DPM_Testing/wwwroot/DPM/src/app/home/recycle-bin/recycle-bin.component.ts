@@ -62,6 +62,19 @@ export class RecycleBinComponent implements OnInit {
             obj['AttachmentFullPath'] = res[index].AttachmentFullPath;
             obj['Remark'] = res[index].Remark;
             obj['DeletedFMTree'] = res[index].DeletedFMTree;
+            obj['Pattern'] = res[index].Pattern;
+            obj['FCACondition'] = res[index].FCACondition
+            obj['FCAInterval'] = res[index].FCAInterval
+            obj['FCAFFI'] = res[index].FCAFFI
+            obj['FCAAlpha'] = res[index].FCAAlpha
+            obj['FCABeta'] = res[index].FCABeta
+            obj['FCAUsefulLife'] = res[index].FCAUsefulLife
+            obj['FCASafeLife'] = res[index].FCASafeLife
+            obj['FCAComment'] = res[index].FCAComment
+            obj['MSSMaintenanceInterval'] = res[index].MSSMaintenanceInterval
+            obj['MSSStartergy'] = res[index].MSSStartergy
+            obj['MSSMaintenanceTask'] = res[index].MSSMaintenanceTask
+            obj['MSSIntervalSelectionCriteria'] = res[index].MSSIntervalSelectionCriteria
             this.RecycleCentrifugalPumpChildData.push(obj);
           }
         }
@@ -139,6 +152,7 @@ export class RecycleBinComponent implements OnInit {
           obj['MSSMaintenanceInterval'] = data.MSSMaintenanceInterval
           obj['MSSStartergy'] = data.MSSStartergy
           obj['MSSMaintenanceTask'] = data.MSSMaintenanceTask
+          obj['MSSIntervalSelectionCriteria'] = data.MSSIntervalSelectionCriteria
           this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
           this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = DataToRestore.CFPPrescriptiveId;
           this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = FMWithConsequenceTree
@@ -228,6 +242,7 @@ export class RecycleBinComponent implements OnInit {
         obj['MSSMaintenanceInterval'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].MSSMaintenanceInterval
         obj['MSSStartergy'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].MSSStartergy
         obj['MSSMaintenanceTask'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].MSSMaintenanceTask
+        obj['MSSIntervalSelectionCriteria'] = data.restoreCentrifugalPumpPrescriptiveFailureModes[index].MSSIntervalSelectionCriteria
         this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj);
       }
 
