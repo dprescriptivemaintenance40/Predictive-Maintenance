@@ -70,6 +70,9 @@ namespace DPM.Controllers.Prescriptive.RCA
         {
             try
             {
+                DateTime Date = DateTime.Now;
+                var Code = Convert.ToString(Date.TimeOfDay);
+                rcaModel.RCACode = Code;
                 rcaModel.UserId = User.Claims.First(c => c.Type == "UserID").Value;
                 await _context.rCAModels.AddAsync(rcaModel);
                 await _context.SaveChangesAsync();
@@ -93,7 +96,9 @@ namespace DPM.Controllers.Prescriptive.RCA
                 string userID = User.Claims.First(c => c.Type == "UserID").Value;
                 RCAModel Data = await _context.rCAModels.FirstOrDefaultAsync(a => a.RCAID == RCA.RCAID && a.UserId == userID);
                 Data.RCATree = RCA.RCATree;
-                Data.RCACode = RCA.RCACode;
+                DateTime Date = DateTime.Now;
+                var Code = Convert.ToString(Date.TimeOfDay);
+                Data.RCACode = Code;
                 Data.RCACompletionPercentage = RCA.RCACompletionPercentage;
                 _context.Entry(Data).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
