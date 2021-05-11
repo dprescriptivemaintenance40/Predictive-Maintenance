@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { MessageService} from 'primeng/api';
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -30,7 +31,7 @@ export class RCAComponent {
     public itemCount: number = 100;
     public TagNumber: string = "";
     public SelectBoxEnabled: boolean = true
-    constructor() {
+    constructor(private messageService: MessageService,) {
         this.files = [{
             id: this.itemCount,
             label: 'Bearing Damage',
@@ -86,6 +87,8 @@ export class RCAComponent {
         if (this.TagNumber.length > 0) {
         this.Treeshow= true;
         this.SelectBoxEnabled = false
+        }else{
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Add Tag number" })  
         }
     }
 }
