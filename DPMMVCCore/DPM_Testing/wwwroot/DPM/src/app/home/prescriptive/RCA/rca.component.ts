@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { MessageService} from 'primeng/api';
+import { RCAModel } from './rca-model'
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 export interface TreeNode<T = any> {
     id?: number;
@@ -38,6 +39,8 @@ export class RCAComponent {
     public RCARecords: any = [];
     public cancel: boolean  = false
     public add: boolean  = false
+    public update: boolean  = false
+    public rcaOBJ: RCAModel = new RCAModel();
 
     constructor(private messageService: MessageService,
                 public commonLoadingDirective: CommonLoadingDirective,) {
@@ -56,6 +59,11 @@ export class RCAComponent {
             children: []
         }];
     }
+    ngOnInit() {
+    }
+    async ngOnDestroy() {
+        await localStorage.removeItem('RCATestingOBj');
+      }
 
     addTreeRow(event) {
         this.itemCount++;
@@ -111,15 +119,22 @@ export class RCAComponent {
         }
     }
     Cancel(){
-
+        this.files[0].children=[]  
     }
     Add(){
-
+        var temp: string = JSON.stringify(this.files)
+        var temp2 = JSON.parse(temp) 
+        this.files[0].children.forEach((res: any) => {
+            res.RCA = temp2
+          })
+          localStorage.setItem('RCATestingOBj', JSON.stringify(this.files))
+          
     }
 
     UpdateTagNumberSelect(){
         this.UpdateTreeshow= true;
         this.SelectUpdateBoxEnabled = false
+        this.update = true
         // if (this.SelectedTagNumber.length > 0) {
         //      this.UpdateTreeshow= true;
         //     this.SelectUpdateBoxEnabled = false
@@ -142,5 +157,7 @@ export class RCAComponent {
     UpdatedeleteTreeRow(event) {        
         this.containsInNestedObjectDF(this.Updatefiles, event.id);
     }
+    UpdateRCA(){
 
+    }
 }

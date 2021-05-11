@@ -84,7 +84,10 @@
             <div *ngIf="UpdateTreeshow" style="overflow: scroll;">
                 <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
                     (addTreeRow)="UpdateaddTreeRow($event)" (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
-            </div>
+                    <div style="margin: 10px;">
+                        <a class="btn btn-dark" *ngIf="update"  style="float:right;" (click)="UpdateRCA()" pTooltip="Update data" tooltipPosition="top">Update</a>
+                     </div>
+                </div>
         </p-tabPanel>
     </p-tabView>
 </div>
