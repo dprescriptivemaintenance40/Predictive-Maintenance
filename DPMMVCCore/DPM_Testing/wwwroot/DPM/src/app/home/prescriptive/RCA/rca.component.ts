@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { MessageService} from 'primeng/api';
+import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -25,16 +26,32 @@ export interface TreeNode<T = any> {
 })
 export class RCAComponent {
     files: TreeNode[];
-
+    Updatefiles: TreeNode[];
     selectedFile: any;
     public Treeshow: boolean= false;
+    public UpdateTreeshow: boolean= false;
     public itemCount: number = 100;
     public TagNumber: string = "";
     public SelectBoxEnabled: boolean = true
-    constructor(private messageService: MessageService,) {
-        this.files = [{
+    public SelectUpdateBoxEnabled: boolean = true
+    public SelectedTagNumber : string = ""
+    public RCARecords: any = [];
+    public cancel: boolean  = false
+    public add: boolean  = false
+
+    constructor(private messageService: MessageService,
+                public commonLoadingDirective: CommonLoadingDirective,) {
+       
+            this.files = [{
             id: this.itemCount,
             label: 'Bearing Damage',
+            addTree: true,
+            children: []
+        }];
+
+        this.Updatefiles = [{
+            id: this.itemCount,
+            label: 'Breakdown',
             addTree: true,
             children: []
         }];
@@ -87,8 +104,43 @@ export class RCAComponent {
         if (this.TagNumber.length > 0) {
         this.Treeshow= true;
         this.SelectBoxEnabled = false
+        this.cancel= true;
+        this.add= true;
         }else{
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Add Tag number" })  
         }
     }
+    Cancel(){
+
+    }
+    Add(){
+
+    }
+
+    UpdateTagNumberSelect(){
+        this.UpdateTreeshow= true;
+        this.SelectUpdateBoxEnabled = false
+        // if (this.SelectedTagNumber.length > 0) {
+        //      this.UpdateTreeshow= true;
+        //     this.SelectUpdateBoxEnabled = false
+        //     }else{
+        //         this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Add Tag number" })  
+        //     }
+    }
+    UpdateaddTreeRow(event) {
+        this.itemCount++;
+        let obj = {
+            id: this.itemCount,
+            label: "Why?",
+            icon: "pi pi-image",
+            addTree: true,
+            children: []
+        }
+        event.children.push(obj);
+    }
+
+    UpdatedeleteTreeRow(event) {        
+        this.containsInNestedObjectDF(this.Updatefiles, event.id);
+    }
+
 }
