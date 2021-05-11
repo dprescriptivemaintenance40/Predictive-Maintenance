@@ -3,7 +3,7 @@
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
     </div>
-
+   
     <div class="col-sm">
         <button type="button" style="background-color:#585570 ; border-color:#585570;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
     </div>
@@ -12,49 +12,51 @@
     </div>
 </div>
 <div style="margin: 10px;" class="row">
-    <div class="form-check col-sm-2">
-        <input [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="daily" (change)="ChooseData($event)" checked>
-        <label class="form-check-label" for="flexRadioDefault1">
+<div class="form-check col-sm-2">
+    <input [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="daily" (change)="ChooseData($event)"checked>
+    <label class="form-check-label" for="flexRadioDefault1">
     <b> Daily Data</b>
     </label>
-    </div>
-    <div class="form-check col-sm-2">
-        <input [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="week" (change)="ChooseData($event)">
-        <label class="form-check-label" for="flexRadioDefault2">
+  </div>
+  <div class="form-check col-sm-2">
+    <input  [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="week"(change)="ChooseData($event)" >
+    <label class="form-check-label" for="flexRadioDefault2">
      <b>Weekly Data</b>
     </label>
-    </div>
+  </div>
 
-    <b>Select Date :</b>
+  <b>Select Date :</b>
     <div class="col-sm-2">
-        <select [(ngModel)]="FromDate" class="form-select" value="form" (change)="GetCentrifugapPumpUniqueDate($event)" class="form-control">
+        <select [(ngModel)]="FromDate" class="form-select"  value="form" (change)="GetCentrifugapPumpUniqueDate($event)" class="form-control">
             <option value="">From Date</option>
             <option *ngFor="let UL of uniqueDates " [ngValue]="UL">{{UL}}</option>        
-       </select>
+       </select> 
     </div>
     <div class="col-sm-2">
-        <select [(ngModel)]="ToDate" class="form-select" value="form" (change)="GetCentrifugapPumpUniqueDate($event)" class="form-control">
+        <select [(ngModel)]="ToDate" class="form-select"  value="form" (change)="GetCentrifugapPumpUniqueDate($event)" class="form-control">
             <option value="">To Date</option>
             <option *ngFor="let UL of uniqueDates" [ngValue]="UL">{{UL}}</option>
         </select>
     </div>
 
-    <div class="col-sm"></div>
-    <div class="col-sm"></div>
-    <div class="col-sm"></div>
-
+  <div class="col-sm"></div>
+  <div class="col-sm"></div>
+  <div class="col-sm"></div>
+ 
 </div>
 
 
 <br>
-<div style="padding: 5px; overflow: scroll;" *ngIf="CentrifugalPumpDailyData">
-    <p-card>
-        <p-table id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="centrifugalPump" [columns]="centrifugalPumpColumns" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
-            <ng-template pTemplate="colgroup" let-columns>
-                <colgroup>
-                    <col *ngFor="let col of columns" [ngStyle]="{width:col.width}">
-                </colgroup>
+<div style="padding: 5px;" *ngIf = "CentrifugalPumpDailyData">
+    <div class="card">
+        <p-table id="exportexcel" [value]="centrifugalPump" [columns]="centrifugalPumpColumns" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
+            [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
+            <ng-template pTemplate="colgroup">
+                <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                        <col *ngFor="let col of columns" [style]="{width: col.width}">
+                    </colgroup>
+                </ng-template>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -72,36 +74,19 @@
                 </tr>
             </ng-template>
         </p-table>
-    </p-card>
+    </div>
 </div>
 
-<div style="padding: 5px; overflow:scroll; text-align:center;" *ngIf="CentrifugalPumpWeekData">
-    <p-card>
-        <p-table id="exportexcel" [value]="centrifugalPumpWeekList" [columns]="centrifugalPumpColumnsWeekData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
-            <!-- <colgroup>
-                    <col style="width:12em;">
-                    <col style="width:7em;">
-                    <col style="width:7em;">
-                    <col style="width:7em;">
-                    <col style="width:7em;">
-                    <col style="width:7em;">
-                    <col style="width:10em;">
-                    <col style="width:10em;">
-                    <col style="width:10em;">
-                    <col style="width:7em;">
-                    <col style="width:7em;">
-                    <col style="width:7em;">
-                    <col style="width:7em;">
-                    <col style="width:11em;">
-                    <col style="width:11em;">
-                    <col style="width:11em;">
-                    <col style="width:14em;">
-                </colgroup> -->
-            <ng-template pTemplate="colgroup" let-columns>
-                <colgroup>
-                    <col *ngFor="let col of columns" [ngStyle]="{width:col.width}">
-                </colgroup>
+<div style="padding: 5px;" *ngIf = "CentrifugalPumpWeekData">
+    <div class="card">
+        <p-table id="exportexcel" [value]="centrifugalPumpWeekList" [columns]="centrifugalPumpColumnsWeekData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
+            [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
+            <ng-template pTemplate="colgroup">
+                <ng-template pTemplate="colgroup" let-columns>
+                    <colgroup>
+                        <col *ngFor="let col of columns" [style]="{width: col.width}">
+                    </colgroup>
+                </ng-template>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -119,7 +104,7 @@
                 </tr>
             </ng-template>
         </p-table>
-    </p-card>
+    </div>
 </div>
 
 <p-toast position="top-center"></p-toast>

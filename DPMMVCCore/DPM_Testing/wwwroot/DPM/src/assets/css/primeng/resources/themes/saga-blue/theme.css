@@ -3049,8 +3049,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-tree {
-    border: none;
-    /*1px solid #dee2e6;*/
+    border: 1px solid #dee2e6;
     background: #ffffff;
     color: #495057;
     padding: 1rem;
