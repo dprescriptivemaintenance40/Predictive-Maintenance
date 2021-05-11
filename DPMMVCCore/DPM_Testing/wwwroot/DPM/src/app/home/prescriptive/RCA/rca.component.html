@@ -8,10 +8,7 @@
             <li class="list-group-item">
                 <div class="input-group mb-3">
                     <label style=" margin-right: 12px;">Tag Number</label>
-                    <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
-                        <option value="">Choose..</option>
-                        <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
-                    </select>
+                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
                 </div>
             </li>
             <li class="list-group-item">

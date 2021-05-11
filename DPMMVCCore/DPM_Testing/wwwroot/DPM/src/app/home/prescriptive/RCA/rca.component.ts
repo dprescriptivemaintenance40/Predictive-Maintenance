@@ -28,12 +28,8 @@ export class RCAComponent {
     selectedFile: any;
     public Treeshow: boolean= false;
     public itemCount: number = 100;
-    public SelectedTagNumber: string = ""
-    public PrescriptiveTreeList: any = [];
-    public SelectedPrescriptiveTree: any = [];
+    public TagNumber: string = "";
     public SelectBoxEnabled: boolean = true
-    public TreeUptoFCA: any = [];
-    public data1Clone: any;
     constructor() {
         this.files = [{
             id: this.itemCount,
@@ -87,8 +83,9 @@ export class RCAComponent {
     }
 
     TagNumberSelect() {
+        if (this.TagNumber.length > 0) {
         this.Treeshow= true;
         this.SelectBoxEnabled = false
-       
+        }
     }
 }
