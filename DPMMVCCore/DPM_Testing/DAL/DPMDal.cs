@@ -5,6 +5,7 @@ using DPM.Models.CompressorModel.ScrewCompressorModel;
 using DPM.Models.Prescriptive;
 using DPM.Models.PumpModel;
 using DPM.Models.RecycleBinModel;
+using DPM.Models.Prescriptive.RCA;
 
 namespace DPM_ServerSide.DAL
 {
@@ -29,6 +30,7 @@ namespace DPM_ServerSide.DAL
         public DbSet<RestoreCentrifugalPumpPrescriptiveFailureMode> restoreCentrifugalPumpPrescriptiveFailureModes { get; set; }
 
         public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
+        public DbSet<RCAModel> rCAModels{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,6 +56,7 @@ namespace DPM_ServerSide.DAL
                         .HasOne(p => p.RecycleBinCentrifugalPumpPrescriptiveModel)
                         .WithMany(b => b.restoreCentrifugalPumpPrescriptiveFailureModes)
                         .HasForeignKey(a => a.RCPPMId);
+            modelBuilder.Entity<RCAModel>().ToTable("rcatable");
         }
 
     }
