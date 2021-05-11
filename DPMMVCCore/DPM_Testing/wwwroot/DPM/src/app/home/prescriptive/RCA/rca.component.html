@@ -1,27 +1,25 @@
 
-<div *ngIf="SelectBoxEnabled">
-    <div class="card shadow div-in-middle">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b> ADD Tag Number for RCA</b></li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">Tag Number</label>
-                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
-                </div>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
-            </li>
-        </ul>
-    </div>
-</div>
-<div class="card" style="margin: 20px;" *ngIf="Treeshow">
+<div class="card shadow" style="margin: 20px;">
     <p-tabView>
         <p-tabPanel header="Display" headerStyleClass="redText" [headerStyle]='{"color": "black"}'>
             <!-- <span class="redText">tab text should have been red, too...</span>  -->
         </p-tabPanel>
         <p-tabPanel header="Add"><br>
-            <div style="overflow: scroll;">
+            <div style="margin-top: 20px; border:1px solid;" *ngIf="SelectBoxEnabled" class="div-in-middle">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Add Tag Number to RCA</b></li>
+                    <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <label style=" margin-right: 12px;">Tag Number</label>
+                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number" class="form-control">
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="Treeshow" style="overflow: scroll;">
                 <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
                     (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
             </div>
