@@ -18,17 +18,17 @@
     <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
 </div>-->
 
-<div class="card"  style="margin: 20px;">
+<div class="card shadow" style="margin: 20px;">
     <p-tabView>
-      <p-tabPanel header="Add" ><br>
-        <div style="overflow: scroll;" >
-            <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
-        </div>
-      </p-tabPanel>
-      <p-tabPanel header="Update">
-      </p-tabPanel>
-      <p-tabPanel header="Report">
-  
-      </p-tabPanel>
+        <p-tabPanel header="Add">
+            <div style="overflow: scroll;">
+                <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Update">
+        </p-tabPanel>
+        <p-tabPanel header="Report">
+
+        </p-tabPanel>
     </p-tabView>
-  </div>
+</div>
