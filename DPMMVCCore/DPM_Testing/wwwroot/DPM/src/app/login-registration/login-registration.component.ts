@@ -20,13 +20,14 @@ export class LoginRegistrationComponent {
   }
 
   public loginForm: FormGroup = null;
+  public registerForm: FormGroup = null;
 
   constructor(public service: UserService,
     public router: Router,
     public messageService: MessageService,
     public title: Title,
     public formBuilder: FormBuilder,
-    public eventEmitterService : EventEmitterService,
+    public eventEmitterService: EventEmitterService,
 
 
   ) { }
@@ -34,11 +35,21 @@ export class LoginRegistrationComponent {
   ngOnInit() {
 
     this.title.setTitle('Login | Dynamic Prescriptive Maintenence');
-    this.service.formModel.reset();
 
     if (localStorage.getItem('token') != null) {
       this.router.navigateByUrl('Home');
     }
+
+    this.registerForm = this.formBuilder.group({
+      UserName: ['', Validators.required],
+      Email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      PhoneNumber: ['', [Validators.required, Validators.pattern(("^((\\+91-?)|0)?[0-9]{10}$"))]],
+      Company: ['', Validators.required],
+      Firstname: ['', Validators.required],
+      Lastname: ['', Validators.required],
+      Password: ['', Validators.required],
+      ConfirmPassword: [''],
+    }, { validators: this.checkConfirmPass });
 
     this.loginForm = this.formBuilder.group({
       UserName: ['', Validators.required],
@@ -46,6 +57,11 @@ export class LoginRegistrationComponent {
     });
   }
 
+  checkConfirmPass(group: FormGroup) {
+    let pass = group.get('Password').value;
+    let confirmPass = group.get('ConfirmPassword').value;
+    return pass === confirmPass ? null : { notSame: true };
+  }
 
   signUpBtn() {
     var container = document.querySelector(".container");
@@ -56,73 +72,79 @@ export class LoginRegistrationComponent {
     container.classList.remove("sign-up-mode");
   }
 
-
-
   onSubmit() {
-    this.service.register()
-      .subscribe(
-        (res: any) => {
-          if (res.Succeeded) {
-            this.service.formModel.reset();
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'New user created! Registration successful', sticky: true });
-            this.signInBtn();
-            this.messageService.add({ severity: 'info', summary: 'info', detail: 'Enter Login Credentials', sticky: true });
-          } else {
-            res.errors.forEach(element => {
-              switch (element.code) {
-                case 'DuplicateUserName':
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed', sticky: true });
-                  break;
+    var checkIsValid = true;
+    if (!this.registerForm.valid) {
+      for (var b in this.registerForm.controls) {
+        this.registerForm.controls[b].markAsDirty();
+        this.registerForm.controls[b].updateValueAndValidity();
+        checkIsValid = false;
+      }
+    }
+    if (checkIsValid) {
+      if (this.registerForm.value.Password.length >= 8) {
+        this.service.register(this.registerForm)
+          .subscribe((res: any) => {
+            if (res.Succeeded) {
+              this.registerForm.reset();
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'New user created! Registration successful' });
+              this.signInBtn();
+              this.messageService.add({ severity: 'info', summary: 'info', detail: 'Enter Login Credentials' });
+            } else {
+              res.errors.forEach(element => {
+                switch (element.code) {
+                  case 'DuplicateUserName':
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed' });
+                    break;
 
-                default:
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed', sticky: true });
-                  break;
-              }
+                  default:
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed' });
+                    break;
+                }
 
-            });
-          }
-        },
-
-        err => {
-          console.log(err);
-          this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Fill All Mandatory Fields', sticky: true });
-        }
-      );
+              });
+            }
+          }, err => {
+            this.messageService.add({ severity: 'warn', summary: 'Warn', detail: err.error });
+          });
+      }
+      else {
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Password must be character atleast' });
+      }
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please fill all mandatory fields' });
+    }
   }
-
-
 
   onLogin() {
     var checkIsValid = true;
-    for (var b in this.loginForm.controls) {
-      this.loginForm.controls[b].markAsDirty();
-      this.loginForm.controls[b].updateValueAndValidity();
+    if (!this.loginForm.valid) {
+      for (var b in this.loginForm.controls) {
+        this.loginForm.controls[b].markAsDirty();
+        this.loginForm.controls[b].updateValueAndValidity();
+        checkIsValid = false;
+      }
     }
     if (checkIsValid) {
       this.service.login(this.loginForm.value)
         .subscribe(
           (res: any) => {
             localStorage.setItem('token', res.SecurityToken);
-           localStorage.setItem('userObject', JSON.stringify(res.user));
-           var data = JSON.parse(localStorage.getItem('userObject'))
-           this.eventEmitterService.SendDataToHomeComponent(data); 
+            localStorage.setItem('userObject', JSON.stringify(res.user));
+            var data = JSON.parse(localStorage.getItem('userObject'))
+            this.eventEmitterService.SendDataToHomeComponent(data);
             this.router.navigateByUrl('Home');
           },
           err => {
             if (err.status == 400)
 
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Incorrect username or password', sticky: true });
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error });
             else
               console.log(err);
           }
         );
     } else {
-
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Fill All Mandatory Fields', sticky: true });
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Missing User name or password' });
     }
   }
-
-
-
-
 }
