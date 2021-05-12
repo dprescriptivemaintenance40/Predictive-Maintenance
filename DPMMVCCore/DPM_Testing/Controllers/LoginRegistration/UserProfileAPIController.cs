@@ -29,12 +29,13 @@ namespace DPM_Testing.Controllers
         public async Task<Object> GetUserProfile()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _userManager.FindByIdAsync(userId);
+            //var user = await _userManager.FindByIdAsync(userId);
+            var user = await this._context.RegisterUsers.FirstOrDefaultAsync(a => a.UserId == userId);
             return new
             {
-                user.Id,
-                user.Firstname,
-                user.Lastname,
+                
+                user.FirstName,
+                user.LastName,
                 user.Email,
                 user.PhoneNumber,
                 user.UserName,
@@ -77,7 +78,8 @@ namespace DPM_Testing.Controllers
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     var fullPath = Path.Combine(pathToSave, fileName);
                     string dbPath = string.Format("DPM_Profile_Images/{0}/{1}", UserId, fileName);
-                    var user = await _userManager.FindByIdAsync(UserId);
+                    //var user = await _userManager.FindByIdAsync(UserId);
+                    var user = await this._context.RegisterUsers.FirstOrDefaultAsync(a => a.UserId == UserId);
                     user.ImageUrl = dbPath;
                     _context.Entry(user).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
