@@ -64,6 +64,7 @@ export class RCAComponent {
             addTree: true,
             children: []
         }];
+
     }
     ngOnInit() {
         this.getRecordsList();
