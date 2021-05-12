@@ -4,6 +4,7 @@ import { RCAModel } from './rca-model'
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
+import { fromEvent } from 'rxjs';
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -31,6 +32,8 @@ export class RCAComponent {
     files: TreeNode[];
     Updatefiles: TreeNode[];
     selectedFile: any;
+    zoom = 1;
+    altKeyPressed = false;
     public Treeshow: boolean= false;
     public UpdateTreeshow: boolean= false;
     public itemCount: number = 100;
@@ -63,10 +66,29 @@ export class RCAComponent {
             addTree: true,
             children: []
         }];
+
     }
     ngOnInit() {
-        localStorage.setItem('RCATestingOBj', JSON.stringify(this.files))    
+        localStorage.setItem('RCATestingOBj', JSON.stringify(this.files))  
+        fromEvent(document, 'wheel').subscribe((event: any) => {
+            console.log('lll');
+            if (this.altKeyPressed) {
+              let newZoom = this.zoom + event.deltaY / 500;
+              this.setZoom(newZoom);
+            }
+          });
+          fromEvent(document, 'keydown.control').subscribe((event: any) => {
+            this.altKeyPressed = true;
+          });
+          fromEvent(document, 'keyup.control').subscribe((event: any) => {
+            this.altKeyPressed = false;
+          });  
     }
+    setZoom(value: number) {
+        console.log('setting zoom ' + this.zoom.toString());
+        this.zoom = value;
+      }
+      
     async ngOnDestroy() {
         await localStorage.removeItem('RCATestingOBj');
       }
