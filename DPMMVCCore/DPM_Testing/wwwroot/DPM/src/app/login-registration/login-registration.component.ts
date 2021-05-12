@@ -85,25 +85,10 @@ export class LoginRegistrationComponent {
       if (this.registerForm.value.Password.length >= 8) {
         this.service.register(this.registerForm)
           .subscribe((res: any) => {
-            if (res.Succeeded) {
-              this.registerForm.reset();
-              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'New user created! Registration successful' });
-              this.signInBtn();
-              this.messageService.add({ severity: 'info', summary: 'info', detail: 'Enter Login Credentials' });
-            } else {
-              res.errors.forEach(element => {
-                switch (element.code) {
-                  case 'DuplicateUserName':
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed' });
-                    break;
-
-                  default:
-                    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed' });
-                    break;
-                }
-
-              });
-            }
+            this.registerForm.reset();
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'New user created! Registration successful' });
+            this.signInBtn();
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'Enter Login Credentials' });
           }, err => {
             this.messageService.add({ severity: 'warn', summary: 'Warn', detail: err.error });
           });
