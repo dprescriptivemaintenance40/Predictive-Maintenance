@@ -6,7 +6,6 @@ import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import { PrescriptiveContantAPI } from "../Shared/prescriptive.constant";
 import { ChangeDetectorRef } from "@angular/core";
 import { fromEvent } from 'rxjs';
-
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -94,7 +93,6 @@ export class RCAComponent {
         console.log('setting zoom ' + this.zoom.toString());
         this.zoom = value;
       }
-
 
     getRecordsList(){
         this.commonBL.getWithoutParameters(this.RCAAPIName.RCAGetAPI)
@@ -216,6 +214,7 @@ export class RCAComponent {
     }
 
     UpdateTagNumberSelect(){
+        if(this.UpdateSelectedTagNumber.length>0){
         this.RCAListRecords.forEach(element => {
             if(element.TagNumber == this.UpdateSelectedTagNumber){
                this.Updatefiles = JSON.parse(element.RCATree)
@@ -225,6 +224,9 @@ export class RCAComponent {
         
         this.UpdateTreeshow= true;
         this.SelectUpdateBoxEnabled = false
+    }else{
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Choose Tag number" })   
+    }
     }
 
     UpdateaddTreeRow(event) {
