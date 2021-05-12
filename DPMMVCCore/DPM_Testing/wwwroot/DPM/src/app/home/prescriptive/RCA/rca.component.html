@@ -1,3 +1,12 @@
+<style>
+    .disabled {
+        pointer-events: none;
+        cursor: default;
+        text-decoration: none;
+        color: grey !important;
+    }
+</style>
+
 <div class="card shadow" style="margin: 20px;">
     <p-tabView>
         <p-tabPanel header="RCA List">
@@ -5,7 +14,7 @@
                 <div class="col-xl-12 col-lg-11">
                     <div class="card rca shadow mb-4 con">
                         <div class="card-body">
-                            <p-table  [scrollable]="true" [style]="{width:'100%'}" [value]="RCARecords"
+                            <p-table  [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords"
                                 [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                 [rowsPerPageOptions]="[10,25,50]">
@@ -15,6 +24,8 @@
                                         <col style="width:9em;">
                                         <col style="width:9em;">
                                         <col style="width:9em;">
+                                        <col style="width:5em;">
+                                        <col style="width:5em;">
                                     </colgroup>
                                 </ng-template>
                                 <ng-template pTemplate="header">
@@ -23,15 +34,24 @@
                                         <th>Tag No.</th>
                                         <th>RCA code</th>
                                         <th>Percentage</th>
+                                        <th>Report</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                                     <tr>
+                                        <td>{{rowIndex + 1}}</td>
                                         <td>{{p.TagNumber}}</td>
                                         <td>{{p.RCACode}}</td>
                                         <td>{{p.RCACompletionPercentage}}</td> 
+                                        <td>
+                                            <a title="Report" [ngClass]="{disabled:p.RCACompletionPercentage != 100 }"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;
+                                        </td>
+                                        <td>
+                                            <a style="color: red;" title="Delete RCA Tree"><i class="pi pi-trash"></i></a>
+                                        </td>
                                     </tr>
-                                    <tr *ngIf="RCARecords.length == 0">
+                                    <tr *ngIf="RCAListRecords.length == 0">
                                         <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show
                                         </td>
                                     </tr>
@@ -60,11 +80,11 @@
             </div>
             <div *ngIf="Treeshow" style="overflow: scroll;">
                 <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
-                    (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree><br><br>
+                    (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree><br><br>
                 <div style="margin: 10px;">
-                    <a class="btn btn-dark" *ngIf="cancel" (click)="Cancel()" pTooltip="Cancel data"
+                    <a class="btn btn-dark" (click)="Cancel()" pTooltip="Cancel data"
                         tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" *ngIf="save" style="float:right;" (click)="Save()" pTooltip="Save data"
+                    <a class="btn btn-dark" style="float:right;" (click)="Save()" pTooltip="Save data"
                         tooltipPosition="top">save</a>
                 </div>
             </div>
@@ -76,9 +96,9 @@
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Tag Number</label>
-                            <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                            <select class="form-select" [(ngModel)]="UpdateSelectedTagNumber" class="form-control">
                                 <option value="">Choose..</option>
-                                <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option>
                             </select>
                         </div>
                     </li>
@@ -91,7 +111,7 @@
                 <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
                     (addTreeRow)="UpdateaddTreeRow($event)" (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
                 <div style="margin: 10px;">
-                    <a class="btn btn-dark" *ngIf="update" style="float:right;" (click)="UpdateRCA()"
+                    <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()"
                         pTooltip="Update data" tooltipPosition="top">Update</a>
                 </div>
             </div>

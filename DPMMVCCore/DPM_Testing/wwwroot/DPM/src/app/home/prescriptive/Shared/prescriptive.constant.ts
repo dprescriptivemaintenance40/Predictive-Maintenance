@@ -34,4 +34,13 @@ export class PrescriptiveContantAPI{
 
     //#endregion
 
+
+    //#region RCA API
+  
+    public RCASaveAPI : string = '/RCAAPI/SaveNewRCA';
+    public RCAGetAPI : string = '/RCAAPI/GetAllRCARecords';
+
+    //#endregion
+
+
 }
