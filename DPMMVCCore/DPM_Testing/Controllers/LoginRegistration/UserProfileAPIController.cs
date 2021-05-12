@@ -106,16 +106,6 @@ namespace DPM_Testing.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            //string id = model.Id;
-            //var user = await _userManager.FindByIdAsync(Id);
-            //user.UserName = model.UserName;
-            //user.Lastname = model.Lastname;
-            //user.Firstname = model.Firstname;
-            //user.Email = model.Email;
-            //user.PhoneNumber = model.PhoneNumber;
-            //user.Company = model.Company;
-            //await _userManager.UpdateAsync(user);
-            //return Ok(user);
         }
     }
 }
