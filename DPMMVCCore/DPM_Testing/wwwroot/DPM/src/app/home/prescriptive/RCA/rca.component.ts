@@ -35,7 +35,7 @@ export class RCAComponent {
     selectedFile: any;
     zoom = 1;
     altKeyPressed = false;
-    public Treeshow: boolean= true;
+    public Treeshow: boolean= false;
     public UpdateTreeshow: boolean= false;
     public itemCount: number = 100;
     public TagNumber: string = "";
