@@ -79,9 +79,10 @@
                 </ul>
             </div>
             <div *ngIf="Treeshow" style="overflow: scroll;">
+                <div cdkDrag>
                 <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
                     (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree><br><br>
-                
+                </div>
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="Cancel()" pTooltip="Cancel data"
                         tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>

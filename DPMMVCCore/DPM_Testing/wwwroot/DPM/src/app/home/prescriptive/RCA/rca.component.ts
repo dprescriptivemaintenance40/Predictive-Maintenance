@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import { PrescriptiveContantAPI } from "../Shared/prescriptive.constant";
 import { ChangeDetectorRef } from "@angular/core";
+import { fromEvent } from 'rxjs';
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -32,6 +33,8 @@ export class RCAComponent {
     files: TreeNode[];
     Updatefiles: TreeNode[];
     selectedFile: any;
+    zoom = 1;
+    altKeyPressed = false;
     public Treeshow: boolean= true;
     public UpdateTreeshow: boolean= false;
     public itemCount: number = 100;
@@ -68,8 +71,25 @@ export class RCAComponent {
     }
     ngOnInit() {
         this.getRecordsList();
-    }
+        fromEvent(document, 'wheel').subscribe((event: any) => {
+            console.log('lll');
+            if (this.altKeyPressed) {
+              let newZoom = this.zoom + event.deltaY / 500;
+              this.setZoom(newZoom);
+            }
+          });
+          fromEvent(document, 'keydown.control').subscribe((event: any) => {
+            this.altKeyPressed = true;
+          });
+          fromEvent(document, 'keyup.control').subscribe((event: any) => {
+            this.altKeyPressed = false;
+          });
 
+    }
+    setZoom(value: number) {
+        console.log('setting zoom ' + this.zoom.toString());
+        this.zoom = value;
+      }
 
     getRecordsList(){
         this.commonBL.getWithoutParameters(this.RCAAPIName.RCAGetAPI)
