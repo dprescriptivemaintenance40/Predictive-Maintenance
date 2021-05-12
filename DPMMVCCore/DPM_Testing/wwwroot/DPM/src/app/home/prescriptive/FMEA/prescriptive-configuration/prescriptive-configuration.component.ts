@@ -29,7 +29,7 @@ export class PrescriptiveConfigurationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.title.setTitle('DPM | Prescriptive Configuration');
+    this.title.setTitle('Prescriptive Configuration | Dynamic Prescriptive Maintenence');
     this.getPrescriptiveLookupMasterList();
   }
   private getPrescriptiveLookupMasterList() {

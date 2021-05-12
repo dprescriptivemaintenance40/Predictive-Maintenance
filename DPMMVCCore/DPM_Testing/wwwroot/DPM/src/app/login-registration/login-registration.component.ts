@@ -27,10 +27,7 @@ export class LoginRegistrationComponent {
     public messageService: MessageService,
     public title: Title,
     public formBuilder: FormBuilder,
-    public eventEmitterService: EventEmitterService,
-
-
-  ) { }
+    public eventEmitterService: EventEmitterService) { }
 
   ngOnInit() {
 

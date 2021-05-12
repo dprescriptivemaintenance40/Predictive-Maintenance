@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
+import { SafeUrl, Title } from '@angular/platform-browser';
 import { TreeNode } from 'primeng/api';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
@@ -26,10 +26,12 @@ export class PrescriptiveDisplayComponent implements OnInit {
   public PdfEnable: boolean = false;
   public ImageEnable: boolean = false;
 
-  constructor(private http: HttpClient,
-    public commonLoadingDirective: CommonLoadingDirective,
+  constructor(public commonLoadingDirective: CommonLoadingDirective,
     private prescriptiveBLService : CommonBLService,
-    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
+    private prescriptiveContantAPI : PrescriptiveContantAPI,
+    private title:Title) { 
+      this.title.setTitle(' Prescriptive Display | Dynamic Prescriptive Maintenence')
+    }
 
   ngOnInit() {
     this.fetchRecords();

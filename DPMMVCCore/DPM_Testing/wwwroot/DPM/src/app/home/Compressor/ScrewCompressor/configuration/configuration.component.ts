@@ -33,7 +33,7 @@ export class ConfigurationComponent {
      }
 
   ngOnInit() {
-    this.title.setTitle('DPM | Screw Configuration');
+    this.title.setTitle('Screw Configuration | Dynamic Prescriptive Maintenence');
     var url : string = this.screwCompressorAPIName.ADDRuleAPI;
     this.screwCompressorMethod.getWithoutParameters(url).subscribe(
       res => {

@@ -48,7 +48,7 @@ export class TrainComponent implements OnInit {
 
 
   ngOnInit() {
-    this.title.setTitle('DPM | Screw Train');
+    this.title.setTitle('Screw Train | Dynamic Prescriptive Maintenence');
     this.getScrewCompressureList();
   }
   getScrewCompressureList() {

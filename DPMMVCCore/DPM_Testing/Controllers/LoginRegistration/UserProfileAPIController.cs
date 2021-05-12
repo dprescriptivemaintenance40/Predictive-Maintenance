@@ -17,31 +17,25 @@ namespace DPM_Testing.Controllers
     [ApiController]
     public class UserProfileAPIController : ControllerBase
     {
-        private readonly DPMDal _context;
-        private UserManager<RegisterUser> _userManager;
-        public UserProfileAPIController(UserManager<RegisterUser> userManager, DPMDal context)
+        private readonly DPMDal context;
+        public UserProfileAPIController(DPMDal context)
         {
-            _userManager = userManager;
-            _context = context;
+            this.context = context;
         }
 
         [HttpGet]
         public async Task<Object> GetUserProfile()
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _userManager.FindByIdAsync(userId);
-            return new
+            try
             {
-                user.Id,
-                user.Firstname,
-                user.Lastname,
-                user.Email,
-                user.PhoneNumber,
-                user.UserName,
-                user.Company,
-                user.ImageUrl,
-                user.UserType
-            };
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                var user = await this.context.RegisterUsers.FirstOrDefaultAsync(a => a.UserId == userId);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }           
         }
 
         [HttpPost]
@@ -77,17 +71,17 @@ namespace DPM_Testing.Controllers
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     var fullPath = Path.Combine(pathToSave, fileName);
                     string dbPath = string.Format("DPM_Profile_Images/{0}/{1}", UserId, fileName);
-                    var user = await _userManager.FindByIdAsync(UserId);
+                    var user = await this.context.RegisterUsers.FirstOrDefaultAsync(a => a.UserId == UserId);
                     user.ImageUrl = dbPath;
-                    _context.Entry(user).State = EntityState.Modified;
-                    await _context.SaveChangesAsync();
+                    context.Entry(user).State = EntityState.Modified;
+                    await context.SaveChangesAsync();
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                         stream.Position = 0;
                     }
 
-                    return Ok(new { dbPath });
+                    return Ok(user);
                 }
                 else
                 {
@@ -100,18 +94,28 @@ namespace DPM_Testing.Controllers
             }
         }
         [HttpPut]
-        public async Task<IActionResult> PutAddRuleModel(String Id, RegisterUser model)
+        public async Task<IActionResult> PutUserProfile(RegistrationModel model)
         {
-            string id = model.Id;
-            var user = await _userManager.FindByIdAsync(Id);
-            user.UserName = model.UserName;
-            user.Lastname = model.Lastname;
-            user.Firstname = model.Firstname;
-            user.Email = model.Email;
-            user.PhoneNumber = model.PhoneNumber;
-            user.Company = model.Company;
-            await _userManager.UpdateAsync(user);
-            return Ok(user);
+            try
+            {
+                context.Entry(model).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            //string id = model.Id;
+            //var user = await _userManager.FindByIdAsync(Id);
+            //user.UserName = model.UserName;
+            //user.Lastname = model.Lastname;
+            //user.Firstname = model.Firstname;
+            //user.Email = model.Email;
+            //user.PhoneNumber = model.PhoneNumber;
+            //user.Company = model.Company;
+            //await _userManager.UpdateAsync(user);
+            //return Ok(user);
         }
     }
 }

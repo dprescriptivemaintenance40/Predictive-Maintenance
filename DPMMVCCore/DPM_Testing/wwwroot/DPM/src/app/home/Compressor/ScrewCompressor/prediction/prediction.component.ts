@@ -64,7 +64,7 @@ export class PredictionComponent implements OnInit {
 
 
   ngOnInit() {
-    this.title.setTitle('DPM | Screw Prediction');
+    this.title.setTitle('Screw Prediction | Dynamic Prescriptive Maintenence');
     this.ChangeToBulkPrediction();
     this.getFuturePredictionRecords();
     this.showNotification('');

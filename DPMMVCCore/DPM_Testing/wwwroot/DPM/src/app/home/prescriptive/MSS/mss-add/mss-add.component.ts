@@ -72,7 +72,7 @@ export class MSSAddComponent implements OnInit {
     private prescriptiveContantAPI : PrescriptiveContantAPI) { }
 
   ngOnInit() {
-    this.title.setTitle('DPM | MSS');
+    this.title.setTitle('MSS | Dynamic Prescriptive Maintenence');
     this.getMSSLibraryData();
     this.getMSSLibraryDataInJSon();
     var MSSData = JSON.parse(localStorage.getItem('MSSObject'))
