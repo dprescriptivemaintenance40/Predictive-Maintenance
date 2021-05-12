@@ -189,6 +189,7 @@ export class RCAComponent {
     }
 
     UpdateTagNumberSelect(){
+        if(this.UpdateSelectedTagNumber.length>0){
         this.RCAListRecords.forEach(element => {
             if(element.TagNumber == this.UpdateSelectedTagNumber){
                this.Updatefiles = JSON.parse(element.RCATree)
@@ -198,6 +199,9 @@ export class RCAComponent {
         
         this.UpdateTreeshow= true;
         this.SelectUpdateBoxEnabled = false
+    }else{
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Choose Tag number" })   
+    }
     }
 
     UpdateaddTreeRow(event) {
