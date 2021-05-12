@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import { PrescriptiveContantAPI } from "../Shared/prescriptive.constant";
 import { ChangeDetectorRef } from "@angular/core";
+import { fromEvent } from 'rxjs';
+
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -29,10 +31,10 @@ export interface TreeNode<T = any> {
     templateUrl: './rca.component.html',
 })
 export class RCAComponent {
-    files: TreeNode[];
+    files: any=[];
     Updatefiles: TreeNode[];
     selectedFile: any;
-    public Treeshow: boolean= true;
+    public Treeshow: boolean= false;
     public UpdateTreeshow: boolean= false;
     public itemCount: number = 100;
     public TagNumber: string = "";
@@ -43,6 +45,9 @@ export class RCAComponent {
     public RCAListRecords: any = [];
     public UpdateTagNumberList : any = [];
     public UpdateRecordList : any = [];
+    public ADDDataForPercentage : any = [];
+    zoom = 1;
+    altKeyPressed = false;
 
     constructor(private messageService: MessageService,
                 public commonLoadingDirective: CommonLoadingDirective,
@@ -50,25 +55,45 @@ export class RCAComponent {
                 public router: Router,
                 private commonBL : CommonBLService,
                 private RCAAPIName :  PrescriptiveContantAPI) {
-       
-            this.files = [{
+       this.files = [{
+           id: this.itemCount,
+           label: 'Bearing Damage',
+           addTree: true,
+           isParent : 'Yes',
+           children: []
+       }];
+       this.ADDDataForPercentage.push(
+        {
             id: this.itemCount,
             label: 'Bearing Damage',
             addTree: true,
+            isParent : 'Yes',
             children: []
-        }];
-
-        this.Updatefiles = [{
-            id: this.itemCount,
-            label: 'Breakdown',
-            addTree: true,
-            children: []
-        }];
+        }
+       )    
 
     }
     ngOnInit() {
         this.getRecordsList();
+        fromEvent(document, 'wheel').subscribe((event: any) => {
+            console.log('lll');
+            if (this.altKeyPressed) {
+              let newZoom = this.zoom + event.deltaY / 500;
+              this.setZoom(newZoom);
+            }
+          });
+          fromEvent(document, 'keydown.control').subscribe((event: any) => {
+            this.altKeyPressed = true;
+          });
+          fromEvent(document, 'keyup.control').subscribe((event: any) => {
+            this.altKeyPressed = false;
+          });  
     }
+
+    setZoom(value: number) {
+        console.log('setting zoom ' + this.zoom.toString());
+        this.zoom = value;
+      }
 
 
     getRecordsList(){
@@ -93,7 +118,20 @@ export class RCAComponent {
             addTree: true,
             children: []
         }
+       var id = obj.id; 
+      if(event.isParent == 'Yes'){
         event.children.push(obj);
+        this.ADDDataForPercentage.push(obj)
+      }else if( event.label == 'Why?'){
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add Information in node" })  
+      }else if( event.RCAFILE == ''){
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add attachment to node" })  
+      }else if( event.label == ''){
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add information to node" })  
+      }else if( event.RCAFILE != '' && event.label != 'Why?'){
+        event.children.push(obj);
+        this.ADDDataForPercentage.push(obj)
+      }
     }
 
     deleteTreeRow(event) {        
@@ -146,8 +184,17 @@ export class RCAComponent {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Add Tag number" })  
         }
     }
-    Cancel(){
-        this.files[0].children=[]  
+    CancelADDRCA(){
+        this.Treeshow = false
+        this.SelectBoxEnabled = true
+        this.files=[]  
+        this.files = [{
+            id: this.itemCount,
+            label: 'Bearing Damage',
+            addTree: true,
+            isParent : 'Yes',
+            children: []
+        }];
     }
 
     Save(){
@@ -162,7 +209,7 @@ export class RCAComponent {
     this.commonBL.postWithoutHeaders(this.RCAAPIName.RCASaveAPI, RCAOBJ)
      .subscribe(
         res => {
-            console.log(res);
+            this.getRecordsList();
             this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
         }, error =>{ console.log(error.error)}
       )
@@ -203,6 +250,7 @@ export class RCAComponent {
     uploadRCAAttachment(event){
         var FileEvent = event[0]
         var TreeNode = event[1]
+        var RCAFILEChange = this.ADDDataForPercentage.find(data => data['id'] == TreeNode.id)
         if (FileEvent.target.files.length > 0) {
             if (FileEvent.target.files[0].type === 'application/pdf'
               || FileEvent.target.files[0].type === 'image/png'
@@ -218,6 +266,10 @@ export class RCAComponent {
                         this.Treeshow = false
                         this.changeDetectorRef.detectChanges()
                         this.Treeshow = true
+                        if(RCAFILEChange !== undefined){
+                            var i = this.ADDDataForPercentage.findIndex(std => std.id == RCAFILEChange.id);
+                            this.ADDDataForPercentage[i].RCAFILE = JSON.stringify(res)
+                        }
                         this.messageService.add({ severity: 'success', summary: 'success', detail: "Sucessfully attached" })
            
                     }, 
@@ -226,6 +278,11 @@ export class RCAComponent {
               this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
             }
           }
+    }
+
+    CheckData(){
+        var labels =  this.files.find(a => a['label'])
+        var Data = this.files.find(a => a['label'] == 'Why?')
     }
 
 }
