@@ -95,7 +95,7 @@
                                 <ng-container *ngTemplateOutlet="tree.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
                             </span>
                         </span>
-                        <ng-container *ngIf="node.addTree">
+                        <ng-container *ngIf="node.deleteTree">
                             <span class="p-tree-toggler pi pi-fw pi-times-circle" style="
                             position: absolute;
                             color: red; 
@@ -105,14 +105,14 @@
                         <ng-container *ngIf="node.addTree">
                             <span class="p-tree-toggler pi pi-fw pi-plus" (click)="addTreeRow($event,node)" style="margin-right: 0;"></span>
                         </ng-container>
-                        <ng-container *ngIf="node.RCAFILE ==''">
+                        <ng-container *ngIf="node.RCAFILE =='' && node.isParent == undefined">
                             <span class="p-tree-toggler pi pi-angle-double-right" style="
                             position: absolute;
                             color: black; 
                             right: -18px;
                             top: -9px;" (click)="AttachmentNodeSelected()" (click)="rCAAttachment($event,node)"></span>
                         </ng-container>
-                        <ng-container *ngIf="node.RCAFILE != ''">
+                        <ng-container *ngIf="node.RCAFILE != '' && node.isParent == undefined">
                             <span class="p-tree-toggler fa fa-eye" style="
                             position: absolute;
                             color: rgb(150, 150, 247); 

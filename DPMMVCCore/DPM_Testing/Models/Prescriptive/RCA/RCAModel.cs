@@ -14,6 +14,8 @@ namespace DPM.Models.Prescriptive.RCA
         public string TagNumber { get; set; }
         public string RCATree { get; set; }
         public string RCACode { get; set; }
-        public decimal RCACompletionPercentage { get; set; }
+        public string RCALabel { get; set; }
+        public string RCAEquipment { get; set; }
+        public string RCAFailureMode { get; set; }
     }
 }

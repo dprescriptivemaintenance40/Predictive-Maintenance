@@ -24,16 +24,20 @@
                                         <col style="width:9em;">
                                         <col style="width:9em;">
                                         <col style="width:9em;">
-                                        <col style="width:5em;">
+                                        <col style="width:9em;">
+                                        <col style="width:9em;">
+                                        <col style="width:9em;">
                                         <col style="width:5em;">
                                     </colgroup>
                                 </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Sr.No</th>
-                                        <th>Tag No.</th>
+                                        <th>RCA Asset</th>
+                                        <th>RCA Label</th>
                                         <th>RCA code</th>
-                                        <th>Percentage</th>
+                                        <th>Tag No.</th>
+                                        <th>Failure Mode</th>
                                         <th>Report</th>
                                         <th>Delete</th>
                                     </tr>
@@ -41,11 +45,13 @@
                                 <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                                     <tr>
                                         <td>{{rowIndex + 1}}</td>
-                                        <td>{{p.TagNumber}}</td>
+                                        <td>{{p.RCAEquipment}}</td> 
+                                        <td>{{p.RCALabel}}</td> 
                                         <td>{{p.RCACode}}</td>
-                                        <td>{{p.RCACompletionPercentage}}</td> 
+                                        <td>{{p.TagNumber}}</td>
+                                        <td>{{p.RCAFailureMode}}</td> 
                                         <td>
-                                            <a title="Report" [ngClass]="{disabled:p.RCACompletionPercentage != 100 }"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;
+                                            <a title="Report"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;
                                         </td>
                                         <td>
                                             <a style="color: red;" title="Delete RCA Tree"><i class="pi pi-trash"></i></a>
@@ -65,7 +71,14 @@
         <p-tabPanel header="Add"><br>
             <div class="card shadow div-in-middle" *ngIf="SelectBoxEnabled">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Add Tag Number to RCA</b></li>
+                    <li class="list-group-item"><b>Add Label and Tag Number to RCA</b></li>
+                    <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <label style=" margin-right: 12px;">Label</label>
+                            <input type="text" [(ngModel)]="RCALabel" placeholder="Enter label"
+                                class="form-control">
+                        </div>
+                    </li>
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Tag Number</label>
@@ -86,7 +99,7 @@
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data"
                         tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="Save()" pTooltip="Save data"
+                    <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data"
                         tooltipPosition="top">save</a>
                 </div>
             </div>
@@ -122,4 +135,46 @@
             </div>
         </p-tabPanel>
     </p-tabView>
+</div>
+
+
+
+<div class="modal" id="ADDRCAModal" tabindex="-1" role="dialog" style="overflow: scroll;">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title"> Add Failure Mode to RCA </h6><br>
+                <button type="button" class="close" data-dismiss="ADDRCAModal" aria-label="Close" (click)="closeRCAAddModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="ADDRCAModal modal-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="input-group mb-3">
+                                    <label style=" margin-right: 12px;">Assets</label>
+                                    <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
+                                          <option value="">Choose..</option>
+                                            <option value="HeatExchanger" selected>Heat Exchanger</option>
+                                        </select>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="input-group mb-3">
+                                    <label style="margin-right: 12px;">Failure Mode</label>
+                                    <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
+                                          <option value="">Choose..</option>
+                                          <option value="Failure Modes">Failure Modes</option>
+                                            <!-- <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option> -->
+                                        </select>
+                                </div>
+                            </li>
+                        </ul>   
+                </div>
+            <div class="ADDRCAModal modal-footer">
+                <button type="button" class="btn btn-secondary"(click)="closeRCAAddModal()" data-dismiss="ADDRCAModal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()" data-dismiss="ADDRCAModal">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>

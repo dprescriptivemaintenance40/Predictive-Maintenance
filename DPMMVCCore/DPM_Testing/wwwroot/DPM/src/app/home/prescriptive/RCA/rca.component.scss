@@ -4,3 +4,10 @@
     background-color: rgb(123, 128, 201);
   }
   
+  :host ::ng-deep .p-organizationchart {
+    .person {
+      padding: 0;
+      border: 0 none;
+      background-color: rgb(123, 128, 201);
+    }
+  }

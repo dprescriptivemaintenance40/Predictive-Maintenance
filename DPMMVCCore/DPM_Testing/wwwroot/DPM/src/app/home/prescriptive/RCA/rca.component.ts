@@ -37,6 +37,7 @@ export class RCAComponent {
     public UpdateTreeshow: boolean= false;
     public itemCount: number = 100;
     public TagNumber: string = "";
+    public RCALabel: string = "";
     public UserId: string = ""; 
     public SelectBoxEnabled: boolean = true
     public SelectUpdateBoxEnabled: boolean = true
@@ -44,7 +45,10 @@ export class RCAComponent {
     public RCAListRecords: any = [];
     public UpdateTagNumberList : any = [];
     public UpdateRecordList : any = [];
-    public ADDDataForPercentage : any = [];
+    public ADDDataForSaveAuth : any = [];
+    public AddRCAmodal : any;
+    public ADDRCAMachineType : string = ""
+    public ADDRCAFailureMode : string = ""
     zoom = 1;
     altKeyPressed = false;
 
@@ -56,15 +60,15 @@ export class RCAComponent {
                 private RCAAPIName :  PrescriptiveContantAPI) {
        this.files = [{
            id: this.itemCount,
-           label: 'Bearing Damage',
+           label: 'Why?',
            addTree: true,
            isParent : 'Yes',
            children: []
        }];
-       this.ADDDataForPercentage.push(
+       this.ADDDataForSaveAuth.push(
         {
             id: this.itemCount,
-            label: 'Bearing Damage',
+            label: 'Why?',
             addTree: true,
             isParent : 'Yes',
             children: []
@@ -98,6 +102,8 @@ export class RCAComponent {
         this.commonBL.getWithoutParameters(this.RCAAPIName.RCAGetAPI)
         .subscribe(
             (res: any) => { 
+                this.RCAListRecords = []
+                this.UpdateTagNumberList = []
                 this.RCAListRecords = res
                 this.RCAListRecords.forEach(element => {
                    this.UpdateTagNumberList.push(element.TagNumber)
@@ -114,26 +120,31 @@ export class RCAComponent {
             RCAFILE:'',
             icon: "pi pi-image",
             addTree: true,
+            deleteTree: true,
             children: []
         }
        var id = obj.id; 
-      if(event.isParent == 'Yes'){
+      if(event.isParent == 'Yes' && ( event.label == 'Why?' ||event.label == 'Why' || event.label == '?' || event.label == '')){
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to parent node" })  
+      }else if(event.isParent == 'Yes' && (event.label != 'Why?' ||event.label != 'Why' || event.label != '?' || event.label != '')){
         event.children.push(obj);
-        this.ADDDataForPercentage.push(obj)
-      }else if( event.label == 'Why?'){
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add Information in node" })  
-      }else if( event.RCAFILE == ''){
+        this.ADDDataForSaveAuth.push(obj)
+      }else if(event.isParent == undefined && (event.label == 'Why?'||event.label == 'Why')){
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data in node" })  
+      }else if( event.isParent == undefined && event.RCAFILE == ''){
         this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add attachment to node" })  
       }else if( event.label == ''){
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add information to node" })  
-      }else if( event.RCAFILE != '' && event.label != 'Why?'){
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to node" })  
+      }else if(event.isParent == undefined && event.RCAFILE != '' && event.label != 'Why?'){
         event.children.push(obj);
-        this.ADDDataForPercentage.push(obj)
+        this.ADDDataForSaveAuth.push(obj)
       }
     }
 
     deleteTreeRow(event) {        
         this.containsInNestedObjectDF(this.files, event.id);
+        var index = this.ADDDataForSaveAuth.findIndex(std => std.id == event.id);
+        this.ADDDataForSaveAuth.splice(index, 1);
     }
 
     rCAAttachment(event){
@@ -167,19 +178,19 @@ export class RCAComponent {
     }
 
     TagNumberSelect() {
-        if (this.TagNumber.length > 0) {
+        if (this.TagNumber.length > 0 && this.RCALabel.length > 0) {
             var TagNo : any;
-            TagNo = this.RCAListRecords.find(r => r['TagNumber'] === this.TagNumber)
+            TagNo = this.RCAListRecords.find(r => r['TagNumber'] === this.TagNumber && r['RCALabel'] === this.RCALabel)
                 if(TagNo == undefined){
                     this.Treeshow= true;
                     this.SelectBoxEnabled = false
-                }else if (TagNo.TagNumber == this.TagNumber){
-                    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Tag number already Exist" })  
+                }else if (TagNo.TagNumber == this.TagNumber && TagNo.RCALabel == this.RCALabel){
+                    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "RCA Label already Exist with same Tag number, please change Label name" })  
                 }
     
         
         }else{
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Add Tag number" })  
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "All fields are manditory" })  
         }
     }
     CancelADDRCA(){
@@ -188,30 +199,58 @@ export class RCAComponent {
         this.files=[]  
         this.files = [{
             id: this.itemCount,
-            label: 'Bearing Damage',
+            label: 'Why?',
             addTree: true,
             isParent : 'Yes',
             children: []
         }];
     }
 
-    Save(){
-    
-    let RCAOBJ = {
-        RCAID : 0 ,
-        TagNumber : this.TagNumber,
-        RCACompletionPercentage : 60,
-        RCATree : JSON.stringify(this.files)
+
+    RCAADDSave(){
+        this.ADDDataForSaveAuth[0].label = this.files[0].label 
+        var Data = this.ADDDataForSaveAuth.find(f => f['label'] === 'Why?' || f['label'] === 'Why' || f['label'] === '' || f['label'] ==='?' || f['label'] ===' ?');
+        var RCAFILE = this.ADDDataForSaveAuth.find(f => f['RCAFILE'] === '');
+        if(Data !== undefined){
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please fill data to all nodes' });
+          
+        } else if(RCAFILE !== undefined){
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please add attachment to all nodes' });
+          
+        }else if(Data == undefined && RCAFILE == undefined){
+            
+            this.AddRCAmodal = document.getElementById("ADDRCAModal")
+            this.AddRCAmodal.style.display = 'block'
+        }
+    }
+
+    SaveAddRCAToDatabase(){
+        let RCAOBJ = {
+            RCAID : 0 ,
+            TagNumber : this.TagNumber,
+            RCALabel : this.RCALabel,
+            RCATree : JSON.stringify(this.files),
+            RCAFailureMode : this.ADDRCAFailureMode,
+            RCAEquipment : this.ADDRCAMachineType
+        }
+        
+        this.commonBL.postWithoutHeaders(this.RCAAPIName.RCASaveAPI, RCAOBJ)
+        .subscribe(
+            res => {
+                this.getRecordsList();
+                this.TagNumber = ""
+                this.RCALabel = ""
+                this.closeRCAAddModal();
+                this.CancelADDRCA()
+                this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
+            }, error =>{ console.log(error.error)}
+        )
+    }
+
+    closeRCAAddModal(){
+        this.AddRCAmodal.style.display = 'none'
     }
     
-    this.commonBL.postWithoutHeaders(this.RCAAPIName.RCASaveAPI, RCAOBJ)
-     .subscribe(
-        res => {
-            this.getRecordsList();
-            this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-        }, error =>{ console.log(error.error)}
-      )
-    }
 
     UpdateTagNumberSelect(){
         if(this.UpdateSelectedTagNumber.length>0){
@@ -252,7 +291,6 @@ export class RCAComponent {
     uploadRCAAttachment(event){
         var FileEvent = event[0]
         var TreeNode = event[1]
-        var RCAFILEChange = this.ADDDataForPercentage.find(data => data['id'] == TreeNode.id)
         if (FileEvent.target.files.length > 0) {
             if (FileEvent.target.files[0].type === 'application/pdf'
               || FileEvent.target.files[0].type === 'image/png'
@@ -268,10 +306,6 @@ export class RCAComponent {
                         this.Treeshow = false
                         this.changeDetectorRef.detectChanges()
                         this.Treeshow = true
-                        if(RCAFILEChange !== undefined){
-                            var i = this.ADDDataForPercentage.findIndex(std => std.id == RCAFILEChange.id);
-                            this.ADDDataForPercentage[i].RCAFILE = JSON.stringify(res)
-                        }
                         this.messageService.add({ severity: 'success', summary: 'success', detail: "Sucessfully attached" })
            
                     }, 

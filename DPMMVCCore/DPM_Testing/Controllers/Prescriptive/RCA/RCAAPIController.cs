@@ -99,7 +99,9 @@ namespace DPM.Controllers.Prescriptive.RCA
                 DateTime Date = DateTime.Now;
                 var Code = Convert.ToString(Date.TimeOfDay);
                 Data.RCACode = Code;
-                Data.RCACompletionPercentage = RCA.RCACompletionPercentage;
+                Data.RCALabel = RCA.RCALabel;
+                Data.RCAFailureMode = RCA.RCAFailureMode;
+                Data.RCAEquipment = RCA.RCAEquipment;
                 _context.Entry(Data).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return Ok();
