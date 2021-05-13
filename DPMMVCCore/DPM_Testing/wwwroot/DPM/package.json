@@ -36,7 +36,6 @@
         "ng2-charts": "^2.4.2",
         "ng2-tel-input": "^2.3.0",
         "ngx-charts": "^3.0.2",
-        "ngx-spinner": "^10.0.1",
         "ngx-toastr": "^9.1.1",
         "ngx-tooltip": "0.0.9",
         "pdf-lib": "^1.6.0",

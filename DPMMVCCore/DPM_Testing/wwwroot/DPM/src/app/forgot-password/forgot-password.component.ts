@@ -23,18 +23,13 @@ export class ForgotPasswordComponent {
     let data = {
       Email: this.Email
     }
-    this.http.post('api/ForgotPasswordAPI/Forgot', data).subscribe(
-      res => {
+    this.http.post('api/ForgotPasswordAPI/Forgot', data)
+      .subscribe(res => {
         this.res1 = res;
-      },
-      err => {
+      }, err => {
         this.res2 = err;
-      }
-    )
-
-    this.disableEnter = false
-    this.hideForm = false
-
+      });
+    this.disableEnter = false;
+    this.hideForm = false;
   }
-
 }

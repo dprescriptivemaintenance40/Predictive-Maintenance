@@ -16,7 +16,6 @@ import { RadioButtonModule } from "primeng/radiobutton";
 import { StepsModule } from "primeng/steps";
 import { TableModule } from "primeng/table";
 import { TreeModule } from "./P-Tree/p-tree";
-import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastModule } from "primeng/toast";
 import {SliderModule} from 'primeng/slider';
 import {DialogModule} from 'primeng/dialog';
@@ -27,8 +26,7 @@ import {TooltipModule} from 'primeng/tooltip';
 import { TabViewModule } from 'primeng/tabview';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
-    imports: [CommonModule,
-        NgxSpinnerModule,        
+    imports: [CommonModule,      
         TableModule,
         FormsModule,
         ReactiveFormsModule,
@@ -53,7 +51,6 @@ import { TabViewModule } from 'primeng/tabview';
         TooltipModule],
     exports: [CommonModule,
         CommonLoadingComponent,
-        NgxSpinnerModule,
         TableModule,
         FormsModule,
         ReactiveFormsModule,
