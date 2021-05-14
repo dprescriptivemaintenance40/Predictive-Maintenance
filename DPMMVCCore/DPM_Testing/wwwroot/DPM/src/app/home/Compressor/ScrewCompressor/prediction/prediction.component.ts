@@ -70,6 +70,14 @@ export class PredictionComponent implements OnInit {
     this.showNotification('');
     this.getPredictedList();
   }
+
+  Downloadfile() {
+    let link = document.createElement("a");
+    link.download = "Excel_Format";
+    link.href = "dist/DPM/assets/Excel_Format.xlsx";
+    link.click();
+  }
+
   imgDowd() {
     let link = document.createElement("a");
     link.download = "Compressor Image";
