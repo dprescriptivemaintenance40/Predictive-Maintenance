@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { MessageService } from 'primeng/api';
@@ -16,7 +16,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
   styleUrls: ['./centrifugal-pump.component.scss'],
   providers: [MessageService, DatePipe]
 })
-export class CentrifugalPumpComponent implements OnInit {
+export class CentrifugalPumpComponent {
   public FromDate: string = "";
   public uniqueDates: any = [];
   public ToDate: string = "";
@@ -33,9 +33,9 @@ export class CentrifugalPumpComponent implements OnInit {
   public filelist: any;
   public arrayBuffer: any;
   public user: any = [];
-  public DailyWeekMode : string = "daily";
-  public CentrifugalPumpDailyData : boolean = true;
-  public CentrifugalPumpWeekData : boolean = false;
+  public DailyWeekMode: string;
+  public CentrifugalPumpDailyData: boolean = true;
+  public CentrifugalPumpWeekData: boolean = false;
   private pumpcolumns: any = [
     'TagNumber',
     'PI025',
@@ -50,7 +50,7 @@ export class CentrifugalPumpComponent implements OnInit {
   ]
 
   public centrifugalPumpColumns: any = [
-    { field: 'TagNumber', header: 'Tag Number', width: '15em' },
+    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
     { field: 'PI025', header: 'PI025', width: '7em' },
     { field: 'PI022', header: 'PI022', width: '7em' },
     { field: 'PI023', header: 'PI023', width: '7em' },
@@ -82,23 +82,23 @@ export class CentrifugalPumpComponent implements OnInit {
     'Date'
   ]
   public centrifugalPumpColumnsWeekData: any = [
-    { field: 'TagNumber', header: 'Tag Number', width: '12em' },
+    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
     { field: 'OneH', header: 'OneH', width: '7em' },
     { field: 'OneV', header: 'OneV', width: '7em' },
     { field: 'TwoH', header: 'TwoH', width: '7em' },
     { field: 'TwoV', header: 'TwoV', width: '7em' },
     { field: 'TwoA', header: 'TwoA', width: '7em' },
-    { field: 'ThreeH', header: 'ThreeH', width: '9em' },
-    { field: 'ThreeV', header: 'ThreeV', width: '9em' },
-    { field: 'ThreeA', header: 'ThreeA', width: '9em' },
-    { field: 'FourH', header: 'FourH', width: '9em' },
-    { field: 'FourV', header: 'FourV', width: '9em' },
+    { field: 'ThreeH', header: 'ThreeH', width: '7em' },
+    { field: 'ThreeV', header: 'ThreeV', width: '7em' },
+    { field: 'ThreeA', header: 'ThreeA', width: '7em' },
+    { field: 'FourH', header: 'FourH', width: '7em' },
+    { field: 'FourV', header: 'FourV', width: '7em' },
     { field: 'OneT', header: 'OneT', width: '7em' },
     { field: 'TwoT', header: 'TwoT', width: '7em' },
-    { field: 'ThreeT', header: 'ThreeT', width: '9em' },
-    { field: 'FourT', header: 'FourT', width: '9em' },
+    { field: 'ThreeT', header: 'ThreeT', width: '7em' },
+    { field: 'FourT', header: 'FourT', width: '7em' },
     { field: 'AMP', header: 'AMP', width: '7em' },
-    { field: 'Date', header: 'Date', width: '6em' },
+    { field: 'Date', header: 'Date', width: '10em' },
   ]
 
   headers = {
@@ -111,87 +111,82 @@ export class CentrifugalPumpComponent implements OnInit {
     public title: Title,
     public messageService: MessageService,
     public datepipe: DatePipe,
-    private excelFormatService : ExcelFormatService,
+    private excelFormatService: ExcelFormatService,
     public commonLoadingDirective: CommonLoadingDirective,
-    private CPAPIName : CentrifugalPumpConstantAPI,
-    private CPAPIMethod : CommonBLService) {
+    private CPAPIName: CentrifugalPumpConstantAPI,
+    private CPAPIMethod: CommonBLService) {
+    this.title.setTitle('Centrifugal Pump | Dynamic Prescriptive Maintenence');
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
     }
+    this.GetDailyData();
+  }
+  GetDailyData() {
+    const url: string = this.CPAPIName.DailyData;
+    this.CPAPIMethod.getWithoutParameters(url)
+      .subscribe(res => {
+        this.centrifugalPump = res
+        this.UniqueDate(this.centrifugalPump)
+
+      })
   }
 
-  ngOnInit() {
-    this.title.setTitle('DPM | Centrifugal Pump');
-   this.GetDailyData()
-  }
-GetDailyData(){
-  this.DailyWeekMode = 'daily'
-  const url : string = this.CPAPIName.DailyData;
-  this.CPAPIMethod.getWithoutParameters(url)
- // this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpDailyData')
-  .subscribe(res => {
-    this.centrifugalPump = res
-   this.UniqueDate( this.centrifugalPump)
-
-  })
-}
-
-  PostCentrifugalPumpDailydata(obj){
+  PostCentrifugalPumpDailydata(obj) {
     this.commonLoadingDirective.showLoading(true, "Please wait....");
     this.loading = true;
-    const url : string = this.CPAPIName.PostCentrifugalPumpDailydata;
+    const url: string = this.CPAPIName.PostCentrifugalPumpDailydata;
     this.CPAPIMethod.postWithHeaders(url, obj)
-   // this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpDailyData', JSON.stringify(obj), this.headers)
-    .subscribe(res => {
-      this.centrifugalPump = res
-      this.commonLoadingDirective.showLoading(false, "");
-      this.loading = false;
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-    }, err => {
-      console.log(err.error);
-      this.loading = false;
-      this.commonLoadingDirective.showLoading(false, "");
-    })
-  }
-
-
-  PostCentrifugalPumpWeekdata(obj){
-    this.commonLoadingDirective.showLoading(true, "Please wait....");
-    this.loading = true;
-    const url :string = this.CPAPIName.PostCentrifugalPumpWeekdata;
-    this.CPAPIMethod.postWithHeaders(url, obj)
-   // this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpWeekData', JSON.stringify(obj),this.headers)
-    .subscribe(
-      res =>{ 
-        this.centrifugalPumpWeekList = res
+      // this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpDailyData', JSON.stringify(obj), this.headers)
+      .subscribe(res => {
+        this.centrifugalPump = res
+        this.commonLoadingDirective.showLoading(false, "");
+        this.loading = false;
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+      }, err => {
+        console.log(err.error);
         this.loading = false;
         this.commonLoadingDirective.showLoading(false, "");
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-      }
-    )
+      })
   }
 
-  GetCentrifugalPumpWeekdata(){
-    const url : string = this.CPAPIName.GetCentrifugalPumpWeekdata;
-    this.CPAPIMethod.getWithoutParameters(url)
-   // this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpWeekData')
-    .subscribe(
-      res =>{ 
-        this.centrifugalPumpWeekList = res
-       var weekDate = this.UniqueDate(this.centrifugalPumpWeekList)
-      }
-    )
+
+  PostCentrifugalPumpWeekdata(obj) {
+    this.commonLoadingDirective.showLoading(true, "Please wait....");
+    this.loading = true;
+    const url: string = this.CPAPIName.PostCentrifugalPumpWeekdata;
+    this.CPAPIMethod.postWithHeaders(url, obj)
+      // this.http.post<any>('api/CenterifugalPumpAPI/PostCentrifugalPumpWeekData', JSON.stringify(obj),this.headers)
+      .subscribe(
+        res => {
+          this.centrifugalPumpWeekList = res
+          this.loading = false;
+          this.commonLoadingDirective.showLoading(false, "");
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+        }
+      )
   }
-  Downloadfile() {  
-    if(this.DailyWeekMode.length == 0){
+
+  GetCentrifugalPumpWeekdata() {
+    const url: string = this.CPAPIName.GetCentrifugalPumpWeekdata;
+    this.CPAPIMethod.getWithoutParameters(url)
+      // this.http.get<any>('api/CenterifugalPumpAPI/GetCentrifugalPumpWeekData')
+      .subscribe(
+        res => {
+          this.centrifugalPumpWeekList = res
+          var weekDate = this.UniqueDate(this.centrifugalPumpWeekList)
+        }
+      )
+  }
+  Downloadfile() {
+    if (this.DailyWeekMode.length == 0) {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please Select Daily or week mode' });
-    }else if(this.DailyWeekMode =='daily'){
+    } else if (this.DailyWeekMode == 'daily') {
       var Name = 'PumpDaily_data'
-      this.excelFormatService.GetExcelFormat(this.pumpcolumns , Name)
-  }else if(this.DailyWeekMode == 'week'){
-    var Name = 'PumpWeek_data'
-    this.excelFormatService.GetExcelFormat(this.pumpWeekDatacolumns , Name) 
-  } 
+      this.excelFormatService.GetExcelFormat(this.pumpcolumns, Name)
+    } else if (this.DailyWeekMode == 'week') {
+      var Name = 'PumpWeek_data'
+      this.excelFormatService.GetExcelFormat(this.pumpWeekDatacolumns, Name)
+    }
   }
 
   addfile(event) {
@@ -209,12 +204,12 @@ GetDailyData(){
       var worksheet = workbook.Sheets[first_sheet_name];
       console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
       this.centrifugalPumpList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      if(this.DailyWeekMode === ""){
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please Select Daily or week mode', sticky: true });
-      }else if(this.DailyWeekMode == 'daily'){
-        this.PostCentrifugalPumpDailydata(this.centrifugalPumpList )
-      }else if(this.DailyWeekMode == 'week'){
-        this.PostCentrifugalPumpWeekdata(this.centrifugalPumpList )
+      if (this.DailyWeekMode.length == 0) {
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Please Select Daily or week mode', sticky: true });
+      } else if (this.DailyWeekMode == 'daily') {
+        this.PostCentrifugalPumpDailydata(this.centrifugalPumpList)
+      } else if (this.DailyWeekMode == 'week') {
+        this.PostCentrifugalPumpWeekdata(this.centrifugalPumpList)
       }
     }
   }
@@ -222,16 +217,16 @@ GetDailyData(){
   exportToExcel() {
     var dataArray
     var Name
-    if(this.DailyWeekMode == 'daily'){
+    if (this.DailyWeekMode == 'daily') {
       dataArray = this.centrifugalPump
       Name = "DPMCentrifugalPumpDailyData"
-    }else if(this.DailyWeekMode == 'week'){
+    } else if (this.DailyWeekMode == 'week') {
       dataArray = this.centrifugalPumpWeekList
       Name = "DPMCentrifugalPumpWeekData"
     }
     if (dataArray != 0) {
       const dataArrayList = dataArray.map(obj => {
-        const { CentrifugalPumpId, UserId, InsertedDate,CPWId,...rest } = obj;
+        const { CentrifugalPumpId, UserId, InsertedDate, CPWId, ...rest } = obj;
         return rest;
       })
       var csvData = this.ConvertToCSV(dataArrayList);
@@ -273,56 +268,56 @@ GetDailyData(){
     return str;
   }
 
-  ChooseData(d){ 
-    if(this.DailyWeekMode == 'daily'){
-      this.CentrifugalPumpDailyData =true;
-      this.CentrifugalPumpWeekData =false;
+  ChooseData(d) {
+    if (this.DailyWeekMode == 'daily') {
+      this.CentrifugalPumpDailyData = true;
+      this.CentrifugalPumpWeekData = false;
       this.GetDailyData();
-     console.log("daily");   
-    }else if(this.DailyWeekMode == 'week'){
-      this.CentrifugalPumpDailyData =false;
-      this.CentrifugalPumpWeekData =true;
+      console.log("daily");
+    } else if (this.DailyWeekMode == 'week') {
+      this.CentrifugalPumpDailyData = false;
+      this.CentrifugalPumpWeekData = true;
       this.GetCentrifugalPumpWeekdata();
       console.log("week");
     }
   }
-  
 
-  UniqueDate(a){
+
+  UniqueDate(a) {
     this.uniqueDates = null;
     this.uniqueDates = []
     for (var i = 0; i < a.length; i++) {
       if (this.uniqueDates.indexOf(a[i].Date) === -1) {
-       var date = this.datepipe.transform(a[i].Date, 'dd-MM-yyyy')
+        var date = this.datepipe.transform(a[i].Date, 'dd-MM-yyyy')
         this.uniqueDates.push(date);
       }
     }
   }
- 
+
   GetCentrifugapPumpUniqueDate(e) {
-    if(this.DailyWeekMode == 'daily'){
+    if (this.DailyWeekMode == 'daily') {
       const params = new HttpParams()
-            .set("FromDate",this.FromDate )
-            .set("ToDate",this.ToDate)
-      const url : string = this.CPAPIName.GetDailyDates;
-      this.CPAPIMethod.getWithParameters(url, params) 
-     // this.http.get('api/CenterifugalPumpAPI/GetDailyDates',{params})
-      .subscribe(res =>{
+        .set("FromDate", this.FromDate)
+        .set("ToDate", this.ToDate)
+      const url: string = this.CPAPIName.GetDailyDates;
+      this.CPAPIMethod.getWithParameters(url, params)
+        // this.http.get('api/CenterifugalPumpAPI/GetDailyDates',{params})
+        .subscribe(res => {
           console.log(res)
           this.centrifugalPump = res
-         
-      })
-    }else if (this.DailyWeekMode == 'week'){
+
+        })
+    } else if (this.DailyWeekMode == 'week') {
       const params = new HttpParams()
-            .set( "FromDate",this.FromDate )
-            .set(  "ToDate",this.ToDate)
-      const url : string = this.CPAPIName.GetWeekDates;
+        .set("FromDate", this.FromDate)
+        .set("ToDate", this.ToDate)
+      const url: string = this.CPAPIName.GetWeekDates;
       this.CPAPIMethod.getWithParameters(url, params)
-     // this.http.get('api/CenterifugalPumpAPI/GetWeekDates',{params})
-      .subscribe(res =>{
+        // this.http.get('api/CenterifugalPumpAPI/GetWeekDates',{params})
+        .subscribe(res => {
           console.log(res)
-          this.centrifugalPumpWeekList =res  
-      })
+          this.centrifugalPumpWeekList = res
+        })
     }
   }
 }

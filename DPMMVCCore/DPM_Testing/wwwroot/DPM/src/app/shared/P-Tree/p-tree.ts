@@ -16,6 +16,7 @@ import { DomHandler } from 'primeng/dom';
 import { RippleModule } from 'primeng/ripple';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment'
+import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'p-treeNode',
     templateUrl: './p-tree.html',
@@ -75,10 +76,10 @@ export class UITreeNode implements OnInit {
     }
 
 
-    NodeSelection(node) {  
-        node.edit = false;      
+    NodeSelection(node) {
+        node.edit = false;
         this.showOverlay = true;
-        this.Remark = !!node.remark? node.remark : '';
+        this.Remark = !!node.remark ? node.remark : '';
         this.FileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(node.dbPath);
         this.FileUrl = node.dbPath;
         var extension = this.getFileExtension(node.dbPath);
@@ -124,6 +125,13 @@ export class UITreeNode implements OnInit {
             this.collapse(event);
         else
             this.expand(event);
+    }
+    addTreeRow(event: Event, node) {
+        this.tree.addTreeRow.emit(node);
+        this.expand(event);
+    }
+    deleteTreeRow(event: Event, node) {
+        this.tree.deleteTreeRow.emit(node);
     }
 
     expand(event: Event) {
@@ -550,6 +558,9 @@ export class Tree implements OnInit, AfterContentInit, OnChanges, OnDestroy, Blo
     @Output() onNodeContextMenuSelect: EventEmitter<any> = new EventEmitter();
 
     @Output() onNodeDrop: EventEmitter<any> = new EventEmitter();
+
+    @Output() addTreeRow: EventEmitter<any> = new EventEmitter();
+    @Output() deleteTreeRow: EventEmitter<any> = new EventEmitter();
 
     @Input() style: any;
 
@@ -1172,8 +1183,8 @@ export class Tree implements OnInit, AfterContentInit, OnChanges, OnDestroy, Blo
     }
 }
 @NgModule({
-    imports: [CommonModule, ScrollingModule, RippleModule],
-    exports: [Tree, SharedModule, ScrollingModule],
+    imports: [CommonModule, ScrollingModule, RippleModule, FormsModule],
+    exports: [Tree, SharedModule, ScrollingModule, FormsModule],
     declarations: [Tree, UITreeNode]
 })
 export class TreeModule { }

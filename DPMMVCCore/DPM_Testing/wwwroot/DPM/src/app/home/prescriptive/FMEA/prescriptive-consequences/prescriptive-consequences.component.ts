@@ -91,7 +91,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
 
 
   ngOnInit() {
-    this.title.setTitle('DPM | Consequence Update');
+    this.title.setTitle('Consequence Update | Dynamic Prescriptive Maintenence');
     this.ConsequencesData = JSON.parse(localStorage.getItem('PrescriptiveUpdateObject'))
     var FailureModeWithLSETree = JSON.parse(this.ConsequencesData.FailureModeWithLSETree)
     this.data1 = FailureModeWithLSETree

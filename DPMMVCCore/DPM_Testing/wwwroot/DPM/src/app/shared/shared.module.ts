@@ -16,7 +16,6 @@ import { RadioButtonModule } from "primeng/radiobutton";
 import { StepsModule } from "primeng/steps";
 import { TableModule } from "primeng/table";
 import { TreeModule } from "./P-Tree/p-tree";
-import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastModule } from "primeng/toast";
 import {SliderModule} from 'primeng/slider';
 import {DialogModule} from 'primeng/dialog';
@@ -24,10 +23,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
 import {TooltipModule} from 'primeng/tooltip';
+import { TabViewModule } from 'primeng/tabview';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
-    imports: [CommonModule,
-        NgxSpinnerModule,        
+    imports: [CommonModule,      
         TableModule,
         FormsModule,
         ReactiveFormsModule,
@@ -52,7 +51,6 @@ import {TooltipModule} from 'primeng/tooltip';
         TooltipModule],
     exports: [CommonModule,
         CommonLoadingComponent,
-        NgxSpinnerModule,
         TableModule,
         FormsModule,
         ReactiveFormsModule,
@@ -75,6 +73,7 @@ import {TooltipModule} from 'primeng/tooltip';
         SafePipe,
         DialogModule,
         OverlayPanelModule,
+        TabViewModule,
         TooltipModule]
 })
 export class SharedModule {

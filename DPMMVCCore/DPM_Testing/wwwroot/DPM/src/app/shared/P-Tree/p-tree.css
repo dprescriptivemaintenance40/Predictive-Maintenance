@@ -3,6 +3,7 @@
     min-width: 10rem;
 }
 
+
 /* p {
     margin: 0;
 } */
@@ -16,12 +17,6 @@
 :host ::ng-deep .p-dialog .p-button {
     min-width: 6rem;
 }
-
-
-
-
-
-
 
 .p-tree-container {
     margin: 0;
@@ -55,7 +50,7 @@
     position: relative;
 }
 
-.p-treenode-leaf > .p-treenode-content .p-tree-toggler {
+.p-treenode-leaf>.p-treenode-content .p-tree-toggler {
     visibility: hidden;
 }
 
@@ -114,10 +109,10 @@
 }
 
 .p-tree-horizontal {
-    width:auto;
+    width: 1000vh;
     padding-left: 0;
     padding-right: 0;
-    overflow:auto;
+    overflow: auto;
 }
 
 .p-tree.p-tree-horizontal table,
@@ -142,7 +137,7 @@
 }
 
 .p-tree.p-tree-horizontal .p-treenode {
-    /* background: url("./images/line.gif") repeat-x scroll center center transparent; */
+    background: url("./images/line.gif") repeat-x scroll center center transparent;
     padding: .25rem 2.5rem;
 }
 
@@ -166,10 +161,10 @@
 }
 
 .p-tree.p-tree-horizontal .p-treenode-connector-line {
-    /* background: url("./images/line.gif") repeat-y scroll 0 0 transparent; */
+    background: url("./images/line.gif") repeat-y scroll 0 0 transparent;
     width: 1px;
 }
 
 .p-tree.p-tree-horizontal table {
-	height: 0;
+    height: 0;
 }

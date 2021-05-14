@@ -5,6 +5,7 @@ using DPM.Models.CompressorModel.ScrewCompressorModel;
 using DPM.Models.Prescriptive;
 using DPM.Models.PumpModel;
 using DPM.Models.RecycleBinModel;
+using DPM.Models.Prescriptive.RCA;
 
 namespace DPM_ServerSide.DAL
 {
@@ -22,13 +23,14 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpPrescriptiveModel> PrescriptiveModelData { get; set; }
         public DbSet<PrescriptiveLookupMasterModel> PrescriptiveLookupMassterModelData { get; set; }
         public DbSet<ContactUs> contactUs { get; set; }
-        public DbSet<RegisterUser> RegisterUsers { get; set; }
+        public DbSet<RegistrationModel> RegisterUsers { get; set; }
         public DbSet<CentrifugalPumpModel> CentrifugalPumpModelData { get; set; }
         public DbSet<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
         public DbSet<RecycleBinCentrifugalPumpPrescriptiveModel> recycleCentrifugalPumpModelData { get; set; }
         public DbSet<RestoreCentrifugalPumpPrescriptiveFailureMode> restoreCentrifugalPumpPrescriptiveFailureModes { get; set; }
 
         public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
+        public DbSet<RCAModel> rCAModels{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,7 +40,7 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<ScrewCompressorPredictionModel>().ToTable("screwcompressorpredictiontable");
             modelBuilder.Entity<ScrewCompressorFuturePredictionModel>().ToTable("screwcompressorfutureprediction");
             modelBuilder.Entity<ContactUs>().ToTable("contactus").HasKey(p => p.ContactUsId);
-            modelBuilder.Entity<RegistrationModel>().ToTable("registeruser");
+            modelBuilder.Entity<RegistrationModel>().ToTable("RegisterUser");
             modelBuilder.Entity<PrescriptiveLookupMasterModel>().ToTable("prescriptive_lookupmaster");
             modelBuilder.Entity<CentrifugalPumpModel>().ToTable("centrifugalpump");
             modelBuilder.Entity<CentrifugalPumpWeekDataModel>().ToTable("centrifugalpumpweekdata");
@@ -54,6 +56,7 @@ namespace DPM_ServerSide.DAL
                         .HasOne(p => p.RecycleBinCentrifugalPumpPrescriptiveModel)
                         .WithMany(b => b.restoreCentrifugalPumpPrescriptiveFailureModes)
                         .HasForeignKey(a => a.RCPPMId);
+            modelBuilder.Entity<RCAModel>().ToTable("rcatable");
         }
 
     }

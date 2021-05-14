@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams, JsonpClientBackend } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
@@ -10,9 +10,7 @@ import { Router } from '@angular/router';
 import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import * as Chart from 'chart.js';
-import { OverlayPanel } from "primeng/overlaypanel";
+import { SafeUrl } from '@angular/platform-browser';
 import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
@@ -232,7 +230,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     public title: Title,
     public router: Router,
     public commonLoadingDirective: CommonLoadingDirective,
-    private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef,
     private prescriptiveBLService : CommonBLService,
     private prescriptiveContantAPI : PrescriptiveContantAPI) { }
@@ -257,7 +254,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   };
 
   ngOnInit() {
-    this.title.setTitle('DPM | Prescriptive ');
+    this.title.setTitle('Prescriptive ADD |Dynamic Prescriptive Maintenence');
     this.data1 = JSON.parse(localStorage.getItem('TestingOBj'))
     setInterval(() => {
       this.dynamicDroppedPopup();

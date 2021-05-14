@@ -56,7 +56,7 @@
                     <input type="text" class="custom-form-control" [(ngModel)]="FunctionPeriodType" placeholder="e.g  60 days"> at a stretch, with equipemt operating within recommended parameters. -->
                 </p>
                 <div>
-                    <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FunctionFluidType"  placeholder="Type Function "></textarea>
+                    <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FunctionFluidType" placeholder="Type Function "></textarea>
                 </div>
             </div>
         </ng-template>
@@ -124,7 +124,7 @@
                         <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                             {{func.Description}}
                         </div>
-                   </div>
+                    </div>
                     <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                         <div *ngFor="let c of dropedMode">
                             <span>{{c?.Description}} </span>
@@ -173,7 +173,7 @@
             Failure Mode Effects
         </ng-template>
         <ng-template pTemplate="subtitle">
-          <b>Enter Failure Mode Effects for {{FMLSEffectModeName}}</b>
+            <b>Enter Failure Mode Effects for {{FMLSEffectModeName}}</b>
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
@@ -375,7 +375,7 @@
 </div>
 
 
-<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style ="overflow: scroll;">
+<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-card>
         <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
         <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
@@ -384,7 +384,7 @@
         <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
         <button *ngIf="!(Pattern == '')" label="Back" type="button" style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button><br>
         <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br>
-       
+
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company" id="selectNodetoView">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}
@@ -613,7 +613,3 @@
         </div>
     </div>
 </div>
-
-
-
-

@@ -1,0 +1,100 @@
+<div class="card shadow" style="margin: 20px;">
+    <p-tabView>
+        <p-tabPanel header="RCA List">
+            <div class="row">
+                <div class="col-xl-12 col-lg-11">
+                    <div class="card rca shadow mb-4 con">
+                        <div class="card-body">
+                            <p-table  [scrollable]="true" [style]="{width:'100%'}" [value]="RCARecords"
+                                [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [rowsPerPageOptions]="[10,25,50]">
+                                <ng-template pTemplate="colgroup">
+                                    <colgroup>
+                                        <col style="width:9em;">
+                                        <col style="width:9em;">
+                                        <col style="width:9em;">
+                                        <col style="width:9em;">
+                                    </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Sr.No</th>
+                                        <th>Tag No.</th>
+                                        <th>RCA code</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                                    <tr>
+                                        <td>{{p.TagNumber}}</td>
+                                        <td>{{p.RCACode}}</td>
+                                        <td>{{p.RCACompletionPercentage}}</td> 
+                                    </tr>
+                                    <tr *ngIf="RCARecords.length == 0">
+                                        <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Add"><br>
+            <div class="card shadow div-in-middle" *ngIf="SelectBoxEnabled">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Add Tag Number to RCA</b></li>
+                    <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <label style=" margin-right: 12px;">Tag Number</label>
+                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number"
+                                class="form-control">
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="Treeshow" style="overflow: scroll;">
+                <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
+                    (addTreeRow)="addTreeRow($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree><br><br>
+                <div style="margin: 10px;">
+                    <a class="btn btn-dark" *ngIf="cancel" (click)="Cancel()" pTooltip="Cancel data"
+                        tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>
+                    <a class="btn btn-dark" *ngIf="save" style="float:right;" (click)="Save()" pTooltip="Save data"
+                        tooltipPosition="top">save</a>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Update"><br>
+            <div class="card shadow div-in-middle" *ngIf="SelectUpdateBoxEnabled">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Select Tag Number to Update RCA</b></li>
+                    <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <label style=" margin-right: 12px;">Tag Number</label>
+                            <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                                <option value="">Choose..</option>
+                                <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <button class="btn btn-dark" (click)="UpdateTagNumberSelect()">Done</button>
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="UpdateTreeshow" style="overflow: scroll;">
+                <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
+                    (addTreeRow)="UpdateaddTreeRow($event)" (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
+                <div style="margin: 10px;">
+                    <a class="btn btn-dark" *ngIf="update" style="float:right;" (click)="UpdateRCA()"
+                        pTooltip="Update data" tooltipPosition="top">Update</a>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+</div>
