@@ -65,6 +65,9 @@ export class UITreeNode implements OnInit {
     public RCAImageViewEnable : boolean = false
     public RCAPdfViewEnable : boolean = false
     public RCAFileSafeUrl: any;
+    public RCAParentAttachment : boolean = false
+    public RCAParentOperationalData : string = ""
+    public RCAParentDesignData : string = ""
 
     constructor(
         @Inject(forwardRef(() => Tree),) tree,
@@ -177,6 +180,15 @@ export class UITreeNode implements OnInit {
             this.RCAPdfViewEnable = true;
             this.RCAFileView = true
         }
+    }
+
+    parentNodeADDData(event: Event, node) {
+        this.RCAParentAttachment = true;
+        // this.tree.addTreeRow.emit(node);
+        // this.expand(event);
+    }
+    closeRCAParrentView(){
+        this.RCAParentAttachment = false;
     }
 
     closeRCAFileView(){

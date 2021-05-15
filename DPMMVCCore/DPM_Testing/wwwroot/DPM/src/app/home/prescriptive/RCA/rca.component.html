@@ -20,12 +20,12 @@
                                 [rowsPerPageOptions]="[10,25,50]">
                                 <ng-template pTemplate="colgroup">
                                     <colgroup>
+                                        <col style="width:5em;">
                                         <col style="width:9em;">
                                         <col style="width:9em;">
+                                        <col style="width:15em;">
                                         <col style="width:9em;">
-                                        <col style="width:9em;">
-                                        <col style="width:9em;">
-                                        <col style="width:9em;">
+                                        <col style="width:16em;">
                                         <col style="width:9em;">
                                         <col style="width:5em;">
                                     </colgroup>
@@ -54,7 +54,7 @@
                                             <a title="Report"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;
                                         </td>
                                         <td>
-                                            <a style="color: red;" title="Delete RCA Tree"><i class="pi pi-trash"></i></a>
+                                            <a style="color: red;" (click)="DeleteRCARecord(p)" title="Delete RCA Tree"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
                                     <tr *ngIf="RCAListRecords.length == 0">
@@ -164,8 +164,7 @@
                                     <label style="margin-right: 12px;">Failure Mode</label>
                                     <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
                                           <option value="">Choose..</option>
-                                          <option value="Failure Modes">Failure Modes</option>
-                                            <!-- <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option> -->
+                                          <option *ngFor="let EL of HeatExchangerFailureModeList" [ngValue]="EL">{{EL}}</option>
                                         </select>
                                 </div>
                             </li>

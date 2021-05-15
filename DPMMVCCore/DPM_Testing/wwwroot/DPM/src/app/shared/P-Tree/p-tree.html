@@ -119,6 +119,13 @@
                             right: -18px;
                             top: -9px;" (click)="showRCAAttachment($event,node)"></span>
                         </ng-container>
+                        <ng-container *ngIf="node.isParent == 'Yes' ">
+                            <span class="p-tree-toggler pi pi-angle-double-right" style="
+                            position: absolute;
+                            color: black; 
+                            right: 10px;
+                            top: -9px;" (click)="parentNodeADDData($event,node)" style="margin-right: 0;"></span>
+                        </ng-container>
                         
                     </div>
                 </td>
@@ -185,7 +192,43 @@
                             <img [src]="RCAFileSafeUrl" width="500" height="300">
                      </div>
                     </div>
-                </div>
+                   </div>
+
+
+                   <div *ngIf="RCAParentAttachment" style="
+                            position: relative;
+                            width: 35em;
+                            border: none;
+                            border-radius: 0.3em;
+                            background-color: #fff;
+                            box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
+                            padding: 10px;">
+
+                            <a (click)="closeRCAParrentView(node)" style="position: absolute;
+                            right: 2px;
+                            top: 0;
+                            color: red;">
+                            <i class="pi pi-times-circle"></i>
+                            </a>&nbsp;&nbsp;
+
+                            <div style="margin-left: 10px;">
+                                <div class="row">
+                                    <label>Operation Details</label>
+                                </div>
+                                <div class="row">
+                                    <textarea [(ngModel)]="RCAParentOperationalData" class="form-control custom-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div style="margin-left: 10px;">
+                                <div class="row">
+                                    <label>Design Details</label>
+                                </div>
+                                <div class="row">
+                                    <textarea [(ngModel)]="RCAParentDesignData" class="form-control custom-textarea"></textarea>
+                                </div>
+                            </div>
+                    
+                   </div>
                 
                 <td class="p-treenode-children-container" *ngIf="node.children && node.expanded" [style.display]="node.expanded ? 'table-cell' : 'none'">
                     <div class="p-treenode-children">

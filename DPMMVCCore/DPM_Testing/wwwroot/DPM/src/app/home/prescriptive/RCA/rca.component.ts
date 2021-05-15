@@ -6,6 +6,7 @@ import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import { PrescriptiveContantAPI } from "../Shared/prescriptive.constant";
 import { ChangeDetectorRef } from "@angular/core";
 import { fromEvent } from 'rxjs';
+import { HttpParams } from "@angular/common/http";
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -49,6 +50,7 @@ export class RCAComponent {
     public AddRCAmodal : any;
     public ADDRCAMachineType : string = ""
     public ADDRCAFailureMode : string = ""
+    public HeatExchangerFailureModeList : any = [];
     zoom = 1;
     altKeyPressed = false;
 
@@ -78,6 +80,7 @@ export class RCAComponent {
     }
     ngOnInit() {
         this.getRecordsList();
+        this.getHeatExchangerData();
         fromEvent(document, 'wheel').subscribe((event: any) => {
             console.log('lll');
             if (this.altKeyPressed) {
@@ -97,6 +100,21 @@ export class RCAComponent {
         console.log('setting zoom ' + this.zoom.toString());
         this.zoom = value;
       }
+
+    
+    getHeatExchangerData(){
+        const params = new HttpParams()
+              .set("data", 'Heat Exchanger')
+        this.commonBL.getWithParameters(this.RCAAPIName.RCAGetHeatExchangerFMAPI, params)
+        .subscribe(
+            (res : any) => {
+                this.HeatExchangerFailureModeList = []
+                res.forEach(element => {
+                    this.HeatExchangerFailureModeList.push(element.Description)
+                });
+            }, err => {console.log(err.error)}
+        )
+    }
 
     getRecordsList(){
         this.commonBL.getWithoutParameters(this.RCAAPIName.RCAGetAPI)
@@ -118,7 +136,6 @@ export class RCAComponent {
             id: this.itemCount,
             label: "Why?",
             RCAFILE:'',
-            icon: "pi pi-image",
             addTree: true,
             deleteTree: true,
             children: []
@@ -225,25 +242,44 @@ export class RCAComponent {
     }
 
     SaveAddRCAToDatabase(){
-        let RCAOBJ = {
-            RCAID : 0 ,
-            TagNumber : this.TagNumber,
-            RCALabel : this.RCALabel,
-            RCATree : JSON.stringify(this.files),
-            RCAFailureMode : this.ADDRCAFailureMode,
-            RCAEquipment : this.ADDRCAMachineType
+        if(this.ADDRCAMachineType.length > 0 && this.ADDRCAFailureMode.length > 0){
+            let RCAOBJ = {
+                RCAID : 0 ,
+                TagNumber : this.TagNumber,
+                RCALabel : this.RCALabel,
+                RCATree : JSON.stringify(this.files),
+                RCAFailureMode : this.ADDRCAFailureMode,
+                RCAEquipment : this.ADDRCAMachineType
+            }
+            
+            this.commonBL.postWithoutHeaders(this.RCAAPIName.RCASaveAPI, RCAOBJ)
+            .subscribe(
+                res => {
+                    this.getRecordsList();
+                    this.TagNumber = ""
+                    this.RCALabel = ""
+                    this.ADDRCAFailureMode = ""
+                    this.ADDRCAMachineType = ""
+                    this.closeRCAAddModal();
+                    this.CancelADDRCA()
+                    this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
+                }, error =>{ console.log(error.error)}
+            )
+
+        }else {
+            this.messageService.add({ severity: 'warn',  summary: 'warn', detail: 'Fill all details'})
         }
         
-        this.commonBL.postWithoutHeaders(this.RCAAPIName.RCASaveAPI, RCAOBJ)
+    }
+
+    DeleteRCARecord(p) {
+        const params = new HttpParams()
+              .set('id', p.RCAID)
+        this.commonBL.DeleteWithParam(this.RCAAPIName.RCADeleteAPI, params)
         .subscribe(
-            res => {
-                this.getRecordsList();
-                this.TagNumber = ""
-                this.RCALabel = ""
-                this.closeRCAAddModal();
-                this.CancelADDRCA()
-                this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-            }, error =>{ console.log(error.error)}
+            (res: any) => {
+                this.getRecordsList()
+            }
         )
     }
 
