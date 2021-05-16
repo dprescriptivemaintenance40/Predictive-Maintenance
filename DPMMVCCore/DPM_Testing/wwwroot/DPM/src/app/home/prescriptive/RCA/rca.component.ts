@@ -32,11 +32,12 @@ export interface TreeNode<T = any> {
 })
 export class RCAComponent {
     files: any=[];
-    Updatefiles: TreeNode[];
+    Updatefiles: any[];
     selectedFile: any;
     public Treeshow: boolean= false;
     public UpdateTreeshow: boolean= false;
     public itemCount: number = 100;
+    public RCAUpdateItemCount: number = 1000;
     public TagNumber: string = "";
     public RCALabel: string = "";
     public UserId: string = ""; 
@@ -48,6 +49,7 @@ export class RCAComponent {
     public UpdateTagNumberList : any = [];
     public UpdateRecordList : any = [];
     public ADDDataForSaveAuth : any = [];
+    public UpdateRCADataForSaveAuth : any = [];
     public AddRCAmodal : any;
     public ADDRCAMachineType : string = ""
     public ADDRCAFailureMode : string = ""
@@ -63,8 +65,9 @@ export class RCAComponent {
                 private RCAAPIName :  PrescriptiveContantAPI) {
        this.files = [{
            id: this.itemCount,
-           label: 'Why?',
+           label: 'Problem Statement',
            addTree: true,
+           update : '',
            operationalData : '',
            designData : '',
            isParent : 'Yes',
@@ -73,7 +76,7 @@ export class RCAComponent {
        this.ADDDataForSaveAuth.push(
         {
             id: this.itemCount,
-            label: 'Why?',
+            label: 'Problem Statement',
             addTree: true,
             isParent : 'Yes',
             children: []
@@ -144,7 +147,7 @@ export class RCAComponent {
             children: []
         }
        var id = obj.id; 
-      if(event.isParent == 'Yes' && ( event.label == 'Why?' ||event.label == 'Why' || event.label == '?' || event.label == '')){
+      if(event.isParent == 'Yes' && ( event.label == 'Problem Statement' ||event.label == 'Problem' || event.label == 'Statement' || event.label == '')){
         this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to parent node" })  
       }else if(event.isParent == 'Yes' && (event.label != 'Why?' ||event.label != 'Why' || event.label != '?' || event.label != '')){
         event.children.push(obj);
@@ -245,7 +248,7 @@ export class RCAComponent {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please add attachment to all nodes' });
           
         }else if(Data == undefined && RCAFILE == undefined){
-            
+            this.files[0].update = JSON.stringify(this.ADDDataForSaveAuth);
             this.AddRCAmodal = document.getElementById("ADDRCAModal")
             this.AddRCAmodal.style.display = 'block'
         }
@@ -271,7 +274,8 @@ export class RCAComponent {
                     this.ADDRCAFailureMode = ""
                     this.ADDRCAMachineType = ""
                     this.closeRCAAddModal();
-                    this.CancelADDRCA()
+                    this.CancelADDRCA();
+                    this.ADDDataForSaveAuth = []
                     this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
                 }, error =>{ console.log(error.error)}
             )
@@ -302,6 +306,7 @@ export class RCAComponent {
         this.RCAListRecords.forEach(element => {
             if(element.RCALabel == this.UpdateSelectedLabel){
                this.Updatefiles = JSON.parse(element.RCATree)
+               this.UpdateRCADataForSaveAuth = JSON.parse(this.Updatefiles[0].update);
                this.UpdateRecordList.push(element)
                this.ADDRCAFailureMode = element.RCAFailureMode
                this.ADDRCAMachineType = element.RCAEquipment
@@ -316,8 +321,9 @@ export class RCAComponent {
     }
 
     UpdateaddTreeRow(event) {
+        this.RCAUpdateItemCount++;
         let obj = {
-            id: this.itemCount,
+            id: this.RCAUpdateItemCount,
             label: "Why?",
             RCAFILE:'',
             addTree: true,
@@ -325,6 +331,7 @@ export class RCAComponent {
             children: []
         }
         event.children.push(obj);
+        this.UpdateRCADataForSaveAuth.push(obj)
     }
 
     UpdatedeleteTreeRow(event) {        
@@ -336,29 +343,45 @@ export class RCAComponent {
             .subscribe()
         }  
         this.containsInNestedObjectDF(this.Updatefiles, event.id);
+        var index = this.UpdateRCADataForSaveAuth.findIndex(std => std.id == event.id);
+        this.UpdateRCADataForSaveAuth.splice(index, 1);
     }
 
     UpdateRCA(){
-        this.UpdateRecordList
-        let obj = {
-            RCAID : this.UpdateRecordList[0].RCAID,
-            TagNumber : this.UpdateRecordList[0].TagNumber,
-            RCATree : JSON.stringify(this.Updatefiles),
-            RCALabel : this.UpdateRecordList[0].RCALabel,
-            RCAEquipment : this.ADDRCAMachineType,
-            RCAFailureMode : this.ADDRCAFailureMode
+        this.UpdateRCADataForSaveAuth[0].label = this.Updatefiles[0].label 
+        var Data = this.UpdateRCADataForSaveAuth.find(f => f['label'] === 'Why?' || f['label'] === 'Why' || f['label'] === '' || f['label'] ==='?' || f['label'] ===' ?');
+        var RCAFILE = this.UpdateRCADataForSaveAuth.find(f => f['RCAFILE'] === '');
+        if(Data !== undefined){
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please fill data to all nodes' });
+          
+        } else if(RCAFILE !== undefined){
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please add attachment to all nodes' });
+          
+        }else if(Data == undefined && RCAFILE == undefined){
+                this.Updatefiles[0].update = JSON.stringify(this.UpdateRCADataForSaveAuth);
+                let obj = {
+                    RCAID : this.UpdateRecordList[0].RCAID,
+                    TagNumber : this.UpdateRecordList[0].TagNumber,
+                    RCATree : JSON.stringify(this.Updatefiles),
+                    RCALabel : this.UpdateRecordList[0].RCALabel,
+                    RCAEquipment : this.ADDRCAMachineType,
+                    RCAFailureMode : this.ADDRCAFailureMode
+                }
+                this.commonBL.PutData(this.RCAAPIName.RCAUpdateAPI, obj)
+                .subscribe(
+                    res =>{ 
+                        this.ADDRCAMachineType = "";
+                        this.ADDRCAFailureMode = "";
+                        this.UpdateTreeshow = false;
+                        this.SelectUpdateBoxEnabled = true;
+                        this.UpdateSelectedLabel = ""
+                        this.Updatefiles = []
+                        this.UpdateRCADataForSaveAuth = []
+                        this.getRecordsList();
+                    }
+                )
         }
-        this.commonBL.PutData(this.RCAAPIName.RCAUpdateAPI, obj)
-        .subscribe(
-            res =>{ 
-                this.ADDRCAMachineType = "";
-                this.ADDRCAFailureMode = "";
-                this.UpdateTreeshow = false;
-                this.SelectUpdateBoxEnabled = true;
-                this.UpdateSelectedLabel = ""
-                this.Updatefiles = []
-                this.getRecordsList();
-            })
+        
     }
 
     cancelRCAUpdate(){
