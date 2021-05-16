@@ -184,6 +184,9 @@
                         <i class="pi pi-download"></i>
                     </a>
                     <div class="text-center">
+                        <h5>To update attachment <button (click)="RCAUpdateNodeAttachment(node)" class="btn btn-link">click here</button></h5>
+                    </div>
+                    <div class="text-center">
                         <label for="file" class="custom-label">Uploaded File</label>
                         <div *ngIf="RCAPdfViewEnable" style="margin: 10px;" id="file">
                             <iframe [src]="RCAFileSafeUrl" width="500" height="300"> </iframe>

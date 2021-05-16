@@ -41,8 +41,9 @@ export class PrescriptiveContantAPI{
     public RCAGetAPI : string = '/RCAAPI/GetAllRCARecords';
     public RCAGetHeatExchangerFMAPI : string = '/PrescriptiveLookupMasterAPI/RCAHeatExchanger';
     public RCADeleteAPI : string = '/RCAAPI/DeleteRCARecord';
+    public RCAUpdateAttachment : string = '/PrescriptiveAPI/UpdateFileUpload'
+    public RCAUpdateAPI : string = '/RCAAPI/RCAUpdate'
 
     //#endregion
-
 
 }

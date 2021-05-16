@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { OverlayPanel } from "primeng/overlaypanel";
 import { PrescriptiveContantAPI } from 'src/app/home/prescriptive/Shared/prescriptive.constant';
 import { CommonBLService } from '../BLDL/common.bl.service';
+import { HttpParams } from '@angular/common/http';
 @Component({
     selector: 'p-treeNode',
     templateUrl: './p-tree.html',
@@ -68,13 +69,14 @@ export class UITreeNode implements OnInit {
     public RCAParentAttachment : boolean = false
     public RCAParentOperationalData : string = ""
     public RCAParentDesignData : string = ""
+    public RCAUpdateAttachment : boolean = false
 
     constructor(
         @Inject(forwardRef(() => Tree),) tree,
         private sanitizer: DomSanitizer,
         private change: ChangeDetectorRef,
         private prescriptiveContantAPI : PrescriptiveContantAPI,
-        private prescriptiveBLService : CommonBLService) {
+        private commonBLService : CommonBLService) {
         this.tree = tree as Tree;
     }
 
@@ -184,6 +186,8 @@ export class UITreeNode implements OnInit {
 
     parentNodeADDData(event: Event, node) {
         this.RCAParentAttachment = true;
+        this.RCAParentDesignData = node.designData
+        this.RCAParentOperationalData = node.operationalData
         // this.tree.addTreeRow.emit(node);
         // this.expand(event);
     }
@@ -201,6 +205,19 @@ export class UITreeNode implements OnInit {
 
     }
     
+    RCAUpdateNodeAttachment(node){
+        var fileDetails = JSON.parse(node.RCAFILE)
+        const params = new HttpParams()
+            .set('fullPath', fileDetails.dbPath)
+        this.commonBLService.DeleteWithParam(this.prescriptiveContantAPI.RCAUpdateAttachment, params)
+        .subscribe(
+            res => {
+                node.RCAFILE = ''
+                this.RCAFileView = false;
+                this.AttachmentOverlay = true;
+            }
+        )
+    }
     
 
     expand(event: Event) {

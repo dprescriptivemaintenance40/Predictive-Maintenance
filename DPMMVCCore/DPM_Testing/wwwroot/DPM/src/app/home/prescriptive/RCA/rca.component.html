@@ -107,8 +107,17 @@
         <p-tabPanel header="Update"><br>
             <div class="card shadow div-in-middle" *ngIf="SelectUpdateBoxEnabled">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Select Tag Number to Update RCA</b></li>
+                    <li class="list-group-item"><b>Select Label to Update RCA</b></li>
                     <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <label style=" margin-right: 12px;">Label</label>
+                            <select class="form-select" [(ngModel)]="UpdateSelectedLabel" class="form-control">
+                                <option value="">Choose..</option>
+                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option>
+                            </select>
+                        </div>
+                    </li>
+                    <!-- <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Tag Number</label>
                             <select class="form-select" [(ngModel)]="UpdateSelectedTagNumber" class="form-control">
@@ -116,19 +125,45 @@
                                 <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option>
                             </select>
                         </div>
-                    </li>
+                    </li> -->
                     <li class="list-group-item">
                         <button class="btn btn-dark" (click)="UpdateTagNumberSelect()">Done</button>
                     </li>
                 </ul>
             </div>
+            
             <div *ngIf="UpdateTreeshow" style="overflow: scroll;">
+                <div style="margin: 20px; border: 1px solid;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" style="width: 31em;">
+                            <div class="input-group mb-3">
+                                <label style=" margin-right: 12px;">Asset</label>
+                                <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
+                                    <option value="" disabled>Choose..</option>
+                                      <option value="HeatExchanger" selected>Heat Exchanger</option>
+                                  </select>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="input-group mb-3" style="width: 29em;">
+                                <label style=" margin-right: 12px;">Failure Mode</label>
+                                <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
+                                    <option value="" disabled>Choose..</option>
+                                    <option *ngFor="let EL of HeatExchangerFailureModeList" [ngValue]="EL">{{EL}}</option>
+                                  </select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 <div cdkDrag>
                     <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
-                    (addTreeRow)="UpdateaddTreeRow($event)" (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
+                    (addTreeRow)="UpdateaddTreeRow($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
                 </div>
                
                 <div style="margin: 10px;">
+                    <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data"
+                        tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>
+                    
                     <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()"
                         pTooltip="Update data" tooltipPosition="top">Update</a>
                 </div>

@@ -43,6 +43,7 @@ export class RCAComponent {
     public SelectBoxEnabled: boolean = true
     public SelectUpdateBoxEnabled: boolean = true
     public UpdateSelectedTagNumber : string = ""
+    public UpdateSelectedLabel : string = ""
     public RCAListRecords: any = [];
     public UpdateTagNumberList : any = [];
     public UpdateRecordList : any = [];
@@ -126,7 +127,7 @@ export class RCAComponent {
                 this.UpdateTagNumberList = []
                 this.RCAListRecords = res
                 this.RCAListRecords.forEach(element => {
-                   this.UpdateTagNumberList.push(element.TagNumber)
+                   this.UpdateTagNumberList.push(element.RCALabel)
                 }); 
             }, err => {console.log(err.error)}
         )
@@ -160,7 +161,14 @@ export class RCAComponent {
       }
     }
 
-    deleteTreeRow(event) {        
+    deleteTreeRow(event) {   
+        if(event.RCAFILE !== ''){
+            var fileDetails = JSON.parse(event.RCAFILE)
+            const params = new HttpParams()
+                  .set('fullPath', fileDetails.dbPath)
+            this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
+            .subscribe()
+        }  
         this.containsInNestedObjectDF(this.files, event.id);
         var index = this.ADDDataForSaveAuth.findIndex(std => std.id == event.id);
         this.ADDDataForSaveAuth.splice(index, 1);
@@ -288,42 +296,75 @@ export class RCAComponent {
     closeRCAAddModal(){
         this.AddRCAmodal.style.display = 'none'
     }
-    
 
     UpdateTagNumberSelect(){
-        if(this.UpdateSelectedTagNumber.length>0){
+        if(this.UpdateSelectedLabel.length > 0){
         this.RCAListRecords.forEach(element => {
-            if(element.TagNumber == this.UpdateSelectedTagNumber){
+            if(element.RCALabel == this.UpdateSelectedLabel){
                this.Updatefiles = JSON.parse(element.RCATree)
                this.UpdateRecordList.push(element)
+               this.ADDRCAFailureMode = element.RCAFailureMode
+               this.ADDRCAMachineType = element.RCAEquipment
             }
         });
         
         this.UpdateTreeshow= true;
         this.SelectUpdateBoxEnabled = false
     }else{
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Choose Tag number" })   
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Choose RCA label" })   
     }
     }
 
     UpdateaddTreeRow(event) {
-        this.itemCount++;
         let obj = {
             id: this.itemCount,
             label: "Why?",
             RCAFILE:'',
-            icon: "pi pi-image",
             addTree: true,
+            deleteTree: true,
             children: []
         }
         event.children.push(obj);
     }
 
     UpdatedeleteTreeRow(event) {        
+        if(event.RCAFILE !== ''){
+            var fileDetails = JSON.parse(event.RCAFILE)
+            const params = new HttpParams()
+                  .set('fullPath', fileDetails.dbPath)
+            this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
+            .subscribe()
+        }  
         this.containsInNestedObjectDF(this.Updatefiles, event.id);
     }
-    UpdateRCA(){
 
+    UpdateRCA(){
+        this.UpdateRecordList
+        let obj = {
+            RCAID : this.UpdateRecordList[0].RCAID,
+            TagNumber : this.UpdateRecordList[0].TagNumber,
+            RCATree : JSON.stringify(this.Updatefiles),
+            RCALabel : this.UpdateRecordList[0].RCALabel,
+            RCAEquipment : this.ADDRCAMachineType,
+            RCAFailureMode : this.ADDRCAFailureMode
+        }
+        this.commonBL.PutData(this.RCAAPIName.RCAUpdateAPI, obj)
+        .subscribe(
+            res =>{ 
+                this.ADDRCAMachineType = "";
+                this.ADDRCAFailureMode = "";
+                this.UpdateTreeshow = false;
+                this.SelectUpdateBoxEnabled = true;
+                this.UpdateSelectedLabel = ""
+                this.Updatefiles = []
+                this.getRecordsList();
+            })
+    }
+
+    cancelRCAUpdate(){
+        this.Updatefiles = []
+        this.UpdateTreeshow = false;
+        this.SelectUpdateBoxEnabled = true;
     }
 
     uploadRCAAttachment(event){
@@ -341,11 +382,20 @@ export class RCAComponent {
               .subscribe(
                     (res: any) => {
                         TreeNode.RCAFILE = JSON.stringify(res)
-                        this.Treeshow = false
-                        this.changeDetectorRef.detectChanges()
-                        this.Treeshow = true
-                        this.messageService.add({ severity: 'success', summary: 'success', detail: "Sucessfully attached" })
-           
+                        if(this.Treeshow){
+                            this.Treeshow = false
+                            this.changeDetectorRef.detectChanges()
+                            this.Treeshow = true
+                            this.messageService.add({ severity: 'success', summary: 'success', detail: "Sucessfully attached" })
+               
+                        }else if(this.UpdateTreeshow){
+                            this.UpdateTreeshow = false
+                            this.changeDetectorRef.detectChanges()
+                            this.UpdateTreeshow = true
+                            this.messageService.add({ severity: 'success', summary: 'success', detail: "Sucessfully attached" })
+               
+                        }
+                        
                     }, 
                     err => { console.log(err.error) });
             } else {
