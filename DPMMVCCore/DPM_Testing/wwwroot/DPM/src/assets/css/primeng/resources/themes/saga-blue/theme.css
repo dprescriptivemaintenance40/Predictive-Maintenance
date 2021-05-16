@@ -3160,7 +3160,8 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
     background-color: #ffffff;
     color: #495057;
-    padding: 0.5rem;
+    margin: 3px;
+    padding: 0.3rem;
     transition: box-shadow 0.2s;
 }
 
@@ -3175,6 +3176,12 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content .p-tree-toggler {
     margin-right: 0.5rem;
+    opacity: 0;
+}
+
+.p-tree-toggler:hover {
+    margin-right: 0.5rem;
+    opacity: 1 !important;
 }
 
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content .p-treenode-icon {
