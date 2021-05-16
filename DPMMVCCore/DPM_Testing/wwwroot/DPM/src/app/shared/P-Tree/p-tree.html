@@ -216,7 +216,7 @@
                                     <label>Operation Details</label>
                                 </div>
                                 <div class="row">
-                                    <textarea [(ngModel)]="RCAParentOperationalData" class="form-control custom-textarea"></textarea>
+                                    <textarea (change)="AddRCAOperationalDesignData(node)" [(ngModel)]="RCAParentOperationalData" class="form-control custom-textarea"></textarea>
                                 </div>
                             </div>
                             <div style="margin-left: 10px;">
@@ -224,7 +224,7 @@
                                     <label>Design Details</label>
                                 </div>
                                 <div class="row">
-                                    <textarea [(ngModel)]="RCAParentDesignData" class="form-control custom-textarea"></textarea>
+                                    <textarea (change)="AddRCAOperationalDesignData(node)" [(ngModel)]="RCAParentDesignData" class="form-control custom-textarea"></textarea>
                                 </div>
                             </div>
                     

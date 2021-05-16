@@ -64,6 +64,8 @@ export class RCAComponent {
            id: this.itemCount,
            label: 'Why?',
            addTree: true,
+           operationalData : '',
+           designData : '',
            isParent : 'Yes',
            children: []
        }];

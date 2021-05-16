@@ -194,6 +194,13 @@ export class UITreeNode implements OnInit {
     closeRCAFileView(){
         this.RCAFileView = false
     }
+
+    AddRCAOperationalDesignData(node){
+        node.designData = this.RCAParentDesignData
+        node.operationalData = this.RCAParentOperationalData
+
+    }
+    
     
 
     expand(event: Event) {
