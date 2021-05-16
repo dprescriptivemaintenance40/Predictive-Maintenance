@@ -331,7 +331,9 @@ public UpdateBeta : number = 0
     private changeDetectorRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
     private prescriptiveBLService : CommonBLService,
-    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
+    private prescriptiveContantAPI : PrescriptiveContantAPI) {
+      this.title.setTitle('Prescriptive Update | Dynamic Prescriptive Maintenence')
+     }
 
   private isNewEntity: boolean = false;
   CanDeactivate(): boolean | Observable<boolean> | Promise<boolean> {

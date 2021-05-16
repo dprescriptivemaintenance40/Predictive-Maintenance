@@ -27,11 +27,9 @@ export class ResetPasswordComponent implements OnInit {
     public fb: FormBuilder,
     public http: HttpClient,
     private title:Title) {
-    this.title.setTitle('Login | Dynamic Prescriptive Maintenence');
+    this.title.setTitle('Reset Password | Dynamic Prescriptive Maintenence');
     this.token = this.activateroute.snapshot.queryParamMap.get('token');
-
     this.email = this.activateroute.snapshot.queryParamMap.get('email');
-    console.log(this.email)
     this.userId = this.activateroute.snapshot.queryParamMap.get('userId');
   }
 

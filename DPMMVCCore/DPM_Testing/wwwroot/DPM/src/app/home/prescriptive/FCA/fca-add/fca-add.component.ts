@@ -144,11 +144,11 @@ public UpdateFCAIntervals : any = []
     public title: Title,
     public router: Router,
     private excelFormatService : ExcelFormatService,
-    public commonLoadingDirective: CommonLoadingDirective,
-    private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef,
     private prescriptiveBLService : CommonBLService,
-    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { 
+      this.title.setTitle('FCA ADD | Dynamic Prescriptive Maintenence');
+    }
 
   ngOnInit() {
     var FCAData = JSON.parse(localStorage.getItem('FCAObject'))

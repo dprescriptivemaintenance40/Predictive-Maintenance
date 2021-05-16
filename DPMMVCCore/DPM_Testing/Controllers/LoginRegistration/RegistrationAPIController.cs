@@ -1,18 +1,15 @@
 ﻿using DPM_Testing.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.Extensions.Configuration;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using DPM_ServerSide.DAL;
+using Microsoft.EntityFrameworkCore;
+using DPM.Utilities;
 
 namespace DPM_Testing.Controllers
 {
@@ -20,65 +17,36 @@ namespace DPM_Testing.Controllers
     [ApiController]
     public class RegistrationAPIController : ControllerBase
     {
-        private UserManager<RegisterUser> _userManager;
-        private SignInManager<RegisterUser> _singInManager;
         private readonly ApplicationSettings _appSettings;
-        IConfiguration config;
+        private readonly DPMDal context;
 
-
-        public RegistrationAPIController(UserManager<RegisterUser> userManager,
-            SignInManager<RegisterUser> signInManager, IOptions<ApplicationSettings> appSettings
-            , IConfiguration config_)
+        public RegistrationAPIController(IOptions<ApplicationSettings> appSettings,
+            DPMDal context)
         {
-            _userManager = userManager;
-            _singInManager = signInManager;
             _appSettings = appSettings.Value;
-            config = config_;
+            this.context = context;
         }
 
 
-
-
-        // GET: api/<RegistrationAPIController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<RegistrationAPIController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<RegistrationAPIController>
-
-        //public void Post([FromBody] string value)
-        //{
-        //}
         [HttpPost]
         [Route("Register")]
-        //POST : /api/RegistrationAPI/Register
         public async Task<IActionResult> Post(RegistrationModel model)
         {
-
-            var registerUser = new RegisterUser()
-            {
-                UserName = model.UserName,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                Firstname = model.Firstname,
-                Lastname = model.Lastname,
-                Company = model.Company,
-                UserType = 2 // UserType 2 is for customer
-            };
-
             try
             {
-                var result = await _userManager.CreateAsync(registerUser, model.Password);
-                return Ok(result);
+                var user = await this.context.RegisterUsers.FirstOrDefaultAsync(a => a.UserName == model.UserName);
+                if (user == null)
+                {
+                    model.UserId = Guid.NewGuid().ToString();
+                    model.Password = EncryptDecryptPassword.Encrypt(model.Password, model.UserId.ToString());
+                    this.context.RegisterUsers.Add(model);
+                    await this.context.SaveChangesAsync();
+                    return Ok(model);
+                }
+                else
+                {
+                    return BadRequest("This User is already registered with us!!!");
+                }
             }
             catch (Exception ex)
             {
@@ -88,48 +56,45 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("Login")]
-        //POST : /api/ApplicationUser/Login
         public async Task<IActionResult> Login(LoginModel model)
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(model.UserName);
-                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                var user = await this.context.RegisterUsers.FirstOrDefaultAsync(a => a.UserName == model.UserName);                
+                if (user != null)
                 {
-                    var tokenDescriptor = new SecurityTokenDescriptor
+                    var testing = EncryptDecryptPassword.Encrypt(model.Password, user.UserId);
+                    var password = EncryptDecryptPassword.Decrypt(user.Password, user.UserId);
+                    if (password == model.Password)
                     {
-                        Subject = new ClaimsIdentity(new Claim[]
+                        var tokenDescriptor = new SecurityTokenDescriptor
                         {
-                        new Claim("UserID",user.Id.ToString())
-                        }),
-                        Expires = DateTime.UtcNow.AddDays(1),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                    var SecurityToken = tokenHandler.WriteToken(securityToken);
-                    return Ok(new { SecurityToken , user });
+                            Subject = new ClaimsIdentity(new Claim[]
+                            {
+                        new Claim("UserID",user.UserId.ToString())
+                            }),
+                            Expires = DateTime.UtcNow.AddMinutes(60),
+                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                        };
+                        var tokenHandler = new JwtSecurityTokenHandler();
+                        var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                        var SecurityToken = tokenHandler.WriteToken(securityToken);
+                        return Ok(new { SecurityToken, user });
+                    }
+                    else
+                    {
+                        return BadRequest("Password is incorrect");
+                    }
                 }
                 else
-                    return BadRequest(new { message = "Username or password is incorrect." });
+                {
+                    return BadRequest("Username is incorrect.");
+                }
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Incorrect username or password");
             }
-        }
-
-
-        // PUT api/<RegistrationAPIController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<RegistrationAPIController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

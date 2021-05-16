@@ -7,17 +7,16 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./education.component.scss']
 })
 export class EducationComponent {
-  constructor( private title: Title){}
-  ngOnInit(){
-    this.title.setTitle('DPM | Education');
+  constructor(private title: Title) {
+    this.title.setTitle('Education | Dynamic Prescriptive Maintenence');
   }
 
-  article1(){
+  article1() {
     let link = document.createElement("a");
     link.download = "DPM Article 1.1-v0.2";
     link.href = "dist/DPM/assets/DPM Article 1.1-v0.2.pdf";
     link.click();
   }
-  
+
 
 }

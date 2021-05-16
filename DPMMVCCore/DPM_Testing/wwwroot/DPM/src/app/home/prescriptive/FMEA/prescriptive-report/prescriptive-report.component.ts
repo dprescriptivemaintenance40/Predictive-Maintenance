@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl, Title } from '@angular/platform-browser';
 import html2canvas from 'html2canvas';
 import jspdf, { jsPDF } from 'jspdf';
 import { MessageService } from 'primeng/api';
@@ -50,7 +50,9 @@ export class PrescriptiveReportComponent implements OnInit {
     public sanitizer: DomSanitizer,
     private messageService: MessageService,
     private changeDetectorRef: ChangeDetectorRef,
-    private commonLoadingDirective: CommonLoadingDirective) {
+    private commonLoadingDirective: CommonLoadingDirective,
+    private title:Title) {
+      this.title.setTitle('Prescriptive Report | Dynamic Prescriptive Maintenence')
   }
 
   ngOnInit() {

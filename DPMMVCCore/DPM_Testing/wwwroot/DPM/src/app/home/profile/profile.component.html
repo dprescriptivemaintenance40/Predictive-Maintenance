@@ -1,102 +1,82 @@
 <div *ngIf="user" class="container bootstrap snippet">
     <div class="row">
         <div class="col-sm-3">
-           
             <div class="text-center">
-                 <img [src]="user.ImageUrl" height="150"> 
+                <img [src]="user.ImageUrl" style="    width: 10em;
+                height: 10em;
+                border: none;
+                border-radius: 100%;">
             </div>
-           <div class="text-center">
-           <div class="col-sm">
-            <input type="file"  #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
-            <button type="button" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;"class="btn btn-success" (click)="file.click()">Upload Image</button>
-           <!-- <button type="button" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;"class="btn btn-success" (click)="file.click()">Delete Image</button> -->
-          </div>
-           </div>
-           
-          <div class="col-md-4">
-            <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
-                {{progress}}%
-              </span>
-            <span class="upload" *ngIf="message">
-              {{message}}
-            </span>
-          </div>
-
-          
-            
+            <div class="text-center">
+                <div class="col-sm">
+                    <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                    <button type="button" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;" class="btn btn-success" (click)="file.click()">Upload Image</button>
+                </div>
+            </div>
         </div>
-        <!--/col-3-->
         <div class="col-sm-9">
             <ul class="nav nav-tabs">
-             
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Profile</a></li>
-              
             </ul>
-
             <div class="tab-content">
                 <div class="tab-pane active" id="home">
-                    <form class="form">
+                    <form [formGroup]="registerForm" class="form">
                         <br>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label for="username">
-                  <h4>Username</h4>
-                </label>
-                                <input [(ngModel)]="user.UserName" type="text" class="form-control" name="username" id="username" placeholder="Username" disabled>
+                                <label for="username"><h4>User Name</h4></label>
+                                <input formControlName="UserName" type="text" class="form-control" name="username" id="username" placeholder="User Name">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label for="email">
-                  <h4>Firstname</h4>
-                </label>
-                                <input [(ngModel)]="user.Firstname" type="text" class="form-control" name="Firstname" id="Firstname" placeholder="Firstname">
+                                <label for="email"><h4>First Name</h4></label>
+                                <input formControlName="FirstName" type="text" class="form-control" name="Firstname" id="Firstname" placeholder="First Name">
+                                <span class="text-danger" *ngIf="registerForm.controls['FirstName'].dirty" [hidden]="!(registerForm.hasError('required', 'FirstName'))">
+                                    <i class="pi pi-info-circle"></i>&nbsp;First name is required 
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label for="email">
-                  <h4>Lastname</h4>
-                </label>
-                                <input [(ngModel)]="user.Lastname" type="text" class="form-control" name="Lastname" id="Lastname" placeholder="Lastname">
+                                <label for="email"><h4>Last Name</h4></label>
+                                <input formControlName="LastName" type="text" class="form-control" name="Lastname" id="Lastname" placeholder="Last Name">
+                                <span class="text-danger" *ngIf="registerForm.controls['LastName'].dirty" [hidden]="!(registerForm.hasError('required', 'LastName'))">
+                                    <i class="pi pi-info-circle"></i>&nbsp;Last name is required 
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label for="email">
-                  <h4>Contact</h4>
-                </label>
-                                <input [(ngModel)]="user.PhoneNumber" type="email" class="form-control" name="Contact" id="Contact" placeholder="Contact">
+                                <label for="number"><h4>Phone Number</h4></label>
+                                <input formControlName="PhoneNumber" type="number" class="form-control" name="Contact" id="Contact" placeholder="Phone Number">
+                                <span class="text-danger" *ngIf="registerForm.controls['PhoneNumber'].dirty" [hidden]="!(registerForm.hasError('required', 'PhoneNumber'))">
+                                    <i class="pi pi-info-circle"></i>&nbsp;Phone number is required 
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-6">
-                                <label for="email">
-                  <h4>Email</h4>
-                </label>
-                                <input [(ngModel)]="user.Email" type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                                <label for="email"><h4>Email</h4></label>
+                                <input formControlName="Email" type="email" class="form-control" name="email" id="email" placeholder="Email">
+                                <span class="text-danger" *ngIf="registerForm.controls['Email'].dirty" [hidden]="!(registerForm.hasError('required', 'Email'))">
+                                    <i class="pi pi-info-circle"></i>&nbsp;Email is required 
+                                </span>
+                                <span class="text-danger" *ngIf="registerForm.controls['Email'].dirty" [hidden]="!(registerForm.hasError('pattern', 'Email'))">
+                                    <i class="pi pi-info-circle"></i>&nbsp;Email format is not correct
+                                </span>
                             </div>
                         </div>
-                        
                         <div class="form-group">
-                            
                             <div class="col-xs-12">
                                 <br>
-                                
                                 <button class="btn btn-dark" type="submit" (click)="Update()"> Update</button>
-
                             </div>
                         </div>
                     </form>
                 </div>
-                <!--/tab-pane-->
-
             </div>
-            <!--/tab-pane-->
         </div>
-        <!--/tab-content-->
     </div>
-    <!--/col-9-->
 </div>
-<!--/row-->
 <p-toast position="top-center"></p-toast>

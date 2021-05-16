@@ -44,7 +44,9 @@ export class PrescriptiveListComponent implements OnInit {
     public changeDetectorRef: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
     private commonBLService: CommonBLService,
-    private prescriptiveContantAPI: PrescriptiveContantAPI) { }
+    private prescriptiveContantAPI: PrescriptiveContantAPI) { 
+      this.title.setTitle('Prescriptive List | Dynamic Prescriptive Maintenence')
+    }
 
   ngOnInit() {
     this.getPrescriptiveRecords();
