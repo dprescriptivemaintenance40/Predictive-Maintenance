@@ -164,8 +164,9 @@
                     </div>
                    
                    <div *ngIf="RCAFileView" style="
-                            position: relative;
-                            width: 35em;
+                            position: absolute;
+                            z-index: 1;
+                            width: 15em;
                             border: none;
                             border-radius: 0.3em;
                             background-color: #fff;
@@ -184,15 +185,18 @@
                         <i class="pi pi-download"></i>
                     </a>
                     <div class="text-center">
-                        <h5 *ngIf="node.addTree">To update attachment <button (click)="RCAUpdateNodeAttachment(node)" class="btn btn-link">click here</button></h5>
+                        <h5 *ngIf="node.addTree" style="font-size: 1em; font-weight: revert;">To update attachment <button (click)="RCAUpdateNodeAttachment(node)" class="btn btn-link">click here</button></h5>
                     </div>
                     <div class="text-center">
-                        <label for="file" class="custom-label">Uploaded File</label>
+                        <label for="file" class="custom-label" style="font-size: 1em;
+                        font-weight: revert;
+                        border-bottom: 2px solid;
+                        margin: 0px;">Uploaded File</label>
                         <div *ngIf="RCAPdfViewEnable" style="margin: 10px;" id="file">
-                            <iframe [src]="RCAFileSafeUrl" width="500" height="300"> </iframe>
+                            <iframe [src]="RCAFileSafeUrl" width="200" height="200"> </iframe>
                         </div>
                         <div *ngIf="RCAImageViewEnable" style="margin: 10px;" id="file">
-                            <img [src]="RCAFileSafeUrl" width="500" height="300">
+                            <img [src]="RCAFileSafeUrl" width="200" height="200">
                      </div>
                     </div>
                    </div>
