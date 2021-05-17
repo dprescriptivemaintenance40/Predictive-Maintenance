@@ -54,6 +54,8 @@ export class RCAComponent {
     public ADDRCAMachineType : string = ""
     public ADDRCAFailureMode : string = ""
     public HeatExchangerFailureModeList : any = [];
+    public RCADisplayLabel : string = ""
+    public RCADisplayFile : any = []
     zoom = 1;
     altKeyPressed = false;
 
@@ -226,10 +228,12 @@ export class RCAComponent {
     CancelADDRCA(){
         this.Treeshow = false
         this.SelectBoxEnabled = true
+        this.TagNumber = ""
+        this.RCALabel = ""
         this.files=[]  
         this.files = [{
             id: this.itemCount,
-            label: 'Why?',
+            label: 'Problem Statement',
             addTree: true,
             isParent : 'Yes',
             children: []
@@ -427,9 +431,39 @@ export class RCAComponent {
           }
     }
 
-    CheckData(){
-        var labels =  this.files.find(a => a['label'])
-        var Data = this.files.find(a => a['label'] == 'Why?')
+    RCATreeDisplay(p){
+        this.RCADisplayLabel = p.RCALabel
+        this.RCADisplayFile = JSON.parse(p.RCATree)
+        this.TraverseNestedJson(this.RCADisplayFile)
+    }
+
+    CloseRCATreeDisplay(){
+        this.RCADisplayFile = []
+    }
+
+
+    TraverseNestedJson(val : any){
+        for (let index = 0; index < val.length; index++) {
+             val[index].addTree = false;
+             val[index].deleteTree = false;
+             if(val[index].children.length > 0){
+                 var Data : any = val[index].children;
+                 for (let index1 = 0; index1 < Data.length; index1++) {
+                    Data[index1].addTree = false;
+                    Data[index1].deleteTree = false;
+                    if(Data[index1].children.length > 0){
+                        var Data2 = Data[index1].children
+                        for (let index3 = 0; index3 < Data2.length; index3++) {
+                            var d = []
+                            d.push(Data2[index3])
+                            this.TraverseNestedJson(d)
+                        }
+                    }
+                 }
+             }
+            
+        }
+
     }
 
 }
