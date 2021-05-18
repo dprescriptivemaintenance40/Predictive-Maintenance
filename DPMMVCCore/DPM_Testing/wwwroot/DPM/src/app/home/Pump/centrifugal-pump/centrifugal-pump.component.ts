@@ -107,6 +107,12 @@ export class CentrifugalPumpComponent {
     })
   }
 
+  public VendorList : any = []
+  public vendorUserId : string = ""
+  public VendorsFirstName : string = ""
+  public vendorsLastname : string = ""
+  public vendorsUsername : string = ""
+
   constructor(public http: HttpClient,
     public title: Title,
     public messageService: MessageService,
@@ -119,7 +125,11 @@ export class CentrifugalPumpComponent {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
     }
-    this.GetDailyData();
+    if(this.user.UserType == 1){
+       this.GetVendorList()
+    }else{
+       this.GetDailyData();
+    }
     this.FromDate = moment().format('YYYY-MM-DD');
     this.ToDate = moment().format('YYYY-MM-DD');
   }
@@ -133,6 +143,28 @@ export class CentrifugalPumpComponent {
       })
   }
 
+  GetVendorList(){
+    this.CPAPIMethod.getWithoutParameters(this.CPAPIName.GetVendorList)
+    .subscribe(
+      (res: any) => {
+        this.VendorList = res;
+      }, err => {console.log(err.error)})
+  }
+  
+  slectedVendor(e : any){
+     if(e !== 'select...'){
+      this.vendorUserId = e.split(" ")[0]
+      var Data = this.VendorList.find(v => v['UserId'] === this.vendorUserId)
+      this.vendorsLastname = Data.LastName;
+      this.VendorsFirstName = Data.FirstName;
+      this.vendorsUsername = Data.UserName;
+     } else{
+      this.vendorUserId = "";
+      this.vendorsLastname = "";
+      this.VendorsFirstName = "";
+      this.vendorsUsername = "";
+     }
+  }
   PostCentrifugalPumpDailydata(obj) {
     this.commonLoadingDirective.showLoading(true, "Please wait....");
     this.loading = true;
@@ -276,14 +308,18 @@ export class CentrifugalPumpComponent {
       this.CentrifugalPumpWeekData = false;
       this.FromDate = moment().format('YYYY-MM-DD');
       this.ToDate = moment().format('YYYY-MM-DD');
+      if(this.user.UserType != 1){  
       this.GetDailyData();
+      }
       console.log("daily");
     } else if (this.DailyWeekMode == 'week') {
       this.CentrifugalPumpDailyData = false;
       this.CentrifugalPumpWeekData = true;
       this.FromDate = moment().subtract(7, 'd').format('YYYY-MM-DD');
       this.ToDate = moment().format('YYYY-MM-DD');
-      this.GetCentrifugalPumpWeekdata();
+      if(this.user.UserType != 1){ 
+        this.GetCentrifugalPumpWeekdata();
+      }
       console.log("week");
     }
   }
@@ -302,29 +338,55 @@ export class CentrifugalPumpComponent {
 
   GetCentrifugapPumpUniqueDate() {
     if (this.DailyWeekMode == 'daily') {
-      const params = new HttpParams()
-        .set("FromDate", this.FromDate)
-        .set("ToDate", this.ToDate)
+       var params : any = new HttpParams()
+        if(this.vendorUserId !== ""){
+          const params1 = new HttpParams()
+               .set("FromDate", this.FromDate)
+               .set("ToDate", this.ToDate)
+               .set("VendorId", this.vendorUserId)
+          params = []
+          params = params1;
+        }else{
+          this.vendorUserId = ""
+          const params2 = new HttpParams()
+               .set("FromDate", this.FromDate)
+               .set("ToDate", this.ToDate)
+               .set("VendorId", this.vendorUserId)
+          params = []
+          params = params2;
+        }
       const url: string = this.CPAPIName.GetDailyDates;
       this.CPAPIMethod.getWithParameters(url, params)
-        // this.http.get('api/CenterifugalPumpAPI/GetDailyDates',{params})
         .subscribe(res => {
           this.centrifugalPump = res;
         }, err => {
           console.log(err);
         })
     } else if (this.DailyWeekMode == 'week') {
-      const params = new HttpParams()
-        .set("FromDate", this.FromDate)
-        .set("ToDate", this.ToDate)
+      var params4 : any = new HttpParams()
+        if(this.vendorUserId !== ""){
+          const params5 = new HttpParams()
+               .set("FromDate", this.FromDate)
+               .set("ToDate", this.ToDate)
+               .set("VendorId", this.vendorUserId)
+          params4 = []
+          params4 = params5;
+        }else{
+          this.vendorUserId = ""
+          const params6 = new HttpParams()
+               .set("FromDate", this.FromDate)
+               .set("ToDate", this.ToDate)
+               .set("VendorId", this.vendorUserId)
+          params4 = []
+          params4 = params6;
+        }
       const url: string = this.CPAPIName.GetWeekDates;
-      this.CPAPIMethod.getWithParameters(url, params)
-        // this.http.get('api/CenterifugalPumpAPI/GetWeekDates',{params})
-        .subscribe(res => {
-          this.centrifugalPumpWeekList = res
-        }, err => {
-          console.log(err);
-        })
+      this.CPAPIMethod.getWithParameters(url, params4)
+      .subscribe(res => {
+        this.centrifugalPumpWeekList = res
+      }, err => {
+        console.log(err);
+      })
     }
   }
 }
