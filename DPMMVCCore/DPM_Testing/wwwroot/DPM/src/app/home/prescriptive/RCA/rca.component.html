@@ -83,23 +83,18 @@
                     </li>
                 </ul>
             </div>
-            <!-- <div id="scene" #scene> -->
+            <div id="scene" #scene>
             <div *ngIf="Treeshow" style="overflow: scroll;">
-                <!-- <div id="scene" #scene> -->
+                <div id="scene" #scene>
                 <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree><br><br>
-                <!-- <br><br>
-                <div class="text-center">
-                    <a class="btn btn-dark" style="margin-left: 10px;" (click)="zoomToggle(false)">-</a>
-                    <span>{{currentZoomLevel * 100}}%</span>
-                    <a class="btn btn-dark" style="margin-left: 10px" (click)="zoomToggle(true)">+</a>
-                </div> -->
-                <!-- </div> -->
+              
+                </div>
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>
                     <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data" tooltipPosition="top">save</a>
                 </div>
             </div>
-            <!-- </div> -->
+            </div>
         </p-tabPanel>
         <p-tabPanel header="Update"><br>
             <div class="card shadow div-in-middle" *ngIf="SelectUpdateBoxEnabled">
@@ -128,7 +123,7 @@
                     </li>
                 </ul>
             </div>
-            <!-- <div class="classname" id="scene1" #scene1> -->
+            <div class="classname" id="scene1" #scene1>
             <div *ngIf="UpdateTreeshow" style="overflow: scroll;">
                 <div style="margin: 20px; border: 1px solid;">
                     <ul class="list-group list-group-flush">
@@ -153,22 +148,16 @@
                     </ul>
                 </div>
 
-                <!-- <div class="classname" id="scene1" #scene1> -->
+                <div class="classname" id="scene1" #scene1>
                 <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
-                <!-- <br><br> -->
-                <!-- <div class="text-center">
-                            <a class="btn btn-dark" style="margin-left: 10px;" (click)="zoomToggle(false)">-</a>
-                            <span>{{currentZoomLevel * 100}}%</span>
-                            <a class="btn btn-dark" style="margin-left: 10px" (click)="zoomToggle(true)">+</a>
-                        </div>
-                    </div> -->
+                    </div> 
 
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>
                     <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data" tooltipPosition="top">Update</a>
                 </div>
             </div>
-            <!-- </div> -->
+            </div>
         </p-tabPanel>
     </p-tabView>
 </div>
