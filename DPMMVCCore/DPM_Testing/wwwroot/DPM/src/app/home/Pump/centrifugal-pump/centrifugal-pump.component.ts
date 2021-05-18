@@ -9,7 +9,7 @@ import { HttpParams } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { CentrifugalPumpConstantAPI } from './centrifugal-pump.API';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-centrifugal-pump',
   templateUrl: './centrifugal-pump.component.html',
@@ -33,7 +33,7 @@ export class CentrifugalPumpComponent {
   public filelist: any;
   public arrayBuffer: any;
   public user: any = [];
-  public DailyWeekMode: string;
+  public DailyWeekMode: string = 'daily';
   public CentrifugalPumpDailyData: boolean = true;
   public CentrifugalPumpWeekData: boolean = false;
   private pumpcolumns: any = [
@@ -50,7 +50,7 @@ export class CentrifugalPumpComponent {
   ]
 
   public centrifugalPumpColumns: any = [
-    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
+    { field: 'TagNumber', header: 'Tag Number', width: '10em' },
     { field: 'PI025', header: 'PI025', width: '7em' },
     { field: 'PI022', header: 'PI022', width: '7em' },
     { field: 'PI023', header: 'PI023', width: '7em' },
@@ -59,7 +59,7 @@ export class CentrifugalPumpComponent {
     { field: 'TI061', header: 'TI061', width: '7em' },
     { field: 'TI062', header: 'TI062', width: '7em' },
     { field: 'TI263', header: 'TI263', width: '7em' },
-    { field: 'Date', header: 'Date', width: '10em' },
+    { field: 'Date', header: 'Date', width: '9em' },
   ]
 
   private pumpWeekDatacolumns: any = [
@@ -82,23 +82,23 @@ export class CentrifugalPumpComponent {
     'Date'
   ]
   public centrifugalPumpColumnsWeekData: any = [
-    { field: 'TagNumber', header: 'Tag Number', width: '8em' },
+    { field: 'TagNumber', header: 'Tag Number', width: '10em' },
     { field: 'OneH', header: 'OneH', width: '7em' },
     { field: 'OneV', header: 'OneV', width: '7em' },
     { field: 'TwoH', header: 'TwoH', width: '7em' },
     { field: 'TwoV', header: 'TwoV', width: '7em' },
     { field: 'TwoA', header: 'TwoA', width: '7em' },
-    { field: 'ThreeH', header: 'ThreeH', width: '7em' },
-    { field: 'ThreeV', header: 'ThreeV', width: '7em' },
-    { field: 'ThreeA', header: 'ThreeA', width: '7em' },
-    { field: 'FourH', header: 'FourH', width: '7em' },
-    { field: 'FourV', header: 'FourV', width: '7em' },
+    { field: 'ThreeH', header: 'ThreeH', width: '10em' },
+    { field: 'ThreeV', header: 'ThreeV', width: '10em' },
+    { field: 'ThreeA', header: 'ThreeA', width: '10em' },
+    { field: 'FourH', header: 'FourH', width: '10em' },
+    { field: 'FourV', header: 'FourV', width: '10em' },
     { field: 'OneT', header: 'OneT', width: '7em' },
     { field: 'TwoT', header: 'TwoT', width: '7em' },
-    { field: 'ThreeT', header: 'ThreeT', width: '7em' },
-    { field: 'FourT', header: 'FourT', width: '7em' },
+    { field: 'ThreeT', header: 'ThreeT', width: '10em' },
+    { field: 'FourT', header: 'FourT', width: '10em' },
     { field: 'AMP', header: 'AMP', width: '7em' },
-    { field: 'Date', header: 'Date', width: '10em' },
+    { field: 'Date', header: 'Date', width: '9em' },
   ]
 
   headers = {
@@ -120,6 +120,8 @@ export class CentrifugalPumpComponent {
       this.user = JSON.parse(localStorage.getItem('userObject'))
     }
     this.GetDailyData();
+    this.FromDate = moment().format('YYYY-MM-DD');
+    this.ToDate = moment().format('YYYY-MM-DD');
   }
   GetDailyData() {
     const url: string = this.CPAPIName.DailyData;
@@ -272,11 +274,15 @@ export class CentrifugalPumpComponent {
     if (this.DailyWeekMode == 'daily') {
       this.CentrifugalPumpDailyData = true;
       this.CentrifugalPumpWeekData = false;
+      this.FromDate = moment().format('YYYY-MM-DD');
+      this.ToDate = moment().format('YYYY-MM-DD');
       this.GetDailyData();
       console.log("daily");
     } else if (this.DailyWeekMode == 'week') {
       this.CentrifugalPumpDailyData = false;
       this.CentrifugalPumpWeekData = true;
+      this.FromDate = moment().subtract(7, 'd').format('YYYY-MM-DD');
+      this.ToDate = moment().format('YYYY-MM-DD');
       this.GetCentrifugalPumpWeekdata();
       console.log("week");
     }
@@ -294,7 +300,7 @@ export class CentrifugalPumpComponent {
     }
   }
 
-  GetCentrifugapPumpUniqueDate(e) {
+  GetCentrifugapPumpUniqueDate() {
     if (this.DailyWeekMode == 'daily') {
       const params = new HttpParams()
         .set("FromDate", this.FromDate)
@@ -303,9 +309,9 @@ export class CentrifugalPumpComponent {
       this.CPAPIMethod.getWithParameters(url, params)
         // this.http.get('api/CenterifugalPumpAPI/GetDailyDates',{params})
         .subscribe(res => {
-          console.log(res)
-          this.centrifugalPump = res
-
+          this.centrifugalPump = res;
+        }, err => {
+          console.log(err);
         })
     } else if (this.DailyWeekMode == 'week') {
       const params = new HttpParams()
@@ -315,8 +321,9 @@ export class CentrifugalPumpComponent {
       this.CPAPIMethod.getWithParameters(url, params)
         // this.http.get('api/CenterifugalPumpAPI/GetWeekDates',{params})
         .subscribe(res => {
-          console.log(res)
           this.centrifugalPumpWeekList = res
+        }, err => {
+          console.log(err);
         })
     }
   }
