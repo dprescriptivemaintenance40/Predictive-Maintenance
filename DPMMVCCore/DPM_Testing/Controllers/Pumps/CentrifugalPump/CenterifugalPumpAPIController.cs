@@ -104,14 +104,22 @@ namespace DPM.Controllers.Pumps
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         [Route("GetWeekDates")]
-        public async Task<IActionResult> GetRecords(string FromDate, string ToDate)
+        public async Task<IActionResult> GetRecords(string FromDate, string ToDate, string VendorId)
         {
             try
             {
 
-                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                string userId;
+                if (VendorId == "")
+                {
+                    userId = User.Claims.First(c => c.Type == "UserID").Value;
+                }
+                else
+                {
+                    userId = VendorId;
+                }
                 DateTime d = Convert.ToDateTime(FromDate);
                 DateTime d1 = Convert.ToDateTime(ToDate);
 
@@ -134,13 +142,21 @@ namespace DPM.Controllers.Pumps
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet]
         [Route("GetDailyDates")]
-        public async Task<IActionResult> DailyDates(string FromDate, string ToDate)
+        public async Task<IActionResult> DailyDates(string FromDate, string ToDate, string VendorId)
         {
             try
             {
-                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                string userId;
+                if(VendorId == "")
+                {
+                    userId = User.Claims.First(c => c.Type == "UserID").Value;
+                }
+                else
+                {
+                    userId = VendorId;
+                }    
                 DateTime d = Convert.ToDateTime(FromDate);
                 DateTime d1 = Convert.ToDateTime(ToDate);
 
@@ -160,6 +176,22 @@ namespace DPM.Controllers.Pumps
                 return BadRequest(exe.Message);
             }
 
+        }
+
+        [HttpGet]
+        [Route("GetVendorList")]
+        public async Task<IActionResult> GetvendorList()
+        {
+            try
+            {
+                var List = await _context.RegisterUsers.Where(a => a.UserType == 3).ToListAsync();
+                return Ok(List);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
         }
 
     }

@@ -1,9 +1,48 @@
+<div style="padding: 10px;" *ngIf="user.UserType == 1">
+    <div class="card shadow" style="padding: 20px;margin: 10px;">
+        <form>
+            <div class="form-group row">
+              <label for="vendorList" class="col-sm-2 col-form-label">Vendors List</label>
+              <div class="col-sm-10">
+                <select #EL (change)="slectedVendor(EL.value)" id="vendorList" class="form-control">
+                    <option>select...</option>
+                    <option *ngFor="let EL of VendorList" [ngValue]="EL">{{EL.UserId}} {{EL.UserName}}</option>
+                </select>
+              </div>
+            </div>
+          </form>
+          <div *ngIf="vendorsLastname !== '' " style="margin-top: 20px;" class="form-group row">
+              <div class="col-sm-2">
+                  <label>Vendor Firstname : </label>
+              </div>
+              <div class="col-sm-2">
+                  {{VendorsFirstName}} 
+              </div>
+              <div class="col-sm-2">
+                  <label>Vendor Lastname : </label>
+              </div>
+              <div class="col-sm-2">
+                  {{vendorsLastname}}
+              </div>
+              <div class="col-sm-2">
+                  <label>Vendor Username : </label>
+              </div>
+              <div class="col-sm-2">
+                  {{vendorsUsername}}
+              </div>
+          </div>
+    </div>
+</div>
+
+
+
+
 <div style="padding: 5px;" class="row" *ngIf="!(user.UserType == 1 || user.UserType == 2)">
     <div class="col-sm col-md-4 form-group">
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
     </div>
-   
+
     <div class="col-sm">
         <button type="button" style="background-color:#585570 ; border-color:#585570;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
     </div>
@@ -12,51 +51,46 @@
     </div>
 </div>
 <div style="margin: 10px;" class="row">
-<div class="form-check col-sm-2">
-    <input [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="daily" (change)="ChooseData($event)"checked>
-    <label class="form-check-label" for="flexRadioDefault1">
+    <div class="form-check col-sm-2">
+        <input [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="daily" (change)="ChooseData($event)" checked>
+        <label class="form-check-label" for="flexRadioDefault1">
     <b> Daily Data</b>
     </label>
-  </div>
-  <div class="form-check col-sm-2">
-    <input  [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="week"(change)="ChooseData($event)" >
-    <label class="form-check-label" for="flexRadioDefault2">
+    </div>
+    <div class="form-check col-sm-2">
+        <input [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="week" (change)="ChooseData($event)">
+        <label class="form-check-label" for="flexRadioDefault2">
      <b>Weekly Data</b>
     </label>
-  </div>
-
-  <b>Select Date :</b>
-    <div class="col-sm-2">
-        <select [(ngModel)]="FromDate" class="form-select"  value="form" (change)="GetCentrifugapPumpUniqueDate($event)" class="form-control">
-            <option value="">From Date</option>
-            <option *ngFor="let UL of uniqueDates " [ngValue]="UL">{{UL}}</option>        
-       </select> 
-    </div>
-    <div class="col-sm-2">
-        <select [(ngModel)]="ToDate" class="form-select"  value="form" (change)="GetCentrifugapPumpUniqueDate($event)" class="form-control">
-            <option value="">To Date</option>
-            <option *ngFor="let UL of uniqueDates" [ngValue]="UL">{{UL}}</option>
-        </select>
     </div>
 
-  <div class="col-sm"></div>
-  <div class="col-sm"></div>
-  <div class="col-sm"></div>
- 
+    <b>From Date :</b>
+    <div class="col-sm-2">
+        <input type="date" [(ngModel)]="FromDate" class="form-control" id="FromDate">
+    </div>
+    <b>To Date :</b>
+    <div class="col-sm-2">
+        <input type="date" [(ngModel)]="ToDate" class="form-control" id="ToDate">
+    </div>
+    <div class="col-sm-2">
+        <button type="button" style="background-color:#585570 ; border-color:#585570;" (click)="GetCentrifugapPumpUniqueDate()" class="btn btn-primary">Show</button>
+    </div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+
 </div>
 
 
 <br>
-<div style="padding: 5px;" *ngIf = "CentrifugalPumpDailyData">
+<div style="padding: 5px;" *ngIf="CentrifugalPumpDailyData">
     <div class="card">
         <p-table id="exportexcel" [value]="centrifugalPump" [columns]="centrifugalPumpColumns" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
             [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
-            <ng-template pTemplate="colgroup">
-                <ng-template pTemplate="colgroup" let-columns>
-                    <colgroup>
-                        <col *ngFor="let col of columns" [style]="{width: col.width}">
-                    </colgroup>
-                </ng-template>
+            <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                    <col *ngFor="let col of columns" [style]="{width: col.width}">
+                </colgroup>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -69,24 +103,28 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr>
                     <td *ngFor="let col of columns;">
-                        {{rowData[col.field]}}
+                        <span *ngIf="col.field !== 'Date'">{{rowData[col.field]}}</span>
+                        <span *ngIf="col.field === 'Date'">{{rowData[col.field] |  date}}</span>
                     </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="10">No customers data found.</td>
                 </tr>
             </ng-template>
         </p-table>
     </div>
 </div>
 
-<div style="padding: 5px;" *ngIf = "CentrifugalPumpWeekData">
+<div style="padding: 5px;" *ngIf="CentrifugalPumpWeekData">
     <div class="card">
-        <p-table id="exportexcel" [value]="centrifugalPumpWeekList" [columns]="centrifugalPumpColumnsWeekData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
-            [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
-            <ng-template pTemplate="colgroup">
-                <ng-template pTemplate="colgroup" let-columns>
-                    <colgroup>
-                        <col *ngFor="let col of columns" [style]="{width: col.width}">
-                    </colgroup>
-                </ng-template>
+        <p-table id="exportexcel" [value]="centrifugalPumpWeekList" [columns]="centrifugalPumpColumnsWeekData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
+            <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                    <col *ngFor="let col of columns" [style]="{width: col.width}">
+                </colgroup>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
                 <tr>
@@ -99,8 +137,14 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr>
                     <td *ngFor="let col of columns;">
-                        {{rowData[col.field]}}
+                        <span *ngIf="col.field !== 'Date'">{{rowData[col.field]}}</span>
+                        <span *ngIf="col.field === 'Date'">{{rowData[col.field] |  date}}</span>
                     </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">No customers data found.</td>
                 </tr>
             </ng-template>
         </p-table>
