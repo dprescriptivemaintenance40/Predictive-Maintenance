@@ -139,7 +139,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
     
       ngAfterViewInit() {
         this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
-        this.currentZoomLevel = this.zoomLevels[4];
+        this.currentZoomLevel = this.zoomLevels[6];
         // panzoom(document.querySelector('#scene'));
          this.panZoomController = panzoom(this.scene.nativeElement);
          this.panZoomController = panzoom(this.scene1.nativeElement);
