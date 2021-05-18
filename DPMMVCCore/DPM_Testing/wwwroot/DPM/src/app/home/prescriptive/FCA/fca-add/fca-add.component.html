@@ -178,8 +178,8 @@
     <div class="card" style="margin: 20px;" *ngIf="FailuerRate">
         <p-card  [ngClass]=" {disableddiv: failuerrate  ? true : false}">
        <ng-template pTemplate="subtitle">
-            <p><b>2. To help determine the Failuer rate, we need to know how reliable the equipment is. If the equipment were left alone
-                for a period of time, would you expect this failuer to have happened.
+            <p><b>2. To help determine the Failure rate, we need to know how reliable the equipment is. If the equipment were left alone
+                for a period of time, would you expect this Failure to have happened.
             </b></p>
         </ng-template>
         <ng-template pTemplate="content">
@@ -204,7 +204,7 @@
         <ng-template pTemplate="title">
         </ng-template>
         <ng-template pTemplate="subtitle">
-            <p><b>3. Are their any prior warnings before the failuer occure? Tick all that apply.
+            <p><b>3. Are their any prior warnings before the failure occure? Tick all that apply.
             </b></p>
         </ng-template>
         <ng-template pTemplate="content" >
@@ -311,7 +311,7 @@
         <p-card [ngClass]=" {disableddiv: intervaldeteacting  ? true : false}" >
         <ng-template pTemplate="subtitle">
             <div class="input-group mb-3">
-                <label><b>5. What is the likely interval between detacting a warning sign and the failuer happening?</b></label>
+                <label><b>5. What is the likely interval between detacting a warning sign and the failure happening?</b></label>
                 <select [(ngModel)]="ffInterval" class="form-select"  class="form-control" placeholder="Failuer very likely">
                     <option value="">Choose</option>
                         <option value="Days" selected> Days</option>
@@ -331,7 +331,7 @@
     <div class="card" style="margin: 20px;" *ngIf ="FailuerEvident" id="PatternFailuerEvident">
         <p-card [ngClass]=" {disableddiv: failuerevident  ? true : false}" >
         <ng-template pTemplate="subtitle">
-            <p><b>6. If the failuer is not evident during normal operation can be found by testing and inspection? Tick yes or no.
+            <p><b>6. If the failure is not evident during normal operation can be found by testing and inspection? Tick yes or no.
             </b></p>
         </ng-template>
         <ng-template pTemplate="content">
@@ -357,7 +357,7 @@
         <ng-template pTemplate="title">
         </ng-template>
         <ng-template pTemplate="subtitle">
-            <p><b >7. Some of the failuer cannot avoided by maintenance. Would planned replacement or refurbishment
+            <p><b >7. Some of the failure cannot avoided by maintenance. Would planned replacement or refurbishment
                 maintainace prevent or mitigate this failuer Mode?
             </b></p>
         </ng-template>

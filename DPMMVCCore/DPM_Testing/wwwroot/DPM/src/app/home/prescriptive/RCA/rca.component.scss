@@ -10,4 +10,20 @@
       border: 0 none;
       background-color: rgb(123, 128, 201);
     }
+   
   }
+  
+  .owl-carousel {
+    -ms-touch-action: none;
+    touch-action: none;
+    -ms-touch-action: pan-y;
+     touch-action: pan-y;
+    }
+
+    .classname {
+      touch-action: none;
+    }
+    .text-center {
+      text-align: center;
+      justify-content: center;
+    }
