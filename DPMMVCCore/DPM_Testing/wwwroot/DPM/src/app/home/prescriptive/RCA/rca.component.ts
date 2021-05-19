@@ -35,6 +35,8 @@ export class RCAComponent implements OnInit, AfterViewInit {
     @ViewChild('scene1', { static: false }) scene1: ElementRef;
     @ViewChild('scene3', { static: false }) scene3: ElementRef;
     panZoomController;
+    panZoomController1;
+    panZoomController2;
     files: any = [];
     Updatefiles: any[];
     selectedFile: any;
@@ -62,6 +64,8 @@ export class RCAComponent implements OnInit, AfterViewInit {
     public RCADisplayFile: any = []
     public tabView: boolean = true
     pinchSpeed
+    public currentZoomLevel: number;
+    zoomLevels: number[];
 
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
@@ -97,11 +101,84 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.getRecordsList();
         this.getHeatExchangerData();
     }
+    zoom(xz) {
+        const isSmooth = true;
+        const scale = this.currentZoomLevel;
+         var transform1
+        if (scale) {
+            if(xz== 'scene'){
+                 transform1 = this.panZoomController.getTransform();
+              
+            }else  if(xz== 'scen1'){
+                transform1 = this.panZoomController1.getTransform();
+
+            } else  if(xz== 'scene2'){
+                transform1 = this.panZoomController2.getTransform();
+            }
+          const transform = transform1;
+          const deltaX = transform.x;
+          const deltaY = transform.y;
+          const offsetX = scale + deltaX;
+          const offsetY = scale + deltaY;
+    
+          if (isSmooth) {
+            if(xz== 'scene'){
+                this.panZoomController.smoothZoom(0, 0, scale);
+           }else  if(xz== 'scen1'){
+               this.panZoomController1.smoothZoom(0, 0, scale);
+           } else  if(xz== 'scene2'){
+               this.panZoomController2.smoothZoom(0, 0, scale);
+           }
+          
+          } else {
+            if(xz== 'scene'){
+             this.panZoomController.zoomTo(offsetX, offsetY, scale);
+           }else  if(xz== 'scen1'){
+            this.panZoomController1.zoomTo(offsetX, offsetY, scale);
+           } else  if(xz== 'scene2'){
+            this.panZoomController2.zoomTo(offsetX, offsetY, scale);
+           }
+            
+          }
+        }
+      }
+    
+      zoomToggle(zoomIn: boolean, abc) {
+        const idx = this.zoomLevels.indexOf(this.currentZoomLevel);
+        if (zoomIn) {
+          if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
+            this.currentZoomLevel = this.zoomLevels[idx + 1];
+          }
+        } else {
+          if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
+            this.currentZoomLevel = this.zoomLevels[idx - 1];
+          }
+        }
+        if (this.currentZoomLevel === 1) {
+            if(abc== 'scene'){
+                this.panZoomController.moveTo(0, 0);
+                this.panZoomController.zoomAbs(0, 0, 1);
+            }else if(abc== 'scen1'){
+                this.panZoomController1.moveTo(0, 0);
+                this.panZoomController1.zoomAbs(0, 0, 1);
+            } else  if(abc== 'scene2'){
+                this.panZoomController2.moveTo(0, 0);
+                this.panZoomController2.zoomAbs(0, 0, 1);
+            }
+         
+        } else {
+          this.zoom(abc);
+        }
+      }
+
     ngAfterViewInit() {
+        this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+        this.currentZoomLevel = this.zoomLevels[4];
         this.panZoomController = panzoom(this.scene.nativeElement);
-        this.panZoomController = panzoom(this.scene1.nativeElement);
-        this.panZoomController = panzoom(this.scene3.nativeElement);
+        this.panZoomController1 = panzoom(this.scene1.nativeElement);
+        this.panZoomController2 = panzoom(this.scene3.nativeElement);
         this.pinchSpeed = -1
+        this.changeDetectorRef.detectChanges();
     }
 
     getHeatExchangerData() {
