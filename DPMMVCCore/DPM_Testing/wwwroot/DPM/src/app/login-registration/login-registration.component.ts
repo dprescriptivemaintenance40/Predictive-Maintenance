@@ -27,16 +27,11 @@ export class LoginRegistrationComponent {
     public messageService: MessageService,
     public title: Title,
     public formBuilder: FormBuilder,
-    public eventEmitterService: EventEmitterService) { }
-
-  ngOnInit() {
-
-    this.title.setTitle('Login | Dynamic Prescriptive Maintenence');
-
-    if (localStorage.getItem('token') != null) {
-      this.router.navigateByUrl('Home');
+    public eventEmitterService: EventEmitterService) { 
+      this.title.setTitle('Login | Dynamic Prescriptive Maintenence');
     }
 
+  ngOnInit() {
     this.registerForm = this.formBuilder.group({
       UserName: ['', Validators.required],
       Email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
