@@ -321,6 +321,35 @@ public UpdateBeta : number = 0
  
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
+  public UpdateFinalFCACondition : any = [] 
+  public UpdateFinalFCAInterval : number = 0; 
+  public UpdateFinalFCAFFIInterval : number = 0;
+  public UpdateFinalSafeUsefulLife : number = 0; 
+  public UpdateSafeLife : number = 0; 
+  public UpdateUsefulLife : number = 0; 
+  public UpdateFCAConditionsFINAL : any = []
+  public UpdateFCAIntervalsFINAL : any = []
+  public UpdateFCACommentFINAL : any = []
+  public UpdateWebalYN : string =""
+  public UpdateMSSConsequence : string =""
+  public UpdateMSSImagePath : string = ""
+  public UpdateMSSImageFlag : boolean = false
+  public UpdateMSSImageValues : any = []
+  public UpdateMSSTaskObj : any = []
+  public UpdatedMSSStartegy : string = ""
+  private UpdateMSSTreeLabel : number = 0
+  private UpdateMSSAvailability : number = 0
+  public UpdateMSSAvailabilityY : string = ""
+  public UpdateMSSstoppageDaysValue : number = 0
+  public UpdateMSSstoppageDays : string = ""
+  public UpdateMSSstoppageDaysTimeValue : number = 0
+  public UpdateMSSstoppageDaysTime : string = ""
+  public UpdateMSSAvailabilityCheck : number = 0
+  public UpdateMSSDirectAvailability : boolean = false
+  public UpdateMSSIndirectAvailability : boolean = false
+  public ADDMSSFinalAvailability : any = []
+
+
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
@@ -2590,16 +2619,6 @@ PatternUpdateBack(){
   this.ColorPatternTreUpdate(this.PatternBack, this.nodePath )
 }
 
- public UpdateFinalFCACondition : any = [] 
- public UpdateFinalFCAInterval : number = 0; 
- public UpdateFinalFCAFFIInterval : number = 0;
- public UpdateFinalSafeUsefulLife : number = 0; 
- public UpdateSafeLife : number = 0; 
- public UpdateUsefulLife : number = 0; 
- public UpdateFCAConditionsFINAL : any = []
- public UpdateFCAIntervalsFINAL : any = []
- public UpdateFCACommentFINAL : any = []
- public UpdateWebalYN : string =""
  async PatternUpdateAdd(){
   var FCAIntervalDWY : any, FCAIntervalDWYValues : any;
   if(this.Updateinterval == 'Days'){ 
@@ -3144,15 +3163,6 @@ UpdateWebal(event){
 
 }
 
-public UpdateMSSConsequence : string =""
-  public UpdateMSSImagePath : string = ""
-  public UpdateMSSImageFlag : boolean = false
-  public UpdateMSSImageValues : any = []
-  public UpdateMSSTaskObj : any = []
-  public UpdatedMSSStartegy : string = ""
-  private UpdateMSSTreeLabel : number = 0
-  private UpdateMSSAvailability : number = 0
-
   SelectNodeToEditMSS(p){
     this.FCAUpdatePageEnable = false
     this.FailureModePatternTree = false
@@ -3162,10 +3172,10 @@ public UpdateMSSConsequence : string =""
    this.UpdateMSSConsequence = this.UpdatedMSSStartegy.split('-')[0]
    var Data : any, FMName, LocalEffect, SystemEffect, Consequence;
    if(this.UpdateMSSConsequence == 'A'){
-    Data = ['A-OCM', 'A-SO', 'A-SR', 'A-FFT', 'A-FromAbove', 'A-RED']
+    Data = ['A-OCM', 'A-SO', 'A-SR', 'A-FFT', 'A-RED']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/A.JPG"
    }else if(this.UpdateMSSConsequence == 'B'){
-    Data = ['B-OCM', 'B-SO', 'B-SR', 'B-FromAbove', 'B-RED']
+    Data = ['B-OCM', 'B-SO', 'B-SR', 'B-RED']
       this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/B.JPG"
    }else if(this.UpdateMSSConsequence == 'C'){
     Data = ['C-OCM', 'C-SO', 'C-SR', 'C-OFM', 'C-RED']
@@ -3188,7 +3198,28 @@ public UpdateMSSConsequence : string =""
         Consequence  = element.children[0].children[2].data.name
   
         var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence)
-        this.UpdateMSSAvailability = UpdateData.MSSAvailability
+        var d = JSON.parse(UpdateData.MSSAvailability)
+        if(d.length > 4){
+          this.UpdateMSSAvailabilityY = d[0]
+          this.UpdateMSSstoppageDays = d[1]
+          this.UpdateMSSstoppageDaysValue = d[2]
+          this.UpdateMSSstoppageDaysTime = d[3]
+          this.UpdateMSSstoppageDaysTimeValue = d[4]
+          this.UpdateMSSAvailability = d[5]
+          this.UpdateMSSIndirectAvailability = true
+          this.UpdateMSSDirectAvailability = false
+        }else{
+          this.UpdateMSSAvailabilityY = d[0]
+          this.UpdateMSSAvailabilityCheck = d[1]
+          this.UpdateMSSAvailability = d[2]
+          this.UpdateMSSstoppageDays = ""
+          this.UpdateMSSstoppageDaysValue = 0
+          this.UpdateMSSstoppageDaysTime = ""
+          this.UpdateMSSstoppageDaysTimeValue = 0
+          this.UpdateMSSIndirectAvailability = false
+          this.UpdateMSSDirectAvailability = true
+        }
+       // this.UpdateMSSAvailability = d.MSSAvailability
         this.UpdateMSSIntervalSelectionCriteria = UpdateData.MSSIntervalSelectionCriteria
       }
     })
@@ -3197,18 +3228,67 @@ public UpdateMSSConsequence : string =""
     this.UpdateMSSImageFlag = true
   }
 
+  UpdateMSSAvailabilityYN(){
+   if(this.UpdateMSSAvailabilityY == "Yes"){
+    this.UpdateMSSIndirectAvailability = false
+    this.UpdateMSSDirectAvailability = true
+   }else{
+    this.UpdateMSSIndirectAvailability = true
+    this.UpdateMSSDirectAvailability = false
+   }
+  }
+
   UpdateMSSToTree(){
+    var availablilityCal1,availablilityCal2, AVAL, FinalAvailability : any = []
+    
     this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[2].children[0].data.name = this.UpdatedMSSStartegy
     this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[0].data.name = this.UpdatedMSSStartegy
      
+      FinalAvailability.push(this.UpdateMSSAvailabilityY)
+      if(this.UpdateMSSAvailabilityY == "No"){
+          if(this.UpdateMSSstoppageDays == 'Days'){
+            availablilityCal1 = this.UpdateMSSstoppageDaysValue * 1 
+            FinalAvailability.push('Days')
+          } else if(this.UpdateMSSstoppageDays == 'Week'){ 
+            availablilityCal1 =  this.UpdateMSSstoppageDaysValue * 7 
+            FinalAvailability.push('Week')
+          } else if(this.UpdateMSSstoppageDays == 'Month'){ 
+            availablilityCal1 =  this.UpdateMSSstoppageDaysValue * 30 
+            FinalAvailability.push('Month')
+          } else if(this.UpdateMSSstoppageDays == 'Year'){ 
+            availablilityCal1 =  this.UpdateMSSstoppageDaysValue * 365 
+            FinalAvailability.push('Year')
+          }
+          FinalAvailability.push(this.UpdateMSSstoppageDaysValue)
+        
+          if (this.UpdateMSSstoppageDaysTime == 'Days') {
+            availablilityCal2 = this.UpdateMSSstoppageDaysTimeValue * 1
+            FinalAvailability.push('Days')
+          } else if (this.UpdateMSSstoppageDaysTime == 'Week') {
+            availablilityCal2 = this.UpdateMSSstoppageDaysTimeValue * 7
+            FinalAvailability.push('Week')
+          } else if (this.UpdateMSSstoppageDaysTime == 'Month') {
+            availablilityCal2 = this.UpdateMSSstoppageDaysTimeValue * 30
+            FinalAvailability.push('Month')
+          } else if (this.UpdateMSSstoppageDaysTime == 'Year') {
+            availablilityCal2 = this.UpdateMSSstoppageDaysTimeValue * 365
+            FinalAvailability.push('Year')
+          }
+          FinalAvailability.push(this.UpdateMSSstoppageDaysTimeValue)
+          AVAL = (1-(availablilityCal2 / availablilityCal1  ))*100
+          this.UpdateMSSAvailability = AVAL;
+          FinalAvailability.push(AVAL)
+      }else{
+        FinalAvailability.push(this.UpdateMSSAvailabilityCheck)
+        this.UpdateMSSAvailability = this.UpdateMSSAvailabilityCheck
+      }
       var FMName = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].data.name ;
       var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
       var MTBF = dataFromLibrary.mtbf;
       var LN =  Math.log((2*(this.UpdateMSSAvailability/100))-1) 
       var INTERVAl : number =  -(MTBF*LN) 
       var intervalWeek = (INTERVAl*365)/7;
-  
-  
+    
     if(this.UpdatedMSSStartegy == 'A-FFT'    ||  this.UpdatedMSSStartegy == 'A-OCM' || this.UpdatedMSSStartegy == 'A-SO'
         || this.UpdatedMSSStartegy == 'A-SR' ||  this.UpdatedMSSStartegy == 'A-RED' || this.UpdatedMSSStartegy == 'A-OFM'
         || this.UpdatedMSSStartegy == 'B-FFT'||  this.UpdatedMSSStartegy == 'B-OCM' || this.UpdatedMSSStartegy == 'B-SO'
@@ -3219,7 +3299,7 @@ public UpdateMSSConsequence : string =""
             obj['MSSMaintenanceInterval'] = 'Not Applicable'
             obj['MSSMaintenanceTask'] = 'Not Applicable'
             obj['MSSStartergy'] = this.UpdatedMSSStartegy
-            obj['MSSAvailability'] = this.UpdateMSSAvailability
+            obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
             obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
             this.UpdateMSSTaskObj.push(obj)
           } else{
@@ -3231,49 +3311,57 @@ public UpdateMSSConsequence : string =""
             
               var strategy = this.UpdatedMSSStartegy.split('-')[1];
               let obj = {}
-              if(strategy == 'FFT'){
-                obj['MSSMaintenanceInterval'] = this.UpdateMSSAvailability;
+              if(this.MSSStratergy == 'A-FFT'){
+                obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
                 obj['MSSMaintenanceTask'] = 'Function Check'
                 obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                obj['MSSAvailability'] = this.UpdateMSSAvailability
+                obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                this.UpdateMSSTaskObj.push(obj)
-
-              }else if(strategy == 'OCM'){
-                obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
-                obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
-                obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                obj['MSSAvailability'] = this.UpdateMSSAvailability
-                obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                this.UpdateMSSTaskObj.push(obj)
-
-              }else if(strategy == 'SO'){
-                obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}` 
-                obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
-                obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                obj['MSSAvailability'] = this.UpdateMSSAvailability
-                obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                this.UpdateMSSTaskObj.push(obj)
-
-              }else if(strategy == 'SR'){
-                obj['MSSMaintenanceInterval'] = `${ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}` 
-                obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
-                obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                obj['MSSAvailability'] = this.UpdateMSSAvailability
-                obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                this.UpdateMSSTaskObj.push(obj)
-
-              }else if(strategy == 'RED'){
-                obj['MSSMaintenanceInterval'] = 'NA'
-                obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
-                obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                obj['MSSAvailability'] = this.UpdateMSSAvailability
-                obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                this.UpdateMSSTaskObj.push(obj)
-
-              }
-          }  
-
+                this.MSSTaskObj.push(obj)
+              }else{
+                 if(strategy == 'FFT'){
+                   obj['MSSMaintenanceInterval'] = this.UpdateMSSAvailability;
+                   obj['MSSMaintenanceTask'] = 'Function Check'
+                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                   this.UpdateMSSTaskObj.push(obj)
+   
+                 }else if(strategy == 'OCM'){
+                   obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
+                   obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                   this.UpdateMSSTaskObj.push(obj)
+   
+                 }else if(strategy == 'SO'){
+                   obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}` 
+                   obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                   this.UpdateMSSTaskObj.push(obj)
+   
+                 }else if(strategy == 'SR'){
+                   obj['MSSMaintenanceInterval'] = `${ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}` 
+                   obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                   this.UpdateMSSTaskObj.push(obj)
+   
+                 }else if(strategy == 'RED'){
+                   obj['MSSMaintenanceInterval'] = 'NA'
+                   obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                   this.UpdateMSSTaskObj.push(obj)
+   
+                 }
+             }  
+          }
       }else if(  this.UpdatedMSSStartegy == 'C-FFT'||  this.UpdatedMSSStartegy == 'C-OCM' || this.UpdatedMSSStartegy == 'C-SO'
               || this.UpdatedMSSStartegy == 'C-SR' ||  this.UpdatedMSSStartegy == 'C-RED' || this.UpdatedMSSStartegy == 'C-OFM'
               || this.UpdatedMSSStartegy == 'D-FFT'||  this.UpdatedMSSStartegy == 'D-OCM' || this.UpdatedMSSStartegy == 'D-SO'
@@ -3286,7 +3374,7 @@ public UpdateMSSConsequence : string =""
                   obj['MSSMaintenanceInterval'] = 'Not Applicable'
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                  obj['MSSAvailability'] = this.UpdateMSSAvailability
+                  obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                   this.UpdateMSSTaskObj.push(obj)
                 } else{
@@ -3310,7 +3398,7 @@ public UpdateMSSConsequence : string =""
                       obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
 
@@ -3318,7 +3406,7 @@ public UpdateMSSConsequence : string =""
                       obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
 
@@ -3326,7 +3414,7 @@ public UpdateMSSConsequence : string =""
                       obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}`  
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
 
@@ -3334,7 +3422,7 @@ public UpdateMSSConsequence : string =""
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
 
@@ -3343,7 +3431,7 @@ public UpdateMSSConsequence : string =""
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'No Task'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
 
@@ -3812,12 +3900,24 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
     this.changeDetectorRef.detectChanges()
 
     if(this.ADDMSSAvailabilityY == 'Yes'){
+      this.ADDMSSFinalAvailability = []
+      this.ADDMSSFinalAvailability.push('Yes')
+      this.ADDMSSstoppageDays = ""
+      this.ADDMSSstoppageDaysValue = 0
+      this.ADDMSSstoppageDaysTime = ""
+      this.ADDMSSstoppageDaysTimeValue = 0
       // this.MSSTreeButton = true
       this.ADDMSSexpectedAvailability = true
       this.ADDMSSAvailabilityPlantStoppage = false
       this.ADDMSSAvailabilityPlantStoppageTime = false
 
      }else if(this.ADDMSSAvailabilityY == 'No') {
+      this.ADDMSSFinalAvailability = []
+      this.ADDMSSFinalAvailability.push('No')
+      this.ADDMSSstoppageDays = ""
+      this.ADDMSSstoppageDaysValue = 0
+      this.ADDMSSstoppageDaysTime = ""
+      this.ADDMSSstoppageDaysTimeValue = 0
       // this.MSSTreeButton = true
       this.ADDMSSexpectedAvailability = false
       this.ADDMSSAvailabilityPlantStoppage = true
@@ -3835,25 +3935,31 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
 
 async AvailabilityYes(){
    if(this.ADDMSSAvailabilityCheck != 0){
-
+     this.ADDMSSFinalAvailability.push(this.ADDMSSAvailabilityCheck)
+     this.MSSTreeButton = true
+   const element = document.querySelector("#Consequence")
+   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ 
    }else{
      alert("Fill the data")
    }
-   this.MSSTreeButton = true
-   const element = document.querySelector("#Consequence")
-   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
- }
+   }
 
 async StoppageDays(){
   if(this.ADDMSSstoppageDays == 'Days'){
     this.MSSstoppageValue = this.ADDMSSstoppageDaysValue * 1
+    this.ADDMSSFinalAvailability.push('Days')
   } else if(this.ADDMSSstoppageDays == 'Week'){
     this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 7
+    this.ADDMSSFinalAvailability.push('Week')
   } else if(this.ADDMSSstoppageDays == 'Month'){
     this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 30
+    this.ADDMSSFinalAvailability.push('Month')
   } else if(this.ADDMSSstoppageDays == 'Year'){
     this.MSSstoppageValue =  this.ADDMSSstoppageDaysValue * 365
+    this.ADDMSSFinalAvailability.push('Year')
   }
+  this.ADDMSSFinalAvailability.push(this.ADDMSSstoppageDaysValue)
   this.PlantStoppageTime = !this.PlantStoppageTime;
   const element = document.querySelector("#PlantStoppagetime")
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -3862,13 +3968,18 @@ async StoppageDays(){
 async StoppageDuration(){
   if (this.ADDMSSstoppageDaysTime == 'Days') {
     this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 1
+    this.ADDMSSFinalAvailability.push('Days')
   } else if (this.ADDMSSstoppageDaysTime == 'Week') {
     this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 7
+    this.ADDMSSFinalAvailability.push('Week')
   } else if (this.ADDMSSstoppageDaysTime == 'Month') {
     this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 30
+    this.ADDMSSFinalAvailability.push('Month')
   } else if (this.ADDMSSstoppageDaysTime == 'Year') {
     this.MSSstoppageDuration = this.ADDMSSstoppageDaysTimeValue * 365
+    this.ADDMSSFinalAvailability.push('Year')
   }
+  this.ADDMSSFinalAvailability.push(this.ADDMSSstoppageDaysTimeValue)
  this.MSSAvailabilityResult = (1-(this.MSSstoppageDuration / this.MSSstoppageValue  ))*100
  this.MSSTreeButton = true
  const element = document.querySelector("#Consequence")
@@ -3905,7 +4016,7 @@ async ADDMSSToTree() {
     if(this.MSSAvailabilityResult != 0){
       availablility = this.MSSAvailabilityResult
     }
-
+    this.ADDMSSFinalAvailability.push(availablility)
       var FMName = this.data1[0].children[0].children[0].children[index - 1].data.name ;
       var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
       var MTBF = dataFromLibrary.mtbf;
@@ -3923,7 +4034,7 @@ async ADDMSSToTree() {
             obj['MSSMaintenanceInterval'] = 'Not Applicable'
             obj['MSSMaintenanceTask'] = 'Not Applicable'
             obj['MSSStartergy'] = this.MSSStratergy
-            obj['MSSAvailability'] = availablility
+            obj['MSSAvailability'] = JSON.stringify( this.ADDMSSFinalAvailability)
             obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
             this.MSSTaskObj.push(obj)
           } else{
@@ -3939,7 +4050,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
                 obj['MSSMaintenanceTask'] = 'Function Check'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
               }else{
@@ -3947,7 +4058,7 @@ async ADDMSSToTree() {
                   obj['MSSMaintenanceInterval'] = 'Not Applicable';
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
                   obj['MSSStartergy'] = this.MSSStratergy
-                  obj['MSSAvailability'] = availablility
+                  obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                   obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                   this.MSSTaskObj.push(obj)
 
@@ -3955,7 +4066,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = `${a}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
@@ -3964,7 +4075,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
@@ -3973,7 +4084,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
@@ -3981,7 +4092,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = 'NA'
                 obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
@@ -4000,7 +4111,7 @@ async ADDMSSToTree() {
                   obj['MSSMaintenanceInterval'] = 'Not Applicable'
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
                   obj['MSSStartergy'] = this.MSSStratergy
-                  obj['MSSAvailability'] = availablility
+                  obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                   obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                   this.MSSTaskObj.push(obj)
                 } else{
@@ -4017,14 +4128,14 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Function check'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
                     }else if(strategy == 'OCM'){
                       obj['MSSMaintenanceInterval'] = `${x}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
@@ -4033,7 +4144,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
@@ -4042,7 +4153,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
@@ -4050,7 +4161,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
@@ -4059,14 +4170,14 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'No Task'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
                     }
               }
       }
-
+      this.ADDMSSFinalAvailability = []
       let MSSStrategy = {
         label: "Strategy",
         type: "person",
