@@ -4,9 +4,9 @@
             <div class="form-group row">
               <label for="vendorList" class="col-sm-2 col-form-label">Vendors List</label>
               <div class="col-sm-10">
-                <select #EL (change)="slectedVendor(EL.value)" id="vendorList" class="form-control">
+                <select #EL (change)="slectedVendor(EL.value)" style="width: 35%;" id="vendorList" class="form-control">
                     <option>select...</option>
-                    <option *ngFor="let EL of VendorList" [ngValue]="EL">{{EL.UserId}} {{EL.UserName}}</option>
+                    <option *ngFor="let EL of VendorList" [ngValue]="EL">{{EL.UserName}}</option>
                 </select>
               </div>
             </div>

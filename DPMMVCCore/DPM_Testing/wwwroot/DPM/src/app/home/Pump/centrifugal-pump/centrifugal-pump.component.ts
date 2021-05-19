@@ -153,8 +153,9 @@ export class CentrifugalPumpComponent {
   
   slectedVendor(e : any){
      if(e !== 'select...'){
-      this.vendorUserId = e.split(" ")[0]
-      var Data = this.VendorList.find(v => v['UserId'] === this.vendorUserId)
+      var Data : any = []
+      Data  = this.VendorList.find(v => v['UserName'] === e)
+      this.vendorUserId = Data.UserId;
       this.vendorsLastname = Data.LastName;
       this.VendorsFirstName = Data.FirstName;
       this.vendorsUsername = Data.UserName;

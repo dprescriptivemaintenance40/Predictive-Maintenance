@@ -62,6 +62,7 @@ export class MSSAddComponent implements OnInit {
  public PlantStoppageTime: boolean  = true
  public MSSLibraryData : any = []
  public MSSLibraryJsonData : any = [] 
+ public FinalAvailability : any = []
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -217,6 +218,7 @@ async ADDMSSToTree() {
       if(this.AvailabilityResult != 0){
         availablility = this.AvailabilityResult
       }
+      this.FinalAvailability.push(availablility)
       var FMName = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].data.name ;
       var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
       var MTBF = dataFromLibrary.mtbf;
@@ -235,7 +237,7 @@ async ADDMSSToTree() {
             let obj = {}
             obj['MSSMaintenanceInterval'] = 'Not Applicable'
             obj['MSSMaintenanceTask'] = 'Not Applicable'
-            obj['MSSAvailability'] = availablility
+            obj['MSSAvailability'] =  JSON.stringify(this.FinalAvailability)
             obj['MSSStartergy'] = this.MSSStratergy
             obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
             this.MSSTaskObj.push(obj)
@@ -250,7 +252,7 @@ async ADDMSSToTree() {
               obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
               obj['MSSMaintenanceTask'] = 'Function Check'
               obj['MSSStartergy'] = this.MSSStratergy
-              obj['MSSAvailability'] = availablility
+              obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
               this.MSSTaskObj.push(obj)
             }else{
@@ -258,7 +260,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = 'Not Applicable';
                 obj['MSSMaintenanceTask'] = 'Not Applicable'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
@@ -266,7 +268,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
                 obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
@@ -274,7 +276,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}` 
                 obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
@@ -282,7 +284,7 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}` 
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
@@ -290,14 +292,14 @@ async ADDMSSToTree() {
                 obj['MSSMaintenanceInterval'] = 'NA'
                 obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                 obj['MSSStartergy'] = this.MSSStratergy
-                obj['MSSAvailability'] = availablility
+                obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
               }
             }
           }  
-
+          this.FinalAvailability= []
       }else if(this.MSSStratergy == 'C-FFT'    ||  this.MSSStratergy == 'C-OCM' || this.MSSStratergy == 'C-SO'
               || this.MSSStratergy == 'C-SR' ||  this.MSSStratergy == 'C-RED' || this.MSSStratergy == 'C-OFM'
               || this.MSSStratergy == 'D-FFT'||  this.MSSStratergy == 'D-OCM' || this.MSSStratergy == 'D-SO'
@@ -309,7 +311,7 @@ async ADDMSSToTree() {
                   let obj = {}
                   obj['MSSMaintenanceInterval'] = 'Not Applicable'
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
-                  obj['MSSAvailability'] = availablility
+                  obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                   obj['MSSStartergy'] = this.MSSStratergy
                   obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                   this.MSSTaskObj.push(obj)
@@ -325,14 +327,14 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Function check'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
                     }else if(strategy == 'OCM'){
                       obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
@@ -340,7 +342,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
@@ -348,7 +350,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`  
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
@@ -356,7 +358,7 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
@@ -365,12 +367,13 @@ async ADDMSSToTree() {
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'No Task'
                       obj['MSSStartergy'] = this.MSSStratergy
-                      obj['MSSAvailability'] = availablility
+                      obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
                     }
               }
+              this.FinalAvailability= []
       }
 
       const element = document.querySelector("#Availability")
@@ -429,12 +432,24 @@ async ADDMSSToTree() {
  async Availability(){
     if( this.MSSIntervalSelectionCriteria != "" && (this.AvailabilityY == 'Yes' || this.AvailabilityY == 'No')){
       this.changeDetectorRef.detectChanges()
-
+      this.FinalAvailability = []
       if(this.AvailabilityY == 'Yes'){
+        this.FinalAvailability = []
+        this.stoppageDays = ""
+        this.stoppageDaysValue = 0
+        this.stoppageDaysTime = ""
+        this.stoppageDaysTimeValue = 0
+        this.FinalAvailability.push('Yes')
         this.expectedAvailability = true
         this.AvailabilityPlantStoppage = false
         this.AvailabilityPlantStoppageTime = false
        }else if(this.AvailabilityY == 'No') { 
+        this.FinalAvailability = []
+        this.stoppageDays = ""
+        this.stoppageDaysValue = 0
+        this.stoppageDaysTime = ""
+        this.stoppageDaysTimeValue = 0
+        this.FinalAvailability.push('No')
         this.expectedAvailability = false
         this.AvailabilityPlantStoppage = true
         this.AvailabilityPlantStoppageTime = true
@@ -451,6 +466,7 @@ async ADDMSSToTree() {
 
  async AvailabilityYes(){
      if(this.AvailabilityCheck != 0){
+      this.FinalAvailability.push(this.AvailabilityCheck)
       this.AddMSSSave = true
       const element = document.querySelector("#Consequence")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -461,34 +477,51 @@ async ADDMSSToTree() {
    }
 
  async StoppageDays(){
-    if(this.stoppageDays == 'Days'){
-      this.stoppageValue = this.stoppageDaysValue * 1 
-    } else if(this.stoppageDays == 'Week'){ 
-      this.stoppageValue =  this.stoppageDaysValue * 7 
-    } else if(this.stoppageDays == 'Month'){ 
-      this.stoppageValue =  this.stoppageDaysValue * 30 
-    } else if(this.stoppageDays == 'Year'){ 
-      this.stoppageValue =  this.stoppageDaysValue * 365 
+   if(this.stoppageDays.length > 0 && this.stoppageDaysValue != 0){
+         if(this.stoppageDays == 'Days'){
+           this.stoppageValue = this.stoppageDaysValue * 1 
+           this.FinalAvailability.push('Days')
+         } else if(this.stoppageDays == 'Week'){ 
+           this.stoppageValue =  this.stoppageDaysValue * 7 
+           this.FinalAvailability.push('Week')
+         } else if(this.stoppageDays == 'Month'){ 
+           this.stoppageValue =  this.stoppageDaysValue * 30 
+           this.FinalAvailability.push('Month')
+         } else if(this.stoppageDays == 'Year'){ 
+           this.stoppageValue =  this.stoppageDaysValue * 365 
+           this.FinalAvailability.push('Year')
+         }
+         this.FinalAvailability.push(this.stoppageDaysValue)
+         this.PlantStoppageTime = !this.PlantStoppageTime;
+         const element = document.querySelector("#PlantStoppagetime")
+         if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }else{
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill all details"})
     }
-    this.PlantStoppageTime = !this.PlantStoppageTime;
-    const element = document.querySelector("#PlantStoppagetime")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
    }
 
   async StoppageDuration(){
-    if (this.stoppageDaysTime == 'Days') {
-      this.stoppageDuration = this.stoppageDaysTimeValue * 1
-    } else if (this.stoppageDaysTime == 'Week') {
-      this.stoppageDuration = this.stoppageDaysTimeValue * 7
-    } else if (this.stoppageDaysTime == 'Month') {
-      this.stoppageDuration = this.stoppageDaysTimeValue * 30
-    } else if (this.stoppageDaysTime == 'Year') {
-      this.stoppageDuration = this.stoppageDaysTimeValue * 365
-    }
-   this.AddMSSSave = true
-   this.AvailabilityResult = (1-(this.stoppageDuration / this.stoppageValue  ))*100
-   const element = document.querySelector("#Consequence")
-   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
+    if(this.stoppageDaysTime.length > 0 && this.stoppageDaysTimeValue != 0){
+         if (this.stoppageDaysTime == 'Days') {
+           this.stoppageDuration = this.stoppageDaysTimeValue * 1
+           this.FinalAvailability.push('Days')
+         } else if (this.stoppageDaysTime == 'Week') {
+           this.stoppageDuration = this.stoppageDaysTimeValue * 7
+           this.FinalAvailability.push('Week')
+         } else if (this.stoppageDaysTime == 'Month') {
+           this.stoppageDuration = this.stoppageDaysTimeValue * 30
+           this.FinalAvailability.push('Month')
+         } else if (this.stoppageDaysTime == 'Year') {
+           this.stoppageDuration = this.stoppageDaysTimeValue * 365
+           this.FinalAvailability.push('Year')
+         }
+         this.FinalAvailability.push(this.stoppageDaysTimeValue)
+        this.AddMSSSave = true
+        this.AvailabilityResult = (1-(this.stoppageDuration / this.stoppageValue  ))*100
+        const element = document.querySelector("#Consequence")
+        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }else{
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill all details"})
+      }
+   }     
 }
