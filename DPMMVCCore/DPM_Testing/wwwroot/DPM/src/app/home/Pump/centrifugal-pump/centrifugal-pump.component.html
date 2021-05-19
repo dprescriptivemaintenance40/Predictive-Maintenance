@@ -2,35 +2,35 @@
     <div class="card shadow" style="padding: 20px;margin: 10px;">
         <form>
             <div class="form-group row">
-              <label for="vendorList" class="col-sm-2 col-form-label">Vendors List</label>
-              <div class="col-sm-10">
-                <select #EL (change)="slectedVendor(EL.value)" id="vendorList" class="form-control">
+                <label for="vendorList" class="col-sm-2 col-form-label">Vendors List</label>
+                <div class="col-sm-10">
+                    <select #EL (change)="slectedVendor(EL.value)" id="vendorList" class="form-control">
                     <option>select...</option>
                     <option *ngFor="let EL of VendorList" [ngValue]="EL">{{EL.UserId}} {{EL.UserName}}</option>
                 </select>
-              </div>
+                </div>
             </div>
-          </form>
-          <div *ngIf="vendorsLastname !== '' " style="margin-top: 20px;" class="form-group row">
-              <div class="col-sm-2">
-                  <label>Vendor Firstname : </label>
-              </div>
-              <div class="col-sm-2">
-                  {{VendorsFirstName}} 
-              </div>
-              <div class="col-sm-2">
-                  <label>Vendor Lastname : </label>
-              </div>
-              <div class="col-sm-2">
-                  {{vendorsLastname}}
-              </div>
-              <div class="col-sm-2">
-                  <label>Vendor Username : </label>
-              </div>
-              <div class="col-sm-2">
-                  {{vendorsUsername}}
-              </div>
-          </div>
+        </form>
+        <div *ngIf="vendorsLastname !== '' " style="margin-top: 20px;" class="form-group row">
+            <div class="col-sm-2">
+                <label>Vendor Firstname : </label>
+            </div>
+            <div class="col-sm-2">
+                {{VendorsFirstName}}
+            </div>
+            <div class="col-sm-2">
+                <label>Vendor Lastname : </label>
+            </div>
+            <div class="col-sm-2">
+                {{vendorsLastname}}
+            </div>
+            <div class="col-sm-2">
+                <label>Vendor Username : </label>
+            </div>
+            <div class="col-sm-2">
+                {{vendorsUsername}}
+            </div>
+        </div>
     </div>
 </div>
 
