@@ -7,9 +7,16 @@
     }
 
     .classname {
-        -ms-touch-action: none;
-        touch-action: none;
+    -ms-touch-action: none;
+     -ms-touch-action: pan-y;
+     touch-action: none;
+     touch-action: pan-x;
+     touch-action: pan-y;
+     touch-action: manipulation;
+     touch-action: pan-right;
+     touch-action: auto;
     }
+
 </style>
 
 <div class="card shadow" style="margin: 20px;">
@@ -223,8 +230,7 @@
             </div>
         </div>
     </div>
-</div>
-
+</div>>
 <div class="modal fade" id="DisplayRCATree" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -235,7 +241,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow: scroll;">
+            <div class="modal-body" style="overflow: scroll;" class="classname" id="scene3" #scene3>
                 <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
             </div>
             <div class="modal-footer">

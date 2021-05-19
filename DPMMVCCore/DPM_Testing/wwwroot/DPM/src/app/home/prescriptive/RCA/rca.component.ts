@@ -31,8 +31,9 @@ export interface TreeNode<T = any> {
     templateUrl: './rca.component.html',
 })
 export class RCAComponent implements OnInit, AfterViewInit {
-    @ViewChild('scene',{ static: false }) scene: ElementRef;
-    @ViewChild('scene1',{ static: false }) scene1: ElementRef;
+    @ViewChild('scene', { static: false }) scene: ElementRef;
+    @ViewChild('scene1', { static: false }) scene1: ElementRef;
+    @ViewChild('scene3', { static: false }) scene3: ElementRef;
     panZoomController;
     files: any = [];
     Updatefiles: any[];
@@ -61,14 +62,14 @@ export class RCAComponent implements OnInit, AfterViewInit {
     public RCADisplayFile: any = []
     public tabView: boolean = true
     pinchSpeed
-    elementYouWant: any;
+
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
         public router: Router,
         private commonBL: CommonBLService,
         private RCAAPIName: PrescriptiveContantAPI,
-         ) {
+    ) {
         this.files = [{
             id: this.itemCount,
             label: 'Problem Statement',
@@ -88,18 +89,19 @@ export class RCAComponent implements OnInit, AfterViewInit {
                 children: []
             }
         )
-  
+
     }
     ngOnInit() {
         this.getRecordsList();
         this.getHeatExchangerData();
     }
-      ngAfterViewInit() {
-         this.panZoomController = panzoom(this.scene.nativeElement);
-         this.panZoomController = panzoom(this.scene1.nativeElement);
-         this.pinchSpeed = -1
-      }
-      
+    ngAfterViewInit() {
+        this.panZoomController = panzoom(this.scene.nativeElement);
+        this.panZoomController = panzoom(this.scene1.nativeElement);
+        this.panZoomController = panzoom(this.scene3.nativeElement);
+        this.pinchSpeed = -1
+    }
+
     getHeatExchangerData() {
         const params = new HttpParams()
             .set("data", 'Heat Exchanger')
