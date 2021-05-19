@@ -76,6 +76,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
             addTree: true,
             update: '',
             operationalData: '',
+            disable: false,
             designData: '',
             isParent: 'Yes',
             children: []
@@ -86,6 +87,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
                 label: 'Problem Statement',
                 addTree: true,
                 isParent: 'Yes',
+                disable: false,
                 children: []
             }
         )
@@ -138,6 +140,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
             RCAFILE: '',
             addTree: true,
             deleteTree: true,
+            disable: false,
             children: []
         }
         var id = obj.id;
@@ -227,6 +230,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
             id: this.itemCount,
             label: 'Problem Statement',
             addTree: true,
+            disable: false,
             isParent: 'Yes',
             children: []
         }];
@@ -322,6 +326,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
             id: this.RCAUpdateItemCount,
             label: "Why?",
             RCAFILE: '',
+            disable: false,
             addTree: true,
             deleteTree: true,
             children: []
@@ -438,11 +443,13 @@ export class RCAComponent implements OnInit, AfterViewInit {
         for (let index = 0; index < val.length; index++) {
             val[index].addTree = false;
             val[index].deleteTree = false;
+            val[index].disable = true;
             if (val[index].children.length > 0) {
                 var Data: any = val[index].children;
                 for (let index1 = 0; index1 < Data.length; index1++) {
                     Data[index1].addTree = false;
                     Data[index1].deleteTree = false;
+                    Data[index1].disable = true;
                     if (Data[index1].children.length > 0) {
                         var Data2 = Data[index1].children
                         for (let index3 = 0; index3 < Data2.length; index3++) {
