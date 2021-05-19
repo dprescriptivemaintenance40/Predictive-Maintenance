@@ -1556,13 +1556,13 @@
                                                     <label> A-FFT</label>
                                                 </div>
                                             </div>
-                                            <div class="col"><br>
+                                            <!-- <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                                                     <input type="radio" [(ngModel)]="MSSStratergy" value="A-FromAbove"
                                                         name="name1" />&nbsp;
                                                     <label> From Above</label>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                                                     <input type="radio" [(ngModel)]="MSSStratergy" value="A-RED"
@@ -1613,13 +1613,13 @@
                                                     <label> B-SR</label>
                                                 </div>
                                             </div>
-                                            <div class="col"><br>
+                                            <!-- <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                                                     <input type="radio" [(ngModel)]="MSSStratergy" value="B-FromAbove"
                                                         name="name1" />&nbsp;
                                                     <label> From Above</label>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                                                     <input type="radio" [(ngModel)]="MSSStratergy" value="B-RED"
@@ -2224,12 +2224,58 @@
       
             </div>
         </div>
+        <div class="row" style="padding: 15px;">
+            <div class="col-md-6">
+                <label>Do you have Availability percentage? </label>
+            </div>
+            <div class="col-sm">
+                Yes <td><input type="radio" (change)="UpdateMSSAvailabilityYN()" [(ngModel)]="UpdateMSSAvailabilityY" value="Yes" name="UpdateMSSAvailabilityYNCheck" />&nbsp;</td>
+            </div>
+            <div class="col-sm">
+                No <td><input type="radio" (change)="UpdateMSSAvailabilityYN()" [(ngModel)]="UpdateMSSAvailabilityY" value="No" name="UpdateMSSAvailabilityYNCheck" />&nbsp;</td>
+            </div>
+            <div class="col-sm"></div>
+        </div>
+        <div *ngIf="UpdateMSSDirectAvailability" class="row" style="padding: 15px;">
+            <div class="input-group mb-3">
+                <label><b > What is your accepted Availability % : </b></label> &ensp;
+                <input type="number"  class="custom-form-control" [(ngModel)]="UpdateMSSAvailabilityCheck" placeholder="Availability percentage">
+            </div>
+        </div>
+        <div *ngIf="UpdateMSSIndirectAvailability" class="row" style="padding: 15px;">
+            <div class="input-group mb-3">
+                <label><b >How long do you run your plant before taking stoppage? </b></label>
+            <select [(ngModel)]="UpdateMSSstoppageDays" class="form-select"  class="form-control" placeholder="Plant Stoppage Days">
+                
+                    <option value="Days" selected> Days</option>
+                    <option value="Week" selected> Week</option>
+                    <option value="Month" selected>Month</option>
+                    <option value="Year" selected>Year</option>
+                </select>
+                <input type="number" [(ngModel)]="UpdateMSSstoppageDaysValue" name="stoppage Days Value" class="form-control">
+            </div>
+        </div>
+
+        <div *ngIf="UpdateMSSIndirectAvailability" class="row" style="padding: 15px;">
+            <div class="input-group mb-3">
+                <label><b > How long is your stoppage? </b></label>
+            <select [(ngModel)]="UpdateMSSstoppageDaysTime" class="form-select"  class="form-control" placeholder="Plant Stoppage Days">
+                
+                    <option value="Days" selected> Days</option>
+                    <option value="Week" selected> Week</option>
+                    <option value="Month" selected>Month</option>
+                    <option value="Year" selected>Year</option>
+                </select>
+                <input type="number" [(ngModel)]="UpdateMSSstoppageDaysTimeValue"  name="stoppage Duration " class="form-control">
+            </div>
+        </div>
+        
         <div class="row">
             <div class="col">
-                <label>Availability % </label>
+                <label>Previous MSS Availability % </label>
             </div>
             <div class="col">
-                <input type="number" [(ngModel)]="UpdateMSSAvailability" name="availability" class="form-control" id="availability">
+                <input type="number" [(ngModel)]="UpdateMSSAvailability" name="availability" class="form-control" id="availability" disabled>
             </div>
         </div>
     </ng-template>
