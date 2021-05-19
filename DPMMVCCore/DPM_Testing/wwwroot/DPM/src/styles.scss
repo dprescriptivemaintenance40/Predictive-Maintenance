@@ -67,12 +67,11 @@ select.ng-invalid.ng-touched {
 }
 
 .custom-textarea {
-    border: 1px solid black;
-    border-radius: 0.3em;
+    border: none;
+    border-radius: 0.2em;
     outline: none;
     line-height: 3ch;
     background-image: linear-gradient(transparent, transparent calc(3ch - 1px), #E7EFF8 0px);
     background-size: 100% 3ch;
     height: 81px;
-   
 }

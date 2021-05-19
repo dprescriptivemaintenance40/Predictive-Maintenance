@@ -120,7 +120,7 @@
         <ng-template pTemplate="content">
             <div class="p-fluid p-formgrid p-grid">
                 <div class="container">
-                    <div style="overflow: scroll; height:20rem; ">
+                    <div style="overflow: scroll; height:20rem;">
                         <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                             {{func.Description}}
                         </div>

@@ -1299,12 +1299,12 @@ namespace DPM.Controllers.Prescriptive
         {
             try
             {
-                string _fileToBeDeleted = fullPath;
-                if (System.IO.File.Exists(_fileToBeDeleted))
-                {
-                    System.IO.File.Delete(_fileToBeDeleted);
-                }
-
+                //string _fileToBeDeleted = fullPath;
+                //if (System.IO.File.Exists(_fileToBeDeleted))
+                //{
+                //    System.IO.File.Delete(_fileToBeDeleted);
+                //}
+                System.IO.File.Delete(Path.Combine(_hostingEnvironment.WebRootPath, fullPath));
                 return Ok();
             }
             catch (Exception exe)

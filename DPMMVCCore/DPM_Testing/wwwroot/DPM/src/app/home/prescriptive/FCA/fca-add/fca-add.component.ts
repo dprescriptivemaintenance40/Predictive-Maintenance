@@ -1639,6 +1639,7 @@ async SelectNodeToView(p){
     this.PatternFailuerAll = true
     this.FCAFreeText = ""
     this.alphaBeta = true
+    this.SafeUsefulLife = !this.SafeUsefulLife;
     this.changeDetectorRef.detectChanges();
     const element = document.querySelector("#alphaBeta")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })

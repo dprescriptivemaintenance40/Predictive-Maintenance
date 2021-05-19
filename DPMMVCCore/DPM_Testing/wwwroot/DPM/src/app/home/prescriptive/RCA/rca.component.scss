@@ -4,3 +4,22 @@
     background-color: rgb(123, 128, 201);
   }
   
+  :host ::ng-deep .p-organizationchart {
+    .person {
+      padding: 0;
+      border: 0 none;
+      background-color: rgb(123, 128, 201);
+    }
+   
+  }
+  
+    .classname {
+     -ms-touch-action: none;
+     -ms-touch-action: pan-y;
+     touch-action: none;
+     touch-action: pan-x;
+     touch-action: pan-y;
+     touch-action: manipulation;
+     touch-action: pan-right;
+     touch-action: auto;
+    }

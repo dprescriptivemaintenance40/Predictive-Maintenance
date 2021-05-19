@@ -89,24 +89,154 @@
                         <span [class]="getIcon()" *ngIf="node.icon||node.expandedIcon||node.collapsedIcon"></span>
                         <span class="p-treenode-label">
                             <span *ngIf="!tree.getTemplateForNode(node)">
-                              <textarea class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2"></textarea>
+                              <textarea [disabled]="node.disable" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2"></textarea>
                             </span>
                         <span *ngIf="tree.getTemplateForNode(node)">
                                 <ng-container *ngTemplateOutlet="tree.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
                             </span>
                         </span>
-                        <ng-container *ngIf="node.addTree">
+                        <ng-container *ngIf="node.deleteTree">
                             <span class="p-tree-toggler pi pi-fw pi-times-circle" style="
                             position: absolute;
                             color: red; 
-                            right: -18px;
-                            top: -9px;" (click)="deleteTreeRow($event,node)"></span>
+                            right: 10px;
+                            top: -9px;" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="deleteTreeRow($event,node)"></span>
                         </ng-container>
                         <ng-container *ngIf="node.addTree">
-                            <span class="p-tree-toggler pi pi-fw pi-plus" (click)="addTreeRow($event,node)" style="margin-right: 0;"></span>
+                            <span class="p-tree-toggler pi pi-fw pi-plus" data-toggle="tooltip" data-placement="right" title="Add Node" (click)="addTreeRow($event,node)" style="margin-right: 0;"></span>
                         </ng-container>
+                        <ng-container *ngIf="node.RCAFILE =='' && node.isParent == undefined">
+                            <span class="p-tree-toggler pi pi-angle-double-right" style="
+                            position: absolute;
+                            color: black; 
+                            right: -18px;
+                            top: -9px;" data-toggle="tooltip" data-placement="right" title="Add attachment to node" (click)="AttachmentNodeSelected()" (click)="rCAAttachment($event,node)"></span>
+                        </ng-container>
+                        <ng-container *ngIf="node.RCAFILE != '' && node.isParent == undefined">
+                            <span class="p-tree-toggler fa fa-eye" style="
+                            position: absolute;
+                            color: rgb(150, 150, 247); 
+                            right: -18px;
+                            top: -9px;" data-toggle="tooltip" data-placement="right" title="View Attachment" (click)="showRCAAttachment($event,node)"></span>
+                        </ng-container>
+                        <ng-container *ngIf="node.isParent == 'Yes' ">
+                            <span class="p-tree-toggler pi pi-angle-double-right" style="
+                            position: absolute;
+                            color: black; 
+                            right: 10px;
+                            top: -9px;" data-toggle="tooltip" data-placement="right" title="Add Operational and Design Details to Problem Statement" (click)="parentNodeADDData($event,node)" style="margin-right: 0;"></span>
+                        </ng-container>
+                        
                     </div>
                 </td>
+               
+                    <div *ngIf="AttachmentOverlay" style="
+                                    position: relative;
+                                    width: 20em;
+                                    border: none;
+                                    border-radius: 0.3em;
+                                    background-color: #fff;
+                                    box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
+                                    padding: 10px;">
+                            <a (click)="AttachmentOverlayClose(node)" style="position: absolute;
+                                                        right: 2px;
+                                                        top: 0;
+                                                        color: red;">
+                                <i class="pi pi-times-circle"></i>
+                            </a>&nbsp;&nbsp;
+                            <p-overlayPanel>
+                                    <div style="margin-left:2px;" class="row">
+                                        <label>Add Evidence</label>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="uploadAttachments">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadRCAAttachment($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                            <label class="custom-file-label" *ngIf="RCAAttacmentUpladName == ''" for="inputGroupFile01">Attachment</label>
+                                            <label class="custom-file-label" *ngIf="RCAAttacmentUpladName != ''" for="inputGroupFile01">{{RCAAttacmentUpladName}}</label>
+                                        </div>
+                                    </div>
+                               
+                            </p-overlayPanel>
+                            
+                    </div>
+                   
+                   <div *ngIf="RCAFileView" style="
+                            position: absolute;
+                            z-index: 1;
+                            width: 15em;
+                            border: none;
+                            border-radius: 0.3em;
+                            background-color: #fff;
+                            box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
+                            padding: 10px;">
+                    <a (click)="closeRCAFileView(node)" style="position: absolute;
+                                                right: 2px;
+                                                top: 0;
+                                                color: red;">
+                          <i class="pi pi-times-circle"></i>
+                    </a>&nbsp;&nbsp;
+                    <a (click)="downloadURI()" style="position: absolute;
+                                                right: 28px;
+                                                top: 0;
+                                                color: blue;">
+                        <i class="pi pi-download"></i>
+                    </a>
+                    <div class="text-center">
+                        <h5 *ngIf="node.addTree" style="font-size: 1em; font-weight: revert;">To update attachment <button (click)="RCAUpdateNodeAttachment(node)" class="btn btn-link">click here</button></h5>
+                    </div>
+                    <div class="text-center">
+                        <label for="file" class="custom-label" style="font-size: 1em;
+                        font-weight: revert;
+                        border-bottom: 2px solid;
+                        margin: 0px;">Uploaded File</label>
+                        <div *ngIf="RCAPdfViewEnable" style="margin: 10px;" id="file">
+                            <iframe [src]="RCAFileSafeUrl" width="200" height="200"> </iframe>
+                        </div>
+                        <div *ngIf="RCAImageViewEnable" style="margin: 10px;" id="file">
+                            <img [src]="RCAFileSafeUrl" width="200" height="200">
+                     </div>
+                    </div>
+                   </div>
+
+
+                   <div *ngIf="RCAParentAttachment" style="
+                            position: relative;
+                            width: 35em;
+                            border: none;
+                            border-radius: 0.3em;
+                            background-color: #fff;
+                            box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
+                            padding: 10px;">
+
+                            <a (click)="closeRCAParrentView(node)" style="position: absolute;
+                            right: 2px;
+                            top: 0;
+                            color: red;">
+                            <i class="pi pi-times-circle"></i>
+                            </a>&nbsp;&nbsp;
+
+                            <div style="margin-left: 10px;">
+                                <div class="row">
+                                    <label>Operation Details</label>
+                                </div>
+                                <div class="row">
+                                    <textarea  [disabled]="node.disable" placeholder="Enter operation details" (change)="AddRCAOperationalDesignData(node)" [(ngModel)]="RCAParentOperationalData" class="form-control custom-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div style="margin-left: 10px;">
+                                <div class="row">
+                                    <label>Design Details</label>
+                                </div>
+                                <div class="row">
+                                    <textarea [disabled]="node.disable" placeholder="Enter design details"  (change)="AddRCAOperationalDesignData(node)" [(ngModel)]="RCAParentDesignData" class="form-control custom-textarea"></textarea>
+                                </div>
+                            </div>
+                    
+                   </div>
+                
                 <td class="p-treenode-children-container" *ngIf="node.children && node.expanded" [style.display]="node.expanded ? 'table-cell' : 'none'">
                     <div class="p-treenode-children">
                         <p-treeNode *ngFor="let childNode of node.children;let firstChild=first;let lastChild=last; trackBy: tree.trackBy" [node]="childNode" [firstChild]="firstChild" [lastChild]="lastChild"></p-treeNode>
@@ -116,3 +246,28 @@
         </tbody>
     </table>
 </ng-template>
+<!-- <ng-template>
+    <ng-container>
+        <div *ngIf="AttachmentOverlay" style="
+                        position: relative;
+                        width: 35em;
+                        border: none;
+                        border-radius: 0.3em;
+                        background-color: #fff;
+                        box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
+                        padding: 10px;">
+                <a (click)="AttachmentOverlayClose(node)" style="position: absolute;
+                                            right: 2px;
+                                            top: 0;
+                                            color: red;">
+                    <i class="pi pi-times-circle"></i>
+                </a>&nbsp;&nbsp;
+                <p-overlayPanel>
+                    <div style="margin-right: 2px;width: 40rem;">
+                        <li>oooooooo</li>
+                    </div>
+                </p-overlayPanel>
+                
+            </div>
+    </ng-container>
+</ng-template> -->

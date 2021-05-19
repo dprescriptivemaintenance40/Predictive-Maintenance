@@ -17,6 +17,10 @@ import { RippleModule } from 'primeng/ripple';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment'
 import { FormsModule } from '@angular/forms';
+import { OverlayPanel } from "primeng/overlaypanel";
+import { PrescriptiveContantAPI } from 'src/app/home/prescriptive/Shared/prescriptive.constant';
+import { CommonBLService } from '../BLDL/common.bl.service';
+import { HttpParams } from '@angular/common/http';
 @Component({
     selector: 'p-treeNode',
     templateUrl: './p-tree.html',
@@ -55,10 +59,24 @@ export class UITreeNode implements OnInit {
     public PdfEnable: boolean = false;
     public ImageEnable: boolean = false;
 
+    public AttachmentOverlay : boolean = false;
+    public RCAAttacmentUpladName : string = ""
+    public RCANodeData : any;
+    public RCAFileView : boolean = false
+    public RCAImageViewEnable : boolean = false
+    public RCAPdfViewEnable : boolean = false
+    public RCAFileSafeUrl: any;
+    public RCAParentAttachment : boolean = false
+    public RCAParentOperationalData : string = ""
+    public RCAParentDesignData : string = ""
+    public RCAUpdateAttachment : boolean = false
+
     constructor(
         @Inject(forwardRef(() => Tree),) tree,
         private sanitizer: DomSanitizer,
-        private change: ChangeDetectorRef) {
+        private change: ChangeDetectorRef,
+        private prescriptiveContantAPI : PrescriptiveContantAPI,
+        private commonBLService : CommonBLService) {
         this.tree = tree as Tree;
     }
 
@@ -75,6 +93,12 @@ export class UITreeNode implements OnInit {
         }
     }
 
+    AttachmentNodeSelected(){
+       this.AttachmentOverlay = true
+    }
+    AttachmentOverlayClose(){
+        this.AttachmentOverlay = false
+    }
 
     NodeSelection(node) {
         node.edit = false;
@@ -133,6 +157,68 @@ export class UITreeNode implements OnInit {
     deleteTreeRow(event: Event, node) {
         this.tree.deleteTreeRow.emit(node);
     }
+    rCAAttachment(event: Event, node) {
+        this.RCANodeData = node;
+        this.tree.rCAAttachment.emit(node);
+    }
+    uploadRCAAttachment(event: any) {
+        this.RCAAttacmentUpladName = event.target.files[0].name
+        var data : any = []
+        data.push(event)
+        data.push(this.RCANodeData)
+        this.tree.uploadRCAAttachment.emit(data);  
+    }
+    showRCAAttachment(event, node){
+        var DATA = JSON.parse(node.RCAFILE)
+        this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(DATA.dbPath);
+        this.FileUrl = DATA.dbPath;
+        var extension = this.getFileExtension(DATA.dbPath);
+        if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
+            this.RCAImageViewEnable = true;
+            this.RCAPdfViewEnable = false;
+            this.RCAFileView = true
+        } else if (extension.toLowerCase() == 'pdf') {
+            this.RCAImageViewEnable = false;
+            this.RCAPdfViewEnable = true;
+            this.RCAFileView = true
+        }
+    }
+
+    parentNodeADDData(event: Event, node) {
+        this.RCAParentAttachment = true;
+        this.RCAParentDesignData = node.designData
+        this.RCAParentOperationalData = node.operationalData
+        // this.tree.addTreeRow.emit(node);
+        // this.expand(event);
+    }
+    closeRCAParrentView(){
+        this.RCAParentAttachment = false;
+    }
+
+    closeRCAFileView(){
+        this.RCAFileView = false
+    }
+
+    AddRCAOperationalDesignData(node){
+        node.designData = this.RCAParentDesignData
+        node.operationalData = this.RCAParentOperationalData
+
+    }
+    
+    RCAUpdateNodeAttachment(node){
+        var fileDetails = JSON.parse(node.RCAFILE)
+        const params = new HttpParams()
+            .set('fullPath', fileDetails.dbPath)
+        this.commonBLService.DeleteWithParam(this.prescriptiveContantAPI.RCAUpdateAttachment, params)
+        .subscribe(
+            res => {
+                node.RCAFILE = ''
+                this.RCAFileView = false;
+                this.AttachmentOverlay = true;
+            }
+        )
+    }
+    
 
     expand(event: Event) {
         this.node.expanded = true;
@@ -561,6 +647,8 @@ export class Tree implements OnInit, AfterContentInit, OnChanges, OnDestroy, Blo
 
     @Output() addTreeRow: EventEmitter<any> = new EventEmitter();
     @Output() deleteTreeRow: EventEmitter<any> = new EventEmitter();
+    @Output() rCAAttachment: EventEmitter<any> = new EventEmitter();
+    @Output() uploadRCAAttachment: EventEmitter<any> = new EventEmitter();
 
     @Input() style: any;
 

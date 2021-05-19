@@ -126,7 +126,7 @@
 
 .p-tree-horizontal .p-treenode-content {
     font-weight: normal;
-    padding: 0.4em 1em 0.4em 0.2em;
+    padding: 0.2em 0.2em 0.2em 0.2em;
     display: flex;
     align-items: center;
 }
