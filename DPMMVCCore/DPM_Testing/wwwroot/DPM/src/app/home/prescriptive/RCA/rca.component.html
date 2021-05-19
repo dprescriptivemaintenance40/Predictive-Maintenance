@@ -5,6 +5,11 @@
         text-decoration: none;
         color: grey !important;
     }
+
+    .classname {
+        -ms-touch-action: none;
+        touch-action: none;
+    }
 </style>
 
 <div class="card shadow" style="margin: 20px;">
@@ -14,7 +19,10 @@
                 <div class="col-xl-12 col-lg-11">
                     <div class="card rca shadow mb-4 con">
                         <div class="card-body">
-                            <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                            <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords"
+                                [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [rowsPerPageOptions]="[10,25,50]">
                                 <ng-template pTemplate="colgroup">
                                     <colgroup>
                                         <col style="width:5em;">
@@ -46,9 +54,13 @@
                                         <td>{{p.TagNumber}}</td>
                                         <td>{{p.RCAFailureMode}}</td>
                                         <td>
-                                            <a title="Report for {{p.RCALabel}}"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;&nbsp;
-                                            <a title="View {{p.RCALabel}}" data-toggle="modal" data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i class="pi pi-eye"></i> </a>&nbsp;&nbsp;
-                                            <a title="Delete {{p.RCALabel}}" style="color: red;" (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
+                                            <a title="Report for {{p.RCALabel}}"><i class="fa fa-file"
+                                                    aria-hidden="true"></i></a>&nbsp;&nbsp;
+                                            <a title="View {{p.RCALabel}}" data-toggle="modal"
+                                                data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i
+                                                    class="pi pi-eye"></i> </a>&nbsp;&nbsp;
+                                            <a title="Delete {{p.RCALabel}}" style="color: red;"
+                                                (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
                                     <tr *ngIf="RCAListRecords.length == 0">
@@ -75,7 +87,8 @@
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Tag Number</label>
-                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number" class="form-control">
+                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number"
+                                class="form-control">
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -83,17 +96,19 @@
                     </li>
                 </ul>
             </div>
-            <div id="scene" #scene>
-            <div *ngIf="Treeshow" style="overflow: scroll;">
-                <div id="scene" #scene>
-                <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)"></p-tree><br><br>
-              
+            <div [hidden]="!Treeshow" style="overflow: scroll;">
+                <div class="classname" id="scene" #scene>
+                    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
+                        (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)"
+                        (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
+                    </p-tree><br><br>
                 </div>
                 <div style="margin: 10px;">
-                    <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data" tooltipPosition="top">save</a>
+                    <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i
+                            class="fa fa-times" aria-hidden="true"></i></a>
+                    <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data"
+                        tooltipPosition="top">save</a>
                 </div>
-            </div>
             </div>
         </p-tabPanel>
         <p-tabPanel header="Update"><br>
@@ -123,8 +138,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="classname" id="scene1" #scene1>
-            <div *ngIf="UpdateTreeshow" style="overflow: scroll;">
+            <div [hidden]="!UpdateTreeshow" style="overflow: scroll;">
                 <div style="margin: 20px; border: 1px solid;">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" style="width: 31em;">
@@ -132,8 +146,8 @@
                                 <label style=" margin-right: 12px;">Asset</label>
                                 <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
                                     <option value="" disabled>Choose..</option>
-                                      <option value="HeatExchanger" selected>Heat Exchanger</option>
-                                  </select>
+                                    <option value="HeatExchanger" selected>Heat Exchanger</option>
+                                </select>
                             </div>
                         </li>
                         <li class="list-group-item">
@@ -141,22 +155,27 @@
                                 <label style=" margin-right: 12px;">Failure Mode</label>
                                 <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
                                     <option value="" disabled>Choose..</option>
-                                    <option *ngFor="let EL of HeatExchangerFailureModeList" [ngValue]="EL">{{EL}}</option>
-                                  </select>
+                                    <option *ngFor="let EL of HeatExchangerFailureModeList" [ngValue]="EL">{{EL}}
+                                    </option>
+                                </select>
                             </div>
                         </li>
                     </ul>
                 </div>
 
                 <div class="classname" id="scene1" #scene1>
-                <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
-                    </div> 
+                    <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single"
+                        [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)"
+                        (uploadRCAAttachment)="uploadRCAAttachment($event)"
+                        (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
+                </div>
 
                 <div style="margin: 10px;">
-                    <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data" tooltipPosition="top">Update</a>
+                    <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
+                            class="fa fa-times" aria-hidden="true"></i></a>
+                    <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data"
+                        tooltipPosition="top">Update</a>
                 </div>
-            </div>
             </div>
         </p-tabPanel>
     </p-tabView>
@@ -169,9 +188,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title"> Add Failure Mode to RCA </h6><br>
-                <button type="button" class="close" data-dismiss="ADDRCAModal" aria-label="Close" (click)="closeRCAAddModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                <button type="button" class="close" data-dismiss="ADDRCAModal" aria-label="Close"
+                    (click)="closeRCAAddModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="ADDRCAModal modal-body">
                 <ul class="list-group list-group-flush">
@@ -179,25 +199,27 @@
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Assets</label>
                             <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
-                                          <option value="">Choose..</option>
-                                            <option value="HeatExchanger" selected>Heat Exchanger</option>
-                                        </select>
+                                <option value="">Choose..</option>
+                                <option value="HeatExchanger" selected>Heat Exchanger</option>
+                            </select>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style="margin-right: 12px;">Failure Mode</label>
                             <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
-                                          <option value="">Choose..</option>
-                                          <option *ngFor="let EL of HeatExchangerFailureModeList" [ngValue]="EL">{{EL}}</option>
-                                        </select>
+                                <option value="">Choose..</option>
+                                <option *ngFor="let EL of HeatExchangerFailureModeList" [ngValue]="EL">{{EL}}</option>
+                            </select>
                         </div>
                     </li>
                 </ul>
             </div>
             <div class="ADDRCAModal modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="closeRCAAddModal()" data-dismiss="ADDRCAModal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()" data-dismiss="ADDRCAModal">Save changes</button>
+                <button type="button" class="btn btn-secondary" (click)="closeRCAAddModal()"
+                    data-dismiss="ADDRCAModal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()"
+                    data-dismiss="ADDRCAModal">Save changes</button>
             </div>
         </div>
     </div>
@@ -208,15 +230,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="DisplayRCATree">RCA Label Name : {{RCADisplayLabel}}</h5>
-                <button type="button" class="close" data-dismiss="modal" (click)="CloseRCATreeDisplay()" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                <button type="button" class="close" data-dismiss="modal" (click)="CloseRCATreeDisplay()"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body" style="overflow: scroll;">
                 <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()"
+                    data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
