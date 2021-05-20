@@ -167,6 +167,7 @@ export class UITreeNode implements OnInit {
         data.push(event)
         data.push(this.RCANodeData)
         this.tree.uploadRCAAttachment.emit(data);  
+        this.AttachmentOverlay = false;
     }
     showRCAAttachment(event, node){
         var DATA = JSON.parse(node.RCAFILE)
