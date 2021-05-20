@@ -3503,7 +3503,6 @@ this.ADDfailurewarning = !this.ADDfailurewarning;
 const element = document.querySelector("#Patternfailurewarning")
 if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }else{
-// alert("fill the data")
 this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
 }
    }
@@ -3827,7 +3826,6 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
      const element = document.querySelector("#PlantStoppage")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }else{
-    alert("fill the data")
     this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
   }
 
@@ -3837,7 +3835,7 @@ async AvailabilityYes(){
    if(this.ADDMSSAvailabilityCheck != 0){
 
    }else{
-     alert("Fill the data")
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
    }
    this.MSSTreeButton = true
    const element = document.querySelector("#Consequence")

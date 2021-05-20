@@ -392,8 +392,8 @@ async ADDMSSToTree() {
       this.AddMSSSave = false
       this.MSSIntervalSelectionCriteria = ""
     }else{
-      
-      alert("fill the data")
+     
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'fill the data' });
     }
   
     
@@ -443,7 +443,6 @@ async ADDMSSToTree() {
        const element = document.querySelector("#PlantStoppage")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      alert("fill the data")
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
     
@@ -455,7 +454,7 @@ async ADDMSSToTree() {
       const element = document.querySelector("#Consequence")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
-       alert("Fill the data")
+       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
      }
      
    }

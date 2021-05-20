@@ -20,7 +20,7 @@
 
 <div *ngIf="PrescriptiveTree" style="overflow:scroll;" id="GoToTheSaveMSS">
     <!-- <button class="btn btn-dark" style="float:left;" (click)="MSSBACK()" > <i class="pi pi-plus"></i>Back</button> &ensp; -->
-    <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float:left;" (click)="ADDMSS()" > <i class="pi pi-plus"></i>MSS</button>
+    <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float:left;" (click)="ADDMSS()"pTooltip="Add MSS" tooltipPosition="top" > <i class="pi pi-plus"></i>MSS</button>
     <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check">Save</i></button>
     <p-organizationChart [value]="TreeUptoFCA" selectionMode="single" styleClass="company">
         <ng-template let-node pTemplate="person">

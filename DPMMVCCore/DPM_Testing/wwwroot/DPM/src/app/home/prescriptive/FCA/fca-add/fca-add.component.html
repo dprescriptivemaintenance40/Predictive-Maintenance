@@ -77,8 +77,8 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 3')"  pTooltip=" Has stedily increasing failuer probability,but no single pointer
-                            where it can be said the component wears out.Faituge failuer, bloKage of filters and flow of turbine efficiency reduction
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 3')"  pTooltip=" Has stedily increasing failure probability,but no single pointer
+                            where it can be said the component wears out.Faituge failure, bloKage of filters and flow of turbine efficiency reduction
                             through the dirt accumlation are example. The slope of the curve is governed by the Weibull scale parameter ranging from days to decade." tooltipPosition="right">
                                 <canvas id="pattern3"></canvas>
                             </div>
@@ -89,14 +89,14 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 5')"pTooltip=" It is for random failuer.This means that the probability that an item will fail in any of iterval of time is same is the same as in other.
-                            Random failuer is charactersized by an exponcial survival distribution and constatnt probability of failuer, so their is no age at which scheduled rework or scheduled discard is appropriate.
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 5')"pTooltip=" It is for random failure.This means that the probability that an item will fail in any of iterval of time is same is the same as in other.
+                            Random failure is charactersized by an exponcial survival distribution and constatnt probability of failure, so their is no age at which scheduled rework or scheduled discard is appropriate.
                             " tooltipPosition="right">
                                 <canvas id="pattern5"></canvas>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 6')" pTooltip="Patterns 6 is very common.The probability of failuer declines with the age to reach constatnt value.
+                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 6')" pTooltip="Patterns 6 is very common.The probability of failure declines with the age to reach constatnt value.
                             It is high when the component is new or just been rewarded,but then settles.Compression fittings and many electronic system,including computers, exhibit the patterns" tooltipPosition="right">
                                 <canvas id="pattern6"></canvas>
                             </div>
@@ -184,7 +184,7 @@
         </ng-template>
         <ng-template pTemplate="content">
             <div class="input-group mb-3">
-                <select [(ngModel)]="interval" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                <select [(ngModel)]="interval" class="form-select"  class="form-control" placeholder="Failure very likely">
                     <option value="">Choose</option>
                         <option value="Days" selected> Days</option>
                         <option value="Week" selected> Week</option>
@@ -312,7 +312,7 @@
         <ng-template pTemplate="subtitle">
             <div class="input-group mb-3">
                 <label><b>5. What is the likely interval between detacting a warning sign and the failure happening?</b></label>
-                <select [(ngModel)]="ffInterval" class="form-select"  class="form-control" placeholder="Failuer very likely">
+                <select [(ngModel)]="ffInterval" class="form-select"  class="form-control" placeholder="Failure very likely">
                     <option value="">Choose</option>
                         <option value="Days" selected> Days</option>
                         <option value="Week" selected> Week</option>
@@ -358,17 +358,17 @@
         </ng-template>
         <ng-template pTemplate="subtitle">
             <p><b >7. Some of the failure cannot avoided by maintenance. Would planned replacement or refurbishment
-                maintainace prevent or mitigate this failuer Mode?
+                maintenance prevent or mitigate this failure Mode?
             </b></p>
         </ng-template>
         <ng-template pTemplate="content">
             <div class="row">
                 <div class="col-sm"></div>
                 <div class="col-sm">
-                    Yes <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - Yes" name="name2" />&nbsp;</td>
+                    Yes <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - Yes" name="name2" />&nbsp;</td>
                 </div>
                 <div class="col-sm">
-                    No <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failuer Mode - No" name="name2" />&nbsp;</td>
+                    No <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - No" name="name2" />&nbsp;</td>
                 </div>
                 <div class="col-sm"></div>
             </div>
@@ -385,7 +385,7 @@
 
         </ng-template>
         <ng-template pTemplate="subtitle">
-            <p><b> 8. Do you have any comments regarding the failuer of this equipment or how the maintainace of the equipment
+            <p><b> 8. Do you have any comments regarding the failure of this equipment or how the maintenance of the equipment
                 could be improved
             </b></p>
         </ng-template>
