@@ -372,6 +372,22 @@ export class RCAComponent implements OnInit, AfterViewInit {
     }
 
     DeleteRCARecord(p) {
+        var j = JSON.parse(p.RCATree)
+        if(j[0].update != ''){
+            var data = JSON.parse(j[0].update)
+ 
+            for (let index = 0; index < data.length; index++) {
+                if (data[index].RCAFILE !== '' && data[index].RCAFILE !== undefined) {
+                    var fileDetails : any = []
+                    fileDetails = JSON.parse(data[index].RCAFILE)
+                    const params = new HttpParams()
+                        .set('fullPath', fileDetails.dbPath)
+                    this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
+                    .subscribe()
+                }
+            }
+          
+        }
         const params = new HttpParams()
             .set('id', p.RCAID)
         this.commonBL.DeleteWithParam(this.RCAAPIName.RCADeleteAPI, params)
@@ -384,6 +400,14 @@ export class RCAComponent implements OnInit, AfterViewInit {
 
     closeRCAAddModal() {
         this.AddRCAmodal.style.display = 'none'
+    }
+
+    RCAHandleChange(e){
+        if(e.index === 1){
+            this.cancelRCAUpdate();
+        }else if(e.index === 2){
+            this.CancelADDRCA();
+        }
     }
 
     UpdateTagNumberSelect() {

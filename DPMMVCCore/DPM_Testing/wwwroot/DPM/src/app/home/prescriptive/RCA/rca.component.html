@@ -20,7 +20,7 @@
 </style>
 
 <div class="card shadow" style="margin: 20px;">
-    <p-tabView>
+    <p-tabView (onChange)="RCAHandleChange($event)">
         <p-tabPanel header="RCA List">
             <div class="row">
                 <div class="col-xl-12 col-lg-11">
