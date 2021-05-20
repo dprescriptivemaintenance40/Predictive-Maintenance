@@ -251,17 +251,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 25em;" class="classname" >
+            <div class="modal-body" style="overflow: scroll; height: 20em;" class="classname" >
                 <div id="scene3" #scene3>
                 <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
+            </div><br><br>
+            <div class="text-center">
+                <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false,'scene3')">-</a>
+                <span>{{currentZoomLevel * 100}}%</span>
+                <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true,'scene3')">+</a>
             </div>
             </div>
             <div class="modal-footer">
-                <div class="text-center">
-                    <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false,'scene3')">-</a>
-                    <span>{{currentZoomLevel * 100}}%</span>
-                    <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true,'scene3')">+</a>
-                   </div>
                 <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()"
                     data-dismiss="modal">Close</button>
             </div>

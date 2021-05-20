@@ -147,41 +147,76 @@ export class RCAComponent implements OnInit, AfterViewInit {
       }
     
       zoomToggle(zoomIn: boolean, abc) {
-        const idx = this.zoomLevels.indexOf(this.currentZoomLevel);
-        if (zoomIn) {
-          if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
-            this.currentZoomLevel = this.zoomLevels[idx + 1];
-          }
-        } else {
-          if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
-            this.currentZoomLevel = this.zoomLevels[idx - 1];
-          }
+        var idxvalue
+        if (abc == 'scene') {
+            idxvalue = this.zoomLevels.indexOf(this.currentZoomLevel);
+
+        } else if (abc == 'scene1') {
+            idxvalue = this.zoomLevels1.indexOf(this.currentZoomLevel);
+
+        } else if (abc == 'scene3') {
+            idxvalue =this.zoomLevels2.indexOf(this.currentZoomLevel);
         }
+   const idx = idxvalue
+        if (abc == 'scene') {
+            if (zoomIn) {
+                if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
+                 this.currentZoomLevel = this.zoomLevels[idxvalue + 1];
+                }
+            } else {
+                if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
+                    this.currentZoomLevel = this.zoomLevels[idxvalue - 1];
+                }
+            }
+
+        } else if (abc == 'scene1') {
+            if (zoomIn) {
+                if (typeof this.zoomLevels1[idx + 1] !== 'undefined') {
+                    this.currentZoomLevel = this.zoomLevels1[idx + 1];
+                }
+            } else {
+                if (typeof this.zoomLevels1[idx - 1] !== 'undefined') {
+                    this.currentZoomLevel = this.zoomLevels1[idx - 1];
+                }
+            }
+        } else if (abc == 'scene3') {
+            if (zoomIn) {
+                if (typeof this.zoomLevels2[idx + 1] !== 'undefined') {
+                    this.currentZoomLevel = this.zoomLevels2[idx + 1];
+                }
+            } else {
+                if (typeof this.zoomLevels2[idx - 1] !== 'undefined') {
+                    this.currentZoomLevel = this.zoomLevels2[idx - 1];
+                }
+            }
+        }
+
         if (this.currentZoomLevel === 1) {
-            if(abc== 'scene'){
+            if (abc == 'scene') {
                 this.panZoomController.moveTo(0, 0);
                 this.panZoomController.zoomAbs(0, 0, 1);
-            }else if(abc== 'scene1'){
+            } else if (abc == 'scene1') {
                 this.panZoomController1.moveTo(0, 0);
                 this.panZoomController1.zoomAbs(0, 0, 1);
-            } else  if(abc== 'scene3'){
+            } else if (abc == 'scene3') {
                 this.panZoomController2.moveTo(0, 0);
                 this.panZoomController2.zoomAbs(0, 0, 1);
             }
+
         } else {
-          this.zoom(abc);
+            this.zoom(abc);
         }
-      }
+    }
 
     ngAfterViewInit() {
-        this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1,1.25,1.50, 1.75, 2, 2.25];
+        this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1];
         this.currentZoomLevel = this.zoomLevels[4];
 
-        this.zoomLevels1 = [0.1, 0.25, 0.5, 0.75, 1,1.25,1.50, 1.75, 2, 2.25];
-        this.currentZoomLevel1 = this.zoomLevels1[4];
+        this.zoomLevels1 = [0.1, 0.25, 0.5, 0.75, 1];
+        this.currentZoomLevel = this.zoomLevels1[4];
 
-        this.zoomLevels2 = [0.1, 0.25, 0.5, 0.75, 1,1.25,1.50, 1.75, 2, 2.25];
-        this.currentZoomLevel2 = this.zoomLevels2[4];
+        this.zoomLevels2 = [0.1, 0.25, 0.5, 0.75, 1];
+        this.currentZoomLevel = this.zoomLevels2[4];
 
         this.panZoomController = panzoom(this.scene.nativeElement);
         this.panZoomController1 = panzoom(this.scene1.nativeElement);
