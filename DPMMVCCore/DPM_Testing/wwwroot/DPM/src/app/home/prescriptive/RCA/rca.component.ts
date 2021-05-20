@@ -64,7 +64,11 @@ export class RCAComponent implements OnInit, AfterViewInit {
     public RCADisplayFile: any = []
     public tabView: boolean = true
     public currentZoomLevel: number;
+    public currentZoomLevel1: number;
+    public currentZoomLevel2: number;
     zoomLevels: number[];
+    zoomLevels1: number[];
+    zoomLevels2: number[];
 
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
@@ -108,7 +112,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
             if(xz== 'scene'){
                  transform1 = this.panZoomController.getTransform();
               
-            }else  if(xz== 'scen1'){
+            }else  if(xz== 'scene1'){
                 transform1 = this.panZoomController1.getTransform();
 
             } else  if(xz== 'scene3'){
@@ -123,7 +127,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
           if (isSmooth) {
             if(xz== 'scene'){
                 this.panZoomController.smoothZoom(0, 0, scale);
-           }else  if(xz== 'scen1'){
+           }else  if(xz== 'scene1'){
                this.panZoomController1.smoothZoom(0, 0, scale);
            } else  if(xz== 'scene3'){
                this.panZoomController2.smoothZoom(0, 0, scale);
@@ -132,7 +136,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
           } else {
             if(xz== 'scene'){
              this.panZoomController.zoomTo(offsetX, offsetY, scale);
-           }else  if(xz== 'scen1'){
+           }else  if(xz== 'scene1'){
             this.panZoomController1.zoomTo(offsetX, offsetY, scale);
            } else  if(xz== 'scene3'){
             this.panZoomController2.zoomTo(offsetX, offsetY, scale);
@@ -145,8 +149,8 @@ export class RCAComponent implements OnInit, AfterViewInit {
       zoomToggle(zoomIn: boolean, abc) {
         const idx = this.zoomLevels.indexOf(this.currentZoomLevel);
         if (zoomIn) {
-          if (typeof this.zoomLevels[idx + 2] !== 'undefined') {
-            this.currentZoomLevel = this.zoomLevels[idx + 2];
+          if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
+            this.currentZoomLevel = this.zoomLevels[idx + 1];
           }
         } else {
           if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
@@ -157,22 +161,28 @@ export class RCAComponent implements OnInit, AfterViewInit {
             if(abc== 'scene'){
                 this.panZoomController.moveTo(0, 0);
                 this.panZoomController.zoomAbs(0, 0, 1);
-            }else if(abc== 'scen1'){
+            }else if(abc== 'scene1'){
                 this.panZoomController1.moveTo(0, 0);
                 this.panZoomController1.zoomAbs(0, 0, 1);
             } else  if(abc== 'scene3'){
                 this.panZoomController2.moveTo(0, 0);
                 this.panZoomController2.zoomAbs(0, 0, 1);
             }
-         
         } else {
           this.zoom(abc);
         }
       }
 
     ngAfterViewInit() {
-        this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1,1.2,1.25,1.50, 1.75, 2, 2.25];
+        this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1,1.25,1.50, 1.75, 2, 2.25];
         this.currentZoomLevel = this.zoomLevels[4];
+
+        this.zoomLevels1 = [0.1, 0.25, 0.5, 0.75, 1,1.25,1.50, 1.75, 2, 2.25];
+        this.currentZoomLevel1 = this.zoomLevels1[4];
+
+        this.zoomLevels2 = [0.1, 0.25, 0.5, 0.75, 1,1.25,1.50, 1.75, 2, 2.25];
+        this.currentZoomLevel2 = this.zoomLevels2[4];
+
         this.panZoomController = panzoom(this.scene.nativeElement);
         this.panZoomController1 = panzoom(this.scene1.nativeElement);
         this.panZoomController2 = panzoom(this.scene3.nativeElement);
