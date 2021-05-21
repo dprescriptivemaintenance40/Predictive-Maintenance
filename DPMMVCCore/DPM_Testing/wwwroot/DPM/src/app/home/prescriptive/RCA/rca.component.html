@@ -114,11 +114,11 @@
                         (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
                     </p-tree><br><br>
                 </div>
-                <div class="text-center">
+                <!-- <div class="text-center">
                     <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene')">-</a>
                     <span>{{currentZoomLevel * 100}}%</span>
                     <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true, 'scene')">+</a>
-                   </div>
+                   </div> -->
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
@@ -186,11 +186,11 @@
                         (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
                         <br><br>
                 </div>
-                <div class="text-center">
+                <!-- <div class="text-center">
                     <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene1')">-</a>
                     <span>{{currentZoomLevel * 100}}%</span>
                     <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true , 'scene1')">+</a>
-                   </div>
+                   </div> -->
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
@@ -259,11 +259,11 @@
                 <div id="scene3" #scene3>
                 <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
             </div><br><br>
-            <div class="text-center">
+            <!-- <div class="text-center">
                 <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false,'scene3')">-</a>
                 <span>{{currentZoomLevel * 100}}%</span>
                 <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true,'scene3')">+</a>
-            </div>
+            </div> -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()"

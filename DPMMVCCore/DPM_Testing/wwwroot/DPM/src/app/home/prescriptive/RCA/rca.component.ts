@@ -30,10 +30,10 @@ export interface TreeNode<T = any> {
 @Component({
     templateUrl: './rca.component.html',
 })
-export class RCAComponent implements OnInit, AfterViewInit {
-    @ViewChild('scene', { static: false }) scene: ElementRef;
-    @ViewChild('scene1', { static: false }) scene1: ElementRef;
-    @ViewChild('scene3', { static: false }) scene3: ElementRef;
+export class RCAComponent  {
+    // @ViewChild('scene', { static: false }) scene: ElementRef;
+    // @ViewChild('scene1', { static: false }) scene1: ElementRef;
+    // @ViewChild('scene3', { static: false }) scene3: ElementRef;
     panZoomController;
     panZoomController1;
     panZoomController2;
@@ -107,125 +107,125 @@ export class RCAComponent implements OnInit, AfterViewInit {
         )
     }
 
-    zoom(xz) {
-        const isSmooth = true;
-        const scale = this.currentZoomLevel;
-         var transform1
-        if (scale) {
-            if(xz== 'scene'){
-                 transform1 = this.panZoomController.getTransform();
+    // zoom(xz) {
+    //     const isSmooth = true;
+    //     const scale = this.currentZoomLevel;
+    //      var transform1
+    //     if (scale) {
+    //         if(xz== 'scene'){
+    //              transform1 = this.panZoomController.getTransform();
               
-            }else  if(xz== 'scene1'){
-                transform1 = this.panZoomController1.getTransform();
+    //         }else  if(xz== 'scene1'){
+    //             transform1 = this.panZoomController1.getTransform();
 
-            } else  if(xz== 'scene3'){
-                transform1 = this.panZoomController2.getTransform();
-            }
-          const transform = transform1;
-          const deltaX = transform.x;
-          const deltaY = transform.y;
-          const offsetX = scale + deltaX;
-          const offsetY = scale + deltaY;
+    //         } else  if(xz== 'scene3'){
+    //             transform1 = this.panZoomController2.getTransform();
+    //         }
+    //       const transform = transform1;
+    //       const deltaX = transform.x;
+    //       const deltaY = transform.y;
+    //       const offsetX = scale + deltaX;
+    //       const offsetY = scale + deltaY;
     
-          if (isSmooth) {
-            if(xz== 'scene'){
-                this.panZoomController.smoothZoom(0, 0, scale);
-           }else  if(xz== 'scene1'){
-               this.panZoomController1.smoothZoom(0, 0, scale);
-           } else  if(xz== 'scene3'){
-               this.panZoomController2.smoothZoom(0, 0, scale);
-           }
+    //       if (isSmooth) {
+    //         if(xz== 'scene'){
+    //             this.panZoomController.smoothZoom(0, 0, scale);
+    //        }else  if(xz== 'scene1'){
+    //            this.panZoomController1.smoothZoom(0, 0, scale);
+    //        } else  if(xz== 'scene3'){
+    //            this.panZoomController2.smoothZoom(0, 0, scale);
+    //        }
           
-          } else {
-            if(xz== 'scene'){
-             this.panZoomController.zoomTo(offsetX, offsetY, scale);
-           }else  if(xz== 'scene1'){
-            this.panZoomController1.zoomTo(offsetX, offsetY, scale);
-           } else  if(xz== 'scene3'){
-            this.panZoomController2.zoomTo(offsetX, offsetY, scale);
-           }
+    //       } else {
+    //         if(xz== 'scene'){
+    //          this.panZoomController.zoomTo(offsetX, offsetY, scale);
+    //        }else  if(xz== 'scene1'){
+    //         this.panZoomController1.zoomTo(offsetX, offsetY, scale);
+    //        } else  if(xz== 'scene3'){
+    //         this.panZoomController2.zoomTo(offsetX, offsetY, scale);
+    //        }
             
-          }
-        }
-      }
+    //       }
+    //     }
+    //   }
     
-      zoomToggle(zoomIn: boolean, abc) {
-        var idxvalue
-        if (abc == 'scene') {
-            idxvalue = this.zoomLevels.indexOf(this.currentZoomLevel);
+//       zoomToggle(zoomIn: boolean, abc) {
+//         var idxvalue
+//         if (abc == 'scene') {
+//             idxvalue = this.zoomLevels.indexOf(this.currentZoomLevel);
 
-        } else if (abc == 'scene1') {
-            idxvalue = this.zoomLevels1.indexOf(this.currentZoomLevel);
+//         } else if (abc == 'scene1') {
+//             idxvalue = this.zoomLevels1.indexOf(this.currentZoomLevel);
 
-        } else if (abc == 'scene3') {
-            idxvalue =this.zoomLevels2.indexOf(this.currentZoomLevel);
-        }
-   const idx = idxvalue
-        if (abc == 'scene') {
-            if (zoomIn) {
-                if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
-                 this.currentZoomLevel = this.zoomLevels[idxvalue + 1];
-                }
-            } else {
-                if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
-                    this.currentZoomLevel = this.zoomLevels[idxvalue - 1];
-                }
-            }
+//         } else if (abc == 'scene3') {
+//             idxvalue =this.zoomLevels2.indexOf(this.currentZoomLevel);
+//         }
+//    const idx = idxvalue
+//         if (abc == 'scene') {
+//             if (zoomIn) {
+//                 if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
+//                  this.currentZoomLevel = this.zoomLevels[idxvalue + 1];
+//                 }
+//             } else {
+//                 if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels[idxvalue - 1];
+//                 }
+//             }
 
-        } else if (abc == 'scene1') {
-            if (zoomIn) {
-                if (typeof this.zoomLevels1[idx + 1] !== 'undefined') {
-                    this.currentZoomLevel = this.zoomLevels1[idx + 1];
-                }
-            } else {
-                if (typeof this.zoomLevels1[idx - 1] !== 'undefined') {
-                    this.currentZoomLevel = this.zoomLevels1[idx - 1];
-                }
-            }
-        } else if (abc == 'scene3') {
-            if (zoomIn) {
-                if (typeof this.zoomLevels2[idx + 1] !== 'undefined') {
-                    this.currentZoomLevel = this.zoomLevels2[idx + 1];
-                }
-            } else {
-                if (typeof this.zoomLevels2[idx - 1] !== 'undefined') {
-                    this.currentZoomLevel = this.zoomLevels2[idx - 1];
-                }
-            }
-        }
+//         } else if (abc == 'scene1') {
+//             if (zoomIn) {
+//                 if (typeof this.zoomLevels1[idx + 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels1[idx + 1];
+//                 }
+//             } else {
+//                 if (typeof this.zoomLevels1[idx - 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels1[idx - 1];
+//                 }
+//             }
+//         } else if (abc == 'scene3') {
+//             if (zoomIn) {
+//                 if (typeof this.zoomLevels2[idx + 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels2[idx + 1];
+//                 }
+//             } else {
+//                 if (typeof this.zoomLevels2[idx - 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels2[idx - 1];
+//                 }
+//             }
+//         }
 
-        if (this.currentZoomLevel === 1) {
-            if (abc == 'scene') {
-                this.panZoomController.moveTo(0, 0);
-                this.panZoomController.zoomAbs(0, 0, 1);
-            } else if (abc == 'scene1') {
-                this.panZoomController1.moveTo(0, 0);
-                this.panZoomController1.zoomAbs(0, 0, 1);
-            } else if (abc == 'scene3') {
-                this.panZoomController2.moveTo(0, 0);
-                this.panZoomController2.zoomAbs(0, 0, 1);
-            }
+//         if (this.currentZoomLevel === 1) {
+//             if (abc == 'scene') {
+//                 this.panZoomController.moveTo(0, 0);
+//                 this.panZoomController.zoomAbs(0, 0, 1);
+//             } else if (abc == 'scene1') {
+//                 this.panZoomController1.moveTo(0, 0);
+//                 this.panZoomController1.zoomAbs(0, 0, 1);
+//             } else if (abc == 'scene3') {
+//                 this.panZoomController2.moveTo(0, 0);
+//                 this.panZoomController2.zoomAbs(0, 0, 1);
+//             }
 
-        } else {
-            this.zoom(abc);
-        }
-    }
+//         } else {
+//             this.zoom(abc);
+//         }
+//     }
 
-    ngAfterViewInit() {
-        this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1];
-        this.currentZoomLevel = this.zoomLevels[4];
+    // ngAfterViewInit() {
+    //     this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1];
+    //     this.currentZoomLevel = this.zoomLevels[4];
 
-        this.zoomLevels1 = [0.1, 0.25, 0.5, 0.75, 1];
-        this.currentZoomLevel = this.zoomLevels1[4];
+    //     this.zoomLevels1 = [0.1, 0.25, 0.5, 0.75, 1];
+    //     this.currentZoomLevel = this.zoomLevels1[4];
 
-        this.zoomLevels2 = [0.1, 0.25, 0.5, 0.75, 1];
-        this.currentZoomLevel = this.zoomLevels2[4];
+    //     this.zoomLevels2 = [0.1, 0.25, 0.5, 0.75, 1];
+    //     this.currentZoomLevel = this.zoomLevels2[4];
 
-        this.panZoomController = panzoom(this.scene.nativeElement);
-        this.panZoomController1 = panzoom(this.scene1.nativeElement);
-        this.panZoomController2 = panzoom(this.scene3.nativeElement);
-        this.changeDetectorRef.detectChanges();
-    }
+    //     this.panZoomController = panzoom(this.scene.nativeElement);
+    //     this.panZoomController1 = panzoom(this.scene1.nativeElement);
+    //     this.panZoomController2 = panzoom(this.scene3.nativeElement);
+    //     this.changeDetectorRef.detectChanges();
+    // }
 
     getHeatExchangerData() {
         const params = new HttpParams()
