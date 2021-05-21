@@ -131,7 +131,8 @@
                 </td>
                
                     <div *ngIf="AttachmentOverlay" style="
-                                    position: relative;
+                                    position: absolute;
+                                    z-index: 1;
                                     width: 20em;
                                     border: none;
                                     border-radius: 0.3em;
@@ -203,8 +204,12 @@
 
 
                    <div *ngIf="RCAParentAttachment" style="
-                            position: relative;
-                            width: 35em;
+                            position: absolute;
+                            z-index: 1;
+                            margin-left: -36px;
+                            margin-top: 9px;
+                            width: 16em;
+                            height: 15em;
                             border: none;
                             border-radius: 0.3em;
                             background-color: #fff;
@@ -218,7 +223,7 @@
                             <i class="pi pi-times-circle"></i>
                             </a>&nbsp;&nbsp;
 
-                            <div style="margin-left: 10px;">
+                            <div style="margin-left: 10px; width: 13em;">
                                 <div class="row">
                                     <label>Operation Details</label>
                                 </div>
@@ -226,7 +231,7 @@
                                     <textarea  [disabled]="node.disable" placeholder="Enter operation details" (change)="AddRCAOperationalDesignData(node)" [(ngModel)]="RCAParentOperationalData" class="form-control custom-textarea"></textarea>
                                 </div>
                             </div>
-                            <div style="margin-left: 10px;">
+                            <div style="margin-left: 10px; width: 13em;">
                                 <div class="row">
                                     <label>Design Details</label>
                                 </div>
