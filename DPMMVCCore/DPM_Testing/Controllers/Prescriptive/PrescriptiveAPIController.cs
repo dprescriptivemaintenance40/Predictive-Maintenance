@@ -465,6 +465,7 @@ namespace DPM.Controllers.Prescriptive
                                                                                                                   .ToListAsync();
                 centrifugalPumpPrescriptiveModel[0].FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;
                 centrifugalPumpPrescriptiveModel[0].MSSAdded = "1";
+                int PSID = centrifugalPumpPrescriptiveModel[0].CFPPrescriptiveId;
 
                 _context.Entry(centrifugalPumpPrescriptiveModel[0]).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
@@ -483,8 +484,10 @@ namespace DPM.Controllers.Prescriptive
                         await _context.SaveChangesAsync();
                     }
                 }
-
-                return Ok(new { centrifugalPumpPrescriptiveModel });
+                List<CentrifugalPumpPrescriptiveModel> data = await _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == PSID && a.UserId == userId)
+                                                                                                                  .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                                                                                  .ToListAsync();
+                return Ok(data);
             }
             catch (Exception exe)
             {

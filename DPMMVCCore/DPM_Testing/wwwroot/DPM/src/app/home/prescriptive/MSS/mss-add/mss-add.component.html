@@ -69,6 +69,20 @@
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-SR"
+                                name="name1" />&nbsp;
+                            <label> A-SR</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-FFT"
+                                name="name1" />&nbsp;
+                            <label> A-FFT</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                             <input type="radio" [(ngModel)]="MSSStratergy" value="A-RED" name="name1" />&nbsp;
                             <label> A-RED</label>
                         </div>
@@ -90,12 +104,36 @@
                         <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/B.JPG " alt="">
                     </div>
                 </div>
+                <div class="row">
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded"
+                        style="width: 10rem;margin-right: 10px;">
+                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-OCM"
+                            name="name1" />&nbsp;
+                        <label> B-OCM</label>
+                    </div>
+                </div>
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-SO"
+                            name="name1" />&nbsp;
+                        <label> B-SO</label>
+                    </div>
+                </div>
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-SR"
+                            name="name1" />&nbsp;
+                        <label> B-SR</label>
+                    </div>
+                </div>
                 <div class="col"><br>
                     <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                         <input type="radio" [(ngModel)]="MSSStratergy" value="B-RED" name="name1" />&nbsp;
                         <label> B-RED</label>
                     </div>
                 </div>
+            </div>
             </ng-template>
         </p-card>
     </div>
