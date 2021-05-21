@@ -354,17 +354,17 @@
         </div>
         <div class="row" style="padding: 15px;">
             <div class="col-sm">
-                Yes <td><input type="radio" [(ngModel)]="AvailabilityY" value="Yes" name="AvailabilityYNCheck" />&nbsp;</td>
+                Yes <td><input type="radio" (change)="Availability()" [(ngModel)]="AvailabilityY" value="Yes" name="AvailabilityYNCheck" />&nbsp;</td>
             </div>
             <div class="col-sm">
-                No <td><input type="radio" [(ngModel)]="AvailabilityY" value="No" name="AvailabilityYNCheck" />&nbsp;</td>
+                No <td><input type="radio" (change)="Availability()" [(ngModel)]="AvailabilityY" value="No" name="AvailabilityYNCheck" />&nbsp;</td>
             </div>
             <div class="col-sm"></div>
         </div>
     </ng-template>
     <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="Availability()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+        <!-- <button class="btn btn-dark" style="float:right;" (click)="Availability()"> <i class="fa fa-check" aria-hidden="true"></i></button> -->
     </ng-template>
 </p-card>
 </div>

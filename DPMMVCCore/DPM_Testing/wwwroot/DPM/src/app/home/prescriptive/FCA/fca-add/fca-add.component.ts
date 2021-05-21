@@ -129,6 +129,7 @@ public WebalYN : string = ""
 
 public UpdateFCACondition : any = []
 public UpdateFCAIntervals : any = []
+public MSSLibraryJsonData : any = []
 
   public file : any;
   public arrayBuffer: any;
@@ -146,12 +147,14 @@ public UpdateFCAIntervals : any = []
     private excelFormatService : ExcelFormatService,
     private changeDetectorRef: ChangeDetectorRef,
     private prescriptiveBLService : CommonBLService,
-    private prescriptiveContantAPI : PrescriptiveContantAPI) { 
+    private prescriptiveContantAPI : PrescriptiveContantAPI,
+    private http : HttpClient) { 
       this.title.setTitle('FCA ADD | Dynamic Prescriptive Maintenence');
     }
 
   ngOnInit() {
     var FCAData = JSON.parse(localStorage.getItem('FCAObject'))
+    this.getMSSLibraryDataInJSon();
     if (FCAData == null) {
       this.SelectBoxEnabled = true;
       this.prescriptiveTree = false;
@@ -633,6 +636,8 @@ public UpdateFCAIntervals : any = []
     this.PatternPath = "";
     this.changeDetectorRef.detectChanges();
     this.PatternFMName = this.data1[0].children[0].children[0].children[0].data.name;
+    var e : string = 'L10';
+    this.SafeLifeCalculation(e);
     this.PatternNextOnPrescriptiveTree = false;
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
@@ -1712,5 +1717,26 @@ ExcelDownload(){
   var ColumnsData : any = ["Days"];
   this.excelFormatService.GetExcelFormat( ColumnsData , 'Webal_Days_Format')
 }
+
+  getMSSLibraryDataInJSon(){
+    this.http.get<any>('dist/DPM/assets/MSS_Library/mss_library.json').subscribe(
+      res => {
+      this.MSSLibraryJsonData = res;
+      }, error =>{ console.log(error.error)}
+    )
+  }
+
+  SafeLifeCalculation(e){
+    var FMName = this.PatternFMName ;
+    var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
+    var MTBF : number = dataFromLibrary.mtbf;
+    if(e === 'L10'){
+     var cal : any = - MTBF * Math.log(0.9)
+     this.SafeLife = cal.toFixed(2)
+    }else if(e === 'L20'){
+      var cal : any = - MTBF * Math.log(0.8)
+     this.SafeLife = cal.toFixed(2)
+    }
+  }
 
 }

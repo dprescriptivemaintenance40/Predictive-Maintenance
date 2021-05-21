@@ -273,7 +273,10 @@ async ADDMSSToTree() {
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'SO'){
-                obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}` 
+                var safeL : number = 0;
+                safeL = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife;
+                safeL = ((safeL*365)/7)
+                obj['MSSMaintenanceInterval'] = `${safeL}${" "}${"Week"}` 
                 obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                 obj['MSSStartergy'] = this.MSSStratergy
                 obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
@@ -281,7 +284,10 @@ async ADDMSSToTree() {
                 this.MSSTaskObj.push(obj)
 
               }else if(strategy == 'SR'){
-                obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}` 
+                var safeL1 : number = 0;
+                safeL1 = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife;
+                safeL1 = ((safeL1*365)/7)
+                obj['MSSMaintenanceInterval'] = `${safeL1}${" "}${"Week"}` 
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                 obj['MSSStartergy'] = this.MSSStratergy
                 obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability)
