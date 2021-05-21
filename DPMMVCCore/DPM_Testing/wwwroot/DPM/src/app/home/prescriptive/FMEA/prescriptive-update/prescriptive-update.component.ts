@@ -3242,7 +3242,7 @@ UpdateWebal(event){
         }else{
           this.UpdateMSSAvailabilityY = d[0]
           this.UpdateMSSAvailabilityCheck = d[1]
-          this.UpdateMSSAvailability = d[2]
+          this.UpdateMSSAvailability = d[1]
           this.UpdateMSSstoppageDays = ""
           this.UpdateMSSstoppageDaysValue = 0
           this.UpdateMSSstoppageDaysTime = ""
@@ -3270,6 +3270,7 @@ UpdateWebal(event){
   }
 
   UpdateMSSToTree(){
+    this.UpdateMSSTaskObj = []
     var availablilityCal1,availablilityCal2, AVAL, FinalAvailability : any = []
     
     this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[2].children[0].data.name = this.UpdatedMSSStartegy
@@ -3367,7 +3368,10 @@ UpdateWebal(event){
                    this.UpdateMSSTaskObj.push(obj)
    
                  }else if(strategy == 'SO'){
-                   obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}` 
+                   var safeL : number = 0;
+                   safeL = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife ;
+                   safeL = ((safeL*365)/7)
+                   obj['MSSMaintenanceInterval'] = `${safeL}${" "}${"Week"}` 
                    obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                    obj['MSSStartergy'] = this.UpdatedMSSStartegy
                    obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
@@ -3375,7 +3379,10 @@ UpdateWebal(event){
                    this.UpdateMSSTaskObj.push(obj)
    
                  }else if(strategy == 'SR'){
-                   obj['MSSMaintenanceInterval'] = `${ this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife}${" "}${"Week"}` 
+                   var safeL1 : number = 0;
+                   safeL1 =  this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife ;
+                   safeL1 = ((safeL1*365)/7)
+                   obj['MSSMaintenanceInterval'] = `${safeL1}${" "}${"Week"}` 
                    obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                    obj['MSSStartergy'] = this.UpdatedMSSStartegy
                    obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
@@ -3487,8 +3494,17 @@ UpdateWebal(event){
          this.changeDetectorRef.detectChanges()
          this.prescriptiveTree = true
          this.UpdateMSSIntervalSelectionCriteria = ""
+         this.UpdateMSSAvailabilityY = ""
+         this.UpdateMSSAvailabilityCheck = 0
+         this.UpdateMSSAvailability = 0
+         this.UpdateMSSstoppageDays = ""
+         this.UpdateMSSstoppageDaysValue = 0
+         this.UpdateMSSstoppageDaysTime = ""
+         this.UpdateMSSstoppageDaysTimeValue = 0
+         this.UpdateMSSIndirectAvailability = false
+         this.UpdateMSSDirectAvailability = false
          localStorage.removeItem('PrescriptiveUpdateObject');
-         localStorage.setItem('PrescriptiveUpdateObject', JSON.stringify(res.centrifugalPumpPrescriptiveModel[0]))
+         localStorage.setItem('PrescriptiveUpdateObject', JSON.stringify(res[0]))
          this.getData();
         //  this.router.navigateByUrl('/Home/Prescriptive/List') 
          this.messageService.add({ severity: 'info', summary:'Info', detail: 'Successfully updated'})
