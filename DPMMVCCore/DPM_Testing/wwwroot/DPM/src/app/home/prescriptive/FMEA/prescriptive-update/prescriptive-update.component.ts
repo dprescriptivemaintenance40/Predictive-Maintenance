@@ -3987,6 +3987,7 @@ async StoppageDuration(){
 }
 
 async ADDMSSToTree() {
+  if(this.MSSStratergy.length >0){
   var index = this.FMTree.length
     let MSSTree = {
       label:  index,
@@ -4005,8 +4006,12 @@ async ADDMSSToTree() {
           }
         }
       ]
-    }
+    }   
+ 
     this.data1[0].children[0].children[0].children[index - 1].children.push(MSSTree)
+  }else{
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stratergy is Missing" }) 
+  }
 
     var availablility: number = 0;
     if(this.MSSAvailabilityResult == 0){

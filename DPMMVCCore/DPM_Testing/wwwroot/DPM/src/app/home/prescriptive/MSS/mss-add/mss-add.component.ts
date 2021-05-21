@@ -394,7 +394,7 @@ async ADDMSSToTree() {
       this.PlantStoppageTime = true
       this.AddMSSSave = false
       this.MSSIntervalSelectionCriteria = ""
-    }else {  
+    }else if(this.MSSStratergy.length ==0){  
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stratergy is Missing" }) 
     }
   
