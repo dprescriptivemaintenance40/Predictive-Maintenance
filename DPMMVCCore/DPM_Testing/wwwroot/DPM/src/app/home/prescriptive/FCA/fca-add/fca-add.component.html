@@ -386,13 +386,13 @@
                         No
                         <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - No" name="name2" />&nbsp;</td>
                     </div>
+                </div>
             </ng-template>
             <ng-template pTemplate="footer">
                 <a class="btn btn-white" style="border:none"> </a>
                 <button class="btn btn-dark " style="float:right;" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i></button>
             </ng-template>
         </p-card>
-        </div>
         <div class="card" style="margin: 20px;" *ngIf="FailuerComments" id="PatternFailuerComments">
             <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}">
                 <ng-template pTemplate="title">
