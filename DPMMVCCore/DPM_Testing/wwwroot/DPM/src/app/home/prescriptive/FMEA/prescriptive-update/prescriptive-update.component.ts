@@ -751,11 +751,6 @@ public UpdateBeta : number = 0
 
   SaveFunction() {
     this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FluidType
-    // this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.RatedHead
-    // this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.PeriodType
-
-
-    // var FunctionTree: string = "Fluid Type : " + this.FluidType + ", Rated Head : " + this.RatedHead + " m," + " Duration Of :" + this.PeriodType + " days"
     var FunctionTree: string = "Function Type : " + this.FluidType 
     this.data1[0].data.name = FunctionTree
     this.data2[0].data.name = FunctionTree
@@ -1129,8 +1124,16 @@ public UpdateBeta : number = 0
 
       this.prescriptiveTree = false
       this.Consequences1 = true;
-    } else {
-      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields' });
+    } else if(this.ADDDownTimeFactor == 0  ) {
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'DownTime Factor is Missing' });
+    }else if(this.ADDScrapeFactor == 0  ){
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Scrape Factor is Missing' });
+    }else if(this.ADDSafetyFactor == 0  ){
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Safety Factor is Missing' });
+    }else if(this.ADDProtectionFactor == 0  ){
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Protection Factor is Missing' });
+    }else if(this.ADDFrequencyFactor == 0  ){
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Frequency Factor is Missing' });
     }
   }
 
@@ -3188,8 +3191,6 @@ UpdateWebal(event){
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/E.JPG"
  }
     this.UpdateMSSImageValues = Data;
-
-
     this.data1[0].children[0].children[0].children.forEach(element => {
       if (element.label === p.label){
         FMName = element.data.name;
@@ -3592,7 +3593,7 @@ const element = document.querySelector("#Patternfailurewarning")
 if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }else{
 // alert("fill the data")
-this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Interval value is missing" })
 }
    }
 
@@ -3672,7 +3673,7 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }
      else{
-       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Prior warnings before the failure occure are missing" })
      }
 
    }
@@ -3727,7 +3728,7 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
       const element = document.querySelector("#PatternIntervalDeteacting")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Warning signs are missing" })
     }
 
    }
@@ -3769,7 +3770,7 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
       const element = document.querySelector("#PatternFailuerEvident")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "FFIInterval is missing" });
     }
 
    }
@@ -3803,7 +3804,7 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
    }
 
   async ADDFCAFreeTextSave() {
-    if (this.ADDFCAFreeText.length > 0) {
+    // if (this.ADDFCAFreeText.length > 0) {
       this.ADDPatternFailuerAll = true
       this.FCAComment.push(this.ADDFCAFreeText)
       this.ADDSafeUsefulLife = true;
@@ -3811,9 +3812,9 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
       this.SafeUsefulLife = !this.SafeUsefulLife;
       const element = document.querySelector("#SafeUsefulLife")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else {
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" })
-    }
+    // } else {
+    //   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" })
+    // }
 
    }
 
@@ -3887,7 +3888,6 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
    this.changeDetectorRef.detectChanges();
    const element = document.querySelector("#ScrollToFCATree")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
  }
 
  ExcelDownload(){
@@ -3927,8 +3927,7 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the d
      const element = document.querySelector("#PlantStoppage")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }else{
-    alert("fill the data")
-    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Availability value is missing" });
   }
 
  }
@@ -3941,7 +3940,7 @@ async AvailabilityYes(){
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
  
    }else{
-     alert("Fill the data")
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Availability value is missing" })
    }
    }
 

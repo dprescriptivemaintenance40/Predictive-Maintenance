@@ -1,4 +1,4 @@
-<p-toast position="top-center"></p-toast>
+<p-toast position="top-right"></p-toast>
 <div *ngIf="prescriptiveSelect">
     <div class="card shadow div-in-middle">
         <ul class="list-group list-group-flush">
@@ -6,24 +6,27 @@
             <li class="list-group-item">
                 <div class="input-group mb-3">
                     <label style=" margin-right: 12px;">Assets</label>
-                    <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
-                          <option value="">Choose..</option>
-                            <option value="Pump" selected>Pump</option>
-                        </select>
+                    <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
+                        class="form-control">
+                        <option value="">Choose..</option>
+                        <option value="Pump" selected>Pump</option>
+                    </select>
                 </div>
             </li>
             <li class="list-group-item">
                 <div class="input-group mb-3">
                     <label style="    margin-right: 12px;">Sub Units</label>
                     <select [(ngModel)]="EquipmentType" class="form-select" class="form-control">
-                          <option value="">Choose..</option>
-                            <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
-                        </select>
+                        <option value="">Choose..</option>
+                        <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
+                    </select>
                 </div>
             </li>
             <li class="list-group-item">
                 <div class="input-group mb-3">
-                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
+                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber"
+                        class="form-control" placeholder="Tag Number" aria-label="Tag Number"
+                        aria-describedby="basic-addon1">
                 </div>
             </li>
             <li class="list-group-item">
@@ -44,25 +47,25 @@
             Function
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Enter Function information
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
-                <p>
-                    <!-- To supply &ensp; -->
-                    <!-- <input type="text" class="custom-form-control" [(ngModel)]="FunctionFluidType" placeholder="e.g thermal fluid">m<sup>3</sup>/h flow with rated head &ensp; -->
-                    <!-- <input type="text" class="custom-form-control" [(ngModel)]="FunctionRatedHead" placeholder="e.g xxx"> m (within -10% variation) continuously for a period of &ensp;<br> &ensp;
-                    <br>
-                    <input type="text" class="custom-form-control" [(ngModel)]="FunctionPeriodType" placeholder="e.g  60 days"> at a stretch, with equipemt operating within recommended parameters. -->
-                </p>
-                <div>
-                    <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FunctionFluidType" placeholder="Type Function "></textarea>
+                <div class="container">
+                    <div>
+                        <textarea class="form-control custom-textarea" class="form-control"
+                            [(ngModel)]="FunctionFluidType" placeholder="Enter Function information"></textarea>
+                    </div>
                 </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
             <div>
-                <a class="btn btn-dark" (click)="FunctionNext()" pTooltip="To add Function Failure  Click on Next" tooltipPosition="top">
+                <a class="btn btn-dark" (click)="FunctionBack()" pTooltip="Back to the select Asset List"
+                    tooltipPosition="top">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <a class="btn btn-dark" style="float: right;" (click)="FunctionNext()"
+                    pTooltip="To add Function Failure  Click on Next" tooltipPosition="top">
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -77,32 +80,24 @@
             Function Failure
         </ng-template>
         <ng-template pTemplate="subtitle">
-            Type your Function Failure
         </ng-template>
         <ng-template pTemplate="content">
-            <div class="p-fluid p-formgrid p-grid">
+            <div class="p-fluid">
                 <div class="container">
-                    <!-- <div *ngFor="let fun of functionfailure" class="border" pDraggable="fun" (onDragStart)="dragStart($event,fun)" (onDragEnd)="dragEnd($event)">
-                        {{fun.Description}}
-                    </div>
-                    <div class="drop" pDroppable="fun" (onDrop)="drop($event)">
-                        <div *ngFor="let c of dropedFailure">{{c?.Description}}</div>
-
-                    </div>
-                    <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br> -->
-
                     <div>
-                        <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FunctionFailure"  placeholder="Type Function Failure"></textarea>
+                        <textarea class="form-control custom-textarea" class="form-control"
+                            [(ngModel)]="FunctionFailure" placeholder="Type Function Failure"></textarea>
                     </div>
                 </div>
-
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="FunctionFailureBack()" pTooltip=" Back to the Function" tooltipPosition="top">
+            <a class="btn btn-dark" (click)="FunctionFailureBack()" pTooltip=" Back to the Function"
+                tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a class="btn btn-dark" style="float: right;" (click)="FunctionFailureNext()" pTooltip="To add Failure Mode Click on Next" tooltipPosition="top">
+            <a class="btn btn-dark" style="float: right;" (click)="FunctionFailureNext()"
+                pTooltip="To add Failure Mode Click on Next" tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
         </ng-template>
@@ -121,14 +116,16 @@
             <div class="p-fluid p-formgrid p-grid">
                 <div class="container">
                     <div style="overflow: scroll; height:20rem;">
-                        <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
+                        <div *ngFor="let func of failuerMode" class="border" pDraggable="func"
+                            (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                             {{func.Description}}
                         </div>
                     </div>
                     <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                         <div *ngFor="let c of dropedMode">
                             <span>{{c?.Description}} </span>
-                            <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
+                            <a class="cell-icon-button cdk-close" style="float:right;color: black;"
+                                (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                 <i class="far fa-times-circle "></i>
                             </a>
                         </div>
@@ -139,17 +136,20 @@
         </ng-template>
 
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="FailureModeBack()" pTooltip=" Back to the Function Failure" tooltipPosition="top">
+            <a class="btn btn-dark" (click)="FailureModeBack()" pTooltip=" Back to the Function Failure"
+                tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a class="btn btn-dark" style="float: right;" (click)="FailureModeNext()" pTooltip="To add Local & System Effect  Click on Next" tooltipPosition="top">
+            <a class="btn btn-dark" style="float: right;" (click)="FailureModeNext()"
+                pTooltip="To add Local & System Effect  Click on Next" tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
         </ng-template>
     </p-card>
 </div>
 <div *ngIf="prescriptiveEffect1" class="col-md-12" style="overflow: scroll;">
-    <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+    <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode"
+        (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
             <div class="node-content">
@@ -163,7 +163,8 @@
     <a class="btn btn-dark" (click)="FailuerEffectBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">
         <i class="fas fa-arrow-left"></i>
     </a>
-    <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()" pTooltip="Click on Next & Lookout the tree" tooltipPosition="top">
+    <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="FailureEffectNext()"
+        pTooltip="Click on Next & Lookout the tree" tooltipPosition="top">
         <i class="fas fa-arrow-right"></i>
     </a>
 </div>
@@ -173,17 +174,19 @@
             Failure Mode Effects
         </ng-template>
         <ng-template pTemplate="subtitle">
-            <b>Enter Failure Mode Effects for {{FMLSEffectModeName}}</b>
+            <b>Provide failure mode effects for {{FMLSEffectModeName}}</b>
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid">
                 <div>
                     <label><b>Local Effect</b></label>
-                    <textarea class="form-control custom-textarea" [(ngModel)]="failuerModeLocalEffects" id="message" name="body" rows="4" placeholder="Type Local Effect"></textarea>
+                    <textarea class="form-control custom-textarea" [(ngModel)]="failuerModeLocalEffects" id="message"
+                        name="body" rows="4" placeholder="Type Local Effect"></textarea>
                 </div><br>
                 <div>
                     <label><b>System Effect</b></label>
-                    <textarea class="form-control custom-textarea" [(ngModel)]="failuerModeSystemEffects" id="message" name="body" rows="4" placeholder="Type System Effect"></textarea>
+                    <textarea class="form-control custom-textarea" [(ngModel)]="failuerModeSystemEffects" id="message"
+                        name="body" rows="4" placeholder="Type System Effect"></textarea>
                 </div>
                 <div style="margin-top: 20px;">
                     <div class="row">
@@ -193,15 +196,20 @@
                                     <span class="input-group-text" id="uploadAttachments">Upload</span>
                                 </div>
                                 <div class="custom-file">
-                                    <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
-                                    <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
-                                    <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
+                                    <input type="file" accept="image/x-png,image/jpeg,.pdf,"
+                                        (change)="uploadFile($event)" class="custom-file-input" id="uploadAttachments"
+                                        aria-describedby="uploadAttachments">
+                                    <label class="custom-file-label" *ngIf="fileUpload == ''"
+                                        for="inputGroupFile01">Attachment</label>
+                                    <label class="custom-file-label" *ngIf="fileUpload != ''"
+                                        for="inputGroupFile01">{{fileUpload}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group mb-3">
-                                <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                                <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message"
+                                    name="body" rows="3" placeholder="Add Remark Here"></textarea>
                             </div>
 
                         </div>
@@ -211,22 +219,25 @@
         </ng-template>
     </p-card>
 </div>
-<div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <span>
                     Add Attachment for {{FMLSEffectModeName}}
                 </span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CloseAttachmentModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="CloseAttachmentModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
                         <div class="toolbar" role="toolbar">
-                            <input type="file" #file placeholder="Choose file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile(file.files)" style="display:none;">
+                            <input type="file" #file placeholder="Choose file" accept="image/x-png,image/jpeg,.pdf,"
+                                (change)="uploadFile(file.files)" style="display:none;">
                             <button type="button" (click)="file.click()" class="btn btn-light">
                                 <span class="fa fa-paperclip"></span>
                             </button>
@@ -235,16 +246,18 @@
                             <div class="file"><br>
                                 <span *ngIf="fileAttachmentEnable" style="margin: 10px;">
                                     <i class="fas fa-file fa-5x"></i>
-                                    {{fileUpload}}  
-                                <a class="attachment" (click)="CloseAttachmentModal()"><i class="pi pi-times"></i></a>  
-                            </span>
+                                    {{fileUpload}}
+                                    <a class="attachment" (click)="CloseAttachmentModal()"><i
+                                            class="pi pi-times"></i></a>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="AttachmentDoneModal()">Done</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="AttachmentDoneModal()">Done</button>
             </div>
 
         </div>
@@ -252,7 +265,8 @@
 </div>
 
 
-<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -260,15 +274,16 @@
                     Add Remark for {{FMLSEffectModeName}}
                 </span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" >&times;</span>
-        </button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-11 ml-auto">
                         <div class="form-group mt-4">
-                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
+                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body"
+                                rows="12" placeholder="Add Remark Here"></textarea>
                         </div>
 
                     </div>
@@ -288,23 +303,33 @@
             Factors
             <p-overlayPanel #panel>
                 <div style=" margin-right: 2px;width: 40rem;">
-                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to the equipment. More the down time more is the factor, less the down time less is the factor. </li>
+                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to
+                        the equipment. More the down time more is the factor, less the down time less is the factor.
+                    </li>
 
-                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of failure are high then the scrap factor value is taken more and in the case of less chance to scrape the equipment or component factor
+                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of
+                        failure are high then the scrap factor value is taken more and in the case of less chance to
+                        scrape the equipment or component factor
                         value is taken less. </li>
 
-                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of injury (both man and machine) are high in the case of equipment failure, more is the value given to the safety factor and less the chances
+                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of
+                        injury (both man and machine) are high in the case of equipment failure, more is the value given
+                        to the safety factor and less the chances
                         of injury, less is the value given to the safety factor.</li>
 
-                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment from failure. Minimum no. is given when protection against the failure is easy. Maximum no. is given when protection against the failure
+                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment
+                        from failure. Minimum no. is given when protection against the failure is easy. Maximum no. is
+                        given when protection against the failure
                         is very difficult.
                     </li>
 
-                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the no. of failure more is the value given to the factor.
+                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the
+                        no. of failure more is the value given to the factor.
                     </li>
                 </div>
             </p-overlayPanel>
-            <a (click)="panel.show($event)" style="width: 20rem;" title="Explaination of each factors." style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
+            <a (click)="panel.show($event)" style="width: 20rem;" title="Explaination of each factors."
+                style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
         </ng-template>
         <ng-template pTemplate="subtitle">
             Enter Factors for {{FMLSEffectModeName}}
@@ -364,10 +389,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="ADDFailuerEffect()" pTooltip=" Add  Failure Mode with Local & System Effect" tooltipPosition="top">
+            <a class="btn btn-dark" (click)="ADDFailuerEffect()"
+                pTooltip=" Add  Failure Mode with Local & System Effect" tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="UPDATEFailuerEffect()" pTooltip="Update Failure Effects" tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="UPDATEFailuerEffect()"
+                pTooltip="Update Failure Effects" tooltipPosition="top">
                 <i class="fas fa-edit"></i>
             </a>
         </ng-template>
@@ -377,18 +404,29 @@
 
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-card>
-        <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top">  <i class="fas fa-arrow-left"></i></button>
-        <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
-        <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)" pTooltip="Click on Next To add Consequences" tooltipPosition="top"><i class="pi pi-plus">Consequences</i></button>
-        <button *ngIf="SaveConcequencesEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#Consequences01" data-toggle="modal"> Save Consequences</button>
-        <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
-        <button *ngIf="!(Pattern == '')" label="Back" type="button" style="float: right;" class="btn btn-dark" (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button><br>
-        <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button> <br>
+        <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()"
+            pTooltip=" Back to the Failure Modes" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
+        <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal"
+            data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>
+        <button *ngIf="prescriptiveTreeNextEnable" class="btn btn-dark" (click)="treeNext(target)"
+            pTooltip="Click on next to add Consequences" tooltipPosition="top"><i class="pi pi-plus">
+                Consequences</i></button>
+        <button *ngIf="SaveConcequencesEnable" class="btn btn-dark" style="float: right;" data-toggle="modal"
+            data-target="#Consequences01" data-toggle="modal"> Save Consequences</button>
+        <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark"
+            style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
+        <button *ngIf="!(Pattern == '')" label="Back" type="button" style="float: right;" class="btn btn-dark"
+            (click)="ADDNextFCA()"> <i class="fas fa-arrow-right"></i></button><br>
+        <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px"
+            (click)="SaveFCA()">Save FCA</button> <br>
 
-        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company" id="selectNodetoView">
+        <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" styleClass="company"
+            id="selectNodetoView">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}
-                    <a class="edit-org-bttn" *ngIf="node.viewFCA !== undefined && node.viewFCA" (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a class="edit-org-bttn" *ngIf="node.viewFCA !== undefined && node.viewFCA"
+                        (click)="SelectNodeToView(node)" pTooltip="Select Node To view" tooltipPosition="top"><i
+                            class="fa fa-eye" aria-hidden="true"></i></a>
                 </div>
                 <div class="node-content">
                     <div class="a">{{node.data.name}}</div>
@@ -401,21 +439,23 @@
     </p-card>
 </div>
 
-<div class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Tree Save</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 Are you sure you want to save the tree
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="treeSave()" pTooltip="Save Tree" tooltipPosition="top">Save changes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="treeSave()"
+                    pTooltip="Save Tree" tooltipPosition="top">Save changes</button>
             </div>
         </div>
     </div>
@@ -433,10 +473,12 @@
         <ng-template pTemplate="content">
             <div class="p-fluid p-formgrid p-grid">
                 <div style="margin-left: 20px;" class="p-fluid">
-                    <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal operation of the plant?</p>
+                    <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during
+                        normal operation of the plant?</p>
                 </div>
                 <div class="container">
-                    <div *ngFor="let con1 of draggedConsequencesYesNO" class="border" pDraggable="con1" (onDragStart)="dragStartC1($event,con1)" (onDragEnd)="dragEndC1($event)">
+                    <div *ngFor="let con1 of draggedConsequencesYesNO" class="border" pDraggable="con1"
+                        (onDragStart)="dragStartC1($event,con1)" (onDragEnd)="dragEndC1($event)">
                         {{con1}}
                     </div>
                     <div class="drop" pDroppable="con1" (onDrop)="dropC1($event)">
@@ -451,7 +493,8 @@
             <a class="btn btn-dark" (click)="Consequence1Back()" pTooltip=" Back to the Tree " tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence1Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence1Next()"
+                pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
         </ng-template>
@@ -470,10 +513,12 @@
         <ng-template pTemplate="content">
             <div class="p-fluid p-formgrid p-grid">
                 <div style="margin-left: 20px;" class="p-fluid">
-                    <p> Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct adverse effect on operational safety or the environment?</p>
+                    <p> Does the effect of the failure mode(or the secondary effect resulting from the failuer) have
+                        direct adverse effect on operational safety or the environment?</p>
                 </div>
                 <div class="container">
-                    <div *ngFor="let con2 of draggedConsequencesYesNO" class="border" pDraggable="con2" (onDragStart)="dragStartC2($event,con2)" (onDragEnd)="dragEndC2($event)">
+                    <div *ngFor="let con2 of draggedConsequencesYesNO" class="border" pDraggable="con2"
+                        (onDragStart)="dragStartC2($event,con2)" (onDragEnd)="dragEndC2($event)">
                         {{con2}}
                     </div>
                     <div class="drop" pDroppable="con2" (onDrop)="dropC2($event)">
@@ -485,10 +530,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="Consequence2Back()" pTooltip=" Back to the First Consequence" tooltipPosition="top">
+            <a class="btn btn-dark" (click)="Consequence2Back()" pTooltip=" Back to the First Consequence"
+                tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence2Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence2Next()"
+                pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
 
@@ -507,10 +554,12 @@
         <ng-template pTemplate="content">
             <div class="p-fluid p-formgrid p-grid">
                 <div style="margin-left: 20px;" class="p-fluid">
-                    <p>Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment? </p>
+                    <p>Does the combination of the failure mode and one additonal failure or event result in an adverse
+                        effect safety of the environment? </p>
                 </div>
                 <div class="container">
-                    <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con3" (onDragStart)="dragStartC3($event,con3)" (onDragEnd)="dragEndC3($event)">
+                    <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con3"
+                        (onDragStart)="dragStartC3($event,con3)" (onDragEnd)="dragEndC3($event)">
                         {{con3}}
                     </div>
                     <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
@@ -521,10 +570,12 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="Consequence3Back()" pTooltip=" Back to the Second Consequence" tooltipPosition="top">
+            <a class="btn btn-dark" (click)="Consequence3Back()" pTooltip=" Back to the Second Consequence"
+                tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence3Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence3Next()"
+                pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
 
@@ -546,23 +597,27 @@
                     <p>Does the Failure mode adversily affect operational capabilities of the plant? </p>
                 </div>
                 <div class="container">
-                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con4" (onDragStart)="dragStartC4($event,con4)" (onDragEnd)="dragEndC4($event)">
+                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con4"
+                        (onDragStart)="dragStartC4($event,con4)" (onDragEnd)="dragEndC4($event)">
                         {{con4}}
                     </div>
                     <div class="drop" pDroppable="con4" (onDrop)="dropC4($event)">
                         <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}</div>
 
                     </div>
-                    <small class="form-text text-muted">Drag and Drop here, from above List or you can type below</small> <br>
+                    <small class="form-text text-muted">Drag and Drop here, from above List or you can type
+                        below</small> <br>
 
                 </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="Consequence4Back()" pTooltip=" Back to the Third Consequence" tooltipPosition="top">
+            <a class="btn btn-dark" (click)="Consequence4Back()" pTooltip=" Back to the Third Consequence"
+                tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence4Next()" pTooltip=" Click To add next Consequence " tooltipPosition="top">
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence4Next()"
+                pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
         </ng-template>
@@ -573,13 +628,19 @@
 <div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">
     <p-card>
         <span>
-            <small class="form-text text-muted"><h5> Your {{FMLSConsequenceName}} Tree </h5></small>
+            <small class="form-text text-muted">
+                <h5> Your {{FMLSConsequenceName}} Tree </h5>
+            </small>
         </span>
-        <a class="btn btn-dark" (click)="ConsequenceTreeBack()" pTooltip=" Back to  Add the Consequence" tooltipPosition="top">
+        <a class="btn btn-dark" (click)="ConsequenceTreeBack()" pTooltip=" Back to  Add the Consequence"
+            tooltipPosition="top">
             <i class="fas fa-arrow-left"></i>
         </a>
-        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()" pTooltip="When you add the consequence then it directly save in to the tree" tooltipPosition="top"><i class="pi pi-plus"></i> Consequences</button><br><br>
-        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" styleClass="company">
+        <button label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="PushConcequences()"
+            pTooltip="When you add the consequence then it directly save in to the tree" tooltipPosition="top"><i
+                class="pi pi-plus"></i> Consequences</button><br><br>
+        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode"
+            styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -594,21 +655,23 @@
 </div>
 
 
-<div class="modal fade" id="Consequences01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="Consequences01" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Consequences Save</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 Are you sure you want to save the Consequences
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SaveConsequences()">Save changes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SaveConsequences()">Save
+                    changes</button>
             </div>
         </div>
     </div>

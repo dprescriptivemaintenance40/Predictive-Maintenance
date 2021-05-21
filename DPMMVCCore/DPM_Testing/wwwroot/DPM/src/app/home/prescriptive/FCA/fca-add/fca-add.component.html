@@ -18,10 +18,10 @@
     </div>
 </div>
 
-<p-toast position="top-center"></p-toast>
+<p-toast position="top-right"></p-toast>
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
-    <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDNextFCA()" pTooltip="Select To Add FCA" tooltipPosition="top"><i class="pi pi-plus">Add FCA</i></button>
+    <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left:40px" (click)="ADDNextFCA()" pTooltip="Select To Add FCA" tooltipPosition="top"><i class="pi pi-plus">Add FCA</i></button>
     <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button>
     <p-organizationChart [value]="data1" styleClass="company">
         <ng-template let-node pTemplate="person">
@@ -41,7 +41,7 @@
 <div *ngIf="FailureModePatternTree" id="ModePatternTree" class="col-md-12" id="ScrollToFCATree" style="overflow: scroll;">
     <div style="overflow: scroll;">
         <label class="form-text text-muted"><h5>Add FCA for {{PatternFMName}}</h5></label>
-        <button *ngIf="patternaddshow" label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark" pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button>
+        <button *ngIf="patternaddshow" label="Next" style="float: right;" (click)="PatternAdd()" type="button" class="btn btn-dark" pTooltip="Add data to Failure Mode" tooltipPosition="top">Add</button>
         <p-organizationChart [value]="FCAdata1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -124,7 +124,7 @@
         <ng-template pTemplate="footer">
             <div>
                 <button label="Back" type="button" (click)="PatternBack()" class="btn btn-dark" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
-                <button label="Next" style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-down"> Save</i></button>
+                <button label="Next" style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-down"> Add & Next</i></button>
 
             </div>
         </ng-template>
@@ -178,8 +178,8 @@
     <div class="card" style="margin: 20px;" *ngIf="FailuerRate">
         <p-card [ngClass]=" {disableddiv: failuerrate  ? true : false}">
             <ng-template pTemplate="subtitle">
-                <p><b>2. To help determine the Failure rate, we need to know how reliable the equipment is. If the equipment were left alone
-                for a period of time, would you expect this Failure to have happened.
+                <p><b>2. To help determine the failure rate, we need to know how reliable the equipment is. If the equipment were left alone
+                for a period of time, would you expect this failure to have happened.
             </b></p>
             </ng-template>
             <ng-template pTemplate="content">
@@ -204,7 +204,7 @@
             <ng-template pTemplate="title">
             </ng-template>
             <ng-template pTemplate="subtitle">
-                <p><b>3. Are their any prior warnings before the failure occure? Tick all that apply.
+                <p><b>3. Are there any prior warnings before the failure occure? Tick all that apply.
             </b></p>
             </ng-template>
             <ng-template pTemplate="content">
@@ -236,7 +236,7 @@
                         </div>
                         <div class="col-sm"><br>
                             <p-card>
-                                Temprature Change<br>
+                                Temperature Change<br>
                                 <td><input type="checkbox" [(ngModel)]="TempratureChange" value="Temprature Change" name="name1" />&nbsp;</td>
                             </p-card>
                         </div><br>
@@ -274,7 +274,7 @@
     <div class="card" style="margin: 20px;" *ngIf="WarningSign" id="PatternWarningSign">
         <p-card [ngClass]=" {disableddiv: warningsign  ? true : false}">
             <ng-template pTemplate="subtitle">
-                <p><b>4. If their are any warning signs, can they be monitored? if so, how?
+                <p><b>4. If there are any warning signs, can they be monitored? if so, how?
             </b></p>
             </ng-template>
             <ng-template pTemplate="content">
@@ -288,19 +288,19 @@
                         </div>
                         <div class="col-sm"><br>
                             <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                                Existing instumentation(portable or fixed)<br>
+                                Existing instrumentation(portable or fixed)<br>
                                 <td><input type="checkbox" [(ngModel)]="ExistingInstumentation" value="Existing instumentation(portable or fixed)" name="name1" />&nbsp;</td>
                             </div>
                         </div>
                         <div class="col-sm"><br>
                             <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                                New instumentation(portable or fixed)<br>
+                                New instrumentation(portable or fixed)<br>
                                 <td><input type="checkbox" [(ngModel)]="NewInstumentation" value="New instumentation(portable or fixed)" name="name1" />&nbsp;</td>
                             </div>
                         </div>
                         <div class="col-sm"><br>
                             <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                                Process Condtions<br>
+                                Process conditions<br>
                                 <td><input type="checkbox" [(ngModel)]="ProcessCondtions" value="Process Condtions" name="name1" />&nbsp;</td>
                             </div>
                         </div>
@@ -322,17 +322,19 @@
     <div class="card" style="margin: 20px;" *ngIf="IntervalDeteacting" id="PatternIntervalDeteacting">
         <p-card [ngClass]=" {disableddiv: intervaldeteacting  ? true : false}">
             <ng-template pTemplate="subtitle">
+                <p><b>5. What is the likely interval between detecting a warning sign and the failure happening?</b></p>
+            </ng-template>
+            <ng-template pTemplate="content">
                 <div class="input-group mb-3">
-                    <label><b>5. What is the likely interval between detacting a warning sign and the failure happening?</b></label>
                     <select [(ngModel)]="ffInterval" class="form-select" class="form-control" placeholder="Failuer very likely">
-                    <option value="">Choose</option>
-                        <option value="Days" selected> Days</option>
-                        <option value="Week" selected> Week</option>
-                        <option value="Month" selected>Month</option>
-                        <option value="year" selected>Year</option>
-                    </select>
+                        <option value="">Choose</option>
+                            <option value="Days" selected> Days</option>
+                            <option value="Week" selected> Week</option>
+                            <option value="Month" selected>Month</option>
+                            <option value="year" selected>Year</option>
+                        </select>
                     <input type="number" [(ngModel)]="ffIntervalValue" name="Interval" class="form-control">
-                </div>
+                </div> 
             </ng-template>
             <ng-template pTemplate="footer">
                 <a class="btn btn-white" style="border:none"> </a>
@@ -343,7 +345,7 @@
     <div class="card" style="margin: 20px;" *ngIf="FailuerEvident" id="PatternFailuerEvident">
         <p-card [ngClass]=" {disableddiv: failuerevident  ? true : false}">
             <ng-template pTemplate="subtitle">
-                <p><b>6. If the failure is not evident during normal operation can be found by testing and inspection? Tick yes or no.
+                <p><b>6. If the failure is not evident during normal operation can be found by testing and inspection?
             </b></p>
             </ng-template>
             <ng-template pTemplate="content">
@@ -406,12 +408,12 @@
             </b></p>
             </ng-template>
             <ng-template pTemplate="content">
-                <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText" id="message" name="body" rows="3" placeholder="Add comments Here"></textarea>
+                <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText" id="message" name="body" rows="3" placeholder="Add comments Here (Optional)"></textarea>
             </ng-template>
             <ng-template pTemplate="footer">
-                <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1" (click)="FCAFreeTextCancel()"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <!-- <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1" (click)="FCAFreeTextCancel()"><i class="fa fa-times" aria-hidden="true"></i></button> -->
+                <a class="btn btn-white" style="border:none"> </a>
                 <button class="btn btn-dark" *ngIf="FCAFreeTextSave1" style="float:right;" (click)="FCAFreeTextSave()"><i class="fa fa-check" aria-hidden="true" ></i></button>
-                <!-- <button *ngIf="patternaddshow"  label="Next" (click)="PatternAdd()" type="button" class="btn btn-dark"  pTooltip=" Click To add data to Failure Mode" tooltipPosition="top">ADD</button> -->
             </ng-template>
         </p-card>
     </div>
@@ -487,7 +489,7 @@
 
             </ng-template>
             <ng-template pTemplate="subtitle">
-                <p><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha, beta.
+                <p><b> 10: Provide List of Days for failure Mode, {{PatternFMName}} in excel format to calculate alpha, beta.
             </b></p>
                 <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-dark" (click)="ExcelDownload()" title="Click here to get webal excel format" ><a class="pi pi-download"></a></button></small></p>
             </ng-template>
