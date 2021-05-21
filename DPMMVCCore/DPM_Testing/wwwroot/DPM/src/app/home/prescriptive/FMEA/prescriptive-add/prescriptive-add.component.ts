@@ -490,22 +490,19 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
           this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'TagNumber is missing' });
         }
       }
-
+  FunctionBack() {
+    this.prescriptiveSelect = true
+    this.prescriptiveSteps= false
+    this.prescriptiveFuntion= false
+  }
   FunctionNext() {
-    // if (this.FunctionFluidType.length > 0 && this.FunctionRatedHead.length > 0 && this.FunctionPeriodType.length > 0) {
-      if (this.FunctionFluidType.length > 0 || this.FunctionRatedHead.length > 0 || this.FunctionPeriodType.length > 0) {
+      if (this.FunctionFluidType.length > 0) {
       this.prescriptiveFuntion = false;
       this.prescriptiveFunctionFailure = true;
       this.activeIndex = 1;
 
     } else if (this.FunctionFluidType.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'FluidType is missing' });
-
-    } else if (this.FunctionRatedHead.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'RatedHead is missing' });
-
-    } else if (this.FunctionPeriodType.length == 0) {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'PeriodType is missing' });
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Function is missing' });
 
     }
   }
@@ -522,34 +519,12 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.activeIndex = 0;
   }
   FunctionFailureNext() {
-    // if (this.dropedFailure.length > 0) {
-    //   this.functionFailuerInput = []
-    // }
-    // if (this.dropedFailure.length > 0 && this.functionFailuerInput.length > 1) {
-    //   this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Data overloaded on both fields, please select any one option' });
-    // } else if (this.dropedFailure.length == 0 && this.functionFailuerInput.length > 0) {
-    //   this.prescriptiveFunctionFailure = false;
-    //   this.prescriptiveFailureMode = true;
-    //   this.activeIndex = 2;
-
-    // } else if (this.dropedFailure.length > 0 && this.functionFailuerInput.length == 0) {
-    //   this.prescriptiveFunctionFailure = false;
-    //   this.prescriptiveFailureMode = true;
-    //   this.activeIndex = 2;
-
-    // } else if (this.dropedFailure.length == 0) {
-    //   this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please Add Function failure' });
-    // } else if (this.dropedFailure.length == 1) {
-    //   this.prescriptiveFunctionFailure = false;
-    //   this.prescriptiveFailureMode = true;
-    //   this.activeIndex = 2;
-    // }
     if(this.FunctionFailure.length>0){
       this.prescriptiveFunctionFailure = false;
       this.prescriptiveFailureMode = true;
       this.activeIndex = 2;
     }else{
-      alert("fun")
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Function Failure is missing' });
     }
  
   }
@@ -568,21 +543,12 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
 
   GenrationTree() {
-    // var funFailure;
-    // if (this.dropedFailure[0].Description == undefined) {
-    //   funFailure = this.dropedFailure[0]
-    // } else {
-    //   funFailure = this.dropedFailure[0].Description
-    // }
-
-
     this.data1 = [
       {
         label: "Function",
         type: "person",
         styleClass: "p-person",
         expanded: true,
-        // data: { name: "Fluid Type : " + this.FunctionFluidType + ", " + "Rated Head : " + this.FunctionRatedHead + " m " + ", " + "Duration Of : " + this.FunctionPeriodType + " days" },
         data: { name: this.FunctionFluidType },
         children: [
           {
@@ -669,12 +635,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
  async ADDFailuerEffect() {
-    //&& this.dbPath.length > 0 
     if (this.failuerModeLocalEffects !== ''
       && this.failuerModeSystemEffects !== '' && this.DownTimeFactor !== 0
       && this.ScrapeFactor !== 0 && this.SafetyFactor !== 0
       && this.ProtectionFactor !== 0 && this.FrequencyFactor !== 0) {
-
       let LFNode = {
         label: "Local Effect",
         type: "person",
@@ -734,8 +698,16 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.Remark = "";
       this.fileUpload = "";
       this.FileId = "";
-    } else {
-      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please fill all Fields' });
+    } else if(this.DownTimeFactor == 0  ) {
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'DownTime Factor is Missing' });
+    }else if(this.ScrapeFactor == 0  ){
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Scrape Factor is Missing' });
+    }else if(this.SafetyFactor == 0  ){
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Safety Factor is Missing' });
+    }else if(this.ProtectionFactor == 0  ){
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Protection Factor is Missing' });
+    }else if(this.FrequencyFactor == 0  ){
+      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Frequency Factor is Missing' });
     }
     const element = document.querySelector("#FactorstoLocal")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
