@@ -1,8 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgxChartsModule } from "@swimlane/ngx-charts";
-import { ChartsModule } from "ng2-charts";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { ChartModule } from "primeng/chart";
@@ -36,10 +34,8 @@ import { TabViewModule } from 'primeng/tabview';
         InputTextModule,
         PasswordModule,
         MessagesModule,
-        MessageModule,        
-        NgxChartsModule,
+        MessageModule, 
         OrganizationChartModule,
-        ChartsModule,
         CardModule,
         StepsModule,
         RadioButtonModule,
@@ -60,10 +56,8 @@ import { TabViewModule } from 'primeng/tabview';
         InputTextModule,
         PasswordModule,
         MessagesModule,
-        MessageModule,        
-        NgxChartsModule,
+        MessageModule,     
         OrganizationChartModule,
-        ChartsModule,
         CardModule,
         StepsModule,
         RadioButtonModule,
