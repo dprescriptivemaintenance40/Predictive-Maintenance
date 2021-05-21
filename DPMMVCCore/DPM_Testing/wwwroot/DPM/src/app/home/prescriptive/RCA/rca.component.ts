@@ -76,10 +76,17 @@ export class RCAComponent implements OnInit, AfterViewInit {
         public router: Router,
         private commonBL: CommonBLService,
         private RCAAPIName: PrescriptiveContantAPI,
-    ) {
+    ) {}
+    ngOnInit() {
+        this.addStartup();
+        this.getRecordsList();
+        this.getHeatExchangerData();
+    }
+    
+    addStartup(){
         this.files = [{
             id: this.itemCount,
-            label: 'Problem Statement',
+            label: '',
             addTree: true,
             update: '',
             operationalData: '',
@@ -91,19 +98,15 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.ADDDataForSaveAuth.push(
             {
                 id: this.itemCount,
-                label: 'Problem Statement',
+                label: '',
                 addTree: true,
                 isParent: 'Yes',
                 disable: false,
                 children: []
             }
         )
+    }
 
-    }
-    ngOnInit() {
-        this.getRecordsList();
-        this.getHeatExchangerData();
-    }
     zoom(xz) {
         const isSmooth = true;
         const scale = this.currentZoomLevel;
@@ -256,7 +259,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.itemCount++;
         let obj = {
             id: this.itemCount,
-            label: "Why?",
+            label: "",
             RCAFILE: '',
             addTree: true,
             deleteTree: true,
@@ -264,18 +267,18 @@ export class RCAComponent implements OnInit, AfterViewInit {
             children: []
         }
         var id = obj.id;
-        if (event.isParent == 'Yes' && (event.label == 'Problem Statement' || event.label == 'Problem' || event.label == 'Statement' || event.label == '')) {
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to parent node" })
-        } else if (event.isParent == 'Yes' && (event.label != 'Why?' || event.label != 'Why' || event.label != '?' || event.label != '')) {
+        if (event.isParent == 'Yes' && event.label == '') {
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add problem statment to node" })
+        } else if (event.isParent == 'Yes' && event.label != '') {
             event.children.push(obj);
             this.ADDDataForSaveAuth.push(obj)
-        } else if (event.isParent == undefined && (event.label == 'Why?' || event.label == 'Why')) {
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data in node" })
+        } else if (event.isParent == undefined && event.label == '') {
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to node" })
         } else if (event.isParent == undefined && event.RCAFILE == '') {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add attachment to node" })
         } else if (event.label == '') {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to node" })
-        } else if (event.isParent == undefined && event.RCAFILE != '' && event.label != 'Why?') {
+        } else if (event.isParent == undefined && event.RCAFILE != '' && event.label != '') {
             event.children.push(obj);
             this.ADDDataForSaveAuth.push(obj)
         }
@@ -346,20 +349,17 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.TagNumber = ""
         this.RCALabel = ""
         this.files = []
-        this.files = [{
-            id: this.itemCount,
-            label: 'Problem Statement',
-            addTree: true,
-            disable: false,
-            isParent: 'Yes',
-            children: []
-        }];
+        this.itemCount = 100
+        this.ADDDataForSaveAuth = []
+        this.files = []
+        this.addStartup();
+        
     }
 
 
     RCAADDSave() {
         this.ADDDataForSaveAuth[0].label = this.files[0].label
-        var Data = this.ADDDataForSaveAuth.find(f => f['label'] === 'Why?' || f['label'] === 'Why' || f['label'] === '' || f['label'] === '?' || f['label'] === ' ?');
+        var Data = this.ADDDataForSaveAuth.find(f => f['label'] === '');
         var RCAFILE = this.ADDDataForSaveAuth.find(f => f['RCAFILE'] === '');
         if (Data !== undefined) {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please fill data to all nodes' });
@@ -396,6 +396,9 @@ export class RCAComponent implements OnInit, AfterViewInit {
                         this.closeRCAAddModal();
                         this.CancelADDRCA();
                         this.ADDDataForSaveAuth = []
+                        this.itemCount = 100
+                        this.files = []
+                        this.addStartup();
                         this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
                     }, error => { console.log(error.error) }
                 )
@@ -439,8 +442,10 @@ export class RCAComponent implements OnInit, AfterViewInit {
 
     RCAHandleChange(e){
         if(e.index === 1){
+            this.Updatefiles = []
             this.cancelRCAUpdate();
         }else if(e.index === 2){
+            this.files = []
             this.CancelADDRCA();
         }
     }
@@ -468,7 +473,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.RCAUpdateItemCount++;
         let obj = {
             id: this.RCAUpdateItemCount,
-            label: "Why?",
+            label: "",
             RCAFILE: '',
             disable: false,
             addTree: true,
@@ -494,7 +499,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
 
     UpdateRCA() {
         this.UpdateRCADataForSaveAuth[0].label = this.Updatefiles[0].label
-        var Data = this.UpdateRCADataForSaveAuth.find(f => f['label'] === 'Why?' || f['label'] === 'Why' || f['label'] === '' || f['label'] === '?' || f['label'] === ' ?');
+        var Data = this.UpdateRCADataForSaveAuth.find(f => f['label'] === '');
         var RCAFILE = this.UpdateRCADataForSaveAuth.find(f => f['RCAFILE'] === '');
         if (Data !== undefined) {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please fill data to all nodes' });
@@ -523,6 +528,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
                         this.Updatefiles = []
                         this.UpdateRCADataForSaveAuth = []
                         this.getRecordsList();
+                        this.RCAUpdateItemCount = 1000;
                     }
                 )
         }
@@ -530,7 +536,9 @@ export class RCAComponent implements OnInit, AfterViewInit {
     }
 
     cancelRCAUpdate() {
+        this.RCAUpdateItemCount = 1000;
         this.Updatefiles = []
+        this.UpdateRCADataForSaveAuth = []
         this.UpdateTreeshow = false;
         this.SelectUpdateBoxEnabled = true;
     }
