@@ -209,7 +209,7 @@ async ADDMSSToTree() {
       }
     )
   }else{
-    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Fill the data" }) 
+    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stratergy is Missing" }) 
   }
       var availablility: number = 0;
       if(this.AvailabilityResult == 0){
@@ -400,9 +400,8 @@ async ADDMSSToTree() {
       this.PlantStoppageTime = true
       this.AddMSSSave = false
       this.MSSIntervalSelectionCriteria = ""
-    }else{
-      
-      alert("fill the data")
+    }else if(this.MSSStratergy.length ==0){  
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stratergy is Missing" }) 
     }
   
     
@@ -464,8 +463,7 @@ async ADDMSSToTree() {
        const element = document.querySelector("#PlantStoppage")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      alert("fill the data")
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Availability value is missing" });
     }
     
    }
@@ -477,7 +475,7 @@ async ADDMSSToTree() {
       const element = document.querySelector("#Consequence")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
-       alert("Fill the data")
+       this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Availability value is missing" })
      }
      
    }
@@ -502,7 +500,7 @@ async ADDMSSToTree() {
          const element = document.querySelector("#PlantStoppagetime")
          if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill all details"})
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stoppage days are missing"})
     }
    }
 
@@ -527,7 +525,7 @@ async ADDMSSToTree() {
         const element = document.querySelector("#Consequence")
         if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }else{
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill all details"})
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stoppage Duration is missing"})
       }
    }     
 }

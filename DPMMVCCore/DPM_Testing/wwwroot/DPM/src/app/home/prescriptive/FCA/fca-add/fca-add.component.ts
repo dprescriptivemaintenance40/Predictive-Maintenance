@@ -1417,7 +1417,7 @@ async SelectNodeToView(p){
   const element = document.querySelector("#Patternfailurewarning")
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
  }else{
-  this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+  this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Interval value is missing" })
  }
   }
 
@@ -1497,7 +1497,7 @@ async SelectNodeToView(p){
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
     else{
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Prior warnings before the failure occure are missing" })
     }
 
   }
@@ -1552,7 +1552,7 @@ async SelectNodeToView(p){
       const element = document.querySelector("#PatternIntervalDeteacting")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Warning signs are missing" })
     }
   
   }
@@ -1594,7 +1594,7 @@ async SelectNodeToView(p){
       const element = document.querySelector("#PatternFailuerEvident")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "FFIInterval is missing" })
     }
   
   }
@@ -1627,16 +1627,16 @@ async SelectNodeToView(p){
   }
 
  async FCAFreeTextSave(){
-   if(this.FCAFreeText.length >0){
+  //  if(this.FCAFreeText.length >0){
     this.PatternFailuerAll = true
     this.FCAComment.push(this.FCAFreeText)
     this.SafeUsefulLife = true;
     this.changeDetectorRef.detectChanges()  
     const element = document.querySelector("#SafeUsefulLife")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-   }else{
-    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" }) 
-   }
+  //  }else{
+  //   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" }) 
+  //  }
  
   }
 

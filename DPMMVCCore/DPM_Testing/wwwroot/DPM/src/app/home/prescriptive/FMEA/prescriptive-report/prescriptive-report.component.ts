@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl, Title } from '@angular/platform-browser';
 import html2canvas from 'html2canvas';
-import jspdf, { jsPDF } from 'jspdf';
+import { jsPDF } from 'jspdf';
 import { MessageService } from 'primeng/api';
 import { PDFDocument } from 'pdf-lib';
 import * as Chart from 'chart.js';
