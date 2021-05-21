@@ -30,11 +30,13 @@ export interface TreeNode<T = any> {
 @Component({
     templateUrl: './rca.component.html',
 })
-export class RCAComponent implements OnInit, AfterViewInit {
-    @ViewChild('scene', { static: false }) scene: ElementRef;
-    @ViewChild('scene1', { static: false }) scene1: ElementRef;
-    @ViewChild('scene3', { static: false }) scene3: ElementRef;
+export class RCAComponent  {
+    // @ViewChild('scene', { static: false }) scene: ElementRef;
+    // @ViewChild('scene1', { static: false }) scene1: ElementRef;
+    // @ViewChild('scene3', { static: false }) scene3: ElementRef;
     panZoomController;
+    panZoomController1;
+    panZoomController2;
     files: any = [];
     Updatefiles: any[];
     selectedFile: any;
@@ -61,7 +63,12 @@ export class RCAComponent implements OnInit, AfterViewInit {
     public RCADisplayLabel: string = ""
     public RCADisplayFile: any = []
     public tabView: boolean = true
-    pinchSpeed
+    public currentZoomLevel: number;
+    public currentZoomLevel1: number;
+    public currentZoomLevel2: number;
+    zoomLevels: number[];
+    zoomLevels1: number[];
+    zoomLevels2: number[];
 
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
@@ -69,10 +76,17 @@ export class RCAComponent implements OnInit, AfterViewInit {
         public router: Router,
         private commonBL: CommonBLService,
         private RCAAPIName: PrescriptiveContantAPI,
-    ) {
+    ) {}
+    ngOnInit() {
+        this.addStartup();
+        this.getRecordsList();
+        this.getHeatExchangerData();
+    }
+    
+    addStartup(){
         this.files = [{
             id: this.itemCount,
-            label: 'Problem Statement',
+            label: '',
             addTree: true,
             update: '',
             operationalData: '',
@@ -84,25 +98,134 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.ADDDataForSaveAuth.push(
             {
                 id: this.itemCount,
-                label: 'Problem Statement',
+                label: '',
                 addTree: true,
                 isParent: 'Yes',
                 disable: false,
                 children: []
             }
         )
+    }
 
-    }
-    ngOnInit() {
-        this.getRecordsList();
-        this.getHeatExchangerData();
-    }
-    ngAfterViewInit() {
-        this.panZoomController = panzoom(this.scene.nativeElement);
-        this.panZoomController = panzoom(this.scene1.nativeElement);
-        this.panZoomController = panzoom(this.scene3.nativeElement);
-        this.pinchSpeed = -1
-    }
+    // zoom(xz) {
+    //     const isSmooth = true;
+    //     const scale = this.currentZoomLevel;
+    //      var transform1
+    //     if (scale) {
+    //         if(xz== 'scene'){
+    //              transform1 = this.panZoomController.getTransform();
+              
+    //         }else  if(xz== 'scene1'){
+    //             transform1 = this.panZoomController1.getTransform();
+
+    //         } else  if(xz== 'scene3'){
+    //             transform1 = this.panZoomController2.getTransform();
+    //         }
+    //       const transform = transform1;
+    //       const deltaX = transform.x;
+    //       const deltaY = transform.y;
+    //       const offsetX = scale + deltaX;
+    //       const offsetY = scale + deltaY;
+    
+    //       if (isSmooth) {
+    //         if(xz== 'scene'){
+    //             this.panZoomController.smoothZoom(0, 0, scale);
+    //        }else  if(xz== 'scene1'){
+    //            this.panZoomController1.smoothZoom(0, 0, scale);
+    //        } else  if(xz== 'scene3'){
+    //            this.panZoomController2.smoothZoom(0, 0, scale);
+    //        }
+          
+    //       } else {
+    //         if(xz== 'scene'){
+    //          this.panZoomController.zoomTo(offsetX, offsetY, scale);
+    //        }else  if(xz== 'scene1'){
+    //         this.panZoomController1.zoomTo(offsetX, offsetY, scale);
+    //        } else  if(xz== 'scene3'){
+    //         this.panZoomController2.zoomTo(offsetX, offsetY, scale);
+    //        }
+            
+    //       }
+    //     }
+    //   }
+    
+//       zoomToggle(zoomIn: boolean, abc) {
+//         var idxvalue
+//         if (abc == 'scene') {
+//             idxvalue = this.zoomLevels.indexOf(this.currentZoomLevel);
+
+//         } else if (abc == 'scene1') {
+//             idxvalue = this.zoomLevels1.indexOf(this.currentZoomLevel);
+
+//         } else if (abc == 'scene3') {
+//             idxvalue =this.zoomLevels2.indexOf(this.currentZoomLevel);
+//         }
+//    const idx = idxvalue
+//         if (abc == 'scene') {
+//             if (zoomIn) {
+//                 if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
+//                  this.currentZoomLevel = this.zoomLevels[idxvalue + 1];
+//                 }
+//             } else {
+//                 if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels[idxvalue - 1];
+//                 }
+//             }
+
+//         } else if (abc == 'scene1') {
+//             if (zoomIn) {
+//                 if (typeof this.zoomLevels1[idx + 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels1[idx + 1];
+//                 }
+//             } else {
+//                 if (typeof this.zoomLevels1[idx - 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels1[idx - 1];
+//                 }
+//             }
+//         } else if (abc == 'scene3') {
+//             if (zoomIn) {
+//                 if (typeof this.zoomLevels2[idx + 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels2[idx + 1];
+//                 }
+//             } else {
+//                 if (typeof this.zoomLevels2[idx - 1] !== 'undefined') {
+//                     this.currentZoomLevel = this.zoomLevels2[idx - 1];
+//                 }
+//             }
+//         }
+
+//         if (this.currentZoomLevel === 1) {
+//             if (abc == 'scene') {
+//                 this.panZoomController.moveTo(0, 0);
+//                 this.panZoomController.zoomAbs(0, 0, 1);
+//             } else if (abc == 'scene1') {
+//                 this.panZoomController1.moveTo(0, 0);
+//                 this.panZoomController1.zoomAbs(0, 0, 1);
+//             } else if (abc == 'scene3') {
+//                 this.panZoomController2.moveTo(0, 0);
+//                 this.panZoomController2.zoomAbs(0, 0, 1);
+//             }
+
+//         } else {
+//             this.zoom(abc);
+//         }
+//     }
+
+    // ngAfterViewInit() {
+    //     this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1];
+    //     this.currentZoomLevel = this.zoomLevels[4];
+
+    //     this.zoomLevels1 = [0.1, 0.25, 0.5, 0.75, 1];
+    //     this.currentZoomLevel = this.zoomLevels1[4];
+
+    //     this.zoomLevels2 = [0.1, 0.25, 0.5, 0.75, 1];
+    //     this.currentZoomLevel = this.zoomLevels2[4];
+
+    //     this.panZoomController = panzoom(this.scene.nativeElement);
+    //     this.panZoomController1 = panzoom(this.scene1.nativeElement);
+    //     this.panZoomController2 = panzoom(this.scene3.nativeElement);
+    //     this.changeDetectorRef.detectChanges();
+    // }
 
     getHeatExchangerData() {
         const params = new HttpParams()
@@ -136,7 +259,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.itemCount++;
         let obj = {
             id: this.itemCount,
-            label: "Why?",
+            label: "",
             RCAFILE: '',
             addTree: true,
             deleteTree: true,
@@ -144,18 +267,18 @@ export class RCAComponent implements OnInit, AfterViewInit {
             children: []
         }
         var id = obj.id;
-        if (event.isParent == 'Yes' && (event.label == 'Problem Statement' || event.label == 'Problem' || event.label == 'Statement' || event.label == '')) {
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to parent node" })
-        } else if (event.isParent == 'Yes' && (event.label != 'Why?' || event.label != 'Why' || event.label != '?' || event.label != '')) {
+        if (event.isParent == 'Yes' && event.label == '') {
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add problem statment to node" })
+        } else if (event.isParent == 'Yes' && event.label != '') {
             event.children.push(obj);
             this.ADDDataForSaveAuth.push(obj)
-        } else if (event.isParent == undefined && (event.label == 'Why?' || event.label == 'Why')) {
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data in node" })
+        } else if (event.isParent == undefined && event.label == '') {
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to node" })
         } else if (event.isParent == undefined && event.RCAFILE == '') {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add attachment to node" })
         } else if (event.label == '') {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to node" })
-        } else if (event.isParent == undefined && event.RCAFILE != '' && event.label != 'Why?') {
+        } else if (event.isParent == undefined && event.RCAFILE != '' && event.label != '') {
             event.children.push(obj);
             this.ADDDataForSaveAuth.push(obj)
         }
@@ -226,20 +349,17 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.TagNumber = ""
         this.RCALabel = ""
         this.files = []
-        this.files = [{
-            id: this.itemCount,
-            label: 'Problem Statement',
-            addTree: true,
-            disable: false,
-            isParent: 'Yes',
-            children: []
-        }];
+        this.itemCount = 100
+        this.ADDDataForSaveAuth = []
+        this.files = []
+        this.addStartup();
+        
     }
 
 
     RCAADDSave() {
         this.ADDDataForSaveAuth[0].label = this.files[0].label
-        var Data = this.ADDDataForSaveAuth.find(f => f['label'] === 'Why?' || f['label'] === 'Why' || f['label'] === '' || f['label'] === '?' || f['label'] === ' ?');
+        var Data = this.ADDDataForSaveAuth.find(f => f['label'] === '');
         var RCAFILE = this.ADDDataForSaveAuth.find(f => f['RCAFILE'] === '');
         if (Data !== undefined) {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please fill data to all nodes' });
@@ -276,6 +396,9 @@ export class RCAComponent implements OnInit, AfterViewInit {
                         this.closeRCAAddModal();
                         this.CancelADDRCA();
                         this.ADDDataForSaveAuth = []
+                        this.itemCount = 100
+                        this.files = []
+                        this.addStartup();
                         this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
                     }, error => { console.log(error.error) }
                 )
@@ -287,6 +410,22 @@ export class RCAComponent implements OnInit, AfterViewInit {
     }
 
     DeleteRCARecord(p) {
+        var j = JSON.parse(p.RCATree)
+        if(j[0].update != ''){
+            var data = JSON.parse(j[0].update)
+ 
+            for (let index = 0; index < data.length; index++) {
+                if (data[index].RCAFILE !== '' && data[index].RCAFILE !== undefined) {
+                    var fileDetails : any = []
+                    fileDetails = JSON.parse(data[index].RCAFILE)
+                    const params = new HttpParams()
+                        .set('fullPath', fileDetails.dbPath)
+                    this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
+                    .subscribe()
+                }
+            }
+          
+        }
         const params = new HttpParams()
             .set('id', p.RCAID)
         this.commonBL.DeleteWithParam(this.RCAAPIName.RCADeleteAPI, params)
@@ -299,6 +438,16 @@ export class RCAComponent implements OnInit, AfterViewInit {
 
     closeRCAAddModal() {
         this.AddRCAmodal.style.display = 'none'
+    }
+
+    RCAHandleChange(e){
+        if(e.index === 1){
+            this.Updatefiles = []
+            this.cancelRCAUpdate();
+        }else if(e.index === 2){
+            this.files = []
+            this.CancelADDRCA();
+        }
     }
 
     UpdateTagNumberSelect() {
@@ -324,7 +473,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
         this.RCAUpdateItemCount++;
         let obj = {
             id: this.RCAUpdateItemCount,
-            label: "Why?",
+            label: "",
             RCAFILE: '',
             disable: false,
             addTree: true,
@@ -350,7 +499,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
 
     UpdateRCA() {
         this.UpdateRCADataForSaveAuth[0].label = this.Updatefiles[0].label
-        var Data = this.UpdateRCADataForSaveAuth.find(f => f['label'] === 'Why?' || f['label'] === 'Why' || f['label'] === '' || f['label'] === '?' || f['label'] === ' ?');
+        var Data = this.UpdateRCADataForSaveAuth.find(f => f['label'] === '');
         var RCAFILE = this.UpdateRCADataForSaveAuth.find(f => f['RCAFILE'] === '');
         if (Data !== undefined) {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please fill data to all nodes' });
@@ -379,6 +528,7 @@ export class RCAComponent implements OnInit, AfterViewInit {
                         this.Updatefiles = []
                         this.UpdateRCADataForSaveAuth = []
                         this.getRecordsList();
+                        this.RCAUpdateItemCount = 1000;
                     }
                 )
         }
@@ -386,7 +536,9 @@ export class RCAComponent implements OnInit, AfterViewInit {
     }
 
     cancelRCAUpdate() {
+        this.RCAUpdateItemCount = 1000;
         this.Updatefiles = []
+        this.UpdateRCADataForSaveAuth = []
         this.UpdateTreeshow = false;
         this.SelectUpdateBoxEnabled = true;
     }

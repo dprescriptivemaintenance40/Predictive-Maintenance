@@ -3592,7 +3592,6 @@ this.ADDfailurewarning = !this.ADDfailurewarning;
 const element = document.querySelector("#Patternfailurewarning")
 if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }else{
-// alert("fill the data")
 this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Interval value is missing" })
 }
    }

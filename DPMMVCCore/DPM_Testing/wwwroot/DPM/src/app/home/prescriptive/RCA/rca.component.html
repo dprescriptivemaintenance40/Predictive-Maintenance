@@ -21,7 +21,7 @@
 </style>
 
 <div class="card shadow" style="margin: 20px;">
-    <p-tabView>
+    <p-tabView (onChange)="RCAHandleChange($event)">
         <p-tabPanel header="RCA List">
             <div class="row">
                 <div class="col-xl-12 col-lg-11">
@@ -71,9 +71,13 @@
                                                 (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
-                                    <tr *ngIf="RCAListRecords.length == 0">
-                                        <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show
-                                        </td>
+                                    <!-- <tr *ngIf="RCAListRecords.length == 0">
+                                        <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show </td>
+                                    </tr> -->
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="10">No records to show.</td>
                                     </tr>
                                 </ng-template>
                             </p-table>
@@ -111,6 +115,11 @@
                         (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
                     </p-tree><br><br>
                 </div>
+                <!-- <div class="text-center">
+                    <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene')">-</a>
+                    <span>{{currentZoomLevel * 100}}%</span>
+                    <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true, 'scene')">+</a>
+                   </div> -->
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
@@ -176,8 +185,13 @@
                         [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)"
                         (uploadRCAAttachment)="uploadRCAAttachment($event)"
                         (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
+                        <br><br>
                 </div>
-
+                <!-- <div class="text-center">
+                    <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene1')">-</a>
+                    <span>{{currentZoomLevel * 100}}%</span>
+                    <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true , 'scene1')">+</a>
+                   </div> -->
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
@@ -242,8 +256,15 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow: scroll;" class="classname" id="scene3" #scene3>
+            <div class="modal-body" style="overflow: scroll; height: 20em;" class="classname" >
+                <div id="scene3" #scene3>
                 <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
+            </div><br><br>
+            <!-- <div class="text-center">
+                <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false,'scene3')">-</a>
+                <span>{{currentZoomLevel * 100}}%</span>
+                <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true,'scene3')">+</a>
+            </div> -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()"
