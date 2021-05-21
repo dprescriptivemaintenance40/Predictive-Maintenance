@@ -91,10 +91,37 @@
                         <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/B.JPG " alt="">
                     </div>
                 </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="B-RED" name="name1" />&nbsp;
-                    <label> B-RED</label>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row">
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded"
+                        style="width: 10rem;margin-right: 10px;">
+                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-OCM"
+                            name="name1" />&nbsp;
+                        <label> B-OCM</label>
+                    </div>
+                </div>
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-SO"
+                            name="name1" />&nbsp;
+                        <label> B-SO</label>
+                    </div>
+                </div>
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-SR"
+                            name="name1" />&nbsp;
+                        <label> B-SR</label>
+                    </div>
+                </div>
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-RED"
+                            name="name1" />&nbsp;
+                        <label> B-RED</label>
+                    </div>
                 </div>
             </div>
     </ng-template>
