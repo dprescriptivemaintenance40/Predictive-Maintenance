@@ -54,7 +54,7 @@ export class FCAADDComponent implements OnInit {
 
   public interval: string = ""
   public intervalValue: number = 0;
-   
+
   public ffInterval: string = ""
   public ffIntervalValue: number = 0;
 
@@ -66,72 +66,72 @@ export class FCAADDComponent implements OnInit {
   public FailuerMaintenance: boolean = false
   public FailuerComments: boolean = false
 
- public failuerrate: boolean  = true
- public failurewarning: boolean  = true
- public warningsign: boolean = true
- public intervaldeteacting: boolean  = true
- public failuerevident: boolean  = true
- public failuermaintenance: boolean  = true
- public failuercomments: boolean  = true
+  public failuerrate: boolean = true
+  public failurewarning: boolean = true
+  public warningsign: boolean = true
+  public intervaldeteacting: boolean = true
+  public failuerevident: boolean = true
+  public failuermaintenance: boolean = true
+  public failuercomments: boolean = true
 
- public FCAFreeTextCancel1: boolean  = true
- public FCAFreeTextSave1: boolean  = true
- public patternaddshow: boolean  = false
- public PatternFailuerAll: boolean  = false
+  public FCAFreeTextCancel1: boolean = true
+  public FCAFreeTextSave1: boolean = true
+  public patternaddshow: boolean = false
+  public PatternFailuerAll: boolean = false
 
 
-  public PrescriptiveTreeList : any = [];
-  public TagList : any = [];
-  public SelectedTagNumber : string = ""
-  public SelectedPrescriptiveTree : any = [];
-  public SelectBoxEnabled : boolean = false
-  public FCAView : any;
-public FCAViewEnabled : boolean = false
+  public PrescriptiveTreeList: any = [];
+  public TagList: any = [];
+  public SelectedTagNumber: string = ""
+  public SelectedPrescriptiveTree: any = [];
+  public SelectBoxEnabled: boolean = false
+  public FCAView: any;
+  public FCAViewEnabled: boolean = false
 
-public FCAInterval : number = 0
-public FCAComment : any = []
-public FCACondition : any = []
+  public FCAInterval: number = 0
+  public FCAComment: any = []
+  public FCACondition: any = []
 
-public FCAFFInterval : number = 0
+  public FCAFFInterval: number = 0
 
-public FCAData : any = []
-public FCAFreeText : string = ""
-public Vibration : string = ""
-public Noice : string = ""
-public Leakage : string = ""
-public PerformanceDrop : string = ""
-public TempratureChange : string = ""
-public EmmisionChange : string = ""
-public IncreaseLubricantConsumption : string = ""
-public Other : string = ""
+  public FCAData: any = []
+  public FCAFreeText: string = ""
+  public Vibration: string = ""
+  public Noice: string = ""
+  public Leakage: string = ""
+  public PerformanceDrop: string = ""
+  public TempratureChange: string = ""
+  public EmmisionChange: string = ""
+  public IncreaseLubricantConsumption: string = ""
+  public Other: string = ""
 
-public HumanSenses : string = ""
-public ExistingInstumentation : string = ""
-public NewInstumentation : string = ""
-public ProcessCondtions : string = ""
-public SampleAnyalysis : string = ""
+  public HumanSenses: string = ""
+  public ExistingInstumentation: string = ""
+  public NewInstumentation: string = ""
+  public ProcessCondtions: string = ""
+  public SampleAnyalysis: string = ""
 
-public CommentFIEYN : string = ""
-public CommentFIEYN2 : string = ""
+  public CommentFIEYN: string = ""
+  public CommentFIEYN2: string = ""
 
-public Interval : boolean = true;
-public Condition : boolean = true;
-public FCAFFI : boolean = true;
-public SafeUsefulLife : boolean = false
-public SafeLife : number = 0
-public UsefulLife : number = 0
+  public Interval: boolean = true;
+  public Condition: boolean = true;
+  public FCAFFI: boolean = true;
+  public SafeUsefulLife: boolean = false
+  public SafeLife: number = 0
+  public UsefulLife: number = 0
 
-public alphaBeta : boolean = false
-public alpha : number = 0
-public beta : number = 0
-public ConsequenceFM : string = ""
-public WebalYN : string = ""
+  public alphaBeta: boolean = false
+  public alpha: number = 0
+  public beta: number = 0
+  public ConsequenceFM: string = ""
+  public WebalYN: string = ""
 
-public UpdateFCACondition : any = []
-public UpdateFCAIntervals : any = []
-public MSSLibraryJsonData : any = []
+  public UpdateFCACondition: any = []
+  public UpdateFCAIntervals: any = []
+  public MSSLibraryJsonData: any = []
 
-  public file : any;
+  public file: any;
   public arrayBuffer: any;
   public daysList: any;
   headers = {
@@ -140,17 +140,17 @@ public MSSLibraryJsonData : any = []
     })
   }
 
- 
+
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
-    private excelFormatService : ExcelFormatService,
+    private excelFormatService: ExcelFormatService,
     private changeDetectorRef: ChangeDetectorRef,
-    private prescriptiveBLService : CommonBLService,
-    private prescriptiveContantAPI : PrescriptiveContantAPI,
-    private http : HttpClient) { 
-      this.title.setTitle('FCA ADD | Dynamic Prescriptive Maintenence');
-    }
+    private prescriptiveBLService: CommonBLService,
+    private prescriptiveContantAPI: PrescriptiveContantAPI,
+    private http: HttpClient) {
+    this.title.setTitle('FCA ADD | Dynamic Prescriptive Maintenence');
+  }
 
   ngOnInit() {
     var FCAData = JSON.parse(localStorage.getItem('FCAObject'))
@@ -172,32 +172,33 @@ public MSSLibraryJsonData : any = []
     await localStorage.removeItem('FCAObject');
   }
 
- async getPrescriptiveRecords(){
+  async getPrescriptiveRecords() {
     this.SelectBoxEnabled = true;
-    var url : string =  this.prescriptiveContantAPI.PrescriptiveRecordsForFCA
+    var url: string = this.prescriptiveContantAPI.PrescriptiveRecordsForFCA
     await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
-      (res : any) => {
+      (res: any) => {
         this.PrescriptiveTreeList = res
-        if(this.PrescriptiveTreeList.length != 0){
+        if (this.PrescriptiveTreeList.length != 0) {
           this.PrescriptiveTreeList.forEach(element => {
-          this.TagList.push(element.TagNumber) 
+            this.TagList.push(element.TagNumber)
           });
-       }})    
+        }
+      })
   }
 
-  TagNumberSelect(){
-    if(this.SelectedTagNumber != ""){
+  TagNumberSelect() {
+    if (this.SelectedTagNumber != "") {
       this.PrescriptiveTreeList.forEach((res: any) => {
-        if(res.TagNumber === this.SelectedTagNumber){
-           this.SelectedPrescriptiveTree.push(res)
-           this.CFPPrescriptiveId = res.CFPPrescriptiveId;
-           this.data1 = JSON.parse(res.FMWithConsequenceTree)
-           this.data1Clone = this.data1[0].children[0].children[0].Consequence;
-           this.prescriptiveTree = true;
-           this.SelectBoxEnabled = false
-           this.PatternTree();
-           this.PatternNextOnPrescriptiveTree = true;
-        } 
+        if (res.TagNumber === this.SelectedTagNumber) {
+          this.SelectedPrescriptiveTree.push(res)
+          this.CFPPrescriptiveId = res.CFPPrescriptiveId;
+          this.data1 = JSON.parse(res.FMWithConsequenceTree)
+          this.data1Clone = this.data1[0].children[0].children[0].Consequence;
+          this.prescriptiveTree = true;
+          this.SelectBoxEnabled = false
+          this.PatternTree();
+          this.PatternNextOnPrescriptiveTree = true;
+        }
       });
     }
   }
@@ -611,7 +612,7 @@ public MSSLibraryJsonData : any = []
 
   }
 
-  ADDFMToFCA() {  
+  ADDFMToFCA() {
     this.prescriptiveTree = false
     this.FailureModePatternTree = true
     this.PattenNode1 = 'p-person'
@@ -636,15 +637,15 @@ public MSSLibraryJsonData : any = []
     this.PatternPath = "";
     this.changeDetectorRef.detectChanges();
     this.PatternFMName = this.data1[0].children[0].children[0].children[0].data.name;
-    var e : string = 'L10';
+    var e: string = 'L10';
     this.SafeLifeCalculation(e);
     this.PatternNextOnPrescriptiveTree = false;
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
-    if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' ){
-       this.UsefulLife = 0;
-    }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C'){
-       this.SafeLife = 0;
+    if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+      this.UsefulLife = 0;
+    } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+      this.SafeLife = 0;
     }
   }
   PatternBack() {
@@ -655,8 +656,8 @@ public MSSLibraryJsonData : any = []
     }
   }
 
-  async PatternSave(){
-    if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'|| this.Pattern === 'Pattern 4'|| this.Pattern === 'Pattern 5'|| this.Pattern === 'Pattern 6') {
+  async PatternSave() {
+    if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5' || this.Pattern === 'Pattern 6') {
       this.FailuerRate = true
       this.FailureWarning = true
       this.FailureWarning = true
@@ -667,13 +668,13 @@ public MSSLibraryJsonData : any = []
       this.FailuerComments = true
       this.FailureModePatternTree = true
       this.changeDetectorRef.detectChanges()
-      this.failuerrate = !this.failuerrate; 
+      this.failuerrate = !this.failuerrate;
       const element = document.querySelector("#PatternTree2")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    } else{
+    } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select One of these Pattern" })
     }
-   
+
   }
 
   PatternAdd() {
@@ -706,9 +707,9 @@ public MSSLibraryJsonData : any = []
 
         let SUNode = {}
 
-        if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' ){
+        if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
           this.UsefulLife = 0;
-           SUNode = {
+          SUNode = {
             label: "SafeLife",
             type: "person",
             styleClass: 'p-person',
@@ -716,10 +717,10 @@ public MSSLibraryJsonData : any = []
             data: {
               name: this.SafeLife
             }
-          } 
-        }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'|| this.ConsequenceFM == 'C'){
+          }
+        } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
           this.SafeLife = 0;
-           SUNode = {
+          SUNode = {
             label: "UsefulLife",
             type: "person",
             styleClass: 'p-person',
@@ -795,9 +796,9 @@ public MSSLibraryJsonData : any = []
               }
             },
             SUNode,
-            
+
           ]
-        } 
+        }
         var FCATree = {
           label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
           type: "person",
@@ -810,11 +811,11 @@ public MSSLibraryJsonData : any = []
         }
 
         let obj = {};
-        obj['FCACondition'] = this.FCACondition ;
+        obj['FCACondition'] = this.FCACondition;
         obj['FCAInterval'] = this.FCAInterval;
         obj['FCAFFI'] = this.FCAFFInterval
         obj['FCAComment'] = this.FCAComment;
-        obj['FCAAlpha'] = this.alpha.toFixed(2) ;
+        obj['FCAAlpha'] = this.alpha.toFixed(2);
         obj['FCABeta'] = this.beta.toFixed(2);
         obj['FCASafeLife'] = this.SafeLife
         obj['FCAUsefulLife'] = this.UsefulLife;
@@ -907,7 +908,7 @@ public MSSLibraryJsonData : any = []
         this.CommentFIEYN2 = ""
         this.interval = ""
         this.intervalValue = 0
-        this.ffInterval =""
+        this.ffInterval = ""
         this.ffIntervalValue = 0
         this.failuerrate = true
         this.failurewarning = true
@@ -924,7 +925,7 @@ public MSSLibraryJsonData : any = []
         this.FailuerEvident = false
         this.FailuerMaintenance = false
         this.FailuerComments = false
-       
+
         this.alpha = 0;
         this.beta = 0;
         this.SafeLife = 0
@@ -934,7 +935,7 @@ public MSSLibraryJsonData : any = []
         this.ConsequenceFM = ""
         this.WebalYN = ""
         this.patternaddshow = false
-   
+
         this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree)
         if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
           this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
@@ -972,9 +973,9 @@ public MSSLibraryJsonData : any = []
 
       let SUNode = {}
 
-      if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B'){
-         this.UsefulLife = 0;
-         SUNode = {
+      if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+        this.UsefulLife = 0;
+        SUNode = {
           label: "SafeLife",
           type: "person",
           styleClass: 'p-person',
@@ -982,10 +983,10 @@ public MSSLibraryJsonData : any = []
           data: {
             name: this.SafeLife
           }
-        } 
-      }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C'){
+        }
+      } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
         this.SafeLife = 0
-         SUNode = {
+        SUNode = {
           label: "UsefulLife",
           type: "person",
           styleClass: 'p-person',
@@ -995,7 +996,7 @@ public MSSLibraryJsonData : any = []
           }
         }
       }
-      
+
       var FCATree1Clone = {
         label: this.data1Clone[0].children[0].children[0].children[this.PatternCounter].label,
         type: "person",
@@ -1074,22 +1075,22 @@ public MSSLibraryJsonData : any = []
         data: { name: "FCA" }
       }
       let obj = {};
-        obj['FCACondition'] = this.FCACondition ;
-        obj['FCAInterval'] = this.FCAInterval;
-        obj['FCAFFI'] = this.FCAFFInterval
-        obj['FCAComment'] = this.FCAComment;
-        obj['FCAAlpha'] = this.alpha.toFixed(2) ;
-        obj['FCABeta'] = this.beta.toFixed(2);
-        obj['FCASafeLife'] = this.SafeLife
-        obj['FCAUsefulLife'] = this.UsefulLife;
-        obj['FCAUpdateIntervals'] = this.UpdateFCAIntervals;
-        obj['FCAUpdateConditions'] = this.UpdateFCACondition;
+      obj['FCACondition'] = this.FCACondition;
+      obj['FCAInterval'] = this.FCAInterval;
+      obj['FCAFFI'] = this.FCAFFInterval
+      obj['FCAComment'] = this.FCAComment;
+      obj['FCAAlpha'] = this.alpha.toFixed(2);
+      obj['FCABeta'] = this.beta.toFixed(2);
+      obj['FCASafeLife'] = this.SafeLife
+      obj['FCAUsefulLife'] = this.UsefulLife;
+      obj['FCAUpdateIntervals'] = this.UpdateFCAIntervals;
+      obj['FCAUpdateConditions'] = this.UpdateFCACondition;
 
-        this.UpdateFCACondition = []
-        this.UpdateFCAIntervals = []
+      this.UpdateFCACondition = []
+      this.UpdateFCAIntervals = []
 
-        this.FCAData.push(obj)
- 
+      this.FCAData.push(obj)
+
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children = []
       this.data1Clone[0].children[0].children[0].children[this.PatternCounter].children.push(
         {
@@ -1148,56 +1149,56 @@ public MSSLibraryJsonData : any = []
         },
         SUNode,
       )
-        this.FCAFFInterval = 0
-        this.FCAInterval = 0
-        this.FCAComment = []
-        this.FCACondition = []
-        this.FCAFreeText = ""
-        this.Vibration = ""
-        this.Noice = ""
-        this.Leakage = ""
-        this.PerformanceDrop = ""
-        this.TempratureChange = ""
-        this.EmmisionChange = ""
-        this.IncreaseLubricantConsumption = ""
-        this.Other = ""
-        this.HumanSenses = ""
-        this.ExistingInstumentation = ""
-        this.NewInstumentation = ""
-        this.ProcessCondtions = ""
-        this.SampleAnyalysis = ""
-        this.CommentFIEYN = ""
-        this.CommentFIEYN2 = ""
-        this.interval = ""
-        this.intervalValue = 0
-        this.ffInterval =""
-        this.ffIntervalValue = 0
-        this.failuerrate = true
-        this.failurewarning = true
-        this.warningsign = true
-        this.intervaldeteacting = true
-        this.failuerevident = true
-        this.failuermaintenance = true
-        this.failuercomments = true
+      this.FCAFFInterval = 0
+      this.FCAInterval = 0
+      this.FCAComment = []
+      this.FCACondition = []
+      this.FCAFreeText = ""
+      this.Vibration = ""
+      this.Noice = ""
+      this.Leakage = ""
+      this.PerformanceDrop = ""
+      this.TempratureChange = ""
+      this.EmmisionChange = ""
+      this.IncreaseLubricantConsumption = ""
+      this.Other = ""
+      this.HumanSenses = ""
+      this.ExistingInstumentation = ""
+      this.NewInstumentation = ""
+      this.ProcessCondtions = ""
+      this.SampleAnyalysis = ""
+      this.CommentFIEYN = ""
+      this.CommentFIEYN2 = ""
+      this.interval = ""
+      this.intervalValue = 0
+      this.ffInterval = ""
+      this.ffIntervalValue = 0
+      this.failuerrate = true
+      this.failurewarning = true
+      this.warningsign = true
+      this.intervaldeteacting = true
+      this.failuerevident = true
+      this.failuermaintenance = true
+      this.failuercomments = true
 
-        this.FailuerRate = false
-        this.FailureWarning = false
-        this.WarningSign = false
-        this.IntervalDeteacting = false
-        this.FailuerEvident = false
-        this.FailuerMaintenance = false
-        this.FailuerComments = false
+      this.FailuerRate = false
+      this.FailureWarning = false
+      this.WarningSign = false
+      this.IntervalDeteacting = false
+      this.FailuerEvident = false
+      this.FailuerMaintenance = false
+      this.FailuerComments = false
 
-        this.alpha = 0;
-        this.beta = 0;
-        this.SafeLife = 0
-        this.UsefulLife = 0;
-        this.alphaBeta = false;
-        this.SafeUsefulLife = false;
-        this.ConsequenceFM = ""
-        this.WebalYN = ""
-        this.patternaddshow = false
-   
+      this.alpha = 0;
+      this.beta = 0;
+      this.SafeLife = 0
+      this.UsefulLife = 0;
+      this.alphaBeta = false;
+      this.SafeUsefulLife = false;
+      this.ConsequenceFM = ""
+      this.WebalYN = ""
+      this.patternaddshow = false
+
       this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
         this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
@@ -1217,7 +1218,7 @@ public MSSLibraryJsonData : any = []
     }
     const element = document.querySelector("#PatternFailuerComments")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    
+
   }
 
 
@@ -1265,12 +1266,12 @@ public MSSLibraryJsonData : any = []
     this.changeDetectorRef.detectChanges();
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
-    if( this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B' ){
-       this.UsefulLife = 0;
-    }else if(this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E'|| this.ConsequenceFM == 'C'){
-       this.SafeLife = 0;
+    if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+      this.UsefulLife = 0;
+    } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+      this.SafeLife = 0;
     }
-   }
+  }
 
   public SaveFCAEnable: boolean = false
   SaveFCA() {
@@ -1318,7 +1319,7 @@ public MSSLibraryJsonData : any = []
       obj['FCAUpdateConditions'] = JSON.stringify(this.FCAData[index].FCAUpdateConditions)
       centrifugalPumpOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
-    var url : string =  this.prescriptiveContantAPI.FCASave
+    var url: string = this.prescriptiveContantAPI.FCASave
     this.prescriptiveBLService.PutData(url, centrifugalPumpOBJ).subscribe(
       res => {
         this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
@@ -1334,7 +1335,7 @@ public MSSLibraryJsonData : any = []
 
 
 
-async SelectNodeToView(p){
+  async SelectNodeToView(p) {
     this.FCAView = []
     this.FCAView.push(p.FCAData)
     this.FCAViewEnabled = true
@@ -1345,28 +1346,28 @@ async SelectNodeToView(p){
   }
 
 
-  GetChartToView(p : string){
+  GetChartToView(p: string) {
     this.FCAViewEnabled = true
     if (p == 'Pattern 1') {
       const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
       const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
-      this.getChartTree(patternLabel1, patternData1, 'ViewPattern',p);
+      this.getChartTree(patternLabel1, patternData1, 'ViewPattern', p);
     } else if (p == 'Pattern 2') {
       const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
       const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
-      this.getChartTree(patternLabel2, patternData2, 'ViewPattern',p);
+      this.getChartTree(patternLabel2, patternData2, 'ViewPattern', p);
     } else if (p == 'Pattern 3') {
       const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
       const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
-      this.getChartTree(patternLabel3, patternData3, 'ViewPattern',p);
+      this.getChartTree(patternLabel3, patternData3, 'ViewPattern', p);
     } else if (p == 'Pattern 4') {
       const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
       const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
-      this.getChartTree(patternLabel4, patternData4,'ViewPattern',p);
+      this.getChartTree(patternLabel4, patternData4, 'ViewPattern', p);
     } else if (p == 'Pattern 5') {
       const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
       const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
-      this.getChartTree(patternLabel5, patternData5, 'ViewPattern',p);
+      this.getChartTree(patternLabel5, patternData5, 'ViewPattern', p);
     } else if (p == 'Pattern 6') {
       const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
       const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
@@ -1375,272 +1376,272 @@ async SelectNodeToView(p){
   }
 
 
-  CloseView(){
+  CloseView() {
     this.FCAViewEnabled = false
     const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   }
 
-  IntervalSave(){
-    var FCAIntervalDWY : any, FCAIntervalDWYValues : any;
-    if(this.interval != "" &&  this.intervalValue != 0){
-   if(this.interval == 'Days'){
-     FCAIntervalDWY = 'Days';
-     FCAIntervalDWYValues = this.intervalValue;
-     this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
-     this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
-     this.FCAInterval = this.intervalValue * 1 * 24
-   } else if(this.interval == 'Week'){ 
-     this.FCAInterval = this.intervalValue * 7 * 24
-     FCAIntervalDWY = 'Week';
-     FCAIntervalDWYValues = this.intervalValue;
-     this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
-     this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
-   } else if(this.interval == 'Month'){ 
-     FCAIntervalDWY = 'Month';
-     FCAIntervalDWYValues = this.intervalValue;
-     this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
-     this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
-     this.FCAInterval = this.intervalValue * 30 * 24
-   } else if(this.interval == 'Year'){ 
-     FCAIntervalDWY = 'Year';
-     FCAIntervalDWYValues = this.intervalValue;
-     this.UpdateFCAIntervals.push({FCAIntervalDWY}) 
-     this.UpdateFCAIntervals.push({FCAIntervalDWYValues}) 
-     this.FCAInterval = this.intervalValue * 365 * 24
-   }
- 
-  this.changeDetectorRef.detectChanges()
-  this.failurewarning = !this.failurewarning;
-  
-  const element = document.querySelector("#Patternfailurewarning")
-  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
- }else{
-  this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Interval value is missing" })
- }
+  IntervalSave() {
+    var FCAIntervalDWY: any, FCAIntervalDWYValues: any;
+    if (this.interval != "" && this.intervalValue != 0) {
+      if (this.interval == 'Days') {
+        FCAIntervalDWY = 'Days';
+        FCAIntervalDWYValues = this.intervalValue;
+        this.UpdateFCAIntervals.push({ FCAIntervalDWY })
+        this.UpdateFCAIntervals.push({ FCAIntervalDWYValues })
+        this.FCAInterval = this.intervalValue * 1 * 24
+      } else if (this.interval == 'Week') {
+        this.FCAInterval = this.intervalValue * 7 * 24
+        FCAIntervalDWY = 'Week';
+        FCAIntervalDWYValues = this.intervalValue;
+        this.UpdateFCAIntervals.push({ FCAIntervalDWY })
+        this.UpdateFCAIntervals.push({ FCAIntervalDWYValues })
+      } else if (this.interval == 'Month') {
+        FCAIntervalDWY = 'Month';
+        FCAIntervalDWYValues = this.intervalValue;
+        this.UpdateFCAIntervals.push({ FCAIntervalDWY })
+        this.UpdateFCAIntervals.push({ FCAIntervalDWYValues })
+        this.FCAInterval = this.intervalValue * 30 * 24
+      } else if (this.interval == 'Year') {
+        FCAIntervalDWY = 'Year';
+        FCAIntervalDWYValues = this.intervalValue;
+        this.UpdateFCAIntervals.push({ FCAIntervalDWY })
+        this.UpdateFCAIntervals.push({ FCAIntervalDWYValues })
+        this.FCAInterval = this.intervalValue * 365 * 24
+      }
+
+      this.changeDetectorRef.detectChanges()
+      this.failurewarning = !this.failurewarning;
+
+      const element = document.querySelector("#Patternfailurewarning")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Interval value is missing" })
+    }
   }
 
-  
-  ConditionFirst(){
-    if(this.Vibration != "" || this.Noice != "" || this.Leakage != "" || this. PerformanceDrop != "" || this.TempratureChange != "" || this.EmmisionChange != "" || this.IncreaseLubricantConsumption != "" || this.Other ){
 
-      var Vibration : string = "", Noice : string = "", Leakage : string = "",
-          PerformanceDrop : string = "", TempratureChange : string = "",
-          EmmisionChange : string = "", IncreaseLubricantConsumption : string = "", 
-          Other: string = "";
-          
-          Vibration = this.Vibration
-          Noice = this.Noice
-          Leakage = this.Leakage
-          PerformanceDrop = this.PerformanceDrop
-          TempratureChange = this.TempratureChange
-          EmmisionChange = this.EmmisionChange
-          IncreaseLubricantConsumption = this.IncreaseLubricantConsumption
-          Other = this.Other
+  ConditionFirst() {
+    if (this.Vibration != "" || this.Noice != "" || this.Leakage != "" || this.PerformanceDrop != "" || this.TempratureChange != "" || this.EmmisionChange != "" || this.IncreaseLubricantConsumption != "" || this.Other) {
 
-    if(this.Vibration != ""){
-      this.Vibration = "Vibration"
-      Vibration = "Vibration"
-      this.FCACondition.push(this.Vibration)
-    }
-    if(this.Noice != ""){
-      this.Noice = "Noice"
-      Noice = "Noice"
-      this.FCACondition.push(this.Noice)
-    }
-    if(this.Leakage != ""){
-      this.Leakage = "Leakage"
-      this.FCACondition.push(this.Leakage)
-      Leakage = "Leakage"
-      
-    }
-    if(this.PerformanceDrop != ""){
-      this.PerformanceDrop = "Performance Drop"
-      this.FCACondition.push(this.PerformanceDrop)
-      PerformanceDrop = "Performance Drop"
-    }
-    if(this.TempratureChange != ""){
-      this.TempratureChange = "Temprature Change"
-      this.FCACondition.push(this.TempratureChange)
-      TempratureChange = "Temprature Change"
-    }
-    if(this.EmmisionChange != ""){
-      this.EmmisionChange = "Emmision Change"
-      this.FCACondition.push(this.EmmisionChange)
-      EmmisionChange = "Emmision Change"
-    }
-    if(this.IncreaseLubricantConsumption != ""){
-      this.IncreaseLubricantConsumption = "Increase Lubricant Consumption"
-      this.FCACondition.push(this.IncreaseLubricantConsumption)
-      IncreaseLubricantConsumption = "Increase Lubricant Consumption"
-    }
-    if(this.Other != ""){
-      this.Other = "Other"
-      this.FCACondition.push(this.Other)
-      Other = "Other"
-    }
-    
-      this.UpdateFCACondition.push({Vibration})
-      this.UpdateFCACondition.push({Noice})
-      this.UpdateFCACondition.push({Leakage})
-      this.UpdateFCACondition.push({PerformanceDrop})
-      this.UpdateFCACondition.push({TempratureChange})
-      this.UpdateFCACondition.push({EmmisionChange})
-      this.UpdateFCACondition.push({IncreaseLubricantConsumption})
-      this.UpdateFCACondition.push({Other})
-      
+      var Vibration: string = "", Noice: string = "", Leakage: string = "",
+        PerformanceDrop: string = "", TempratureChange: string = "",
+        EmmisionChange: string = "", IncreaseLubricantConsumption: string = "",
+        Other: string = "";
+
+      Vibration = this.Vibration
+      Noice = this.Noice
+      Leakage = this.Leakage
+      PerformanceDrop = this.PerformanceDrop
+      TempratureChange = this.TempratureChange
+      EmmisionChange = this.EmmisionChange
+      IncreaseLubricantConsumption = this.IncreaseLubricantConsumption
+      Other = this.Other
+
+      if (this.Vibration != "") {
+        this.Vibration = "Vibration"
+        Vibration = "Vibration"
+        this.FCACondition.push(this.Vibration)
+      }
+      if (this.Noice != "") {
+        this.Noice = "Noice"
+        Noice = "Noice"
+        this.FCACondition.push(this.Noice)
+      }
+      if (this.Leakage != "") {
+        this.Leakage = "Leakage"
+        this.FCACondition.push(this.Leakage)
+        Leakage = "Leakage"
+
+      }
+      if (this.PerformanceDrop != "") {
+        this.PerformanceDrop = "Performance Drop"
+        this.FCACondition.push(this.PerformanceDrop)
+        PerformanceDrop = "Performance Drop"
+      }
+      if (this.TempratureChange != "") {
+        this.TempratureChange = "Temprature Change"
+        this.FCACondition.push(this.TempratureChange)
+        TempratureChange = "Temprature Change"
+      }
+      if (this.EmmisionChange != "") {
+        this.EmmisionChange = "Emmision Change"
+        this.FCACondition.push(this.EmmisionChange)
+        EmmisionChange = "Emmision Change"
+      }
+      if (this.IncreaseLubricantConsumption != "") {
+        this.IncreaseLubricantConsumption = "Increase Lubricant Consumption"
+        this.FCACondition.push(this.IncreaseLubricantConsumption)
+        IncreaseLubricantConsumption = "Increase Lubricant Consumption"
+      }
+      if (this.Other != "") {
+        this.Other = "Other"
+        this.FCACondition.push(this.Other)
+        Other = "Other"
+      }
+
+      this.UpdateFCACondition.push({ Vibration })
+      this.UpdateFCACondition.push({ Noice })
+      this.UpdateFCACondition.push({ Leakage })
+      this.UpdateFCACondition.push({ PerformanceDrop })
+      this.UpdateFCACondition.push({ TempratureChange })
+      this.UpdateFCACondition.push({ EmmisionChange })
+      this.UpdateFCACondition.push({ IncreaseLubricantConsumption })
+      this.UpdateFCACondition.push({ Other })
+
       this.changeDetectorRef.detectChanges()
       this.warningsign = !this.warningsign;
-      
-    const element = document.querySelector("#PatternWarningSign")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+      const element = document.querySelector("#PatternWarningSign")
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
-    else{
+    else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Prior warnings before the failure occure are missing" })
     }
 
   }
 
-  ConditionSecond(){
-    if(this.HumanSenses != ""|| this.ExistingInstumentation  != "" || this.NewInstumentation  != "" || this.ProcessCondtions  != "" ||this.SampleAnyalysis  != ""){
-    
-      var HumanSenses : string = "",  ExistingInstumentation : string = "",  NewInstumentation : string = "",  ProcessCondtions : string = "",  SampleAnyalysis : string = ""
-          HumanSenses = this.HumanSenses
-          ExistingInstumentation = this.ExistingInstumentation
-          NewInstumentation = this.NewInstumentation
-          ProcessCondtions = this.ProcessCondtions
-          SampleAnyalysis = this.SampleAnyalysis
-      if(this.HumanSenses != ""){
-      this.HumanSenses = "Human Senses"
-      HumanSenses = "Human Senses"
-      this.FCACondition.push(this.HumanSenses)
-    
-    }
-    if(this.ExistingInstumentation != ""){
-      this.ExistingInstumentation = "Existing Instumentation(portable or fixed)"
-      ExistingInstumentation = "Existing Instumentation(portable or fixed)"
-      this.FCACondition.push(this.ExistingInstumentation)
-    
-    }
-    if(this.NewInstumentation != ""){
-      this.NewInstumentation = "New Instumentation(portable or fixed)"
-      NewInstumentation = "New Instumentation(portable or fixed)"
-      this.FCACondition.push(this.NewInstumentation)
-    
-    }
-    if(this.ProcessCondtions != ""){
-      this.ProcessCondtions = "Process Condtions"
-      ProcessCondtions = "Process Condtions"
-      this.FCACondition.push(this.ProcessCondtions)
-    }
-    if(this.SampleAnyalysis != ""){
-      this.SampleAnyalysis = "Sample Anyalysis"
-      SampleAnyalysis = "Sample Anyalysis"
-      this.FCACondition.push(this.SampleAnyalysis)
-    }
+  ConditionSecond() {
+    if (this.HumanSenses != "" || this.ExistingInstumentation != "" || this.NewInstumentation != "" || this.ProcessCondtions != "" || this.SampleAnyalysis != "") {
 
-    
-    this.UpdateFCACondition.push({HumanSenses})
-    this.UpdateFCACondition.push({ExistingInstumentation})
-    this.UpdateFCACondition.push({NewInstumentation})
-    this.UpdateFCACondition.push({ProcessCondtions})
-    this.UpdateFCACondition.push({SampleAnyalysis})
+      var HumanSenses: string = "", ExistingInstumentation: string = "", NewInstumentation: string = "", ProcessCondtions: string = "", SampleAnyalysis: string = ""
+      HumanSenses = this.HumanSenses
+      ExistingInstumentation = this.ExistingInstumentation
+      NewInstumentation = this.NewInstumentation
+      ProcessCondtions = this.ProcessCondtions
+      SampleAnyalysis = this.SampleAnyalysis
+      if (this.HumanSenses != "") {
+        this.HumanSenses = "Human Senses"
+        HumanSenses = "Human Senses"
+        this.FCACondition.push(this.HumanSenses)
+
+      }
+      if (this.ExistingInstumentation != "") {
+        this.ExistingInstumentation = "Existing Instumentation(portable or fixed)"
+        ExistingInstumentation = "Existing Instumentation(portable or fixed)"
+        this.FCACondition.push(this.ExistingInstumentation)
+
+      }
+      if (this.NewInstumentation != "") {
+        this.NewInstumentation = "New Instumentation(portable or fixed)"
+        NewInstumentation = "New Instumentation(portable or fixed)"
+        this.FCACondition.push(this.NewInstumentation)
+
+      }
+      if (this.ProcessCondtions != "") {
+        this.ProcessCondtions = "Process Condtions"
+        ProcessCondtions = "Process Condtions"
+        this.FCACondition.push(this.ProcessCondtions)
+      }
+      if (this.SampleAnyalysis != "") {
+        this.SampleAnyalysis = "Sample Anyalysis"
+        SampleAnyalysis = "Sample Anyalysis"
+        this.FCACondition.push(this.SampleAnyalysis)
+      }
+
+
+      this.UpdateFCACondition.push({ HumanSenses })
+      this.UpdateFCACondition.push({ ExistingInstumentation })
+      this.UpdateFCACondition.push({ NewInstumentation })
+      this.UpdateFCACondition.push({ ProcessCondtions })
+      this.UpdateFCACondition.push({ SampleAnyalysis })
 
       this.changeDetectorRef.detectChanges()
-      this.intervaldeteacting = !this.intervaldeteacting;    
+      this.intervaldeteacting = !this.intervaldeteacting;
       const element = document.querySelector("#PatternIntervalDeteacting")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }else{
+    } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Warning signs are missing" })
     }
-  
+
   }
-  
-  FFInterval(){
-    var FCAFFIIntervalDWY : any, FCAFFIIntervalDWYValues : any;
 
-    if(this.ffInterval != "" &&  this.ffIntervalValue != 0){
+  FFInterval() {
+    var FCAFFIIntervalDWY: any, FCAFFIIntervalDWYValues: any;
 
-    if(this.ffInterval == 'Days'){
-      FCAFFIIntervalDWY = 'Days';
-      FCAFFIIntervalDWYValues = this.ffIntervalValue;
-      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
-      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
-      this.FCAFFInterval = this.ffIntervalValue * 1 * 24
-    } else if(this.ffInterval == 'Week'){ 
-      FCAFFIIntervalDWY = 'Week';
-      FCAFFIIntervalDWYValues = this.ffIntervalValue;
-      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
-      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
-      this.FCAFFInterval = this.ffIntervalValue * 7 * 24
-    } else if(this.ffInterval == 'Month'){ 
-      FCAFFIIntervalDWY = 'Month';
-      FCAFFIIntervalDWYValues = this.ffIntervalValue;
-      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
-      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
-      this.FCAFFInterval = this.ffIntervalValue * 30 * 24
-    } else if(this.ffInterval == 'Year'){ 
-      FCAFFIIntervalDWY = 'Year';
-      FCAFFIIntervalDWYValues = this.ffIntervalValue;
-      this.UpdateFCAIntervals.push({FCAFFIIntervalDWY}) 
-      this.UpdateFCAIntervals.push({FCAFFIIntervalDWYValues})
-      this.FCAFFInterval = this.ffIntervalValue * 365 * 24
-    }
+    if (this.ffInterval != "" && this.ffIntervalValue != 0) {
 
-   
+      if (this.ffInterval == 'Days') {
+        FCAFFIIntervalDWY = 'Days';
+        FCAFFIIntervalDWYValues = this.ffIntervalValue;
+        this.UpdateFCAIntervals.push({ FCAFFIIntervalDWY })
+        this.UpdateFCAIntervals.push({ FCAFFIIntervalDWYValues })
+        this.FCAFFInterval = this.ffIntervalValue * 1 * 24
+      } else if (this.ffInterval == 'Week') {
+        FCAFFIIntervalDWY = 'Week';
+        FCAFFIIntervalDWYValues = this.ffIntervalValue;
+        this.UpdateFCAIntervals.push({ FCAFFIIntervalDWY })
+        this.UpdateFCAIntervals.push({ FCAFFIIntervalDWYValues })
+        this.FCAFFInterval = this.ffIntervalValue * 7 * 24
+      } else if (this.ffInterval == 'Month') {
+        FCAFFIIntervalDWY = 'Month';
+        FCAFFIIntervalDWYValues = this.ffIntervalValue;
+        this.UpdateFCAIntervals.push({ FCAFFIIntervalDWY })
+        this.UpdateFCAIntervals.push({ FCAFFIIntervalDWYValues })
+        this.FCAFFInterval = this.ffIntervalValue * 30 * 24
+      } else if (this.ffInterval == 'Year') {
+        FCAFFIIntervalDWY = 'Year';
+        FCAFFIIntervalDWYValues = this.ffIntervalValue;
+        this.UpdateFCAIntervals.push({ FCAFFIIntervalDWY })
+        this.UpdateFCAIntervals.push({ FCAFFIIntervalDWYValues })
+        this.FCAFFInterval = this.ffIntervalValue * 365 * 24
+      }
+
+
       this.changeDetectorRef.detectChanges()
-      this.failuerevident = !this.failuerevident; 
+      this.failuerevident = !this.failuerevident;
       const element = document.querySelector("#PatternFailuerEvident")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }else{
+    } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "FFIInterval is missing" })
     }
-  
+
   }
 
-  CommentThird(){
-    if( this.CommentFIEYN.length>0){
+  CommentThird() {
+    if (this.CommentFIEYN.length > 0) {
       this.FCAComment.push(this.CommentFIEYN)
       this.changeDetectorRef.detectChanges()
-      this.failuermaintenance = !this.failuermaintenance;   
+      this.failuermaintenance = !this.failuermaintenance;
       const element = document.querySelector("#PatternFailuerMaintenance")
-      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
-    }else{
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
-  
+
   }
 
-  CommentFourth(){
+  CommentFourth() {
     // this.patternaddshow = false
     this.FCAComment.push(this.CommentFIEYN2)
-    if( this.CommentFIEYN2.length>0 && this.CommentFIEYN2.length>0){
+    if (this.CommentFIEYN2.length > 0 && this.CommentFIEYN2.length > 0) {
       this.changeDetectorRef.detectChanges()
-      this.failuercomments = !this.failuercomments; 
+      this.failuercomments = !this.failuercomments;
       const element = document.querySelector("#PatternFailuerComments")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }else{
+    } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
- 
+
   }
 
- async FCAFreeTextSave(){
-  //  if(this.FCAFreeText.length >0){
+  async FCAFreeTextSave() {
+    //  if(this.FCAFreeText.length >0){
     this.PatternFailuerAll = true
     this.FCAComment.push(this.FCAFreeText)
     this.SafeUsefulLife = true;
-    this.changeDetectorRef.detectChanges()  
+    this.changeDetectorRef.detectChanges()
     const element = document.querySelector("#SafeUsefulLife")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  //  }else{
-  //   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" }) 
-  //  }
- 
+    //  }else{
+    //   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" }) 
+    //  }
+
   }
 
- async FCAFreeTextCancel(){
+  async FCAFreeTextCancel() {
     this.PatternFailuerAll = true
     this.FCAFreeText = ""
     this.alphaBeta = true
@@ -1651,8 +1652,8 @@ async SelectNodeToView(p){
 
   }
 
- 
-  Webal(event){
+
+  Webal(event) {
     this.file = event.target.files[0];
     let fileReader = new FileReader();
     fileReader.readAsArrayBuffer(this.file);
@@ -1667,75 +1668,75 @@ async SelectNodeToView(p){
       var worksheet = workbook.Sheets[first_sheet_name];
       console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
       this.daysList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      var Data : any = []
+      var Data: any = []
       this.daysList.forEach(element => {
         Data.push(element.Days)
       });
-     var url : string =  this.prescriptiveContantAPI.FCAWebal
-     this.prescriptiveBLService.postWithHeaders(url, Data).subscribe(
-        (res: any) =>{
-            this.alpha =res.alpha;
-            this.beta =res.beta;
-            this.changeDetectorRef.detectChanges();
-        }, err => {console.log(err.error)}
+      var url: string = this.prescriptiveContantAPI.FCAWebal
+      this.prescriptiveBLService.postWithHeaders(url, Data).subscribe(
+        (res: any) => {
+          this.alpha = res.alpha;
+          this.beta = res.beta;
+          this.changeDetectorRef.detectChanges();
+        }, err => { console.log(err.error) }
       )
-  } 
-  
-}
+    }
+
+  }
 
 
-async SafeUsefulLifeSave(){
-  if(this.WebalYN == 'YES'  || this.WebalYN == 'No'){
-      if(this.WebalYN == 'YES'){
+  async SafeUsefulLifeSave() {
+    if (this.WebalYN == 'YES' || this.WebalYN == 'No') {
+      if (this.WebalYN == 'YES') {
         this.alphaBeta = true
         this.alpha = 0;
         this.beta = 0;
         this.changeDetectorRef.detectChanges();
         const element = document.querySelector("#alphaBeta")
         if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }else {
+      } else {
         this.patternaddshow = true
         this.changeDetectorRef.detectChanges();
         const element = document.querySelector("#ScrollToFCATree")
         if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      
+
       }
-  }else{
-    this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please choose Yes or No for webal analysis"})
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please choose Yes or No for webal analysis" })
+    }
   }
-}
 
-async alphaBetaSave(){
-  this.patternaddshow = true
-  this.changeDetectorRef.detectChanges();
-  const element = document.querySelector("#ScrollToFCATree")
-  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  async alphaBetaSave() {
+    this.patternaddshow = true
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#ScrollToFCATree")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-}
+  }
 
-ExcelDownload(){
-  var ColumnsData : any = ["Days"];
-  this.excelFormatService.GetExcelFormat( ColumnsData , 'Webal_Days_Format')
-}
+  ExcelDownload() {
+    var ColumnsData: any = ["Days"];
+    this.excelFormatService.GetExcelFormat(ColumnsData, 'Webal_Days_Format')
+  }
 
-  getMSSLibraryDataInJSon(){
+  getMSSLibraryDataInJSon() {
     this.http.get<any>('dist/DPM/assets/MSS_Library/mss_library.json').subscribe(
       res => {
-      this.MSSLibraryJsonData = res;
-      }, error =>{ console.log(error.error)}
+        this.MSSLibraryJsonData = res;
+      }, error => { console.log(error.error) }
     )
   }
 
-  SafeLifeCalculation(e){
-    var FMName = this.PatternFMName ;
+  SafeLifeCalculation(e) {
+    var FMName = this.PatternFMName;
     var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
-    var MTBF : number = dataFromLibrary.mtbf;
-    if(e === 'L10'){
-     var cal : any = - MTBF * Math.log(0.9)
-     this.SafeLife = cal.toFixed(2)
-    }else if(e === 'L20'){
-      var cal : any = - MTBF * Math.log(0.8)
-     this.SafeLife = cal.toFixed(2)
+    var MTBF: number = dataFromLibrary.mtbf;
+    if (e === 'L10') {
+      var cal: any = - MTBF * Math.log(0.9)
+      this.SafeLife = cal.toFixed(2)
+    } else if (e === 'L20') {
+      var cal: any = - MTBF * Math.log(0.8)
+      this.SafeLife = cal.toFixed(2)
     }
   }
 
