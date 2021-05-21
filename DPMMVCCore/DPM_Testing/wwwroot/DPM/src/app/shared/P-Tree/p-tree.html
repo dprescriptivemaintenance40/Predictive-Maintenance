@@ -88,9 +88,12 @@
                         </ng-container>
                         <span [class]="getIcon()" *ngIf="node.icon||node.expandedIcon||node.collapsedIcon"></span>
                         <span class="p-treenode-label">
-                            <span *ngIf="!tree.getTemplateForNode(node)">
-                              <textarea [disabled]="node.disable" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2"></textarea>
+                            <span *ngIf="!tree.getTemplateForNode(node) && (node.isParent == 'Yes' && node.isParent != undefined )">
+                              <textarea [disabled]="node.disable" placeholder="Problem Statement?" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2"></textarea>
                             </span>
+                            <span *ngIf="!tree.getTemplateForNode(node) && node.isParent == undefined">
+                                <textarea [disabled]="node.disable" placeholder="Why?" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2"></textarea>
+                              </span>
                         <span *ngIf="tree.getTemplateForNode(node)">
                                 <ng-container *ngTemplateOutlet="tree.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
                             </span>

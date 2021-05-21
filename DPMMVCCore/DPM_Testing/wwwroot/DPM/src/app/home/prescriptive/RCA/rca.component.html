@@ -70,9 +70,13 @@
                                                 (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
-                                    <tr *ngIf="RCAListRecords.length == 0">
-                                        <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show
-                                        </td>
+                                    <!-- <tr *ngIf="RCAListRecords.length == 0">
+                                        <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show </td>
+                                    </tr> -->
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="10">No records to show.</td>
                                     </tr>
                                 </ng-template>
                             </p-table>
