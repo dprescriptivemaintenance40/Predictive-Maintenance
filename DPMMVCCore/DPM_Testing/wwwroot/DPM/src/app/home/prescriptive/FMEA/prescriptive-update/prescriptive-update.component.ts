@@ -3269,6 +3269,23 @@ UpdateWebal(event){
    }
   }
 
+  UpdateMSSClose(){
+    this.UpdateMSSImageFlag = false
+    this.prescriptiveTree = false
+    this.changeDetectorRef.detectChanges()
+    this.prescriptiveTree = true
+    this.UpdateMSSIntervalSelectionCriteria = ""
+    this.UpdateMSSAvailabilityY = ""
+    this.UpdateMSSAvailabilityCheck = 0
+    this.UpdateMSSAvailability = 0
+    this.UpdateMSSstoppageDays = ""
+    this.UpdateMSSstoppageDaysValue = 0
+    this.UpdateMSSstoppageDaysTime = ""
+    this.UpdateMSSstoppageDaysTimeValue = 0
+    this.UpdateMSSIndirectAvailability = false
+    this.UpdateMSSDirectAvailability = false
+  }
+
   UpdateMSSToTree(){
     this.UpdateMSSTaskObj = []
     var availablilityCal1,availablilityCal2, AVAL, FinalAvailability : any = []
