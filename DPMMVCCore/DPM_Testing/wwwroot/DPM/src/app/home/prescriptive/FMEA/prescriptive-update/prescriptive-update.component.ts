@@ -1063,6 +1063,8 @@ public UpdateBeta : number = 0
       this.dropedMode = []
       this.LSEdiv = document.getElementById("LSEffectUpdate")
       this.LSEdiv.style.display = 'block'
+      var e: string='L10';
+      this.AddSafeLifeCalculation(e);
     } else {
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Please selct Failuer Modes' });
     }
@@ -2296,7 +2298,7 @@ async UpdatePattern(){
   this.FCAUpdatePageEnable = true
   this.FailureModePatternTree = true
   this.AddFMPatternAddEnable = false;
-  // this.UpdatePatternAddEnable = true;
+  this.UpdatePatternAddEnable = true;
   this.UpdateMSSImageFlag = false;
   this.changeDetectorRef.detectChanges();
   this.GetChartData();
@@ -3070,6 +3072,33 @@ SelectPatternForFailureMode(value: string) {
 
 }
 
+public UpdateFCAFailureModeName : string = ""
+
+UpdateFCASafeLifeCalculation(e){
+  var FMName = this.UpdateFCAFailureModeName;
+    var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
+    var MTBF : number = dataFromLibrary.mtbf;
+    if(e === 'L10'){
+     var cal : any = - MTBF * Math.log(0.9)
+     this.UpdateFinalSafeUsefulLife = cal.toFixed(2)
+    }else if(e === 'L20'){
+      var cal : any = - MTBF * Math.log(0.8)
+     this.UpdateFinalSafeUsefulLife = cal.toFixed(2)
+    }
+}
+
+AddSafeLifeCalculation(e){
+  var FMName = this.LSFailureMode;
+  var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
+  var MTBF : number = dataFromLibrary.mtbf;
+  if(e === 'L10'){
+   var cal : any = - MTBF * Math.log(0.9)
+   this.ADDSafeLife = cal.toFixed(2)
+  }else if(e === 'L20'){
+    var cal : any = - MTBF * Math.log(0.8)
+   this.ADDSafeLife = cal.toFixed(2)
+  }
+}
 
 CompleteUpdateFCA(p){
  console.log(p.label)
@@ -3078,6 +3107,7 @@ CompleteUpdateFCA(p){
  this.data1[0].children[0].children[0].children.forEach(element => {
     if (element.label === p.label){
       FMName = element.data.name;
+      this.UpdateFCAFailureModeName =  element.data.name;
       LocalEffect  = element.children[0].children[0].data.name
       SystemEffect = element.children[0].children[1].data.name
       Consequence  = element.children[0].children[2].data.name

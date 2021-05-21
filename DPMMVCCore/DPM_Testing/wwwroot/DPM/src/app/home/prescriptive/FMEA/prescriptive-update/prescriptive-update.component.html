@@ -1364,6 +1364,12 @@
                                                 <div class="col-md-3">
                                                     <label> Safe Life</label>
                                                 </div>
+                                                 <div class="col-md-3">
+                                                    <select #value (change)="AddSafeLifeCalculation(value.value)" style="width: 50%;" class="form-control">
+                                                        <option value="L10">L10 life</option>
+                                                        <option value="L20">L20 life</option>
+                                                    </select>     
+                                                </div>
                                                 <div class="col-md-3">
                                                     <input type="number" [(ngModel)]="ADDSafeLife" name="safelife" class="form-control">
                                                 </div>
@@ -2076,10 +2082,16 @@
             </div>
             <div class="row" style="padding: 15px;" *ngIf="!UpdateSafeLife == 0">
                 <div class="col-md-3">
-                    <label> Safe Life</label>
+                    <label> Safe Life in years</label>
                 </div>
                 <div class="col-md-3">
-                    <input type="number" [(ngModel)]="UpdateFinalSafeUsefulLife" name="safelife" class="form-control">
+                    <select #value (change)="UpdateFCASafeLifeCalculation(value.value)" style="width: 50%;" class="form-control">
+                        <option value="L10">L10 life</option>
+                        <option value="L20">L20 life</option>
+                    </select>     
+                </div>
+                <div class="col-md-3">
+                    <input type="number" [(ngModel)]="UpdateFinalSafeUsefulLife" name="safelife" class="form-control" disabled>
                 </div>
             </div>
             <div class="row" style="padding: 15px;" *ngIf="!UpdateUsefulLife == 0">
