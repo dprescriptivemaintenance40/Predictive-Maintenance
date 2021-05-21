@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonLoadingDirective } from './common-loading.directive';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: 'common-loading',
@@ -12,10 +11,7 @@ export class CommonLoadingComponent implements OnInit {
     public showLoading: boolean = false;
     public loadingMessage:string = "";
     constructor(public commonLoadingDirective: CommonLoadingDirective,
-        public changeRef: ChangeDetectorRef,
-        private spinner: NgxSpinnerService) {
-        this.spinner.show();
-
+        public changeRef: ChangeDetectorRef) {
     }
 
     ngOnInit() {
