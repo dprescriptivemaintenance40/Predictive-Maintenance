@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { DatePipe } from '@angular/common'
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { DomSanitizer, Title } from "@angular/platform-browser";
 import { Chart } from "chart.js";
 import * as moment from "moment";
-import "chartjs-plugin-streaming";
 import { MessageService } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { Router } from "@angular/router";

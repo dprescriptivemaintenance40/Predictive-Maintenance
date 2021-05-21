@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { MessageService, TreeNode } from 'primeng/api';
+import { MessageService} from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 import * as XLSX from 'xlsx';
@@ -14,7 +14,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
   selector: 'app-mss-add',
   templateUrl: './mss-add.component.html',
   styleUrls: ['./mss-add.component.scss', '../../../../../assets/orgchart.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class MSSAddComponent implements OnInit {
   public Pattern: string = ""
@@ -395,8 +395,7 @@ async ADDMSSToTree() {
       this.AddMSSSave = false
       this.MSSIntervalSelectionCriteria = ""
     }else{
-      
-      alert("fill the data")
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'fill the data' });
     }
   
     
@@ -458,7 +457,6 @@ async ADDMSSToTree() {
        const element = document.querySelector("#PlantStoppage")
        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }else{
-      alert("fill the data")
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
     }
     
@@ -471,7 +469,7 @@ async ADDMSSToTree() {
       const element = document.querySelector("#Consequence")
      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
      }else{
-       alert("Fill the data")
+       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "fill the data" })
      }
      
    }

@@ -6,7 +6,7 @@
             <li class="list-group-item">
                 <div class="input-group mb-3">
                     <label style=" margin-right: 12px;">Tag Number</label>
-                    <select  class="form-select" [(ngModel)]="SelectedTagNumber"  class="form-control">
+                    <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
                           <option value="">Choose..</option>
                           <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
                         </select>
@@ -21,8 +21,8 @@
 
 <div *ngIf="PrescriptiveTree" style="overflow:scroll;" id="GoToTheSaveMSS">
     <!-- <button class="btn btn-dark" style="float:left;" (click)="MSSBACK()" > <i class="pi pi-plus"></i>Back</button> &ensp; -->
-    <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float:left;" (click)="ADDMSS()" > <i class="pi pi-plus"></i>MSS</button>
-    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()"pTooltip="Save MSS" tooltipPosition="top" > <i class="fa fa-check">Save</i></button>
+    <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float:left;" (click)="ADDMSS()" pTooltip="Add MSS" tooltipPosition="top"> <i class="pi pi-plus"></i>MSS</button>
+    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float:left;" (click)="SaveMSS()" pTooltip="Save MSS" tooltipPosition="top"> <i class="fa fa-check">Save</i></button>
     <p-organizationChart [value]="TreeUptoFCA" selectionMode="single" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -30,7 +30,7 @@
                 <div>{{node.data.name}}</div>
             </div>
         </ng-template>
-        <ng-template let-node pTemplate="department"  id ="FCATreeShow">
+        <ng-template let-node pTemplate="department" id="FCATreeShow">
             {{node.label}}
         </ng-template>
     </p-organizationChart>
@@ -38,395 +38,391 @@
 
 <div id="GoToTheSaveMSS1">
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'A'" id="Consequence">
-    <p-card >
-    <ng-template pTemplate="subtitle">
-        <div class="card shadow mb-4">
-            <div>
-                <a class="btn btn-white" style="border:none" > </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
-            </div>
-            <div class="card-body">
-                <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
-                        src="/dist/DPM/assets/MSS/A.JPG "alt="">
-            </div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="row">
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;" >
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="A-COM" name="name1" />&nbsp;
-                    <label> A-OCM</label>
-                </div>
-            </div>
-            <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                        <input type="radio"[(ngModel)]="MSSStratergy" value="A-SO" name="name1" />&nbsp;
-                        <label> A-SO</label>
+    <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'A'" id="Consequence">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <div class="card shadow mb-4">
+                    <div>
+                        <a class="btn btn-white" style="border:none"> </a>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
                     </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="A-SR" name="name1" />&nbsp;
-                    <label> A-SR</label>
+                    <div class="card-body">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/A.JPG " alt="">
+                    </div>
                 </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="A-FFT" name="name1" />&nbsp;
-                    <label> A-FFT</label>
-                </div>
-            </div>
-            <!-- <div class="col"><br>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row">
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-COM" name="name1" />&nbsp;
+                            <label> A-OCM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-SO" name="name1" />&nbsp;
+                            <label> A-SO</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-SR" name="name1" />&nbsp;
+                            <label> A-SR</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-FFT" name="name1" />&nbsp;
+                            <label> A-FFT</label>
+                        </div>
+                    </div>
+                    <!-- <div class="col"><br>
                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                     <input type="radio"[(ngModel)]="MSSStratergy" value="A-FromAbove" name="name1" />&nbsp;
                     <label> From Above</label>
                 </div>
             </div> -->
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="A-RED" name="name1" />&nbsp;
-                    <label> A-RED</label>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-RED" name="name1" />&nbsp;
+                            <label> A-RED</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div> 
-    </ng-template>
-    <!-- <ng-template pTemplate="footer">
+            </ng-template>
+            <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
         <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
     </ng-template> -->
-</p-card>
-</div>
+        </p-card>
+    </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'B'" id="Consequence" >
-    <p-card >
-    <ng-template pTemplate="subtitle">
-        <div class="card shadow mb-4">
-            <div>
-                <a class="btn btn-white" style="border:none"> </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
-            </div>
-            <div class="card-body">
-                <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
-                        src="/dist/DPM/assets/MSS/B.JPG "alt="">
-            </div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="row">
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="B-OCM" name="name1" />&nbsp;
-                    <label> B-OCM</label>
-                </div>
-            </div>
-            <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                        <input type="radio"[(ngModel)]="MSSStratergy" value="B-SO" name="name1" />&nbsp;
-                        <label> B-SO</label>
+    <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'B'" id="Consequence">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <div class="card shadow mb-4">
+                    <div>
+                        <a class="btn btn-white" style="border:none"> </a>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
                     </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="B-SR" name="name1" />&nbsp;
-                    <label> B-SR</label>
+                    <div class="card-body">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/B.JPG " alt="">
+                    </div>
                 </div>
-            </div>
-            <!-- <div class="col"><br>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row">
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="B-OCM" name="name1" />&nbsp;
+                            <label> B-OCM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="B-SO" name="name1" />&nbsp;
+                            <label> B-SO</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="B-SR" name="name1" />&nbsp;
+                            <label> B-SR</label>
+                        </div>
+                    </div>
+                    <!-- <div class="col"><br>
                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                     <input type="radio"[(ngModel)]="MSSStratergy" value="B-FromAbove" name="name1" />&nbsp;
                     <label> From Above</label>
                 </div>
             </div> -->
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="B-RED" name="name1" />&nbsp;
-                    <label> B-RED</label>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="B-RED" name="name1" />&nbsp;
+                            <label> B-RED</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div> 
-    </ng-template>
-    <!-- <ng-template pTemplate="footer">
+            </ng-template>
+            <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
        <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button> 
     </ng-template> -->
-</p-card>
-</div>
+        </p-card>
+    </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'C'" id="Consequence">
-    <p-card >
-    <ng-template pTemplate="subtitle">
-        <div class="card shadow mb-4">
-            <div>
-                <a class="btn btn-white" style="border:none" > </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
-            </div>
-            <div class="card-body">
-                <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
-                        src="/dist/DPM/assets/MSS/C.JPG "alt="">
-            </div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="row">
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="C-OCM" name="name1" />&nbsp;
-                    <label> C-OCM</label>
-                </div>
-            </div>
-            <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                        <input type="radio"[(ngModel)]="MSSStratergy" value="C-SO" name="name1" />&nbsp;
-                        <label> C-SO</label>
+    <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'C'" id="Consequence">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <div class="card shadow mb-4">
+                    <div>
+                        <a class="btn btn-white" style="border:none"> </a>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
                     </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="C-SR" name="name1" />&nbsp;
-                    <label> C-SR</label>
+                    <div class="card-body">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/C.JPG " alt="">
+                    </div>
                 </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="C-OFM" name="name1" />&nbsp;
-                    <label> C-OFM</label>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row">
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="C-OCM" name="name1" />&nbsp;
+                            <label> C-OCM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="C-SO" name="name1" />&nbsp;
+                            <label> C-SO</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="C-SR" name="name1" />&nbsp;
+                            <label> C-SR</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="C-OFM" name="name1" />&nbsp;
+                            <label> C-OFM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="C-RED" name="name1" />&nbsp;
+                            <label> C-RED</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="C-RED" name="name1" />&nbsp;
-                    <label> C-RED</label>
-                </div>
-            </div>
-        </div> 
-    </ng-template>
-    <!-- <ng-template pTemplate="footer">
+            </ng-template>
+            <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
         <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
     </ng-template> -->
-</p-card>
-</div>
+        </p-card>
+    </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'D'" id="Consequence">
-    <p-card >
-    <ng-template pTemplate="subtitle">
-        <div class="card shadow mb-4">
-            <div>
-                <a class="btn btn-white" style="border:none" > </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
-            </div>
-            <div class="card-body">
-                <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
-                        src="/dist/DPM/assets/MSS/D.JPG "alt="">
-            </div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="row">
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="D-OCM" name="name1" />&nbsp;
-                    <label> D-OCM</label>
-                </div>
-            </div>
-            <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                        <input type="radio"[(ngModel)]="MSSStratergy" value="D-SO" name="name1" />&nbsp;
-                        <label> D-SO</label>
+    <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'D'" id="Consequence">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <div class="card shadow mb-4">
+                    <div>
+                        <a class="btn btn-white" style="border:none"> </a>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
                     </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="D-SR" name="name1" />&nbsp;
-                    <label> D-SR</label>
+                    <div class="card-body">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/D.JPG " alt="">
+                    </div>
                 </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="D-OFM" name="name1" />&nbsp;
-                    <label> D-OFM</label>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row">
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="D-OCM" name="name1" />&nbsp;
+                            <label> D-OCM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="D-SO" name="name1" />&nbsp;
+                            <label> D-SO</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="D-SR" name="name1" />&nbsp;
+                            <label> D-SR</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="D-OFM" name="name1" />&nbsp;
+                            <label> D-OFM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="D-RED" name="name1" />&nbsp;
+                            <label> D-RED</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="D-RED" name="name1" />&nbsp;
-                    <label> D-RED</label>
-                </div>
-            </div>
-        </div> 
-    </ng-template>
-    <!-- <ng-template pTemplate="footer">
+            </ng-template>
+            <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
         <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
     </ng-template> -->
-</p-card>
-</div>
+        </p-card>
+    </div>
 
 
-<div class="card" style="margin: 20px;"  *ngIf="ConsequenceBasedMSS == 'E'" id="Consequence">
-    <p-card >
-    <ng-template pTemplate="subtitle">
-        <div class="card shadow mb-4">
-            <div>
-                <a class="btn btn-white" style="border:none" > </a>
-                <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
-            </div>
-            <div class="card-body">
-                <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" 
-                        src="/dist/DPM/assets/MSS/E.JPG "alt="">
-            </div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="row">
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="E-OCM" name="name1" />&nbsp;
-                    <label> E-OCM</label>
-                </div>
-            </div>
-            <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                        <input type="radio"[(ngModel)]="MSSStratergy" value="E-SO" name="name1" />&nbsp;
-                        <label> E-SO</label>
+    <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'E'" id="Consequence">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <div class="card shadow mb-4">
+                    <div>
+                        <a class="btn btn-white" style="border:none"> </a>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">Save MSS</button>
                     </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="E-SR" name="name1" />&nbsp;
-                    <label> E-SR</label>
+                    <div class="card-body">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/E.JPG " alt="">
+                    </div>
                 </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="E-FFT" name="name1" />&nbsp;
-                    <label> E-FFT</label>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row">
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="E-OCM" name="name1" />&nbsp;
+                            <label> E-OCM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="E-SO" name="name1" />&nbsp;
+                            <label> E-SO</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="E-SR" name="name1" />&nbsp;
+                            <label> E-SR</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="E-FFT" name="name1" />&nbsp;
+                            <label> E-FFT</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="E-OFM" name="name1" />&nbsp;
+                            <label> E-OFM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="E-RED" name="name1" />&nbsp;
+                            <label> E-RED</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="E-OFM" name="name1" />&nbsp;
-                    <label> E-OFM</label>
-                </div>
-            </div>
-            <div class="col"><br>
-                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                    <input type="radio"[(ngModel)]="MSSStratergy" value="E-RED" name="name1" />&nbsp;
-                    <label> E-RED</label>
-                </div>
-            </div>
-        </div> 
-    </ng-template>
-    <!-- <ng-template pTemplate="footer">
+            </ng-template>
+            <!-- <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
         <button class="btn btn-dark" style="float:right;" (click)="ADDMSSToTree()">save</button>
     </ng-template> -->
-</p-card>
-</div>
+        </p-card>
+    </div>
 
-<style>
-    .disableddiv {
-      pointer-events: none;
-      cursor: default;
-      text-decoration: none;
-      opacity: 0.5;
-      padding: 1px;
-      background-color: #777
-    }
-  </style>
-<div class="card" style="margin: 20px;" *ngIf="AvailabilityYNCheck" id="Availability">
-    <p-card   >
-    <ng-template pTemplate="subtitle">
-        <p><b>1.Fill the following data
+    <style>
+        .disableddiv {
+            pointer-events: none;
+            cursor: default;
+            text-decoration: none;
+            opacity: 0.5;
+            padding: 1px;
+            background-color: #777
+        }
+    </style>
+    <div class="card" style="margin: 20px;" *ngIf="AvailabilityYNCheck" id="Availability">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <p><b>1.Fill the following data
         </b></p>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <div class="row" style="padding: 15px;">
-            <label>Enter MSS Interval Selection Criteria</label>
-        </div>
-        <div class="row" style="padding: 15px;">
-                <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="MSSIntervalSelectionCriteria"  placeholder="Type MSS Interval Selection Criteria" required></textarea>
-         </div>
-        <div class="row" style="padding: 15px;">
-            <label>Do you have Availability percentage? </label>
-        </div>
-        <div class="row" style="padding: 15px;">
-            <div class="col-sm">
-                Yes <td><input type="radio" [(ngModel)]="AvailabilityY" value="Yes" name="AvailabilityYNCheck" />&nbsp;</td>
-            </div>
-            <div class="col-sm">
-                No <td><input type="radio" [(ngModel)]="AvailabilityY" value="No" name="AvailabilityYNCheck" />&nbsp;</td>
-            </div>
-            <div class="col-sm"></div>
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="Availability()"> <i class="fa fa-check" aria-hidden="true"></i></button>
-    </ng-template>
-</p-card>
-</div>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row" style="padding: 15px;">
+                    <label>Enter MSS Interval Selection Criteria</label>
+                </div>
+                <div class="row" style="padding: 15px;">
+                    <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="MSSIntervalSelectionCriteria" placeholder="Type MSS Interval Selection Criteria" required></textarea>
+                </div>
+                <div class="row" style="padding: 15px;">
+                    <label>Do you have Availability percentage? </label>
+                </div>
+                <div class="row" style="padding: 15px;">
+                    <div class="col-sm">
+                        Yes
+                        <td><input type="radio" [(ngModel)]="AvailabilityY" value="Yes" name="AvailabilityYNCheck" />&nbsp;</td>
+                    </div>
+                    <div class="col-sm">
+                        No
+                        <td><input type="radio" [(ngModel)]="AvailabilityY" value="No" name="AvailabilityYNCheck" />&nbsp;</td>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-white" style="border:none"> </a>
+                <button class="btn btn-dark" style="float:right;" (click)="Availability()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+            </ng-template>
+        </p-card>
+    </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="expectedAvailability" id="PlantStoppage">
-    <p-card >
-    <ng-template pTemplate="subtitle">
-        <div class="input-group mb-3">
-            <label><b >1. What is your accepted Availability % : </b></label> &ensp;
-            <input type="number"  class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability percentage">
-        </div>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <a class="btn btn-white" style="border:none" > </a>
-        <button *ngIf="AvailabilityCheck !=0" class="btn btn-dark" style="float:right;" (click)="AvailabilityYes()"> <i class="fa fa-check" aria-hidden="true"></i></button>
-    </ng-template>
-</p-card>
-</div>
+    <div class="card" style="margin: 20px;" *ngIf="expectedAvailability" id="PlantStoppage">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <div class="input-group mb-3">
+                    <label><b >1. What is your accepted Availability % : </b></label> &ensp;
+                    <input type="number" class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability percentage">
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-white" style="border:none"> </a>
+                <button *ngIf="AvailabilityCheck !=0" class="btn btn-dark" style="float:right;" (click)="AvailabilityYes()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+            </ng-template>
+        </p-card>
+    </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="AvailabilityPlantStoppage" id="PlantStoppage">
-    <p-card>
-    <ng-template pTemplate="subtitle">
-        <div class="input-group mb-3">
-            <label><b >How long do you run your plant before taking stoppage? </b></label>
-        <select [(ngModel)]="stoppageDays" class="form-select"  class="form-control" placeholder="Plant Stoppage Days">
+    <div class="card" style="margin: 20px;" *ngIf="AvailabilityPlantStoppage" id="PlantStoppage">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <div class="input-group mb-3">
+                    <label><b >How long do you run your plant before taking stoppage? </b></label>
+                    <select [(ngModel)]="stoppageDays" class="form-select" class="form-control" placeholder="Plant Stoppage Days">
             <option value="">Choose</option>
                 <option value="Days" selected> Days</option>
                 <option value="Week" selected> Week</option>
                 <option value="Month" selected>Month</option>
                 <option value="Year" selected>Year</option>
             </select>
-            <input type="number" [(ngModel)]="stoppageDaysValue" name="stoppage Days Value" class="form-control">
-        </div>
-        </ng-template>
-    <ng-template pTemplate="footer">
-        <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="StoppageDays()"> <i class="fa fa-check" aria-hidden="true"></i></button>
-    </ng-template>
-</p-card>
-</div>
+                    <input type="number" [(ngModel)]="stoppageDaysValue" name="stoppage Days Value" class="form-control">
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-white" style="border:none"> </a>
+                <button class="btn btn-dark" style="float:right;" (click)="StoppageDays()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+            </ng-template>
+        </p-card>
+    </div>
 
-<div class="card" style="margin: 20px;"  *ngIf="AvailabilityPlantStoppageTime" id="PlantStoppagetime">
-    <p-card [ngClass]=" {disableddiv: PlantStoppageTime  ? true : false}">
-    <ng-template pTemplate="subtitle">
-        <div class="input-group mb-3">
-            <label><b > How long is your stoppage? </b></label>
-        <select [(ngModel)]="stoppageDaysTime" class="form-select"  class="form-control" placeholder="Plant Stoppage Days">
+    <div class="card" style="margin: 20px;" *ngIf="AvailabilityPlantStoppageTime" id="PlantStoppagetime">
+        <p-card [ngClass]=" {disableddiv: PlantStoppageTime  ? true : false}">
+            <ng-template pTemplate="subtitle">
+                <div class="input-group mb-3">
+                    <label><b > How long is your stoppage? </b></label>
+                    <select [(ngModel)]="stoppageDaysTime" class="form-select" class="form-control" placeholder="Plant Stoppage Days">
             <option value="">Choose</option>
                 <option value="Days" selected> Days</option>
                 <option value="Week" selected> Week</option>
                 <option value="Month" selected>Month</option>
                 <option value="Year" selected>Year</option>
             </select>
-            <input type="number" [(ngModel)]="stoppageDaysTimeValue"  name="stoppage Duration " class="form-control">
-        </div>
-        </ng-template>
-    <ng-template pTemplate="footer">
-        <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:right;" (click)="StoppageDuration()"> <i class="fa fa-check" aria-hidden="true"></i></button>
-    </ng-template>
-</p-card>
-</div>
+                    <input type="number" [(ngModel)]="stoppageDaysTimeValue" name="stoppage Duration " class="form-control">
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-white" style="border:none"> </a>
+                <button class="btn btn-dark" style="float:right;" (click)="StoppageDuration()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+            </ng-template>
+        </p-card>
+    </div>
 
 </div>
-
