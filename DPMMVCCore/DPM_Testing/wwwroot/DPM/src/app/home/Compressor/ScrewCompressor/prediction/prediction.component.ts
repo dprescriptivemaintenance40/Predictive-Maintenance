@@ -51,7 +51,10 @@ export class PredictionComponent implements OnInit {
       'Content-Type': 'application/json'
     })
   }
-
+ private UserDetails : any =[]
+ public FromDate : string = ""
+ public ToDate : string = ""
+ public SingleBulkPredictionName : string = ""
 
   constructor(public title: Title,
     public http: HttpClient,
@@ -69,6 +72,13 @@ export class PredictionComponent implements OnInit {
     this.getFuturePredictionRecords();
     this.showNotification('');
     this.getPredictedList();
+    this.getUserDetails();
+    this.FromDate = moment().format('YYYY-MM-DD');
+    this.ToDate = moment().format('YYYY-MM-DD');
+  }
+
+  getUserDetails(){
+    this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
   }
 
   Downloadfile() {
@@ -117,6 +127,18 @@ export class PredictionComponent implements OnInit {
   isFirstPage(): boolean {
     return this.screwWithPrediction ? this.first === 0 : true;
 
+  }
+
+  getPredictedListRecordsByDate(){
+    const params = new HttpParams()
+          .set('FromDate', this.FromDate)
+          .set('ToDate', this.ToDate)
+     this.screwCompressorMethod.getWithParameters( this.screwCompressorAPIName.getPredictedListByDate, params)
+     .subscribe(
+       (res : any) => {
+        this.screwWithPrediction = res;
+       }, err => { console.log(err.error)}
+     )
   }
 
   getPredictedList() {
@@ -173,7 +195,7 @@ export class PredictionComponent implements OnInit {
       this.screwCompressorMethod.postWithHeaders(url, XLSX.utils.sheet_to_json(worksheet, { raw: true }))
      // this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
         .subscribe(async res => {
-          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=${this.UserDetails.UserId}`, { responseType: 'text' })
             .subscribe(res => {
               this.getPredictedList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
@@ -221,12 +243,14 @@ export class PredictionComponent implements OnInit {
       this.showNotification("")
       this.showBulkPrediction = true;
       this.getPredictedList();
+      this.SingleBulkPredictionName = "Single Prediction"
       this.PridictedId = 0;
     } else {
       this.configurationObj = new ScrewCompressorPredictionModel();
       this.showNotification("")
       this.showBulkPrediction = false;
       this.PridictedId = 0;
+      this.SingleBulkPredictionName = "Bulk Prediction"
     }
   }
 

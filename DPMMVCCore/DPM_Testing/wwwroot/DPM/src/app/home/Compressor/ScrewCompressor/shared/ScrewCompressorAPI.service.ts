@@ -19,6 +19,7 @@ export class SCConstantsAPI{
   public UploadCSV : string = '/ScrewCompressureAPI/UploadCSV';
   public TrainAddData : string = '/ScrewCompressureAPI/Configuration';
   public ChangeInConfiguration : string = '/ScrewCompressureAPI/ConfigurationChange';
+  public getPredictedListByDate : string = '/ScrewCompressureAPI/GetPredictionByDate';
 
 
   //#region  Dashboard ScrewCompressureAPI

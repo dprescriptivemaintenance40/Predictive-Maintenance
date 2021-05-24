@@ -36,7 +36,7 @@ export class TrainComponent implements OnInit {
       'Content-Type': 'application/json'
     })
   }
-
+  public UserDetails : any = []
 
   constructor(public http: HttpClient,
     public title: Title,
@@ -50,7 +50,13 @@ export class TrainComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle('Screw Train | Dynamic Prescriptive Maintenence');
     this.getScrewCompressureList();
+    this.getUserDetails();
   }
+
+  getUserDetails(){
+    this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
+  }
+
   getScrewCompressureList() {
     this.compListWithClassification = [];
     this.loading = true;
@@ -128,9 +134,8 @@ export class TrainComponent implements OnInit {
       this.commonLoadingDirective.showLoading(true, "Please wait to get the uploaded rules....");
       const url : string = this.screwCompressorAPIName.TrainAddData;
       this.screwCompressorMethod.postWithHeaders(url, this.CompDetailList)
-    //  this.http.post<any>('api/ScrewCompressureAPI/Configuration', JSON.stringify(this.CompDetailList), this.headers)
         .subscribe(async res => {
-          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=dpm`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=${this.UserDetails.UserId}`, { responseType: 'text' })
             .subscribe(res => {
               this.getScrewCompressureList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
