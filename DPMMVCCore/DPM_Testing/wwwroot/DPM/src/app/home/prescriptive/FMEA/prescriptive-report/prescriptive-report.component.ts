@@ -117,8 +117,12 @@ export class PrescriptiveReportComponent implements OnInit {
         this.commonLoadingDirective.showLoading(false, '');
       });
       this.hide = false;
-    } else {
-      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Fill the mandatory fields' });
+    } else if(this.Time.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Time is missing' });
+    } else if(this.TypeMethodology.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Methodology is missing' });
+    } else if(this.TypeCurrentandfuture.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Current and future actions are  missing' });
     }
   }
 
@@ -182,8 +186,12 @@ export class PrescriptiveReportComponent implements OnInit {
       popupWinindow.document.close();
       this.hide = false;
       this.change.detectChanges();
-    } else {
-      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Fill the mandatory fields' });
+    }  else if(this.Time.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Time is missing' });
+    } else if(this.TypeMethodology.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Methodology is missing' });
+    } else if(this.TypeCurrentandfuture.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Current and future actions are  missing' });
     }
   }
 
@@ -529,4 +537,68 @@ export class PrescriptiveReportComponent implements OnInit {
       this.hide = false;
       this.change.detectChanges();
   }
+  public DownloadRCMPDF() {
+      this.hide = true;
+      this.change.detectChanges();
+      this.commonLoadingDirective.showLoading(true, 'Downloading....');
+      var data = document.getElementById('RCMcontentToConvert');
+      var pdfdata = html2canvas(data).then(canvas => {
+        var imgData = canvas.toDataURL('image/png');
+        var imgWidth = 190;
+        var pageHeight = 298;
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
+        var doc = new jsPDF('p', 'mm', "a4");
+        var position = 0;
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 90);
+        heightLeft -= pageHeight;
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          doc.addPage();
+          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 90);
+          heightLeft -= pageHeight;
+        }
+        const arrbf = doc.output("arraybuffer");
+        this.mergeRCMPdfs(arrbf);
+        this.commonLoadingDirective.showLoading(false, '');
+      });
+      this.hide = false;
+  }
+
+  async mergeRCMPdfs(pdfsToMerges: ArrayBuffer) {
+    const mergedPdf = await PDFDocument.create();
+    const pdf = await PDFDocument.load(pdfsToMerges);
+    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    copiedPages.forEach((page) => {
+      mergedPdf.addPage(page);
+    });
+
+    let pdfsToMerge = [];
+    if (this.PDFURL.length > 0) {
+      this.PDFURL.forEach(item => {
+        pdfsToMerge.push(`${this.BrowserURl}${item.Link}`);
+      });
+    }
+    for (const pdfCopyDoc of pdfsToMerge) {
+      const pdfBytes = await fetch(pdfCopyDoc).then(res => res.arrayBuffer())
+      const pdf = await PDFDocument.load(pdfBytes);
+      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      copiedPages.forEach((page) => {
+        mergedPdf.addPage(page);
+      });
+    }
+    const savedpdf = await mergedPdf.save();
+    this.saveRCMByteArray("RCM Analysis Report", savedpdf);
+    this.hide = false;
+    this.change.detectChanges();
+  }
+
+  saveRCMByteArray(reportName, byte) {
+    var blob = new Blob([byte], { type: "application/pdf" });
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    var fileName = reportName;
+    link.download = fileName;
+    link.click();
+  };
 }

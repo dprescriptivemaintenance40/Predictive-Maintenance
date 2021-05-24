@@ -1197,7 +1197,7 @@ public UpdateBeta : number = 0
     this.PattenAnsNode5 = 'p-person'
     this.PattenAnsNode6P1 = 'p-person'
     this.PattenAnsNode6P2 = 'p-person'
-    this.AddFMPatternAddEnable = true;
+    this.AddFMPatternAddEnable = false;
     this.UpdatePatternAddEnable = false;
     this.AddFMMSSAddEnable = true;
     this.UpdateMSSAddEnable = false
@@ -2155,18 +2155,14 @@ async AddPatternToNewFM() {
     this.FCAViewTreeEnabled = true
     this.FCAView = []
     this.FCAView.push(p.FCAData)
-    const element = document.querySelector("#viewFCAPatterns")
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'end' })
-    // this.FCAViewEnabled = true
     this.FCAViewTreeEnabled = true
+    this.changeDetectorRef.detectChanges();
+    const element = document.querySelector("#viewFCAPatterns")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     this.changeDetectorRef.detectChanges();
     await this.GetChartToView(this.FCAView[0].children[0].data.name)
     await this.ColorPatternTreUpdate(p.pattern, p.nodePath)
     this.GetChartData();
-    // const element = document.querySelector("#viewFCA")
-    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-  
   }
 
   ColorPatternTreUpdate(value , nodePath){
@@ -2289,7 +2285,7 @@ async SelectNodeToEdit(p){
  async CloseFCAUpdateView(){
   this.FCAViewEnabled = false
   this.FCAViewTreeEnabled = false
-  const element = document.querySelector("#prescriptive")
+  const element = document.querySelector("#viewFCAPatterns")
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
@@ -2616,6 +2612,7 @@ private GetChartData() {
   const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
   const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
   this.getChartTree(patternLabel6, patternData6, 'pattern6', 'Pattern 6');
+
 }
 
 PatternUpdateBack(){
@@ -2865,11 +2862,6 @@ this.UpdateFCACommentFINAL.push(this.UpdateFCAFreeText)
     this.ColorPatternTreUpdate(this.Pattern, 0)
   }
   this.changeDetectorRef.detectChanges();
-  // const element = document.querySelector("#FCAViewTreeEnable")
-  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
-  
-  const element = document.querySelector("#viewFCAPatterns")
-  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start'})
   this.FailureModePatternTree = false;
   this.FCAViewTreeEnabled = true
 }
@@ -3257,6 +3249,8 @@ UpdateWebal(event){
 
     this.changeDetectorRef.detectChanges()
     this.UpdateMSSImageFlag = true
+    const element = document.querySelector("#Consequence")
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   UpdateMSSAvailabilityYN(){
@@ -3929,15 +3923,16 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Interval v
          this.ADDalphaBeta = true
          this.ADDalpha = 0;
          this.ADDbeta = 0;
+         this.AddFMPatternAddEnable = true;
          this.changeDetectorRef.detectChanges();
          const element = document.querySelector("#alphaBeta")
          if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
        }else {
          this.ADDpatternaddshow = true
+         this.AddFMPatternAddEnable = true;
          this.changeDetectorRef.detectChanges();
          const element = document.querySelector("#ScrollToFCATree")
          if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
        }
    }else{
      this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please choose Yes or No for webal analysis"})
