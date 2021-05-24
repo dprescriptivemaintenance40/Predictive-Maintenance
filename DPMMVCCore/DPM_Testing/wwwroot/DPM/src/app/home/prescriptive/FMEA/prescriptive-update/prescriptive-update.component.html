@@ -785,8 +785,7 @@
         </div>
     </div>
 </div>
-
-
+<div class="col-md-12" style="overflow: scroll;" id="viewFCAPatterns">
 <div *ngIf="FCAViewEnabled" id="viewFCA" >
     <p-card>
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAUpdateView()" pTooltip="Close" tooltipPosition="top">
@@ -802,7 +801,7 @@
             <div class="col-md-3"></div>
         </div><br>
 
-        <div class="col-md-12" style="overflow: scroll;" id="viewFCAPatterns">
+        <!-- <div class="col-md-12" style="overflow: scroll;" id="viewFCAPatterns"> -->
             <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
                 <ng-template let-node pTemplate="person">
                     <div class="node-header p-corner-top">{{node.label}}</div>
@@ -815,7 +814,7 @@
                     {{node.label}}
                 </ng-template>
             </p-organizationChart>   
-        </div>
+        <!-- </div> -->
         
         <div *ngIf="FCAViewTreeEnabled" class="col-md-12" style="overflow: scroll;" id="FCAViewTreeEnable">
             <label>You Have Selected this path</label>
@@ -872,7 +871,7 @@
         </div>
     </p-card>
 </div>
-
+</div>
 <div class="modal fade" id="UpdatePattern" tabindex="-1" role="dialog" aria-labelledby="ChangeFCA" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" id="Viewpatternadd">
         <div class="modal-content">
@@ -980,6 +979,7 @@
 </div> -->
 
 <div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;" id="ViewtoAddPattern">
+    <h5 style="margin-bottom: 1em;"><b>Add FCA for {{LSFailureMode}} </b></h5>
     <p-organizationChart [value]="FCAChangeData" selectionMode="single" [(selection)]="selectedNode"
         (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
@@ -998,7 +998,7 @@
                 Pattern For Failure Mode
             </ng-template>
             <ng-template pTemplate="subtitle">
-                Enter Pattern for {{PatternFMName}}
+                Enter Pattern for {{PatternFMName}}{{LSFailureMode}}
             </ng-template>
             <ng-template pTemplate="content">
                 <div class="p-fluid">
@@ -1277,7 +1277,7 @@
                                         <ng-template pTemplate="content">
                                             <div class="row">
                                                 <div class="col-sm"></div>
-                                                <div class="col-md-2">
+                                                <div class="col-sm">
                                                     Yes <td><input type="radio" [(ngModel)]="ADDCommentFIEYN" value="Failure is not Evident" name="name1" />&nbsp;</td>
                                                 </div>
                                                 <div class="col-md-2">
@@ -1311,7 +1311,7 @@
                                                 <div class="col-sm">
                                                     Yes <td><input type="radio" [(ngModel)]="ADDCommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failure Mode - Yes"     name="name2" />&nbsp;</td>
                                                 </div>
-                                                <div class="col-sm">
+                                                <div class="col-md-2">
                                                     No <td><input type="radio" [(ngModel)]="ADDCommentFIEYN2" value=" planned replacement or refurbishment maintainace prevent or mitigate this failure Mode - No" name="name2" />&nbsp;</td>
                                                 </div>
                                                 <div class="col-sm"></div>
@@ -1339,7 +1339,7 @@
                                         <ng-template pTemplate="content">
                                             <textarea class="form-control custom-textarea" [(ngModel)]="ADDFCAFreeText"
                                                 id="message" name="body" rows="3"
-                                                placeholder="Add comments Here (Optional)"></textarea>
+                                                placeholder="Add comments here (Optional)"></textarea>
                                         </ng-template>
                                         <ng-template pTemplate="footer">
                                             <!-- <button class="btn btn-dark" *ngIf="ADDFCAFreeTextCancel1"
@@ -1356,7 +1356,8 @@
 
                                         </ng-template>
                                         <ng-template pTemplate="subtitle">
-                                            <p><b> 9: Provide Safe Life and Useful life for {{PatternFMName}} Consequence:{{ConsequenceBasedMSS}}
+                                            <!-- <p><b> 9: Provide Safe Life and Useful life for {{PatternFMName}} Consequence:{{ConsequenceBasedMSS}} -->
+                                                <p><b> 9:{{(ConsequenceBasedMSS == 'A' || ConsequenceBasedMSS == 'B') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}{{LSFailureMode}}
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content">
@@ -1472,7 +1473,7 @@
                         class="btn btn-dark">Cancel</button>
                     <a class="btn btn-white" style="border:none"> </a>
                     <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;"
-                        (click)="AddPatternToNewFM()" type="button" class="btn btn-dark"> Save</button>
+                        (click)="AddPatternToNewFM()" type="button" class="btn btn-dark"> Save FCA</button>
                 </div>
             </ng-template>
         </p-card>
@@ -1904,7 +1905,7 @@
 <div *ngIf="FCAUpdatePageEnable" style="padding: 15px;">
     <p-card>
         <ng-template pTemplate="title">
-            <label>Update FCA</label>
+            <label>Update FCA for {{LSFailureMode}} {{UpdateFCAFailureModeName}}</label>
         </ng-template>
 
         <ng-template pTemplate="content">
@@ -2151,10 +2152,9 @@
             </div>
             
             <div class="row" style="padding: 15px;">
+                <a class="btn btn-white" style="border:none"> </a>
                 <button *ngIf="UpdatePatternAddEnable" label="Next" style="float: right;" (click)="PatternUpdateAdd()" type="button" class="btn btn-dark">Update</button>
             </div>
-
-
         </ng-template>
 
     </p-card>

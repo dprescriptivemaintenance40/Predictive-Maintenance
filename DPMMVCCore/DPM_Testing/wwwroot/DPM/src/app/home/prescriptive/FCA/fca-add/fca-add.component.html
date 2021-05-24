@@ -388,6 +388,7 @@
                         No
                         <td><input type="radio" [(ngModel)]="CommentFIEYN2" value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - No" name="name2" />&nbsp;</td>
                     </div>
+                    <div class="col-sm"></div>
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
@@ -395,10 +396,10 @@
                 <button class="btn btn-dark " style="float:right;" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i></button>
             </ng-template>
         </p-card>
+        </div>
         <div class="card" style="margin: 20px;" *ngIf="FailuerComments" id="PatternFailuerComments">
             <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}">
                 <ng-template pTemplate="title">
-
                 </ng-template>
                 <ng-template pTemplate="subtitle">
                     <p><b> 8. Do you have any comments regarding the failure of this equipment or how the maintenance of the equipment
@@ -406,7 +407,7 @@
             </b></p>
                 </ng-template>
                 <ng-template pTemplate="content">
-                    <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText" id="message" name="body" rows="3" placeholder="Add comments Here (Optional)"></textarea>
+                    <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText" id="message" name="body" rows="3" placeholder="Add comments here (Optional)"></textarea>
                 </ng-template>
                 <ng-template pTemplate="footer">
                     <!-- <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1" (click)="FCAFreeTextCancel()"><i class="fa fa-times" aria-hidden="true"></i></button> -->
@@ -418,7 +419,6 @@
         <div class="card" style="margin: 20px;" *ngIf="SafeUsefulLife" id="SafeUsefulLife">
             <p-card [ngClass]=" {disableddiv: SafeUsefulLife  ? false : true}">
                 <ng-template pTemplate="title">
-
                 </ng-template>
                 <ng-template pTemplate="subtitle">
                     <p><b> 9. {{(ConsequenceFM == 'A' || ConsequenceFM == 'B') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}
@@ -517,5 +517,5 @@
                 </ng-template>
             </p-card>
         </div>
-    </div>
+    <!-- </div> -->
 </div>
