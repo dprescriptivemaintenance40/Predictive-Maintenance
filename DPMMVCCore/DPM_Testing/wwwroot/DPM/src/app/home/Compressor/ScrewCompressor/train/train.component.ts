@@ -135,7 +135,7 @@ export class TrainComponent implements OnInit {
       const url : string = this.screwCompressorAPIName.TrainAddData;
       this.screwCompressorMethod.postWithHeaders(url, this.CompDetailList)
         .subscribe(async res => {
-          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=${this.UserDetails.UserId}`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}UserId=${this.UserDetails.UserId}`, { responseType: 'text' })
             .subscribe(res => {
               this.getScrewCompressureList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
@@ -165,7 +165,7 @@ export class TrainComponent implements OnInit {
       this.screwCompressorMethod.postWithoutHeaders(url, Data)
      // this.http.post("api/ScrewCompressureAPI/ConfigurationChange", Data)
         .subscribe(async res => {
-          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=dpm`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}UserId=${this.UserDetails.UserId}`, { responseType: 'text' })
             .subscribe(res => {
               this.getScrewCompressureList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
