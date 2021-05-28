@@ -25,6 +25,7 @@ export class FCAADDComponent implements OnInit {
   public Pattern: string = ""
   public PatternPathEnable: boolean = false;
   public PatternNextOnPrescriptiveTree: boolean = false;
+  public FinalBack: boolean = false;
   public FailureModePatternTree: boolean = false;
   public PattenNode1: string;
   public PattenNode2: string;
@@ -166,12 +167,16 @@ export class FCAADDComponent implements OnInit {
       this.PatternTree();
       this.prescriptiveTree = true;
       this.PatternNextOnPrescriptiveTree = true;
+      this.FinalBack= true;
     }
   }
   async ngOnDestroy() {
     await localStorage.removeItem('FCAObject');
   }
 
+  BaxkToAssetList(){
+    this.router.navigateByUrl('/Home/Prescriptive/List');
+  }
   async getPrescriptiveRecords() {
     this.SelectBoxEnabled = true;
     var url: string = this.prescriptiveContantAPI.PrescriptiveRecordsForFCA
@@ -198,6 +203,7 @@ export class FCAADDComponent implements OnInit {
           this.SelectBoxEnabled = false
           this.PatternTree();
           this.PatternNextOnPrescriptiveTree = true;
+          this.FinalBack = true;
         }
       });
     }

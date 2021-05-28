@@ -31,9 +31,10 @@
 
 <p-toast position="top-right"></p-toast>
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
-    <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
+    <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark"(click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
+    <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="float: right;" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
     <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="margin-left:40px" (click)="ADDNextFCA()" pTooltip="Select To Add FCA" tooltipPosition="top"><i class="pi pi-plus">Add FCA</i></button>
-    <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="SaveFCA()">Save FCA</button>
+    <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="float: right;"  (click)="SaveFCA()">Save FCA</button>
     <p-organizationChart [value]="data1" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
