@@ -7,6 +7,9 @@ import { PrescriptiveContantAPI } from "../Shared/prescriptive.constant";
 import { ChangeDetectorRef } from "@angular/core";
 import { HttpParams } from "@angular/common/http";
 import panzoom from 'panzoom';
+import * as moment from 'moment';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -34,6 +37,7 @@ export class RCAComponent  {
     // @ViewChild('scene', { static: false }) scene: ElementRef;
     // @ViewChild('scene1', { static: false }) scene1: ElementRef;
     // @ViewChild('scene3', { static: false }) scene3: ElementRef;
+    @ViewChild('pdfTable', {static: false}) pdfTable: ElementRef;
     panZoomController;
     panZoomController1;
     panZoomController2;
@@ -69,7 +73,13 @@ export class RCAComponent  {
     zoomLevels: number[];
     zoomLevels1: number[];
     zoomLevels2: number[];
-
+    public RCAReportData : any = []
+    public RCAReportTree : any = []
+    public RCAReportDate : string = ""
+    public RCAReportRecommadtion : string = ""
+    public RCAReportinputs : string = ""
+    public RCAReportBodyEnabled : boolean = false
+    public RCAReportfileds : boolean = false
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
@@ -615,6 +625,83 @@ export class RCAComponent  {
 
         }
 
+    }
+
+    RCAReport(p){
+       this.RCAReportfileds = false
+       this.RCAReportDate = moment().format('YYYY-MM-DD');
+       this.RCAReportBodyEnabled = false
+       this.RCAReportData = []
+       this.RCAReportTree = []
+       this.RCAReportData = p
+       this.RCAReportTree = JSON.parse(p.RCATree)
+       this.TraverseNestedJson(this.RCAReportTree)
+       this.RCAReportBodyEnabled = true
+       this.changeDetectorRef.detectChanges()
+    }
+
+
+    RCAReportDownload() {
+        if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
+            const doc = new jsPDF();
+            this.RCAReportfileds = true
+            this.changeDetectorRef.detectChanges()
+             const specialElementHandlers = {
+               '#editor': function (element, renderer) {
+                 return true;
+               }
+             };
+         
+             const pdfTable = this.pdfTable.nativeElement;
+         
+             doc.fromHTML(pdfTable.innerHTML, 15, 15, {
+               width: 190,
+               'elementHandlers': specialElementHandlers
+             });
+             let imageData= document.getElementById('image');
+             html2canvas(imageData).then(function (canvas)
+             {
+               var img = canvas.toDataURL("image/png");
+               doc.addImage(img, 'JPEG', 20, 90);
+               doc.save('RCA Report');
+               this.changeDetectorRef.detectChanges()
+             })
+             this.RCAReportinputs = ""
+             this.RCAReportRecommadtion = ""
+             this.RCAReportfileds = false
+             this.RCAReportBodyEnabled = true
+        }else{
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail:'Please fill the details'})
+        }
+    }
+
+    RCAReportPrint() {
+        if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
+            this.RCAReportfileds = true;
+            this.changeDetectorRef.detectChanges();
+             let popupWinindow;
+             let printContents = document.getElementById('RCAREPORT').innerHTML;
+             popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+             popupWinindow.document.open();
+             let documentContent = "<html><head>";
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/line.gif">';
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/color.png">';
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/hue.png">';
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
+             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
+             documentContent += '</head>';
+             documentContent += '<body onload="window.print()">'+ printContents + '</body></html>'
+             popupWinindow.document.write(documentContent);
+             popupWinindow.document.close();
+             this.RCAReportfileds = false;
+            this.changeDetectorRef.detectChanges();
+        }else{
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail:'Please fill the details'})
+        }
     }
 
 }
