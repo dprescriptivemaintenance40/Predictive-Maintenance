@@ -51,6 +51,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public FinalUpdate: boolean = false;
   public FinalDelete: boolean = false;
   public AddFailureMode: boolean = true;
+  public FinalBack: boolean = true;
   public Consequences1: boolean = false;
   public Consequences2: boolean = false;
   public Consequences3: boolean = false;
@@ -405,6 +406,10 @@ public UpdateBeta : number = 0
 
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveUpdateObject');
+  }
+
+  BaxkToAssetList(){
+    this.router.navigateByUrl('/Home/Prescriptive/List');
   }
 
  async SelectNodeToUpdate(p) {
@@ -2864,6 +2869,9 @@ this.UpdateFCACommentFINAL.push(this.UpdateFCAFreeText)
   this.changeDetectorRef.detectChanges();
   this.FailureModePatternTree = false;
   this.FCAViewTreeEnabled = true
+  
+  const element = document.querySelector("#FCAViewTreeEnable")
+  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 public EnabledPatternUpdate : boolean = false
@@ -3049,16 +3057,16 @@ SelectPatternForFailureMode(value: string) {
     this.PatternPath = ""
     this.changeDetectorRef.detectChanges();
   }
-  this.ADDFailureModePatternTree = true
-  this.ADDFailuerRate = true
-  this.ADDFailureWarning = true
-  this.ADDWarningSign = true
-  this.ADDIntervalDeteacting = true
-  this.ADDFailuerEvident = true
-  this.ADDFailuerMaintenance = true
-  this.ADDFailuerComments = true
-  this.ADDSafeUsefulLife = true
-  this.ADDalphaBeta = true
+   this.ADDFailureModePatternTree = true
+  // this.ADDFailuerRate = true
+  // this.ADDFailureWarning = true
+  // this.ADDWarningSign = true
+  // this.ADDIntervalDeteacting = true
+  // this.ADDFailuerEvident = true
+  // this.ADDFailuerMaintenance = true
+  // this.ADDFailuerComments = true
+  // this.ADDSafeUsefulLife = true
+  // this.ADDalphaBeta = true
   // const element = document.querySelector("#ScrollToFCATree")
   // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
