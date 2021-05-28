@@ -794,6 +794,16 @@ public UpdateBeta : number = 0
     this.FCAViewEnabled = false;
     this.MSSViewEnabled = false;
     this.changeDetectorRef.detectChanges();
+    this.ADDFailureModePatternTree = true
+   this.ADDFailuerRate = true
+   this.ADDFailureWarning = true
+   this.ADDWarningSign = true
+   this.ADDIntervalDeteacting = true
+   this.ADDFailuerEvident = true
+   this.ADDFailuerMaintenance = true
+   this.ADDFailuerComments = true
+   this.ADDSafeUsefulLife = true
+   this.ADDalphaBeta = true
     const element = document.querySelector("#EditTheNode")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
@@ -2196,6 +2206,16 @@ async UpdatePattern(){
   this.AddFMPatternAddEnable = false;
   this.UpdatePatternAddEnable = true;
   this.UpdateMSSImageFlag = false;
+  this.ADDFailureModePatternTree = false
+  this.ADDFailuerRate = false
+  this.ADDFailureWarning = false
+  this.ADDWarningSign = false
+  this.ADDIntervalDeteacting = false
+  this.ADDFailuerEvident = false
+  this.ADDFailuerMaintenance = false
+  this.ADDFailuerComments = false
+  this.ADDSafeUsefulLife = false
+  this.ADDalphaBeta = true
   this.changeDetectorRef.detectChanges();
   this.GetChartData();
   const element = document.querySelector("#ViewtoAddPattern")
@@ -2952,7 +2972,16 @@ SelectPatternForFailureMode(value: string) {
     this.PatternPath = ""
     this.changeDetectorRef.detectChanges();
   }
-   this.ADDFailureModePatternTree = true
+  this.ADDFailureModePatternTree = true
+  // this.ADDFailuerRate = true
+  // this.ADDFailureWarning = true
+  // this.ADDWarningSign = true
+  // this.ADDIntervalDeteacting = true
+  // this.ADDFailuerEvident = true
+  // this.ADDFailuerMaintenance = true
+  // this.ADDFailuerComments = true
+  // this.ADDSafeUsefulLife = true
+  // this.ADDalphaBeta = true
 }
 
 public UpdateFCAFailureModeName : string = ""
