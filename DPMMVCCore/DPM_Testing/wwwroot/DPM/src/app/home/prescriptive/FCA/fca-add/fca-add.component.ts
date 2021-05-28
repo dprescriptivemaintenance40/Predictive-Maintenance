@@ -1431,7 +1431,6 @@ export class FCAADDComponent implements OnInit {
 
   ConditionFirst() {
     if (this.Vibration != "" || this.Noice != "" || this.Leakage != "" || this.PerformanceDrop != "" || this.TempratureChange != "" || this.EmmisionChange != "" || this.IncreaseLubricantConsumption != "" || this.Other) {
-
       var Vibration: string = "", Noice: string = "", Leakage: string = "",
         PerformanceDrop: string = "", TempratureChange: string = "",
         EmmisionChange: string = "", IncreaseLubricantConsumption: string = "",
@@ -1620,7 +1619,6 @@ export class FCAADDComponent implements OnInit {
   }
 
   CommentFourth() {
-    // this.patternaddshow = false
     this.FCAComment.push(this.CommentFIEYN2)
     if (this.CommentFIEYN2.length > 0 && this.CommentFIEYN2.length > 0) {
       this.changeDetectorRef.detectChanges()
@@ -1634,17 +1632,12 @@ export class FCAADDComponent implements OnInit {
   }
 
   async FCAFreeTextSave() {
-    //  if(this.FCAFreeText.length >0){
     this.PatternFailuerAll = true
     this.FCAComment.push(this.FCAFreeText)
     this.SafeUsefulLife = true;
     this.changeDetectorRef.detectChanges()
     const element = document.querySelector("#SafeUsefulLife")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    //  }else{
-    //   this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Add Comment" }) 
-    //  }
-
   }
 
   async FCAFreeTextCancel() {

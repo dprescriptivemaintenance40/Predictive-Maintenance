@@ -643,85 +643,6 @@
     </div>
 </div>
 
-
-<!-- 
-<div class="modal fade" id="AttachmentModalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-11 ml-auto">
-                        <div class="toolbar" role="toolbar">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Upload</span>
-                                </div>
-                                <div class="custom-file">
-                                    <input [disabled]="AttachmentADD" type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)" class="custom-file-input" id="inputGroupFile01">
-                                    <label class="custom-file-label" for="inputGroupFile01">Choose file to update attachment</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="border-color: black;height: 300px;width: 400px;" class="card">
-                            <div class="file"><br>
-                                <span *ngIf="(EditdbPathURL == '')">
-                                    <p style="margin: 20px; margin-left: 40px;"> No attachment to show</p>
-                                </span>
-                                <span style="margin: 10px;" *ngIf="extensionPDF">
-                                <iframe [src]="EditdbPathURL" width="350" height="250" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px;" allowfullscreen> </iframe>
-                               <a class="attachment"  data-toggle="modal" data-target="#DeleteFailureModeAttachment"><i class="pi pi-times"></i></a>  
-                             </span>
-                                <span style="margin: 10px;" *ngIf="extensionImage">
-                                <img [src]="EditdbPathURL" width="350" height="250" > 
-                             
-                               <a class="attachment" (click)="DeleteAttachment()"><i class="pi pi-times"></i></a>  
-                             </span>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
-            </div>
-
-        </div>
-    </div>
-</div>  -->
-
-<!-- <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" >&times;</span>
-        </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-11 ml-auto">
-                        <div class="form-group mt-4">
-                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="12" placeholder="Add Remark Here"></textarea>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
-            </div>
-
-        </div>
-    </div>
-</div>  -->
-
 <div class="modal fade" id="DeleteFailureMode" tabindex="-1" role="dialog" aria-labelledby="DeleteFailureModeTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -786,7 +707,6 @@
         </div>
     </div>
 </div>
-<!-- <div class="col-md-12" style="overflow: scroll;" id="viewFCAPatterns"> -->
 <div *ngIf="FCAViewEnabled" id="viewFCA" >
     <p-card>
         <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseFCAUpdateView()" pTooltip="Close" tooltipPosition="top">
@@ -832,7 +752,7 @@
                 </ng-template>
             </p-organizationChart>
             <div>
-                <!-- <p-card>
+              <p-card>
                     <div class="row">
                         <div class="row col-md-12">
                             <div class="col-md-2">
@@ -867,12 +787,11 @@
                             </div>
                         </div>
                     </div>
-                </p-card> -->
+                </p-card>
             </div>
         </div>
     </p-card>
 </div>
-<!-- </div> -->
 <div class="modal fade" id="UpdatePattern" tabindex="-1" role="dialog" aria-labelledby="ChangeFCA" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" id="Viewpatternadd">
         <div class="modal-content">
@@ -894,90 +813,6 @@
 </div>
 
 <br><br>
-<!-- <div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;" id="ViewtoAddPattern">
-    <p-organizationChart [value]="FCAChangeData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
-        <ng-template let-node pTemplate="person">
-            <div class="node-header p-corner-top">{{node.label}}</div>
-            <div class="node-content">
-                <div>{{node.data.name}}</div>
-            </div>
-        </ng-template>
-        <ng-template let-node pTemplate="department">
-            {{node.label}}
-        </ng-template>
-    </p-organizationChart>
-    <div id="ViewPatternForEdit">
-    <p-card  id="PatternForFailureMode">
-        <ng-template pTemplate="title">
-            Pattern For Failure Mode
-        </ng-template>
-        <ng-template pTemplate="subtitle">
-            Enter Pattern for {{PatternFMName}}
-        </ng-template>
-        <ng-template pTemplate="content">
-            <div class="p-fluid">
-                <div class="row">
-                    <div class="row col-md-12">
-                        <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 1')">
-                                <canvas id="pattern1"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 2')">
-                                <canvas id="pattern2"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 3')">
-                                <canvas id="pattern3"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 4')">
-                                <canvas id="pattern4"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 5')">
-                                <canvas id="pattern5"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="col-md-12" style="width: 13em;height: 7em;" (click)="SelectPatternForFailureMode('Pattern 6')">
-                                <canvas id="pattern6"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
-                    <input type="radio" [(ngModel)]="PatternPath" id="customRadio1" value="1" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label" for="customRadio1">Select Path</label>
-                    <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(245, 148, 172);">
-                        <i class="fas fa-circle"></i>
-                    </a>
-                </div>
-                <div *ngIf="PatternPathEnable" class="custom-control custom-radio" style="margin:20px;">
-                    <input type="radio" [(ngModel)]="PatternPath" value="2" id="customRadio2" name="customRadio" class="custom-control-input">
-                    <label class="custom-control-label" for="customRadio2">Select Path</label>
-                    <a class="cell-icon-button cdk-close" style="margin-left:25px; color:rgb(212, 218, 211);" class="fas fa-circle">
-                    </a>
-                </div>
-
-            </div>
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <div>
-                <button *ngIf="UpdatePatternAddEnable" label="Next"  (click)="PatternUpdateCancel()" type="button" class="btn btn-dark">Cancel</button>
-                
-                <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;" (click)="AddPatternToNewFM()" type="button" class="btn btn-dark">ADD Pattern</button>
-            </div>
-        </ng-template>
-    </p-card>
-    </div>
-
-</div> -->
 
 <div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;" id="ViewtoAddPattern">
     <h5 style="margin-bottom: 1em;"><b>Add FCA for {{LSFailureMode}} </b></h5>
@@ -1339,8 +1174,6 @@
                                                 placeholder="Add comments here (Optional)"></textarea>
                                         </ng-template>
                                         <ng-template pTemplate="footer">
-                                            <!-- <button class="btn btn-dark" *ngIf="ADDFCAFreeTextCancel1"
-                                                (click)="ADDFCAFreeTextCancel()"><i class="fa fa-times" aria-hidden="true"></i></button> -->
                                                 <a class="btn btn-white" style="border:none"> </a>
                                             <button class="btn btn-dark" *ngIf="ADDFCAFreeTextSave1"
                                                 style="float:right;" (click)="ADDFCAFreeTextSave()"><i class="fa fa-check" aria-hidden="true" ></i></button>
@@ -1353,7 +1186,6 @@
 
                                         </ng-template>
                                         <ng-template pTemplate="subtitle">
-                                            <!-- <p><b> 9: Provide Safe Life and Useful life for {{PatternFMName}} Consequence:{{ConsequenceBasedMSS}} -->
                                                 <p><b> 9:{{(ConsequenceBasedMSS == 'A' || ConsequenceBasedMSS == 'B') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}{{LSFailureMode}}
                                                 </b></p>
                                         </ng-template>
@@ -1466,8 +1298,6 @@
             </ng-template>
             <ng-template pTemplate="footer">
                 <div>
-                    <!-- <button *ngIf="UpdatePatternAddEnable" label="Next" (click)="PatternUpdateCancel()" type="button"
-                        class="btn btn-dark">Cancel</button> -->
                     <a class="btn btn-white" style="border:none"> </a>
                     <button *ngIf="AddFMPatternAddEnable" label="Next" style="float: right;"
                         (click)="AddPatternToNewFM()" type="button" class="btn btn-dark"> Save FCA</button>

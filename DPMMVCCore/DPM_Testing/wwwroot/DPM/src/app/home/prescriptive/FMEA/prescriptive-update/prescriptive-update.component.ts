@@ -797,111 +797,6 @@ public UpdateBeta : number = 0
     const element = document.querySelector("#EditTheNode")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
-
-  // ADDSingleFailureModeToTree() {
-  //   if (this.dropedMode.length > 0) {
-  //     this.LSFailureMode = this.dropedMode[0].Description
-  //     var index = this.FMTree.length
-  //     var AddFMEA = {
-  //       label: index + 1,
-  //       type: "person",
-  //       styleClass: "p-person",
-  //       expanded: true,
-  //       data: { name: this.LSFailureMode },
-  //       children: [
-  //         {
-  //           label: index + 1,
-  //           type: "person",
-  //           styleClass: "p-person",
-  //           expanded: true,
-  //           data: { name: 'FMEA' },
-  //           children: []
-  //         }
-  //       ]
-  //     }
-  //     var AddFCA = {
-  //       label: index + 1,
-  //       type: "person",
-  //       styleClass: "p-person",
-  //       expanded: true,
-  //       data: { name: this.LSFailureMode },
-  //       children: [
-  //         {
-  //           label: index + 1,
-  //           type: "person",
-  //           styleClass: "p-person",
-  //           expanded: true,
-  //           data: { name: 'FCA' },
-  //           children: []
-  //         }
-  //       ]
-  //     }
-  //     var FMEA = {
-  //       label: index + 1,
-  //       type: "person",
-  //       styleClass: "p-person",
-  //       expanded: true,
-  //       data: { name: this.LSFailureMode },
-  //       children: []
-  //     }
-
-  //     var FCAFMEA = {
-  //       label: index + 1,
-  //       type: "person",
-  //       styleClass: "p-person",
-  //       expanded: true,
-  //       data: { name: this.LSFailureMode },
-  //       children: []
-  //     }
-      
-  //     var FCATreeClone = {
-  //       label: index + 1,
-  //       type: "person",
-  //       styleClass: 'p-person',
-  //       editFCA: true,
-  //       expanded: true,
-  //       nodePath: 0,
-  //       pattern: "pattern",
-  //       data: { name: "FCA" },
-  //       children: [
-  //         {
-  //           label: "Pattern",
-  //           type: "person",
-  //           styleClass: 'p-person',
-  //           expanded: true,
-  //           data: {
-  //             name: this.Pattern
-  //           }
-  //         }
-  //       ]
-  //     }
-
-
-
-  //     var FCATree = {
-  //       label: index + 1,
-  //       type: "person",
-  //       styleClass: 'p-person',
-  //       viewFCA: true,
-  //       FCAData: FCATreeClone,
-  //       data: { name: "FCA" }
-  //     }
-
-  //     this.data1[0].children[0].children[0].FMEA[0].children[0].children[0].children.push(FMEA)
-  //     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children.push(FCAFMEA)
-  //     this.data1[0].children[0].children[0].children.push(AddFMEA)
-  //     this.data1[0].children[0].children[0].children[index].children.push(FCATree)
-  //     var temp: any = this.data1
-  //     this.data1 = []
-  //     this.data1 = temp
-  //     this.FMdiv.style.display = 'none'
-  //     this.dropedMode = []
-  //     this.LSEdiv = document.getElementById("LSEffectUpdate")
-  //     this.LSEdiv.style.display = 'block'
-  //   } else {
-  //     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Please selct Failuer Modes' });
-  //   }
-  // }
   ADDSingleFailureModeToTree() {
     if (this.dropedMode.length > 0) {
       this.LSFailureMode = this.dropedMode[0].Description
@@ -2801,7 +2696,7 @@ this.UpdateFCACommentFINAL.push(this.UpdateFCAFreeText)
   this.FCAUpdatePageEnable = false
   this.FCAView[0].children[0].data.name = this.Pattern
   this.FCAView[0].children[1].data.name = this.UpdateFinalFCACondition
-  this.FCAView[0].children[2].data.name = this.UpdateFinalFCAInterval
+  this.FCAView[0].children[2].data.name = this.UpdateFinalFCAInterval  
   this.FCAView[0].children[3].data.name = this.UpdateFinalFCAFFIInterval
   this.FCAView[0].children[4].data.name = this.UpdateAlpha.toFixed(2)
   this.FCAView[0].children[5].data.name = this.UpdateBeta.toFixed(2)
@@ -3058,18 +2953,6 @@ SelectPatternForFailureMode(value: string) {
     this.changeDetectorRef.detectChanges();
   }
    this.ADDFailureModePatternTree = true
-  // this.ADDFailuerRate = true
-  // this.ADDFailureWarning = true
-  // this.ADDWarningSign = true
-  // this.ADDIntervalDeteacting = true
-  // this.ADDFailuerEvident = true
-  // this.ADDFailuerMaintenance = true
-  // this.ADDFailuerComments = true
-  // this.ADDSafeUsefulLife = true
-  // this.ADDalphaBeta = true
-  // const element = document.querySelector("#ScrollToFCATree")
-  // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
 }
 
 public UpdateFCAFailureModeName : string = ""
@@ -3355,11 +3238,9 @@ UpdateWebal(event){
             this.UpdateMSSTaskObj.push(obj)
           } else{
 
-            var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
-            var ocmWeek : number = ocmHours.split(" ")[0]
+             var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
+             var ocmWeek : number = ocmHours.split(" ")[0]
                 ocmWeek = Math.round((ocmWeek / 24) / 7)
-
-            
               var strategy = this.UpdatedMSSStartegy.split('-')[1];
               let obj = {}
               if(this.MSSStratergy == 'A-FFT'){
