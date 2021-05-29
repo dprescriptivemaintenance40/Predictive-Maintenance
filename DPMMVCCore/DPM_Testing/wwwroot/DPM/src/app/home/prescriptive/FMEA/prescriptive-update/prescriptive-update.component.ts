@@ -311,7 +311,7 @@ public UpdateffInterval : string =""
 public UpdateffIntervalValue : number  = 0
 public FCAUpdatePageEnable : boolean = false
 public MSSLibraryJsonData : any ;
-
+public abc: boolean = true
 public UpdateAlpha : number = 0
 public UpdateBeta : number = 0
   headers = {
@@ -786,6 +786,7 @@ public UpdateBeta : number = 0
     this.LSEdiv.style.display = 'none'
   }
  async AddFailureModeToTree() {
+   this.abc= false
     this.getDropDownLookMasterData();
     this.FMdiv = document.getElementById("FailureModeUpdate")
     this.FMdiv.style.display = 'block'
@@ -793,6 +794,7 @@ public UpdateBeta : number = 0
     this.FCAViewTreeEnabled = false;
     this.FCAViewEnabled = false;
     this.MSSViewEnabled = false;
+    this.FCAUpdatePageEnable= false;
     this.changeDetectorRef.detectChanges();
     this.ADDFailureModePatternTree = true
    this.ADDFailuerRate = true
@@ -804,6 +806,7 @@ public UpdateBeta : number = 0
    this.ADDFailuerComments = true
    this.ADDSafeUsefulLife = true
    this.ADDalphaBeta = true
+   this.FCAUpdatePageEnable= false;
     const element = document.querySelector("#EditTheNode")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }

@@ -722,7 +722,7 @@
             <div class="col-md-3"></div>
         </div><br>
 
-        <div id="viewFCAPatterns">
+        <div id="viewFCAPatterns" >
             <p-organizationChart [value]="FCAView" selectionMode="single" styleClass="company">
                 <ng-template let-node pTemplate="person">
                     <div class="node-header p-corner-top">{{node.label}}</div>
@@ -792,7 +792,7 @@
         </div>
     </p-card>
 </div>
-<div class="modal fade" id="UpdatePattern" tabindex="-1" role="dialog" aria-labelledby="ChangeFCA" aria-hidden="true">
+<div class="modal fade" id="UpdatePattern" tabindex="-1" role="dialog" aria-labelledby="ChangeFCA" aria-hidden="true" *ngIf="abc">
     <div class="modal-dialog modal-dialog-centered" role="document" id="Viewpatternadd">
         <div class="modal-content">
             <div class="modal-header">
