@@ -3917,8 +3917,8 @@ async AvailabilityYes(){
    if(this.ADDMSSAvailabilityCheck != 0){
      this.ADDMSSFinalAvailability.push(this.ADDMSSAvailabilityCheck)
      this.MSSTreeButton = true
-   const element = document.querySelector("#Consequence")
-   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  //  const element = document.querySelector("#Consequence")
+  //  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
  
    }else{
     this.messageService.add({ severity: 'warn', summary: 'warn', detail: " Availability value is missing" })
@@ -3962,8 +3962,8 @@ async StoppageDuration(){
   this.ADDMSSFinalAvailability.push(this.ADDMSSstoppageDaysTimeValue)
  this.MSSAvailabilityResult = (1-(this.MSSstoppageDuration / this.MSSstoppageValue  ))*100
  this.MSSTreeButton = true
- const element = document.querySelector("#Consequence")
- if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+//  const element = document.querySelector("#Consequence")
+//  if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
 }
 
