@@ -70,6 +70,9 @@ export class UITreeNode implements OnInit {
     public RCAParentOperationalData : string = ""
     public RCAParentDesignData : string = ""
     public RCAUpdateAttachment : boolean = false
+    public RCAViewAttachmentList : any = []
+    public RCAUpdateFileView : boolean = false
+    public RCAFileUrlDownload : string = ""
 
     constructor(
         @Inject(forwardRef(() => Tree),) tree,
@@ -170,19 +173,21 @@ export class UITreeNode implements OnInit {
         this.AttachmentOverlay = false;
     }
     showRCAAttachment(event, node){
-        var DATA = JSON.parse(node.RCAFILE)
-        this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(DATA.dbPath);
-        this.FileUrl = DATA.dbPath;
-        var extension = this.getFileExtension(DATA.dbPath);
-        if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
-            this.RCAImageViewEnable = true;
-            this.RCAPdfViewEnable = false;
-            this.RCAFileView = true
-        } else if (extension.toLowerCase() == 'pdf') {
-            this.RCAImageViewEnable = false;
-            this.RCAPdfViewEnable = true;
-            this.RCAFileView = true
-        }
+        this.RCAViewAttachmentList = []
+        this.RCAViewAttachmentList = JSON.parse(node.RCAFILE)
+        this.RCAFileView = true
+        // this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(DATA.dbPath);
+        // this.FileUrl = DATA.dbPath;
+        // var extension = this.getFileExtension(DATA.dbPath);
+        // if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
+        //     this.RCAImageViewEnable = true;
+        //     this.RCAPdfViewEnable = false;
+        //     this.RCAFileView = true
+        // } else if (extension.toLowerCase() == 'pdf') {
+        //     this.RCAImageViewEnable = false;
+        //     this.RCAPdfViewEnable = true;
+        //     this.RCAFileView = true
+        // }
     }
 
     parentNodeADDData(event: Event, node) {
@@ -205,17 +210,69 @@ export class UITreeNode implements OnInit {
         node.operationalData = this.RCAParentOperationalData
 
     }
-    
-    RCAUpdateNodeAttachment(node){
-        var fileDetails = JSON.parse(node.RCAFILE)
+
+    public RCANoteEnable : boolean = false
+    public RCANote : string = ""
+
+    addNoteTonode(node){
+        this.RCANoteEnable = true
+        if(node.note !== undefined){
+            this.RCANote = node.note;
+        }
+    }
+    closeRCANote(node){
+        this.RCANoteEnable = false
+    }
+    AddRCANote(node){
+        node.note = this.RCANote;
+    }
+
+    RCAUpdateViewFromList(file){
+        this.RCAFileSafeUrl = "";
+        this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(file.dbPath);
+        this.RCAFileUrlDownload = file.dbPath
+        this.FileUrl = file.dbPath;
+        var extension = this.getFileExtension(file.dbPath);
+        if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
+            this.RCAImageViewEnable = true;
+            this.RCAPdfViewEnable = false;
+            this.RCAUpdateFileView = true
+        } else if (extension.toLowerCase() == 'pdf') {
+            this.RCAImageViewEnable = false;
+            this.RCAPdfViewEnable = true;
+            this.RCAUpdateFileView = true
+        }
+    }
+
+    RCAAttachmentDownload(){
+        var a = document.createElement("a");
+        a.href = this.RCAFileUrlDownload;
+        a.setAttribute("download", `Document ${moment().format('DD-MM-YYYY')}`);
+        a.click();
+    }
+
+    CancelRCAUpdateViewFromList(){
+        this.RCAUpdateFileView = false;
+    }
+
+    RCAUpdateFromList(file, node){
+        
+    }
+
+    public RCAUpdateSingleAttachment : boolean = false;
+
+    RCAUpdateDeleteFromList(file, node){
         const params = new HttpParams()
-            .set('fullPath', fileDetails.dbPath)
+            .set('fullPath', file.dbPath)
         this.commonBLService.DeleteWithParam(this.prescriptiveContantAPI.RCAUpdateAttachment, params)
         .subscribe(
             res => {
-                node.RCAFILE = ''
+                var d : number = this.RCAViewAttachmentList.findIndex(std => std.FileId == file.FileId && std.fileName == file.fileName  );
+                this.RCAViewAttachmentList.splice(d, 1);
                 this.RCAFileView = false;
-                this.AttachmentOverlay = true;
+                node.RCAFILE = JSON.stringify(this.RCAViewAttachmentList);
+                this.change.detectChanges();
+                this.RCAFileView = true;
             }
         )
     }

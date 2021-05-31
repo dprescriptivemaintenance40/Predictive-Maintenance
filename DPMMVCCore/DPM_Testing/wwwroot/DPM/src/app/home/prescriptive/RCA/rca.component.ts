@@ -557,7 +557,17 @@ export class RCAComponent  {
                 this.commonBL.postWithoutHeaders(url, formData)
                     .subscribe(
                         (res: any) => {
-                            TreeNode.RCAFILE = JSON.stringify(res)
+                            if(TreeNode.RCAFILE === ''){
+                               var Data : any = [];
+                               Data.push(res);
+                               TreeNode.RCAFILE = JSON.stringify(Data); 
+                            }else if(TreeNode.RCAFILE !== ''){
+                                var Data1 : any = [];
+                                Data1 = JSON.parse(TreeNode.RCAFILE);
+                                Data1.push(res);
+                                TreeNode.RCAFILE = JSON.stringify(Data1); 
+                            }
+
                             if (this.Treeshow) {
                                 this.Treeshow = false
                                 this.changeDetectorRef.detectChanges()
