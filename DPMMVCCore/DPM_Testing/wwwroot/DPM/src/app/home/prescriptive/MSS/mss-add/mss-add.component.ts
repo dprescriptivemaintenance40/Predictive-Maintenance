@@ -63,6 +63,7 @@ export class MSSAddComponent implements OnInit {
  public MSSLibraryData : any = []
  public MSSLibraryJsonData : any = [] 
  public FinalAvailability : any = []
+ public FinalBack: boolean = false;
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -84,6 +85,7 @@ export class MSSAddComponent implements OnInit {
       this.PrescriptiveTree = true
       this.AddBtnEnable = true
       this.SaveBtnEnable = false
+      this.FinalBack= true
       this.data1Clone = JSON.parse(MSSData.FMWithConsequenceTree);
       this.data1Clone[0].children[0].children[0].children.forEach(element => {
         element.children = [];
@@ -151,9 +153,14 @@ export class MSSAddComponent implements OnInit {
           this.SelectBoxEnabled = false
           this.SaveBtnEnable = false;
           this.AddBtnEnable = true;
+          this.FinalBack= true
         }
       });
     }
+  }
+  
+  BaxkToAssetList(){
+    this.router.navigateByUrl('/Home/Prescriptive/List');
   }
 
   async ADDMSS() {
