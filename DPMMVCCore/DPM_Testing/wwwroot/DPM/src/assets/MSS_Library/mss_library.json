@@ -97,6 +97,11 @@
         "id": 18,
         "name": "Vibration",
         "mtbf" : 6.15  
+      },
+      { 
+        "id": 19,
+        "name": "Plugged/ Choked",
+        "mtbf" : 0 
       }
 
 ]

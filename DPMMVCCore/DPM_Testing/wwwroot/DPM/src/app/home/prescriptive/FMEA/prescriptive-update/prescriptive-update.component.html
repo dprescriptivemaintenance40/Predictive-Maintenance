@@ -1317,10 +1317,6 @@
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
-                                            <div class="mssbtn" style="margin: 20px;">
-                                                <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" *ngIf="MSSTreeButton" style="float:right;margin-left: 40px" class="btn" style="margin: 20px;" (click)="ADDMSSToTree()">ADD MSS</button>
-                                            </div>
                                             <div class="card-body">
                                                 <img class="img-fluid px-3 px-sm-4"
                                                     src="/dist/DPM/assets/MSS/A.JPG " alt="">
@@ -1374,10 +1370,6 @@
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
-                                            <div class="mssbtn" style="margin: 20px;">
-                                                <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;" *ngIf="MSSTreeButton" (click)="ADDMSSToTree()">ADD MSS</button>
-                                            </div>
                                             <div class="card-body">
                                                 <img  class="img-fluid px-3 px-sm-4"
                                                     src="/dist/DPM/assets/MSS/B.JPG " alt="">
@@ -1424,10 +1416,6 @@
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
-                                            <div class="mssbtn" style="margin: 20px;">
-                                                <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;" *ngIf="MSSTreeButton"  (click)="ADDMSSToTree()">ADD MSS</button>
-                                            </div>
                                             <div class="card-body">
                                                 <img  class="img-fluid px-3 px-sm-4"
                                                     src="/dist/DPM/assets/MSS/C.JPG " alt="">
@@ -1481,10 +1469,6 @@
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
-                                            <div class="mssbtn" style="margin: 20px;">
-                                                <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;"*ngIf="MSSTreeButton"  (click)="ADDMSSToTree()">ADD MSS</button>
-                                            </div>
                                             <div class="card-body">
                                                 <img  class="img-fluid px-3 px-sm-4"
                                                     src="/dist/DPM/assets/MSS/D.JPG " alt="">
@@ -1538,10 +1522,10 @@
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
-                                            <div class="mssbtn" style="margin: 20px;">
+                                            <!-- <div class="mssbtn" style="margin: 20px;">
                                                 <a class="btn btn-white" style="border:none"> </a>
                                                 <button class="btn btn-dark" style="float:right;"*ngIf="MSSTreeButton" (click)="ADDMSSToTree()">ADD MSS</button>
-                                            </div>
+                                            </div> -->
                                             <div class="card-body">
                                                 <img  class="img-fluid px-3 px-sm-4"
                                                     src="/dist/DPM/assets/MSS/E.JPG " alt="">
@@ -1595,6 +1579,7 @@
                                             </div>
                                         </div>
                                     </ng-template>
+                               
                                 </p-card>
                             </div>
 
@@ -1718,12 +1703,15 @@
                                     </ng-template>
                                 </p-card>
                             </div>
-
                         </div>
                     </div>
-
+                </div>
+                <div class="mssbtn" style="margin: 20px;">
+                    <a class="btn btn-white" style="border:none"> </a>
+                    <button class="btn btn-dark" style="float:right;" *ngIf="MSSTreeButton" (click)="ADDMSSToTree()">ADD MSS</button>
                 </div>
             </p-card>
+    
         </div>
 </div> 
 
@@ -1998,6 +1986,9 @@
     <ng-template pTemplate="subtitle">
         <div class="card shadow mb-4">
             <div class="card-body">
+                <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseMSSUpdateView()" pTooltip="Close" tooltipPosition="top">
+                    <i class="far fa-times-circle "></i>
+                </a>
                 <img class="img-fluid px-3 px-sm-4" 
                         src="{{UpdateMSSImagePath}}"alt="">
             </div>
@@ -2078,7 +2069,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:left;" (click)="UpdateMSSClose()">Close</button>
+        <!-- <button class="btn btn-dark" style="float:left;" (click)="UpdateMSSClose()">Close</button> -->
         <button class="btn btn-dark" style="float:right;" (click)="UpdateMSSToTree()">Update MSS</button>
     </ng-template>
 </p-card>
