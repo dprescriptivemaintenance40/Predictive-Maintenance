@@ -2202,6 +2202,7 @@ async SelectNodeToEdit(p){
   if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
+
 async UpdatePattern(){
   this.FCAViewTreeEnabled = false
   this.FCAUpdatePageEnable = true
@@ -3115,6 +3116,7 @@ UpdateWebal(event){
     this.FCAUpdatePageEnable = false
     this.FailureModePatternTree = false
     this.FCAViewEnabled = false
+    this.MSSViewEnabled = true
     this.UpdateMSSTreeLabel = p.label
    this.UpdatedMSSStartegy = p.children[0].data.name
    this.UpdateMSSConsequence = this.UpdatedMSSStartegy.split('-')[0]
@@ -3523,6 +3525,7 @@ UpdateWebal(event){
   async CloseMSSUpdateView() {
     this.MSSViewEnabled = false
     this.MSSViewTreeEnabled = false
+    this.UpdateMSSImageFlag= false
   }
   async UpdateMSSPattern() {
     this.FCAViewTreeEnabled = false
@@ -3972,6 +3975,7 @@ async ADDMSSToTree() {
       type: "person",
       styleClass: 'p-person',
       expanded: true,
+      editMSS: true,
       data: { name: "MSS" },
       children: [
         {

@@ -1595,6 +1595,7 @@
                                             </div>
                                         </div>
                                     </ng-template>
+                               
                                 </p-card>
                             </div>
 
@@ -1998,6 +1999,9 @@
     <ng-template pTemplate="subtitle">
         <div class="card shadow mb-4">
             <div class="card-body">
+                <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseMSSUpdateView()" pTooltip="Close" tooltipPosition="top">
+                    <i class="far fa-times-circle "></i>
+                </a>
                 <img class="img-fluid px-3 px-sm-4" 
                         src="{{UpdateMSSImagePath}}"alt="">
             </div>
@@ -2078,7 +2082,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
         <a class="btn btn-white" style="border:none" > </a>
-        <button class="btn btn-dark" style="float:left;" (click)="UpdateMSSClose()">Close</button>
+        <!-- <button class="btn btn-dark" style="float:left;" (click)="UpdateMSSClose()">Close</button> -->
         <button class="btn btn-dark" style="float:right;" (click)="UpdateMSSToTree()">Update MSS</button>
     </ng-template>
 </p-card>
