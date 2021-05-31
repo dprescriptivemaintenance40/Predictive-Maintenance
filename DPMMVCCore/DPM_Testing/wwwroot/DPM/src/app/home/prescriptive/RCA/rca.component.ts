@@ -661,7 +661,7 @@ export class RCAComponent  {
              let imageData= document.getElementById('image');
              html2canvas(imageData).then(function (canvas)
              {
-               var img = canvas.toDataURL("image/png");
+               var img = canvas.toDataURL('image/jpeg', 1.0);
                doc.addImage(img, 'JPEG', 20, 90);
                doc.save('RCA Report');
                this.changeDetectorRef.detectChanges()
