@@ -13,5 +13,6 @@ export class CentrifugalPumpConstantAPI{
     public GetDailyDates : string = '/CenterifugalPumpAPI/GetDailyDates';
     public GetWeekDates : string = '/CenterifugalPumpAPI/GetWeekDates';
     public GetVendorList : string = '/CenterifugalPumpAPI/GetVendorList';
+    public ADDPumpRuleAPI : string = '/CenterifugalPumpConfigurationAPI';
   
 }

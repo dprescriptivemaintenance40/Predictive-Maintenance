@@ -13,6 +13,7 @@ import { ProfileService } from "./Services/ProfileService";
 import { EventEmitterService } from "./Services/event-emitter.service";
 import { ExcelFormatService } from "./Services/excel-format.service";
 import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
+import { PumpConfigurationComponent } from './Pump/centrifugal-pump/pump-configuration/pump-configuration.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
         ProfileComponent,
         CentrifugalPumpComponent,
         ReportComponent,
-        RecycleBinComponent
+        RecycleBinComponent,
+        PumpConfigurationComponent
     ],
     imports: [        
         HomeRoutingModule,       

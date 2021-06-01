@@ -1,0 +1,52 @@
+<div class="container">     
+    <div class="table-responsive"> 
+<div style="padding:10px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">Column</div>
+            <div style="text-align: center;" class="col-sm">Alarm</div>
+            <div style="text-align: right;" class="col-sm-2">Trigger</div>
+            <div style="text-align: right;" class="col-sm-2">Condition</div>
+            <div style="text-align: center;" class="col-sm"></div>
+
+            <div class="td col-sm">
+                <span *ngIf="notification" class="elementToFadeInAndOut">
+                        <i class="fas fa-check-circle {{notification.class}}"></i>
+                        {{notification.message}}
+                    </span>
+            </div>
+        </div>
+    </div>
+    <div class="tbody">
+        <form class="tr" [formGroup]="fg" *ngFor="let fg of addPumpRuleForms.controls ; let i=index;" (submit)="recordSubmit(fg)">
+            <div class="td">
+                <input class="form-control" data-toggle="tooltip" data-placement="right" title="{{addRuleResponse[i]}}" formControlName="columns">
+            </div>
+            <div class="td">
+                <input class="form-control" formControlName="alarm">
+            </div>
+            <div class="td">
+                <input class="form-control" formControlName="trigger">
+            </div>
+
+            <div class="td">
+                <!-- <input class="form-control" formControlName="condition"> -->
+                <select class="form-control" formControlName="condition">
+                        <option>></option>
+                        <option><</option>
+                        <option>=</option>
+                      </select>
+            </div>
+
+
+            <div class="td">
+                <button type="submit" class="btn btn-outline-primary" [disabled]="fg.invalid" [ngClass]="(fg.get('addRuleId').value==0)?'btn btn-outline-primary':'btn-outline-dark'"><i
+                            class="far fa-save"></i>
+                        {{fg.get('addRuleId').value==0?'Submit':'Update'}}
+                    </button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
