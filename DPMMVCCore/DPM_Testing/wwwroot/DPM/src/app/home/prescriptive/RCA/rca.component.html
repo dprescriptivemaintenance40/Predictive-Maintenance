@@ -6,18 +6,17 @@
         text-decoration: none;
         color: grey !important;
     }
-
+    
     .classname {
-    -ms-touch-action: none;
-     -ms-touch-action: pan-y;
-     touch-action: none;
-     touch-action: pan-x;
-     touch-action: pan-y;
-     touch-action: manipulation;
-     touch-action: pan-right;
-     touch-action: auto;
+        -ms-touch-action: none;
+        -ms-touch-action: pan-y;
+        touch-action: none;
+        touch-action: pan-x;
+        touch-action: pan-y;
+        touch-action: manipulation;
+        touch-action: pan-right;
+        touch-action: auto;
     }
-
 </style>
 <div class="card shadow" style="margin: 20px;">
     <p-tabView (onChange)="RCAHandleChange($event)">
@@ -26,10 +25,7 @@
                 <div class="col-xl-12 col-lg-11">
                     <div class="card rca shadow mb-4 con">
                         <div class="card-body">
-                            <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords"
-                                [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                [rowsPerPageOptions]="[10,25,50]">
+                            <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                                 <ng-template pTemplate="colgroup">
                                     <colgroup>
                                         <col style="width:5em;">
@@ -63,11 +59,9 @@
                                         <td>
                                             <a (click)="RCAReport(p)" data-toggle="modal" data-target="#rcaReport" title="Report for {{p.RCALabel}}"><i class="fa fa-file"
                                                     aria-hidden="true"></i></a>&nbsp;&nbsp;
-                                            <a title="View {{p.RCALabel}}" data-toggle="modal"
-                                                data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i
+                                            <a title="View {{p.RCALabel}}" data-toggle="modal" data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i
                                                     class="pi pi-eye"></i> </a>&nbsp;&nbsp;
-                                            <a title="Delete {{p.RCALabel}}" style="color: red;"
-                                                (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
+                                            <a title="Delete {{p.RCALabel}}" style="color: red;" (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
                                     <!-- <tr *ngIf="RCAListRecords.length == 0">
@@ -98,8 +92,7 @@
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Tag Number</label>
-                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number"
-                                class="form-control">
+                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number" class="form-control">
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -109,9 +102,7 @@
             </div>
             <div [hidden]="!Treeshow" style="overflow: scroll;">
                 <div class="classname" id="scene" #scene>
-                    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
-                        (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)"
-                        (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
+                    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
                     </p-tree><br><br>
                 </div>
                 <!-- <div class="text-center">
@@ -122,8 +113,7 @@
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data"
-                        tooltipPosition="top">save</a>
+                    <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data" tooltipPosition="top">save</a>
                 </div>
             </div>
         </p-tabPanel>
@@ -180,11 +170,8 @@
                 </div>
 
                 <div class="classname" id="scene1" #scene1>
-                    <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single"
-                        [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)"
-                        (uploadRCAAttachment)="uploadRCAAttachment($event)"
-                        (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
-                        <br><br>
+                    <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
+                    <br><br>
                 </div>
                 <!-- <div class="text-center">
                     <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene1')">-</a>
@@ -194,8 +181,7 @@
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data"
-                        tooltipPosition="top">Update</a>
+                    <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data" tooltipPosition="top">Update</a>
                 </div>
             </div>
         </p-tabPanel>
@@ -209,8 +195,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title"> Add Failure Mode to RCA </h6><br>
-                <button type="button" class="close" data-dismiss="ADDRCAModal" aria-label="Close"
-                    (click)="closeRCAAddModal()">
+                <button type="button" class="close" data-dismiss="ADDRCAModal" aria-label="Close" (click)="closeRCAAddModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -237,10 +222,8 @@
                 </ul>
             </div>
             <div class="ADDRCAModal modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="closeRCAAddModal()"
-                    data-dismiss="ADDRCAModal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()"
-                    data-dismiss="ADDRCAModal">Save changes</button>
+                <button type="button" class="btn btn-secondary" (click)="closeRCAAddModal()" data-dismiss="ADDRCAModal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()" data-dismiss="ADDRCAModal">Save changes</button>
             </div>
         </div>
     </div>
@@ -250,24 +233,22 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="DisplayRCATree">RCA Label Name : {{RCADisplayLabel}}</h5>
-                <button type="button" class="close" data-dismiss="modal" (click)="CloseRCATreeDisplay()"
-                    aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" (click)="CloseRCATreeDisplay()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 20em;" class="classname" >
+            <div class="modal-body" style="overflow: scroll; height: 20em;" class="classname">
                 <div id="scene3" #scene3>
-                <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
-            </div><br><br>
-            <!-- <div class="text-center">
+                    <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
+                </div><br><br>
+                <!-- <div class="text-center">
                 <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false,'scene3')">-</a>
                 <span>{{currentZoomLevel * 100}}%</span>
                 <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true,'scene3')">+</a>
             </div> -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()"
-                    data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -276,113 +257,113 @@
 
 <div class="modal fade" id="rcaReport" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">RCA Report</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">RCA Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
-        <div class="modal-body" style="overflow: scroll; height: 30em; padding: 20px;">
-            <!-- <div class="print">
+            </div>
+            <div class="modal-body" style="overflow: scroll; height: 30em; padding: 20px;">
+                <!-- <div class="print">
                 <a (click)="RCAReportDownload()" title="Download RCA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: red;" class="pi pi-file-pdf"></i></a>
                 <a (click)="RCAReportPrint()" title="Print RCA Report Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: rgb(26, 26, 226);" class="pi pi-print"></i></a>
             </div> -->
-         <div id="pdfTable" #pdfTable *ngIf="RCAReportBodyEnabled"> 
-              <div>
-                 <label><u><b>Root Cause Analysis (RCA)</b></u></label>
-              </div>
-              <div>
-                 <label><u><b>Summary</b></u></label>
-              </div>
-              <div>
-                  <p>This report is based on the results of a technical process for investigation and analysis of failure causes. The Root Cause Analysis (RCA) method used is based on following steps: </p>
-              </div>
-              <div>
-                   <ul style="list-style-type:disc; margin: left 40px;">
-                     <li>Problem identification</li>
-                     <li>Judgment of problem criticality. </li>
-                     <li>Identification of the basic causes preceding the problem </li>
-                     <li>Identification of the reason of the preceding causes. </li>
-                   </ul>
-                   <label>Root cause analysis is based on a wide range of data collection including:</label>
-                   <ul style="list-style-type:disc; margin: left 40px;">
-                       <li>Operation data </li>
-                       <li>Asset data and drawing </li>
-                       <li>Historical data </li>
-                   </ul>
-                   <p>
-                       The results of the analysis integrated into an assessment process and providing a set of consistent conclusions 
-                   </p>
-                   <p>
-                       A brief introduction of the system data and considerations are briefly described. RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments conducted. 
-                   </p>
-                   <p>
-                       Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.
-                   </p>
-              </div>
-              <div>
-               <label><u><b>Introduction</b></u></label>
-              </div>
-            <div>
-               <p>RCA analysis completed on 
-                   <span *ngIf="!RCAReportfileds">
-                       <input type="date" style="width: 10em;" [(ngModel)]="RCAReportDate" name="reportDate" />
+                <div id="pdfTable" #pdfTable *ngIf="RCAReportBodyEnabled">
+                    <div>
+                        <label><u><b>Root Cause Analysis (RCA)</b></u></label>
+                    </div>
+                    <div>
+                        <label><u><b>Summary</b></u></label>
+                    </div>
+                    <div>
+                        <p>This report is based on the results of a technical process for investigation and analysis of failure causes. The Root Cause Analysis (RCA) method used is based on following steps: </p>
+                    </div>
+                    <div>
+                        <ul style="list-style-type:disc; margin: left 40px;">
+                            <li>Problem identification</li>
+                            <li>Judgment of problem criticality. </li>
+                            <li>Identification of the basic causes preceding the problem </li>
+                            <li>Identification of the reason of the preceding causes. </li>
+                        </ul>
+                        <label>Root cause analysis is based on a wide range of data collection including:</label>
+                        <ul style="list-style-type:disc; margin: left 40px;">
+                            <li>Operation data </li>
+                            <li>Asset data and drawing </li>
+                            <li>Historical data </li>
+                        </ul>
+                        <p>
+                            The results of the analysis integrated into an assessment process and providing a set of consistent conclusions
+                        </p>
+                        <p>
+                            A brief introduction of the system data and considerations are briefly described. RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments
+                            conducted.
+                        </p>
+                        <p>
+                            Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.
+                        </p>
+                    </div>
+                    <div>
+                        <label><u><b>Introduction</b></u></label>
+                    </div>
+                    <div>
+                        <p>RCA analysis completed on
+                            <span *ngIf="!RCAReportfileds">
+                       <input type="date" class="form-control" style="width: 10em;" [(ngModel)]="RCAReportDate" name="reportDate" />
                    </span>&ensp;
-                   <span *ngIf="RCAReportfileds">
+                            <span *ngIf="RCAReportfileds">
                        {{RCAReportDate}}
-                   </span>
-                   for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. RCA finalized by using the current data and considering the failure history of the asset.</p>
-               <p>An understanding of the system to be analyzed was essential prior to the development of the RCA. The initial step was to collect the data and identify whether adequate information was </p>
-            </div>
-            <div>
-               <label><u><b>RCA inputs</b></u></label>
-               <span *ngIf="!RCAReportfileds">
+                   </span> for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. RCA finalized by using the current data and considering the failure history of the asset.</p>
+                        <p>An understanding of the system to be analyzed was essential prior to the development of the RCA. The initial step was to collect the data and identify whether adequate information was </p>
+                    </div>
+                    <div>
+                        <label><u><b>RCA inputs</b></u></label>
+                        <span *ngIf="!RCAReportfileds">
                <textarea [(ngModel)]="RCAReportinputs" class="form-control custom-textarea" name="RCAInput"></textarea>
                 </span>
-                <div>
-                <span *ngIf="RCAReportfileds">
+                        <div>
+                            <span *ngIf="RCAReportfileds">
                     {{RCAReportinputs}}
                 </span>
-                </div>
-            </div>
-            <div>
-               <label><u><b>Actions and recommendations </b></u></label>
-               
-               <span *ngIf="!RCAReportfileds">
+                        </div>
+                    </div>
+                    <div>
+                        <label><u><b>Actions and recommendations </b></u></label>
+
+                        <span *ngIf="!RCAReportfileds">
                 <textarea [(ngModel)]="RCAReportRecommadtion" class="form-control custom-textarea" name="RCARecommedation"></textarea>
                </span>
-               <div>
-                <span *ngIf="RCAReportfileds">
+                        <div>
+                            <span *ngIf="RCAReportfileds">
                     {{RCAReportRecommadtion}}
                 </span>
-              </div>
-            </div>
-        
-            <div style="page-break-before: always;">
-               <label><u><b>Conclussion</b></u></label>
-               <p>
-                   The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}}  {{RCAReportData.TagNumber}} and propose technical solutions to prevent similar failures in future
-               </p>
-               <p>
-                   The reliability methodology was based on RCA order to take into consideration the objectives and recommended actions to eliminate the failures. 
-               </p>
-               <p>
-                   During RCA the main failure defects and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation. 
-               </p>
-            </div>
-        </div>
+                        </div>
+                    </div>
 
-            <div id="image">
-               <label><u><b>Annexures</b></u></label>
-               <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
+                    <div style="page-break-before: always;">
+                        <label><u><b>Conclussion</b></u></label>
+                        <p>
+                            The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} {{RCAReportData.TagNumber}} and propose technical solutions to prevent similar failures in future
+                        </p>
+                        <p>
+                            The reliability methodology was based on RCA order to take into consideration the objectives and recommended actions to eliminate the failures.
+                        </p>
+                        <p>
+                            During RCA the main failure defects and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="image">
+                    <label><u><b>Annexures</b></u></label>
+                    <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
+                </div>
+
             </div>
-         
+            <div class="modal-footer">
+                <button type="button" (click)="RCAReportPrint()" class="btn btn-secondary">Print</button>
+                <button type="button" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" (click)="RCAReportPrint()" class="btn btn-secondary">Print</button>
-          <button type="button" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
