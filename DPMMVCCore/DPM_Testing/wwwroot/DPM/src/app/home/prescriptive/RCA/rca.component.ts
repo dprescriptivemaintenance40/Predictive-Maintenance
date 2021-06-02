@@ -38,6 +38,7 @@ export class RCAComponent  {
     // @ViewChild('scene1', { static: false }) scene1: ElementRef;
     // @ViewChild('scene3', { static: false }) scene3: ElementRef;
     @ViewChild('pdfTable', {static: false}) pdfTable: ElementRef;
+    
     panZoomController;
     panZoomController1;
     panZoomController2;
@@ -643,26 +644,27 @@ export class RCAComponent  {
 
     RCAReportDownload() {
         if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
-            const doc = new jsPDF();
+            const doc = new jsPDF('p', 'pt','a4', true);
+            // const doc= new jsPDF(  "l", "mm", "a0");
             this.RCAReportfileds = true
             this.changeDetectorRef.detectChanges()
              const specialElementHandlers = {
-               '#editor': function (element, renderer) {
+               '#editor':  (element, renderer) =>{
                  return true;
                }
              };
-         
              const pdfTable = this.pdfTable.nativeElement;
-         
              doc.fromHTML(pdfTable.innerHTML, 15, 15, {
-               width: 190,
+               'width': 560,
                'elementHandlers': specialElementHandlers
              });
              let imageData= document.getElementById('image');
-             html2canvas(imageData).then(function (canvas)
+             html2canvas(imageData).then( (canvas) =>
              {
-               var img = canvas.toDataURL('image/jpeg', 1.0);
-               doc.addImage(img, 'JPEG', 20, 90);
+                var img = canvas.toDataURL('image/jpeg', 1.5,);
+                // canvas.setAttribute("width","1500");
+                // let width = canvas.getAttribute("width");
+               doc.addImage(img, 'jpeg', 20, 200, 560, 350);
                doc.save('RCA Report');
                this.changeDetectorRef.detectChanges()
              })
@@ -674,6 +676,7 @@ export class RCAComponent  {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail:'Please fill the details'})
         }
     }
+
 
     RCAReportPrint() {
         if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
