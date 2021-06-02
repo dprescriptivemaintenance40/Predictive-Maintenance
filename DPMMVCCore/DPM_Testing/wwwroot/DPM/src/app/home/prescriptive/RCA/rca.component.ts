@@ -661,10 +661,11 @@ export class RCAComponent  {
              let imageData= document.getElementById('image');
              html2canvas(imageData).then( (canvas) =>
              {
-                var img = canvas.toDataURL('image/jpeg', 1.5,);
+                var img = canvas.toDataURL('image/png', 1.5,);
                 // canvas.setAttribute("width","1500");
                 // let width = canvas.getAttribute("width");
-               doc.addImage(img, 'jpeg', 20, 200, 560, 350);
+            //    doc.addImage(img, 'PNG', 20, 200, 560, 350);
+                doc.addImage(img, 'PNG', 20, 200, 600, 230);
                doc.save('RCA Report');
                this.changeDetectorRef.detectChanges()
              })
