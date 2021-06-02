@@ -13,6 +13,7 @@ import { ProfileService } from "./Services/ProfileService";
 import { EventEmitterService } from "./Services/event-emitter.service";
 import { ExcelFormatService } from "./Services/excel-format.service";
 import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
+import { AndorlogicComponent } from "./ANDORLogic/andorlogic.component";
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
         ProfileComponent,
         CentrifugalPumpComponent,
         ReportComponent,
-        RecycleBinComponent
+        RecycleBinComponent,
+        AndorlogicComponent
     ],
     imports: [        
         HomeRoutingModule,       
