@@ -169,13 +169,36 @@ export class UITreeNode implements OnInit {
         var data : any = []
         data.push(event)
         data.push(this.RCANodeData)
-        this.tree.uploadRCAAttachment.emit(data);  
+        if(this.RCANodeData.currentStage === 'update'){
+            this.tree.uploadRCAAttachment.emit(data);  
+        }else{
+            var evidence : any = [], evidenceList : any = [], url, fileName : string = "";
+            let file = event.target.files[0];
+            if(event.target.files && event.target.files.length > 0) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = e =>{
+                url = reader.result.toString();
+                fileName = event.target.files[0].name;
+                evidence.push(event);
+                evidence.push(url);
+                evidence.push(fileName);
+                if(this.RCANodeData.RCAFILE !== ''){
+                    evidenceList = this.RCANodeData.RCAFILE;
+                }
+                evidenceList.push(evidence);
+                this.RCANodeData.RCAFILE = evidenceList;
+                }  
+            }
+        }
         this.AttachmentOverlay = false;
     }
+
+
     showRCAAttachment(event, node){
         this.RCAViewAttachmentList = []
-        this.RCAViewAttachmentList = JSON.parse(node.RCAFILE)
-        this.RCAFileView = true
+        this.RCAViewAttachmentList = node.RCAFILE;
+        this.RCAFileView = true;
         // this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(DATA.dbPath);
         // this.FileUrl = DATA.dbPath;
         // var extension = this.getFileExtension(DATA.dbPath);
@@ -227,12 +250,22 @@ export class UITreeNode implements OnInit {
         node.note = this.RCANote;
     }
 
-    RCAUpdateViewFromList(file){
-        this.RCAFileSafeUrl = "";
-        this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(file.dbPath);
-        this.RCAFileUrlDownload = file.dbPath
-        this.FileUrl = file.dbPath;
-        var extension = this.getFileExtension(file.dbPath);
+    RCAUpdateViewFromList(file, node){
+        if(node.currentStage === "add"){
+            this.RCAFileSafeUrl = "";
+            var url = file[1]
+            this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+            this.RCAFileUrlDownload = url;
+            this.FileUrl = url;
+            var extension = this.getFileExtension(file[2]);
+
+        }else if(node.currentStage === "update"){
+            this.RCAFileSafeUrl = "";
+            this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(file.dbPath);
+            this.RCAFileUrlDownload = file.dbPath
+            this.FileUrl = file.dbPath;
+            var extension = this.getFileExtension(file.dbPath);
+        }
         if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
             this.RCAImageViewEnable = true;
             this.RCAPdfViewEnable = false;
@@ -262,19 +295,30 @@ export class UITreeNode implements OnInit {
     public RCAUpdateSingleAttachment : boolean = false;
 
     RCAUpdateDeleteFromList(file, node){
-        const params = new HttpParams()
+        if(node.currentStage === "add"){
+           var data : any = JSON.parse(node.RCAFILE)
+           var url : string =  file[1]
+           var fileName : string = file[2]
+           var index = data.findIndex(std => std[1] == url && std[2] == fileName)
+           data.splice(index, 1)
+           this.RCAViewAttachmentList.splice(index, 1);
+           node.RCAFILE = JSON.stringify(data);
+        }else if (node.currentStage === "update"){
+            const params = new HttpParams()
             .set('fullPath', file.dbPath)
-        this.commonBLService.DeleteWithParam(this.prescriptiveContantAPI.RCAUpdateAttachment, params)
-        .subscribe(
-            res => {
-                var d : number = this.RCAViewAttachmentList.findIndex(std => std.FileId == file.FileId && std.fileName == file.fileName  );
-                this.RCAViewAttachmentList.splice(d, 1);
-                this.RCAFileView = false;
-                node.RCAFILE = JSON.stringify(this.RCAViewAttachmentList);
-                this.change.detectChanges();
-                this.RCAFileView = true;
-            }
-        )
+            this.commonBLService.DeleteWithParam(this.prescriptiveContantAPI.RCAUpdateAttachment, params)
+            .subscribe(
+                res => {
+                    var d : number = this.RCAViewAttachmentList.findIndex(std => std.FileId == file.FileId && std.fileName == file.fileName  );
+                    this.RCAViewAttachmentList.splice(d, 1);
+                    this.RCAFileView = false;
+                    node.RCAFILE = JSON.stringify(this.RCAViewAttachmentList);
+                    this.change.detectChanges();
+                    this.RCAFileView = true;
+                }
+            )
+        }
+        
     }
     
 

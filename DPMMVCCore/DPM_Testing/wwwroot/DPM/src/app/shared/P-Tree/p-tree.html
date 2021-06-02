@@ -204,7 +204,7 @@
                                <tbody>
                                     <tr *ngFor="let file of RCAViewAttachmentList let i = index ;">
                                         <td>{{i+1}}</td>
-                                        <td (click)="RCAUpdateViewFromList(file)" data-toggle="tooltip" data-placement="right" title="View Attachment" style="color:blue;">{{file.fileName}}</td>
+                                        <td (click)="RCAUpdateViewFromList(file, node)" data-toggle="tooltip" data-placement="right" title="View Attachment" style="color:blue;">{{file[2]}}</td>
                                         <td><a (click)="RCAUpdateFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Update Attachment" style="color:black;" > <i class="pi pi-pencil"></i></a></td>
                                         <td><a (click)="RCAUpdateDeleteFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Delete Attachment" style="color:red;" > <i class="pi pi-times-circle"></i></a></td>
                                     </tr>
