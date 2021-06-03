@@ -73,7 +73,8 @@ export class UITreeNode implements OnInit {
     public RCAViewAttachmentList : any = []
     public RCAUpdateFileView : boolean = false
     public RCAFileUrlDownload : string = ""
-
+    public RCAADDAttachmentListView : boolean = false
+    public RCAUpdateAttachmentListView : boolean = false
     constructor(
         @Inject(forwardRef(() => Tree),) tree,
         private sanitizer: DomSanitizer,
@@ -196,8 +197,20 @@ export class UITreeNode implements OnInit {
 
 
     showRCAAttachment(event, node){
-        this.RCAViewAttachmentList = []
-        this.RCAViewAttachmentList = node.RCAFILE;
+        if(node.currentStage == 'add'){
+            this.RCAUpdateAttachmentListView = false;
+            this.RCAADDAttachmentListView = true
+            this.RCAViewAttachmentList = []
+            this.RCAViewAttachmentList = node.RCAFILE;
+        }else if(node.currentStage == 'update'){
+            this.RCAUpdateAttachmentListView = true;
+            this.RCAADDAttachmentListView = false
+            this.RCAViewAttachmentList = []
+            node.RCAFILE.forEach(element => {
+                this.RCAViewAttachmentList.push(JSON.parse(element))
+            });
+        }
+       
         this.RCAFileView = true;
         // this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(DATA.dbPath);
         // this.FileUrl = DATA.dbPath;
@@ -261,10 +274,10 @@ export class UITreeNode implements OnInit {
 
         }else if(node.currentStage === "update"){
             this.RCAFileSafeUrl = "";
-            this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(file.dbPath);
-            this.RCAFileUrlDownload = file.dbPath
-            this.FileUrl = file.dbPath;
-            var extension = this.getFileExtension(file.dbPath);
+            this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(file[0][0].dbPath);
+            this.RCAFileUrlDownload = file[0][0].dbPath
+            this.FileUrl = file[0][0].dbPath;
+            var extension = this.getFileExtension(file[0][1]);
         }
         if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
             this.RCAImageViewEnable = true;
@@ -296,29 +309,41 @@ export class UITreeNode implements OnInit {
 
     RCAUpdateDeleteFromList(file, node){
         if(node.currentStage === "add"){
-           var data : any = JSON.parse(node.RCAFILE)
            var url : string =  file[1]
            var fileName : string = file[2]
-           var index = data.findIndex(std => std[1] == url && std[2] == fileName)
-           data.splice(index, 1)
-           this.RCAViewAttachmentList.splice(index, 1);
-           node.RCAFILE = JSON.stringify(data);
+           var index = node.RCAFILE.findIndex(std => std[1] == url && std[2] == fileName)
+           node.RCAFILE.splice(index, 1)
         }else if (node.currentStage === "update"){
-            const params = new HttpParams()
-            .set('fullPath', file.dbPath)
-            this.commonBLService.DeleteWithParam(this.prescriptiveContantAPI.RCAUpdateAttachment, params)
-            .subscribe(
-                res => {
-                    var d : number = this.RCAViewAttachmentList.findIndex(std => std.FileId == file.FileId && std.fileName == file.fileName  );
-                    this.RCAViewAttachmentList.splice(d, 1);
-                    this.RCAFileView = false;
-                    node.RCAFILE = JSON.stringify(this.RCAViewAttachmentList);
-                    this.change.detectChanges();
-                    this.RCAFileView = true;
-                }
-            )
+            var fileData : any = []
+            fileData.push(file)
+            fileData.push(node)
+            this.tree.RCAUpdateDeleteFromList.emit(fileData)
+            // var FileId : string = file[0][0].FileId
+            // var index1 = this.RCAViewAttachmentList.findIndex(std => std[0][0].FileId === FileId)
+            // this.RCAViewAttachmentList.splice(index1, 1)
+            // let d : any = []
+            // this.RCAViewAttachmentList.forEach(element => {
+            //     d.push(JSON.stringify(element))
+            // });
+            // node.RCAFILE = d;
+            // const params = new HttpParams()
+            // .set('fullPath', file[0][0].dbPath)
+            // this.commonBLService.DeleteWithParam(this.prescriptiveContantAPI.RCAUpdateAttachment, params)
+            // .subscribe(
+            //     res => {
+            //         this.RCAFileView = false;
+            //         this.change.detectChanges();
+            //         this.RCAFileView = true;
+            //     }
+            // )
         }
         
+    }
+
+    RCAUpdateDeleteAttach(event){
+        this.RCAFileView = false;
+        this.change.detectChanges();
+        this.RCAFileView = true;
     }
     
 
@@ -751,6 +776,7 @@ export class Tree implements OnInit, AfterContentInit, OnChanges, OnDestroy, Blo
     @Output() deleteTreeRow: EventEmitter<any> = new EventEmitter();
     @Output() rCAAttachment: EventEmitter<any> = new EventEmitter();
     @Output() uploadRCAAttachment: EventEmitter<any> = new EventEmitter();
+    @Output() RCAUpdateDeleteFromList: EventEmitter<any> = new EventEmitter();
 
     @Input() style: any;
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import { PrescriptiveContantAPI } from "../Shared/prescriptive.constant";
 import { ChangeDetectorRef } from "@angular/core";
 import { HttpParams } from "@angular/common/http";
+import {ConfirmationService} from 'primeng/api';
 import panzoom from 'panzoom';
 export interface TreeNode<T = any> {
     id?: number;
@@ -28,12 +29,16 @@ export interface TreeNode<T = any> {
     key?: string;
 }
 @Component({
+    selector: 'app-rca',
     templateUrl: './rca.component.html',
+    providers: [ConfirmationService,MessageService]
 })
 export class RCAComponent  {
     // @ViewChild('scene', { static: false }) scene: ElementRef;
     // @ViewChild('scene1', { static: false }) scene1: ElementRef;
     // @ViewChild('scene3', { static: false }) scene3: ElementRef;
+    @Output() RCAUpdateDeleteAttach = new EventEmitter();
+    tree : RCAComponent;
     panZoomController;
     panZoomController1;
     panZoomController2;
@@ -74,6 +79,7 @@ export class RCAComponent  {
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
         public router: Router,
+        private confirmationService: ConfirmationService,
         private commonBL: CommonBLService,
         private RCAAPIName: PrescriptiveContantAPI,
     ) {}
@@ -377,12 +383,13 @@ export class RCAComponent  {
         }
     }
 
-    SaveADDRCAFilesToDatabase(){
-        this.TraverseNestedJson(this.files, 'add')
-    }
+    // SaveADDRCAFilesToDatabase(){
+    //     this.TraverseNestedJson(this.files, 'add')
+    // }
 
-    SaveAddRCAToDatabase() {
+   async SaveAddRCAToDatabase() {
         if (this.ADDRCAMachineType.length > 0 && this.ADDRCAFailureMode.length > 0) {
+            await this.TraverseNestedJson(this.files, 'add')
             let RCAOBJ = {
                 RCAID: 0,
                 TagNumber: this.TagNumber,
@@ -553,7 +560,6 @@ export class RCAComponent  {
     }
 
    async uploadRCAAttachment(event) {
-        if(event.length !== 5){
         var FileEvent = event[0]
         var TreeNode = event[1]
         if (FileEvent.target.files.length > 0) {
@@ -598,26 +604,7 @@ export class RCAComponent  {
                 this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
             }
          }
-        }else {
-                const formData = new FormData();
-                var FileEvent = event[0]
-                let fileToUpload = FileEvent.target.files[0];
-                formData.append('file', fileToUpload, event[1]);
-                var url: string = this.RCAAPIName.FMEAFileUpload
-                await this.commonBL.postWithoutHeaders(url, formData)
-                    .subscribe(
-                       async (res: any) => {
-                         var abc : any =[], abc2 : any =[]
-                         abc.push(res);
-                         abc.push(event[2]);
-                         abc2.push(abc);
-                         var q = event[4].RCAFILE;
-                         q[event[3]] = JSON.stringify(abc2);
-                         event[4].RCAFILE = q;
-                         return await res;
-                        }
-                )
-        }
+        
         
     }
 
@@ -645,7 +632,9 @@ export class RCAComponent  {
                     var filess = val[index].RCAFILE
                     var FC : number = 1;
                     for (let FI = 0; FI < filess.length; FI++) {
-                        var newName : string = `${this.RCALabel}_${this.TagNumber}_${val[index].id}_${FC}` 
+                        var prevName = filess[FI][0].target.files[0].name
+                        var ext = this.getFileExtension(prevName);
+                        var newName : string = `${this.RCALabel}_${this.TagNumber}_${val[index].id}_${FC}.${ext}` 
                         var f : any = []
                         f.push(filess[FI][0]);
                         f.push(newName);
@@ -653,7 +642,14 @@ export class RCAComponent  {
                         f.push(FI)
                         f.push(val[index])
                         let ff = f;
-                        var res =  await this.uploadRCAAttachment(f);
+                        var res =  await this.ADDRCAUploadAttachment(f);
+                        var abc : any =[], abc2 : any =[]
+                        abc.push(res);
+                        abc.push(f[2]);
+                        abc2.push(abc);
+                        var q = f[4].RCAFILE;
+                        q[f[3]] = JSON.stringify(abc2);
+                        val[index].RCAFILE = q;
                         FC = FC + 1
                     }
                     
@@ -673,7 +669,9 @@ export class RCAComponent  {
                             var filess = Data[index1].RCAFILE
                             var FC : number = 1;
                             for (let FI = 0; FI < filess.length; FI++) {
-                                var newName : string = `${this.RCALabel}_${this.TagNumber}_${Data[index1].id}_${FC}` 
+                                var prevName = filess[FI][0].target.files[0].name
+                                var ext = this.getFileExtension(prevName);
+                                var newName : string = `${this.RCALabel}_${this.TagNumber}_${Data[index1].id}_${FC}.${ext}` 
                                 var fz : any = [];
                                 fz.push(filess[FI][0]);
                                 fz.push(newName);
@@ -681,7 +679,14 @@ export class RCAComponent  {
                                 fz.push(FI)
                                 fz.push(Data[index1])
                                 let ff = fz;
-                                var res =  await this.uploadRCAAttachment(ff);
+                                var res =  await this.ADDRCAUploadAttachment(ff);
+                                var abc : any =[], abc2 : any =[]
+                                abc.push(res);
+                                abc.push(ff[2]);
+                                abc2.push(abc);
+                                var q = ff[4].RCAFILE;
+                                q[ff[3]] = JSON.stringify(abc2);
+                                Data[index1].RCAFILE = q;
                                 FC = FC + 1
                             }
                             
@@ -693,10 +698,6 @@ export class RCAComponent  {
                             var d = []
                             d.push(Data2[index3])
                             this.TraverseNestedJson(d, fun)
-                            if(fun === 'add'){
-                                if(index1 === Data2.length-1)
-                                   this.SaveAddRCAToDatabase();
-                            }
                         }
                     }
                 }
@@ -704,6 +705,53 @@ export class RCAComponent  {
 
         }
 
+    }
+
+
+  async ADDRCAUploadAttachment(event){
+    const formData = new FormData();
+    var FileEvent = event[0]
+    let fileToUpload = FileEvent.target.files[0];
+    formData.append('file', fileToUpload, event[1]);
+    var url: string = this.RCAAPIName.FMEAFileUpload
+    return await this.commonBL.postWithoutHeaders(url, formData)
+                 .toPromise()
+    }
+
+    getFileExtension(filename) {
+        const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+        return extension;
+    }
+
+
+    RCAUpdateDeleteFromList(event){
+        this.confirmationService.confirm({
+        message: 'Are you sure that you want to proceed?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            var FileId : string = event[0][0][0].FileId
+            var data : any = []; 
+            event[1].RCAFILE.forEach(element => {
+                data.push(JSON.parse(element))
+            });
+            var index1 = data.findIndex(std => std[0][0].FileId === FileId)
+            data.splice(index1, 1)
+            let d : any = []
+            data.forEach(element => {
+                d.push(JSON.stringify(element))
+            });
+            event[1].RCAFILE = d;
+            const params = new HttpParams()
+            .set('fullPath', event[0][0][0].dbPath)
+            this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
+            .subscribe(
+                res => {
+                   this.RCAUpdateDeleteAttach.emit(data)
+                }
+            )
+        }
+        })
     }
 
 }

@@ -22,6 +22,7 @@ import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
 import {TooltipModule} from 'primeng/tooltip';
 import { TabViewModule } from 'primeng/tabview';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,      
@@ -44,6 +45,7 @@ import { TabViewModule } from 'primeng/tabview';
         DialogModule,
         OverlayPanelModule,
         TreeModule,
+        ConfirmDialogModule,
         TooltipModule],
     exports: [CommonModule,
         CommonLoadingComponent,
@@ -68,6 +70,7 @@ import { TabViewModule } from 'primeng/tabview';
         DialogModule,
         OverlayPanelModule,
         TabViewModule,
+        ConfirmDialogModule,
         TooltipModule]
 })
 export class SharedModule {

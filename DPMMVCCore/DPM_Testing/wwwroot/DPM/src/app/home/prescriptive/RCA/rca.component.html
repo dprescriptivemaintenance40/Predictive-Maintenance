@@ -1,4 +1,5 @@
 <p-toast position="top-right"></p-toast>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <style>
     .disabled {
         pointer-events: none;
@@ -183,7 +184,7 @@
                 <div class="classname" id="scene1" #scene1>
                     <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single"
                         [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)"
-                        (uploadRCAAttachment)="uploadRCAAttachment($event)"
+                        (uploadRCAAttachment)="uploadRCAAttachment($event)"  (RCAUpdateDeleteFromList)="RCAUpdateDeleteFromList($event)"
                         (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
                         <br><br>
                 </div>
@@ -240,7 +241,7 @@
             <div class="ADDRCAModal modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeRCAAddModal()"
                     data-dismiss="ADDRCAModal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="SaveADDRCAFilesToDatabase()"
+                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()"
                     data-dismiss="ADDRCAModal">Save changes</button>
             </div>
         </div>
