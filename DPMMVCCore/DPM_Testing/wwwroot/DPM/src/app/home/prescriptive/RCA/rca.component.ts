@@ -10,6 +10,7 @@ import panzoom from 'panzoom';
 import * as moment from 'moment';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { PDFDocument } from 'pdf-lib';
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -645,7 +646,6 @@ export class RCAComponent  {
     RCAReportDownload() {
         if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
             const doc = new jsPDF('p', 'pt','a4', true);
-            // const doc= new jsPDF(  "l", "mm", "a0");
             this.RCAReportfileds = true
             this.changeDetectorRef.detectChanges()
              const specialElementHandlers = {
@@ -661,12 +661,10 @@ export class RCAComponent  {
              let imageData= document.getElementById('image');
              html2canvas(imageData).then( (canvas) =>
              {
-                var img = canvas.toDataURL('image/png', 1.5,);
-                // canvas.setAttribute("width","1500");
-                // let width = canvas.getAttribute("width");
-            //    doc.addImage(img, 'PNG', 20, 200, 560, 350);
+                doc.addPage('a4', 'p');
+               var img = canvas.toDataURL('image/png', 1.5,);
                 doc.addImage(img, 'PNG', 20, 200, 600, 230);
-               doc.save('RCA Report');
+                 doc.save('RCA Report');
                this.changeDetectorRef.detectChanges()
              })
              this.RCAReportinputs = ""
