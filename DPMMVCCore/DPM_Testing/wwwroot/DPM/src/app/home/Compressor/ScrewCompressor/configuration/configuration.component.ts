@@ -24,10 +24,18 @@ export class ConfigurationComponent {
   public EquipmentTypeSelect: boolean = true;
   public EquipmentTypeCompressor: boolean = false;
   public EquipmentTypePump: boolean = false;
+  public centrifugalpump: boolean = false;
+  public comppressor: boolean = false;
+  
   public notification = null;
   public Image=false;
   public enableImage =true;  
   public CancelImage=false;
+
+  public MachineType: string = "";
+  public EquipmentType: string = "";
+  public EquipmentList: any = []
+  
   constructor(public fb: FormBuilder,
               private screwCompressorAPIName : SCConstantsAPI,
               private screwCompressorMethod : CommonBLService,
@@ -152,5 +160,25 @@ export class ConfigurationComponent {
     setTimeout(() => {
       this.notification = null;
     }, 3000);
+  }
+  MachineEquipmentSelect() {
+    if (this.MachineType == "Pump") {
+      this.EquipmentList = null
+      this.EquipmentList = ["Centrifugal Pump"]
+    }
+    if (this.MachineType == "Compressor") {
+      this.EquipmentList = null
+      this.EquipmentList = ["Screw Compressor"]
+    }
+    console.log(this.EquipmentType)
+  }
+  GeneratePrescription(){
+    if (this.MachineType == "Pump" && this.EquipmentList=="Centrifugal Pump" ){
+     this.comppressor= true
+     this.centrifugalpump= false
+    }else if (this.MachineType == "Compressor"&& this.EquipmentList=="Screw Compressor" ){
+      this.centrifugalpump= true
+      this.comppressor= false
+    }
   }
 }

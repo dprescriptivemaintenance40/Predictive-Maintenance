@@ -38,13 +38,14 @@
                 <li>
                     <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities25" aria-expanded="true">
                         <span>Configuration</span>
+                        <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewConfiguration']">Configuration</a>
                          
                     </a>
-                    <div id="collapseUtilities25" class="collapse" aria-labelledby="heading12" data-parent="#accordionSidebar">
+                    <!-- <div id="collapseUtilities25" class="collapse" aria-labelledby="heading12" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewConfiguration']">Configuration</a>
                         </div>
-                    </div>
+                    </div> -->
                 </li>
             </div>
             <div *ngIf="screwCompressor" id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
