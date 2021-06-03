@@ -644,6 +644,8 @@ export class RCAComponent  {
 
 
     RCAReportDownload() {
+        this.changeDetectorRef.detectChanges()
+        this.commonLoadingDirective.showLoading(true, 'Downloading....');
         if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
             const doc = new jsPDF('p', 'pt','a4', true);
             this.RCAReportfileds = true
@@ -665,6 +667,7 @@ export class RCAComponent  {
                var img = canvas.toDataURL('image/png', 1.5,);
                 doc.addImage(img, 'PNG', 20, 200, 600, 230);
                  doc.save('RCA Report');
+                 this.commonLoadingDirective.showLoading(false, 'Downloading....');
                this.changeDetectorRef.detectChanges()
              })
              this.RCAReportinputs = ""
