@@ -666,6 +666,9 @@ export class RCAComponent  {
                 doc.addPage('a4', 'p');
                var img = canvas.toDataURL('image/png', 1.5,);
                 doc.addImage(img, 'PNG', 20, 200, 600, 230);
+                doc.setFontSize(22);
+                doc.setTextColor(0, 0, 0);
+                doc.text(20, 20, 'Annexures');
                  doc.save('RCA Report');
                  this.commonLoadingDirective.showLoading(false, 'Downloading....');
                this.changeDetectorRef.detectChanges()
