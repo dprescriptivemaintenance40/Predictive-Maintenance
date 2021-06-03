@@ -3,11 +3,13 @@
 <div style="padding:10px;">
     <div class="container">
         <div class="row">
-            <div class="col-sm">Column</div>
-            <div style="text-align: center;" class="col-sm">Alarm</div>
-            <div style="text-align: right;" class="col-sm-2">Trigger</div>
-            <div style="text-align: right;" class="col-sm-2">Condition</div>
-            <div style="text-align: center;" class="col-sm"></div>
+            <div class="col-sm">Machine Type</div>
+            <div  class="col-sm">Equipment type</div>
+            <div style="text-align: left;" class="col-sm-2">Column</div>
+            <div style="text-align: left;" class="col-sm-2">Alarm</div>
+            <div style="text-align: left;" class="col-sm-2">Trigger</div>
+            <div style="text-align: left;" class="col-sm-2">Condition</div>
+            <div style="text-align: center;" class="col-sm-2"></div>
 
             <div class="td col-sm">
                 <span *ngIf="notification" class="elementToFadeInAndOut">
@@ -19,6 +21,24 @@
     </div>
     <div class="tbody">
         <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;" (submit)="recordSubmit(fg)">
+            <div class="td">
+                <select class="form-control" (change)="SelectMachineType(fg)" formControlName="machineType">
+                    <option>Pump</option> 
+                    <option disabled>Compressor</option>
+                </select>
+            </div>
+            <div *ngIf="EquipmentTypeCompressor" class="td">
+                <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="MachineTypeSelect" formControlName="equipmentType">
+                    <option>Screw Compressor</option> 
+                    <option disabled>Compressor 2</option>
+                </select>
+            </div>
+            <div *ngIf="EquipmentTypePump" class="td">
+                <select class="form-control" formControlName="equipmentType">
+                    <option>Centrifugal Pump</option> 
+                    <option disabled>Pump 2</option>
+                </select>
+            </div>
             <div class="td">
                 <input class="form-control" data-toggle="tooltip" data-placement="right" title="{{addRuleResponse[i]}}" formControlName="columns">
             </div>

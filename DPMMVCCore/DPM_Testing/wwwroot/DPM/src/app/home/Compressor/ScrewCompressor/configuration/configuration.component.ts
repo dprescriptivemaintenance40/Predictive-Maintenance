@@ -20,7 +20,10 @@ export class ConfigurationComponent {
      "Temperature Suction stage 2",
     "Temperature Discharge stage 2"];
   addRuleForms: FormArray = this.fb.array([]);
-  
+  public MachineTypeSelect: any;
+  public EquipmentTypeSelect: boolean = true;
+  public EquipmentTypeCompressor: boolean = false;
+  public EquipmentTypePump: boolean = false;
   public notification = null;
   public Image=false;
   public enableImage =true;  
@@ -43,15 +46,30 @@ export class ConfigurationComponent {
           (res as []).forEach((addRuleModel: any) => { 
             this.addRuleForms.push(this.fb.group({
               addRuleId: [addRuleModel.AddRuleId],
+              machineType: [addRuleModel.MachineType, Validators.required],
+              equipmentType: [addRuleModel.EquipmentType, Validators.required],
               columns: [addRuleModel.Columns, Validators.required],
               alarm: [addRuleModel.Alarm, Validators.required],
               trigger: [addRuleModel.Trigger, Validators.required],
               condition: [addRuleModel.Condition, Validators.required]
             }));
           });
+          this.EquipmentTypeSelect = false
+          this.EquipmentTypePump = true
         }
       }
     );
+  }
+  SelectMachineType(fg: FormGroup) {
+    if (fg.value.machineType == 'Pump') {
+      this.EquipmentTypePump = true;
+      this.EquipmentTypeCompressor = false;
+      this.EquipmentTypeSelect = false;
+    } else {
+      this.EquipmentTypePump = false;
+      this.EquipmentTypeCompressor = true;
+      this.EquipmentTypeSelect = false;
+    }
   }
 
 
@@ -77,6 +95,8 @@ export class ConfigurationComponent {
   addRuleForm() {
     this.addRuleForms.push(this.fb.group({
       addRuleId: [0],
+      machineType: ['', Validators.required],
+      equipmentType: ['', Validators.required],
       columns: ['', Validators.required],
       alarm: ['', Validators.required],
       trigger: ['', Validators.required],
