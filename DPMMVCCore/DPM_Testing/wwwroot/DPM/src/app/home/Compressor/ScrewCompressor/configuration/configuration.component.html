@@ -69,10 +69,10 @@
                 <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;"
                     (submit)="recordSubmit(fg)">
                     <div class="td">
-                        <input type="text" class="form-control" formControlName="machineType" [(ngModel)]="MachineType" disabled />
+                        <input type="text" class="form-control" formControlName="machineType" [(ngModel)]="MachineType" [attr.disabled] />
                     </div>
                     <div class="td">
-                        <input type="text" class="form-control" formControlName="equipmentType" [(ngModel)]="EquipmentType" disabled />
+                        <input type="text" class="form-control" formControlName="equipmentType" [(ngModel)]="EquipmentType" [attr.disabled] />
                     </div>
                     <div class="td">
                         <input class="form-control" data-toggle="tooltip" data-placement="right"
