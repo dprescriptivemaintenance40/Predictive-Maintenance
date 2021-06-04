@@ -821,20 +821,18 @@ export class RCAComponent  {
                             var Data2 : any = [];
                             var Data3 : any = [];
                             var Data4 : any = [];
-                            var Data5 : any = [];
                             TreeNode.RCAFILE.forEach(element => {
                                 Data1.push(JSON.parse(element));
                             });
                             Data2.push(res);
                             Data2.push(fileName);
                             Data3.push(Data2)
-                            Data4.push(Data3)
                             var index = Data1.findIndex(std=> std[0][0].FileId == FileData[0][0].FileId);
-                            Data1[index]=Data4
+                            Data1[index]=Data3
                             Data1.forEach(element => {
-                                Data5.push(JSON.stringify(element))
+                                Data4.push(JSON.stringify(element))
                             });
-                            TreeNode.RCAFILE = Data5; 
+                            TreeNode.RCAFILE = Data4; 
                         
                         let RCAOBJ = {
                             RCAID: this.UpdateRecordList[0].RCAID,
