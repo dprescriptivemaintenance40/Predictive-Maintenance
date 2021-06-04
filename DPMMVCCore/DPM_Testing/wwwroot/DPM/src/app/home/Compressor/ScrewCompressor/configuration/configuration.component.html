@@ -42,14 +42,17 @@
                 <div class="row">
                     <div class="col-sm">Machine Type</div>
                      <div  class="col-sm"></div>
+                     <div  class="col-sm"></div>
                     <div style="text-align: left;" class="col-sm">Equipment type</div>
                     <div  class="col-sm"></div>
-                    <div style="text-align: left;" class="col-sm-2">Column</div>
-                    <div style="text-align: left;" class="col-sm-2">Alarm</div>
-                    <div style="text-align: left;" class="col-sm-2">Trigger</div>
-                    <div style="text-align: right;" class="col-sm">Condition</div>
+                    <div style="text-align: center;" class="col-sm-2">Column</div>
+                    <div style="text-align: center;" class="col-sm-2">Alarm</div>
+                    <div style="text-align: center;" class="col-sm-2">Trigger</div>
+                    <!-- <div class="col-sm"></div> -->
+                    <div style="text-align: left;" class="col-xs">Condition</div>
+                    <div class="col-sm"></div>
                     <div style="text-align: center;" class="col-sm">
-                    <button class="btn btn-outline-primary" (click)="addRuleForm()">
+                    <button class="btn btn-outline-primary btn-sm" (click)="addRuleForm()">
                         <i class="fa fa-plus"></i> New Record
                     </button>
                     </div>
@@ -81,11 +84,11 @@
                     <div class="td">
                         <input class="form-control" formControlName="alarm">
                     </div>
-                    <div class="td">
+                    <div class="td" >
                         <input class="form-control" formControlName="trigger">
                     </div>
 
-                    <div class="td">
+                    <div class="td" style="width:70px">
                         <select class="form-control" formControlName="condition">
                             <option> > 
                             </option>
@@ -96,8 +99,8 @@
                         </select>
                     </div>
                     <div class="td">
-                        <button type="submit" class="btn btn-outline-primary" [disabled]="fg.invalid"
-                            [ngClass]="(fg.get('addRuleId').value==0)?'btn btn-outline-primary':'btn-outline-dark'"><i
+                        <button type="submit" class="btn btn-sm" [disabled]="fg.invalid"
+                            [ngClass]="(fg.get('addRuleId').value==0)?'btn btn-sm':'btn-outline-dark'"><i
                                 class="far fa-save"></i>
                             {{fg.get('addRuleId').value==0?'Submit':'Update'}}
                         </button>
