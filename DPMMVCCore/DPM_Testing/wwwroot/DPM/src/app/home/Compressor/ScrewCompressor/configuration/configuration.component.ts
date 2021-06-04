@@ -5,6 +5,7 @@ import { MessageService, TreeNode } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-configuration',
@@ -42,7 +43,8 @@ export class ConfigurationComponent {
   constructor(public fb: FormBuilder,
               private screwCompressorAPIName : SCConstantsAPI,
               private screwCompressorMethod : CommonBLService,
-              public title: Title) {
+              public title: Title,
+              public router: Router,) {
      
      }
 
@@ -162,6 +164,7 @@ export class ConfigurationComponent {
     this.AssetListBack= false
     this.MachineType = null
     this.EquipmentType=null
+    this.router.navigateByUrl('/Home/Prescriptive/List');
   }
   GenerateConfiguration(){
     var url : string = this.screwCompressorAPIName.ADDRuleAPI;
