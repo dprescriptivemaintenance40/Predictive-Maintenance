@@ -657,15 +657,15 @@ export class RCAComponent  {
              };
              const pdfTable = this.pdfTable.nativeElement;
              doc.fromHTML(pdfTable.innerHTML, 15, 15, {
-               'width': 560,
+               'width': 590,
                'elementHandlers': specialElementHandlers
              });
              let imageData= document.getElementById('image');
              html2canvas(imageData).then( (canvas) =>
              {
-                doc.addPage('a4', 'p');
+                doc.addPage('a4', 'l');
                var img = canvas.toDataURL('image/png', 1.5,);
-               doc.addImage(img, 'PNG', 20, 200, 600, 230);
+               doc.addImage(img, 'PNG', 20, 200, 1000, 230);
                 doc.setFontSize(22);
                 doc.setTextColor(0, 0, 0);
                 doc.text(20, 20, 'Annexures');
