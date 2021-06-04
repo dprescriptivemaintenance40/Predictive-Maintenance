@@ -31,6 +31,7 @@
 </div>
 <div style="margin:10px">
     <button *ngIf="AssetListBack" label="Back" type="button" class="btn btn-dark"(click)="BackToConfiglist()" pTooltip="Back to List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
+
 </div>
 <br>
 <div class="container" *ngIf="configurationrecords">
@@ -46,7 +47,13 @@
                     <div style="text-align: right;" class="col-sm-2">Alarm</div>
                     <div style="text-align: right;" class="col-sm-2">Trigger</div>
                     <div style="text-align: right;margin-right: 5px;" class="col-sm">Condition</div>
+                    <div style="text-align: center;" class="col-sm">
+                    <button class="btn btn-outline-primary" (click)="addRuleForm()">
+                        <i class="fa fa-plus"></i> New Record
+                    </button>
+                    </div>
                     <div style="text-align: center;" class="col-sm-2"></div>
+                  
                     <!-- <div class="col-sm-2"></div> -->
                     <div class="td col-sm">
                         <span *ngIf="notification" class="elementToFadeInAndOut">
@@ -66,7 +73,7 @@
                         </select>
                     </div>
                     <div *ngIf="EquipmentTypeCompressor" class="td">
-                        <select class="form-control" (change)="SelectEquipmentType(fg)"
+                        <select class="form-control" (change)="SelectMachineType(fg)"
                              formControlName="equipmentType">
                             <option>Screw Compressor</option>
                             <option disabled>Compressor 2</option>
