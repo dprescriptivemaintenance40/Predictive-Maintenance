@@ -57,7 +57,6 @@ export class ConfigurationComponent {
       this.EquipmentTypePump= true;
       this.EquipmentTypeCompressor = false;
       this.EquipmentTypeSelect = false;
-      this.EquipmentList = ["Pump"]
     }
     else {
       this.EquipmentTypeCompressor = true;
@@ -166,7 +165,7 @@ export class ConfigurationComponent {
     this.MachineType = null
     this.EquipmentType=null
   }
-  
+
   GenerateConfiguration(){
     var url : string = this.screwCompressorAPIName.ADDRuleAPI;
     const params = new HttpParams()

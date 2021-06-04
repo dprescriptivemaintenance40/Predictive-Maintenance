@@ -41,6 +41,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm">Machine Type</div>
+                     <div  class="col-sm"></div>
                     <div style="text-align: left;" class="col-sm">Equipment type</div>
                     <div  class="col-sm"></div>
                     <div style="text-align: left;" class="col-sm-2">Column</div>
@@ -65,17 +66,12 @@
                 <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;"
                     (submit)="recordSubmit(fg)">
                     <div class="td">
-                        <!-- <select class="form-control" (change)="SelectMachineType(fg)" formControlName="machineType">
-                            <option >Compressor</option>
-                            <option>Pump</option>
-                        </select> -->
                         <input type="" class="form-control" (change)="SelectMachineType(fg)"  formControlName="machineType" [(ngModel)]="MachineType" />
                     </div>
                     <div *ngIf="EquipmentTypeCompressor" class="td">
-                        <input type="" class="form-control" formControlName="machineType" [(ngModel)]="MachineType" />
+                        <input type="" class="form-control" formControlName="equipmentType" [(ngModel)]="EquipmentType" />
                     </div>
                     <div *ngIf="EquipmentTypePump" class="td">
-                        <!-- <div *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}></div> -->
                         <input type="" class="form-control" formControlName="equipmentType" [(ngModel)]="EquipmentType" />
                     </div>
                     <div class="td">
