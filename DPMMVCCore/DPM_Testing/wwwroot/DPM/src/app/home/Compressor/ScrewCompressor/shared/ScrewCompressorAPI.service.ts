@@ -7,7 +7,7 @@ import { Injectable } from "@angular/core";
 
 export class SCConstantsAPI{
 
-  public ADDRuleAPI : string = '/ScrewCompressorConfigurationAPI';
+  public ADDRuleAPI : string = '/ScrewCompressorConfigurationAPI/GetAllConfigurationRecords';
   public getPredictedList : string = '/ScrewCompressureAPI/GetPrediction';
   public getPredictionById : string = '/ScrewCompressureAPI/GetPredictionById';
   public PredictionData : string = '/ScrewCompressureAPI/Prediction';

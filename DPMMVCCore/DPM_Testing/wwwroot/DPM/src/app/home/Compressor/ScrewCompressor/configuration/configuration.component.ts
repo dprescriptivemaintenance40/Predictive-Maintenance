@@ -1,6 +1,7 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, Validators, FormGroup } from '@angular/forms';
-
+import { MessageService, TreeNode } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
@@ -8,7 +9,8 @@ import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
 @Component({
   selector: 'app-configuration',
   templateUrl: './configuration.component.html',
-  styleUrls: ['./configuration.component.scss']
+  styleUrls: ['./configuration.component.scss'],
+  providers: [MessageService],
 })
 export class ConfigurationComponent {
   addRuleResponse:any=["Presssure Suction stage 1",
@@ -20,13 +22,14 @@ export class ConfigurationComponent {
      "Temperature Suction stage 2",
     "Temperature Discharge stage 2"];
   addRuleForms: FormArray = this.fb.array([]);
+
   public MachineTypeSelect: any;
   public EquipmentTypeSelect: boolean = true;
   public EquipmentTypeCompressor: boolean = false;
   public EquipmentTypePump: boolean = false;
-  public centrifugalpump: boolean = false;
-  public comppressor: boolean = false;
-  
+  public AssetList: boolean = true;
+  public configurationrecords: boolean = false;
+  public AssetListBack: boolean = false;
   public notification = null;
   public Image=false;
   public enableImage =true;  
@@ -45,41 +48,26 @@ export class ConfigurationComponent {
 
   ngOnInit() {
     this.title.setTitle('Screw Configuration | Dynamic Prescriptive Maintenence');
-    var url : string = this.screwCompressorAPIName.ADDRuleAPI;
-    this.screwCompressorMethod.getWithoutParameters(url).subscribe(
-      res => {
-        if (res == [])
-          this.addRuleForm();
-        else { 
-          (res as []).forEach((addRuleModel: any) => { 
-            this.addRuleForms.push(this.fb.group({
-              addRuleId: [addRuleModel.AddRuleId],
-              machineType: [addRuleModel.MachineType, Validators.required],
-              equipmentType: [addRuleModel.EquipmentType, Validators.required],
-              columns: [addRuleModel.Columns, Validators.required],
-              alarm: [addRuleModel.Alarm, Validators.required],
-              trigger: [addRuleModel.Trigger, Validators.required],
-              condition: [addRuleModel.Condition, Validators.required]
-            }));
-          });
-          this.EquipmentTypeSelect = false
-          this.EquipmentTypePump = true
-        }
-      }
-    );
+
   }
   SelectMachineType(fg: FormGroup) {
-    if (fg.value.machineType == 'Pump') {
+    if (fg.value.machineType == 'Pump' ) {
       this.EquipmentTypePump = true;
       this.EquipmentTypeCompressor = false;
       this.EquipmentTypeSelect = false;
-    } else {
+    } else if (fg.value.machineType == 'Compressor' ) {
+      this.EquipmentTypePump = false;
+      this.EquipmentTypeCompressor = true;
+      this.EquipmentTypeSelect = false;
+    }
+    else {
       this.EquipmentTypePump = false;
       this.EquipmentTypeCompressor = true;
       this.EquipmentTypeSelect = false;
     }
   }
-
+ 
+ 
 
   compressorImage(){
     this.enableImage=false;
@@ -172,13 +160,47 @@ export class ConfigurationComponent {
     }
     console.log(this.EquipmentType)
   }
-  GeneratePrescription(){
+
+  BackToConfiglist(){
+    this.AssetList= true
+    this.configurationrecords= false
+    this.AssetListBack= false
+  }
+  GenerateConfiguration(){
+    var url : string = this.screwCompressorAPIName.ADDRuleAPI;
+    const params = new HttpParams()
+                .set('machineType',this.MachineType )
+                .set('equipmentType',this.EquipmentType )
+    this.screwCompressorMethod.getWithParameters(url, params).subscribe(
+      res => {
+        if (res == [])
+          this.addRuleForm();
+        else { 
+          (res as []).forEach((addRuleModel: any) => { 
+            this.addRuleForms.push(this.fb.group({
+              addRuleId: [addRuleModel.AddRuleId],
+              machineType: [addRuleModel.MachineType, Validators.required],
+              equipmentType: [addRuleModel.EquipmentType, Validators.required],
+              columns: [addRuleModel.Columns, Validators.required],
+              alarm: [addRuleModel.Alarm, Validators.required],
+              trigger: [addRuleModel.Trigger, Validators.required],
+              condition: [addRuleModel.Condition, Validators.required]
+            }));
+          });
+          this.EquipmentTypeSelect = true
+          this.EquipmentTypeCompressor= true;
+          this.EquipmentTypePump = true
+        }
+      }
+    );
     if (this.MachineType == "Pump" && this.EquipmentList=="Centrifugal Pump" ){
-     this.comppressor= true
-     this.centrifugalpump= false
+      this.configurationrecords= true
+      this.AssetList= false
+      this.AssetListBack= true
     }else if (this.MachineType == "Compressor"&& this.EquipmentList=="Screw Compressor" ){
-      this.centrifugalpump= true
-      this.comppressor= false
+      this.configurationrecords= true
+      this.AssetList= false
+      this.AssetListBack= true
     }
   }
 }

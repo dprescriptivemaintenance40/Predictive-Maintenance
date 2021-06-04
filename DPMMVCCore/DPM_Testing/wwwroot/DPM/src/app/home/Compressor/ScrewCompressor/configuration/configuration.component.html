@@ -1,4 +1,5 @@
-<div class="card shadow div-in-middle"style="width: 50rem;">
+<p-toast position="top-right"></p-toast>
+<div class="card shadow div-in-middle"style="width: 50rem;" *ngIf="AssetList">
 <div class="row">
         <div class="col-sm" style="padding:30px;">
             <label style=" margin-right: 12px;">
@@ -6,8 +7,8 @@
             </label>
             <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"class="form-control">
                 <option value="">Choose..</option>
-                <option value="Pump" selected>Pump</option>
                 <option value="Compressor" selected>Compressor</option>
+                <option value="Pump" selected>Pump</option>
             </select>
         </div>
         <div class="col-sm" style="padding:30px;">
@@ -22,105 +23,31 @@
         <div class="col-sm" style="padding:30px;">
             <div class="row">
                 <div class="col-sm" style="padding:30px;">
-                    <a class="btn btn-dark" (click)="GeneratePrescription()">Done</a>
+                    <a class="btn btn-dark" (click)="GenerateConfiguration()">Done</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<br><br>
-
-<div class="container" *ngIf="comppressor">
-    <div class="shadow-sm p-3 mb-5 bg-white rounded">
-    <div class="table-responsive">
-        <div style="padding:10px;">
-            <div class="container">
-                <div class="row">
-                    <div style="text-align: left;" class="col-sm-2">Column</div>
-                    <div style="text-align: left;" class="col-sm-2">Alarm</div>
-                    <div style="text-align: left;" class="col-sm-2">Trigger</div>
-                    <div style="text-align: left;" class="col-sm-2">Condition</div>
-                    <div style="text-align: center;" class="col-sm-2"></div>
-
-                    <div class="td col-sm">
-                        <span *ngIf="notification" class="elementToFadeInAndOut">
-                            <i class="fas fa-check-circle {{notification.class}}"></i>
-                            {{notification.message}}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="tbody">
-                <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;"
-                    (submit)="recordSubmit(fg)">
-                    <div class="td">
-                        <select class="form-control" (change)="SelectMachineType(fg)" formControlName="machineType">
-                            <option>Pump</option>
-                            <option disabled>Compressor</option>
-                        </select>
-                    </div>
-                    <div *ngIf="EquipmentTypeCompressor" class="td">
-                        <select class="form-control" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="MachineTypeSelect" formControlName="equipmentType">
-                            <option>Screw Compressor</option>
-                            <option disabled>Compressor 2</option>
-                        </select>
-                    </div>
-                    <div *ngIf="EquipmentTypePump" class="td">
-                        <select class="form-control" formControlName="equipmentType">
-                            <option>Centrifugal Pump</option>
-                            <option disabled>Pump 2</option>
-                        </select>
-                    </div>
-                    <div class="td">
-                        <input class="form-control" data-toggle="tooltip" data-placement="right"
-                            title="{{addRuleResponse[i]}}" formControlName="columns">
-                    </div>
-                    <div class="td">
-                        <input class="form-control" formControlName="alarm">
-                    </div>
-                    <div class="td">
-                        <input class="form-control" formControlName="trigger">
-                    </div>
-
-                    <div class="td">
-                        <select class="form-control" formControlName="condition">
-                            <option>></option>
-                            <option>
-                                << /option>
-                            <option>=</option>
-                        </select>
-                    </div>
-
-
-                    <div class="td">
-                        <button type="submit" class="btn btn-outline-primary" [disabled]="fg.invalid"
-                            [ngClass]="(fg.get('addRuleId').value==0)?'btn btn-outline-primary':'btn-outline-dark'"><i
-                                class="far fa-save"></i>
-                            {{fg.get('addRuleId').value==0?'Submit':'Update'}}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    </div>
+<div style="margin:10px">
+    <button *ngIf="AssetListBack" label="Back" type="button" class="btn btn-dark"(click)="BackToConfiglist()" pTooltip="Back to List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
 </div>
-
-<div class="container" *ngIf="centrifugalpump">
+<br>
+<div class="container" *ngIf="configurationrecords">
     <div class="shadow-sm p-3 mb-5 bg-white rounded">
     <div class="table-responsive">
         <div style="padding:10px;">
             <div class="container">
                 <div class="row">
                     <div class="col-sm">Machine Type</div>
-                    <div class="col-sm">Equipment type</div>
-                    <div style="text-align: left;" class="col-sm-2">Column</div>
-                    <div style="text-align: left;" class="col-sm-2">Alarm</div>
-                    <div style="text-align: left;" class="col-sm-2">Trigger</div>
-                    <div style="text-align: left;" class="col-sm-2">Condition</div>
+                    <div  class="col-sm"></div>
+                    <div style="text-align: left;" class="col-sm">Equipment type</div>
+                    <div style="text-align: right;" class="col-sm-2">Column</div>
+                    <div style="text-align: right;" class="col-sm-2">Alarm</div>
+                    <div style="text-align: right;" class="col-sm-2">Trigger</div>
+                    <div style="text-align: right;margin-right: 5px;" class="col-sm">Condition</div>
                     <div style="text-align: center;" class="col-sm-2"></div>
-
+                    <!-- <div class="col-sm-2"></div> -->
                     <div class="td col-sm">
                         <span *ngIf="notification" class="elementToFadeInAndOut">
                             <i class="fas fa-check-circle {{notification.class}}"></i>
@@ -134,19 +61,20 @@
                     (submit)="recordSubmit(fg)">
                     <div class="td">
                         <select class="form-control" (change)="SelectMachineType(fg)" formControlName="machineType">
+                            <option >Compressor</option>
                             <option>Pump</option>
-                            <option disabled>Compressor</option>
                         </select>
                     </div>
                     <div *ngIf="EquipmentTypeCompressor" class="td">
-                        <select class="form-control" [ngModelOptions]="{standalone: true}"
+                        <select class="form-control" (change)="SelectEquipmentType(fg)"
                             [(ngModel)]="MachineTypeSelect" formControlName="equipmentType">
                             <option>Screw Compressor</option>
                             <option disabled>Compressor 2</option>
                         </select>
                     </div>
                     <div *ngIf="EquipmentTypePump" class="td">
-                        <select class="form-control" formControlName="equipmentType">
+                        <select class="form-control" (change)="SelectMachineType(fg)"
+                        [(ngModel)]="EquipmentTypeSelect" formControlName="equipmentType">
                             <option>Centrifugal Pump</option>
                             <option disabled>Pump 2</option>
                         </select>
@@ -175,6 +103,9 @@
                             [ngClass]="(fg.get('addRuleId').value==0)?'btn btn-outline-primary':'btn-outline-dark'"><i
                                 class="far fa-save"></i>
                             {{fg.get('addRuleId').value==0?'Submit':'Update'}}
+                        </button>
+                        <button class="btn btn-light ml-1" (click)="onDelete(fg.get('addRuleId').value,i)">
+                            <i class="far fa-trash-alt fa-lg text-danger"></i>
                         </button>
                     </div>
                 </form>
