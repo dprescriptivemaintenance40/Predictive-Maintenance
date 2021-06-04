@@ -302,7 +302,11 @@ export class UITreeNode implements OnInit {
     }
 
     RCAUpdateFromList(file, node){
-        
+        var data : any = []
+        data.push(file);
+        data.push(node);
+        this.tree.RCAUpdateAttachmentFromList.emit(data)
+        this.RCAFileView = false;
     }
 
     public RCAUpdateSingleAttachment : boolean = false;
@@ -318,6 +322,7 @@ export class UITreeNode implements OnInit {
             fileData.push(file)
             fileData.push(node)
             this.tree.RCAUpdateDeleteFromList.emit(fileData)
+            this.RCAFileView = false;
             // var FileId : string = file[0][0].FileId
             // var index1 = this.RCAViewAttachmentList.findIndex(std => std[0][0].FileId === FileId)
             // this.RCAViewAttachmentList.splice(index1, 1)
@@ -339,14 +344,7 @@ export class UITreeNode implements OnInit {
         }
         
     }
-
-    RCAUpdateDeleteAttach(event){
-        this.RCAFileView = false;
-        this.change.detectChanges();
-        this.RCAFileView = true;
-    }
     
-
     expand(event: Event) {
         this.node.expanded = true;
         if (this.tree.virtualScroll) {
@@ -777,6 +775,7 @@ export class Tree implements OnInit, AfterContentInit, OnChanges, OnDestroy, Blo
     @Output() rCAAttachment: EventEmitter<any> = new EventEmitter();
     @Output() uploadRCAAttachment: EventEmitter<any> = new EventEmitter();
     @Output() RCAUpdateDeleteFromList: EventEmitter<any> = new EventEmitter();
+    @Output() RCAUpdateAttachmentFromList: EventEmitter<any> = new EventEmitter();
 
     @Input() style: any;
 
