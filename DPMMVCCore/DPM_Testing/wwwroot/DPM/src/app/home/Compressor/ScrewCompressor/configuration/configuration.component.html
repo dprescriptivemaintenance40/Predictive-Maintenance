@@ -15,7 +15,7 @@
             <label style=" margin-right: 12px;">
                 <h5>Equipment Type</h5>
             </label>
-            <select [(ngModel)]="EquipmentType" class="form-select" class="form-control">
+            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
                 <option value="">Choose..</option>
                 <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
             </select>
@@ -67,14 +67,13 @@
                     </div>
                     <div *ngIf="EquipmentTypeCompressor" class="td">
                         <select class="form-control" (change)="SelectEquipmentType(fg)"
-                            [(ngModel)]="MachineTypeSelect" formControlName="equipmentType">
+                             formControlName="equipmentType">
                             <option>Screw Compressor</option>
                             <option disabled>Compressor 2</option>
                         </select>
                     </div>
                     <div *ngIf="EquipmentTypePump" class="td">
-                        <select class="form-control" (change)="SelectMachineType(fg)"
-                        [(ngModel)]="EquipmentTypeSelect" formControlName="equipmentType">
+                        <select class="form-control" formControlName="equipmentType">
                             <option>Centrifugal Pump</option>
                             <option disabled>Pump 2</option>
                         </select>
@@ -93,8 +92,7 @@
                     <div class="td">
                         <select class="form-control" formControlName="condition">
                             <option>></option>
-                            <option>
-                                << /option>
+                            <option><</option>
                             <option>=</option>
                         </select>
                     </div>

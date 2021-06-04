@@ -52,23 +52,18 @@ export class ConfigurationComponent {
   }
   SelectMachineType(fg: FormGroup) {
     if (fg.value.machineType == 'Pump' ) {
-      this.EquipmentTypePump = true;
+      this.EquipmentTypePump= true;
       this.EquipmentTypeCompressor = false;
       this.EquipmentTypeSelect = false;
-    } else if (fg.value.machineType == 'Compressor' ) {
-      this.EquipmentTypePump = false;
-      this.EquipmentTypeCompressor = true;
-      this.EquipmentTypeSelect = false;
+      this.EquipmentList = ["Pump"]
     }
     else {
-      this.EquipmentTypePump = false;
       this.EquipmentTypeCompressor = true;
+      this.EquipmentTypePump= false;
       this.EquipmentTypeSelect = false;
     }
   }
  
- 
-
   compressorImage(){
     this.enableImage=false;
     this.CancelImage=true;
@@ -102,14 +97,14 @@ export class ConfigurationComponent {
 
   recordSubmit(fg: FormGroup) {
     if (fg.value.addRuleId == 0){
-      var url : string =  this.screwCompressorAPIName.ADDRuleAPI;
+      var url : string =  this.screwCompressorAPIName.ADDRuleAPIbyID;
       this.screwCompressorMethod.postWithoutHeaders(url, fg.value).subscribe(
         (res: any) => {
           fg.patchValue({ addRuleId: res.addRuleId });
           this.showNotification('insert');
         });
     }else{
-      var url : string =  this.screwCompressorAPIName.ADDRuleAPI;
+      var url : string =  this.screwCompressorAPIName.ADDRuleAPIbyID;
       this.screwCompressorMethod.PutData(url, fg.value).subscribe(
         (res: any) => {
           this.showNotification('update');
@@ -121,7 +116,7 @@ export class ConfigurationComponent {
     if (addRuleId == 0)
       this.addRuleForms.removeAt(i);
     else if (confirm('Are you sure to delete this record ?')){
-      var url :string =  this.screwCompressorAPIName.ADDRuleAPI;
+      var url :string =  this.screwCompressorAPIName.ADDRuleAPIbyID;
       this.screwCompressorMethod.DeleteWithID(url, addRuleId).subscribe(
         res => {
           this.addRuleForms.removeAt(i);
@@ -165,6 +160,8 @@ export class ConfigurationComponent {
     this.AssetList= true
     this.configurationrecords= false
     this.AssetListBack= false
+    this.MachineType = null
+    this.EquipmentType=null
   }
   GenerateConfiguration(){
     var url : string = this.screwCompressorAPIName.ADDRuleAPI;
@@ -189,7 +186,7 @@ export class ConfigurationComponent {
           });
           this.EquipmentTypeSelect = true
           this.EquipmentTypeCompressor= true;
-          this.EquipmentTypePump = true
+          // this.EquipmentTypePump = true
         }
       }
     );
