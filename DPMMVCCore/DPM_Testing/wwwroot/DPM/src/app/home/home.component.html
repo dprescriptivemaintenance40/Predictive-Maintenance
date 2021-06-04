@@ -36,10 +36,8 @@
             </a>
             <div *ngIf="screwCompressor" id="collapseTwo" class="collapse" aria-labelledby="heading12">
                 <li>
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities25" aria-expanded="true">
-                        <span>Configuration</span>
-                        <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewConfiguration']">Configuration</a>
-                         
+                    <a [routerLink]="['/Home/Compressor/ScrewConfiguration']" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilities25" aria-expanded="true">
+                        <span>Configuration</span>                         
                     </a>
                 </li>
             </div>

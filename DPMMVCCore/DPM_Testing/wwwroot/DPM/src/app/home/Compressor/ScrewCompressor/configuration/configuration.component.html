@@ -65,18 +65,10 @@
                 <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;"
                     (submit)="recordSubmit(fg)">
                     <div class="td">
-                        <!-- <select class="form-control" (change)="SelectMachineType(fg)" formControlName="machineType">
-                            <option >Compressor</option>
-                            <option>Pump</option>
-                        </select> -->
-                        <input type="" class="form-control" (change)="SelectMachineType(fg)"  formControlName="machineType" [(ngModel)]="MachineType" />
+                        <input type="text" class="form-control" formControlName="machineType" [(ngModel)]="MachineType" disabled />
                     </div>
-                    <div *ngIf="EquipmentTypeCompressor" class="td">
-                        <input type="" class="form-control" formControlName="machineType" [(ngModel)]="MachineType" />
-                    </div>
-                    <div *ngIf="EquipmentTypePump" class="td">
-                        <!-- <div *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}></div> -->
-                        <input type="" class="form-control" formControlName="equipmentType" [(ngModel)]="EquipmentType" />
+                    <div class="td">
+                        <input type="text" class="form-control" formControlName="equipmentType" [(ngModel)]="EquipmentType" disabled />
                     </div>
                     <div class="td">
                         <input class="form-control" data-toggle="tooltip" data-placement="right"
@@ -91,12 +83,9 @@
 
                     <div class="td">
                         <select class="form-control" formControlName="condition">
-                            <option> > 
-                            </option>
-                            <option> < 
-                                </option>
-                            <option> =
-                                 </option>
+                            <option> >  </option>
+                            <option> <  </option>
+                            <option> = </option>
                         </select>
                     </div>
                     <div class="td">

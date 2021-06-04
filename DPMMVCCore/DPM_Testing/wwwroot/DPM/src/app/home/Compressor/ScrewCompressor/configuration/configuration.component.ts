@@ -52,19 +52,6 @@ export class ConfigurationComponent {
     this.title.setTitle('Screw Configuration | Dynamic Prescriptive Maintenence');
 
   }
-  SelectMachineType(fg: FormGroup) {
-    if (fg.value.machineType == 'Pump' ) {
-      this.EquipmentTypePump= true;
-      this.EquipmentTypeCompressor = false;
-      this.EquipmentTypeSelect = false;
-      this.EquipmentList = ["Pump"]
-    }
-    else {
-      this.EquipmentTypeCompressor = true;
-      this.EquipmentTypePump= false;
-      this.EquipmentTypeSelect = false;
-    }
-  }
  
   compressorImage(){
     this.enableImage=false;
@@ -88,8 +75,8 @@ export class ConfigurationComponent {
   addRuleForm() {
     this.addRuleForms.push(this.fb.group({
       addRuleId: [0],
-      machineType: ['', Validators.required],
-      equipmentType: ['', Validators.required],
+      machineType: [this.MachineType, Validators.required],
+      equipmentType: [this.EquipmentType, Validators.required],
       columns: ['', Validators.required],
       alarm: ['', Validators.required],
       trigger: ['', Validators.required],
@@ -148,26 +135,26 @@ export class ConfigurationComponent {
   }
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
-      this.EquipmentList = null
+      this.EquipmentList = []
       this.EquipmentList = ["Centrifugal Pump"]
     }
     if (this.MachineType == "Compressor") {
-      this.EquipmentList = null
+      this.EquipmentList = []
       this.EquipmentList = ["Screw Compressor"]
     }
     console.log(this.EquipmentType)
   }
 
   BackToConfiglist(){
-    this.router.navigateByUrl('/Home/Prescriptive/List');
     this.AssetList= true
     this.configurationrecords= false
     this.AssetListBack= false
-    this.MachineType = null
-    this.EquipmentType=null
+    this.MachineType = ""
+    this.EquipmentType=""
   }
   
   GenerateConfiguration(){
+    this.addRuleForms = this.fb.array([]);
     var url : string = this.screwCompressorAPIName.ADDRuleAPI;
     const params = new HttpParams()
                 .set('machineType',this.MachineType )
@@ -188,21 +175,12 @@ export class ConfigurationComponent {
               condition: [addRuleModel.Condition, Validators.required]
             }));
           });
-          this.EquipmentTypeSelect = true
-          this.EquipmentTypeCompressor= true;
         }
+        this.AssetListBack = true;
+        this.AssetList = false;
+        this.configurationrecords = true;
       }
     );
-    if (this.MachineType == "Pump" && this.EquipmentList=="Centrifugal Pump" ){
-      this.configurationrecords= true
-      this.AssetList= false
-      this.AssetListBack= true
-      // this.EquipmentTypePump= true
-      // this.EquipmentTypeCompressor= false
-    }else if (this.MachineType == "Compressor"&& this.EquipmentList=="Screw Compressor" ){
-      this.configurationrecords= true
-      this.AssetList= false
-      this.AssetListBack= true
-    }
+  
   }
 }
