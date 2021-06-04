@@ -152,7 +152,7 @@ export class ConfigurationComponent {
     this.MachineType = ""
     this.EquipmentType=""
   }
-  
+
   GenerateConfiguration(){
     this.addRuleForms = this.fb.array([]);
     var url : string = this.screwCompressorAPIName.ADDRuleAPI;
