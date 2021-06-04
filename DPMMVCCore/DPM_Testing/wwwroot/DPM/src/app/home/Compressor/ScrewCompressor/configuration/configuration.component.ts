@@ -159,13 +159,14 @@ export class ConfigurationComponent {
   }
 
   BackToConfiglist(){
+    this.router.navigateByUrl('/Home/Prescriptive/List');
     this.AssetList= true
     this.configurationrecords= false
     this.AssetListBack= false
     this.MachineType = null
     this.EquipmentType=null
-    this.router.navigateByUrl('/Home/Prescriptive/List');
   }
+  
   GenerateConfiguration(){
     var url : string = this.screwCompressorAPIName.ADDRuleAPI;
     const params = new HttpParams()
@@ -189,7 +190,6 @@ export class ConfigurationComponent {
           });
           this.EquipmentTypeSelect = true
           this.EquipmentTypeCompressor= true;
-          // this.EquipmentTypePump = true
         }
       }
     );
@@ -197,6 +197,8 @@ export class ConfigurationComponent {
       this.configurationrecords= true
       this.AssetList= false
       this.AssetListBack= true
+      // this.EquipmentTypePump= true
+      // this.EquipmentTypeCompressor= false
     }else if (this.MachineType == "Compressor"&& this.EquipmentList=="Screw Compressor" ){
       this.configurationrecords= true
       this.AssetList= false
