@@ -90,11 +90,11 @@
                         <span class="p-treenode-label">
                             <span *ngIf="!tree.getTemplateForNode(node) && (node.isParent == 'Yes' && node.isParent != undefined )">
                               <textarea [disabled]="node.disable" placeholder="Problem Statement?" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2" style="border-width: .25em;
-                              border-style: double;border-left:5px solid #000 ;" ></textarea>
+                              border: 1px solid;background-color: #fff;" ></textarea>
                             </span>
                             <span *ngIf="!tree.getTemplateForNode(node) && node.isParent == undefined">
-                                <textarea [disabled]="node.disable" placeholder="Why?" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2" style="border-width: em;border-color:#000;
-                                border-style:double;border-left:5px solid #000"></textarea>
+                                <textarea  [disabled]="node.disable" placeholder="Why?" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2" style="width:100%; ;border-width: em;border-color:#000;
+                                 border: 1px solid;background-color:#fff;"></textarea>
                               </span>
                         <span *ngIf="tree.getTemplateForNode(node)">
                                 <ng-container *ngTemplateOutlet="tree.getTemplateForNode(node); context: {$implicit: node}"></ng-container>

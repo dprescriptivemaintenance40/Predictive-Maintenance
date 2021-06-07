@@ -356,7 +356,20 @@
                         </p>
                     </div>
                 </div>
-                <div style="overflow: scroll; height: 30em;width:300%;">
+                <!-- <div class="div-in-middle">
+                    <label for="file" class="custom-label">Uploaded File</label>
+                    <div id="file ">
+                        <iframe [src]="RCAFileSafeUrl" width="200" height="200"> </iframe>
+                    </div>
+                </div> -->
+                <!-- <div *ngIf="RCAPdfViewEnable" style="margin: 10px;" id="file">
+                    <iframe [src]="RCAFileSafeUrl" width="200" height="200"> </iframe>
+                </div>
+                <div *ngIf="RCAImageViewEnable" style="margin: 10px;" id="file">
+                    <img [src]="RCAFileSafeUrl" width="200" height="200">
+             </div>
+                -->
+                <div style="overflow: scroll; height: 30em;width:350%;">
                     <label><u><b>Annexures</b></u></label>
                     <div  id="image">
                         <p-tree id="image" [value]="RCAReportTree" layout="horizontal"></p-tree>

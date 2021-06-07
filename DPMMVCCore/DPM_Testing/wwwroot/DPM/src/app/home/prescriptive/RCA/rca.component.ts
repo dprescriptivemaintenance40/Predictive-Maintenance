@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { PDFDocument } from 'pdf-lib';
+import { DomSanitizer } from '@angular/platform-browser';
 export interface TreeNode<T = any> {
     id?: number;
     label?: string;
@@ -78,13 +79,20 @@ export class RCAComponent  {
     public RCAReportData : any = []
     public RCAReportTree : any = []
     public RCAReportDate : string = ""
+    public RCAFILE : any = []
     public RCAReportRecommadtion : string = ""
     public RCAReportinputs : string = ""
     public RCAReportBodyEnabled : boolean = false
     public RCAReportfileds : boolean = false
+    public RCAFileSafeUrl: any;
+    public FileUrl: any;
+    public RCAImageViewEnable : boolean = false
+    public RCAPdfViewEnable : boolean = false
+    public XYZ: any
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
+        private sanitizer: DomSanitizer,
         public router: Router,
         private commonBL: CommonBLService,
         private RCAAPIName: PrescriptiveContantAPI,
@@ -93,8 +101,12 @@ export class RCAComponent  {
         this.addStartup();
         this.getRecordsList();
         this.getHeatExchangerData();
-    }
     
+    }
+    getFileExtension(filename) {
+        const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+        return extension;
+    }
     addStartup(){
         this.files = [{
             id: this.itemCount,
@@ -583,7 +595,6 @@ export class RCAComponent  {
                                 this.messageService.add({ severity: 'success', summary: 'success', detail: "Sucessfully attached" })
 
                             }
-
                         },
                         err => { console.log(err.error) });
             } else {
@@ -629,6 +640,7 @@ export class RCAComponent  {
 
     }
 
+
     RCAReport(p){
        this.RCAReportfileds = false
        this.RCAReportDate = moment().format('YYYY-MM-DD');
@@ -638,10 +650,27 @@ export class RCAComponent  {
        this.RCAReportData = p
        this.RCAReportTree = JSON.parse(p.RCATree)
        this.TraverseNestedJson(this.RCAReportTree)
+    //    this.PdfImageShow()
        this.RCAReportBodyEnabled = true
        this.changeDetectorRef.detectChanges()
+      
     }
-
+    // PdfImageShow(){
+    //     this.changeDetectorRef.detectChanges()
+    //     this.XYZ= this.RCAReportTree[0].children[0].children[0].RCAFILE
+    //     var DATA = JSON.parse(this.XYZ)
+    //     this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(DATA.dbPath);
+    //     this.FileUrl = DATA.dbPath;
+    //     var extension = this.getFileExtension(DATA.dbPath);
+    //     if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
+    //      this.RCAImageViewEnable = true;
+    //      this.RCAPdfViewEnable = false;
+    //  } else if (extension.toLowerCase() == 'pdf') {
+    //      this.RCAImageViewEnable = false;
+    //      this.RCAPdfViewEnable = true;
+    //  }
+    // }
+ 
 
     RCAReportDownload() {
         this.changeDetectorRef.detectChanges()
@@ -664,14 +693,15 @@ export class RCAComponent  {
              html2canvas(imageData).then( (canvas) =>
              {
                 doc.addPage('a4', 'l');
-               var img = canvas.toDataURL('image/png', 1.5,);
-               doc.addImage(img, 'PNG', 20, 200, 1000, 230);
+                var img = canvas.toDataURL('image/png', 1.5,);
+                doc.addImage(img, 'PNG', 20, 200, 1200, 230);
                 doc.setFontSize(22);
                 doc.setTextColor(0, 0, 0);
                 doc.text(20, 20, 'Annexures');
                 doc.save('RCA Report');
                 this.commonLoadingDirective.showLoading(false, 'Downloading....');
-                this.changeDetectorRef.detectChanges()
+                this.changeDetectorRef.detectChanges();
+
              })
              this.RCAReportinputs = ""
              this.RCAReportRecommadtion = ""
