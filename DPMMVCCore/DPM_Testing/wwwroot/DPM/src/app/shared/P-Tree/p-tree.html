@@ -111,7 +111,7 @@
                         <ng-container *ngIf="(node.disable == true || node.addTree ) && node.isParent == undefined">
                             <span class="p-tree-toggler pi pi-pencil" data-toggle="tooltip" data-placement="right" (click)="addNoteTonode(node)" title="Write Something" style="margin-right: 0; color:blue"></span>
                         </ng-container>
-                        <ng-container *ngIf="node.RCAFILE == '' || node.RCAFILE !='' && node.isParent == undefined">
+                        <ng-container *ngIf="node.RCAFILE == '' || node.RCAFILE !='' && node.isParent == undefined && node.disable == false">
                             <span class="p-tree-toggler pi pi-angle-double-right" style="
                             position: absolute;
                             color: black; 

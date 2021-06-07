@@ -197,12 +197,19 @@ export class UITreeNode implements OnInit {
 
 
     showRCAAttachment(event, node){
-        if(node.currentStage == 'add'){
+        if(node.currentStage == 'add' && node.disable == false){
             this.RCAUpdateAttachmentListView = false;
             this.RCAADDAttachmentListView = true
             this.RCAViewAttachmentList = []
             this.RCAViewAttachmentList = node.RCAFILE;
-        }else if(node.currentStage == 'update'){
+        }else if(node.currentStage == 'update' && node.disable == false){
+            this.RCAUpdateAttachmentListView = true;
+            this.RCAADDAttachmentListView = false
+            this.RCAViewAttachmentList = []
+            node.RCAFILE.forEach(element => {
+                this.RCAViewAttachmentList.push(JSON.parse(element))
+            });
+        }else if(node.disable == true){
             this.RCAUpdateAttachmentListView = true;
             this.RCAADDAttachmentListView = false
             this.RCAViewAttachmentList = []
@@ -264,7 +271,7 @@ export class UITreeNode implements OnInit {
     }
 
     RCAUpdateViewFromList(file, node){
-        if(node.currentStage === "add"){
+        if(node.currentStage === "add" && node.disable == false){
             this.RCAFileSafeUrl = "";
             var url = file[1]
             this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -272,7 +279,13 @@ export class UITreeNode implements OnInit {
             this.FileUrl = url;
             var extension = this.getFileExtension(file[2]);
 
-        }else if(node.currentStage === "update"){
+        }else if(node.currentStage === "update" && node.disable == false){
+            this.RCAFileSafeUrl = "";
+            this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(file[0][0].dbPath);
+            this.RCAFileUrlDownload = file[0][0].dbPath
+            this.FileUrl = file[0][0].dbPath;
+            var extension = this.getFileExtension(file[0][1]);
+        }else if(node.disable == true){
             this.RCAFileSafeUrl = "";
             this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(file[0][0].dbPath);
             this.RCAFileUrlDownload = file[0][0].dbPath
