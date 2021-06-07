@@ -644,7 +644,11 @@ export class RCAComponent  {
                         const paramsFile = new HttpParams()
                           .set('fullPath', element[0][0].dbPath)
                         this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, paramsFile)
-                        .subscribe()
+                        .subscribe(
+                            res => {
+
+                            }, error => { console.log(error.error)}
+                        )
                     });
                     
                 }
