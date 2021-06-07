@@ -651,26 +651,11 @@ export class RCAComponent  {
        this.RCAReportData = p
        this.RCAReportTree = JSON.parse(p.RCATree)
        this.TraverseNestedJson(this.RCAReportTree)
-    //    this.PdfImageShow()
        this.RCAReportBodyEnabled = true
        this.changeDetectorRef.detectChanges()
       
     }
-    // PdfImageShow(){
-    //     this.changeDetectorRef.detectChanges()
-    //     this.XYZ= this.RCAReportTree[0].children[0].children[0].RCAFILE
-    //     var DATA = JSON.parse(this.XYZ)
-    //     this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(DATA.dbPath);
-    //     this.FileUrl = DATA.dbPath;
-    //     var extension = this.getFileExtension(DATA.dbPath);
-    //     if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
-    //      this.RCAImageViewEnable = true;
-    //      this.RCAPdfViewEnable = false;
-    //  } else if (extension.toLowerCase() == 'pdf') {
-    //      this.RCAImageViewEnable = false;
-    //      this.RCAPdfViewEnable = true;
-    //  }
-    // }
+
  
 
     RCAReportDownload() {
