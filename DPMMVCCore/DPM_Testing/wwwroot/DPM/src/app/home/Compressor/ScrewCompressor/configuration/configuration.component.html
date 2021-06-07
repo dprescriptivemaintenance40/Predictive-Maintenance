@@ -29,32 +29,25 @@
         </div>
     </div>
 </div>
-<div style="margin:10px">
+<!-- <div style="margin:10px">
     <button *ngIf="AssetListBack" label="Back" type="button" class="btn btn-dark"(click)="BackToConfiglist()" pTooltip="Back to List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
 
-</div>
+</div> -->
 <br>
 <div class="container" *ngIf="configurationrecords">
-    <!-- <div class="shadow-sm p-3 mb-5 bg-white rounded"> -->
+    <div class="shadow-sm p-3 mb-5 bg-white rounded">
     <div class="table-responsive">
         <div style="padding:10px;">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm">Machine Type</div>
-                     <div  class="col-sm"></div>
-                     <div  class="col-sm"></div>
-                    <div style="text-align: left;" class="col-sm">Equipment type</div>
-                    <div  class="col-sm"></div>
-                    <div style="text-align: center;" class="col-sm-2">Column</div>
+                    <div class="col-sm-2">Column</div>
                     <div style="text-align: center;" class="col-sm-2">Alarm</div>
-                    <div style="text-align: center;" class="col-sm-2">Trigger</div>
-                    <!-- <div class="col-sm"></div> -->
-                    <div style="text-align: left;" class="col-xs">Condition</div>
-                    <div class="col-sm"></div>
+                    <div style="text-align: right;" class="col-sm-2">Trigger</div>
+                    <div style="text-align: right;" class="col-sm-2">Condition</div>
                     <div style="text-align: center;" class="col-sm">
-                    <button class="btn btn-outline-primary btn-sm" (click)="addRuleForm()">
-                        <i class="fa fa-plus"></i> New Record
-                    </button>
+                        <button class="btn btn-outline-primary btn-sm" (click)="addRuleForm()">
+                            <i class="fa fa-plus"></i> New Record
+                        </button>
                     </div>
                     <div style="text-align: center;" class="col-sm-2"></div>
                     <div class="td col-sm">
@@ -68,12 +61,12 @@
             <div class="tbody">
                 <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;"
                     (submit)="recordSubmit(fg)">
-                    <div class="td">
+                    <!-- <div class="td">
                         <input type="text" class="form-control" formControlName="machineType" [(ngModel)]="MachineType" [attr.disabled] />
                     </div>
                     <div class="td">
                         <input type="text" class="form-control" formControlName="equipmentType" [(ngModel)]="EquipmentType" [attr.disabled] />
-                    </div>
+                    </div> -->
                     <div class="td">
                         <input class="form-control" data-toggle="tooltip" data-placement="right"
                             title="{{addRuleResponse[i]}}" formControlName="columns">
@@ -109,5 +102,5 @@
             </div>
         </div>
         </div>
-    <!-- </div> -->
+    </div>
 </div>

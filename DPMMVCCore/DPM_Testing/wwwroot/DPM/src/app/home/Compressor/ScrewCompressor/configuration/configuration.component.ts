@@ -177,7 +177,6 @@ export class ConfigurationComponent {
           });
         }
         this.AssetListBack = true;
-        this.AssetList = false;
         this.configurationrecords = true;
       }
     );
