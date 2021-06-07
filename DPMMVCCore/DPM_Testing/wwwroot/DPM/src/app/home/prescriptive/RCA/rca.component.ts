@@ -694,12 +694,12 @@ export class RCAComponent  {
              let imageData= document.getElementById('image');
              domtoimage.toPng(this.image.nativeElement).then(res => {
                 imageLink = res;
+                // doc.addPage('a4', 'l');
                 doc.addPage('a4', 'l');
                 const imgProps= doc.getImageProperties(imageLink);
                 const pdfWidth = doc.internal.pageSize.getWidth();
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                // doc.addImage(imageLink, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                 doc.addImage(imageLink, 'PNG', 10, 190, pdfWidth*2, pdfHeight);
+                doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth*2.5, pdfHeight*4);
                 doc.save('RCA Report');
                 this.commonLoadingDirective.showLoading(false, 'Downloading....');
               }) 

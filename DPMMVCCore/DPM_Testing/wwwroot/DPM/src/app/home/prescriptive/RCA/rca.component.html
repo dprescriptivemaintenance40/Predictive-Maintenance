@@ -269,7 +269,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 70em;padding-left: 50;">
+            <div class="modal-body" style="overflow: scroll; height: 80em;padding-left: 50;">
                 <div id="pdfTable" #pdfTable *ngIf="RCAReportBodyEnabled">
                     <div>
                         <label><u><b>Root Cause Analysis (RCA)</b></u></label>
@@ -356,23 +356,10 @@
                         </p>
                     </div>
                 </div>
-                <!-- <div class="div-in-middle">
-                    <label for="file" class="custom-label">Uploaded File</label>
-                    <div id="file ">
-                        <iframe [src]="RCAFileSafeUrl" width="200" height="200"> </iframe>
-                    </div>
-                </div> -->
-                <!-- <div *ngIf="RCAPdfViewEnable" style="margin: 10px;" id="file">
-                    <iframe [src]="RCAFileSafeUrl" width="200" height="200"> </iframe>
-                </div>
-                <div *ngIf="RCAImageViewEnable" style="margin: 10px;" id="file">
-                    <img [src]="RCAFileSafeUrl" width="200" height="200">
-             </div>
-                -->
                 <!-- <div style="overflow: scroll; height: 30em;width:450%;"> -->
                     <div style="overflow: scroll;">
                     <label><u><b>Annexures</b></u></label>
-                    <div  id="image" #image>
+                    <div  id="image" #image >
                         <p-tree  [value]="RCAReportTree" layout="horizontal"></p-tree>
                     </div>
                     </div>
