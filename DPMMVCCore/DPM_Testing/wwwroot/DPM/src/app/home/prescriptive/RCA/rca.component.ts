@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { PDFDocument } from 'pdf-lib';
+import domtoimage from 'dom-to-image';
 import { DomSanitizer } from '@angular/platform-browser';
 export interface TreeNode<T = any> {
     id?: number;
@@ -40,7 +41,7 @@ export class RCAComponent  {
     // @ViewChild('scene1', { static: false }) scene1: ElementRef;
     // @ViewChild('scene3', { static: false }) scene3: ElementRef;
     @ViewChild('pdfTable', {static: false}) pdfTable: ElementRef;
-    
+    @ViewChild('image') image;
     panZoomController;
     panZoomController1;
     panZoomController2;
@@ -689,20 +690,32 @@ export class RCAComponent  {
                'width': 590,
                'elementHandlers': specialElementHandlers
              });
+            var imageLink : any
              let imageData= document.getElementById('image');
-             html2canvas(imageData).then( (canvas) =>
-             {
+             domtoimage.toPng(this.image.nativeElement).then(res => {
+                imageLink = res;
                 doc.addPage('a4', 'l');
-                var img = canvas.toDataURL('image/png', 1.5,);
-                doc.addImage(img, 'PNG', 20, 200, 1200, 230);
-                doc.setFontSize(22);
-                doc.setTextColor(0, 0, 0);
-                doc.text(20, 20, 'Annexures');
+                const imgProps= doc.getImageProperties(imageLink);
+                const pdfWidth = doc.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                // doc.addImage(imageLink, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                 doc.addImage(imageLink, 'PNG', 10, 190, pdfWidth*2, pdfHeight);
                 doc.save('RCA Report');
                 this.commonLoadingDirective.showLoading(false, 'Downloading....');
-                this.changeDetectorRef.detectChanges();
+              }) 
+            //  html2canvas(imageData).then( (canvas) =>
+            //  {
+            //     doc.addPage('a4', 'l');
+            //     var img = canvas.toDataURL('image/png', 1.5,);
+            //     doc.addImage(img, 'PNG', 10, 190, 1500, 190);
+            //     doc.setFontSize(22);
+            //     doc.setTextColor(0, 0, 0);
+            //     doc.text(20, 20, 'Annexures');
+            //     doc.save('RCA Report');
+            //     this.commonLoadingDirective.showLoading(false, 'Downloading....');
+            //     this.changeDetectorRef.detectChanges();
 
-             })
+            //  })
              this.RCAReportinputs = ""
              this.RCAReportRecommadtion = ""
              this.RCAReportfileds = false

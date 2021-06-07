@@ -369,10 +369,11 @@
                     <img [src]="RCAFileSafeUrl" width="200" height="200">
              </div>
                 -->
-                <div style="overflow: scroll; height: 30em;width:350%;">
+                <!-- <div style="overflow: scroll; height: 30em;width:450%;"> -->
+                    <div style="overflow: scroll;">
                     <label><u><b>Annexures</b></u></label>
-                    <div  id="image">
-                        <p-tree id="image" [value]="RCAReportTree" layout="horizontal"></p-tree>
+                    <div  id="image" #image>
+                        <p-tree  [value]="RCAReportTree" layout="horizontal"></p-tree>
                     </div>
                     </div>
              <div class="modal-footer">

@@ -93,7 +93,7 @@
                               border: 1px solid;background-color: #fff;" ></textarea>
                             </span>
                             <span *ngIf="!tree.getTemplateForNode(node) && node.isParent == undefined">
-                                <textarea  [disabled]="node.disable" placeholder="Why?" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="2" style="width:100%; ;border-width: em;border-color:#000;
+                                <textarea  [disabled]="node.disable" placeholder="Why?" class="form-control custom-textarea" [(ngModel)]="node.label" cols="20" rows="3" style="border-width: em;border-color:#000;
                                  border: 1px solid;background-color:#fff;"></textarea>
                               </span>
                         <span *ngIf="tree.getTemplateForNode(node)">
