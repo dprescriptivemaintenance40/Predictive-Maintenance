@@ -43,6 +43,7 @@ export class PrescriptiveContantAPI{
     public RCADeleteAPI : string = '/RCAAPI/DeleteRCARecord';
     public RCAUpdateAttachment : string = '/PrescriptiveAPI/UpdateFileUpload'
     public RCAUpdateAPI : string = '/RCAAPI/RCAUpdate'
+    public RCAOnlyTreeSaveAPI : string = '/RCAAPI/RCATreeUpdate';
 
     //#endregion
 

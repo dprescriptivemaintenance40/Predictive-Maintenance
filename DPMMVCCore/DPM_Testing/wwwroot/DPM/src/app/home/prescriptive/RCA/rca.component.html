@@ -1,4 +1,5 @@
 <p-toast position="top-right"></p-toast>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <style>
     .disabled {
         pointer-events: none;
@@ -183,8 +184,8 @@
                 <div class="classname" id="scene1" #scene1>
                     <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single"
                         [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)"
-                        (uploadRCAAttachment)="uploadRCAAttachment($event)"
-                        (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
+                        (uploadRCAAttachment)="uploadRCAAttachment($event)"  (RCAUpdateDeleteFromList)="RCAUpdateDeleteFromList($event)"
+                        (deleteTreeRow)="UpdatedeleteTreeRow($event)"  (RCAUpdateAttachmentFromList)="RCAUpdateAttachmentFromList($event)"></p-tree>
                         <br><br>
                 </div>
                 <!-- <div class="text-center">
@@ -273,3 +274,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal" id="UpdateAttachmentInUpdateFle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload attachment for update</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="CloseRCAUpdateUploadFile()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="uploadAttachments">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="RCAUpdateUploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                    <label class="custom-file-label" for="inputGroupFile01">Attachment</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="CloseRCAUpdateUploadFile()" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
