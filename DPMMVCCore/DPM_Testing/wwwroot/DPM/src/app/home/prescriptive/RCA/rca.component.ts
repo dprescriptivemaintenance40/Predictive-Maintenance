@@ -6,7 +6,7 @@ import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import { PrescriptiveContantAPI } from "../Shared/prescriptive.constant";
 import { ChangeDetectorRef } from "@angular/core";
 import { HttpParams } from "@angular/common/http";
-import {ConfirmationService} from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import panzoom from 'panzoom';
 import * as moment from 'moment';
 import jsPDF from 'jspdf';
@@ -37,15 +37,12 @@ export interface TreeNode<T = any> {
 @Component({
     selector: 'app-rca',
     templateUrl: './rca.component.html',
-    providers: [ConfirmationService,MessageService]
+    providers: [ConfirmationService, MessageService]
 })
-export class RCAComponent  {
-    // @ViewChild('scene', { static: false }) scene: ElementRef;
-    // @ViewChild('scene1', { static: false }) scene1: ElementRef;
-    // @ViewChild('scene3', { static: false }) scene3: ElementRef;
-    @ViewChild('pdfTable', {static: false}) pdfTable: ElementRef;
+export class RCAComponent {
+    @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
     @ViewChild('image') image;
-    tree : RCAComponent;
+    tree: RCAComponent;
     panZoomController;
     panZoomController1;
     panZoomController2;
@@ -78,25 +75,25 @@ export class RCAComponent  {
     public currentZoomLevel: number;
     public currentZoomLevel1: number;
     public currentZoomLevel2: number;
-    public UpdateFC : number = 1000
+    public UpdateFC: number = 1000
     private ADDRCANodeCount: number = 0
     private ADDRCAForSaveNodeCount: number = 0
-    private UserDetails : any = []
+    private UserDetails: any = []
     zoomLevels: number[];
     zoomLevels1: number[];
     zoomLevels2: number[];
-    public RCAReportData : any = []
-    public RCAReportTree : any = []
-    public RCAReportDate : string = ""
-    public RCAFILE : any = []
-    public RCAReportRecommadtion : string = ""
-    public RCAReportinputs : string = ""
-    public RCAReportBodyEnabled : boolean = false
-    public RCAReportfileds : boolean = false
+    public RCAReportData: any = []
+    public RCAReportTree: any = []
+    public RCAReportDate: string = ""
+    public RCAFILE: any = []
+    public RCAReportRecommadtion: string = ""
+    public RCAReportinputs: string = ""
+    public RCAReportBodyEnabled: boolean = false
+    public RCAReportfileds: boolean = false
     public RCAFileSafeUrl: any;
     public FileUrl: any;
-    public RCAImageViewEnable : boolean = false
-    public RCAPdfViewEnable : boolean = false
+    public RCAImageViewEnable: boolean = false
+    public RCAPdfViewEnable: boolean = false
     public XYZ: any
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
@@ -106,7 +103,7 @@ export class RCAComponent  {
         private confirmationService: ConfirmationService,
         private commonBL: CommonBLService,
         private RCAAPIName: PrescriptiveContantAPI,
-    ) {}
+    ) { }
     ngOnInit() {
         this.addStartup();
         this.getRecordsList();
@@ -114,13 +111,13 @@ export class RCAComponent  {
         this.getUserDetails();
     }
 
-    getUserDetails(){
+    getUserDetails() {
         this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
     }
-    
-    
- 
-    addStartup(){
+
+
+
+    addStartup() {
         this.files = [{
             id: this.itemCount,
             label: '',
@@ -145,127 +142,6 @@ export class RCAComponent  {
             }
         )
     }
-
-    // zoom(xz) {
-    //     const isSmooth = true;
-    //     const scale = this.currentZoomLevel;
-    //      var transform1
-    //     if (scale) {
-    //         if(xz== 'scene'){
-    //              transform1 = this.panZoomController.getTransform();
-              
-    //         }else  if(xz== 'scene1'){
-    //             transform1 = this.panZoomController1.getTransform();
-
-    //         } else  if(xz== 'scene3'){
-    //             transform1 = this.panZoomController2.getTransform();
-    //         }
-    //       const transform = transform1;
-    //       const deltaX = transform.x;
-    //       const deltaY = transform.y;
-    //       const offsetX = scale + deltaX;
-    //       const offsetY = scale + deltaY;
-    
-    //       if (isSmooth) {
-    //         if(xz== 'scene'){
-    //             this.panZoomController.smoothZoom(0, 0, scale);
-    //        }else  if(xz== 'scene1'){
-    //            this.panZoomController1.smoothZoom(0, 0, scale);
-    //        } else  if(xz== 'scene3'){
-    //            this.panZoomController2.smoothZoom(0, 0, scale);
-    //        }
-          
-    //       } else {
-    //         if(xz== 'scene'){
-    //          this.panZoomController.zoomTo(offsetX, offsetY, scale);
-    //        }else  if(xz== 'scene1'){
-    //         this.panZoomController1.zoomTo(offsetX, offsetY, scale);
-    //        } else  if(xz== 'scene3'){
-    //         this.panZoomController2.zoomTo(offsetX, offsetY, scale);
-    //        }
-            
-    //       }
-    //     }
-    //   }
-    
-//       zoomToggle(zoomIn: boolean, abc) {
-//         var idxvalue
-//         if (abc == 'scene') {
-//             idxvalue = this.zoomLevels.indexOf(this.currentZoomLevel);
-
-//         } else if (abc == 'scene1') {
-//             idxvalue = this.zoomLevels1.indexOf(this.currentZoomLevel);
-
-//         } else if (abc == 'scene3') {
-//             idxvalue =this.zoomLevels2.indexOf(this.currentZoomLevel);
-//         }
-//    const idx = idxvalue
-//         if (abc == 'scene') {
-//             if (zoomIn) {
-//                 if (typeof this.zoomLevels[idx + 1] !== 'undefined') {
-//                  this.currentZoomLevel = this.zoomLevels[idxvalue + 1];
-//                 }
-//             } else {
-//                 if (typeof this.zoomLevels[idx - 1] !== 'undefined') {
-//                     this.currentZoomLevel = this.zoomLevels[idxvalue - 1];
-//                 }
-//             }
-
-//         } else if (abc == 'scene1') {
-//             if (zoomIn) {
-//                 if (typeof this.zoomLevels1[idx + 1] !== 'undefined') {
-//                     this.currentZoomLevel = this.zoomLevels1[idx + 1];
-//                 }
-//             } else {
-//                 if (typeof this.zoomLevels1[idx - 1] !== 'undefined') {
-//                     this.currentZoomLevel = this.zoomLevels1[idx - 1];
-//                 }
-//             }
-//         } else if (abc == 'scene3') {
-//             if (zoomIn) {
-//                 if (typeof this.zoomLevels2[idx + 1] !== 'undefined') {
-//                     this.currentZoomLevel = this.zoomLevels2[idx + 1];
-//                 }
-//             } else {
-//                 if (typeof this.zoomLevels2[idx - 1] !== 'undefined') {
-//                     this.currentZoomLevel = this.zoomLevels2[idx - 1];
-//                 }
-//             }
-//         }
-
-//         if (this.currentZoomLevel === 1) {
-//             if (abc == 'scene') {
-//                 this.panZoomController.moveTo(0, 0);
-//                 this.panZoomController.zoomAbs(0, 0, 1);
-//             } else if (abc == 'scene1') {
-//                 this.panZoomController1.moveTo(0, 0);
-//                 this.panZoomController1.zoomAbs(0, 0, 1);
-//             } else if (abc == 'scene3') {
-//                 this.panZoomController2.moveTo(0, 0);
-//                 this.panZoomController2.zoomAbs(0, 0, 1);
-//             }
-
-//         } else {
-//             this.zoom(abc);
-//         }
-//     }
-
-    // ngAfterViewInit() {
-    //     this.zoomLevels = [0.1, 0.25, 0.5, 0.75, 1];
-    //     this.currentZoomLevel = this.zoomLevels[4];
-
-    //     this.zoomLevels1 = [0.1, 0.25, 0.5, 0.75, 1];
-    //     this.currentZoomLevel = this.zoomLevels1[4];
-
-    //     this.zoomLevels2 = [0.1, 0.25, 0.5, 0.75, 1];
-    //     this.currentZoomLevel = this.zoomLevels2[4];
-
-    //     this.panZoomController = panzoom(this.scene.nativeElement);
-    //     this.panZoomController1 = panzoom(this.scene1.nativeElement);
-    //     this.panZoomController2 = panzoom(this.scene3.nativeElement);
-    //     this.changeDetectorRef.detectChanges();
-    // }
-
     getHeatExchangerData() {
         const params = new HttpParams()
             .set("data", 'Heat Exchanger')
@@ -393,7 +269,7 @@ export class RCAComponent  {
         this.ADDDataForSaveAuth = []
         this.files = []
         this.addStartup();
-        
+
     }
 
 
@@ -414,7 +290,7 @@ export class RCAComponent  {
         }
     }
 
-    SaveADDRCAFilesToDatabase(){
+    SaveADDRCAFilesToDatabase() {
         let RCAOBJ = {
             RCAID: 0,
             TagNumber: this.TagNumber,
@@ -443,7 +319,7 @@ export class RCAComponent  {
             )
     }
 
-   async SaveAddRCAToDatabase() {
+    async SaveAddRCAToDatabase() {
         this.ADDRCANodeCount = 0;
         this.ADDRCAForSaveNodeCount = 0;
         await this.TraverseNestedJson(this.files, 'count')
@@ -456,7 +332,7 @@ export class RCAComponent  {
 
     }
 
-  async  DeleteRCARecord(p) {
+    async DeleteRCARecord(p) {
         var j = JSON.parse(p.RCATree)
         await this.TraverseNestedJson(j, 'delete')
         const params = new HttpParams()
@@ -473,11 +349,11 @@ export class RCAComponent  {
         this.AddRCAmodal.style.display = 'none'
     }
 
-    RCAHandleChange(e){
-        if(e.index === 1){
+    RCAHandleChange(e) {
+        if (e.index === 1) {
             this.Updatefiles = []
             this.cancelRCAUpdate();
-        }else if(e.index === 2){
+        } else if (e.index === 2) {
             this.files = []
             this.CancelADDRCA();
         }
@@ -580,7 +456,7 @@ export class RCAComponent  {
     }
 
 
-   async uploadRCAAttachment(event) {
+    async uploadRCAAttachment(event) {
         var FileEvent = event[0]
         var TreeNode = event[1]
         if (FileEvent.target.files.length > 0) {
@@ -591,31 +467,31 @@ export class RCAComponent  {
                 var prevName = FileEvent.target.files[0].name
                 var ext = this.getFileExtension(prevName);
                 this.UpdateFC + 1;
-                var newName : string = `${this.UserDetails.UserId}_${this.UpdateRecordList[0].RCALabel}_${this.UpdateRecordList[0].TagNumber}_${TreeNode.id}_${this.UpdateFC}.${ext}` 
+                var newName: string = `${this.UserDetails.UserId}_${this.UpdateRecordList[0].RCALabel}_${this.UpdateRecordList[0].TagNumber}_${TreeNode.id}_${this.UpdateFC}.${ext}`
                 const formData = new FormData();
                 formData.append('file', fileToUpload, newName);
                 var url: string = this.RCAAPIName.FMEAFileUpload
                 this.commonBL.postWithoutHeaders(url, formData)
                     .subscribe(
                         (res: any) => {
-                            if(TreeNode.RCAFILE === ''){
-                               var Data : any = [];
-                               Data.push(res);
-                               Data.push(prevName)
-                               TreeNode.RCAFILE.push(JSON.stringify(Data)); 
-                            }else if(TreeNode.RCAFILE !== ''){
-                                var Data1 : any = [];
-                                var Data2 : any = [];
-                                var Data3 : any = [];
+                            if (TreeNode.RCAFILE === '') {
+                                var Data: any = [];
+                                Data.push(res);
+                                Data.push(prevName)
+                                TreeNode.RCAFILE.push(JSON.stringify(Data));
+                            } else if (TreeNode.RCAFILE !== '') {
+                                var Data1: any = [];
+                                var Data2: any = [];
+                                var Data3: any = [];
                                 TreeNode.RCAFILE.forEach(element => {
                                     Data1.push(element);
                                 });
-                               
+
                                 Data2.push(res);
                                 Data2.push(prevName);
                                 Data3.push(Data2)
                                 Data1.push(JSON.stringify(Data3));
-                                TreeNode.RCAFILE = Data1; 
+                                TreeNode.RCAFILE = Data1;
                             }
                             let RCAOBJ = {
                                 RCAID: this.UpdateRecordList[0].RCAID,
@@ -627,7 +503,7 @@ export class RCAComponent  {
                             }
                             this.commonBL.PutData(this.RCAAPIName.RCAOnlyTreeSaveAPI, RCAOBJ)
                                 .subscribe(
-                                    res =>{}, err => { console.log(err.error)}
+                                    res => { }, err => { console.log(err.error) }
                                 )
 
                         },
@@ -635,8 +511,8 @@ export class RCAComponent  {
             } else {
                 this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
             }
-         }
-        
+        }
+
     }
 
     RCATreeDisplay(p) {
@@ -650,55 +526,55 @@ export class RCAComponent  {
     }
 
 
-   async TraverseNestedJson(val: any, fun :string) {
+    async TraverseNestedJson(val: any, fun: string) {
         for (let index = 0; index < val.length; index++) {
-            if(fun === 'count'){
-             this.ADDRCANodeCount = this.ADDRCANodeCount + 1;
+            if (fun === 'count') {
+                this.ADDRCANodeCount = this.ADDRCANodeCount + 1;
             }
-            if(fun === 'delete'){
-                if(val[index].RCAFILE !== undefined && val[index].RCAFILE !== ''){
-                    var deleteAttachment : any = []
+            if (fun === 'delete') {
+                if (val[index].RCAFILE !== undefined && val[index].RCAFILE !== '') {
+                    var deleteAttachment: any = []
                     val[index].RCAFILE.forEach(element => {
                         deleteAttachment.push(JSON.parse(element))
                     });
                     deleteAttachment.forEach(element => {
                         const paramsFile = new HttpParams()
-                          .set('fullPath', element[0][0].dbPath)
+                            .set('fullPath', element[0][0].dbPath)
                         this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, paramsFile)
-                        .subscribe(
-                            res => {
+                            .subscribe(
+                                res => {
 
-                            }, error => { console.log(error.error)}
-                        )
+                                }, error => { console.log(error.error) }
+                            )
                     });
-                    
+
                 }
-                
+
             }
-            if(fun === 'disable'){
+            if (fun === 'disable') {
                 val[index].addTree = false;
                 val[index].deleteTree = false;
                 val[index].disable = true;
-            }else if(fun === 'update'){
+            } else if (fun === 'update') {
                 val[index].currentStage = 'update';
-            }else if(fun === 'add'){
+            } else if (fun === 'add') {
                 this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
-                if(val[index].RCAFILE !== undefined && val[index].RCAFILE !== ''){
+                if (val[index].RCAFILE !== undefined && val[index].RCAFILE !== '') {
                     let filess = val[index].RCAFILE
-                    var FC : number = 1;
+                    var FC: number = 1;
                     for (let FI = 0; FI < filess.length; FI++) {
                         var prevName = filess[FI][0].target.files[0].name
                         var ext = this.getFileExtension(prevName);
-                        var newName : string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${val[index].id}_${FC}.${ext}` 
-                        var f : any = []
+                        var newName: string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${val[index].id}_${FC}.${ext}`
+                        var f: any = []
                         f.push(filess[FI][0]);
                         f.push(newName);
                         f.push(filess[FI][2])
                         f.push(FI)
                         f.push(val[index])
                         let ff = f;
-                        var res =  await this.ADDRCAUploadAttachment(ff);
-                        var abc : any =[], abc2 : any =[]
+                        var res = await this.ADDRCAUploadAttachment(ff);
+                        var abc: any = [], abc2: any = []
                         abc.push(res);
                         abc.push(f[2]);
                         abc2.push(abc);
@@ -706,59 +582,59 @@ export class RCAComponent  {
                         q[f[3]] = JSON.stringify(abc2);
                         val[index].RCAFILE = q;
                         FC = FC + 1;
-                        if(this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount){
+                        if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
                             this.SaveADDRCAFilesToDatabase();
                         }
                     }
-                    
+
                 }
             }
             if (val[index].children.length > 0) {
                 var Data: any = val[index].children;
                 for (let index1 = 0; index1 < Data.length; index1++) {
-                    if(fun === 'count'){
+                    if (fun === 'count') {
                         this.ADDRCANodeCount = this.ADDRCANodeCount + 1;
                     }
-                    if(fun === 'delete'){
-                        if(Data[index1].RCAFILE !== undefined && Data[index1].RCAFILE !== ''){
-                            var deleteAttachment : any = []
+                    if (fun === 'delete') {
+                        if (Data[index1].RCAFILE !== undefined && Data[index1].RCAFILE !== '') {
+                            var deleteAttachment: any = []
                             Data[index1].RCAFILE.forEach(element => {
                                 deleteAttachment.push(JSON.parse(element))
                             });
                             deleteAttachment.forEach(element => {
                                 const paramsFile = new HttpParams()
-                                      .set('fullPath', element[0][0].dbPath)
+                                    .set('fullPath', element[0][0].dbPath)
                                 this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, paramsFile)
-                                .subscribe() 
+                                    .subscribe()
                             });
-                            
+
                         }
-                        
+
                     }
-                    if(fun === 'disable'){
+                    if (fun === 'disable') {
                         Data[index1].addTree = false;
                         Data[index1].deleteTree = false;
                         Data[index1].disable = true;
-                    }else if(fun === 'update'){
+                    } else if (fun === 'update') {
                         Data[index1].currentStage = 'update';
-                    }else if(fun === 'add'){
+                    } else if (fun === 'add') {
                         this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
-                        if( Data[index1].RCAFILE !== undefined && Data[index1].RCAFILE !== ''){
+                        if (Data[index1].RCAFILE !== undefined && Data[index1].RCAFILE !== '') {
                             let filess = Data[index1].RCAFILE
-                            var FC : number = 1;
+                            var FC: number = 1;
                             for (let FI = 0; FI < filess.length; FI++) {
                                 var prevName = filess[FI][0].target.files[0].name
                                 var ext = this.getFileExtension(prevName);
-                                var newName : string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${Data[index1].id}_${FC}.${ext}` 
-                                var fz : any = [];
+                                var newName: string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${Data[index1].id}_${FC}.${ext}`
+                                var fz: any = [];
                                 fz.push(filess[FI][0]);
                                 fz.push(newName);
                                 fz.push(filess[FI][2])
                                 fz.push(FI)
                                 fz.push(Data[index1])
                                 let ff = fz;
-                                var res =  await this.ADDRCAUploadAttachment(ff);
-                                var abc : any =[], abc2 : any =[]
+                                var res = await this.ADDRCAUploadAttachment(ff);
+                                var abc: any = [], abc2: any = []
                                 abc.push(res);
                                 abc.push(ff[2]);
                                 abc2.push(abc);
@@ -766,11 +642,11 @@ export class RCAComponent  {
                                 q[ff[3]] = JSON.stringify(abc2);
                                 Data[index1].RCAFILE = q;
                                 FC = FC + 1;
-                                if(this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount){
+                                if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
                                     this.SaveADDRCAFilesToDatabase();
                                 }
                             }
-                            
+
                         }
                     }
                     if (Data[index1].children.length > 0) {
@@ -789,52 +665,52 @@ export class RCAComponent  {
     }
 
 
-    RCAReport(p){
-       this.RCAReportfileds = false
-       this.RCAReportDate = moment().format('YYYY-MM-DD');
-       this.RCAReportBodyEnabled = false
-       this.RCAReportData = []
-       this.RCAReportTree = []
-       this.RCAReportData = p
-       this.RCAReportTree = JSON.parse(p.RCATree)
-    //    this.TraverseNestedJson(this.RCAReportTree)
-       this.RCAReportBodyEnabled = true
-       this.changeDetectorRef.detectChanges()
-      
+    RCAReport(p) {
+        this.RCAReportfileds = false
+        this.RCAReportDate = moment().format('YYYY-MM-DD');
+        this.RCAReportBodyEnabled = false
+        this.RCAReportData = []
+        this.RCAReportTree = []
+        this.RCAReportData = p
+        this.RCAReportTree = JSON.parse(p.RCATree)
+        this.TraverseNestedJson(this.RCAReportTree, "disable");
+        this.RCAReportBodyEnabled = true
+        this.changeDetectorRef.detectChanges()
+
     }
 
- 
+
 
     RCAReportDownload() {
         this.changeDetectorRef.detectChanges()
         this.commonLoadingDirective.showLoading(true, 'Downloading....');
         if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
-            const doc = new jsPDF('p', 'pt','a4', true);
+            const doc = new jsPDF('p', 'pt', 'a4', true);
             this.RCAReportfileds = true
             this.changeDetectorRef.detectChanges()
-             const specialElementHandlers = {
-               '#editor':  (element, renderer) =>{
-                 return true;
-               }
-             };
-             const pdfTable = this.pdfTable.nativeElement;
-             doc.fromHTML(pdfTable.innerHTML, 15, 15, {
-               'width': 590,
-               'elementHandlers': specialElementHandlers
-             });
-            var imageLink : any
-             let imageData= document.getElementById('image');
-             domtoimage.toPng(this.image.nativeElement).then(res => {
+            const specialElementHandlers = {
+                '#editor': (element, renderer) => {
+                    return true;
+                }
+            };
+            const pdfTable = this.pdfTable.nativeElement;
+            doc.fromHTML(pdfTable.innerHTML, 15, 15, {
+                'width': 590,
+                'elementHandlers': specialElementHandlers
+            });
+            var imageLink: any
+            let imageData = document.getElementById('image');
+            domtoimage.toPng(this.image.nativeElement).then(res => {
                 imageLink = res;
                 // doc.addPage('a4', 'l');
                 doc.addPage('a4', 'l');
-                const imgProps= doc.getImageProperties(imageLink);
+                const imgProps = doc.getImageProperties(imageLink);
                 const pdfWidth = doc.internal.pageSize.getWidth();
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth*2.5, pdfHeight*4);
+                doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
                 doc.save('RCA Report');
                 this.commonLoadingDirective.showLoading(false, 'Downloading....');
-              }) 
+            })
             //  html2canvas(imageData).then( (canvas) =>
             //  {
             //     doc.addPage('a4', 'l');
@@ -848,12 +724,12 @@ export class RCAComponent  {
             //     this.changeDetectorRef.detectChanges();
 
             //  })
-             this.RCAReportinputs = ""
-             this.RCAReportRecommadtion = ""
-             this.RCAReportfileds = false
-             this.RCAReportBodyEnabled = true
-        }else{
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail:'Please fill the details'})
+            this.RCAReportinputs = ""
+            this.RCAReportRecommadtion = ""
+            this.RCAReportfileds = false
+            this.RCAReportBodyEnabled = true
+        } else {
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please fill the details' })
         }
     }
 
@@ -862,38 +738,38 @@ export class RCAComponent  {
         if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
             this.RCAReportfileds = true;
             this.changeDetectorRef.detectChanges();
-             let popupWinindow;
-             let printContents = document.getElementById('RCAREPORT').innerHTML;
-             popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-             popupWinindow.document.open();
-             let documentContent = "<html><head>";
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/line.gif">';
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/color.png">';
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/hue.png">';
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
-             documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
-             documentContent += '</head>';
-             documentContent += '<body onload="window.print()">'+ printContents + '</body></html>'
-             popupWinindow.document.write(documentContent);
-             popupWinindow.document.close();
-             this.RCAReportfileds = false;
+            let popupWinindow;
+            let printContents = document.getElementById('RCAREPORT').innerHTML;
+            popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+            popupWinindow.document.open();
+            let documentContent = "<html><head>";
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/line.gif">';
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/color.png">';
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/images/hue.png">';
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
+            documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
+            documentContent += '</head>';
+            documentContent += '<body onload="window.print()">' + printContents + '</body></html>'
+            popupWinindow.document.write(documentContent);
+            popupWinindow.document.close();
+            this.RCAReportfileds = false;
             this.changeDetectorRef.detectChanges();
-        }else{
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail:'Please fill the details'})
+        } else {
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please fill the details' })
         }
     }
-  async ADDRCAUploadAttachment(event){
-    const formData = new FormData();
-    var FileEvent = event[0]
-    let fileToUpload = FileEvent.target.files[0];
-    formData.append('file', fileToUpload, event[1]);
-    var url: string = this.RCAAPIName.FMEAFileUpload
-    return await this.commonBL.postWithoutHeaders(url, formData)
-                 .toPromise()
+    async ADDRCAUploadAttachment(event) {
+        const formData = new FormData();
+        var FileEvent = event[0]
+        let fileToUpload = FileEvent.target.files[0];
+        formData.append('file', fileToUpload, event[1]);
+        var url: string = this.RCAAPIName.FMEAFileUpload
+        return await this.commonBL.postWithoutHeaders(url, formData)
+            .toPromise()
     }
 
     getFileExtension(filename) {
@@ -902,131 +778,131 @@ export class RCAComponent  {
     }
 
 
-    RCAUpdateDeleteFromList(event){
+    RCAUpdateDeleteFromList(event) {
         this.confirmationService.confirm({
-        message: 'Are you sure that you want to proceed?',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-            var FileId : string = event[0][0][0].FileId
-            var data : any = []; 
-            event[1].RCAFILE.forEach(element => {
-                data.push(JSON.parse(element))
-            });
-            var index1 = data.findIndex(std => std[0][0].FileId === FileId)
-            data.splice(index1, 1)
-            let d : any = []
-            data.forEach(element => {
-                d.push(JSON.stringify(element))
-            });
-            event[1].RCAFILE = d;
-            const params = new HttpParams()
-            .set('fullPath', event[0][0][0].dbPath)
-            this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
-            .subscribe(
-                res => {
-                    let RCAOBJ = {
-                        RCAID: this.UpdateRecordList[0].RCAID,
-                        RCATree: JSON.stringify(this.Updatefiles),
-                        TagNumber: this.UpdateRecordList[0].TagNumber,
-                        RCALabel: this.UpdateRecordList[0].RCALabel,
-                        RCAEquipment: this.ADDRCAMachineType,
-                        RCAFailureMode: this.ADDRCAFailureMode,
-                    }
-                    this.commonBL.PutData(this.RCAAPIName.RCAOnlyTreeSaveAPI, RCAOBJ)
-                        .subscribe(
-                            res =>{}, err => { console.log(err.error)}
-                        )
-                }
-            )
-        }
+            message: 'Are you sure that you want to proceed?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                var FileId: string = event[0][0][0].FileId
+                var data: any = [];
+                event[1].RCAFILE.forEach(element => {
+                    data.push(JSON.parse(element))
+                });
+                var index1 = data.findIndex(std => std[0][0].FileId === FileId)
+                data.splice(index1, 1)
+                let d: any = []
+                data.forEach(element => {
+                    d.push(JSON.stringify(element))
+                });
+                event[1].RCAFILE = d;
+                const params = new HttpParams()
+                    .set('fullPath', event[0][0][0].dbPath)
+                this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
+                    .subscribe(
+                        res => {
+                            let RCAOBJ = {
+                                RCAID: this.UpdateRecordList[0].RCAID,
+                                RCATree: JSON.stringify(this.Updatefiles),
+                                TagNumber: this.UpdateRecordList[0].TagNumber,
+                                RCALabel: this.UpdateRecordList[0].RCALabel,
+                                RCAEquipment: this.ADDRCAMachineType,
+                                RCAFailureMode: this.ADDRCAFailureMode,
+                            }
+                            this.commonBL.PutData(this.RCAAPIName.RCAOnlyTreeSaveAPI, RCAOBJ)
+                                .subscribe(
+                                    res => { }, err => { console.log(err.error) }
+                                )
+                        }
+                    )
+            }
         })
     }
 
 
-   public RCAUpdateUpload : any;  
-   public RCAUpdateUploadData : any;    
-   RCAUpdateAttachmentFromList(event){
-    this.confirmationService.confirm({
-        message: 'Are you sure that you want to update the attachment, this will delete old attachments?',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-            this.RCAUpdateUploadData = []
-            this.RCAUpdateUploadData = event;
-            this.RCAUpdateUpload = document.getElementById("UpdateAttachmentInUpdateFle")
-            this.RCAUpdateUpload.style.display = 'block' 
-        }
+    public RCAUpdateUpload: any;
+    public RCAUpdateUploadData: any;
+    RCAUpdateAttachmentFromList(event) {
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to update the attachment, this will delete old attachments?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.RCAUpdateUploadData = []
+                this.RCAUpdateUploadData = event;
+                this.RCAUpdateUpload = document.getElementById("UpdateAttachmentInUpdateFle")
+                this.RCAUpdateUpload.style.display = 'block'
+            }
         })
-   }
+    }
 
-   RCAUpdateUploadFile(event){
-       
-    var FileData = this.RCAUpdateUploadData[0]
-    var TreeNode =  this.RCAUpdateUploadData[1]
-    if (event.target.files.length > 0) {
-        if (event.target.files[0].type === 'application/pdf'
-            || event.target.files[0].type === 'image/png'
-            || event.target.files[0].type === 'image/jpeg') {
-            let fileToUpload = event.target.files[0];
-            var fileName = event.target.files[0].name
-            var ext = this.getFileExtension(fileName);
-            this.UpdateFC + 1;
-            var newName : string = `${this.UserDetails.UserId}_${this.UpdateRecordList[0].RCALabel}_${this.UpdateRecordList[0].TagNumber}_${TreeNode.id}_${this.UpdateFC}.${ext}` 
-            const formData = new FormData();
-            formData.append('file', fileToUpload, newName);
-            var url: string = this.RCAAPIName.FMEAFileUpload
-            this.commonBL.postWithoutHeaders(url, formData)
-                .subscribe(
-                    (res: any) => {
-                            var Data1 : any = [];
-                            var Data2 : any = [];
-                            var Data3 : any = [];
-                            var Data4 : any = [];
+    RCAUpdateUploadFile(event) {
+
+        var FileData = this.RCAUpdateUploadData[0]
+        var TreeNode = this.RCAUpdateUploadData[1]
+        if (event.target.files.length > 0) {
+            if (event.target.files[0].type === 'application/pdf'
+                || event.target.files[0].type === 'image/png'
+                || event.target.files[0].type === 'image/jpeg') {
+                let fileToUpload = event.target.files[0];
+                var fileName = event.target.files[0].name
+                var ext = this.getFileExtension(fileName);
+                this.UpdateFC + 1;
+                var newName: string = `${this.UserDetails.UserId}_${this.UpdateRecordList[0].RCALabel}_${this.UpdateRecordList[0].TagNumber}_${TreeNode.id}_${this.UpdateFC}.${ext}`
+                const formData = new FormData();
+                formData.append('file', fileToUpload, newName);
+                var url: string = this.RCAAPIName.FMEAFileUpload
+                this.commonBL.postWithoutHeaders(url, formData)
+                    .subscribe(
+                        (res: any) => {
+                            var Data1: any = [];
+                            var Data2: any = [];
+                            var Data3: any = [];
+                            var Data4: any = [];
                             TreeNode.RCAFILE.forEach(element => {
                                 Data1.push(JSON.parse(element));
                             });
                             Data2.push(res);
                             Data2.push(fileName);
                             Data3.push(Data2)
-                            var index = Data1.findIndex(std=> std[0][0].FileId == FileData[0][0].FileId);
+                            var index = Data1.findIndex(std => std[0][0].FileId == FileData[0][0].FileId);
                             const paramsFile = new HttpParams()
-                                 .set('fullPath', Data1[index][0][0].dbPath)
+                                .set('fullPath', Data1[index][0][0].dbPath)
                             this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, paramsFile)
-                            .subscribe()
-                            Data1[index]=Data3
+                                .subscribe()
+                            Data1[index] = Data3
                             Data1.forEach(element => {
                                 Data4.push(JSON.stringify(element))
                             });
-                            TreeNode.RCAFILE = Data4; 
-                        
-                        let RCAOBJ = {
-                            RCAID: this.UpdateRecordList[0].RCAID,
-                            RCATree: JSON.stringify(this.Updatefiles),
-                            TagNumber: this.UpdateRecordList[0].TagNumber,
-                            RCALabel: this.UpdateRecordList[0].RCALabel,
-                            RCAEquipment: this.ADDRCAMachineType,
-                            RCAFailureMode: this.ADDRCAFailureMode,
-                        }
-                        this.commonBL.PutData(this.RCAAPIName.RCAOnlyTreeSaveAPI, RCAOBJ)
-                            .subscribe(
-                                res =>{}, err => { console.log(err.error)}
-                            )
+                            TreeNode.RCAFILE = Data4;
 
-                    },
-                    err => { console.log(err.error) });
-        } else {
-            this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
+                            let RCAOBJ = {
+                                RCAID: this.UpdateRecordList[0].RCAID,
+                                RCATree: JSON.stringify(this.Updatefiles),
+                                TagNumber: this.UpdateRecordList[0].TagNumber,
+                                RCALabel: this.UpdateRecordList[0].RCALabel,
+                                RCAEquipment: this.ADDRCAMachineType,
+                                RCAFailureMode: this.ADDRCAFailureMode,
+                            }
+                            this.commonBL.PutData(this.RCAAPIName.RCAOnlyTreeSaveAPI, RCAOBJ)
+                                .subscribe(
+                                    res => { }, err => { console.log(err.error) }
+                                )
+
+                        },
+                        err => { console.log(err.error) });
+            } else {
+                this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Only Pdf's and Images are allowed" })
+            }
         }
-     }
 
 
-    this.RCAUpdateUploadData = []
-    this.RCAUpdateUpload.style.display = 'none' 
-   }
-   CloseRCAUpdateUploadFile(){
-    this.RCAUpdateUploadData = []
-    this.RCAUpdateUpload.style.display = 'none' 
-  }
+        this.RCAUpdateUploadData = []
+        this.RCAUpdateUpload.style.display = 'none'
+    }
+    CloseRCAUpdateUploadFile() {
+        this.RCAUpdateUploadData = []
+        this.RCAUpdateUpload.style.display = 'none'
+    }
 
 }

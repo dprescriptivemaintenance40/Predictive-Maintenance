@@ -65,9 +65,6 @@
                                             <a title="Delete {{p.RCALabel}}" style="color: red;" (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
-                                    <!-- <tr *ngIf="RCAListRecords.length == 0">
-                                        <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show </td>
-                                    </tr> -->
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
@@ -107,11 +104,6 @@
                     <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
                     </p-tree><br><br>
                 </div>
-                <!-- <div class="text-center">
-                    <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene')">-</a>
-                    <span>{{currentZoomLevel * 100}}%</span>
-                    <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true, 'scene')">+</a>
-                   </div> -->
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
@@ -132,15 +124,6 @@
                             </select>
                         </div>
                     </li>
-                    <!-- <li class="list-group-item">
-                        <div class="input-group mb-3">
-                            <label style=" margin-right: 12px;">Tag Number</label>
-                            <select class="form-select" [(ngModel)]="UpdateSelectedTagNumber" class="form-control">
-                                <option value="">Choose..</option>
-                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option>
-                            </select>
-                        </div>
-                    </li> -->
                     <li class="list-group-item">
                         <button class="btn btn-dark" (click)="UpdateTagNumberSelect()">Done</button>
                     </li>
@@ -178,11 +161,6 @@
                         (deleteTreeRow)="UpdatedeleteTreeRow($event)"  (RCAUpdateAttachmentFromList)="RCAUpdateAttachmentFromList($event)"></p-tree>
                         <br><br>
                 </div>
-                <!-- <div class="text-center">
-                    <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene1')">-</a>
-                    <span>{{currentZoomLevel * 100}}%</span>
-                    <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true , 'scene1')">+</a>
-                   </div> -->
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
@@ -246,11 +224,6 @@
                 <div id="scene3" #scene3>
                     <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
                 </div><br><br>
-                <!-- <div class="text-center">
-                <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false,'scene3')">-</a>
-                <span>{{currentZoomLevel * 100}}%</span>
-                <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true,'scene3')">+</a>
-            </div> -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()" data-dismiss="modal">Close</button>
@@ -259,11 +232,7 @@
     </div>
 </div>
 
-<style>
-    /* .modal-content {
-    width: 250%;
-}  */
-</style>
+
 <div class="modal fade" id="rcaReport" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
