@@ -197,8 +197,8 @@
                                     <tr>
                                       <th scope="col">#</th>
                                       <th scope="col">Name</th>
-                                      <th *ngIf="RCAUpdateAttachmentListView" scope="col">Update</th>
-                                      <th scope="col">Delete</th>
+                                      <th *ngIf="RCAUpdateAttachmentListView && node.disable == false" scope="col">Update</th>
+                                      <th *ngIf="node.disable == false"  scope="col">Delete</th>
                                     </tr>
                                 </thead>
                                <tbody *ngIf="RCAADDAttachmentListView">
@@ -206,15 +206,15 @@
                                         <td>{{i+1}}</td>
                                         <td (click)="RCAUpdateViewFromList(file, node)" data-toggle="tooltip" data-placement="right" title="View Attachment" style="color:blue;">{{file[2]}}</td>
                                         <!-- <td><a (click)="RCAUpdateFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Update Attachment" style="color:black;" > <i class="pi pi-pencil"></i></a></td> -->
-                                        <td><a (click)="RCAUpdateDeleteFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Delete Attachment" style="color:red;" > <i class="pi pi-times-circle"></i></a></td>
+                                        <td *ngIf="node.disable == false" ><a (click)="RCAUpdateDeleteFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Delete Attachment" style="color:red;" > <i class="pi pi-times-circle"></i></a></td>
                                     </tr>
                                </tbody>
                                <tbody *ngIf="RCAUpdateAttachmentListView">
                                 <tr *ngFor="let file of RCAViewAttachmentList let i = index ;">
                                     <td>{{i+1}}</td>
                                     <td (click)="RCAUpdateViewFromList(file, node)" data-toggle="tooltip" data-placement="right" title="View Attachment" style="color:blue;">{{file[0][1]}}</td>
-                                    <td><a (click)="RCAUpdateFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Update Attachment" style="color:black;" > <i class="pi pi-pencil"></i></a></td>
-                                    <td><a (click)="RCAUpdateDeleteFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Delete Attachment" style="color:red;" > <i class="pi pi-times-circle"></i></a></td>
+                                    <td *ngIf="node.disable == false" ><a (click)="RCAUpdateFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Update Attachment" style="color:black;" > <i class="pi pi-pencil"></i></a></td>
+                                    <td *ngIf="node.disable == false" ><a (click)="RCAUpdateDeleteFromList(file, node)" data-toggle="tooltip" data-placement="right" title="Delete Attachment" style="color:red;" > <i class="pi pi-times-circle"></i></a></td>
                                 </tr>
                            </tbody>
                             </table>
