@@ -163,8 +163,11 @@
 .p-tree.p-tree-horizontal .p-treenode-connector-line {
     background: url("./images/line.gif") repeat-y scroll 0 0 transparent;
     width: 1px;
+    border:1px solid;
+    height:56px
 }
 
 .p-tree.p-tree-horizontal table {
     height: 0;
 }
+

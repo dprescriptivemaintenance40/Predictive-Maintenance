@@ -104,6 +104,7 @@ export class UITreeNode implements OnInit {
         this.AttachmentOverlay = false
     }
 
+    
     NodeSelection(node) {
         node.edit = false;
         this.showOverlay = true;
