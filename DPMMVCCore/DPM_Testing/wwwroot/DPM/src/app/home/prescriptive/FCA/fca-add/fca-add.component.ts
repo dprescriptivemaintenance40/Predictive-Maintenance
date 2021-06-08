@@ -1719,7 +1719,7 @@ export class FCAADDComponent implements OnInit {
   }
 
   getMSSLibraryDataInJSon() {
-    this.http.get<any>('dist/DPM/assets/MSS_Library/mss_library.json').subscribe(
+    this.http.get<any>('dist/DPM/assets/Library/mss_library.json').subscribe(
       res => {
         this.MSSLibraryJsonData = res;
       }, error => { console.log(error.error) }

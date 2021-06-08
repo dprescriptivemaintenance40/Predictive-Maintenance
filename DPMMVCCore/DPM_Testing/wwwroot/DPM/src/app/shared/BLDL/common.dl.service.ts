@@ -84,10 +84,15 @@ export class CommonDLService {
 
 
     public GetMSSLibrary(){
-        return this.http.get('dist/DPM/assets/MSS_Library/MSS_Library.xlsx', {responseType: 'blob'})
+        return this.http.get('dist/DPM/assets/Library/MSS_Library.xlsx', {responseType: 'blob'})
     }
 
+    public GetFailureComponents(){
+        return this.http.get('dist/DPM/assets/Library/FailureComponents.xlsx', {responseType: 'blob'})
+    }
 
-
+    public GetFailureCause(){
+        return this.http.get('dist/DPM/assets/Library/FailureCause.xlsx', {responseType: 'blob'})
+    }
 
 }

@@ -266,7 +266,6 @@ export class RCAComponent  {
             disable: false,
             children: []
         }
-        var id = obj.id;
         if (event.isParent == 'Yes' && event.label == '') {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add problem statment to node" })
         } else if (event.isParent == 'Yes' && event.label != '') {

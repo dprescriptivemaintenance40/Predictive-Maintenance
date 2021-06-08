@@ -8,23 +8,24 @@ import { DragDropModule } from "primeng/dragdrop";
 import { InputTextModule } from "primeng/inputtext";
 import { MessageModule } from "primeng/message";
 import { MessagesModule } from "primeng/messages";
-import { OrganizationChartModule } from "primeng/organizationchart";
 import { PasswordModule } from "primeng/password";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { StepsModule } from "primeng/steps";
 import { TableModule } from "primeng/table";
 import { TreeModule } from "./P-Tree/p-tree";
 import { ToastModule } from "primeng/toast";
-import {SliderModule} from 'primeng/slider';
-import {DialogModule} from 'primeng/dialog';
+import { SliderModule } from 'primeng/slider';
+import { DialogModule } from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
-import {TooltipModule} from 'primeng/tooltip';
+import { TooltipModule } from 'primeng/tooltip';
 import { TabViewModule } from 'primeng/tabview';
+import { OrganizationChartModule } from "./organization-chart/organization-chart.component";
+import { SplitButtonModule } from 'primeng/splitbutton';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
-    imports: [CommonModule,      
+    imports: [CommonModule,
         TableModule,
         FormsModule,
         ReactiveFormsModule,
@@ -34,7 +35,7 @@ import { TabViewModule } from 'primeng/tabview';
         InputTextModule,
         PasswordModule,
         MessagesModule,
-        MessageModule, 
+        MessageModule,
         OrganizationChartModule,
         CardModule,
         StepsModule,
@@ -44,7 +45,8 @@ import { TabViewModule } from 'primeng/tabview';
         DialogModule,
         OverlayPanelModule,
         TreeModule,
-        TooltipModule],
+        TooltipModule,
+        SplitButtonModule],
     exports: [CommonModule,
         CommonLoadingComponent,
         TableModule,
@@ -56,7 +58,7 @@ import { TabViewModule } from 'primeng/tabview';
         InputTextModule,
         PasswordModule,
         MessagesModule,
-        MessageModule,     
+        MessageModule,
         OrganizationChartModule,
         CardModule,
         StepsModule,
@@ -68,7 +70,8 @@ import { TabViewModule } from 'primeng/tabview';
         DialogModule,
         OverlayPanelModule,
         TabViewModule,
-        TooltipModule]
+        TooltipModule,
+        SplitButtonModule]
 })
 export class SharedModule {
 

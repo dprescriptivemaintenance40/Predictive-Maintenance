@@ -1,0 +1,100 @@
+<tbody *ngIf="node">
+    <tr>
+        <td #container [attr.colspan]="colspan">
+            <div [class]="node.styleClass" [ngClass]="{'p-organizationchart-node-content': true, 'p-organizationchart-selectable-node': chart.selectionMode && node.selectable !== false,'p-highlight':isSelected()}" (click)="onNodeClick($event,node)">
+                <div *ngIf="!node.ANDORLogic">
+                    <div *ngIf="!chart.getTemplateForNode(node)">{{node.label}}</div>
+                    <div *ngIf="chart.getTemplateForNode(node)">
+                        <ng-container *ngTemplateOutlet="chart.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
+                    </div>
+                </div>
+                <div *ngIf="node.ANDORLogic">
+                    <span class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="onDeleteNode(node)"></span>
+                    <div *ngIf="!chart.getTemplateForNode(node) && !node.BasicEvent">
+                        <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}">
+                    </div>
+                    <div *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span *ngFor="let comp of node.SelectedFailureComponentsList; let i=index;" class="badge badge-pill badge-success">
+                                        {{comp.FailureComponents}} 
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true" style="cursor: pointer;" (click)="onDeleteFailureComponents(i)">&times;</span>
+                                </button>
+                                </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span *ngFor="let cause of node.SelectedFailureCausesList; let i=index;" class="badge badge-pill badge-success">
+                                    {{cause.FailureCause}} 
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true" style="cursor: pointer;" (click)="onDeleteFailureCauses(i)">&times;</span>
+                                </button>
+                                </span>
+                            </div>
+                        </div>
+                        <select [(ngModel)]="SelectedFailureComponents" (ngModelChange)="onFailureComponents($event)" class="form-control">
+                            <option value="">Select Failure Components</option>
+                            <option *ngFor="let FailureComp of node.FailureComponents" [ngValue]="FailureComp">{{FailureComp.FailureComponents}}</option>
+                        </select>
+                        <select [(ngModel)]="SelectedFailureCauses" (ngModelChange)="onFailureCauses($event)" class="form-control">
+                            <option value="">Select Failure Causes</option>
+                            <option *ngFor="let FailCause of node.FailureCauses" [ngValue]="FailCause">{{FailCause.FailureCause}}</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <!-- <div class="row">
+                        <div class="col-md-2" *ngIf="!chart.getTemplateForNode(node)">
+                            <input [(ngModel)]="node.years" placeholder="yrs" class="form-control" name="years" id="years">
+                        </div>
+                        <div class="col-md-2" *ngIf="!chart.getTemplateForNode(node)">
+                            <input [(ngModel)]="node.hours" placeholder="hrs" class="form-control" name="hours" id="hours">
+                        </div>
+                    </div> -->
+                </div>
+                <div *ngIf="node.ANDORLogic && !node.BasicEvent">
+                    <a style="cursor:pointer; text-decoration: none;" title="Add new node for AND / OR" class="pi pi-plus" (click)="onAddNode(node)"></a>
+                    <p-menu #menu [popup]="true" [model]="items" [appendTo]="appendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
+                    <p-menu #submenu [popup]="true" [model]="subItems" [appendTo]="subappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
+                </div>
+                <a *ngIf="!leaf && !(node.ANDORLogic)" tabindex="0" class="p-node-toggler" (click)="toggleNode($event, node)" (keydown.enter)="toggleNode($event, node)">
+                    <i class="p-node-toggler-icon pi" [ngClass]="{'pi-chevron-down': node.expanded, 'pi-chevron-up': !node.expanded}"></i>
+                </a>
+
+            </div>
+        </td>
+    </tr>
+    <ng-container *ngIf="!leaf && (node.ANDORLogic)">
+        <tr [ngClass]="!leaf && node.expanded  ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'">
+            <td [attr.colspan]="colspan">
+                <div class="p-organizationchart-line-down"></div>
+                <a *ngIf="!leaf && (node.ANDORLogic)" tabindex="0" class="p-node-toggler" (click)="toggleNode($event, node)" (keydown.enter)="toggleNode($event, node)">
+                    <i class="p-node-toggler-icon pi and-image-url" *ngIf="node.ANDIcon" style="margin: -2px 0 -10px 5px;"></i>
+                    <i class="p-node-toggler-icon pi or-image-url" *ngIf="node.ORIcon" style="margin: 0 -13px -17px 0px;"></i>
+                </a>
+            </td>
+        </tr>
+    </ng-container>
+    <tr [ngClass]="!leaf&&node.expanded  ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'">
+        <td [attr.colspan]="colspan">
+            <div class="p-organizationchart-line-down"></div>
+        </td>
+    </tr>
+    <tr [ngClass]="!leaf&&node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'">
+        <ng-container *ngIf="node.children && node.children.length === 1">
+            <td [attr.colspan]="colspan">
+                <div class="p-organizationchart-line-down"></div>
+            </td>
+        </ng-container>
+        <ng-container *ngIf="node.children && node.children.length > 1">
+            <ng-template ngFor let-child [ngForOf]="node.children" let-first="first" let-last="last">
+                <td class="p-organizationchart-line-left" [ngClass]="{'p-organizationchart-line-top':!first}">&nbsp;</td>
+                <td class="p-organizationchart-line-right" [ngClass]="{'p-organizationchart-line-top':!last}">&nbsp;</td>
+            </ng-template>
+        </ng-container>
+    </tr>
+    <tr [ngClass]="!leaf&&node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-nodes" [@childState]="'in'">
+        <td *ngFor="let child of node.children" colspan="2">
+            <table class="p-organizationchart-table" pOrganizationChartNode [node]="child"></table>
+        </td>
+    </tr>
+</tbody>
