@@ -75,7 +75,6 @@ export class PrescriptiveConfigurationComponent implements OnInit {
   prescriptiveLookUpForm() {
     this.prescriptiveLookUpForms.push(this.fb.group({
       prescriptiveLookupMasterId: [0],
-      // tagNumber: ['', Validators.required],
       machineType: ['', Validators.required],
       equipmentType: ['', Validators.required],
       function: ['', Validators.required],
