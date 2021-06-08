@@ -71,6 +71,9 @@ export class RCAComponent  {
     public currentZoomLevel1: number;
     public currentZoomLevel2: number;
     public UpdateFC : number = 1000
+    private ADDRCANodeCount: number = 0
+    private ADDRCAForSaveNodeCount: number = 0
+    private UserDetails : any = []
     zoomLevels: number[];
     zoomLevels1: number[];
     zoomLevels2: number[];
@@ -87,6 +90,11 @@ export class RCAComponent  {
         this.addStartup();
         this.getRecordsList();
         this.getHeatExchangerData();
+        this.getUserDetails();
+    }
+
+    getUserDetails(){
+        this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
     }
     
     addStartup(){
@@ -383,39 +391,41 @@ export class RCAComponent  {
         }
     }
 
-    // SaveADDRCAFilesToDatabase(){
-    //     this.TraverseNestedJson(this.files, 'add')
-    // }
+    SaveADDRCAFilesToDatabase(){
+        let RCAOBJ = {
+            RCAID: 0,
+            TagNumber: this.TagNumber,
+            RCALabel: this.RCALabel,
+            RCATree: JSON.stringify(this.files),
+            RCAFailureMode: this.ADDRCAFailureMode,
+            RCAEquipment: this.ADDRCAMachineType
+        }
+
+        this.commonBL.postWithoutHeaders(this.RCAAPIName.RCASaveAPI, RCAOBJ)
+            .subscribe(
+                res => {
+                    this.getRecordsList();
+                    this.TagNumber = ""
+                    this.RCALabel = ""
+                    this.ADDRCAFailureMode = ""
+                    this.ADDRCAMachineType = ""
+                    this.closeRCAAddModal();
+                    this.CancelADDRCA();
+                    this.ADDDataForSaveAuth = []
+                    this.itemCount = 100
+                    this.files = []
+                    this.addStartup();
+                    this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
+                }, error => { console.log(error.error) }
+            )
+    }
 
    async SaveAddRCAToDatabase() {
+        this.ADDRCANodeCount = 0;
+        this.ADDRCAForSaveNodeCount = 0;
+        await this.TraverseNestedJson(this.files, 'count')
         if (this.ADDRCAMachineType.length > 0 && this.ADDRCAFailureMode.length > 0) {
             await this.TraverseNestedJson(this.files, 'add')
-            let RCAOBJ = {
-                RCAID: 0,
-                TagNumber: this.TagNumber,
-                RCALabel: this.RCALabel,
-                RCATree: JSON.stringify(this.files),
-                RCAFailureMode: this.ADDRCAFailureMode,
-                RCAEquipment: this.ADDRCAMachineType
-            }
-
-            this.commonBL.postWithoutHeaders(this.RCAAPIName.RCASaveAPI, RCAOBJ)
-                .subscribe(
-                    res => {
-                        this.getRecordsList();
-                        this.TagNumber = ""
-                        this.RCALabel = ""
-                        this.ADDRCAFailureMode = ""
-                        this.ADDRCAMachineType = ""
-                        this.closeRCAAddModal();
-                        this.CancelADDRCA();
-                        this.ADDDataForSaveAuth = []
-                        this.itemCount = 100
-                        this.files = []
-                        this.addStartup();
-                        this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
-                    }, error => { console.log(error.error) }
-                )
 
         } else {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Fill all details' })
@@ -425,21 +435,6 @@ export class RCAComponent  {
 
   async  DeleteRCARecord(p) {
         var j = JSON.parse(p.RCATree)
-        // if(j[0].update != ''){
-        //     var data = JSON.parse(j[0].update)
- 
-        //     for (let index = 0; index < data.length; index++) {
-        //         if (data[index].RCAFILE !== '' && data[index].RCAFILE !== undefined) {
-        //             var fileDetails : any = []
-        //             fileDetails = JSON.parse(data[index].RCAFILE)
-        //             const params = new HttpParams()
-        //                 .set('fullPath', fileDetails.dbPath)
-        //             this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
-        //             .subscribe()
-        //         }
-        //     }
-          
-        // }
         await this.TraverseNestedJson(j, 'delete')
         const params = new HttpParams()
             .set('id', p.RCAID)
@@ -573,7 +568,7 @@ export class RCAComponent  {
                 var prevName = FileEvent.target.files[0].name
                 var ext = this.getFileExtension(prevName);
                 this.UpdateFC + 1;
-                var newName : string = `${this.UpdateRecordList[0].RCALabel}_${this.UpdateRecordList[0].TagNumber}_${TreeNode.id}_${this.UpdateFC}.${ext}` 
+                var newName : string = `${this.UserDetails.UserId}_${this.UpdateRecordList[0].RCALabel}_${this.UpdateRecordList[0].TagNumber}_${TreeNode.id}_${this.UpdateFC}.${ext}` 
                 const formData = new FormData();
                 formData.append('file', fileToUpload, newName);
                 var url: string = this.RCAAPIName.FMEAFileUpload
@@ -634,6 +629,9 @@ export class RCAComponent  {
 
    async TraverseNestedJson(val: any, fun :string) {
         for (let index = 0; index < val.length; index++) {
+            if(fun === 'count'){
+             this.ADDRCANodeCount = this.ADDRCANodeCount + 1;
+            }
             if(fun === 'delete'){
                 if(val[index].RCAFILE !== undefined && val[index].RCAFILE !== ''){
                     var deleteAttachment : any = []
@@ -661,13 +659,14 @@ export class RCAComponent  {
             }else if(fun === 'update'){
                 val[index].currentStage = 'update';
             }else if(fun === 'add'){
+                this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
                 if(val[index].RCAFILE !== undefined && val[index].RCAFILE !== ''){
                     let filess = val[index].RCAFILE
                     var FC : number = 1;
                     for (let FI = 0; FI < filess.length; FI++) {
                         var prevName = filess[FI][0].target.files[0].name
                         var ext = this.getFileExtension(prevName);
-                        var newName : string = `${this.RCALabel}_${this.TagNumber}_${val[index].id}_${FC}.${ext}` 
+                        var newName : string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${val[index].id}_${FC}.${ext}` 
                         var f : any = []
                         f.push(filess[FI][0]);
                         f.push(newName);
@@ -683,7 +682,10 @@ export class RCAComponent  {
                         var q = f[4].RCAFILE;
                         q[f[3]] = JSON.stringify(abc2);
                         val[index].RCAFILE = q;
-                        FC = FC + 1
+                        FC = FC + 1;
+                        if(this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount){
+                            this.SaveADDRCAFilesToDatabase();
+                        }
                     }
                     
                 }
@@ -691,6 +693,9 @@ export class RCAComponent  {
             if (val[index].children.length > 0) {
                 var Data: any = val[index].children;
                 for (let index1 = 0; index1 < Data.length; index1++) {
+                    if(fun === 'count'){
+                        this.ADDRCANodeCount = this.ADDRCANodeCount + 1;
+                    }
                     if(fun === 'delete'){
                         if(Data[index1].RCAFILE !== undefined && Data[index1].RCAFILE !== ''){
                             var deleteAttachment : any = []
@@ -714,13 +719,14 @@ export class RCAComponent  {
                     }else if(fun === 'update'){
                         Data[index1].currentStage = 'update';
                     }else if(fun === 'add'){
+                        this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
                         if( Data[index1].RCAFILE !== undefined && Data[index1].RCAFILE !== ''){
                             let filess = Data[index1].RCAFILE
                             var FC : number = 1;
                             for (let FI = 0; FI < filess.length; FI++) {
                                 var prevName = filess[FI][0].target.files[0].name
                                 var ext = this.getFileExtension(prevName);
-                                var newName : string = `${this.RCALabel}_${this.TagNumber}_${Data[index1].id}_${FC}.${ext}` 
+                                var newName : string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${Data[index1].id}_${FC}.${ext}` 
                                 var fz : any = [];
                                 fz.push(filess[FI][0]);
                                 fz.push(newName);
@@ -736,7 +742,10 @@ export class RCAComponent  {
                                 var q = ff[4].RCAFILE;
                                 q[ff[3]] = JSON.stringify(abc2);
                                 Data[index1].RCAFILE = q;
-                                FC = FC + 1
+                                FC = FC + 1;
+                                if(this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount){
+                                    this.SaveADDRCAFilesToDatabase();
+                                }
                             }
                             
                         }
@@ -843,7 +852,7 @@ export class RCAComponent  {
             var fileName = event.target.files[0].name
             var ext = this.getFileExtension(fileName);
             this.UpdateFC + 1;
-            var newName : string = `${this.UpdateRecordList[0].RCALabel}_${this.UpdateRecordList[0].TagNumber}_${TreeNode.id}_${this.UpdateFC}.${ext}` 
+            var newName : string = `${this.UserDetails.UserId}_${this.UpdateRecordList[0].RCALabel}_${this.UpdateRecordList[0].TagNumber}_${TreeNode.id}_${this.UpdateFC}.${ext}` 
             const formData = new FormData();
             formData.append('file', fileToUpload, newName);
             var url: string = this.RCAAPIName.FMEAFileUpload

@@ -219,18 +219,6 @@ export class UITreeNode implements OnInit {
         }
        
         this.RCAFileView = true;
-        // this.RCAFileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(DATA.dbPath);
-        // this.FileUrl = DATA.dbPath;
-        // var extension = this.getFileExtension(DATA.dbPath);
-        // if (extension.toLowerCase() == 'jpg' || extension.toLowerCase() == 'jpeg' || extension.toLowerCase() == 'png') {
-        //     this.RCAImageViewEnable = true;
-        //     this.RCAPdfViewEnable = false;
-        //     this.RCAFileView = true
-        // } else if (extension.toLowerCase() == 'pdf') {
-        //     this.RCAImageViewEnable = false;
-        //     this.RCAPdfViewEnable = true;
-        //     this.RCAFileView = true
-        // }
     }
 
     parentNodeADDData(event: Event, node) {
@@ -336,24 +324,6 @@ export class UITreeNode implements OnInit {
             fileData.push(node)
             this.tree.RCAUpdateDeleteFromList.emit(fileData)
             this.RCAFileView = false;
-            // var FileId : string = file[0][0].FileId
-            // var index1 = this.RCAViewAttachmentList.findIndex(std => std[0][0].FileId === FileId)
-            // this.RCAViewAttachmentList.splice(index1, 1)
-            // let d : any = []
-            // this.RCAViewAttachmentList.forEach(element => {
-            //     d.push(JSON.stringify(element))
-            // });
-            // node.RCAFILE = d;
-            // const params = new HttpParams()
-            // .set('fullPath', file[0][0].dbPath)
-            // this.commonBLService.DeleteWithParam(this.prescriptiveContantAPI.RCAUpdateAttachment, params)
-            // .subscribe(
-            //     res => {
-            //         this.RCAFileView = false;
-            //         this.change.detectChanges();
-            //         this.RCAFileView = true;
-            //     }
-            // )
         }
         
     }
