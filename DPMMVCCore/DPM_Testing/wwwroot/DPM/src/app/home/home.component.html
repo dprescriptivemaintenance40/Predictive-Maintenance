@@ -34,6 +34,21 @@
                 <i class="fas fa-industry"></i>
                 <span>Machinery</span>
             </a>
+            <div *ngIf="screwCompressor" id="collapseTwo" class="collapse" aria-labelledby="heading12">
+                <li>
+                    <a [routerLink]="['/Home/Compressor/ScrewConfiguration']" class="nav-link collapsed"  data-target="#collapseUtilities25" aria-expanded="true">
+                        <span>Configuration</span>                         
+                    </a>
+                </li>
+            </div>
+            <!-- <div>
+                <li *ngIf="screwCompressor" class="nav-item">
+                    <a [routerLink]="['/Home/Compressor/ScrewConfiguration']" class="nav-link">
+                        <i [routerLink]="['/Home/Compressor/ScrewConfiguration']"></i>
+                        <span>Configuration</span>
+                    </a>
+                </li>
+            </div> -->
             <div *ngIf="screwCompressor" id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
                 <li>
                     <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
@@ -51,7 +66,7 @@
             </div>
             <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewConfiguration']">Configuration</a>
+                    <!-- <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewConfiguration']">Configuration</a> -->
                     <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewTrain']">Train</a>
                     <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewPrediction']">Predict</a>
 

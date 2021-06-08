@@ -22,9 +22,11 @@ namespace DPM_Testing.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ScrewCompressorConfigurationModel>>> GetAddRuleModels()
+        [Route("GetAllConfigurationRecords")]
+        public async Task<ActionResult<IEnumerable<ScrewCompressorConfigurationModel>>> GetAddRuleModels(string MachineType, string EquipmentType)
         {
-              return await _context.AddRuleModels.OrderBy(a=> a.AddRuleId).ToListAsync();
+              return await _context.AddRuleModels.Where(a=>a.MachineType == MachineType && a.EquipmentType == EquipmentType)
+                                                 .OrderBy(a=> a.AddRuleId).ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -82,6 +84,21 @@ namespace DPM_Testing.Controllers
         private bool AddRuleModelExists(int id)
         {
             return _context.AddRuleModels.Any(e => e.AddRuleId == id);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAddRuleModel(int id)
+        {
+            var AddRuleModels = await _context.AddRuleModels.FindAsync(id);
+            if (AddRuleModels == null)
+            {
+                return NotFound();
+            }
+
+            _context.AddRuleModels.Remove(AddRuleModels);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
