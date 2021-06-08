@@ -12,8 +12,6 @@ import { AuthInterceptor } from './Token.Interceptor';
 import { SharedModule } from './shared/shared.module';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { UserService } from './home/Services/user.services';
-import { DashboardChartService } from './home/Services/dashboard_Chart.service';
 import { ConfigModule } from './shared/config.service';
 
 @NgModule({
