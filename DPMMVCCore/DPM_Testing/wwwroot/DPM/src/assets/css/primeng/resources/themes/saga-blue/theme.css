@@ -3156,7 +3156,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content {
     border-radius: 3px;
-    border: none;
+    border: 1px solid;
     box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
     background-color: #ffffff;
     color: #495057;
