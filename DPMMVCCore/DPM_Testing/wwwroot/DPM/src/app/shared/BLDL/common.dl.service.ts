@@ -94,5 +94,8 @@ export class CommonDLService {
     public GetFailureCause(){
         return this.http.get('dist/DPM/assets/Library/FailureCause.xlsx', {responseType: 'blob'})
     }
+    public GetFailureModeNames(){
+        return this.http.get('dist/DPM/assets/Library/FailureModeNames.xlsx', {responseType: 'blob'})
+    }
 
 }

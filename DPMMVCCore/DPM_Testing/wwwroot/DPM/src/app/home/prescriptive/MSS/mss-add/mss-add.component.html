@@ -25,7 +25,7 @@
 </div>
 
 <div *ngIf="PrescriptiveTree" class="col-md-12" style="overflow:scroll;" id="GoToTheSaveMSS">
-    <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark"(click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
+    <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark" (click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
     <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float: right;" (click)="ADDMSS()"> <i class="pi pi-plus"></i> MSS</button>
     <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float: right;" (click)="SaveMSS()" pTooltip="Save MSS" tooltipPosition="top"> <i class="fa fa-check"> Save</i></button>
     <p-organizationChart [value]="TreeUptoFCA" selectionMode="single" styleClass="company">
@@ -70,15 +70,13 @@
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-SR"
-                                name="name1" />&nbsp;
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-SR" name="name1" />&nbsp;
                             <label> A-SR</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-FFT"
-                                name="name1" />&nbsp;
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="A-FFT" name="name1" />&nbsp;
                             <label> A-FFT</label>
                         </div>
                     </div>
@@ -106,35 +104,31 @@
                     </div>
                 </div>
                 <div class="row">
-                <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded"
-                        style="width: 10rem;margin-right: 10px;">
-                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-OCM"
-                            name="name1" />&nbsp;
-                        <label> B-OCM</label>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="B-OCM" name="name1" />&nbsp;
+                            <label> B-OCM</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="B-SO" name="name1" />&nbsp;
+                            <label> B-SO</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="B-SR" name="name1" />&nbsp;
+                            <label> B-SR</label>
+                        </div>
+                    </div>
+                    <div class="col"><br>
+                        <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                            <input type="radio" [(ngModel)]="MSSStratergy" value="B-RED" name="name1" />&nbsp;
+                            <label> B-RED</label>
+                        </div>
                     </div>
                 </div>
-                <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-SO"
-                            name="name1" />&nbsp;
-                        <label> B-SO</label>
-                    </div>
-                </div>
-                <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-SR"
-                            name="name1" />&nbsp;
-                        <label> B-SR</label>
-                    </div>
-                </div>
-                <div class="col"><br>
-                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                        <input type="radio" [(ngModel)]="MSSStratergy" value="B-RED" name="name1" />&nbsp;
-                        <label> B-RED</label>
-                    </div>
-                </div>
-            </div>
             </ng-template>
         </p-card>
     </div>

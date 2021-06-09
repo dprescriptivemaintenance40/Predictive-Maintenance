@@ -11,7 +11,10 @@
                 <div *ngIf="node.ANDORLogic">
                     <span class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="onDeleteNode(node)"></span>
                     <div *ngIf="!chart.getTemplateForNode(node) && !node.BasicEvent">
-                        <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}">
+                        <div>
+                            <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}">
+                        </div>
+                        <hr>
                     </div>
                     <div *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
                         <div class="row">
@@ -32,23 +35,45 @@
                                 </span>
                             </div>
                         </div>
-                        <select [(ngModel)]="SelectedFailureComponents" (ngModelChange)="onFailureComponents($event)" class="form-control">
-                            <option value="">Select Failure Components</option>
-                            <option *ngFor="let FailureComp of node.FailureComponents" [ngValue]="FailureComp">{{FailureComp.FailureComponents}}</option>
-                        </select>
-                        <select [(ngModel)]="SelectedFailureCauses" (ngModelChange)="onFailureCauses($event)" class="form-control">
-                            <option value="">Select Failure Causes</option>
-                            <option *ngFor="let FailCause of node.FailureCauses" [ngValue]="FailCause">{{FailCause.FailureCause}}</option>
-                        </select>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select [(ngModel)]="SelectedFailureComponents" (ngModelChange)="onFailureComponents($event)" class="form-control">
+                                    <option value="">Select Failure Components</option>
+                                    <option *ngFor="let FailureComp of FailureComponents" [ngValue]="FailureComp">{{FailureComp.FailureComponents}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select [(ngModel)]="SelectedFailureCauses" (ngModelChange)="onFailureCauses($event)" class="form-control">
+                                    <option value="">Select Failure Causes</option>
+                                    <option *ngFor="let FailCause of FailureCause" [ngValue]="FailCause">{{FailCause.FailureCause}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{node.years}} years
+                            </div>
+                            <div class="col-md-6">
+                                {{node.hours}} hours
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-dark" (click)="GetLibrary()">Done</button>
+                        </div>
                     </div>
-                    <hr>
-                    <!-- <div class="row">
-                        <div class="col-md-2" *ngIf="!chart.getTemplateForNode(node)">
-                            <input [(ngModel)]="node.years" placeholder="yrs" class="form-control" name="years" id="years">
+                    <!--
+                    <div class="row" *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
+                        <div class="col-md-6">
+                            {{node.years}} years
                         </div>
-                        <div class="col-md-2" *ngIf="!chart.getTemplateForNode(node)">
-                            <input [(ngModel)]="node.hours" placeholder="hrs" class="form-control" name="hours" id="hours">
+                        <div class="col-md-6">
+                            {{node.hours}} hours
                         </div>
+                    </div> -->
+                    <!-- <div *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
+                        <button type="button" class="btn btn-dark" (click)="GetLibrary()">Done</button>
                     </div> -->
                 </div>
                 <div *ngIf="node.ANDORLogic && !node.BasicEvent">

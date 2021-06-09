@@ -11,6 +11,8 @@ import { Subject, Subscription } from 'rxjs';
 import { MenuModule, Menu } from 'primeng/menu';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule } from '@angular/forms';
+import { CommonBLService } from '../BLDL/common.bl.service';
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: '[pOrganizationChartNode]',
@@ -57,8 +59,22 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
     public subappendTo: any;
     public ANDIcon: boolean;
     public ORIcon: boolean;
+    public FailureComponents: any[] = [];
+    public FailureCause: any[] = [];
+    public FailureModeNamesList: any[] = []
 
-    constructor(@Inject(forwardRef(() => OrganizationChart)) chart, public cd: ChangeDetectorRef) {
+    constructor(@Inject(forwardRef(() => OrganizationChart)) chart,
+        public cd: ChangeDetectorRef,
+        private commonBLService: CommonBLService) {
+        if (this.FailureComponents.length === 0) {
+            this.GetFailureComponents();
+        }
+        if (this.FailureCause.length === 0) {
+            this.GetFailureCause();
+        } 
+        if (this.FailureModeNamesList.length === 0) {
+            this.GetFailureModeNames();
+        }              
         this.chart = chart as OrganizationChart;
         this.subscription = this.chart.selectionSource$.subscribe(() => {
             this.cd.markForCheck();
@@ -184,6 +200,127 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         this.node.SelectedFailureCausesList.splice(index, 1);
     }
 
+    // public GetLibrary() {
+    //     this.chart.Library.emit({ node: this.node, SelectedFailureComponentsList: this.node.SelectedFailureComponentsList, SelectedFailureCausesList: this.node.SelectedFailureCausesList });
+    // }
+
+    private GetFailureComponents() {
+        this.commonBLService.GetFailureComponents()
+            .subscribe((res: any) => {
+                let fileReader = new FileReader();
+                fileReader.readAsArrayBuffer(res);
+                fileReader.onload = (e) => {
+                    var arrayBuffer: any = fileReader.result;
+                    var data = new Uint8Array(arrayBuffer);
+                    var arr = new Array();
+                    for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                    var bstr = arr.join("");
+                    var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+                    var first_sheet_name = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[first_sheet_name];
+                    this.FailureComponents = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+                }
+
+            });
+    }
+
+
+    private GetFailureCause() {
+        this.commonBLService.GetFailureCause()
+            .subscribe((res: any) => {
+                let fileReader = new FileReader();
+                fileReader.readAsArrayBuffer(res);
+                fileReader.onload = (e) => {
+                    var arrayBuffer: any = fileReader.result;
+                    var data = new Uint8Array(arrayBuffer);
+                    var arr = new Array();
+                    for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                    var bstr = arr.join("");
+                    var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+                    var first_sheet_name = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[first_sheet_name];
+                    this.FailureCause = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+                }
+            });
+    }
+
+    public GetLibrary() {
+        this.commonBLService.GetMSSLibrary()
+            .subscribe(res => {
+                let fileReader = new FileReader();
+                fileReader.readAsArrayBuffer(res);
+                fileReader.onload = (e) => {
+                    var arrayBuffer: any = fileReader.result;
+                    var data = new Uint8Array(arrayBuffer);
+                    var arr = new Array();
+                    for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                    var bstr = arr.join("");
+                    var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+                    var first_sheet_name = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[first_sheet_name];
+                    let Library = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+                    console.log(Library);
+                    let FailureComponentsList = this.node.SelectedFailureComponentsList;
+                    let FailureCausesList = this.node.SelectedFailureCausesList;
+                    let failureModes = [];
+                    FailureComponentsList.forEach(comp => {
+                        let CompList: any = comp;
+                        let sortedFailureComponents = [];
+                        for (var sort in CompList) {
+                            sortedFailureComponents.push([sort, CompList[sort]]);
+                        }
+                        sortedFailureComponents.sort((a, b) => {
+                            return a[1] - b[1];
+                        });
+                        const len = sortedFailureComponents.length;
+                        failureModes.push(sortedFailureComponents[len - 1]);
+                    });
+                    FailureCausesList.forEach(cau => {
+                        let CauList: any = cau;
+                        let sortedFailureCauses = [];
+                        for (var sort in CauList) {
+                            sortedFailureCauses.push([sort, CauList[sort]]);
+                        }
+                        sortedFailureCauses.sort((a, b) => {
+                            return a[1] - b[1];
+                        });
+                        const len = sortedFailureCauses.length;
+                        failureModes.push(sortedFailureCauses[len - 1]);
+                    });
+
+                    failureModes.sort((a, b) => {
+                        return a[1] - b[1];
+                    });
+                    const len = failureModes.length;
+                    let ShortName = failureModes[len - 1];
+                    let Mode = this.FailureModeNamesList.find(a => a.ShortName === ShortName[0]).FullName;
+                    let failureMode = Library.find(a => a['Failure mode'] === Mode);
+                    this.node.years = failureMode['Failure rate Upper'];
+                    this.node.hours = failureMode['Repair (manhours) Mean'];
+                    this.cd.detectChanges();
+                }
+            });
+    }
+
+    private GetFailureModeNames() {
+        this.commonBLService.GetFailureModeNames()
+            .subscribe((res: any) => {
+                let fileReader = new FileReader();
+                fileReader.readAsArrayBuffer(res);
+                fileReader.onload = (e) => {
+                    var arrayBuffer: any = fileReader.result;
+                    var data = new Uint8Array(arrayBuffer);
+                    var arr = new Array();
+                    for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                    var bstr = arr.join("");
+                    var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+                    var first_sheet_name = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[first_sheet_name];
+                    this.FailureModeNamesList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+                }
+            });
+    }
+
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }
@@ -234,6 +371,8 @@ export class OrganizationChart implements AfterContentInit {
     @Output() AddNode: EventEmitter<any> = new EventEmitter();
 
     @Output() DeleteNode: EventEmitter<any> = new EventEmitter();
+
+    @Output() Library: EventEmitter<any> = new EventEmitter();
 
     @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 

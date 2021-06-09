@@ -87,4 +87,11 @@ export class CommonBLService {
             }));
     }
 
+    public GetFailureModeNames() {
+        return this.commonDLService.GetFailureModeNames()
+            .pipe(map(res => {
+                return res;
+            }));
+    }
+
 }
