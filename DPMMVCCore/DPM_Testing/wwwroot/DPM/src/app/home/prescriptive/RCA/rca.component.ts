@@ -480,10 +480,12 @@ export class RCAComponent {
                     .subscribe(
                         (res: any) => {
                             if (TreeNode.RCAFILE === '') {
-                                var Data: any = [];
+                                var Data: any = [], Data1: any = [];
                                 Data.push(res);
                                 Data.push(prevName)
-                                TreeNode.RCAFILE.push(JSON.stringify(Data));
+                                Data1.push(Data)
+                                TreeNode.RCAFILE = [] 
+                                TreeNode.RCAFILE.push(JSON.stringify(Data1));
                             } else if (TreeNode.RCAFILE !== '') {
                                 var Data1: any = [];
                                 var Data2: any = [];
