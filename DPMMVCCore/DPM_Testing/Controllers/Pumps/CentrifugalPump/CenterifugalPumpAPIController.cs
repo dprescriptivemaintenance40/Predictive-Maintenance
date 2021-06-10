@@ -194,5 +194,26 @@ namespace DPM.Controllers.Pumps
             }
         }
 
+        [HttpPost]
+        [Route("PostHQLibrary")]
+        public async Task<IActionResult> PostHQData([FromBody] List<CentrifugalPumpHQLibraryModel> centrifugalPumpHQLibrary)
+        {
+            try
+            {
+                var collection = centrifugalPumpHQLibrary.ToList();
+                foreach (var item in collection)
+                {
+                    _context.CentrifugalPumpHQLibraryModels.Add(item);
+                    await _context.SaveChangesAsync();
+                }
+                return Ok();
+
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
     }
 }

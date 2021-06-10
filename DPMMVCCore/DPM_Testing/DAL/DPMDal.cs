@@ -31,6 +31,7 @@ namespace DPM_ServerSide.DAL
 
         public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
         public DbSet<RCAModel> rCAModels{ get; set; }
+        public DbSet<CentrifugalPumpHQLibraryModel> CentrifugalPumpHQLibraryModels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,6 +58,7 @@ namespace DPM_ServerSide.DAL
                         .WithMany(b => b.restoreCentrifugalPumpPrescriptiveFailureModes)
                         .HasForeignKey(a => a.RCPPMId);
             modelBuilder.Entity<RCAModel>().ToTable("rcatable");
+            modelBuilder.Entity<CentrifugalPumpHQLibraryModel>().ToTable("centrifugalpumpHQtable");
         }
 
     }
