@@ -215,5 +215,69 @@ namespace DPM.Controllers.Pumps
             }
         }
 
+        [HttpGet]
+        [Route("CPTrain")]
+        public async Task<IActionResult> GetHQData()
+        {
+            try
+            {
+                List<CentrifugalPumpHQLibraryModel> centrifugalPumpHQLibraryModel = await _context.CentrifugalPumpHQLibraryModels.OrderBy(a => a.CentrifugalPumpHQLibraryID).ToListAsync();
+                var HQLibraryList = centrifugalPumpHQLibraryModel.ToList();
+                List<decimal> QLlist = new List<decimal>();
+                foreach (var item in HQLibraryList)
+                {
+                    QLlist.Add(item.Q);
+                }
+                decimal P1 = 10;
+                decimal P2 = 20;
+
+                decimal HCustomernumber = 10 * (P2 - P1) / 0.86m;
+                decimal Qnumber = 1249;
+                decimal Firstclosest = QLlist.Aggregate((x, y) => Math.Abs(x - Qnumber) < Math.Abs(y - Qnumber) ? x : y);
+                int Firstclosestindex = QLlist.IndexOf(Firstclosest);
+               
+                if (Firstclosestindex != -1)
+                {
+                    decimal difference;
+                    if (Qnumber < Firstclosest)
+                    {
+                        Firstclosestindex = Firstclosestindex - 1;
+                        difference = Firstclosest - Qnumber;
+                    }
+                    else
+                    {
+                        difference = Qnumber - Firstclosest;
+                    }
+                    var FirstClosestValue = HQLibraryList[Firstclosestindex];
+                    var FirstHClose = FirstClosestValue.H;
+                    var FirstQClose = FirstClosestValue.Q;
+                    var SecondClosestValue = HQLibraryList[Firstclosestindex + 1];
+                    var SecondHClose = SecondClosestValue.H;
+                    var SecondQClose = SecondClosestValue.Q;              
+                    var DeviationH = (SecondHClose - FirstHClose)/20;
+                    var HValueLibrary = DeviationH * difference;
+                    if ( (HValueLibrary * 0.8m) <= HCustomernumber)
+                    {
+                        // Degrade
+                    }
+                    else if ((HValueLibrary * 0.9m) <= HCustomernumber)
+                    {
+                        // Incipient
+                    }
+                    else if ((HValueLibrary) >= HCustomernumber)
+                    {
+                        // Normal
+                    }
+
+                }
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
     }
 }

@@ -10,7 +10,7 @@ namespace DPM.Models.PumpModel
     {
         [Key]
         public int CentrifugalPumpHQLibraryID { get; set; }
-        public double H { get; set; }
-        public double Q { get; set; }
+        public decimal H { get; set; }
+        public decimal Q { get; set; }
     }
 }
