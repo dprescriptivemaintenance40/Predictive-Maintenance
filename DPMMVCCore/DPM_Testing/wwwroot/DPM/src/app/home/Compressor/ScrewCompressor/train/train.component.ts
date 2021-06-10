@@ -58,7 +58,7 @@ export class TrainComponent implements OnInit {
   }
 
   getScrewCompressureList() {
-    this.compListWithClassification = [];
+     this.compListWithClassification = [];
     this.loading = true;
     const url : string = this.screwCompressorAPIName.getTrainList
     this.screwCompressorMethod.getWithoutParameters(url)
@@ -117,7 +117,7 @@ export class TrainComponent implements OnInit {
 
   addfile(event) {
     this.file = event.target.files[0];
-    let fileReader = new FileReader();
+    var fileReader = new FileReader();
     fileReader.readAsArrayBuffer(this.file);
     fileReader.onload = (e) => {
       this.arrayBuffer = fileReader.result;
@@ -137,7 +137,7 @@ export class TrainComponent implements OnInit {
         .subscribe(async res => {
           await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=${this.UserDetails.UserId}`, { responseType: 'text' })
             .subscribe(res => {
-              this.getScrewCompressureList();
+              // this.getScrewCompressureList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
             }, err => {
               console.log(err.error);

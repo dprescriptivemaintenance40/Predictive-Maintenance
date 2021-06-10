@@ -17,7 +17,7 @@
     </div>
 
     <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
+        <!-- <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button> -->
     </div>
 </div>
 <br>
@@ -27,10 +27,10 @@
             [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
+                    <!-- <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
+                    <col style="width:8em;"> -->
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
@@ -40,46 +40,27 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="PS">PS
-                        <p-sortIcon field="PS"></p-sortIcon>
+                    <th pSortableColumn="P1">P1
+                        <p-sortIcon field="P1"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="PD">PD
+                    <th pSortableColumn="P2">P2
                         <p-sortIcon field="PD"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Average">Average
+                        <p-sortIcon field="Average"></p-sortIcon>
                     </th>
                     <th pSortableColumn="Q">Q
                         <p-sortIcon field="Q"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="D">D
-                        <p-sortIcon field="D"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="H">H
-                        <p-sortIcon field="H"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="E">E
-                        <p-sortIcon field="E"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="g">g
-                        <p-sortIcon field="g"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="F">F
-                        <p-sortIcon field="F"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="CLASSIFICATION">CLASSIFICATION</th>
+                    
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-pumpListWithClassification>
                 <tr>
-
-                    <td>{{pumpListWithClassification.PS}}</td>
-                    <td>{{pumpListWithClassification.PD}}</td>
+                    <td>{{pumpListWithClassification.P1}}</td>
+                    <td>{{pumpListWithClassification.P2}}</td>
+                    <td>{{pumpListWithClassification.Average}}</td>
                     <td>{{pumpListWithClassification.Q}}</td>
-                    <td>{{pumpListWithClassification.D}}</td>
-                    <td>{{pumpListWithClassification.H}}</td>
-                    <td>{{pumpListWithClassification.E}}</td>
-                    <td>{{pumpListWithClassification.g}}</td>
-                    <td>{{pumpListWithClassification.F}}</td>
-                    <td>{{pumpListWithClassification.Classification}}</td>
-
                 </tr>
             </ng-template>
         </p-table>
