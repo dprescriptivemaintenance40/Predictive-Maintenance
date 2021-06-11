@@ -23,7 +23,7 @@ namespace DPM_Testing.Models
         public DateTime InsertedDate { get; set; }
         public string ProcessingStage { get; set; }
 
-       
+
     }
 
 }

@@ -15,6 +15,8 @@ import { PrescriptiveAddComponent } from "./prescriptive/FMEA/prescriptive-add/p
 import { PrescriptiveDisplayComponent } from "./prescriptive/FMEA/prescriptive-display/prescriptive-display.component";
 import { CentrifugalPumpComponent } from "./Pump/centrifugal-pump/centrifugal-pump.component";
 import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
+import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component";
+
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -23,12 +25,13 @@ import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
             children: [
                 { path: '', redirectTo: 'Education', pathMatch: 'full' },
                 { path: 'Education', component: EducationComponent },
-                 { path: 'Dashboard', component: DashboardComponent },
+                { path: 'Dashboard', component: DashboardComponent },
                 { path: 'Compressor', loadChildren: () => import('./Compressor/ScrewCompressor/compressor.module').then(a => a.CompressorModule) },
-                { path: 'Prescriptive', loadChildren: () => import('./prescriptive/prescriptive.module').then(a => a.PrescriptiveModule) },               
+                { path: 'Prescriptive', loadChildren: () => import('./prescriptive/prescriptive.module').then(a => a.PrescriptiveModule) },
                 { path: 'Profile', component: ProfileComponent },
                 { path: 'Report', component: ReportComponent },
                 { path: 'CentrifugalPump', component: CentrifugalPumpComponent },
+                { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent },
                 { path: 'RecycleBin', component: RecycleBinComponent }
             ]
         }
