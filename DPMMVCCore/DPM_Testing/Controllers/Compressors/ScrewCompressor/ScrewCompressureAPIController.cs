@@ -29,7 +29,7 @@ namespace DPM_Testing.Controllers
         {
             _context = context;
         }
-
+        
         public async Task<IActionResult> GetClassification()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -74,8 +74,6 @@ namespace DPM_Testing.Controllers
             }
             catch (Exception exe)
             {
-
-
                 return BadRequest(exe.Message);
             }
 
@@ -135,7 +133,7 @@ namespace DPM_Testing.Controllers
             }
             catch (Exception exe)
             {
-                return BadRequest(exe.Message);
+                return BadRequest(exe.Message); 
             }
 
         }
