@@ -29,8 +29,7 @@ namespace DPM_Testing.Controllers
         {
             _context = context;
         }
-        [HttpGet]
-        [Route("getClassification")]
+        
         public async Task<IActionResult> GetClassification()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;

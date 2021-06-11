@@ -135,23 +135,24 @@ export class TrainComponent implements OnInit {
       const url : string = this.screwCompressorAPIName.TrainAddData;
       this.screwCompressorMethod.postWithHeaders(url, this.CompDetailList)
         .subscribe(async res => {
-          // await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=${this.UserDetails.UserId}`, { responseType: 'text' })
-           this.compListWithClassification = res;
-                // this.getScrewCompressureList();
+          await this.http.get(`${this.configService.getApi('RULE_ENGINE_URL')}name=${this.UserDetails.UserId}`, { responseType: 'text' })
+            .subscribe(res => {
+               this.getScrewCompressureList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-            },)
+            }, err => {
+              console.log(err.error);
+              this.commonLoadingDirective.showLoading(false, "");
+            })
           this.loading = false;
         }, err => {
           this.loading = false;
           console.log(err.error);
         }
-   
+        );
+    }
   }
 
-
-
   ChangeInConfiguration() {
-
     if (this.compListWithClassification.length > 0) {
       var Data = 123;
       //this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Wait for some time ', sticky: true });
