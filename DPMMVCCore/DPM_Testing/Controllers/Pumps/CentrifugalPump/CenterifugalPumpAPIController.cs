@@ -254,8 +254,8 @@ namespace DPM.Controllers.Pumps
                     var SecondClosestValue = HQLibraryList[Firstclosestindex + 1];
                     var SecondHClose = SecondClosestValue.H;
                     var SecondQClose = SecondClosestValue.Q;              
-                    var DeviationH = (SecondHClose - FirstHClose)/20;
-                    var HValueLibrary = DeviationH * difference;
+                    var DeviationH = (FirstHClose - SecondHClose) /20;
+                    var HValueLibrary = FirstHClose - (DeviationH * difference);
                     if ( (HValueLibrary * 0.8m) <= HCustomernumber)
                     {
                         // Degrade
@@ -264,8 +264,9 @@ namespace DPM.Controllers.Pumps
                     {
                         // Incipient
                     }
-                    else if ((HValueLibrary) >= HCustomernumber)
+                    else 
                     {
+                       // if ((HValueLibrary) >= HCustomernumber)
                         // Normal
                     }
 
