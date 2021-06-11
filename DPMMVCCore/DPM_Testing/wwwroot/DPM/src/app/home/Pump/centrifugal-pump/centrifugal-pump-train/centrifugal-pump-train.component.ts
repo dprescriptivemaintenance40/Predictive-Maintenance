@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
-import { PumpConfigService } from 'src/app/shared/PumpConfigService.service';
+// import { PumpConfigService } from 'src/app/shared/PumpConfigService.service';
 import * as XLSX from 'xlsx';
 import { CentrifugalPumpConstantAPI } from '../centrifugal-pump.API';
 @Component({
@@ -28,7 +28,7 @@ export class CentrifugalPumpTrainComponent implements OnInit {
     public commonLoadingDirective: CommonLoadingDirective,
     private CentrifugalPumpName: CentrifugalPumpConstantAPI,
     private CentrifugalPumpMethod: CommonBLService,
-    private CentrifugalPumpconfigService: PumpConfigService,) { }
+   ) { }
 
   ngOnInit(): void {
     this.title.setTitle('CentrifugalPump Train | Dynamic Prescriptive Maintenence');
