@@ -228,11 +228,11 @@ namespace DPM.Controllers.Pumps
                 {
                     QLlist.Add(item.Q);
                 }
-                decimal P1 = 10;
-                decimal P2 = 20;
+                decimal P1 = 0.1m;
+                decimal P2 = 2.3m;
 
                 decimal HCustomernumber = 10 * (P2 - P1) / 0.86m;
-                decimal Qnumber = 1249;
+                decimal Qnumber = 1100m;
                 decimal Firstclosest = QLlist.Aggregate((x, y) => Math.Abs(x - Qnumber) < Math.Abs(y - Qnumber) ? x : y);
                 int Firstclosestindex = QLlist.IndexOf(Firstclosest);
                
@@ -256,18 +256,19 @@ namespace DPM.Controllers.Pumps
                     var SecondQClose = SecondClosestValue.Q;              
                     var DeviationH = (FirstHClose - SecondHClose) /20;
                     var HValueLibrary = FirstHClose - (DeviationH * difference);
-                    if ( (HValueLibrary * 0.8m) <= HCustomernumber)
+                    var HD = (HValueLibrary * 0.8m); // Trigger
+                    var HI = ((HValueLibrary * 0.9m)); // Alarm
+                    if ( HD >= HCustomernumber)
                     {
-                        // Degrade
+                        var result = "Degrade";
                     }
-                    else if ((HValueLibrary * 0.9m) <= HCustomernumber)
+                    else if (HI >= HCustomernumber)
                     {
-                        // Incipient
+                        var result = "Incipient"; 
                     }
                     else 
                     {
-                       // if ((HValueLibrary) >= HCustomernumber)
-                        // Normal
+                        var result = "Normal";
                     }
 
                 }
