@@ -134,8 +134,7 @@ export class CentrifugalPumpComponent {
     this.ToDate = moment().format('YYYY-MM-DD');
   }
   GetDailyData() {
-    // const url: string = this.CPAPIName.DailyData;
-    const url: string = '/CenterifugalPumpAPI/CPTrain';
+    const url: string = this.CPAPIName.DailyData;
     this.CPAPIMethod.getWithoutParameters(url)
       .subscribe(res => {
         this.centrifugalPump = res

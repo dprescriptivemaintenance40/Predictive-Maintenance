@@ -27,15 +27,14 @@
             [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
-                    <col style="width:12em;">
-
+                    <!-- <col style="width:12em;"> -->
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
                     <!-- <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:12em;"> -->
                 </colgroup>
@@ -48,10 +47,16 @@
                     <th pSortableColumn="P2">P2
                         <p-sortIcon field="PD"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="Average">Average
+                    <th pSortableColumn="Average">Amperage
                         <p-sortIcon field="Average"></p-sortIcon>
                     </th>
                     <th pSortableColumn="Q">Q
+                        <p-sortIcon field="Q"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Q">Date
+                        <p-sortIcon field="Q"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Q">Classification
                         <p-sortIcon field="Q"></p-sortIcon>
                     </th>
                     
@@ -61,8 +66,10 @@
                 <tr>
                     <td>{{pumpListWithClassification.P1}}</td>
                     <td>{{pumpListWithClassification.P2}}</td>
-                    <td>{{pumpListWithClassification.Average}}</td>
+                    <td>{{pumpListWithClassification.Amperage}}</td>
                     <td>{{pumpListWithClassification.Q}}</td>
+                    <td>{{pumpListWithClassification.InsertedDate | date}}</td>
+                    <td>{{pumpListWithClassification.Classificaion}}</td>
                 </tr>
             </ng-template>
         </p-table>
