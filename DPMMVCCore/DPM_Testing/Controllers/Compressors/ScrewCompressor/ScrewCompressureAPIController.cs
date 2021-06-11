@@ -13,6 +13,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DPM_Testing.Controllers
@@ -29,7 +30,33 @@ namespace DPM_Testing.Controllers
         {
             _context = context;
         }
-        
+
+        public static DataTable ToDataTable<T>(List<T> items)
+        {
+            DataTable dataTable = new DataTable(typeof(T).Name);
+
+            //Get all the properties
+            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo prop in Props)
+            {
+                //Setting column names as Property names
+                dataTable.Columns.Add(prop.Name);
+            }
+            foreach (T item in items)
+            {
+                var values = new object[Props.Length];
+                for (int i = 0; i < Props.Length; i++)
+                {
+                    //inserting property values to datatable rows
+                    values[i] = Props[i].GetValue(item, null);
+                }
+                dataTable.Rows.Add(values);
+            }
+            //put a breakpoint here and check datatable
+            return dataTable;
+        }
+        [HttpGet]
+        [Route("GetClassification")]
         public async Task<IActionResult> GetClassification()
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -50,12 +77,17 @@ namespace DPM_Testing.Controllers
         [Route("Configuration")]
         public async Task<IActionResult> PostConfiguration([FromBody] List<ScrewCompressorTrainModel> compressuredetails)
         {
-             string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
             try
             {
+               
+                IQueryable<ScrewCompressorConfigurationModel> ruleDetails = _context.AddRuleModels.OrderBy(a => a.AddRuleId).AsQueryable();
+                DataTable dtRules = ToDataTable<ScrewCompressorConfigurationModel>(ruleDetails.ToList());
+
                 foreach (var item in compressuredetails)
                 {
+
                     DateTime datetime = item.InsertedDate;
                     if (datetime == DateTime.MinValue)
                     {
@@ -66,10 +98,62 @@ namespace DPM_Testing.Controllers
                     item.InsertedDate = dateOnly;
                     item.UserId = userId;
                     item.TenantId = 1;
+                    var PD1 = item.PD1;
+                    var PS2 = item.PS2;
+                    var PS1 = item.PS1;
+                    var PD2 = item.PD2;
+                    var TS1 = item.TS1;
+                    var TD1 = item.TD1;
+                    var TS2 = item.TS2;
+                    var TD2 = item.TD2;
+
+                    var T = Convert.ToDecimal(TD1 - TS1);
+                    var T2 = Convert.ToDecimal(TD2 - TS2);
+                    var T3 = Convert.ToDecimal((((PD1 + 1) / (PS1 + 1)) - 1));
+                    var T4 = Convert.ToDecimal((((PD2 + 1) / (PS2 + 1)) - 1));
+                    var data = dtRules.Rows[1]["Trigger"];
+                    if (((PD1 >= Convert.ToDecimal(dtRules.Rows[1]["Trigger"])))
+                         && (T >= Convert.ToDecimal(dtRules.Rows[8]["Trigger"]))
+                         && (T2 >= Convert.ToDecimal(dtRules.Rows[9]["Trigger"]))
+                         && (T3 >= Convert.ToDecimal(dtRules.Rows[10]["Trigger"]))
+                         && (T4 <= Convert.ToDecimal(dtRules.Rows[11]["Trigger"])))
+                    {
+                        item.ClassificationsId = 2;
+                        item.Classifications = "degrade";
+                        item.ProcessingStage = "Done";
+                    }
+
+                    else if ((PD1 <= Convert.ToDecimal(dtRules.Rows[1]["Alarm"]))
+                          || (PS2 <= Convert.ToDecimal(dtRules.Rows[2]["Alarm"]))
+                          || (PD2 <= Convert.ToDecimal(dtRules.Rows[3]["Alarm"]))
+                          || (TD1 <= Convert.ToDecimal(dtRules.Rows[5]["Alarm"]))
+                          || (TD2 <= Convert.ToDecimal(dtRules.Rows[7]["Alarm"])))
+                    {
+                        item.ClassificationsId = 0;
+                        item.Classifications = "bad";
+                        item.ProcessingStage = "Done";
+                    }
+
+                    else if (((PD1 >= Convert.ToDecimal(dtRules.Rows[1]["Trigger"])))
+                         || (T >= Convert.ToDecimal(dtRules.Rows[8]["Trigger"]))
+                         || (T2 >= Convert.ToDecimal(dtRules.Rows[9]["Trigger"]))
+                         || (T3 >= Convert.ToDecimal(dtRules.Rows[10]["Trigger"]))
+                         || (T4 <= Convert.ToDecimal(dtRules.Rows[11]["Trigger"])))
+                    {
+                        item.ClassificationsId = 1;
+                        item.Classifications = "incipient";
+                        item.ProcessingStage = "Done";
+                    }
+                    else
+                    {
+                        item.ClassificationsId = 3;
+                        item.Classifications = "normal";
+                        item.ProcessingStage = "Done";
+                    }
                     _context.ScrewCompressureTrainData.Add(item);
                     await _context.SaveChangesAsync();
-
                 }
+               
                 return Ok(compressuredetails);
             }
             catch (Exception exe)
@@ -86,7 +170,7 @@ namespace DPM_Testing.Controllers
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
-                List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).ToListAsync();
+                List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData.Where(a => a.UserId == userId).OrderBy(a => a.InsertedDate).ToListAsync();
                 var PredictionData = screwCompressorPredictions.ToList();
                 return Ok(PredictionData);
             }
@@ -109,7 +193,7 @@ namespace DPM_Testing.Controllers
             try
             {
                 List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData.Where(a => a.UserId == userId
-                                                                                                                                 && (a.InsertedDate>= PredictionFromDate
+                                                                                                                                 && (a.InsertedDate >= PredictionFromDate
                                                                                                                                  && a.InsertedDate <= PredictionToDate))
                                                                                                                                .OrderBy(a => a.InsertedDate).ToListAsync();
                 var PredictionData = screwCompressorPredictions.ToList();
@@ -133,7 +217,7 @@ namespace DPM_Testing.Controllers
             }
             catch (Exception exe)
             {
-                return BadRequest(exe.Message); 
+                return BadRequest(exe.Message);
             }
 
         }
@@ -207,7 +291,7 @@ namespace DPM_Testing.Controllers
             try
             {
 
-                List<ScrewCompressorTrainModel> screwCompressorTrainData = await _context.ScrewCompressureTrainData.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).ToListAsync();
+                List<ScrewCompressorTrainModel> screwCompressorTrainData = await _context.ScrewCompressureTrainData.Where(a => a.UserId == userId).OrderBy(a => a.InsertedDate).ToListAsync();
                 var DetailData = screwCompressorTrainData.ToList();
                 foreach (var item in DetailData)
                 {
@@ -233,7 +317,7 @@ namespace DPM_Testing.Controllers
                 }
 
 
-                List<ScrewCompressorTrainClassificationModel> screwCompressorTrainClassificationData = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).OrderBy(a=> a.InsertedDate).ToListAsync();
+                List<ScrewCompressorTrainClassificationModel> screwCompressorTrainClassificationData = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).OrderBy(a => a.InsertedDate).ToListAsync();
                 var classifydata = screwCompressorTrainClassificationData.ToList();
                 foreach (var item in classifydata)
                 {

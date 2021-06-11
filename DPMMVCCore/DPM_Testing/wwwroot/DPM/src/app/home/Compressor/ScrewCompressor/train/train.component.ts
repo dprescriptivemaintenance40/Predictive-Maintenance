@@ -117,7 +117,7 @@ export class TrainComponent implements OnInit {
 
   addfile(event) {
     this.file = event.target.files[0];
-    var fileReader = new FileReader();
+    let fileReader = new FileReader();
     fileReader.readAsArrayBuffer(this.file);
     fileReader.onload = (e) => {
       this.arrayBuffer = fileReader.result;
