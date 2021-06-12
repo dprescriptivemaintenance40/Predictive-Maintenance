@@ -105,7 +105,8 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
                         var SecondClosestValue = HQLibraryList[Firstclosestindex + 1];
                         var SecondHClose = SecondClosestValue.H;
                         var SecondQClose = SecondClosestValue.Q;
-                        var DeviationH = (FirstHClose - SecondHClose) / 20;
+                        var ValueDifference = SecondQClose - FirstQClose;
+                        var DeviationH = (FirstHClose - SecondHClose) / ValueDifference;
                         var HValueLibrary = FirstHClose - (DeviationH * difference);
                         var Trigger = (HValueLibrary * HTrigger); // Trigger
                         var Alarm = ((HValueLibrary * HAlaram)); // Alarm

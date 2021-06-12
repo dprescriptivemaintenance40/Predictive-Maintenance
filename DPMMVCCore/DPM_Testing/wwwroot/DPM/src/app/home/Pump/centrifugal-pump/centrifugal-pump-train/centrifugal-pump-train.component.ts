@@ -77,7 +77,7 @@ export class CentrifugalPumpTrainComponent implements OnInit {
       this.CentrifugalPumpMethod.postWithHeaders(url, this.CompDetailList)
         .subscribe(async res => {
               this.pumpListWithClassification = res;
-              // this.getCentrifugalPumpList();
+              this.getCentrifugalPumpList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
             }, err => {
               console.log(err.error);
