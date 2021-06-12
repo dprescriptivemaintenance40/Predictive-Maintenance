@@ -125,7 +125,7 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
                         }
 
                     }
-                    item.Classificaion = result;
+                    item.Classification = result;
                     _context.CentrifugalPumpTrainData.Add(item);
                     await _context.SaveChangesAsync();
 

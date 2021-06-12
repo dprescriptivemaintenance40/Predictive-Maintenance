@@ -16,7 +16,7 @@ namespace DPM.Models.PumpModel
         public decimal Amperage { get; set; }
         public decimal Q { get; set; }
         public DateTime InsertedDate { get; set; }
-        public string Classificaion { get; set; }
+        public string Classification { get; set; }
 
     }
 }
