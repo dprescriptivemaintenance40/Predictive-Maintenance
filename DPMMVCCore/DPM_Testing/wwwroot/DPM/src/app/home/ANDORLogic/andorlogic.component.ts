@@ -33,7 +33,7 @@ export class AndorlogicComponent {
             id: this.itemCount,
             text: '',
             expanded: true,
-            ANDORLogic: true            
+            ANDORLogic: true
         }
         if (!event.node.ANDIcon && event.ANDIcon) {
             event.node.ANDIcon = event.ANDIcon;
@@ -57,13 +57,29 @@ export class AndorlogicComponent {
                     children: []
                 });
         } else if (event.BasicEvent) {
-            Object.assign(obj,
-                {
-                    label: 'Basic Event',
-                    BasicEvent: event.BasicEvent,
-                    SelectedFailureComponentsList: [],
-                    SelectedFailureCausesList: [],
-                });
+            if (event.Failure) {
+                Object.assign(obj,
+                    {
+                        label: 'Failure',
+                        BasicEvent: event.BasicEvent,
+                        SelectedFailureComponentsList: [],
+                        SelectedFailureCausesList: [],
+                        SelectedFailureComponents: "",
+                        SelectedFailureCauses: "",
+                        Failure: event.Failure
+                    });
+            }
+
+            if (event.ScheduledDowntime) {
+                Object.assign(obj,
+                    {
+                        label: 'Scheduled Downtime',
+                        BasicEvent: event.BasicEvent,
+                        ScheduledDowntime: event.ScheduledDowntime
+                    });
+            }
+
+
         }
         return obj;
     }
@@ -191,7 +207,7 @@ export class AndorlogicComponent {
                     let Mode = this.FailureModeNamesList.find(a => a.ShortName === ShortName[0]).FullName;
                     let failureMode = Library.find(a => a['Failure mode'] === Mode);
                     event.node.years = failureMode['Failure rate Upper'];
-                    event.node.hours = failureMode['Repair (manhours) Mean'];                    
+                    event.node.hours = failureMode['Repair (manhours) Mean'];
                     this.changeRef.detectChanges();
                 }
             });
@@ -211,7 +227,7 @@ export class AndorlogicComponent {
                     var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
                     var first_sheet_name = workbook.SheetNames[0];
                     var worksheet = workbook.Sheets[first_sheet_name];
-                    this.FailureModeNamesList = XLSX.utils.sheet_to_json(worksheet, { raw: true });                    
+                    this.FailureModeNamesList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
                 }
             });
     }

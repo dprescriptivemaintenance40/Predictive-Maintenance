@@ -17,50 +17,70 @@
                         <hr>
                     </div>
                     <div *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <span *ngFor="let comp of node.SelectedFailureComponentsList; let i=index;" class="badge badge-pill badge-success">
+                        <div *ngIf="node.Failure">
+                            <h5>{{node.label}}</h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span *ngFor="let comp of node.SelectedFailureComponentsList; let i=index;" class="badge badge-pill badge-success">
                                         {{comp.FailureComponents}} 
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true" style="cursor: pointer;" (click)="onDeleteFailureComponents(i)">&times;</span>
-                                </button>
-                                </span>
-                            </div>
-                            <div class="col-md-6">
-                                <span *ngFor="let cause of node.SelectedFailureCausesList; let i=index;" class="badge badge-pill badge-success">
+                                    </button>
+                                    </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span *ngFor="let cause of node.SelectedFailureCausesList; let i=index;" class="badge badge-pill badge-success">
                                     {{cause.FailureCause}} 
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true" style="cursor: pointer;" (click)="onDeleteFailureCauses(i)">&times;</span>
-                                </button>
-                                </span>
+                                    </button>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <select [(ngModel)]="SelectedFailureComponents" (ngModelChange)="onFailureComponents($event)" class="form-control">
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select [(ngModel)]="node.SelectedFailureComponents" (ngModelChange)="onFailureComponents($event)" class="form-control">
                                     <option value="">Select Failure Components</option>
                                     <option *ngFor="let FailureComp of FailureComponents" [ngValue]="FailureComp">{{FailureComp.FailureComponents}}</option>
                                 </select>
-                            </div>
-                            <div class="col-md-6">
-                                <select [(ngModel)]="SelectedFailureCauses" (ngModelChange)="onFailureCauses($event)" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <select [(ngModel)]="node.SelectedFailureCauses" (ngModelChange)="onFailureCauses($event)" class="form-control">
                                     <option value="">Select Failure Causes</option>
                                     <option *ngFor="let FailCause of FailureCause" [ngValue]="FailCause">{{FailCause.FailureCause}}</option>
                                 </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{node.years}} years
+                                </div>
+                                <div class="col-md-6">
+                                    {{node.hours}} hours
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-dark" (click)="GetLibrary()">Done</button>
                             </div>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                {{node.years}} years
+                        <div *ngIf="node.ScheduledDowntime">
+                            <h5>{{node.label}}</h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input [(ngModel)]="node.years" class="form-control" placeholder="Set Years" name="years" id="years">
+                                </div>
+                                <div class="col-md-6">
+                                    <input [(ngModel)]="node.hours" class="form-control" placeholder="Set hours" name="hours" id="hours">
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                {{node.hours}} hours
+                            <hr>
+                            <div>
+                                <button type="button" class="btn btn-dark">Done</button>
                             </div>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-dark" (click)="GetLibrary()">Done</button>
                         </div>
                     </div>
                     <!--
@@ -80,6 +100,7 @@
                     <a style="cursor:pointer; text-decoration: none;" title="Add new node for AND / OR" class="pi pi-plus" (click)="onAddNode(node)"></a>
                     <p-menu #menu [popup]="true" [model]="items" [appendTo]="appendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                     <p-menu #submenu [popup]="true" [model]="subItems" [appendTo]="subappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
+                    <p-menu #basicmenu [popup]="true" [model]="basicItems" [appendTo]="basicappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                 </div>
                 <a *ngIf="!leaf && !(node.ANDORLogic)" tabindex="0" class="p-node-toggler" (click)="toggleNode($event, node)" (keydown.enter)="toggleNode($event, node)">
                     <i class="p-node-toggler-icon pi" [ngClass]="{'pi-chevron-down': node.expanded, 'pi-chevron-up': !node.expanded}"></i>

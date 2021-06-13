@@ -48,15 +48,17 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
     subscription: Subscription;
     public items: MenuItem[];
     public subItems: MenuItem[];
-
+    public basicItems: MenuItem[];
     public showTransitionOptions: string = '.12s cubic-bezier(0, 0, 0.2, 1)';
 
     public hideTransitionOptions: string = '.1s linear';
     @ViewChild('container') containerViewChild: ElementRef;
     @ViewChild('menu') menu: Menu;
     @ViewChild('submenu') submenu: Menu;
+    @ViewChild('basicmenu') basicmenu: Menu;
     public appendTo: any;
     public subappendTo: any;
+    public basicappendTo: any;
     public ANDIcon: boolean;
     public ORIcon: boolean;
     public FailureComponents: any[] = [];
@@ -71,10 +73,10 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         }
         if (this.FailureCause.length === 0) {
             this.GetFailureCause();
-        } 
+        }
         if (this.FailureModeNamesList.length === 0) {
             this.GetFailureModeNames();
-        }              
+        }
         this.chart = chart as OrganizationChart;
         this.subscription = this.chart.selectionSource$.subscribe(() => {
             this.cd.markForCheck();
@@ -107,20 +109,31 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                 }
             }
         ];
+
+        this.basicItems = [
+            {
+                label: 'Failure', command: () => {
+                    this.Failure();
+                }
+            },
+            {
+                label: 'Scheduled Downtime', command: () => {
+                    this.ScheduledDowntime();
+                }
+            }
+        ];
     }
 
     public AND() {
         this.ANDIcon = true;
         this.ORIcon = false;
         this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
-        //this.chart.AddNode.emit({ node: this.node, ANDIcon: true });
     }
 
     public OR() {
         this.ORIcon = true;
         this.ANDIcon = false;
         this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
-        //this.chart.AddNode.emit({ node: this.node, ORIcon: true });
     }
 
     public Event() {
@@ -134,12 +147,26 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
     }
 
     public BasicEvent() {
+        this.basicmenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.basicappendTo == null });
+    }
+
+    public Failure() {
         if (this.ANDIcon) {
-            this.chart.AddNode.emit({ node: this.node, ANDIcon: true, BasicEvent: true });
+            this.chart.AddNode.emit({ node: this.node, ANDIcon: true, BasicEvent: true, Failure: true });
         } else if (this.ORIcon) {
-            this.chart.AddNode.emit({ node: this.node, ORIcon: true, BasicEvent: true });
+            this.chart.AddNode.emit({ node: this.node, ORIcon: true, BasicEvent: true, Failure: true });
         } else {
-            this.chart.AddNode.emit({ node: this.node, BasicEvent: true });
+            this.chart.AddNode.emit({ node: this.node, BasicEvent: true, Failure: true });
+        }
+    }
+
+    public ScheduledDowntime() {
+        if (this.ANDIcon) {
+            this.chart.AddNode.emit({ node: this.node, ANDIcon: true, BasicEvent: true, ScheduledDowntime: true });
+        } else if (this.ORIcon) {
+            this.chart.AddNode.emit({ node: this.node, ORIcon: true, BasicEvent: true, ScheduledDowntime: true });
+        } else {
+            this.chart.AddNode.emit({ node: this.node, BasicEvent: true, ScheduledDowntime: true });
         }
     }
 
@@ -295,7 +322,7 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                     let ShortName = failureModes[len - 1];
                     let Mode = this.FailureModeNamesList.find(a => a.ShortName === ShortName[0]).FullName;
                     let failureMode = Library.find(a => a['Failure mode'] === Mode);
-                    this.node.years = failureMode['Failure rate Upper'];
+                    this.node.years = parseFloat(((1 / failureMode['Failure rate Upper']) * (1000000 / 8760)).toFixed(2));
                     this.node.hours = failureMode['Repair (manhours) Mean'];
                     this.cd.detectChanges();
                 }
