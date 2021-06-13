@@ -14,6 +14,7 @@ import { EventEmitterService } from "./Services/event-emitter.service";
 import { ExcelFormatService } from "./Services/excel-format.service";
 import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
 import { AndorlogicComponent } from "./ANDORLogic/andorlogic.component";
+import { CentrifugalPumpTrainComponent } from './Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { AndorlogicComponent } from "./ANDORLogic/andorlogic.component";
         CentrifugalPumpComponent,
         ReportComponent,
         RecycleBinComponent,
-        AndorlogicComponent
+        AndorlogicComponent,
+        CentrifugalPumpTrainComponent
     ],
     imports: [        
         HomeRoutingModule,       

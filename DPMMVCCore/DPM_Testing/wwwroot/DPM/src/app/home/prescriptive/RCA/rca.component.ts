@@ -95,6 +95,7 @@ export class RCAComponent {
     public RCAImageViewEnable: boolean = false
     public RCAPdfViewEnable: boolean = false
     public XYZ: any
+    private UpdateAttachmentBuffer : any = [];
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
@@ -200,13 +201,6 @@ export class RCAComponent {
     }
 
     deleteTreeRow(event) {
-        if (event.RCAFILE !== '') {
-            var fileDetails = JSON.parse(event.RCAFILE)
-            const params = new HttpParams()
-                .set('fullPath', fileDetails.dbPath)
-            this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
-                .subscribe()
-        }
         this.containsInNestedObjectDF(this.files, event.id);
         var index = this.ADDDataForSaveAuth.findIndex(std => std.id == event.id);
         this.ADDDataForSaveAuth.splice(index, 1);
@@ -396,12 +390,12 @@ export class RCAComponent {
     }
 
     UpdatedeleteTreeRow(event) {
-        if (event.RCAFILE !== '') {
-            var fileDetails = JSON.parse(event.RCAFILE)
-            const params = new HttpParams()
-                .set('fullPath', fileDetails.dbPath)
-            this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params)
-                .subscribe()
+        if(event.currentStage === "update"){
+            if (event.RCAFILE !== '') {
+                event.RCAFILE.forEach(element => {
+                    this.UpdateAttachmentBuffer.push(JSON.parse(element));
+                });
+            }
         }
         this.containsInNestedObjectDF(this.Updatefiles, event.id);
         var index = this.UpdateRCADataForSaveAuth.findIndex(std => std.id == event.id);
@@ -420,6 +414,16 @@ export class RCAComponent {
 
         } else if (Data == undefined && RCAFILE == undefined) {
             this.Updatefiles[0].update = JSON.stringify(this.UpdateRCADataForSaveAuth);
+            if(this.UpdateAttachmentBuffer !== [] || this.UpdateAttachmentBuffer !== undefined){
+                this.UpdateAttachmentBuffer.forEach(element => {
+                    const params1 = new HttpParams()
+                          .set('fullPath', element[0][0].dbPath)
+                     this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params1)
+                    .subscribe(
+                        res =>{}, err=>{ console.log(err.error)}
+                    ) 
+                });
+            }
             let obj = {
                 RCAID: this.UpdateRecordList[0].RCAID,
                 TagNumber: this.UpdateRecordList[0].TagNumber,
@@ -435,9 +439,10 @@ export class RCAComponent {
                         this.ADDRCAFailureMode = "";
                         this.UpdateTreeshow = false;
                         this.SelectUpdateBoxEnabled = true;
-                        this.UpdateSelectedLabel = ""
-                        this.Updatefiles = []
-                        this.UpdateRCADataForSaveAuth = []
+                        this.UpdateSelectedLabel = "";
+                        this.Updatefiles = [];
+                        this.UpdateRCADataForSaveAuth = [];
+                        this.UpdateAttachmentBuffer = [] ;
                         this.getRecordsList();
                         this.RCAUpdateItemCount = 1000;
                     }
@@ -474,10 +479,12 @@ export class RCAComponent {
                     .subscribe(
                         (res: any) => {
                             if (TreeNode.RCAFILE === '') {
-                                var Data: any = [];
+                                var Data: any = [], Data1: any = [];
                                 Data.push(res);
                                 Data.push(prevName)
-                                TreeNode.RCAFILE.push(JSON.stringify(Data));
+                                Data1.push(Data)
+                                TreeNode.RCAFILE = [] 
+                                TreeNode.RCAFILE.push(JSON.stringify(Data1));
                             } else if (TreeNode.RCAFILE !== '') {
                                 var Data1: any = [];
                                 var Data2: any = [];
@@ -604,7 +611,7 @@ export class RCAComponent {
                                 const paramsFile = new HttpParams()
                                     .set('fullPath', element[0][0].dbPath)
                                 this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, paramsFile)
-                                    .subscribe()
+                                    .subscribe(res =>{}, err=>{ console.log(err.error)})
                             });
 
                         }
@@ -868,7 +875,7 @@ export class RCAComponent {
                             const paramsFile = new HttpParams()
                                 .set('fullPath', Data1[index][0][0].dbPath)
                             this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, paramsFile)
-                                .subscribe()
+                                .subscribe(res =>{}, err=>{ console.log(err.error)})
                             Data1[index] = Data3
                             Data1.forEach(element => {
                                 Data4.push(JSON.stringify(element))

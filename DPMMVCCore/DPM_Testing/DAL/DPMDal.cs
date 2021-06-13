@@ -28,10 +28,10 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
         public DbSet<RecycleBinCentrifugalPumpPrescriptiveModel> recycleCentrifugalPumpModelData { get; set; }
         public DbSet<RestoreCentrifugalPumpPrescriptiveFailureMode> restoreCentrifugalPumpPrescriptiveFailureModes { get; set; }
-
         public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
         public DbSet<RCAModel> rCAModels{ get; set; }
-
+        public DbSet<CentrifugalPumpTrainModel> CentrifugalPumpTrainData { get; set; }
+        public DbSet<CentrifugalPumpTrainClassificationModel> CentrifugalPumpTrainClassifications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -57,6 +57,8 @@ namespace DPM_ServerSide.DAL
                         .WithMany(b => b.restoreCentrifugalPumpPrescriptiveFailureModes)
                         .HasForeignKey(a => a.RCPPMId);
             modelBuilder.Entity<RCAModel>().ToTable("rcatable");
+            modelBuilder.Entity<CentrifugalPumpTrainModel>().ToTable("centrifugalpumpdetails");
+            modelBuilder.Entity<CentrifugalPumpTrainClassificationModel>().ToTable("centrifugalpumpwithclassification");
         }
 
     }
