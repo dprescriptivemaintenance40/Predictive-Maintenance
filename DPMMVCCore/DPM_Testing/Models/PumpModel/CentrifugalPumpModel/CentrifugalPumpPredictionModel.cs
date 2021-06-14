@@ -12,7 +12,7 @@ namespace DPM.Models.PumpModel
         public string UserId { get; set; }
         public decimal P1 { get; set; }
         public decimal P2 { get; set; }
-        public decimal Amperage { get; set; }
+        public decimal Average { get; set; }
         public decimal Q { get; set; }
         public DateTime InsertedDate { get; set; }
         public string Prediction { get; set; }

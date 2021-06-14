@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
@@ -27,6 +27,8 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
   public SingleCentrifugalPumpBulkPredictionName : string = "";
   public PridictedId: number = 0;
   public notification = null;
+  public FromDate : string = ""
+  public ToDate : string = ""
   public CentrifugalPumpconfigurationObj: CentrifugalPumpPredictionModel = new CentrifugalPumpPredictionModel();
 
   constructor(public http: HttpClient,
@@ -102,6 +104,20 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     }
 
   }
+  getPredictedById(PredictedId) {
+    this.showNotification("")
+    const params = new HttpParams()
+          .set("PredictedId", PredictedId)
+     var url : string = this.CentrifugalPumpPredictionName.getPredictionById
+     this.CentrifugalPumpPredictionMethod.getWithParameters(url, params)
+     .subscribe((res: any) => {
+        this.showNotification(res.Prediction)
+        this.commonLoadingDirective.showLoading(false, "");
+      }, err => {
+        this.commonLoadingDirective.showLoading(false, "");
+        console.log(err.error);
+      });
+  }
   getPredictedList() {
     this.centrifugalPumpWithPrediction = [];
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
@@ -132,22 +148,42 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       this.SingleCentrifugalPumpBulkPredictionName = "Bulk Prediction"
     }
   }
-  CentrifugalPumpPrediction(){
+
+  CentrifugalPumpPrediction() {
     this.CentrifugalPumpconfigurationObj.Prediction = "";
-    this.CentrifugalPumpconfigurationObj.PredictionId = 0;
+    //  this.CentrifugalPumpconfigurationObj.PredictionId = 0;
     this.CentrifugalPumpconfigurationObj.UserId = "";
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
     this.CentrifugalPumpconfigurationObj.InsertedDate = moment().format("YYYY-MM-DD");
-    this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
-    const url : string = this.CentrifugalPumpPredictionName.CentrifugalPumpPredictionAddData;
-    this.CentrifugalPumpPredictionMethod.postWithHeaders(url, this.centrifugalPumpDetailList)
-      .subscribe(async res => {
-            this.centrifugalPumpWithPrediction = res;
-            this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-          }, err => {
-            console.log(err.error);
-            this.commonLoadingDirective.showLoading(false, "");
-          })
-        this.loading = false;  
+    var url : string =  this.CentrifugalPumpPredictionName.Prediction
+    this.CentrifugalPumpPredictionMethod.postWithoutHeaders(url, this.CentrifugalPumpconfigurationObj)
+      .subscribe(async (res : any) => {
+        this.CentrifugalPumpconfigurationObj = res;
+         this.PridictedId = res.PredictionId;
+        // await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
+          // .subscribe(res => {
+          //   this.getPredictedById(this.PridictedId);
+          //   this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+          // }, err => {
+          //   console.log(err.error);
+          //   this.commonLoadingDirective.showLoading(false, "");
+          // })
+      }, err => {
+        this.commonLoadingDirective.showLoading(false, "");
+        console.log(err.error);
+      });
+
+  }
+
+  getPredictedListRecordsByDate(){
+    const params = new HttpParams()
+          .set('FromDate', this.FromDate)
+          .set('ToDate', this.ToDate)
+     this.CentrifugalPumpPredictionMethod.getWithParameters( this.CentrifugalPumpPredictionName.getPredictedListByDate, params)
+     .subscribe(
+       (res : any) => {
+        this.centrifugalPumpWithPrediction = res;
+       }, err => { console.log(err.error)}
+     )
   }
 }
