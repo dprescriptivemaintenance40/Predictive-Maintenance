@@ -55,6 +55,27 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
 
         }
 
+        [HttpGet]
+        [Route("GetCentrifugalPumpPredictionByDate")]
+        public async Task<IActionResult> GetPredictionByDate(string FromDate, string ToDate)
+        {
+            try
+            {
+                DateTime d = Convert.ToDateTime(FromDate);
+                DateTime PredictionFromDate = d.Date;
+                DateTime d1 = Convert.ToDateTime(ToDate);
+                DateTime PredictionToDate = d1.Date;
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                var Record = await _context.CentrifugalPumpPredictions.Where(a => a.UserId == userId &&  a.InsertedDate >= PredictionFromDate && a.InsertedDate <= PredictionToDate).OrderBy(a => a.InsertedDate).ToListAsync();
+                return Ok(Record);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
+        }
+
 
         [HttpPost]
         [Route("CentrifugalPumpPredictionPost")]
