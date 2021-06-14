@@ -46,7 +46,7 @@
             placeholder="Enter value">
     </div>
     <div class="td">
-        <label data-toggle="tooltip" data-placement="top" title="">Average</label>
+        <label data-toggle="tooltip" data-placement="top" title="">Amperage</label>
         <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Average" class="form-control"
             placeholder="Enter value">
     </div>
@@ -93,8 +93,8 @@
                     <th pSortableColumn="P2">P2
                         <p-sortIcon field="PD"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="Average">Average
-                        <p-sortIcon field="Average"></p-sortIcon>
+                    <th pSortableColumn="Amperage">Amperage
+                        <p-sortIcon field="Amperage"></p-sortIcon>
                     </th>
                     <th pSortableColumn="Q">Q
                         <p-sortIcon field="Q"></p-sortIcon>
@@ -111,7 +111,7 @@
                 <tr>
                     <td>{{centrifugalPumpWithPrediction.P1}}</td>
                     <td>{{centrifugalPumpWithPrediction.P2}}</td>
-                    <td>{{centrifugalPumpWithPrediction.Average}}</td>
+                    <td>{{centrifugalPumpWithPrediction.Amperage}}</td>
                     <td>{{centrifugalPumpWithPrediction.Q}}</td>
                     <td>{{centrifugalPumpWithPrediction.InsertedDate | date}}</td>
                     <td>{{centrifugalPumpWithPrediction.Prediction}}</td>

@@ -43,6 +43,8 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     this.title.setTitle('CentrifugalPump Prediction | Dynamic Prescriptive Maintenence');
     this.CPChangeToBulkPrediction();
     this.showNotification('');
+    // this.GetAllRecords();
+    this.getPredictedList();
   }
 
   Downloadfile() {
@@ -72,7 +74,8 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       const url : string = this.CentrifugalPumpPredictionName.CentrifugalPumpPredictionAddData;
       this.CentrifugalPumpPredictionMethod.postWithHeaders(url, this.centrifugalPumpDetailList)
         .subscribe(async res => {
-              this.centrifugalPumpWithPrediction = res;
+              // this.centrifugalPumpWithPrediction = res;
+              this.GetAllRecords()
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
             }, err => {
               console.log(err.error);
@@ -102,7 +105,6 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       default:
         break;
     }
-
   }
   getPredictedById(PredictedId) {
     this.showNotification("")
@@ -118,6 +120,7 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
         console.log(err.error);
       });
   }
+
   getPredictedList() {
     this.centrifugalPumpWithPrediction = [];
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
@@ -151,7 +154,6 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
 
   CentrifugalPumpPrediction() {
     this.CentrifugalPumpconfigurationObj.Prediction = "";
-    //  this.CentrifugalPumpconfigurationObj.PredictionId = 0;
     this.CentrifugalPumpconfigurationObj.UserId = "";
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
     this.CentrifugalPumpconfigurationObj.InsertedDate = moment().format("YYYY-MM-DD");
@@ -159,7 +161,8 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     this.CentrifugalPumpPredictionMethod.postWithoutHeaders(url, this.CentrifugalPumpconfigurationObj)
       .subscribe(async (res : any) => {
         this.CentrifugalPumpconfigurationObj = res;
-         this.PridictedId = res.PredictionId;
+        this.getPredictedById(res.CentifugalPumpPID);
+        //  this.PridictedId = res.PredictionId;
         // await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
           // .subscribe(res => {
           //   this.getPredictedById(this.PridictedId);
@@ -174,7 +177,6 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       });
 
   }
-
   getPredictedListRecordsByDate(){
     const params = new HttpParams()
           .set('FromDate', this.FromDate)
@@ -185,5 +187,18 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
         this.centrifugalPumpWithPrediction = res;
        }, err => { console.log(err.error)}
      )
+  }
+  GetAllRecords(){
+    this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
+    var url : string = this.CentrifugalPumpPredictionName.getCentrifugalPumpAllRecords;
+    this.CentrifugalPumpPredictionMethod.getWithoutParameters(url)
+      .subscribe(res => {
+        this.centrifugalPumpWithPrediction = res;
+        this.commonLoadingDirective.showLoading(false, "");
+      }, err => {
+        this.commonLoadingDirective.showLoading(false, "");
+        console.log(err.error);
+      });
+
   }
 }
