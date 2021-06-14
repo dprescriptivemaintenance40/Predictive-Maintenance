@@ -73,7 +73,7 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
         .subscribe(async res => {
               var UserId = res[0].UserId;
               var Data : any = await this.GetTrainDataList();
-              if(Data.length >= 20){
+              if(Data.length >= 10){
                 await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${UserId}&name=prediction&type=pump`, { responseType: 'text' })
                       .subscribe(res => {
                         this.getPredictedList();
@@ -156,6 +156,7 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
   }
 
   CentrifugalPumpPrediction() {
+ if(this.CentrifugalPumpconfigurationObj.P1 >0 && this.CentrifugalPumpconfigurationObj.P2 >0 && this.CentrifugalPumpconfigurationObj.Amperage >0 && this.CentrifugalPumpconfigurationObj.Q >0){
     this.CentrifugalPumpconfigurationObj.Prediction = "";
     this.CentrifugalPumpconfigurationObj.UserId = "";
     this.CentrifugalPumpconfigurationObj.InsertedDate = moment().format("YYYY-MM-DD");
@@ -182,7 +183,9 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       }, err => {
         console.log(err.error);
       });
-
+    }else {
+      this.messageService.add({ severity: 'warn', detail: 'No Records are Found for Prediction'});
+    }
   }
 
   async GetTrainDataList(){
@@ -200,5 +203,52 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
         this.centrifugalPumpWithPrediction = res;
        }, err => { console.log(err.error)}
      )
+  }
+  exportToExcel() {
+    const dataArray = this.centrifugalPumpWithPrediction
+    if (dataArray != 0) {
+      const dataArrayList = dataArray.map(obj => {
+        const { CentrifugalTrainID, UserId, InsertedDate, ...rest } = obj;
+        return rest;
+      })
+
+      var csvData = this.ConvertToCSV(dataArrayList);
+      var a = document.createElement("a");
+      a.setAttribute('style', 'display:none;');
+      document.body.appendChild(a);
+      var blob = new Blob([csvData], { type: 'text/csv' });
+      var url = window.URL.createObjectURL(blob);
+      a.href = url;
+      // var x = new Date();
+      var link: string = "DPMPrediction" + '.csv';
+      a.download = link.toLocaleLowerCase();
+      a.click();
+      this.messageService.add({ severity: 'info', detail: 'Excel Downloaded Successfully'});
+
+    } else {
+      this.messageService.add({ severity: 'warn', detail: 'No Records are Found to Download in Excel'});
+    }
+  }
+  ConvertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    var row = "";
+    for (var index in objArray[0]) {
+      //Now convert each value to string and comma-separated
+      row += index + ',';
+    }
+    row = row.slice(0, -1);
+    //append Label row with line break
+    str += row + '\r\n';
+    for (var i = 0; i < array.length; i++) {
+      var line = '';
+      for (var index in array[i]) {
+        if (line != '') line += ','
+
+        line += array[i][index];
+      }
+      str += line + '\r\n';
+    }
+    return str;
   }
 }
