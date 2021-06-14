@@ -16,5 +16,9 @@ export class CentrifugalPumpConstantAPI{
 
     public getCentrifugalPumpTrainList : string = '/CentrifugalPumpTrainAPI/getConfiguration';
     public CentrifugalPumpTrainAddData : string = '/CentrifugalPumpTrainAPI/PumpConfiguration';
+
+    public getCentrifugalPredictionTrainList : string = '';
+    public CentrifugalPumpPredictionAddData : string = '';
+    public getCentrifugalPumpPredictedList : string = '';
   
 }

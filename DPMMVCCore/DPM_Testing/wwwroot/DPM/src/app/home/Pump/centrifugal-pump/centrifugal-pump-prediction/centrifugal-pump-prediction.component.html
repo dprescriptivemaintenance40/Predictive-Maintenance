@@ -1,0 +1,111 @@
+<p-toast position="top-right"></p-toast>
+
+<button type="button" style="background-color:#585570 ; border-color:#585570 ;    margin: 0.3em;"
+    (click)="CPChangeToBulkPrediction()" class="btn btn-primary">{{SingleCentrifugalPumpBulkPredictionName}}</button>
+<div style="padding-left: 5px;" class="row" *ngIf="showCentrifugalPumpBulkPrediction">
+    <div class="col-sm col-md-4 form-group">
+        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)"
+            placeholder="Upload file"
+            accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+    </div>
+</div>
+<div style="padding-left: 5px;" class="row" *ngIf="showCentrifugalPumpBulkPrediction">
+
+    <div class="col-sm">
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()"
+            class="btn btn-primary">Get Excel Format</button>
+    </div>
+
+    <div class="col-sm">
+        <!-- <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button> -->
+    </div>
+    <div class="col-sm">
+    </div>
+</div>
+
+<div style="text-align: center;" class="tbody" *ngIf="!showCentrifugalPumpBulkPrediction">
+    <div class="td">
+        <label data-toggle="tooltip" data-placement="top" title="">P1</label>
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.P1" class="form-control"
+            placeholder="Enter value">
+    </div>
+    <div class="td">
+        <label data-toggle="tooltip" data-placement="top" title="">P2</label>
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.P2" class="form-control"
+            placeholder="Enter value">
+    </div>
+    <div class="td">
+        <label data-toggle="tooltip" data-placement="top" title="">Average</label>
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Average" class="form-control"
+            placeholder="Enter value">
+    </div>
+    <div class="td">
+        <label data-toggle="tooltip" data-placement="top" title="">Q</label>
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Q" class="form-control"
+            placeholder="Enter value">
+    </div>
+    <div class="td"></div>
+    <div class="td"> </div>
+    <div class="td"></div>
+    <div class="td"></div>
+    <div class="td">
+        <label>
+            <button type="button" style="background-color:#585570 ; border-color:#585570 ;"
+                (click)="CentrifugalPumpPrediction()" class="btn btn-primary">Predictions</button>
+        </label>
+        <span *ngIf="notification">
+            <i class="fas fa-check-circle {{notification.class}}"></i>
+            {{notification.message}}
+        </span>
+    </div>
+</div>
+
+<div style="padding: 5px;" *ngIf="showCentrifugalPumpBulkPrediction">
+    <div class="card">
+        <p-table id="exportexcel" [value]="centrifugalPumpWithPrediction" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
+            [loading]="loading">
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="P1">P1
+                        <p-sortIcon field="P1"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="P2">P2
+                        <p-sortIcon field="PD"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Average">Amperage
+                        <p-sortIcon field="Average"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Q">Q
+                        <p-sortIcon field="Q"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Date">Date
+                        <p-sortIcon field="Date"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Prediction">Prediction
+                        <p-sortIcon field="Prediction"></p-sortIcon>
+                    </th>  
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-centrifugalPumpWithPrediction>
+                <tr>
+                    <td>{{centrifugalPumpWithPrediction.P1}}</td>
+                    <td>{{centrifugalPumpWithPrediction.P2}}</td>
+                    <td>{{centrifugalPumpWithPrediction.Amperage}}</td>
+                    <td>{{centrifugalPumpWithPrediction.Q}}</td>
+                    <td>{{centrifugalPumpWithPrediction.InsertedDate | date}}</td>
+                    <td>{{centrifugalPumpWithPrediction.Prediction}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div> 
