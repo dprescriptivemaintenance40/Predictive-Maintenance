@@ -126,9 +126,6 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
     var url : string = this.CentrifugalPumpPredictionName.getCentrifugalPumpPredictedList;
     this.CentrifugalPumpPredictionMethod.getWithoutParameters(url)
-      // .subscribe(res => {
-      //   this.centrifugalPumpWithPrediction = res;
-      //   this.commonLoadingDirective.showLoading(false, "");
         .subscribe((res: any) => {
           // if (res.length > 0) {
             this.centrifugalPumpWithPrediction = res;
@@ -166,7 +163,6 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     var url : string =  this.CentrifugalPumpPredictionName.Prediction
     this.CentrifugalPumpPredictionMethod.postWithoutHeaders(url, this.CentrifugalPumpconfigurationObj)
       .subscribe(async (res : any) => {
-        this.getPredictedList()
          this.CentrifugalPumpconfigurationObj = res;
         this.getPredictedById(res.CentifugalPumpPID);
         //  this.PridictedId = res.PredictionId;
