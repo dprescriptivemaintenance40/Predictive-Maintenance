@@ -29,11 +29,10 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
                 List<CentrifugalPumpPredictionModel> centrifugalPumpPredictionModel = await _context.CentrifugalPumpPredictions.Where(a => a.UserId == userId && a.Prediction != "pending").OrderBy(a => a.CentifugalPumpPID).ToListAsync();
                 var PData = centrifugalPumpPredictionModel.ToList();
-                return Ok();
+                return Ok(PData);
             }
             catch (Exception exe)
             {
-
                 return BadRequest(exe.Message);
             }
         }
