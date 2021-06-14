@@ -34,7 +34,7 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
-                List<CentrifugalPumpTrainModel> centrifugalPumpClassification = await _context.CentrifugalPumpTrainData.Where(a => a.UserId == userId).ToListAsync();
+                List<CentrifugalPumpTrainModel> centrifugalPumpClassification = await _context.CentrifugalPumpTrainData.Where(a => a.UserId == userId).OrderBy(a => a.CentrifugalTrainID).ToListAsync();
                 var PumpClassificationData = centrifugalPumpClassification.ToList();
                 return Ok(PumpClassificationData);
             }

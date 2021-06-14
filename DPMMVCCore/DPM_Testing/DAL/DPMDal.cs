@@ -31,7 +31,7 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
         public DbSet<RCAModel> rCAModels{ get; set; }
         public DbSet<CentrifugalPumpHQLibraryModel> CentrifugalPumpHQLibraryModels { get; set; }
-
+        public DbSet<CentrifugalPumpPredictionModel> CentrifugalPumpPredictions { get; set; }
         public DbSet<CentrifugalPumpTrainModel> CentrifugalPumpTrainData { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,6 +60,7 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<RCAModel>().ToTable("rcatable");
             modelBuilder.Entity<CentrifugalPumpHQLibraryModel>().ToTable("centrifugalpumpHQtable");
             modelBuilder.Entity<CentrifugalPumpTrainModel>().ToTable("centrifugalpumpTraindetails");
+            modelBuilder.Entity<CentrifugalPumpPredictionModel>().ToTable("centrifugalpumppredictiontable");
         }
 
     }
