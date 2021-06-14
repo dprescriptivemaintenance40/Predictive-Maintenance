@@ -43,7 +43,6 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     this.title.setTitle('CentrifugalPump Prediction | Dynamic Prescriptive Maintenence');
     this.CPChangeToBulkPrediction();
     this.showNotification('');
-    // this.GetAllRecords();
     this.getPredictedList();
   }
 
@@ -74,8 +73,8 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       const url : string = this.CentrifugalPumpPredictionName.CentrifugalPumpPredictionAddData;
       this.CentrifugalPumpPredictionMethod.postWithHeaders(url, this.centrifugalPumpDetailList)
         .subscribe(async res => {
-              // this.centrifugalPumpWithPrediction = res;
-              this.GetAllRecords()
+              this.centrifugalPumpWithPrediction = res;
+              this.getPredictedList()
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
             }, err => {
               console.log(err.error);
@@ -114,6 +113,7 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
      this.CentrifugalPumpPredictionMethod.getWithParameters(url, params)
      .subscribe((res: any) => {
         this.showNotification(res.Prediction)
+        res.CentifugalPumpPID = 1
         this.commonLoadingDirective.showLoading(false, "");
       }, err => {
         this.commonLoadingDirective.showLoading(false, "");
@@ -122,13 +122,19 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
   }
 
   getPredictedList() {
-    this.centrifugalPumpWithPrediction = [];
+    // this.centrifugalPumpWithPrediction = [];
     this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
     var url : string = this.CentrifugalPumpPredictionName.getCentrifugalPumpPredictedList;
     this.CentrifugalPumpPredictionMethod.getWithoutParameters(url)
-      .subscribe(res => {
-        this.centrifugalPumpWithPrediction = res;
-        this.commonLoadingDirective.showLoading(false, "");
+      // .subscribe(res => {
+      //   this.centrifugalPumpWithPrediction = res;
+      //   this.commonLoadingDirective.showLoading(false, "");
+        .subscribe((res: any) => {
+          // if (res.length > 0) {
+            this.centrifugalPumpWithPrediction = res;
+            this.commonLoadingDirective.showLoading(false, "");
+          // }
+          this.loading = false;
       }, err => {
         this.commonLoadingDirective.showLoading(false, "");
         console.log(err.error);
@@ -160,7 +166,8 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     var url : string =  this.CentrifugalPumpPredictionName.Prediction
     this.CentrifugalPumpPredictionMethod.postWithoutHeaders(url, this.CentrifugalPumpconfigurationObj)
       .subscribe(async (res : any) => {
-        this.CentrifugalPumpconfigurationObj = res;
+        this.getPredictedList()
+         this.CentrifugalPumpconfigurationObj = res;
         this.getPredictedById(res.CentifugalPumpPID);
         //  this.PridictedId = res.PredictionId;
         // await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
@@ -187,18 +194,5 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
         this.centrifugalPumpWithPrediction = res;
        }, err => { console.log(err.error)}
      )
-  }
-  GetAllRecords(){
-    this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
-    var url : string = this.CentrifugalPumpPredictionName.getCentrifugalPumpAllRecords;
-    this.CentrifugalPumpPredictionMethod.getWithoutParameters(url)
-      .subscribe(res => {
-        this.centrifugalPumpWithPrediction = res;
-        this.commonLoadingDirective.showLoading(false, "");
-      }, err => {
-        this.commonLoadingDirective.showLoading(false, "");
-        console.log(err.error);
-      });
-
   }
 }

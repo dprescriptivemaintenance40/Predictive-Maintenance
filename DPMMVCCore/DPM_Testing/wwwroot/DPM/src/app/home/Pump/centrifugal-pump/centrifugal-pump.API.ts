@@ -23,7 +23,6 @@ export class CentrifugalPumpConstantAPI{
     public getPredictedListByDate : string = '/CentrifugalPumpPredictionAPI/GetCentrifugalPumpPredictionByDate';
     public getPredictionById : string = '/CentrifugalPumpPredictionAPI/GetCentrifugalPumpPredictionById';
     public Prediction : string = '/CentrifugalPumpPredictionAPI/CentrifugalPumpSinglePrediction';
-    public getCentrifugalPumpAllRecords : '/CentrifugalPumpPredictionAPI/GetAllPredictionRecords';
 
   
 }
