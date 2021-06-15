@@ -1,7 +1,7 @@
 <p-toast position="top-right"></p-toast>
 
-<button type="button" style="background-color:#585570 ; border-color:#585570 ;    margin: 0.3em;"
-    (click)="CPChangeToBulkPrediction()" class="btn btn-primary">{{SingleCentrifugalPumpBulkPredictionName}}</button>
+<button type="button" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;"
+    (click)="CPChangeToBulkPrediction()" class="btn btn-primary">{{SingleCentrifugalPumpBulkPredictionName}}</button><br>
 <div style="padding-left: 5px;" class="row" *ngIf="showCentrifugalPumpBulkPrediction">
     <div class="col-sm col-md-4 form-group">
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)"
@@ -34,40 +34,31 @@
     </div>
 </div>
 
-<div style="text-align: center;" class="tbody" *ngIf="!showCentrifugalPumpBulkPrediction">
-    <div class="td">
+<div style="text-align:center;" class="tbody" *ngIf="!showCentrifugalPumpBulkPrediction">
+    <div class="td" style="margin:7rem;padding-left:7rem;">
         <label data-toggle="tooltip" data-placement="top" title="">P1</label>
-        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.P1" class="form-control"
-            placeholder="Enter value">
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.P1" class="form-control" placeholder="Enter value">
     </div>
     <div class="td">
         <label data-toggle="tooltip" data-placement="top" title="">P2</label>
-        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.P2" class="form-control"
-            placeholder="Enter value">
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.P2" class="form-control" placeholder="Enter value">
     </div>
     <div class="td">
         <label data-toggle="tooltip" data-placement="top" title="">Amperage</label>
-        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Amperage" class="form-control"
-            placeholder="Enter value">
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Amperage" class="form-control"placeholder="Enter value">
     </div>
     <div class="td">
         <label data-toggle="tooltip" data-placement="top" title="">Q</label>
-        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Q" class="form-control"
-            placeholder="Enter value">
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Q" class="form-control"placeholder="Enter value">
     </div>
-    <div class="td"></div>
-    <div class="td"> </div>
-    <div class="td"></div>
-    <div class="td"></div>
     <div class="td">
         <label>
-            <button type="button" style="background-color:#585570 ; border-color:#585570 ;"
-                (click)="CentrifugalPumpPrediction()" class="btn btn-primary">Predictions</button>
-        </label>
+            <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="CentrifugalPumpPrediction()" class="btn btn-primary">Predictions</button>
+            </label><br>
         <span *ngIf="notification">
-            <i class="fas fa-check-circle {{notification.class}}"></i>
-            {{notification.message}}
-        </span>
+                <i class="fas fa-check-circle {{notification.class}}"></i>
+                {{notification.message}}
+            </span>
     </div>
 </div>
 
