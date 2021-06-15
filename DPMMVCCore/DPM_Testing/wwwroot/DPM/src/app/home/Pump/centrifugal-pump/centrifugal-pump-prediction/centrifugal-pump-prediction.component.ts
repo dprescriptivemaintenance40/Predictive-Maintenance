@@ -208,7 +208,7 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     const dataArray = this.centrifugalPumpWithPrediction
     if (dataArray != 0) {
       const dataArrayList = dataArray.map(obj => {
-        const { CentrifugalTrainID, UserId, InsertedDate, ...rest } = obj;
+        const {CentifugalPumpPID,UserId,BatchId, InsertedDate, ...rest } = obj;
         return rest;
       })
 

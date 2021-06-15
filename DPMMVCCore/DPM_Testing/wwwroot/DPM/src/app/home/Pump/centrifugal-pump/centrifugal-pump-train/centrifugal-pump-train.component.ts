@@ -98,7 +98,7 @@ export class CentrifugalPumpTrainComponent implements OnInit {
     const dataArray = this.pumpListWithClassification
     if (dataArray != 0) {
       const dataArrayList = dataArray.map(obj => {
-        const { CompClassID, BatchId, TenantId, ClassificationId, InsertedDate, ...rest } = obj;
+        const { BatchId, TenantId,UserId,CentrifugalTrainID, InsertedDate, ...rest } = obj;
         return rest;
       })
 
