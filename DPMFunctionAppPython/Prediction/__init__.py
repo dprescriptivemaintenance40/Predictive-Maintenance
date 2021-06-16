@@ -10,110 +10,157 @@ import psycopg2
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
+    UserId = req.params.get('UserId')
     name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
+    type = req.params.get('type')
+    
     conn = psycopg2.connect(
-            host="dpmdb.postgres.database.azure.com",
-            database="DPM",
-            user="dpm@dpmdb",
+            host="51.79.221.240",
+            database="DPMDB",
+            user="postgres",
             password="Admin@123")
     cur = conn.cursor()
-    if name == "prediction":
-        cur.execute(
-            'select * from compressurewithclassification ORDER BY "CompClassID" ASC  ')
-        row_header = [x[0] for x in cur.description]
-        # provide path of TrainWithClassification
-        compressClassificationdata = pd.DataFrame(
-            cur.fetchall(), columns=row_header)
+    if type == "screwcompressor":
+        if name == "prediction":
+            classSQL = """select * from "compressurewithclassification" where "UserId" = %s ORDER BY "CompClassID" ASC   """                
+            cur.execute(classSQL, [UserId])
 
-        cur.execute(
-            """select * from screwcompressorpredictiontable where "Prediction" isnull or "Prediction" = 'pending'  
-            ORDER BY "PredictionId" ASC  """)
-        row_header = [x[0] for x in cur.description]
-        # provide path of Test Data for Prediction
-        compressTestdata = pd.DataFrame(cur.fetchall(), columns=row_header)
-        if compressTestdata.count().values[0] != 0:
-            train, test = train_test_split(
-                compressClassificationdata, stratify=compressClassificationdata['Classification'])
-            print(
-                "======================================Train Data set================================================")
-            train.head()
-            print(train.head())
-            lr = LogisticRegression(
-                random_state=0, solver='lbfgs', max_iter=10000)
-            lr.fit(train[['PS1', 'PD1', 'PS2', 'PD2', 'TS1',
-                          'TD1', 'TS2', 'TD2']], train['Classification'])
-            print("======================================Test Data set================================================")
-            compressTestdata["Predicted"] = lr.predict(
-                compressTestdata[['PS1', 'PD1', 'PS2', 'PD2', 'TS1', 'TD1', 'TS2', 'TD2']])
-            print(compressTestdata.head())
-            count = 0
-            for row in compressTestdata.itertuples():
-                count += 1
-                print(row.PredictionId, " ", row.Predicted, " ", count)
-                sql = """UPDATE screwcompressorpredictiontable SET "Prediction" = %s WHERE "PredictionId" = %s"""
-                val = (row.Predicted, row.PredictionId)
-                cur.execute(sql, val)
-            conn.commit()
-            count = 0
-            print("Prediction done")
-        else:
-            print("Prediction table is empty")
+            row_header = [x[0] for x in cur.description]
+            # provide path of TrainWithClassification
+            compressClassificationdata = pd.DataFrame(
+                cur.fetchall(), columns=row_header)
 
-        print("Process completed")
-        return func.HttpResponse(f"Hello, Prediction. Process completed")
+            predictSQL = """select * from "screwcompressorpredictiontable" where "UserId" = %s and ("Prediction" isnull or "Prediction" = 'pending')  
+                ORDER BY "PredictionId" ASC  """                 
+            cur.execute(predictSQL, [UserId])
 
-    elif  name =="futureprediction":
-        cur.execute(
-            'select * from compressurewithclassification ORDER BY "CompClassID" ASC  ')
-        row_header = [x[0] for x in cur.description]
-        # provide path of TrainWithClassification
-        compressClassificationdata = pd.DataFrame(
-            cur.fetchall(), columns=row_header)
+            row_header = [x[0] for x in cur.description]
+            # provide path of Test Data for Prediction
+            compressTestdata = pd.DataFrame(cur.fetchall(), columns=row_header)
+            if compressTestdata.count().values[0] != 0:
+                train, test = train_test_split(
+                    compressClassificationdata, stratify=compressClassificationdata['Classification'])
+                print(
+                    "======================================Train Data set================================================")
+                train.head()
+                print(train.head())
+                lr = LogisticRegression(
+                    random_state=0, solver='lbfgs', max_iter=10000)
+                lr.fit(train[['PS1', 'PD1', 'PS2', 'PD2', 'TS1',
+                              'TD1', 'TS2', 'TD2']], train['Classification'])
+                print("======================================Test Data set================================================")
+                compressTestdata["Predicted"] = lr.predict(
+                    compressTestdata[['PS1', 'PD1', 'PS2', 'PD2', 'TS1', 'TD1', 'TS2', 'TD2']])
+                print(compressTestdata.head())
+                count = 0
+                for row in compressTestdata.itertuples():
+                    count += 1
+                    print(row.PredictionId, " ", row.Predicted, " ", count)
+                    sql = """UPDATE screwcompressorpredictiontable SET "Prediction" = %s WHERE "UserId" = %s and "PredictionId" = %s"""
+                    val = (row.Predicted, UserId, row.PredictionId)
+                    cur.execute(sql, val)
+                conn.commit()
+                count = 0
+                print("Prediction done")
+            else:
+                print("Prediction table is empty")
 
-        cur.execute(
-            """select * from screwcompressorfutureprediction where "Prediction" isnull or "Prediction" = 'pending'  
-            ORDER BY "SCFPId" ASC  """)
-        row_header = [x[0] for x in cur.description]
-        # provide path of Test Data for Prediction
-        compressTestdata = pd.DataFrame(cur.fetchall(), columns=row_header)
-        if compressTestdata.count().values[0] != 0:
-            train, test = train_test_split(
-                compressClassificationdata, stratify=compressClassificationdata['Classification'])
-            print(
-                "======================================Train Data set================================================")
-            train.head()
-            print(train.head())
-            lr = LogisticRegression(
-                random_state=0, solver='lbfgs', max_iter=10000)
-            lr.fit(train[['PS1', 'PD1', 'PS2', 'PD2', 'TS1',
-                          'TD1', 'TS2', 'TD2']], train['Classification'])
-            print("======================================Test Data set================================================")
-            compressTestdata["Predicted"] = lr.predict(
-                compressTestdata[['PS1', 'PD1', 'PS2', 'PD2', 'TS1', 'TD1', 'TS2', 'TD2']])
-            print(compressTestdata.head())
-            count = 0
-            for row in compressTestdata.itertuples():
-                count += 1
-                print(row.SCFPId, " ", row.Predicted, " ", count)
-                sql = """UPDATE screwcompressorfutureprediction SET "Prediction" = %s WHERE "SCFPId" = %s"""
-                val = (row.Predicted, row.SCFPId)
-                cur.execute(sql, val)
-            conn.commit()
-            count = 0
-            print("Future Prediction done")
-        else:
-            print("Future Prediction table is empty")
+            print("Process completed")
+            return func.HttpResponse(f"Hello, Prediction. Process completed")
 
-        print("Process completed")
-        return func.HttpResponse(f"Hello, Future Prediction. Process completed")
-   
+        elif  name =="futureprediction":
+                classSQL = """select * from "compressurewithclassification" where "UserId" = %s ORDER BY "CompClassID" ASC   """                      
+                cur.execute(classSQL, [UserId])
+                row_header = [x[0] for x in cur.description]
+                # provide path of TrainWithClassification
+                compressClassificationdata = pd.DataFrame(
+                    cur.fetchall(), columns=row_header)
+
+                predictSQL = """select * from "screwcompressorfutureprediction" where "UserId" = %s and ("Prediction" isnull or "Prediction" = 'pending')  
+                    ORDER BY "SCFPId" ASC  """
+                cur.execute(predictSQL, [UserId])
+
+                row_header = [x[0] for x in cur.description]
+                # provide path of Test Data for Prediction
+                compressTestdata = pd.DataFrame(cur.fetchall(), columns=row_header)
+                if compressTestdata.count().values[0] != 0:
+                    train, test = train_test_split(
+                        compressClassificationdata, stratify=compressClassificationdata['Classification'])
+                    print(
+                        "======================================Train Data set================================================")
+                    train.head()
+                    print(train.head())
+                    lr = LogisticRegression(
+                        random_state=0, solver='lbfgs', max_iter=10000)
+                    lr.fit(train[['PS1', 'PD1', 'PS2', 'PD2', 'TS1',
+                                  'TD1', 'TS2', 'TD2']], train['Classification'])
+                    print("======================================Test Data set================================================")
+                    compressTestdata["Predicted"] = lr.predict(
+                        compressTestdata[['PS1', 'PD1', 'PS2', 'PD2', 'TS1', 'TD1', 'TS2', 'TD2']])
+                    print(compressTestdata.head())
+                    count = 0
+                    for row in compressTestdata.itertuples():
+                        count += 1
+                        print(row.SCFPId, " ", row.Predicted, " ", count)
+                        sql = """UPDATE screwcompressorfutureprediction SET "Prediction" = %s WHERE "UserId" = %s and "SCFPId" = %s"""
+                        val = (row.Predicted, UserId, row.SCFPId)
+                        cur.execute(sql, val)
+                    conn.commit()
+                    count = 0
+                    print("Future Prediction done")
+                else:
+                    print("Future Prediction table is empty")
+
+                print("Process completed")
+                return func.HttpResponse(f"Hello, Future Prediction. Process completed")
+    elif type == "pump":
+        if name == "prediction":
+            classSQL = """select * from "centrifugalpumpTraindetails" ORDER BY "CentrifugalTrainID" ASC   """                                  
+            cur.execute(classSQL)
+
+            row_header = [x[0] for x in cur.description]
+            # provide path of TrainWithClassification
+            centrifugalpumpClassificationdata = pd.DataFrame(
+                cur.fetchall(), columns=row_header)
+
+            predictSQL = """select * from "centrifugalpumppredictiontable" where ("Prediction" isnull or "Prediction" = 'pending')  
+                ORDER BY "CentifugalPumpPID" ASC  """
+            cur.execute(predictSQL)
+
+            row_header = [x[0] for x in cur.description]
+            # provide path of Test Data for Prediction
+            centrifugalpumpTestdata = pd.DataFrame(cur.fetchall(), columns=row_header)
+            if centrifugalpumpTestdata.count().values[0] != 0:
+                data = centrifugalpumpClassificationdata['Classification']
+                train, test = train_test_split(
+                    centrifugalpumpClassificationdata, stratify=centrifugalpumpClassificationdata['Classification'])
+                print(
+                    "======================================Train Data set================================================")
+                train.head()
+                print(train.head())
+                lr = LogisticRegression(
+                    random_state=0, solver='lbfgs', max_iter=10000)
+                lr.fit(train[['P1', 'P2', 'Amperage', 'Q']], train['Classification'])
+                print("======================================Test Data set================================================")
+                centrifugalpumpTestdata["Predicted"] = lr.predict(
+                    centrifugalpumpTestdata[['P1', 'P2', 'Amperage', 'Q']])
+                print(centrifugalpumpTestdata.head())
+                count = 0
+                for row in centrifugalpumpTestdata.itertuples():
+                    count += 1
+                    print(row.CentifugalPumpPID, " ", row.Predicted, " ", count)
+                    sql = """UPDATE "centrifugalpumppredictiontable" SET "Prediction" = %s WHERE "UserId" = %s and "CentifugalPumpPID" = %s"""
+                    val = (row.Predicted, UserId, row.CentifugalPumpPID)
+                    cur.execute(sql, val)
+                conn.commit()
+                count = 0
+                print("Prediction done")
+            else:
+                print("Prediction table is empty")
+
+            print("Process completed")
+            return func.HttpResponse(f"Hello, Prediction. Process completed")
+
     else :
          return func.HttpResponse(
             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request "
