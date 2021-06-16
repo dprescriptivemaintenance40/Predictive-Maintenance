@@ -1,4 +1,5 @@
 <p-toast position="top-right"></p-toast>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <style>
     .disabled {
         pointer-events: none;
@@ -6,20 +7,18 @@
         text-decoration: none;
         color: grey !important;
     }
-
+    
     .classname {
-    -ms-touch-action: none;
-     -ms-touch-action: pan-y;
-     touch-action: none;
-     touch-action: pan-x;
-     touch-action: pan-y;
-     touch-action: manipulation;
-     touch-action: pan-right;
-     touch-action: auto;
+        -ms-touch-action: none;
+        -ms-touch-action: pan-y;
+        touch-action: none;
+        touch-action: pan-x;
+        touch-action: pan-y;
+        touch-action: manipulation;
+        touch-action: pan-right;
+        touch-action: auto;
     }
-
 </style>
-
 <div class="card shadow" style="margin: 20px;">
     <p-tabView (onChange)="RCAHandleChange($event)">
         <p-tabPanel header="RCA List">
@@ -27,10 +26,7 @@
                 <div class="col-xl-12 col-lg-11">
                     <div class="card rca shadow mb-4 con">
                         <div class="card-body">
-                            <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords"
-                                [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                [rowsPerPageOptions]="[10,25,50]">
+                            <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                                 <ng-template pTemplate="colgroup">
                                     <colgroup>
                                         <col style="width:5em;">
@@ -62,18 +58,13 @@
                                         <td>{{p.TagNumber}}</td>
                                         <td>{{p.RCAFailureMode}}</td>
                                         <td>
-                                            <a title="Report for {{p.RCALabel}}"><i class="fa fa-file"
+                                            <a (click)="RCAReport(p)" data-toggle="modal" data-target="#rcaReport" title="Report for {{p.RCALabel}}" ><i class="fa fa-file"
                                                     aria-hidden="true"></i></a>&nbsp;&nbsp;
-                                            <a title="View {{p.RCALabel}}" data-toggle="modal"
-                                                data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i
+                                            <a title="View {{p.RCALabel}}" data-toggle="modal" data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i
                                                     class="pi pi-eye"></i> </a>&nbsp;&nbsp;
-                                            <a title="Delete {{p.RCALabel}}" style="color: red;"
-                                                (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
+                                            <a title="Delete {{p.RCALabel}}" style="color: red;" (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
-                                    <!-- <tr *ngIf="RCAListRecords.length == 0">
-                                        <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show </td>
-                                    </tr> -->
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
@@ -99,8 +90,7 @@
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Tag Number</label>
-                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number"
-                                class="form-control">
+                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number" class="form-control">
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -108,23 +98,16 @@
                     </li>
                 </ul>
             </div>
+            
             <div [hidden]="!Treeshow" style="overflow: scroll;">
                 <div class="classname" id="scene" #scene>
-                    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile"
-                        (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)"
-                        (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
+                    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
                     </p-tree><br><br>
                 </div>
-                <!-- <div class="text-center">
-                    <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene')">-</a>
-                    <span>{{currentZoomLevel * 100}}%</span>
-                    <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true, 'scene')">+</a>
-                   </div> -->
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data"
-                        tooltipPosition="top">save</a>
+                    <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data" tooltipPosition="top">save</a>
                 </div>
             </div>
         </p-tabPanel>
@@ -141,15 +124,6 @@
                             </select>
                         </div>
                     </li>
-                    <!-- <li class="list-group-item">
-                        <div class="input-group mb-3">
-                            <label style=" margin-right: 12px;">Tag Number</label>
-                            <select class="form-select" [(ngModel)]="UpdateSelectedTagNumber" class="form-control">
-                                <option value="">Choose..</option>
-                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option>
-                            </select>
-                        </div>
-                    </li> -->
                     <li class="list-group-item">
                         <button class="btn btn-dark" (click)="UpdateTagNumberSelect()">Done</button>
                     </li>
@@ -183,20 +157,14 @@
                 <div class="classname" id="scene1" #scene1>
                     <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single"
                         [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)"
-                        (uploadRCAAttachment)="uploadRCAAttachment($event)"
-                        (deleteTreeRow)="UpdatedeleteTreeRow($event)"></p-tree>
+                        (uploadRCAAttachment)="uploadRCAAttachment($event)"  (RCAUpdateDeleteFromList)="RCAUpdateDeleteFromList($event)"
+                        (deleteTreeRow)="UpdatedeleteTreeRow($event)"  (RCAUpdateAttachmentFromList)="RCAUpdateAttachmentFromList($event)"></p-tree>
                         <br><br>
                 </div>
-                <!-- <div class="text-center">
-                    <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false, 'scene1')">-</a>
-                    <span>{{currentZoomLevel * 100}}%</span>
-                    <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true , 'scene1')">+</a>
-                   </div> -->
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data"
-                        tooltipPosition="top">Update</a>
+                    <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data" tooltipPosition="top">Update</a>
                 </div>
             </div>
         </p-tabPanel>
@@ -210,8 +178,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title"> Add Failure Mode to RCA </h6><br>
-                <button type="button" class="close" data-dismiss="ADDRCAModal" aria-label="Close"
-                    (click)="closeRCAAddModal()">
+                <button type="button" class="close" data-dismiss="ADDRCAModal" aria-label="Close" (click)="closeRCAAddModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -238,10 +205,8 @@
                 </ul>
             </div>
             <div class="ADDRCAModal modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="closeRCAAddModal()"
-                    data-dismiss="ADDRCAModal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()"
-                    data-dismiss="ADDRCAModal">Save changes</button>
+                <button type="button" class="btn btn-secondary" (click)="closeRCAAddModal()" data-dismiss="ADDRCAModal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()" data-dismiss="ADDRCAModal">Save changes</button>
             </div>
         </div>
     </div>
@@ -251,25 +216,157 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="DisplayRCATree">RCA Label Name : {{RCADisplayLabel}}</h5>
-                <button type="button" class="close" data-dismiss="modal" (click)="CloseRCATreeDisplay()"
-                    aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" (click)="CloseRCATreeDisplay()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 20em;" class="classname" >
+            <div class="modal-body" style="overflow: scroll; height: 20em;" class="classname">
                 <div id="scene3" #scene3>
-                <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
-            </div><br><br>
-            <!-- <div class="text-center">
-                <a class="btn btn-dark" style="margin-left: 10px;"  (click)="zoomToggle(false,'scene3')">-</a>
-                <span>{{currentZoomLevel * 100}}%</span>
-                <a class="btn btn-dark" style="margin-left: 10px"  (click)="zoomToggle(true,'scene3')">+</a>
-            </div> -->
+                    <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
+                </div><br><br>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()"
-                    data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="rcaReport" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">RCA Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body" style="overflow: scroll; height: 80em;padding-left: 50;">
+                <div id="pdfTable" #pdfTable *ngIf="RCAReportBodyEnabled">
+                    <div>
+                        <label><u><b>Root Cause Analysis (RCA)</b></u></label>
+                    </div>
+                    <div>
+                        <label><u><b>Summary</b></u></label>
+                    </div>
+                    <div>
+                        <p>This report is based on the results of a technical process for investigation and analysis of failure causes. 
+                             Root Cause Analysis (RCA) method used is based on following steps: </p>
+                    </div>
+                    <div>
+                        <ul style="list-style-type:disc; margin: left 40px;">
+                            <li>Problem identification</li>
+                            <li>Judgment of problem criticality. </li>
+                            <li>Identification of the basic causes preceding the problem </li>
+                            <li>Identification of the reason of the preceding causes. </li>
+                        </ul>
+                        <label>Root cause analysis is based on a wide range of data collection including:</label>
+                        <ul style="list-style-type:disc; margin: left 40px;">
+                            <li>Operation data </li>
+                            <li>Asset data and drawing </li>
+                            <li>Historical data </li>
+                        </ul>
+                        <p>
+                            The results of the analysis integrated into an assessment process and providing a set of consistent conclusions
+                        </p>
+                        <p>
+                            A brief introduction of the system data and considerations are briefly described.
+                             RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments
+                            conducted.
+                        </p>
+                        <p>
+                            Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.
+                        </p>
+                    </div>
+                    <div>
+                        <label><u><b>Introduction</b></u></label>
+                    </div>
+                    <div>
+                        <p>RCA analysis completed on
+                            <span *ngIf="!RCAReportfileds">
+                       <input type="date" class="form-control" style="width: 10em;" [(ngModel)]="RCAReportDate" name="reportDate" />
+                   </span>&ensp;
+                            <span *ngIf="RCAReportfileds">
+                       {{RCAReportDate}}
+                   </span> for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. RCA finalized by using the current data and considering the failure history of the asset.</p>
+                        <p>An understanding of the system to be analyzed was essential prior to the development of the RCA. The initial step was to collect the data and identify whether adequate information was </p>
+                    </div>
+                    <div>
+                        <label><u><b>RCA inputs</b></u></label>
+                        <span *ngIf="!RCAReportfileds">
+               <textarea [(ngModel)]="RCAReportinputs" class="form-control custom-textarea" name="RCAInput"></textarea>
+                </span>
+                        <div>
+                            <span *ngIf="RCAReportfileds">
+                    {{RCAReportinputs}}
+                </span>
+                        </div>
+                    </div>
+                    <div>
+                        <label><u><b>Actions and recommendations </b></u></label>
+
+                        <span *ngIf="!RCAReportfileds">
+                <textarea [(ngModel)]="RCAReportRecommadtion" class="form-control custom-textarea" name="RCARecommedation"></textarea>
+               </span>
+                        <div>
+                            <span *ngIf="RCAReportfileds">
+                    {{RCAReportRecommadtion}}
+                </span>
+                        </div>
+                    </div>
+
+                    <div style="page-break-before: always;">
+                        <label><u><b>Conclussion</b></u></label>
+                        <p>
+                            The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} {{RCAReportData.TagNumber}} and propose technical solutions to prevent similar failures in future
+                        </p>
+                        <p>
+                            The reliability methodology was based on RCA order to take into consideration the objectives and recommended actions to eliminate the failures.
+                        </p>
+                        <p>
+                            During RCA the main failure defects and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation.
+                        </p>
+                    </div>
+                </div>
+                <!-- <div style="overflow: scroll; height: 30em;width:450%;"> -->
+                    <div style="overflow: scroll;">
+                    <label><u><b>Annexures</b></u></label>
+                    <div  id="image" #image >
+                        <p-tree  [value]="RCAReportTree" layout="horizontal"></p-tree>
+                    </div>
+                    </div>
+             <div class="modal-footer">
+                <!-- <button type="button" (click)="RCAReportPrint()" class="btn btn-secondary">Print</button> -->
+                <button type="button" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="UpdateAttachmentInUpdateFle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload attachment for update</h5>
+          <button type="button" class="close" data-dismiss="modal" (click)="CloseRCAUpdateUploadFile()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="uploadAttachments">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="RCAUpdateUploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                    <label class="custom-file-label" for="inputGroupFile01">Attachment</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="CloseRCAUpdateUploadFile()" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
