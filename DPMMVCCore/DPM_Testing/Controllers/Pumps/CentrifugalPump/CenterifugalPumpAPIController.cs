@@ -234,7 +234,7 @@ namespace DPM.Controllers.Pumps
                 List<decimal> QLlist = new List<decimal>();
                 foreach (var item in HQLibraryList)
                 {
-                    QLlist.Add(item.Q);
+                 //   QLlist.Add(item.Q);
                 }
                 decimal P1 = 0.1m;
                 decimal P2 = 2.3m;
@@ -264,22 +264,22 @@ namespace DPM.Controllers.Pumps
                     var SecondQClose = SecondClosestValue.Q;
                     var ValueDifference = SecondQClose - FirstQClose;
                     var DeviationH = (FirstHClose - SecondHClose) / ValueDifference;
-                    var HValueLibrary = FirstHClose - (DeviationH * difference);
-                    var Trigger = (HValueLibrary * HTrigger); // Trigger
-                    var Alarm = ((HValueLibrary * HAlaram)); // Alarm
+                 //   var HValueLibrary = FirstHClose - (DeviationH * difference);
+                 //   var Trigger = (HValueLibrary * HTrigger); // Trigger
+                //    var Alarm = ((HValueLibrary * HAlaram)); // Alarm
                     string result = "";
-                    if (Trigger >= HCustomernumber)
-                    {
-                         result = "Degrade";
-                    }
-                    else if (Alarm >= HCustomernumber)
-                    {
-                         result = "Incipient"; 
-                    }
-                    else 
-                    {
-                         result = "Normal";
-                    }
+                    //if (Trigger >= HCustomernumber)
+                    //{
+                    //     result = "Degrade";
+                    //}
+                    //else if (Alarm >= HCustomernumber)
+                    //{
+                    //     result = "Incipient"; 
+                    //}
+                    //else 
+                    //{
+                    //     result = "Normal";
+                    //}
 
                 }
                 return Ok();
