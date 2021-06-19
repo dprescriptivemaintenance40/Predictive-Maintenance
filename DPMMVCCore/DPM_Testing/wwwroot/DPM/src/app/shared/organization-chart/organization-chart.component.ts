@@ -5,7 +5,6 @@ import {
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { MenuItem, SharedModule } from 'primeng/api';
-import { TreeNode } from 'primeng/api';
 import { PrimeTemplate } from 'primeng/api';
 import { Subject, Subscription } from 'rxjs';
 import { MenuModule, Menu } from 'primeng/menu';
@@ -13,6 +12,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { CommonBLService } from '../BLDL/common.bl.service';
 import * as XLSX from 'xlsx';
+import { TreeNode } from './tree.node';
 
 @Component({
     selector: '[pOrganizationChartNode]',
@@ -124,6 +124,31 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         ];
     }
 
+    // public getMenuItemsForSubMenu(node: TreeNode) {
+    //     if (node.children.length > 0 && node.children[0].Event) {
+    //         this.subItems = [
+    //             {
+    //                 label: 'Event', command: () => {
+    //                     this.Event();
+    //                 }
+    //             }
+    //         ];          
+    //     } else {
+    //         this.subItems = [
+    //             {
+    //                 label: 'Event', command: () => {
+    //                     this.Event();
+    //                 }
+    //             },
+    //             {
+    //                 label: 'Basic Event', command: () => {
+    //                     this.BasicEvent();
+    //                 }
+    //             }
+    //         ];           
+    //     }
+    // }
+
     public AND() {
         this.ANDIcon = true;
         this.ORIcon = false;
@@ -134,6 +159,7 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         this.ORIcon = true;
         this.ANDIcon = false;
         this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
+        this.cd.detectChanges();
     }
 
     public Event() {
@@ -273,10 +299,10 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
 
     public GetLibrary() {
         this.commonBLService.GetMSSLibrary()
-            .subscribe(res => {
+            .subscribe(async res => {
                 let fileReader = new FileReader();
                 fileReader.readAsArrayBuffer(res);
-                fileReader.onload = (e) => {
+                fileReader.onload = async (e) => {
                     var arrayBuffer: any = fileReader.result;
                     var data = new Uint8Array(arrayBuffer);
                     var arr = new Array();
@@ -324,9 +350,15 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                     let failureMode = Library.find(a => a['Failure mode'] === Mode);
                     this.node.years = parseFloat(((1 / failureMode['Failure rate Upper']) * (1000000 / 8760)).toFixed(2));
                     this.node.hours = failureMode['Repair (manhours) Mean'];
+                    await this.familyTree(this.chart.value, this.node.id);
                     this.cd.detectChanges();
                 }
             });
+    }
+
+    public async onScheduledDowntime(node: TreeNode) {
+        await this.familyTree(this.chart.value, node.id);
+        this.cd.detectChanges();
     }
 
     private GetFailureModeNames() {
@@ -346,6 +378,104 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                     this.FailureModeNamesList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
                 }
             });
+    }
+
+    private async familyTree(arr1, id) {
+        var temp = [];
+        let level = 0;
+        let findLevel;
+        var forFn = async (arr, id) => {
+            for (var i = 0; i < arr.length; i++) {
+                var item = arr[i];
+                if (i === 0)
+                    level++;
+                arr[i].level = level;
+                if (item.id === id) {
+                    findLevel = level - 1;
+                    return await this.findLevel(arr1, arr, findLevel);
+                } else {
+                    if (item.children) {
+                        forFn(item.children, id);
+                    }
+                }
+            }
+        }
+        forFn(arr1, id);
+        return await temp;
+    }
+
+    private async findLevel(arr1, basicEvntArr, level) {
+        var temp = [];
+        var forFn = async (arr, level) => {
+            for (var i = 0; i < arr.length; i++) {
+                var item = arr[i];
+                if (item.level === level) {
+                    // calculation
+                    arr[i].years = 0;
+                    arr[i].hours = 0;
+                    arr[i].Availability = 0;
+                    var years = 0;
+                    var hours = 0;
+                    let lamb = 0;
+                    let tau = 0;
+                    let tauPOW = 0;
+                    let eventRepeat = 0;
+                    if (item.nodeType === 'TopEvent') {
+                        years = 0;
+                        hours = 0;
+                        lamb = 1;
+                        tau = 0;
+                        tauPOW = 0;
+                        basicEvntArr.forEach(basic => {
+                            if (item.ANDIcon) {
+                                lamb *= parseFloat(basic.years);
+                                tau += parseFloat(basic.hours);
+                                tauPOW += Math.pow(basic.hours, 2);
+                            } else if (item.ORIcon) {
+                                lamb += parseFloat(basic.years);
+                                tau += (parseFloat(basic.years) * parseFloat(basic.hours))
+                            }
+                        });
+                        years = parseFloat((lamb * (tau / 8766)).toFixed(2));
+                        hours = parseFloat((tauPOW / (2 / tau)).toFixed(2));
+                        arr[i].years = years;
+                        arr[i].hours = hours;
+                        arr[i].Availability = parseFloat(((1 / (1 + (arr[i].hours / 8766) * arr[i].years)) * 100).toFixed(3));
+                        return arr1;
+                    } else if (item.nodeType === 'Event') {
+                        eventRepeat++;
+                        years = 0;
+                        hours = 0;
+                        lamb = 0;
+                        tau = 0;
+                        basicEvntArr.forEach(basic => {
+                            if (item.ANDIcon) {
+                                lamb *= parseFloat(basic.years);
+                                tau += parseFloat(basic.hours);
+                                tauPOW += Math.pow(basic.hours, 2);
+                            } else if (item.ORIcon) {
+                                lamb += parseFloat(basic.years);
+                                tau += (parseFloat(basic.years) * parseFloat(basic.hours))
+                            }
+                        });
+                        years = lamb;
+                        hours = parseFloat(((tau) / (years)).toFixed(2));
+                        arr[i].years = years;
+                        arr[i].hours = hours;
+                        arr[i].Availability = parseFloat(((1 / (1 + (arr[i].hours / 8766) * arr[i].years)) * 100).toFixed(3));
+                        let findLevel = item.level - 1;
+                        await this.findLevel(arr1, arr, findLevel);
+                    }
+                    break;
+                } else {
+                    if (item.children) {
+                        forFn(item.children, level);
+                    }
+                }
+            }
+        }
+        forFn(arr1, level);
+        return await temp;
     }
 
     ngOnDestroy() {

@@ -1,6 +1,9 @@
 <tbody *ngIf="node">
     <tr>
         <td #container [attr.colspan]="colspan">
+            <div *ngIf="node.ANDORLogic">
+                <span *ngIf="!chart.getTemplateForNode(node) && !node.BasicEvent && node.Availability" style="color: red;">Availability : {{node.Availability}}%</span>
+            </div>
             <div [class]="node.styleClass" [ngClass]="{'p-organizationchart-node-content': true, 'p-organizationchart-selectable-node': chart.selectionMode && node.selectable !== false,'p-highlight':isSelected()}" (click)="onNodeClick($event,node)">
                 <div *ngIf="!node.ANDORLogic">
                     <div *ngIf="!chart.getTemplateForNode(node)">{{node.label}}</div>
@@ -15,6 +18,14 @@
                             <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}">
                         </div>
                         <hr>
+                        <div class="row" *ngIf="node.years || node.hours">
+                            <div class="col-md-6" style="color: red;">
+                                {{node.years}} years
+                            </div>
+                            <div class="col-md-6" style="color: red;">
+                                {{node.hours}} hours
+                            </div>
+                        </div>
                     </div>
                     <div *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
                         <div *ngIf="node.Failure">
@@ -54,11 +65,11 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="row">
-                                <div class="col-md-6">
+                            <div class="row" *ngIf="node.years || node.hours">
+                                <div class="col-md-6" style="color: red;">
                                     {{node.years}} years
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" style="color: red;">
                                     {{node.hours}} hours
                                 </div>
                             </div>
@@ -79,22 +90,10 @@
                             </div>
                             <hr>
                             <div>
-                                <button type="button" class="btn btn-dark">Done</button>
+                                <button type="button" class="btn btn-dark" (click)="onScheduledDowntime(node)">Done</button>
                             </div>
                         </div>
                     </div>
-                    <!--
-                    <div class="row" *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
-                        <div class="col-md-6">
-                            {{node.years}} years
-                        </div>
-                        <div class="col-md-6">
-                            {{node.hours}} hours
-                        </div>
-                    </div> -->
-                    <!-- <div *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
-                        <button type="button" class="btn btn-dark" (click)="GetLibrary()">Done</button>
-                    </div> -->
                 </div>
                 <div *ngIf="node.ANDORLogic && !node.BasicEvent">
                     <a style="cursor:pointer; text-decoration: none;" title="Add new node for AND / OR" class="pi pi-plus" (click)="onAddNode(node)"></a>

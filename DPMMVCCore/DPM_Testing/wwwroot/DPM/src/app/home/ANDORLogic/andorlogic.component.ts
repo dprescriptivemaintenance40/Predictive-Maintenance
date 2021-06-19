@@ -1,9 +1,11 @@
 import { ChangeDetectorRef, Component } from "@angular/core";
-import { TreeNode } from "primeng/api";
+import { MessageService } from "primeng/api";
 import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import * as XLSX from 'xlsx';
+import { TreeNode } from '../../shared/organization-chart/tree.node';
 @Component({
-    templateUrl: './andorlogic.component.html'
+    templateUrl: './andorlogic.component.html',
+    providers: [MessageService]
 })
 export class AndorlogicComponent {
 
@@ -17,14 +19,16 @@ export class AndorlogicComponent {
             hours: 0,
             expanded: true,
             ANDORLogic: true,
-            children: []
+            children: [],
+            nodeType: "TopEvent"
         }
     ];
     public FailureComponents: any[] = [];
     public FailureCause: any[] = [];
     public FailureModeNamesList: any[] = []
     constructor(private commonBLService: CommonBLService,
-        private changeRef: ChangeDetectorRef) {
+        private changeRef: ChangeDetectorRef,
+        private messageService: MessageService) {
     }
 
     onAddNode(event: any) {
@@ -33,7 +37,9 @@ export class AndorlogicComponent {
             id: this.itemCount,
             text: '',
             expanded: true,
-            ANDORLogic: true
+            ANDORLogic: true,
+            years: 0,
+            hours: 0,
         }
         if (!event.node.ANDIcon && event.ANDIcon) {
             event.node.ANDIcon = event.ANDIcon;
@@ -44,7 +50,11 @@ export class AndorlogicComponent {
         } else {
             obj = this.SetEventAndBasicEvent(event, obj);
         }
-        event.node.children.push(obj);
+        if (event.BasicEvent && event.node.children.length > 2) {
+            this.messageService.add({ severity: 'info', summary: 'Info', detail: 'You are allowed to add only 2 basic events.' });
+        } else {
+            event.node.children.push(obj);
+        }
         this.changeRef.detectChanges();
     }
 
@@ -54,7 +64,8 @@ export class AndorlogicComponent {
                 {
                     label: 'Event',
                     Event: event.Event,
-                    children: []
+                    children: [],
+                    nodeType: "Event"
                 });
         } else if (event.BasicEvent) {
             if (event.Failure) {
@@ -66,7 +77,8 @@ export class AndorlogicComponent {
                         SelectedFailureCausesList: [],
                         SelectedFailureComponents: "",
                         SelectedFailureCauses: "",
-                        Failure: event.Failure
+                        Failure: event.Failure,
+                        nodeType: "BasicEvent"
                     });
             }
 
@@ -75,11 +87,10 @@ export class AndorlogicComponent {
                     {
                         label: 'Scheduled Downtime',
                         BasicEvent: event.BasicEvent,
-                        ScheduledDowntime: event.ScheduledDowntime
+                        ScheduledDowntime: event.ScheduledDowntime,
+                        nodeType: "BasicEvent"
                     });
             }
-
-
         }
         return obj;
     }
