@@ -235,12 +235,12 @@ async ADDMSSToTree() {
 
           // Logic for Maintenance Tasks and Interval
           // first IF condition for Consequence A and B
-        if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
-        || this.MSSStratergy == 'A-SR' ||  this.MSSStratergy == 'A-RED' || this.MSSStratergy == 'A-OFM'
-        || this.MSSStratergy == 'B-FFT'||  this.MSSStratergy == 'B-OCM' || this.MSSStratergy == 'B-SO'
-        || this.MSSStratergy == 'B-SR' ||  this.MSSStratergy == 'B-RED' || this.MSSStratergy == 'B-OFM' ){
+        if(this.MSSStratergy == 'A-FFT (Failure Finding Task)' ||  this.MSSStratergy == 'A-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'A-SO (Scheduled Overhaul Task)'
+        || this.MSSStratergy == 'A-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'A-RED (Redsigned Mandatory)' || this.MSSStratergy == 'A-OFM (On Failure Maintainenance)'
+        || this.MSSStratergy == 'B-FFT (Failure Finding Task)'||  this.MSSStratergy == 'B-OCM (On condition Maintainenance Task)' || this.MSSStratergy == 'B-SO (Scheduled Overhaul Task)'
+        || this.MSSStratergy == 'B-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'B-RED (Redsigned Mandatory)' || this.MSSStratergy == 'B-OFM (On Failure Maintainenance)' ){
 
-          if(this.MSSStratergy == 'A-OFM' ||     this.MSSStratergy == 'B-FFT'){
+          if(this.MSSStratergy == 'A-OFM (On Failure Maintainenance)' ||     this.MSSStratergy == 'B-FFT (Failure Finding Task)'){
             let obj = {}
             obj['MSSMaintenanceInterval'] = 'Not Applicable'
             obj['MSSMaintenanceTask'] = 'Not Applicable'
@@ -255,7 +255,7 @@ async ADDMSSToTree() {
                 ocmWeek = Math.round((ocmWeek / 24) / 7)
               var strategy = this.MSSStratergy.split('-')[1];
               let obj = {}
-            if(this.MSSStratergy == 'A-FFT'){
+            if(this.MSSStratergy == 'A-FFT (Failure Finding Task)'){
               obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
               obj['MSSMaintenanceTask'] = 'Function Check'
               obj['MSSStartergy'] = this.MSSStratergy
@@ -313,14 +313,14 @@ async ADDMSSToTree() {
             }
           }  
           this.FinalAvailability= []
-      }else if(this.MSSStratergy == 'C-FFT'    ||  this.MSSStratergy == 'C-OCM' || this.MSSStratergy == 'C-SO'
-              || this.MSSStratergy == 'C-SR' ||  this.MSSStratergy == 'C-RED' || this.MSSStratergy == 'C-OFM'
-              || this.MSSStratergy == 'D-FFT'||  this.MSSStratergy == 'D-OCM' || this.MSSStratergy == 'D-SO'
-              || this.MSSStratergy == 'D-SR' ||  this.MSSStratergy == 'D-RED' || this.MSSStratergy == 'D-OFM'
-              || this.MSSStratergy == 'E-FFT'||  this.MSSStratergy == 'E-OCM' || this.MSSStratergy == 'E-SO'
-              || this.MSSStratergy == 'E-SR' ||  this.MSSStratergy == 'E-RED' || this.MSSStratergy == 'E-OFM'){
+      }else if(this.MSSStratergy == 'C-FFT (Failure Finding Task)'    ||  this.MSSStratergy == 'C-OCM (On condition Maintainenance Task)' || this.MSSStratergy == 'C-SO (Scheduled Overhaul Task)'
+              || this.MSSStratergy == 'C-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'C-RED (Redsigned Mandatory)' || this.MSSStratergy == 'C-OFM (On Failure Maintainenance)'
+              || this.MSSStratergy == 'D-FFT (Failure Finding Task)'||  this.MSSStratergy == 'D-OCM (On condition Maintainenance Task)' || this.MSSStratergy == 'D-SO (Scheduled Overhaul Task)'
+              || this.MSSStratergy == 'D-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'D-RED (Redsigned Mandatory)' || this.MSSStratergy == 'D-OFM (On Failure Maintainenance)'
+              || this.MSSStratergy == 'E-FFT (Failure Finding Task)'||  this.MSSStratergy == 'E-OCM (On condition Maintainenance Task)' || this.MSSStratergy == 'E-SO (Scheduled Overhaul Task)'
+              || this.MSSStratergy == 'E-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'E-RED (Redsigned Mandatory)' || this.MSSStratergy == 'E-OFM (On Failure Maintainenance)'){
 
-                if(this.MSSStratergy == 'C-FFT' ||     this.MSSStratergy == 'D-FFT'){
+                if(this.MSSStratergy == 'C-FFT (Failure Finding Task)' ||     this.MSSStratergy == 'D-FFT (Failure Finding Task)'){
                   let obj = {}
                   obj['MSSMaintenanceInterval'] = 'Not Applicable'
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
@@ -432,7 +432,7 @@ async ADDMSSToTree() {
         this.router.navigateByUrl('/Home/Prescriptive/List')
       }, err => {
         console.log(err.error)
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
+        // this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
       }
     )
     this.AvailabilityYNCheck= false;
