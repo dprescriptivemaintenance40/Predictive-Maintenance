@@ -61,7 +61,9 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
                 double HAlaram = Convert.ToDouble(ScrewCompressorConfigurationModel[1].Alarm);
                 double HTrigger = Convert.ToDouble(ScrewCompressorConfigurationModel[1].Trigger);
                 var Formula = ScrewCompressorConfigurationModel[2].Columns;
-               // double GConstant = Convert.ToDouble(ScrewCompressorConfigurationModel[3].Alarm);
+                double GConstant = Convert.ToDouble(ScrewCompressorConfigurationModel[3].Alarm);
+                double CosPhi = Convert.ToDouble(ScrewCompressorConfigurationModel[4].Alarm);
+                double Voltage = Convert.ToDouble(ScrewCompressorConfigurationModel[5].Alarm);
 
                 List<CentrifugalPumpHQLibraryModel> centrifugalPumpHQLibraryModel = await _context.CentrifugalPumpHQLibraryModels.OrderBy(a => a.CentrifugalPumpHQLibraryID).ToListAsync();
                 var HQLibraryList = centrifugalPumpHQLibraryModel.ToList();
@@ -85,16 +87,16 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
 
                     double P1 = Convert.ToDouble(item.P1);
                     double P2 = Convert.ToDouble(item.P2);
-                   // double KW = Convert.ToDouble(item.KW);
+                    double KW = (1.732 * Voltage * CosPhi * Convert.ToDouble(item.I))/1000;
 
                     double HCustomernumber = 10 * (P2 - P1) / Dcustomer;
                     //string p1 = string.Format("{0:G}", P1);
                     //string p2 = string.Format("{0:G}", P2);
                     //string d = string.Format("{0:G}", Dcustomer);
-                    
-                    //var f1 =  Formula.Replace("P1", p1);
+
+                    //var f1 = Formula.Replace("P1", p1);
                     //var f2 = f1.Replace("P2", p2);
-                    //var f3 =  f2.Replace("D", d);
+                    //var f3 = f2.Replace("D", d);
                     //DataTable dtw = new DataTable();
                     //var v = dtw.Compute(f3, "");
                     double Qnumber = Convert.ToSingle(item.Q);
@@ -116,37 +118,100 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
                         var FirstClosestValue = HQLibraryList[Firstclosestindex];
                         double FirstHClose = Convert.ToDouble(FirstClosestValue.H);
                         double FirstQClose = Convert.ToDouble(FirstClosestValue.Q);
-                       // double FirstKWClose = Convert.ToDouble(FirstClosestValue.KW);
+                        double FirstKWClose = Convert.ToDouble(FirstClosestValue.KW);
+                        double FirstCalEffClose = Convert.ToDouble(FirstClosestValue.CalculatedEff);
+                        double FirstGraphEffClose = Convert.ToDouble(FirstClosestValue.GraphEff);
+
                         var SecondClosestValue = HQLibraryList[Firstclosestindex + 1];
                         double SecondHClose = Convert.ToDouble(SecondClosestValue.H);
                         double SecondQClose = Convert.ToDouble(SecondClosestValue.Q);
-                       // double SecondKWClose = Convert.ToDouble(SecondClosestValue.KW);
+                        double SecondKWClose = Convert.ToDouble(SecondClosestValue.KW);
+                        double SecondCalEffClose = Convert.ToDouble(SecondClosestValue.CalculatedEff);
+                        double SecondGraphEffClose = Convert.ToDouble(SecondClosestValue.GraphEff);
+
                         double ValueQDifference = SecondQClose - FirstQClose;
                         double DeviationH = (FirstHClose - SecondHClose) / ValueQDifference;
                         double HValueLibrary = FirstHClose - (DeviationH * difference);
                         double Trigger = (HValueLibrary * HTrigger); // Trigger
                         double Alarm = ((HValueLibrary * HAlaram)); // Alarm
-                        //double ValueKWDifference = SecondKWClose - FirstKWClose;
-                        //double DeviationKW = (SecondKWClose - FirstKWClose) / ValueKWDifference;
-                        //double KWValueLibrary = FirstKWClose - (DeviationKW * difference);
-                        //double EfficienyFromLib = (Qnumber * Dcustomer * GConstant * HValueLibrary) / KWValueLibrary;
-                        //double CustomerEfficiency = (Qnumber * Dcustomer * GConstant * HCustomernumber) / KW;
 
-                        //double LibraryEffSinglePercentage = EfficienyFromLib / 100;
-                        //double CustEffLessLibraryEffPercentage = (100 - (CustomerEfficiency / LibraryEffSinglePercentage));
+                        double ValueKWDifference = SecondKWClose - FirstKWClose;
+                        double DeviationKW = (SecondKWClose - FirstKWClose) / ValueQDifference;
+                        double KWValueLibrary = FirstKWClose + (DeviationKW * difference);
 
-                        if (Trigger >= HCustomernumber)
+                        double ValueCalEffDifference = 0.00;
+                        if (FirstCalEffClose > SecondCalEffClose)
                         {
-                            result = "Degrade";
-                        }
-                        else if (Alarm >= HCustomernumber)
-                        {
-                            result = "Incipient";
+                            ValueCalEffDifference = FirstCalEffClose - SecondCalEffClose;
                         }
                         else
                         {
+                            ValueCalEffDifference = SecondCalEffClose - FirstCalEffClose;
+                        }
+                        double DeviationCalEff = ValueCalEffDifference / ValueQDifference;
+                        double CalEffFromLibValueLibrary = 0.00;
+                        if (FirstCalEffClose > SecondCalEffClose)
+                        {
+                            CalEffFromLibValueLibrary = FirstCalEffClose - (DeviationCalEff * difference);
+                        }
+                        else
+                        {
+                            CalEffFromLibValueLibrary = FirstCalEffClose + (DeviationCalEff * difference);
+                        }
+
+
+                        double ValueGraphEffDifference = 0.00;
+                        if (FirstGraphEffClose > SecondGraphEffClose)
+                        {
+                            ValueGraphEffDifference = FirstGraphEffClose - SecondGraphEffClose;
+                        }
+                        else
+                        {
+                            ValueGraphEffDifference = SecondGraphEffClose - FirstGraphEffClose;
+                        }
+                        double DeviationGraphEff = ValueGraphEffDifference / ValueQDifference;
+                        double GraphEffFromLibValueLibrary = 0.00;
+                        if (FirstCalEffClose > SecondCalEffClose)
+                        {
+                            GraphEffFromLibValueLibrary = FirstGraphEffClose - (DeviationGraphEff * difference);
+                        }
+                        else
+                        {
+                            GraphEffFromLibValueLibrary = FirstGraphEffClose + (DeviationGraphEff * difference);
+                        }
+
+                        double ErrorGraphEff = GraphEffFromLibValueLibrary - CalEffFromLibValueLibrary;
+
+                        double CustomerEffWithDeviation = ((Convert.ToDouble(item.Q) * Dcustomer * GConstant * HCustomernumber) / KW )/1000;
+                        double CustomerEff = CustomerEffWithDeviation + ErrorGraphEff;
+
+                        double DeviationEffPercentage = ((GraphEffFromLibValueLibrary - CustomerEff )/ GraphEffFromLibValueLibrary) * 100;
+                        
+                        if(DeviationEffPercentage >= 20)
+                        {
+                            result = "Degrade";
+                        }
+                        else if (DeviationEffPercentage >= 10)
+                        {
+                            result = "Incipient";
+                        }
+                        else 
+                        {
                             result = "Normal";
                         }
+
+                        //if (Trigger >= HCustomernumber)
+                        //{
+                        //    result = "Degrade";
+                        //}
+                        //else if (Alarm >= HCustomernumber)
+                        //{
+                        //    result = "Incipient";
+                        //}
+                        //else
+                        //{
+                        //    result = "Normal";
+                        //}
 
                     }
                     item.Classification = result;

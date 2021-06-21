@@ -12,6 +12,8 @@ namespace DPM.Models.PumpModel
         public int CentrifugalPumpHQLibraryID { get; set; }
         public decimal H { get; set; }
         public decimal Q { get; set; }
-        public float KW { get; set; }
+        public double KW { get; set; }
+        public double CalculatedEff { get; set; }
+        public double GraphEff{ get; set; }
     }
 }
