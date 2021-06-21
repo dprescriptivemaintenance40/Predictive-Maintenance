@@ -538,12 +538,12 @@ export class PrescriptiveReportComponent implements OnInit {
       var heightLeft = imgHeight;
       var doc = new jsPDF('p', 'mm', "a4");
       var position = 0;
-      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 52);
+      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 42);
       heightLeft -= pageHeight;
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         doc.addPage();
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 52);
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 42);
         heightLeft -= pageHeight;
       }
       const arrbf = doc.output("arraybuffer");
