@@ -136,7 +136,7 @@
         <ng-template pTemplate="footer">
             <div>
                 <button label="Back" type="button" (click)="PatternBack()" class="btn btn-dark" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
-                <button label="Next" style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-down"> Add & Next</i></button>
+                <button label="Next" style="float: right;" type="button" *ngIf="PatternAddNext" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-down"> Add & Next</i></button>
 
             </div>
         </ng-template>

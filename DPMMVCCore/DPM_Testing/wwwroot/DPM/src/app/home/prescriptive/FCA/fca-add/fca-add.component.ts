@@ -52,7 +52,7 @@ export class FCAADDComponent implements OnInit {
   public data1: any;
   public data1Clone: any;
   public CFPPrescriptiveId: number = 0;
-
+  public PatternAddNext: boolean = true;
   public interval: string = ""
   public intervalValue: number = 0;
 
@@ -79,7 +79,7 @@ export class FCAADDComponent implements OnInit {
   public FCAFreeTextSave1: boolean = true
   public patternaddshow: boolean = false
   public PatternFailuerAll: boolean = false
-
+   
 
   public PrescriptiveTreeList: any = [];
   public TagList: any = [];
@@ -657,9 +657,11 @@ export class FCAADDComponent implements OnInit {
   PatternBack() {
     this.prescriptiveTree = true
     this.FailureModePatternTree = false
+    this.PatternAddNext = false
     if (this.PatternCounter == 0) {
       this.PatternNextOnPrescriptiveTree = true;
     }
+    this.PatternAddNext = false
   }
 
   async PatternSave() {
