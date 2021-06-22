@@ -648,9 +648,9 @@ export class FCAADDComponent implements OnInit {
     this.PatternNextOnPrescriptiveTree = false;
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
-    if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+    if (this.ConsequenceFM == 'A (Consequence A)' || this.ConsequenceFM == 'B (Consequence B)') {
       this.UsefulLife = 0;
-    } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+    } else if (this.ConsequenceFM == 'D (Consequence D)' || this.ConsequenceFM == 'E (Consequence E)' || this.ConsequenceFM == 'C (Consequence C)') {
       this.SafeLife = 0;
     }
   }
@@ -713,7 +713,7 @@ export class FCAADDComponent implements OnInit {
 
         let SUNode = {}
 
-        if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+        if (this.ConsequenceFM == 'A (Consequence A)' || this.ConsequenceFM == 'B (Consequence B)') {
           this.UsefulLife = 0;
           SUNode = {
             label: "SafeLife",
@@ -724,7 +724,7 @@ export class FCAADDComponent implements OnInit {
               name: this.SafeLife
             }
           }
-        } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+        } else if (this.ConsequenceFM == 'D (Consequence D)' || this.ConsequenceFM == 'E (Consequence E)' || this.ConsequenceFM == 'C (Consequence C)') {
           this.SafeLife = 0;
           SUNode = {
             label: "UsefulLife",
@@ -979,7 +979,7 @@ export class FCAADDComponent implements OnInit {
 
       let SUNode = {}
 
-      if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+      if (this.ConsequenceFM == 'A (Consequence A)' || this.ConsequenceFM == 'B (Consequence B)') {
         this.UsefulLife = 0;
         SUNode = {
           label: "SafeLife",
@@ -990,7 +990,7 @@ export class FCAADDComponent implements OnInit {
             name: this.SafeLife
           }
         }
-      } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+      } else if (this.ConsequenceFM == 'D (Consequence D)' || this.ConsequenceFM == 'E (Consequence E)' || this.ConsequenceFM == 'C (Consequence C)') {
         this.SafeLife = 0
         SUNode = {
           label: "UsefulLife",
@@ -1272,9 +1272,9 @@ export class FCAADDComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
-    if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+    if (this.ConsequenceFM == 'A (Consequence A)' || this.ConsequenceFM == 'B (Consequence B)') {
       this.UsefulLife = 0;
-    } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+    } else if (this.ConsequenceFM == 'D (Consequence D)' || this.ConsequenceFM == 'E (Consequence E)' || this.ConsequenceFM == 'C (Consequence C)') {
       this.SafeLife = 0;
     }
   }
