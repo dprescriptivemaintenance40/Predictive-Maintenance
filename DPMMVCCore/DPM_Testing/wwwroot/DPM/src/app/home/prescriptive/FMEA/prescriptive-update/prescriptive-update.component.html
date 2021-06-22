@@ -1186,11 +1186,11 @@
 
                                         </ng-template>
                                         <ng-template pTemplate="subtitle">
-                                                <p><b> 9:{{(ConsequenceBasedMSS == 'A' || ConsequenceBasedMSS == 'B') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}{{LSFailureMode}}
+                                                <p><b> 9:{{(ConsequenceBasedMSS == 'A (Consequence A)' || ConsequenceBasedMSS == 'B (Consequence B)') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}{{LSFailureMode}}
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content">
-                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceBasedMSS == 'A' || ConsequenceBasedMSS == 'B' ">
+                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceBasedMSS == 'A (Consequence A)' || ConsequenceBasedMSS == 'B (Consequence B)' ">
                                                 <div class="col-md-3">
                                                     <label> Safe Life</label>
                                                 </div>
@@ -1204,7 +1204,7 @@
                                                     <input type="number" [(ngModel)]="ADDSafeLife" name="safelife" class="form-control">
                                                 </div>
                                             </div>
-                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceBasedMSS == 'D' || ConsequenceBasedMSS == 'E' || ConsequenceBasedMSS == 'C' ">
+                                            <div class="row" style="padding: 15px;" *ngIf="ConsequenceBasedMSS == 'D (Consequence D)' || ConsequenceBasedMSS == 'E (Consequence E)' || ConsequenceBasedMSS == 'C (Consequence C)' ">
                                                 <div class="col-md-3">
                                                     <label> Useful Life</label>
                                                 </div>
@@ -1313,7 +1313,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div  id="GoToTheSaveMSS1">
-                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'A'" id="Consequence">
+                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'A (Consequence A)'" id="Consequence">
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
@@ -1323,7 +1323,7 @@
                                             </div>
                                         </div>
                                     </ng-template>
-                                    <ng-template pTemplate="content">
+                                    <!-- <ng-template pTemplate="content">
                                         <div class="row">
                                             <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded"
@@ -1362,11 +1362,53 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </ng-template> -->
+                                    <ng-template pTemplate="content">
+                                        <div class="row">
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="A-OCM (On Condition Maintainenance Task)" name="name1" />&nbsp;
+                                                    <label> A-OCM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="A-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                                                    <label> A-SO</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="A-SR (Scheduled Replacement Task)"
+                                                        name="name1" />&nbsp;
+                                                    <label> A-SR</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="A-FFT (Failure Finding Task)"
+                                                        name="name1" />&nbsp;
+                                                    <label> A-FFT</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="A-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                                                    <label> A-RED</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="A-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                                                    <label> A-OFM</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </ng-template>
                                 </p-card>
                             </div>
 
-                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'B'" id="Consequence">
+                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'B (Consequence B)'" id="Consequence">
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
@@ -1377,7 +1419,7 @@
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="content">
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded"
                                                     style="width: 10rem;margin-right: 10px;">
@@ -1407,12 +1449,42 @@
                                                     <label> B-RED</label>
                                                 </div>
                                             </div>
+                                        </div> -->
+                                        <div class="row">
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded"
+                                                    style="width: 10rem;margin-right: 10px;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="B-OCM (On condition Maintainenance Task)"
+                                                        name="name1" />&nbsp;
+                                                    <label> B-OCM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="B-SO (Scheduled Overhaul Task)"
+                                                        name="name1" />&nbsp;
+                                                    <label> B-SO</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="B-SR (Scheduled Replacement Task)"
+                                                        name="name1" />&nbsp;
+                                                    <label> B-SR</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="B-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                                                    <label> B-RED</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </ng-template>
                                 </p-card>
                             </div>
 
-                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'C'" id="Consequence">
+                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'C (Consequence C)'" id="Consequence">
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
@@ -1423,7 +1495,7 @@
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="content">
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded"
                                                     style="width: 10rem;margin-right: 10px;">
@@ -1460,12 +1532,44 @@
                                                     <label> C-RED</label>
                                                 </div>
                                             </div>
+                                        </div> -->
+                                        <div class="row">
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="C-OCM (On condition Maintainenance Task)" name="name1" />&nbsp;
+                                                    <label> C-OCM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="C-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                                                    <label> C-SO</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="C-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                                                    <label> C-SR</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="C-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                                                    <label> C-OFM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="C-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                                                    <label> C-RED</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </ng-template>
                                 </p-card>
                             </div>
 
-                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'D'" id="Consequence">
+                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'D (Consequence D)'" id="Consequence">
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
@@ -1476,7 +1580,7 @@
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="content">
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded"
                                                     style="width: 10rem;margin-right: 10px;">
@@ -1514,18 +1618,46 @@
                                                     <label> D-RED</label>
                                                 </div>
                                             </div>
+                                        </div> -->
+                                        <div class="row">
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="D-OCM (On condition Maintainenance Task)" name="name1" />&nbsp;
+                                                    <label> D-OCM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="D-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                                                    <label> D-SO</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="D-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                                                    <label> D-SR</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="D-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                                                    <label> D-OFM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="D-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                                                    <label> D-RED</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </ng-template>
                                 </p-card>
                             </div>
-                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'E'" id="Consequence">
+                            <div class="card" style="margin: 20px;" *ngIf="ConsequenceBasedMSS == 'E (Consequence E)'" id="Consequence">
                                 <p-card>
                                     <ng-template pTemplate="subtitle">
                                         <div class="card shadow mb-4">
-                                            <!-- <div class="mssbtn" style="margin: 20px;">
-                                                <a class="btn btn-white" style="border:none"> </a>
-                                                <button class="btn btn-dark" style="float:right;"*ngIf="MSSTreeButton" (click)="ADDMSSToTree()">ADD MSS</button>
-                                            </div> -->
                                             <div class="card-body">
                                                 <img  class="img-fluid px-3 px-sm-4"
                                                     src="/dist/DPM/assets/MSS/E.JPG " alt="">
@@ -1533,7 +1665,7 @@
                                         </div>
                                     </ng-template>
                                     <ng-template pTemplate="content">
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col"><br>
                                                 <div class="shadow p-3 mb-5 bg-white rounded"
                                                     style="width: 10rem;margin-right: 10px;">
@@ -1574,6 +1706,44 @@
                                                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
                                                     <input type="radio" [(ngModel)]="MSSStratergy" value="E-RED"
                                                         name="name1" />&nbsp;
+                                                    <label> E-RED</label>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div class="row">
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="E-OCM (On condition Maintainenance Task)" name="name1" />&nbsp;
+                                                    <label> E-OCM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="E-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                                                    <label> E-SO</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="E-SR SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                                                    <label> E-SR</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="E-FFT (Failure Findind Task)" name="name1" />&nbsp;
+                                                    <label> E-FFT</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="E-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                                                    <label> E-OFM</label>
+                                                </div>
+                                            </div>
+                                            <div class="col"><br>
+                                                <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                                                    <input type="radio" [(ngModel)]="MSSStratergy" value="E-RED (Redsigned Mandatory)" name="name1" />&nbsp;
                                                     <label> E-RED</label>
                                                 </div>
                                             </div>

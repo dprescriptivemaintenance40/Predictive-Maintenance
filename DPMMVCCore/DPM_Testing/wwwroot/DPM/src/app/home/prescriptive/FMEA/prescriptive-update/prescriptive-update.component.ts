@@ -1213,7 +1213,7 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
 
-        if( this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B' ){
+        if( this.ConsequenceBasedMSS == 'A (Consequence A)' || this.ConsequenceBasedMSS == 'B (Consequence B)' ){
           // this.ADDUsefulLife = 0;
           let SafeLife  = {
             label: "SafeLife",
@@ -1228,7 +1228,7 @@ async AddPatternToNewFM() {
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
 
-      }else if(this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' || this.ConsequenceBasedMSS == 'C'){
+      }else if(this.ConsequenceBasedMSS == 'D (Consequence D)' || this.ConsequenceBasedMSS == 'E (Consequence E)' || this.ConsequenceBasedMSS == 'C (Consequence C)'){
         // this.ADDSafeLife = 0;
         let UsefulLife = {
             label: "UsefulLife",
@@ -1360,7 +1360,7 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
    
 
-      if( this.ConsequenceBasedMSS == 'C' || this.ConsequenceBasedMSS == 'D' || this.ConsequenceBasedMSS == 'E' ){
+      if( this.ConsequenceBasedMSS == 'C (Consequence C)' || this.ConsequenceBasedMSS == 'D (Consequence D)' || this.ConsequenceBasedMSS == 'E (Consequence E)' ){
         // this.ADDSafeLife = 0;
         let UsefulLife = {
           label: "UsefulLife",
@@ -1376,7 +1376,7 @@ async AddPatternToNewFM() {
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
 
-    }else if(this.ConsequenceBasedMSS == 'A' || this.ConsequenceBasedMSS == 'B'){
+    }else if(this.ConsequenceBasedMSS == 'A (Consequence A)' || this.ConsequenceBasedMSS == 'B (Consequence B)'){
       // this.ADDUsefulLife = 0; 
       let SafeLife = {
           label: "SafeLife",
@@ -1548,7 +1548,7 @@ async AddPatternToNewFM() {
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
         this.finalConsequence = ""
-        this.finalConsequence = "B"
+        this.finalConsequence = "B (Consequence B)"
         console.log(this.ConsequencesAnswer)
         this.Consequences3 = false;
         this.Consequences2 = false;
@@ -1585,7 +1585,7 @@ async AddPatternToNewFM() {
       if (this.dropedConsequenceCombinationFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "A"
+        this.finalConsequence = "A (Consequence A)"
         this.consequenceA = 'p-person1'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -1608,7 +1608,7 @@ async AddPatternToNewFM() {
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "E"
+        this.finalConsequence = "E (Consequence E)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -1643,7 +1643,7 @@ async AddPatternToNewFM() {
       if (this.dropedConsequenceAffectFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "C"
+        this.finalConsequence = "C (Consequence C)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person1'
@@ -1666,7 +1666,7 @@ async AddPatternToNewFM() {
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "D"
+        this.finalConsequence = "D (Consequence D)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -3122,21 +3122,22 @@ UpdateWebal(event){
    this.UpdateMSSConsequence = this.UpdatedMSSStartegy.split('-')[0]
    var Data : any, FMName, LocalEffect, SystemEffect, Consequence;
    if(this.UpdateMSSConsequence == 'A'){
-    Data = ['A-OCM', 'A-SO', 'A-SR', 'A-FFT', 'A-RED']
+    Data = ['A-OCM (On condition Maintainenance Task)', 'A-SO (Scheduled Overhaul Task)', 'A-SR (Scheduled Replacement Task)', 'A-FFT (Failure Findind Task)', 'A-RED (Redsigned Mandatory)']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/A.JPG"
    }else if(this.UpdateMSSConsequence == 'B'){
-    Data = ['B-OCM', 'B-SO', 'B-SR', 'B-RED']
+    Data = ['B-OCM (On condition Maintainenance Task)', 'B-SO (Scheduled Overhaul Task)', 'B-SR (Scheduled Replacement Task)', 'B-RED']
       this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/B.JPG"
    }else if(this.UpdateMSSConsequence == 'C'){
-    Data = ['C-OCM', 'C-SO', 'C-SR', 'C-OFM', 'C-RED']
+    Data = ['C-OCM (On condition Maintainenance Task)', 'C-SO (Scheduled Overhaul Task)', 'C-SR (Scheduled Replacement Task)', 'C-OFM (On Failure Maintainenance)', 'C-RED']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/C.JPG"
   }else if(this.UpdateMSSConsequence == 'D'){
-    Data = ['D-OCM', 'D-SO', 'D-SR','D-OFM', 'D-RED']
+    Data = ['D-OCM (On condition Maintainenance Task)', 'D-SO (Scheduled Overhaul Task)', 'D-SR (Scheduled Replacement Task)','D-OFM (On Failure Maintainenance)', 'D-RED']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/D.JPG"
   }else if(this.UpdateMSSConsequence == 'E'){
-    Data = ['E-OCM', 'E-SO', 'E-SR', 'E-FFT', 'E-OFM', 'E-RED']
+    Data = ['E-OCM (On condition Maintainenance Task)', 'E-SO (Scheduled Overhaul Task)', 'E-SR (Scheduled Replacement Task)', 'E-FFT (Failure Findind Task)', 'E-OFM (On Failure Maintainenance)', 'E-RED']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/E.JPG"
  }
+   
     this.UpdateMSSImageValues = Data;
     this.data1[0].children[0].children[0].children.forEach(element => {
       if (element.label === p.label){
@@ -3257,12 +3258,12 @@ UpdateWebal(event){
       var INTERVAl : number =  -(MTBF*LN) 
       var intervalWeek = (INTERVAl*365)/7;
     
-    if(this.UpdatedMSSStartegy == 'A-FFT'    ||  this.UpdatedMSSStartegy == 'A-OCM' || this.UpdatedMSSStartegy == 'A-SO'
-        || this.UpdatedMSSStartegy == 'A-SR' ||  this.UpdatedMSSStartegy == 'A-RED' || this.UpdatedMSSStartegy == 'A-OFM'
-        || this.UpdatedMSSStartegy == 'B-FFT'||  this.UpdatedMSSStartegy == 'B-OCM' || this.UpdatedMSSStartegy == 'B-SO'
-        || this.UpdatedMSSStartegy == 'B-SR' ||  this.UpdatedMSSStartegy == 'B-RED' || this.UpdatedMSSStartegy == 'B-OFM' ){
+    if(this.UpdatedMSSStartegy == 'A-FFT (Failure Finding Task)'    ||  this.UpdatedMSSStartegy == 'A-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'A-SO (Scheduled Overhaul Task)'
+        || this.UpdatedMSSStartegy == 'A-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'A-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'A-OFM (On Failure Maintainenance)'
+        || this.UpdatedMSSStartegy == 'B-FFT (Failure Finding Task)'||  this.UpdatedMSSStartegy == 'B-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'B-SO (Scheduled Overhaul Task)'
+        || this.UpdatedMSSStartegy == 'B-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'B-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'B-OFM (On Failure Maintainenance)' ){
 
-          if(this.UpdatedMSSStartegy == 'A-OFM' ||     this.UpdatedMSSStartegy == 'B-FFT'){
+          if(this.UpdatedMSSStartegy == 'A-OFM (On Failure Maintainenance)' ||     this.UpdatedMSSStartegy == 'B-FFT (Failure Finding Task)'){
             let obj = {}
             obj['MSSMaintenanceInterval'] = 'Not Applicable'
             obj['MSSMaintenanceTask'] = 'Not Applicable'
@@ -3277,7 +3278,7 @@ UpdateWebal(event){
                 ocmWeek = Math.round((ocmWeek / 24) / 7)
               var strategy = this.UpdatedMSSStartegy.split('-')[1];
               let obj = {}
-              if(this.MSSStratergy == 'A-FFT'){
+              if(this.MSSStratergy == 'A-FFT (Failure Finding Task)'){
                 obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
                 obj['MSSMaintenanceTask'] = 'Function Check'
                 obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -3285,7 +3286,7 @@ UpdateWebal(event){
                 obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
               }else{
-                 if(strategy == 'FFT'){
+                 if(strategy == 'FFT (Failure Finding Task)'){
                    obj['MSSMaintenanceInterval'] = this.UpdateMSSAvailability;
                    obj['MSSMaintenanceTask'] = 'Function Check'
                    obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -3293,7 +3294,7 @@ UpdateWebal(event){
                    obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                    this.UpdateMSSTaskObj.push(obj)
    
-                 }else if(strategy == 'OCM'){
+                 }else if(strategy == 'OCM (On condition Maintainenance Task)'){
                    obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
                    obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                    obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -3301,7 +3302,7 @@ UpdateWebal(event){
                    obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                    this.UpdateMSSTaskObj.push(obj)
    
-                 }else if(strategy == 'SO'){
+                 }else if(strategy == 'SO (Scheduled Overhaul Task)'){
                    var safeL : number = 0;
                    safeL = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife ;
                    safeL = ((safeL*365)/7)
@@ -3312,7 +3313,7 @@ UpdateWebal(event){
                    obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                    this.UpdateMSSTaskObj.push(obj)
    
-                 }else if(strategy == 'SR'){
+                 }else if(strategy == 'SR (Scheduled Replacement Task)'){
                    var safeL1 : number = 0;
                    safeL1 =  this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife ;
                    safeL1 = ((safeL1*365)/7)
@@ -3323,7 +3324,7 @@ UpdateWebal(event){
                    obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                    this.UpdateMSSTaskObj.push(obj)
    
-                 }else if(strategy == 'RED'){
+                 }else if(strategy == 'RED (Redsigned Mandatory)'){
                    obj['MSSMaintenanceInterval'] = 'NA'
                    obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                    obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -3334,14 +3335,14 @@ UpdateWebal(event){
                  }
              }  
           }
-      }else if(  this.UpdatedMSSStartegy == 'C-FFT'||  this.UpdatedMSSStartegy == 'C-OCM' || this.UpdatedMSSStartegy == 'C-SO'
-              || this.UpdatedMSSStartegy == 'C-SR' ||  this.UpdatedMSSStartegy == 'C-RED' || this.UpdatedMSSStartegy == 'C-OFM'
-              || this.UpdatedMSSStartegy == 'D-FFT'||  this.UpdatedMSSStartegy == 'D-OCM' || this.UpdatedMSSStartegy == 'D-SO'
-              || this.UpdatedMSSStartegy == 'D-SR' ||  this.UpdatedMSSStartegy == 'D-RED' || this.UpdatedMSSStartegy == 'D-OFM'
-              || this.UpdatedMSSStartegy == 'E-FFT'||  this.UpdatedMSSStartegy == 'E-OCM' || this.UpdatedMSSStartegy == 'E-SO'
-              || this.UpdatedMSSStartegy == 'E-SR' ||  this.UpdatedMSSStartegy == 'E-RED' || this.UpdatedMSSStartegy == 'E-OFM'){
+      }else if(  this.UpdatedMSSStartegy == 'C-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'C-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'C-SO (Scheduled Overhaul Task)'
+              || this.UpdatedMSSStartegy == 'C-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'C-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'C-OFM (On Failure Maintainenance)'
+              || this.UpdatedMSSStartegy == 'D-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'D-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'D-SO (Scheduled Overhaul Task)'
+              || this.UpdatedMSSStartegy == 'D-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'D-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'D-OFM (On Failure Maintainenance)'
+              || this.UpdatedMSSStartegy == 'E-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'E-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'E-SO (Scheduled Overhaul Task)'
+              || this.UpdatedMSSStartegy == 'E-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'E-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'E-OFM (On Failure Maintainenance)'){
 
-                if(this.UpdatedMSSStartegy == 'C-FFT' ||     this.UpdatedMSSStartegy == 'D-FFT'){
+                if(this.UpdatedMSSStartegy == 'C-FFT (Failure Findind Task)' ||     this.UpdatedMSSStartegy == 'D-FFT (Failure Findind Task)'){
                   let obj = {}
                   obj['MSSMaintenanceInterval'] = 'Not Applicable'
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
@@ -3359,14 +3360,14 @@ UpdateWebal(event){
               
                     var strategy = this.UpdatedMSSStartegy.split('-')[1];
                     let obj = {}
-                    if(strategy == 'FFT'){
+                    if(strategy == 'FFT (Failure Findind Task)'){
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Function check'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
                       obj['MSSAvailability'] = this.UpdateMSSAvailability
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
-                    }else if(strategy == 'OCM'){
+                    }else if(strategy == 'OCM (On condition Maintainenance Task)'){
                       obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -3374,7 +3375,7 @@ UpdateWebal(event){
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
 
-                    }else if(strategy == 'SO'){
+                    }else if(strategy == 'SO (Scheduled Overhaul Task)'){
                       obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -3382,7 +3383,7 @@ UpdateWebal(event){
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
 
-                    }else if(strategy == 'SR'){
+                    }else if(strategy == 'SR (Scheduled Replacement Task)'){
                       obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}`  
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -3390,7 +3391,7 @@ UpdateWebal(event){
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
 
-                    }else if(strategy == 'RED'){
+                    }else if(strategy == 'RED (Redsigned Mandatory)'){
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -3399,7 +3400,7 @@ UpdateWebal(event){
                       this.UpdateMSSTaskObj.push(obj)
 
                     }
-                    else if(strategy == 'OFM'){
+                    else if(strategy == 'OFM (On Failure Maintainenance)'){
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'No Task'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
@@ -4010,12 +4011,12 @@ async ADDMSSToTree() {
       var INTERVAl : number =  -(MTBF*LN) 
       var intervalWeek = (INTERVAl*365)/7;
 
-        if(this.MSSStratergy == 'A-FFT'    ||  this.MSSStratergy == 'A-OCM' || this.MSSStratergy == 'A-SO'
-        || this.MSSStratergy == 'A-SR' ||  this.MSSStratergy == 'A-RED' || this.MSSStratergy == 'A-OFM'
-        || this.MSSStratergy == 'B-FFT'||  this.MSSStratergy == 'B-OCM' || this.MSSStratergy == 'B-SO'
-        || this.MSSStratergy == 'B-SR' ||  this.MSSStratergy == 'B-RED' || this.MSSStratergy == 'B-OFM' ){
+      if(this.MSSStratergy == 'A-FFT (Failure Finding Task)' ||  this.MSSStratergy == 'A-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'A-SO (Scheduled Overhaul Task)'
+      || this.MSSStratergy == 'A-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'A-RED (Redsigned Mandatory)' || this.MSSStratergy == 'A-OFM (On Failure Maintainenance)'
+      || this.MSSStratergy == 'B-FFT (Failure Finding Task)'||  this.MSSStratergy == 'B-OCM (On condition Maintainenance Task)' || this.MSSStratergy == 'B-SO (Scheduled Overhaul Task)'
+      || this.MSSStratergy == 'B-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'B-RED (Redsigned Mandatory)' || this.MSSStratergy == 'B-OFM (On Failure Maintainenance)' ){
 
-          if(this.MSSStratergy == 'A-OFM' ||     this.MSSStratergy == 'B-FFT'){
+        if(this.MSSStratergy == 'A-OFM (On Failure Maintainenance)' ||     this.MSSStratergy == 'B-FFT (Failure Finding Task)'){
             let obj = {}
             obj['MSSMaintenanceInterval'] = 'Not Applicable'
             obj['MSSMaintenanceTask'] = 'Not Applicable'
@@ -4032,7 +4033,7 @@ async ADDMSSToTree() {
             
               var strategy = this.MSSStratergy.split('-')[1];
               let obj = {}
-              if(this.MSSStratergy == 'A-FFT'){
+              if(this.MSSStratergy == 'A-FFT (Failure Finding Task)'){
                 obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
                 obj['MSSMaintenanceTask'] = 'Function Check'
                 obj['MSSStartergy'] = this.MSSStratergy
@@ -4040,7 +4041,7 @@ async ADDMSSToTree() {
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
               }else{
-                if(strategy == 'FFT'){
+                if(strategy == 'FFT (Failure Finding Task)'){
                   obj['MSSMaintenanceInterval'] = 'Not Applicable';
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
                   obj['MSSStartergy'] = this.MSSStratergy
@@ -4048,7 +4049,7 @@ async ADDMSSToTree() {
                   obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                   this.MSSTaskObj.push(obj)
 
-              }else if(strategy == 'OCM'){
+              }else if(strategy == 'OCM (On condition Maintainenance Task)'){
                 obj['MSSMaintenanceInterval'] = `${a}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                 obj['MSSStartergy'] = this.MSSStratergy
@@ -4056,7 +4057,7 @@ async ADDMSSToTree() {
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
-              }else if(strategy == 'SO'){
+              }else if(strategy == 'SO (Scheduled Overhaul Task)'){
                 //  obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
@@ -4065,7 +4066,7 @@ async ADDMSSToTree() {
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
-              }else if(strategy == 'SR'){
+              }else if(strategy == 'SR (Scheduled Replacement Task)'){
                 // obj['MSSMaintenanceInterval'] = `${ this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceInterval'] = `${this.ADDSafeLife}${" "}${"Week"}`
                 obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
@@ -4074,7 +4075,7 @@ async ADDMSSToTree() {
                 obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                 this.MSSTaskObj.push(obj)
 
-              }else if(strategy == 'RED'){
+              }else if(strategy == 'RED (Redsigned Mandatory)'){
                 obj['MSSMaintenanceInterval'] = 'NA'
                 obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                 obj['MSSStartergy'] = this.MSSStratergy
@@ -4085,14 +4086,14 @@ async ADDMSSToTree() {
               }
           }
         }
-      }else if(this.MSSStratergy == 'C-FFT'    ||  this.MSSStratergy == 'C-OCM' || this.MSSStratergy == 'C-SO'
-              || this.MSSStratergy == 'C-SR' ||  this.MSSStratergy == 'C-RED' || this.MSSStratergy == 'C-OFM'
-              || this.MSSStratergy == 'D-FFT'||  this.MSSStratergy == 'D-OCM' || this.MSSStratergy == 'D-SO'
-              || this.MSSStratergy == 'D-SR' ||  this.MSSStratergy == 'D-RED' || this.MSSStratergy == 'D-OFM'
-              || this.MSSStratergy == 'E-FFT'||  this.MSSStratergy == 'E-OCM' || this.MSSStratergy == 'E-SO'
-              || this.MSSStratergy == 'E-SR' ||  this.MSSStratergy == 'E-RED' || this.MSSStratergy == 'E-OFM'){
+      }else if(this.MSSStratergy == 'C-FFT (Failure Finding Task)'||  this.MSSStratergy == 'C-OCM (On condition Maintainenance Task)' || this.MSSStratergy == 'C-SO (Scheduled Overhaul Task)'
+      || this.MSSStratergy == 'C-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'C-RED (Redsigned Mandatory)' || this.MSSStratergy == 'C-OFM (On Failure Maintainenance)'
+      || this.MSSStratergy == 'D-FFT (Failure Finding Task)'||  this.MSSStratergy == 'D-OCM (On condition Maintainenance Task)' || this.MSSStratergy == 'D-SO (Scheduled Overhaul Task)'
+      || this.MSSStratergy == 'D-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'D-RED (Redsigned Mandatory)' || this.MSSStratergy == 'D-OFM (On Failure Maintainenance)'
+      || this.MSSStratergy == 'E-FFT (Failure Finding Task)'||  this.MSSStratergy == 'E-OCM (On condition Maintainenance Task)' || this.MSSStratergy == 'E-SO (Scheduled Overhaul Task)'
+      || this.MSSStratergy == 'E-SR (Scheduled Replacement Task)' ||  this.MSSStratergy == 'E-RED (Redsigned Mandatory)' || this.MSSStratergy == 'E-OFM (On Failure Maintainenance)'){
 
-                if(this.MSSStratergy == 'C-FFT' ||     this.MSSStratergy == 'D-FFT'){
+        if(this.MSSStratergy == 'C-FFT (Failure Finding Task)' ||     this.MSSStratergy == 'D-FFT (Failure Finding Task)'){
                   let obj = {}
                   obj['MSSMaintenanceInterval'] = 'Not Applicable'
                   obj['MSSMaintenanceTask'] = 'Not Applicable'
@@ -4110,14 +4111,14 @@ async ADDMSSToTree() {
                       var x= result/7
                     var strategy = this.MSSStratergy.split('-')[1];
                     let obj = {}
-                    if(strategy == 'FFT'){
+                    if(strategy == 'FFT (Failure Finding Task)'){
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Function check'
                       obj['MSSStartergy'] = this.MSSStratergy
                       obj['MSSAvailability'] = JSON.stringify(this.ADDMSSFinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
-                    }else if(strategy == 'OCM'){
+                    }else if(strategy == 'OCM (On condition Maintainenance Task)'){
                       obj['MSSMaintenanceInterval'] = `${x}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.MSSStratergy
@@ -4125,7 +4126,7 @@ async ADDMSSToTree() {
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
-                    }else if(strategy == 'SO'){
+                    }else if(strategy == 'SO (Scheduled Overhaul Task)'){
                       // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
@@ -4134,7 +4135,7 @@ async ADDMSSToTree() {
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
-                    }else if(strategy == 'SR'){
+                    }else if(strategy == 'SR (Scheduled Replacement Task)'){
                       // obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceInterval'] = `${this.ADDUsefulLife}${" "}${"Week"}`
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
@@ -4143,7 +4144,7 @@ async ADDMSSToTree() {
                       obj['MSSIntervalSelectionCriteria'] = this.ADDMSSIntervalSelectionCriteria
                       this.MSSTaskObj.push(obj)
 
-                    }else if(strategy == 'RED'){
+                    }else if(strategy == 'RED (Redsigned Mandatory)'){
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                       obj['MSSStartergy'] = this.MSSStratergy
@@ -4152,7 +4153,7 @@ async ADDMSSToTree() {
                       this.MSSTaskObj.push(obj)
 
                     }
-                    else if(strategy == 'OFM'){
+                    else if(strategy == 'OFM (On Failure Maintainenance)'){
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'No Task'
                       obj['MSSStartergy'] = this.MSSStratergy
