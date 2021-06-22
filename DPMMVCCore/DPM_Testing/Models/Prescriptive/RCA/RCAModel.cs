@@ -12,10 +12,13 @@ namespace DPM.Models.Prescriptive.RCA
         public int RCAID { get; set; }
         public string UserId { get; set; }
         public string TagNumber { get; set; }
-        public string RCATree { get; set; }
+        public string RCAQualitativeTree { get; set; }
+        public string RCAQuantitiveTree { get; set; }
         public string RCACode { get; set; }
         public string RCALabel { get; set; }
-        public string RCAEquipment { get; set; }
-        public string RCAFailureMode { get; set; }
+        public string RCAQualitativeEquipment { get; set; }
+        public string RCAQuantitiveEquipment { get; set; }
+        public string RCAQualitativeFailureMode { get; set; }
+        public string RCAQuantitiveFailureMode { get; set; }
     }
 }

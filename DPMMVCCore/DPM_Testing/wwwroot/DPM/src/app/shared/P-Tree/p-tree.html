@@ -99,7 +99,11 @@
                             </span>
                         </span>
                         <ng-container *ngIf="node.deleteTree">
-                            <span class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="deleteTreeRow($event,node)"></span>
+                            <span class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" style="
+                            position: absolute;
+                            color: red; 
+                            left: -12px;
+                            top: -15px;" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="deleteTreeRow($event,node)"></span>
                         </ng-container>
                         <ng-container *ngIf="node.addTree">
                             <span class="p-tree-toggler pi pi-fw pi-plus" data-toggle="tooltip" data-placement="right" title="Add Node" (click)="addTreeRow($event,node)" style="margin-right: 0;"></span>
