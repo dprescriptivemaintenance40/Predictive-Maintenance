@@ -269,8 +269,15 @@ export class PrescriptiveReportComponent implements OnInit {
             var i = index + 1
             patternIds1.push(`${id}${i}`)
           }
+          var a = patternIds1
           this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
             res.labels = `${"FCA for "}${""}${res.data.name}`
+            for (let index = 0; index < this.attachmentRemark.length; index++) {
+              if (res.data.name == this.attachmentRemark[index].FunctionMode) {
+                res.Pattern = patternIds1[index];
+              }
+            }
+     
             this.AnnexuresTreeList.push([res]);
             this.changeDetectorRef.detectChanges();
             for (let index = 0; index < this.attachmentRemark.length; index++) {
@@ -301,7 +308,6 @@ export class PrescriptiveReportComponent implements OnInit {
                 const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
                 this.getChartTree(patternLabel6, patternData6, ChartId, p);
               }
-    
             }
           });
           this.NewTree[0].children[0].children[0].MSS[0].children[0].children[0].children.forEach((res: any) => {
