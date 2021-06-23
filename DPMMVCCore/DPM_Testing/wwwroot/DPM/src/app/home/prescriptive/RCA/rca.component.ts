@@ -125,7 +125,9 @@ export class RCAComponent {
     ];
     public FailureComponents: any[] = [];
     public FailureCause: any[] = [];
-    public FailureModeNamesList: any[] = []
+    public FailureModeNamesList: any[] = [];
+    public RCAUpdateUpload: any;
+    public RCAUpdateUploadData: any;
 
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
@@ -560,9 +562,9 @@ export class RCAComponent {
                 RCAQualitativeTree = JSON.stringify(this.Updatefiles);
                 RCAQuantitiveTree  = JSON.stringify(this.RCAUpdateQuantitivefiles),
                 RCAQualitativeEquipment = this.UpdateRecordList[0].RCAQualitativeEquipment;
-                RCAQuantitiveEquipment  = this.UpdateRecordList[0].RCAQuantitiveEquipment;;
+                RCAQuantitiveEquipment  = this.UpdateRecordList[0].RCAQuantitiveEquipment;
                 RCAQualitativeFailureMode  = this.UpdateRecordList[0].RCAQualitativeFailureMode; 
-                RCAQuantitiveFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode;;
+                RCAQuantitiveFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode;
             }else if(this.UpdateRCATypeQualititive === true ){
                 RCAQualitativeTree = JSON.stringify(this.Updatefiles);
                 RCAQuantitiveTree  = "None",
@@ -580,15 +582,14 @@ export class RCAComponent {
             }
             let obj = {
                 RCAID: this.UpdateRecordList[0].RCAID,
+                UserId : "",
                 TagNumber: this.UpdateRecordList[0].TagNumber,
                 RCALabel: this.UpdateRecordList[0].RCALabel,
-                RCAEquipment: this.ADDRCAMachineType,
-                RCAFailureMode: this.ADDRCAFailureMode,
                 RCAQualitativeTree  : RCAQualitativeTree,
                 RCAQuantitiveTree :RCAQuantitiveTree,
-                RCAQualitativeEquipment :RCAQualitativeEquipment,
+                RCAQualitativeEquipment :this.ADDRCAMachineType,
                 RCAQuantitiveEquipment :RCAQuantitiveEquipment,
-                RCAQualitativeFailureMode :RCAQualitativeFailureMode,
+                RCAQualitativeFailureMode :this.ADDRCAFailureMode,
                 RCAQuantitiveFailureMode :RCAQuantitiveFailureMode
             }
             this.commonBL.PutData(this.RCAAPIName.RCAUpdateAPI, obj)
@@ -600,6 +601,9 @@ export class RCAComponent {
                         this.SelectUpdateBoxEnabled = true;
                         this.UpdateSelectedLabel = "";
                         this.Updatefiles = [];
+                        this.RCAUpdateQuantitivefiles = [];
+                        this.UpdateRCATypeQualititive = false;
+                        this.UpdateRCATypeQuantitive = false;
                         this.UpdateRCADataForSaveAuth = [];
                         this.UpdateAttachmentBuffer = [] ;
                         this.getRecordsList();
@@ -612,7 +616,10 @@ export class RCAComponent {
 
     cancelRCAUpdate() {
         this.RCAUpdateItemCount = 1000;
-        this.Updatefiles = []
+        this.Updatefiles = [];
+        this.RCAUpdateQuantitivefiles = [];
+        this.UpdateRCATypeQuantitive = false;
+        this.UpdateRCATypeQualititive = false;
         this.UpdateRCADataForSaveAuth = []
         this.UpdateTreeshow = false;
         this.SelectUpdateBoxEnabled = true;
@@ -660,12 +667,16 @@ export class RCAComponent {
                             }
                             let RCAOBJ = {
                                 RCAID: this.UpdateRecordList[0].RCAID,
-                                RCATree: JSON.stringify(this.Updatefiles),
+                                UserId : "",
                                 TagNumber: this.UpdateRecordList[0].TagNumber,
                                 RCALabel: this.UpdateRecordList[0].RCALabel,
-                                RCAEquipment: this.ADDRCAMachineType,
-                                RCAFailureMode: this.ADDRCAFailureMode,
-                            }
+                                RCAQualitativeTree : JSON.stringify(this.Updatefiles),
+                                RCAQuantitiveTree  : "",
+                                RCAQualitativeEquipment : "",
+                                RCAQuantitiveEquipment  :"",
+                                RCAQualitativeFailureMode : "",
+                                RCAQuantitiveFailureMode :"",
+                                }
                             this.commonBL.PutData(this.RCAAPIName.RCAOnlyTreeSaveAPI, RCAOBJ)
                                 .subscribe(
                                     res => { }, err => { console.log(err.error) }
@@ -971,11 +982,15 @@ export class RCAComponent {
                         res => {
                             let RCAOBJ = {
                                 RCAID: this.UpdateRecordList[0].RCAID,
-                                RCATree: JSON.stringify(this.Updatefiles),
+                                UserId : "",
                                 TagNumber: this.UpdateRecordList[0].TagNumber,
                                 RCALabel: this.UpdateRecordList[0].RCALabel,
-                                RCAEquipment: this.ADDRCAMachineType,
-                                RCAFailureMode: this.ADDRCAFailureMode,
+                                RCAQualitativeTree : JSON.stringify(this.Updatefiles),
+                                RCAQuantitiveTree  : "",
+                                RCAQualitativeEquipment : "",
+                                RCAQuantitiveEquipment  :"",
+                                RCAQualitativeFailureMode : "",
+                                RCAQuantitiveFailureMode :"",
                             }
                             this.commonBL.PutData(this.RCAAPIName.RCAOnlyTreeSaveAPI, RCAOBJ)
                                 .subscribe(
@@ -987,9 +1002,6 @@ export class RCAComponent {
         })
     }
 
-
-    public RCAUpdateUpload: any;
-    public RCAUpdateUploadData: any;
     RCAUpdateAttachmentFromList(event) {
         this.confirmationService.confirm({
             message: 'Are you sure that you want to update the attachment, this will delete old attachments?',
@@ -1046,11 +1058,15 @@ export class RCAComponent {
 
                             let RCAOBJ = {
                                 RCAID: this.UpdateRecordList[0].RCAID,
-                                RCATree: JSON.stringify(this.Updatefiles),
+                                UserId : "",
                                 TagNumber: this.UpdateRecordList[0].TagNumber,
                                 RCALabel: this.UpdateRecordList[0].RCALabel,
-                                RCAEquipment: this.ADDRCAMachineType,
-                                RCAFailureMode: this.ADDRCAFailureMode,
+                                RCAQualitativeTree : JSON.stringify(this.Updatefiles),
+                                RCAQuantitiveTree  : "",
+                                RCAQualitativeEquipment : "",
+                                RCAQuantitiveEquipment  :"",
+                                RCAQualitativeFailureMode : "",
+                                RCAQuantitiveFailureMode :"",
                             }
                             this.commonBL.PutData(this.RCAAPIName.RCAOnlyTreeSaveAPI, RCAOBJ)
                                 .subscribe(
