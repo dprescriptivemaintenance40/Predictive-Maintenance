@@ -3272,11 +3272,15 @@ UpdateWebal(event){
             obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
             this.UpdateMSSTaskObj.push(obj)
           } else{
+            //  var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
+            //  var ocmWeek : number = ocmHours.split(" ")[0]
+            //     ocmWeek = Math.round((ocmWeek / 24) / 7)
 
-             var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
-             var ocmWeek : number = ocmHours.split(" ")[0]
-                ocmWeek = Math.round((ocmWeek / 24) / 7)
-              var strategy = this.UpdatedMSSStartegy.split('-')[1];
+            var ocmweek:number  = this.FCAInterval
+            var result = (ocmweek/ 24)
+            var a= result/7
+             
+                var strategy = this.UpdatedMSSStartegy.split('-')[1];
               let obj = {}
               if(this.MSSStratergy == 'A-FFT (Failure Finding Task)'){
                 obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
@@ -3295,7 +3299,7 @@ UpdateWebal(event){
                    this.UpdateMSSTaskObj.push(obj)
    
                  }else if(strategy == 'OCM (On condition Maintainenance Task)'){
-                   obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
+                   obj['MSSMaintenanceInterval'] = `${a}${" "}${"Week"}` 
                    obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                    obj['MSSStartergy'] = this.UpdatedMSSStartegy
                    obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
@@ -3352,10 +3356,12 @@ UpdateWebal(event){
                   this.UpdateMSSTaskObj.push(obj)
                 } else{
 
-                    var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
-                    var ocmWeek : number = ocmHours.split(" ")[0]
-                    ocmWeek = Math.round((ocmWeek / 24) / 7)
-
+                    // var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
+                    // var ocmWeek : number = ocmHours.split(" ")[0]
+                    // ocmWeek = Math.round((ocmWeek / 24) / 7)
+                    var ocmHourss:number  = this.FCAFFInterval
+                    var result = (ocmHourss/ 24)
+                    var x= result/7
                    
               
                     var strategy = this.UpdatedMSSStartegy.split('-')[1];
@@ -3368,7 +3374,7 @@ UpdateWebal(event){
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
                       this.UpdateMSSTaskObj.push(obj)
                     }else if(strategy == 'OCM (On condition Maintainenance Task)'){
-                      obj['MSSMaintenanceInterval'] = `${ocmWeek}${" "}${"Week"}` 
+                      obj['MSSMaintenanceInterval'] = `${x}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
                       obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
