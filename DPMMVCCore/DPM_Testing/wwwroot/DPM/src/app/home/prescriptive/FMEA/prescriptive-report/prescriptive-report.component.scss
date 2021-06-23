@@ -5,3 +5,30 @@
     align-items: center!important;
 }
 
+:host ::ng-deep .p-organizationchart {
+    .p-person {
+        padding: 0;
+        border: 0 none;
+    }
+
+    .p-person1 {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(123, 201, 123)
+    }
+    .StylePattern {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(108, 212, 219) 
+    }
+    .StylePattern1 {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(245, 148, 172) 
+    }
+    .StylePattern2 {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(212, 218, 211) 
+    }
+}
