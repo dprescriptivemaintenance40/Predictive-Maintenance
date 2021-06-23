@@ -510,7 +510,7 @@ export class FCAADDComponent implements OnInit {
     this.PattenAnsNode6P2 = 'p-person'
     this.PatternPathEnable = false
 
-    if (value === 'Pattern 1 abc') {
+    if (value === 'Pattern 1') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'p-person'
       this.PattenNode3 = 'StylePattern'
@@ -523,7 +523,7 @@ export class FCAADDComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    } else if (value === 'Pattern 2 abc2') {
+    } else if (value === 'Pattern 2') {
       this.PatternPathEnable = true
       this.PattenNode2 = 'StylePattern1'
       this.PattenNode5 = 'StylePattern1'
@@ -541,7 +541,7 @@ export class FCAADDComponent implements OnInit {
 
 
 
-    } else if (value === 'Pattern 3 abc3') {
+    } else if (value === 'Pattern 3') {
       this.PatternPathEnable = true
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern1'
@@ -555,7 +555,7 @@ export class FCAADDComponent implements OnInit {
       this.PatternTree()
 
 
-    } else if (value === 'Pattern 4 abc4') {
+    } else if (value === 'Pattern 4') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern'
       this.PattenNode4 = 'StylePattern'
@@ -563,7 +563,7 @@ export class FCAADDComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    } else if (value === 'Pattern 5 abc5') {
+    } else if (value === 'Pattern 5') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern'
       this.PattenNode4 = 'StylePattern'
@@ -573,7 +573,7 @@ export class FCAADDComponent implements OnInit {
       this.PatternTree()
       this.PatternEnable = true;
 
-    } else if (value === 'Pattern 6 abc6') {
+    } else if (value === 'Pattern 6') {
       this.PatternPathEnable = true
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern1'
@@ -665,7 +665,7 @@ export class FCAADDComponent implements OnInit {
   }
 
   async PatternSave() {
-    if (this.Pattern === 'Pattern 1 abc' || this.Pattern === 'Pattern 2 abc2' || this.Pattern === 'Pattern 3 abc3' || this.Pattern === 'Pattern 4 abc4' || this.Pattern === 'Pattern 5 abc5' || this.Pattern === 'Pattern 6 abc6') {
+    if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5' || this.Pattern === 'Pattern 6') {
       this.FailuerRate = true
       this.FailureWarning = true
       this.FailureWarning = true
@@ -686,29 +686,29 @@ export class FCAADDComponent implements OnInit {
   }
 
   PatternAdd() {
-    if (this.Pattern === 'Pattern 2 abc2' || this.Pattern === 'Pattern 3 abc3' || this.Pattern === 'Pattern 6 abc6') {
-      if ((this.Pattern === 'Pattern 2 abc2' || this.Pattern === 'Pattern 3 abc3'
-        || this.Pattern === 'Pattern 6 abc6')
+    if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
+      if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
+        || this.Pattern === 'Pattern 6')
         && this.PatternPath != "") {
         var path, pattern
-        if (this.Pattern === 'Pattern 2 abc2' && this.PatternPath == "1") {
+        if (this.Pattern === 'Pattern 2' && this.PatternPath == "1") {
           path = 1;
           pattern = 'Pattern 2'
-        } else if (this.Pattern === 'Pattern 2 abc2' && this.PatternPath == "2") {
+        } else if (this.Pattern === 'Pattern 2' && this.PatternPath == "2") {
           path = 2;
           pattern = 'Pattern 2'
-        } else if (this.Pattern === 'Pattern 3 abc3' && this.PatternPath == "1") {
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "1") {
           path = 1;
           pattern = 'Pattern 3'
 
-        } else if (this.Pattern === 'Pattern 3 abc3' && this.PatternPath == "2") {
+        } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "2") {
           path = 2;
           pattern = 'Pattern 3'
 
-        } else if (this.Pattern === 'Pattern 6 abc6' && this.PatternPath == "1") {
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "1") {
           path = 1;
           pattern = 'Pattern 6'
-        } else if (this.Pattern === 'Pattern 6 abc6' && this.PatternPath == "2") {
+        } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
           path = 2;
           pattern = 'Pattern 6'
         }
@@ -963,17 +963,17 @@ export class FCAADDComponent implements OnInit {
 
       }
 
-    } else if (this.Pattern === 'Pattern 1 abc' || this.Pattern === 'Pattern 4 abc4' || this.Pattern === 'Pattern 5 abc5') {
+    } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
 
-      if (this.Pattern === 'Pattern 1 abc') {
+      if (this.Pattern === 'Pattern 1') {
         path = 0;
         pattern = 'Pattern 1'
 
-      } else if (this.Pattern === 'Pattern 4 abc4') {
+      } else if (this.Pattern === 'Pattern 4') {
         path = 0;
         pattern = 'Pattern 4'
 
-      } else if (this.Pattern === 'Pattern 5 abc5') {
+      } else if (this.Pattern === 'Pattern 5') {
         path = 0;
         pattern = 'Pattern 5'
 

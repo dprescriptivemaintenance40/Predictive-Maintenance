@@ -1123,29 +1123,29 @@ public UpdateBeta : number = 0
 
 async AddPatternToNewFM() {
 
-  if (this.Pattern === 'Pattern 2 abc2' || this.Pattern === 'Pattern 3 abc3' || this.Pattern === 'Pattern 6 abc6') {
-    if ((this.Pattern === 'Pattern 2 abc2' || this.Pattern === 'Pattern 3 abc3'
-      || this.Pattern === 'Pattern 6 abc6')
+  if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
+    if ((this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3'
+      || this.Pattern === 'Pattern 6')
       && this.PatternPath != "") {
       var path, pattern
-      if (this.Pattern === 'Pattern 2 abc2' && this.PatternPath == "1") {
+      if (this.Pattern === 'Pattern 2' && this.PatternPath == "1") {
         path = 1;
         pattern = 'Pattern 2'
-      } else if (this.Pattern === 'Pattern 2 abc2' && this.PatternPath == "2") {
+      } else if (this.Pattern === 'Pattern 2' && this.PatternPath == "2") {
         path = 2;
         pattern = 'Pattern 2'
-      } else if (this.Pattern === 'Pattern 3 abc3' && this.PatternPath == "1") {
+      } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "1") {
         path = 1;
         pattern = 'Pattern 3'
 
-      } else if (this.Pattern === 'Pattern 3 abc3' && this.PatternPath == "2") {
+      } else if (this.Pattern === 'Pattern 3' && this.PatternPath == "2") {
         path = 2;
         pattern = 'Pattern 3'
 
-      } else if (this.Pattern === 'Pattern 6 abc6' && this.PatternPath == "1") {
+      } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "1") {
         path = 1;
         pattern = 'Pattern 6'
-      } else if (this.Pattern === 'Pattern 6 abc6' && this.PatternPath == "2") {
+      } else if (this.Pattern === 'Pattern 6' && this.PatternPath == "2") {
         path = 2;
         pattern = 'Pattern 6'
       }
@@ -1277,17 +1277,17 @@ async AddPatternToNewFM() {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please Select any one color path" })
     }
 
-  } else if (this.Pattern === 'Pattern 1 abc' || this.Pattern === 'Pattern 4 abc4' || this.Pattern === 'Pattern 5 abc5') {
+  } else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
 
-    if (this.Pattern === 'Pattern 1 abc') {
+    if (this.Pattern === 'Pattern 1') {
       path = 0;
       pattern = 'Pattern 1'
 
-    } else if (this.Pattern === 'Pattern 4 abc4') {
+    } else if (this.Pattern === 'Pattern 4') {
       path = 0;
       pattern = 'Pattern 4'
 
-    } else if (this.Pattern === 'Pattern 5 abc5') {
+    } else if (this.Pattern === 'Pattern 5') {
       path = 0;
       pattern = 'Pattern 5'
 
@@ -2099,7 +2099,7 @@ async AddPatternToNewFM() {
     this.PattenAnsNode6P1 = 'p-person'
     this.PattenAnsNode6P2 = 'p-person'
 
-    if (value === 'Pattern 1 abc') {
+    if (value === 'Pattern 1') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'p-person'
       this.PattenNode3 = 'StylePattern'
@@ -2112,7 +2112,7 @@ async AddPatternToNewFM() {
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    } else if (value === 'Pattern 2 abc2') {
+    } else if (value === 'Pattern 2') {
       if(nodePath == 1){
         this.PattenNode1 = 'StylePattern1'
         this.PattenNode2 = 'StylePattern1'
@@ -2133,7 +2133,7 @@ async AddPatternToNewFM() {
 
 
 
-    } else if (value === 'Pattern 3 abc3') {
+    } else if (value === 'Pattern 3') {
       if(nodePath == 1){
       this.PattenNode1 = 'StylePattern1'
       this.PattenNode2 = 'StylePattern1'
@@ -2151,7 +2151,7 @@ async AddPatternToNewFM() {
       this.PatternTree()
 
 
-    } else if (value === 'Pattern 4 abc4') {
+    } else if (value === 'Pattern 4') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern'
       this.PattenNode4 = 'StylePattern'
@@ -2159,7 +2159,7 @@ async AddPatternToNewFM() {
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    } else if (value === 'Pattern 5 abc5') {
+    } else if (value === 'Pattern 5') {
       this.PattenNode1 = 'StylePattern'
       this.PattenNode2 = 'StylePattern'
       this.PattenNode4 = 'StylePattern'
@@ -2168,7 +2168,7 @@ async AddPatternToNewFM() {
       this.changeDetectorRef.detectChanges();
       this.PatternTree()
 
-    } else if (value === 'Pattern 6 abc6') {
+    } else if (value === 'Pattern 6') {
       if(nodePath == 1){
       this.PattenNode1 = 'StylePattern1'
       this.PattenNode2 = 'StylePattern1'
@@ -2746,32 +2746,32 @@ this.UpdateFCACommentFINAL.push(this.UpdateFCAFreeText)
   this.AddFMPatternAddEnable = false;
   this.UpdatePatternAddEnable = false;
 
-  if (this.Pattern == 'Pattern 1 abc') {
+  if (this.Pattern == 'Pattern 1') {
     const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
     this.getChartTree(patternLabel1, patternData1, 'ViewPattern',this.Pattern);
-  } else if (this.Pattern == 'Pattern 2 abc2') {
+  } else if (this.Pattern == 'Pattern 2') {
     const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
     this.getChartTree(patternLabel2, patternData2, 'ViewPattern',this.Pattern);
-  } else if (this.Pattern == 'Pattern 3 abc3') {
+  } else if (this.Pattern == 'Pattern 3') {
     const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
     this.getChartTree(patternLabel3, patternData3, 'ViewPattern',this.Pattern);
-  } else if (this.Pattern == 'Pattern 4 abc4') {
+  } else if (this.Pattern == 'Pattern 4') {
     const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
     this.getChartTree(patternLabel4, patternData4,'ViewPattern',this.Pattern);
-  } else if (this.Pattern == 'Pattern 5 abc5') {
+  } else if (this.Pattern == 'Pattern 5') {
     const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
     const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
     this.getChartTree(patternLabel5, patternData5, 'ViewPattern', this.Pattern);
-  } else if (this.Pattern == 'Pattern 6 abc6') {
+  } else if (this.Pattern == 'Pattern 6') {
     const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
     this.getChartTree(patternLabel6, patternData6, 'ViewPattern', this.Pattern);
   }
-  if (this.Pattern === 'Pattern 2 abc2' || this.Pattern === 'Pattern 3 abc3' || this.Pattern === 'Pattern 6 abc6') {
+  if (this.Pattern === 'Pattern 2' || this.Pattern === 'Pattern 3' || this.Pattern === 'Pattern 6') {
     if(this.PatternPath == '1'){
       this.ColorPatternTreUpdate(this.Pattern, 1)
       this.FCAView[0].nodePath = 1
@@ -2782,7 +2782,7 @@ this.UpdateFCACommentFINAL.push(this.UpdateFCAFreeText)
         this.data1[0].children[0].children[0].children[this.FCAView[0].label -1].children[1].nodePath = 2
     }
    
-  }else if (this.Pattern === 'Pattern 1 abc' || this.Pattern === 'Pattern 4 abc4' || this.Pattern === 'Pattern 5 abc5') {
+  }else if (this.Pattern === 'Pattern 1' || this.Pattern === 'Pattern 4' || this.Pattern === 'Pattern 5') {
     this.ColorPatternTreUpdate(this.Pattern, 0)
   }
   this.changeDetectorRef.detectChanges();
@@ -2875,7 +2875,7 @@ SelectPatternForFailureMode(value: string) {
   this.PattenAnsNode6P2 = 'p-person'
   this.PatternPathEnable = false
 
-  if (value === 'Pattern 1 abc') {
+  if (value === 'Pattern 1') {
     this.PattenNode1 = 'StylePattern'
     this.PattenNode2 = 'p-person'
     this.PattenNode3 = 'StylePattern'
@@ -2888,7 +2888,7 @@ SelectPatternForFailureMode(value: string) {
     this.changeDetectorRef.detectChanges();
     this.PatternTree()
 
-  } else if (value === 'Pattern 2 abc2') {
+  } else if (value === 'Pattern 2') {
     this.PatternPathEnable = true
     this.PattenNode2 = 'StylePattern1'
     this.PattenNode5 = 'StylePattern1'
@@ -2906,7 +2906,7 @@ SelectPatternForFailureMode(value: string) {
 
 
 
-  } else if (value === 'Pattern 3 abc3') {
+  } else if (value === 'Pattern 3') {
     this.PatternPathEnable = true
     this.PattenNode1 = 'StylePattern'
     this.PattenNode2 = 'StylePattern1'
@@ -2920,7 +2920,7 @@ SelectPatternForFailureMode(value: string) {
     this.PatternTree()
 
 
-  } else if (value === 'Pattern 4 abc4') {
+  } else if (value === 'Pattern 4') {
     this.PattenNode1 = 'StylePattern'
     this.PattenNode2 = 'StylePattern'
     this.PattenNode4 = 'StylePattern'
@@ -2928,7 +2928,7 @@ SelectPatternForFailureMode(value: string) {
     this.changeDetectorRef.detectChanges();
     this.PatternTree()
 
-  } else if (value === 'Pattern 5 abc5') {
+  } else if (value === 'Pattern 5') {
     this.PattenNode1 = 'StylePattern'
     this.PattenNode2 = 'StylePattern'
     this.PattenNode4 = 'StylePattern'
@@ -2937,7 +2937,7 @@ SelectPatternForFailureMode(value: string) {
     this.changeDetectorRef.detectChanges();
     this.PatternTree()
 
-  } else if (value === 'Pattern 6 abc6') {
+  } else if (value === 'Pattern 6') {
     this.PatternPathEnable = true
     this.PattenNode1 = 'StylePattern'
     this.PattenNode2 = 'StylePattern1'
