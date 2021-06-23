@@ -89,16 +89,16 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
                     double P2 = Convert.ToDouble(item.P2);
                     double KW = (1.732 * Voltage * CosPhi * Convert.ToDouble(item.I))/1000;
 
-                    double HCustomernumber = 10 * (P2 - P1) / Dcustomer;
-                    //string p1 = string.Format("{0:G}", P1);
-                    //string p2 = string.Format("{0:G}", P2);
-                    //string d = string.Format("{0:G}", Dcustomer);
+                    //double HCustomernumber = 10 * (P2 - P1) / Dcustomer;
+                    string p1 = string.Format("{0:G}", P1);
+                    string p2 = string.Format("{0:G}", P2);
+                    string d = string.Format("{0:G}", Dcustomer);
 
-                    //var f1 = Formula.Replace("P1", p1);
-                    //var f2 = f1.Replace("P2", p2);
-                    //var f3 = f2.Replace("D", d);
-                    //DataTable dtw = new DataTable();
-                    //var v = dtw.Compute(f3, "");
+                    var f1 = Formula.Replace("P1", p1);
+                    var f2 = f1.Replace("P2", p2);
+                    var f3 = f2.Replace("D", d);
+                    DataTable dtw = new DataTable();
+                    var HCustomernumber = dtw.Compute(f3, "");
                     double Qnumber = Convert.ToSingle(item.Q);
                     double Firstclosest = QLlist.Aggregate((x, y) => Math.Abs(x - Qnumber) < Math.Abs(y - Qnumber) ? x : y);
                     int Firstclosestindex = QLlist.IndexOf(Firstclosest);
@@ -182,7 +182,7 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
 
                         double ErrorGraphEff = GraphEffFromLibValueLibrary - CalEffFromLibValueLibrary;
 
-                        double CustomerEffWithDeviation = ((Convert.ToDouble(item.Q) * Dcustomer * GConstant * HCustomernumber) / KW )/1000;
+                        double CustomerEffWithDeviation = ((Convert.ToDouble(item.Q) * Dcustomer * GConstant * Convert.ToDouble(HCustomernumber)) / KW )/1000;
                         double CustomerEff = CustomerEffWithDeviation + ErrorGraphEff;
 
                         double DeviationEffPercentage = ((GraphEffFromLibValueLibrary - CustomerEff )/ GraphEffFromLibValueLibrary) * 100;
