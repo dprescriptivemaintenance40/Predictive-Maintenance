@@ -76,3 +76,10 @@ select.ng-invalid.ng-touched {
     background-size: 100% 3ch;
     height: 81px;
 }
+
+.row{
+    display: visibility !important;
+    display: flex!important;
+    justify-content: center!important;
+    align-items: center!important;
+}

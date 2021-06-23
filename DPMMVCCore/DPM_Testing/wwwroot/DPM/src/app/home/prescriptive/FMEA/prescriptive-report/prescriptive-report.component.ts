@@ -12,7 +12,8 @@ import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.di
   selector: 'app-prescriptive-report',
   templateUrl: './prescriptive-report.component.html',
   styleUrls: ['./prescriptive-report.component.scss', '../../../../../assets/orgchart.scss'],
-  providers: [MessageService, DatePipe]
+  providers: [MessageService, DatePipe],
+
 })
 export class PrescriptiveReportComponent implements OnInit {
 
@@ -228,12 +229,10 @@ export class PrescriptiveReportComponent implements OnInit {
       this.FCAPatternEnable = true;
       if (this.data.CAttachmentDBPath != null) {
         var FileExt = this.getFileExtension(this.data.CAttachmentDBPath)
-        this.FCAPatternEnable = true;
         if (FileExt.toLowerCase() == 'pdf') {
           let obj = {}
           obj['Link'] = this.data.CAttachmentDBPath;
           this.PDFURL.push(obj)
-          this.FCAPatternEnable = true;
         }
       }
         this.NewTree = [] 
@@ -270,7 +269,6 @@ export class PrescriptiveReportComponent implements OnInit {
             var i = index + 1
             patternIds1.push(`${id}${i}`)
           }
-
           this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
             res.labels = `${"FCA for "}${""}${res.data.name}`
             this.AnnexuresTreeList.push([res]);
@@ -306,8 +304,6 @@ export class PrescriptiveReportComponent implements OnInit {
     
             }
           });
-        
-        
           this.NewTree[0].children[0].children[0].MSS[0].children[0].children[0].children.forEach((res: any) => {
             res.labels = `${"MSS for "}${""}${res.data.name}`
             this.AnnexuresTreeList.push([res]);
@@ -456,7 +452,9 @@ export class PrescriptiveReportComponent implements OnInit {
         }
         this.AnnexuresTreeList.push([res]);
       });
+
     } else if (this.ReportRCMType == 'RCM'){
+      this.FCAPatternEnable = true;
       this.PDFURL=[]
       this.AnnexuresTreeList = []
       this.NewTree = [] 
