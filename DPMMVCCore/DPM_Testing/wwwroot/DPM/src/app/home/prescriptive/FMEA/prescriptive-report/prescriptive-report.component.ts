@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit,} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild,} from '@angular/core';
 import { DomSanitizer, SafeUrl, Title } from '@angular/platform-browser';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -7,7 +7,7 @@ import { MessageService } from 'primeng/api';
 import { PDFDocument } from 'pdf-lib';
 import * as Chart from 'chart.js';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
-
+import domtoimage from 'dom-to-image';
 @Component({
   selector: 'app-prescriptive-report',
   templateUrl: './prescriptive-report.component.html',
@@ -16,7 +16,8 @@ import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.di
 
 })
 export class PrescriptiveReportComponent implements OnInit {
-
+  @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
+  @ViewChild('image') image;
   public FileUrl: any;
   public data: any = []
   public EditdbPathURL: SafeUrl;
@@ -540,17 +541,17 @@ export class PrescriptiveReportComponent implements OnInit {
     var pdfdata = html2canvas(data).then(canvas => {
       var imgData = canvas.toDataURL('image/png');
       var imgWidth = 190;
-      var pageHeight = 295;
+      var pageHeight = 298;
       var imgHeight = canvas.height * imgWidth / canvas.width;
       var heightLeft = imgHeight;
       var doc = new jsPDF('p', 'mm', "a4");
       var position = 0;
-      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 42);
+      doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight *1);
       heightLeft -= pageHeight;
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         doc.addPage();
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 42);
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight *1);
         heightLeft -= pageHeight;
       }
       const arrbf = doc.output("arraybuffer");
@@ -667,12 +668,12 @@ printMSSPage(){
         var heightLeft = imgHeight;
         var doc = new jsPDF('p', 'mm', "a4");
         var position = 0;
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 35);
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight *1);
         heightLeft -= pageHeight;
         while (heightLeft >= 0) {
           position = heightLeft - imgHeight;
           doc.addPage();
-          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 35);
+          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight *1);
           heightLeft -= pageHeight;
         }
         const arrbf = doc.output("arraybuffer");
@@ -719,4 +720,31 @@ printMSSPage(){
     link.download = fileName;
     link.click();
   };
+
+  // public DownloadRCMPDF() {
+  //   const doc = new jsPDF();
+  //   const specialElementHandlers = {
+  //     '#editor': function (element, renderer) {
+  //       return true;
+  //     }
+  //   };
+  //   const pdfTable = this.pdfTable.nativeElement;
+  //   doc.fromHTML(pdfTable.innerHTML, 15, 15, {
+  //     width: 190,
+  //     'elementHandlers': specialElementHandlers
+  //   });
+  //   var imageLink: any
+  //   let imageData = document.getElementById('image');
+  //   domtoimage.toPng(this.image.nativeElement).then(res => {
+  //       imageLink = res;
+  //       // doc.addPage('a4', 'l');
+  //       doc.addPage('a4', 'l');
+  //       const imgProps = doc.getImageProperties(imageLink);
+  //       const pdfWidth = doc.internal.pageSize.getWidth();
+  //       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  //       doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
+  //       doc.save('RCA Report');
+  //       this.commonLoadingDirective.showLoading(false, 'Downloading....');
+  //   })
+  // }
 }
