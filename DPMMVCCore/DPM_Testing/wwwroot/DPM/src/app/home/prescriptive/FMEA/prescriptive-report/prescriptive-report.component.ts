@@ -225,12 +225,15 @@ export class PrescriptiveReportComponent implements OnInit {
       this.AnnexuresTreeList = []
       this.ReportSelect = false;
       this.MSSReportSelect = false;
+      this.FCAPatternEnable = true;
       if (this.data.CAttachmentDBPath != null) {
         var FileExt = this.getFileExtension(this.data.CAttachmentDBPath)
+        this.FCAPatternEnable = true;
         if (FileExt.toLowerCase() == 'pdf') {
           let obj = {}
           obj['Link'] = this.data.CAttachmentDBPath;
           this.PDFURL.push(obj)
+          this.FCAPatternEnable = true;
         }
       }
         this.NewTree = [] 

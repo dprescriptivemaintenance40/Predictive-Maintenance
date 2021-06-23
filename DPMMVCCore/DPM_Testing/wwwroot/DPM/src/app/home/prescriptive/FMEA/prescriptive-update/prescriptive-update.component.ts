@@ -1213,7 +1213,7 @@ async AddPatternToNewFM() {
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Alpha)
       this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
 
-        if( this.ConsequenceBasedMSS == 'A (Consequence A)' || this.ConsequenceBasedMSS == 'B (Consequence B)' ){
+        if( this.ConsequenceBasedMSS == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || this.ConsequenceBasedMSS == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)' ){
           // this.ADDUsefulLife = 0;
           let SafeLife  = {
             label: "SafeLife",
@@ -1228,7 +1228,7 @@ async AddPatternToNewFM() {
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(SafeLife)
           this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDSafeLife
 
-      }else if(this.ConsequenceBasedMSS == 'D (Consequence D)' || this.ConsequenceBasedMSS == 'E (Consequence E)' || this.ConsequenceBasedMSS == 'C (Consequence C)'){
+      }else if(this.ConsequenceBasedMSS == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || this.ConsequenceBasedMSS == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' || this.ConsequenceBasedMSS == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)'){
         // this.ADDSafeLife = 0;
         let UsefulLife = {
             label: "UsefulLife",
@@ -1360,7 +1360,7 @@ async AddPatternToNewFM() {
     this.data1[0].children[0].children[0].FCA[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children.push(Beta)
    
 
-      if( this.ConsequenceBasedMSS == 'C (Consequence C)' || this.ConsequenceBasedMSS == 'D (Consequence D)' || this.ConsequenceBasedMSS == 'E (Consequence E)' ){
+      if( this.ConsequenceBasedMSS == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)' || this.ConsequenceBasedMSS == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || this.ConsequenceBasedMSS == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' ){
         // this.ADDSafeLife = 0;
         let UsefulLife = {
           label: "UsefulLife",
@@ -1376,7 +1376,7 @@ async AddPatternToNewFM() {
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children.push(UsefulLife)
         this.data1[0].children[0].children[0].children[this.data1[0].children[0].children[0].children.length - 1].children[1].FCAData.children[6].data.name = this.ADDUsefulLife
 
-    }else if(this.ConsequenceBasedMSS == 'A (Consequence A)' || this.ConsequenceBasedMSS == 'B (Consequence B)'){
+    }else if(this.ConsequenceBasedMSS == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || this.ConsequenceBasedMSS == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)'){
       // this.ADDUsefulLife = 0; 
       let SafeLife = {
           label: "SafeLife",
@@ -1548,7 +1548,7 @@ async AddPatternToNewFM() {
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
         this.finalConsequence = ""
-        this.finalConsequence = "B (Consequence B)"
+        this.finalConsequence = "B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)"
         console.log(this.ConsequencesAnswer)
         this.Consequences3 = false;
         this.Consequences2 = false;
@@ -1585,7 +1585,7 @@ async AddPatternToNewFM() {
       if (this.dropedConsequenceCombinationFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "A (Consequence A)"
+        this.finalConsequence = "A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)"
         this.consequenceA = 'p-person1'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -1608,7 +1608,7 @@ async AddPatternToNewFM() {
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "E (Consequence E)"
+        this.finalConsequence = "E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -1643,7 +1643,7 @@ async AddPatternToNewFM() {
       if (this.dropedConsequenceAffectFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "C (Consequence C)"
+        this.finalConsequence = "C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person1'
@@ -1666,7 +1666,7 @@ async AddPatternToNewFM() {
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "D (Consequence D)"
+        this.finalConsequence = "D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
