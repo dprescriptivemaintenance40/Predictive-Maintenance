@@ -176,6 +176,22 @@
                                 </select>
                             </div>
                         </li>
+                        <li class="list-group-item">
+                            <div class="input-group mb-3" style="width: 29em;">
+                                <div class="form-check">
+                                    <input [(ngModel)]="UpdateRCATypeQualititive" (change)="UpdateRCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Qualitative">
+                                    <label class="form-check-label" for="Qualitative">
+                                        Qualititive
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input [(ngModel)]="UpdateRCATypeQuantitive" (change)="UpdateRCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Quantitive">
+                                    <label class="form-check-label" for="Quantitive">
+                                        Quantitive
+                                    </label>
+                                  </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
 
@@ -186,9 +202,8 @@
                         (deleteTreeRow)="UpdatedeleteTreeRow($event)"  (RCAUpdateAttachmentFromList)="RCAUpdateAttachmentFromList($event)"></p-tree>
                         <br><br>
                 </div>
-                <div id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%; padding-bottom: 20em;">
+                <div *ngIf="UpdateRCATypeQuantitive" id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%; padding-bottom: 20em;">
                     <p-card>
-                        <button (click)="ClearRCAQuantiveTree()" class="btn btn-dark" pTooltip="Clear Quantitive tree data" tooltipPosition="top">clear</button>               
                         <p-organizationChart [value]="RCAUpdateQuantitivefiles" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
                         </p-organizationChart>
                     </p-card>

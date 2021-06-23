@@ -105,6 +105,8 @@ export class RCAComponent {
     private UpdateAttachmentBuffer : any = [];
     public RCATypeQualititive : boolean = false;
     public RCATypeQuantitive : boolean = false;
+    public UpdateRCATypeQualititive : boolean = false;
+    public UpdateRCATypeQuantitive : boolean = false;
     public finalRCATypeQualititive : boolean = false;
     public finalRCATypeQuantitive : boolean = false;
     public andOrItemCount?: number = 100;
@@ -219,11 +221,13 @@ export class RCAComponent {
             this.ADDDataForSaveAuth.push(obj)
         } else if (event.isParent == undefined && event.label == '') {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to node" })
-        } else if (event.isParent == undefined && event.RCAFILE == '') {
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add attachment to node" })
-        } else if (event.label == '') {
+        }
+        //  else if (event.isParent == undefined && event.RCAFILE == '') {
+        //     this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add attachment to node" })
+        // } 
+        else if (event.label == '') {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please add data to node" })
-        } else if (event.isParent == undefined && event.RCAFILE != '' && event.label != '') {
+        } else if (event.isParent == undefined && event.label != '') {
             event.children.push(obj);
             this.ADDDataForSaveAuth.push(obj)
         }
@@ -292,8 +296,25 @@ export class RCAComponent {
         this.itemCount = 100
         this.ADDDataForSaveAuth = []
         this.files = []
+        this.ANDORLOGICTREE = [];
+        this.ANDORLOGICTREE = [
+            {
+                id: this.andOrItemCount,
+                label: 'Top Event',
+                text: '',
+                years: 0,
+                hours: 0,
+                expanded: true,
+                ANDORLogic: true,
+                children: [],
+                nodeType: "TopEvent"
+            }
+        ]
         this.addStartup();
-
+        this.RCATypeQualititive  = false;
+        this.RCATypeQuantitive  = false;
+        this.finalRCATypeQualititive = false;
+        this.finalRCATypeQuantitive = false;
     }
 
     RCACheckValidation(){
@@ -402,6 +423,8 @@ export class RCAComponent {
     }
 
     async SaveAddRCAToDatabase() {
+        this.ADDRCANodeCount = 0;
+        this.ADDRCAForSaveNodeCount = 0;
         if(this.RCATypeQualititive === true){
             this.ADDRCANodeCount = 0;
             this.ADDRCAForSaveNodeCount = 0;
@@ -446,16 +469,26 @@ export class RCAComponent {
 
     UpdateTagNumberSelect() {
         if (this.UpdateSelectedLabel.length > 0) {
+            this.UpdateRCATypeQualititive = false;
+            this.UpdateRCATypeQuantitive = false;
             this.RCAListRecords.forEach(element => {
                 if (element.RCALabel == this.UpdateSelectedLabel) {
-                    this.UpdateRecordList = []
-                    this.Updatefiles = JSON.parse(element.RCAQualitativeTree)
-                    this.RCAUpdateQuantitivefiles = JSON.parse(element.RCAQuantitiveTree);
-                    this.TraverseNestedJson(this.Updatefiles, 'update')
+                    this.UpdateRecordList = [];
+                    this.Updatefiles = [];
+                    this.RCAUpdateQuantitivefiles = [];
+                    if(element.RCAQualitativeTree !== 'None'){
+                        this.Updatefiles = JSON.parse(element.RCAQualitativeTree);
+                        this.TraverseNestedJson(this.Updatefiles, 'update')
+                        this.UpdateRCATypeQualititive = true;
+                    }
+                    if(element.RCAQuantitiveTree !== 'None'){
+                        this.RCAUpdateQuantitivefiles = JSON.parse(element.RCAQuantitiveTree);
+                        this.UpdateRCATypeQuantitive = true;
+                    }
                     this.UpdateRCADataForSaveAuth = JSON.parse(this.Updatefiles[0].update);
                     this.UpdateRecordList.push(element)
-                    this.ADDRCAFailureMode = element.RCAFailureMode
-                    this.ADDRCAMachineType = element.RCAEquipment
+                    this.ADDRCAFailureMode = element.RCAQualitativeFailureMode;
+                    this.ADDRCAMachineType = element.RCAQualitativeEquipment;
                 }
             });
 
@@ -517,13 +550,46 @@ export class RCAComponent {
                     ) 
                 });
             }
+            var RCAQualitativeTree :string = "";
+            var RCAQuantitiveTree :string = "";
+            var RCAQualitativeEquipment :string = "";
+            var RCAQuantitiveEquipment :string = "";
+            var RCAQualitativeFailureMode :string = "";
+            var RCAQuantitiveFailureMode :string = "";
+            if(this.UpdateRCATypeQualititive === true && this.UpdateRCATypeQuantitive === true){
+                RCAQualitativeTree = JSON.stringify(this.Updatefiles);
+                RCAQuantitiveTree  = JSON.stringify(this.RCAUpdateQuantitivefiles),
+                RCAQualitativeEquipment = this.UpdateRecordList[0].RCAQualitativeEquipment;
+                RCAQuantitiveEquipment  = this.UpdateRecordList[0].RCAQuantitiveEquipment;;
+                RCAQualitativeFailureMode  = this.UpdateRecordList[0].RCAQualitativeFailureMode; 
+                RCAQuantitiveFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode;;
+            }else if(this.UpdateRCATypeQualititive === true ){
+                RCAQualitativeTree = JSON.stringify(this.Updatefiles);
+                RCAQuantitiveTree  = "None",
+                RCAQualitativeEquipment = this.UpdateRecordList[0].RCAQualitativeEquipment;
+                RCAQuantitiveEquipment  = "None";
+                RCAQualitativeFailureMode  = this.UpdateRecordList[0].RCAQualitativeFailureMode; 
+                RCAQuantitiveFailureMode = "None";
+            }else if(this.UpdateRCATypeQuantitive === true ){
+                RCAQualitativeTree = "None";
+                RCAQuantitiveTree  = JSON.stringify(this.RCAUpdateQuantitivefiles),
+                RCAQualitativeEquipment = "None";
+                RCAQuantitiveEquipment  = this.UpdateRecordList[0].RCAQuantitiveEquipment; 
+                RCAQualitativeFailureMode  = "None" ;
+                RCAQuantitiveFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode; 
+            }
             let obj = {
                 RCAID: this.UpdateRecordList[0].RCAID,
                 TagNumber: this.UpdateRecordList[0].TagNumber,
-                RCATree: JSON.stringify(this.Updatefiles),
                 RCALabel: this.UpdateRecordList[0].RCALabel,
                 RCAEquipment: this.ADDRCAMachineType,
-                RCAFailureMode: this.ADDRCAFailureMode
+                RCAFailureMode: this.ADDRCAFailureMode,
+                RCAQualitativeTree  : RCAQualitativeTree,
+                RCAQuantitiveTree :RCAQuantitiveTree,
+                RCAQualitativeEquipment :RCAQualitativeEquipment,
+                RCAQuantitiveEquipment :RCAQuantitiveEquipment,
+                RCAQualitativeFailureMode :RCAQualitativeFailureMode,
+                RCAQuantitiveFailureMode :RCAQuantitiveFailureMode
             }
             this.commonBL.PutData(this.RCAAPIName.RCAUpdateAPI, obj)
                 .subscribe(
@@ -684,9 +750,9 @@ export class RCAComponent {
                         q[f[3]] = JSON.stringify(abc2);
                         val[index].RCAFILE = q;
                         FC = FC + 1;
-                        if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
-                            this.SaveADDRCAFilesToDatabase();
-                        }
+                    }
+                    if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
+                        this.SaveADDRCAFilesToDatabase();
                     }
 
                 }
@@ -744,9 +810,9 @@ export class RCAComponent {
                                 q[ff[3]] = JSON.stringify(abc2);
                                 Data[index1].RCAFILE = q;
                                 FC = FC + 1;
-                                if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
-                                    this.SaveADDRCAFilesToDatabase();
-                                }
+                            }
+                            if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
+                                this.SaveADDRCAFilesToDatabase();
                             }
 
                         }
@@ -1027,6 +1093,31 @@ export class RCAComponent {
             this.finalRCATypeQuantitive = true;
         }else if(this.RCATypeQuantitive == false  ){
             this.finalRCATypeQuantitive = false;
+        }
+    }
+
+
+    UpdateRCATypeSelect(){
+        if(this.UpdateRCATypeQualititive == false && this.UpdateRCATypeQuantitive == false){
+            this.messageService.add({severity : 'warn', summary: 'warn', detail : 'You cannot unselect both'});
+            this.UpdateRCATypeQualititive = true;
+            this.changeDetectorRef.detectChanges();
+        }else if(this.UpdateRCATypeQuantitive == true){
+              if(this.RCAUpdateQuantitivefiles.length == 0){
+                this.RCAUpdateQuantitivefiles = [
+                    {
+                        id: this.andOrItemCount,
+                        label: 'Top Event',
+                        text: '',
+                        years: 0,
+                        hours: 0,
+                        expanded: true,
+                        ANDORLogic: true,
+                        children: [],
+                        nodeType: "TopEvent"
+                    }
+                ]
+              }
         }
     }
 

@@ -116,25 +116,24 @@ namespace DPM.Controllers.Prescriptive.RCA
             }
         }
 
-        //[HttpPut]
-        //[Route("RCATreeUpdate")]
-        //public async Task<IActionResult> PutOnlyTreeUpdate(RCAModel RCA)
-        //{
-        //    try
-        //    {
-        //        string userID = User.Claims.First(c => c.Type == "UserID").Value;
-        //        RCAModel Data = await _context.rCAModels.FirstOrDefaultAsync(a => a.RCAID == RCA.RCAID && a.UserId == userID);
-        //        Data.RCATree = RCA.RCATree;
-        //        _context.Entry(Data).State = EntityState.Modified;
-        //        await _context.SaveChangesAsync();
-        //        return Ok();
-        //    }
-        //    catch (Exception exe)
-        //    {
-
-        //        return BadRequest(exe.Message);
-        //    }
-        //}
+        [HttpPut]
+        [Route("RCATreeUpdate")]
+        public async Task<IActionResult> PutOnlyTreeUpdate(RCAModel RCA)
+        {
+            try
+            {
+                string userID = User.Claims.First(c => c.Type == "UserID").Value;
+                RCAModel Data = await _context.rCAModels.FirstOrDefaultAsync(a => a.RCAID == RCA.RCAID && a.UserId == userID);
+                Data.RCAQualitativeTree = RCA.RCAQualitativeTree;
+                _context.Entry(Data).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
 
         // DELETE api/<RCAAPIController>/5
         [HttpDelete]
