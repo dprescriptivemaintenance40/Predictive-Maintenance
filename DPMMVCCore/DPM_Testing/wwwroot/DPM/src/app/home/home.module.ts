@@ -14,6 +14,7 @@ import { EventEmitterService } from "./Services/event-emitter.service";
 import { ExcelFormatService } from "./Services/excel-format.service";
 import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
 import { CentrifugalPumpTrainComponent } from './Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component';
+import { PrescriptivePocComponent } from "./Prescriptive_poc/prescriptive-poc.component";
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { CentrifugalPumpTrainComponent } from './Pump/centrifugal-pump/centrifug
         CentrifugalPumpComponent,
         ReportComponent,
         RecycleBinComponent,
-        CentrifugalPumpTrainComponent
+        CentrifugalPumpTrainComponent,
+        PrescriptivePocComponent
     ],
     imports: [        
         HomeRoutingModule,       
