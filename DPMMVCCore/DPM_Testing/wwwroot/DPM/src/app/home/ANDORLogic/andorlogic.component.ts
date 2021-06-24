@@ -20,7 +20,8 @@ export class AndorlogicComponent {
             expanded: true,
             ANDORLogic: true,
             children: [],
-            nodeType: "TopEvent"
+            nodeType: "TopEvent",
+            level: 1
         }
     ];
     public FailureComponents: any[] = [];
@@ -40,6 +41,7 @@ export class AndorlogicComponent {
             ANDORLogic: true,
             years: 0,
             hours: 0,
+            level: event.node.level + 1
         }
         if (!event.node.ANDIcon && event.ANDIcon) {
             event.node.ANDIcon = event.ANDIcon;

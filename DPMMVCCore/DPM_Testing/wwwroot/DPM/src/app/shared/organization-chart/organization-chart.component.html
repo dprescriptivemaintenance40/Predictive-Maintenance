@@ -82,10 +82,10 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input [(ngModel)]="node.years" class="form-control" placeholder="Set Years" name="years" id="years">
+                                    <input (keypress)=AllowNumber($event) [(ngModel)]="node.years" class="form-control" placeholder="Set Years" name="years" id="years">
                                 </div>
                                 <div class="col-md-6">
-                                    <input [(ngModel)]="node.hours" class="form-control" placeholder="Set hours" name="hours" id="hours">
+                                    <input (keypress)=AllowNumber($event) [(ngModel)]="node.hours" class="form-control" placeholder="Set hours" name="hours" id="hours">
                                 </div>
                             </div>
                             <hr>
