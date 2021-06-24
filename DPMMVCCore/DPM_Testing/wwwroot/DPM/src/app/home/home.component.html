@@ -117,6 +117,27 @@
             </a>
             <div id="collapseSeven" class="collapse" aria-labelledby="headingEight">
                 <li>
+                    <a [routerLink]="['/Home/Prescriptive/List']" class="nav-link collapsed" aria-expanded="true">
+                        <span>Assets List</span>
+                    </a>
+                </li>
+            </div>
+            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight">
+                <li>
+                    <a [routerLink]="['/Home/Prescriptive/Configuration']" class="nav-link collapsed" aria-expanded="true">
+                        <span>Configuration</span>
+                    </a>
+                </li>
+            </div>
+            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight1">
+                <li>
+                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseEight1" aria-expanded="true" aria-controls="collapseEight1">
+                        <span>RCM</span>
+                    </a>
+                </li>
+            </div>
+            <div style="padding-left: 10px;" id="collapseEight1" class="collapse" aria-labelledby="headingEight">
+                <li>
                     <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
                         <span>FMEA</span>
                     </a>
@@ -126,13 +147,11 @@
 
             <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" [routerLink]="['/Home/Prescriptive/List']">Assets List</a>
-                    <a *ngIf="prescriptiveConfiguration" class="collapse-item" [routerLink]="['/Home/Prescriptive/Configuration']">Configuration</a>
                     <a class="collapse-item" [routerLink]="['/Home/Prescriptive/ADD']"> ADD</a>
                     <a class="collapse-item" [routerLink]="['/Home/Prescriptive/Display']"> Display</a>
                 </div>
             </div>
-            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight">
+            <div style="padding-left: 10px;" id="collapseEight1" class="collapse" aria-labelledby="headingEight">
                 <li>
                     <a [routerLink]="['/Home/Prescriptive/FCAAdd']" class="nav-link">
                         <span>FCA</span>
@@ -140,7 +159,7 @@
                 </li>
             </div>
 
-            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight">
+            <div style="padding-left: 10px;" id="collapseEight1" class="collapse" aria-labelledby="headingEight">
                 <li>
                     <a [routerLink]="['/Home/Prescriptive/MSSAdd']" class="nav-link">
                         <span>MSS</span>

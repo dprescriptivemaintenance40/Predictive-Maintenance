@@ -137,7 +137,10 @@
                 </td>
 
                 <div *ngIf="AttachmentOverlay" style="
-                                    position: absolute;
+                                    position: fixed; 
+                                    left: 50%; 
+                                    top: 30%;   
+                                    transform: translateX(-50%);
                                     z-index: 1;
                                     width: 20em;
                                     border: none;
@@ -171,7 +174,10 @@
                 </div>
 
                 <div *ngIf="RCAFileView" style="
-                            position: absolute;
+                            position: fixed; 
+                            left: 50%; 
+                            top: 30%;   
+                            transform: translateX(-50%);
                             z-index: 1;
                             width: 30em;
                             border: none;
@@ -229,7 +235,10 @@
                 </div>
 
                 <div *ngIf="RCAUpdateFileView" style="
-                        position: absolute;
+                        position: fixed; 
+                        left: 50%; 
+                        top: 30%;   
+                        transform: translateX(-50%);
                         z-index: 1;
                         width: 15em;
                         border: none;
@@ -263,7 +272,10 @@
 
 
                 <div *ngIf="RCAParentAttachment" style="
-                            position: absolute;
+                            position: fixed; 
+                            left: 50%; 
+                            top: 30%;   
+                            transform: translateX(-50%);
                             z-index: 1;
                             margin-left: -36px;
                             margin-top: 9px;
