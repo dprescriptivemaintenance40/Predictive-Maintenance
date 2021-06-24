@@ -15,31 +15,7 @@ import { PDFDocument } from 'pdf-lib';
 import domtoimage from 'dom-to-image';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
-export interface TreeNode<T = any> {
-    id?: number;
-    label?: string;
-    addTree?: boolean;
-    data?: T;
-    icon?: string;
-    expandedIcon?: any;
-    collapsedIcon?: any;
-    children?: TreeNode<T>[];
-    leaf?: boolean;
-    expanded?: boolean;
-    type?: string;
-    parent?: TreeNode<T>;
-    partialSelected?: boolean;
-    styleClass?: string;
-    draggable?: boolean;
-    droppable?: boolean;
-    selectable?: boolean;
-    key?: string;
-    text?:string;
-    years?: number;
-    hours?:number;
-    ANDORLogic?:boolean;
-    nodeType?:string;
-}
+import { TreeNode } from 'src/app/shared/organization-chart/tree.node';
 @Component({
     selector: 'app-rca',
     templateUrl: './rca.component.html',
@@ -120,7 +96,8 @@ export class RCAComponent {
             expanded: true,
             ANDORLogic: true,
             children: [],
-            nodeType: "TopEvent"
+            nodeType: "TopEvent",
+            level: 1
         }
     ];
     public FailureComponents: any[] = [];
@@ -1146,6 +1123,7 @@ export class RCAComponent {
             ANDORLogic: true,
             years: 0,
             hours: 0,
+            level: event.node.level + 1
         }
         if (!event.node.ANDIcon && event.ANDIcon) {
             event.node.ANDIcon = event.ANDIcon;
