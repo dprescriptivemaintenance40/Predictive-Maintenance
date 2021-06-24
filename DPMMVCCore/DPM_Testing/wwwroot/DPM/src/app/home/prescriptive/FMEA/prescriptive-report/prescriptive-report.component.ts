@@ -105,18 +105,19 @@ export class PrescriptiveReportComponent implements OnInit {
       var data = document.getElementById('contentToConvert');
       var pdfdata = html2canvas(data).then(canvas => {
         var imgData = canvas.toDataURL('image/png');
-        var imgWidth = 190;
-        var pageHeight = 280;
-        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var imgWidth = 180;
+        var pageHeight = 297;
+        // var imgHeight = canvas.height * imgWidth / canvas.width;
+        var imgHeight = 297;
         var heightLeft = imgHeight;
         var doc = new jsPDF('p', 'mm', "a4");
         var position = 0;
-        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 25);
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight*2 );
         heightLeft -= pageHeight;
         while (heightLeft >= 0) {
           position = heightLeft - imgHeight;
           doc.addPage();
-          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight + 25);
+          doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight*2 );
           heightLeft -= pageHeight;
         }
         const arrbf = doc.output("arraybuffer");
