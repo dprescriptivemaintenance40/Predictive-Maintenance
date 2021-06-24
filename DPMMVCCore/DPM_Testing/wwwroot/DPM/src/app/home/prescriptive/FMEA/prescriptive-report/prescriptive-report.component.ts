@@ -17,7 +17,7 @@ import domtoimage from 'dom-to-image';
 })
 export class PrescriptiveReportComponent implements OnInit {
   @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
-  @ViewChild('image') image;
+  @ViewChild('image') image
   public FileUrl: any;
   public data: any = []
   public EditdbPathURL: SafeUrl;
@@ -51,6 +51,8 @@ export class PrescriptiveReportComponent implements OnInit {
   public NewTree: any;
   public FCAPatternEnable: boolean = false
   public MSSPatternEnable: boolean = false
+  public FailuerModecounts: any = [];
+
   constructor(public datepipe: DatePipe,
     private change: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
@@ -239,6 +241,24 @@ export class PrescriptiveReportComponent implements OnInit {
       }
         this.NewTree = [] 
         this.NewTree = JSON.parse(this.data.FMWithConsequenceTree)
+
+        var FailuerModecount  = this.NewTree[0].children[0].children[0].children.length
+        var TotalCount = FailuerModecount*3
+       
+        var indexFailuerMode : number = 0
+        for (let index = 0; index < TotalCount; index++) {
+          var id = "image"
+          var i = index + 1
+          this.FailuerModecounts.push(`${id}${i}`)
+        }
+        // this.NewTree[0].children[0].children[0].children.forEach((res: any) => {
+        //   if(this.FailuerModecounts[indexFailuerMode] !== undefined){
+        //     res.FailuerModes = this.FailuerModecounts[indexFailuerMode];
+        //   }
+        //   indexFailuerMode = indexFailuerMode + 1;
+        // })
+
+
         this.NewTree[0].children[0].children[0].FMEA[0].children[0].children[0].children.forEach((res: any) => {
           res.labels = `${"FMEA for "}${""}${res.data.name}`
           for (let index = 0; index < this.attachmentRemark.length; index++) {
@@ -271,15 +291,19 @@ export class PrescriptiveReportComponent implements OnInit {
             var i = index + 1
             patternIds1.push(`${id}${i}`)
           }
-          var a = patternIds1
+          var a = patternIds1;
+          var indexRCM : number = 0
           this.NewTree[0].children[0].children[0].FCA[0].children[0].children[0].children.forEach((res: any) => {
             res.labels = `${"FCA for "}${""}${res.data.name}`
-            for (let index = 0; index < this.attachmentRemark.length; index++) {
-              if (res.data.name == this.attachmentRemark[index].FunctionMode) {
-                res.Pattern = patternIds1[index];
-              }
+            // for (let index = 0; index < this.attachmentRemark.length; index++) {
+            //   if (res.data.name == this.attachmentRemark[index].FunctionMode) {
+            //     res.Pattern = patternIds1[index];
+            //   }
+            // }
+            if(patternIds1[indexRCM] !== undefined){
+              res.Pattern = patternIds1[indexRCM];
             }
-     
+            indexRCM = indexRCM + 1;
             this.AnnexuresTreeList.push([res]);
             this.changeDetectorRef.detectChanges();
             for (let index = 0; index < this.attachmentRemark.length; index++) {
@@ -656,7 +680,7 @@ printMSSPage(){
       this.hide = false;
       this.change.detectChanges();
   }
-  public DownloadRCMPDF() {
+  public DownloadRCMPDF1() {
       this.hide = true;
       this.change.detectChanges();
       this.commonLoadingDirective.showLoading(true, 'Downloading....');
@@ -685,6 +709,70 @@ printMSSPage(){
       this.hide = false;
   }
 
+  async mergeRCMPdfs1(pdfsToMerges: ArrayBuffer) {
+    const mergedPdf = await PDFDocument.create();
+    const pdf = await PDFDocument.load(pdfsToMerges);
+    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    copiedPages.forEach((page) => {
+      mergedPdf.addPage(page);
+    });
+
+    let pdfsToMerge = [];
+    if (this.PDFURL.length > 0) {
+      this.PDFURL.forEach(item => {
+        pdfsToMerge.push(`${this.BrowserURl}${item.Link}`);
+      });
+    }
+    for (const pdfCopyDoc of pdfsToMerge) {
+      const pdfBytes = await fetch(pdfCopyDoc).then(res => res.arrayBuffer())
+      const pdf = await PDFDocument.load(pdfBytes);
+      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      copiedPages.forEach((page) => {
+        mergedPdf.addPage(page);
+      });
+    }
+    const savedpdf = await mergedPdf.save();
+    this.saveRCMByteArray("RCM Analysis Report", savedpdf);
+    this.hide = false;
+    this.change.detectChanges();
+  }
+
+  saveRCMByteArray1(reportName, byte) {
+    var blob = new Blob([byte], { type: "application/pdf" });
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    var fileName = reportName;
+    link.download = fileName;
+    link.click();
+  };
+
+  public DownloadRCMPDF() {
+    const doc = new jsPDF();
+    const specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    const pdfTable = this.pdfTable.nativeElement;
+    doc.fromHTML(pdfTable.innerHTML, 15, 15, {
+      width: 190,
+      'elementHandlers': specialElementHandlers
+    });
+    var imageLink: any
+    let imageData = document.getElementById('image');
+    domtoimage.toPng(this.image.nativeElement).then(res => {
+        imageLink = res;
+        doc.addPage('a4', 'p');
+        const imgProps = doc.getImageProperties(imageLink);
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        doc.addImage(imageLink, 'PNG', 2, 2, pdfWidth , pdfHeight/2 );
+        const arrbf = doc.output("arraybuffer");
+        doc.addPage();
+        this.mergeRCMPdfs(arrbf);
+        this.commonLoadingDirective.showLoading(false, 'Downloading....');
+    })
+  }
   async mergeRCMPdfs(pdfsToMerges: ArrayBuffer) {
     const mergedPdf = await PDFDocument.create();
     const pdf = await PDFDocument.load(pdfsToMerges);
@@ -722,30 +810,4 @@ printMSSPage(){
     link.click();
   };
 
-  // public DownloadRCMPDF() {
-  //   const doc = new jsPDF();
-  //   const specialElementHandlers = {
-  //     '#editor': function (element, renderer) {
-  //       return true;
-  //     }
-  //   };
-  //   const pdfTable = this.pdfTable.nativeElement;
-  //   doc.fromHTML(pdfTable.innerHTML, 15, 15, {
-  //     width: 190,
-  //     'elementHandlers': specialElementHandlers
-  //   });
-  //   var imageLink: any
-  //   let imageData = document.getElementById('image');
-  //   domtoimage.toPng(this.image.nativeElement).then(res => {
-  //       imageLink = res;
-  //       // doc.addPage('a4', 'l');
-  //       doc.addPage('a4', 'l');
-  //       const imgProps = doc.getImageProperties(imageLink);
-  //       const pdfWidth = doc.internal.pageSize.getWidth();
-  //       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-  //       doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
-  //       doc.save('RCA Report');
-  //       this.commonLoadingDirective.showLoading(false, 'Downloading....');
-  //   })
-  // }
 }
