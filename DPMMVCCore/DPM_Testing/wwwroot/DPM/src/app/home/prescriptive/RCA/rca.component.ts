@@ -87,6 +87,7 @@ export class RCAComponent {
     public finalRCATypeQuantitive : boolean = false;
     public andOrItemCount?: number = 100;
     public andOrLogicTreeFailureMode : string = "";
+    public displayQuantitativeTree : any =[]
     public ANDORLOGICTREE: TreeNode[] = [
         {
             id: this.andOrItemCount,
@@ -674,8 +675,14 @@ export class RCAComponent {
 
     RCATreeDisplay(p) {
         this.RCADisplayLabel = p.RCALabel
-        this.RCADisplayFile = JSON.parse(p.RCATree)
-        this.TraverseNestedJson(this.RCADisplayFile, 'disable')
+        if(p.RCAQualitativeTree !== undefined){
+            this.RCADisplayFile = JSON.parse(p.RCAQualitativeTree);
+            this.TraverseNestedJson(this.RCADisplayFile, 'disable');
+        }
+        if(p.RCAQuantitiveTree !== undefined){
+            this.displayQuantitativeTree = JSON.parse(p.RCAQuantitiveTree);
+            // this.TraverseNestedJson(this.RCADisplayFile, 'disable');
+        }
     }
 
     CloseRCATreeDisplay() {
