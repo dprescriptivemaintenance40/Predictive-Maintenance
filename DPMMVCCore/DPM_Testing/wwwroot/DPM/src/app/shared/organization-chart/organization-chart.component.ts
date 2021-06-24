@@ -352,6 +352,7 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                     this.node.hours = failureMode['Repair (manhours) Mean'];
                     await this.familyTree(this.chart.value, this.node.id);
                     this.cd.detectChanges();
+                    this.chart.FailureMode.emit(failureMode);
                 }
             });
     }
@@ -552,6 +553,8 @@ export class OrganizationChart implements AfterContentInit {
     @Output() DeleteNode: EventEmitter<any> = new EventEmitter();
 
     @Output() Library: EventEmitter<any> = new EventEmitter();
+
+    @Output() FailureMode: EventEmitter<any> = new EventEmitter();
 
     @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 

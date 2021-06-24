@@ -31,9 +31,9 @@
                                     <colgroup>
                                         <col style="width:5em;">
                                         <col style="width:9em;">
-                                        <col style="width:9em;">
                                         <col style="width:14em;">
                                         <col style="width:9em;">
+                                        <col style="width:15em;">
                                         <col style="width:15em;">
                                         <col style="width:9em;">
                                     </colgroup>
@@ -41,22 +41,22 @@
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Sr.No</th>
-                                        <th>RCA Asset</th>
                                         <th>RCA Label</th>
                                         <th>RCA code</th>
                                         <th>Tag No.</th>
-                                        <th>Failure Mode</th>
+                                        <th> Qualitative Failure Mode</th>
+                                        <th> Quantitative Failure Mode</th>
                                         <th>Action</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                                     <tr>
                                         <td>{{rowIndex + 1}}</td>
-                                        <td>{{p.RCAEquipment}}</td>
                                         <td>{{p.RCALabel}}</td>
                                         <td>{{p.RCACode}}</td>
                                         <td>{{p.TagNumber}}</td>
-                                        <td>{{p.RCAFailureMode}}</td>
+                                        <td>{{p.RCAQualitativeFailureMode}}</td>
+                                        <td>{{p.RCAQuantitiveFailureMode}}</td>
                                         <td>
                                             <a (click)="RCAReport(p)" data-toggle="modal" data-target="#rcaReport" title="Report for {{p.RCALabel}}" ><i class="fa fa-file"
                                                     aria-hidden="true"></i></a>&nbsp;&nbsp;
@@ -103,13 +103,13 @@
                 <div class="form-check">
                     <input [(ngModel)]="RCATypeQualititive" (change)="RCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Qualitative" checked>
                     <label class="form-check-label" for="Qualitative">
-                        Qualititive
+                        Qualitative
                     </label>
                   </div>
                   <div class="form-check">
                     <input [(ngModel)]="RCATypeQuantitive" (change)="RCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Quantitive">
                     <label class="form-check-label" for="Quantitive">
-                        Quantitive
+                        Quantitative
                     </label>
                   </div>
             </div>
@@ -126,7 +126,7 @@
             <div *ngIf="RCATypeQuantitive === true" id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%; padding-bottom: 20em;">
                 <p-card>
                     <button (click)="ClearRCAQuantiveTree()" class="btn btn-dark" pTooltip="Clear Quantitive tree data" tooltipPosition="top">clear</button>               
-                    <p-organizationChart [value]="ANDORLOGICTREE" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
+                    <p-organizationChart [value]="ANDORLOGICTREE" (FailureMode)="AndOrLogicTreeFailureMode($event)" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
                     </p-organizationChart>
                 </p-card>
             </div>
@@ -143,9 +143,18 @@
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Label</label>
-                            <select class="form-select" [(ngModel)]="UpdateSelectedLabel" class="form-control">
+                            <select class="form-select" (change)="UpdateLabeselect()" [(ngModel)]="UpdateSelectedLabel" class="form-control">
                                 <option value="">Choose..</option>
-                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option>
+                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL.RCALabel}}</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <label style=" margin-right: 12px;">Type</label>
+                            <select class="form-select" [(ngModel)]="UpdateRCATypeSelected" class="form-control">
+                                <option value="">Choose..</option>
+                                <option *ngFor="let EL of UpdateRCATypeList" [ngValue]="EL">{{EL}}</option>
                             </select>
                         </div>
                     </li>
@@ -157,7 +166,7 @@
             <div [hidden]="!UpdateTreeshow" style="overflow: scroll;">
                 <div style="margin: 20px; border: 1px solid;">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" style="width: 31em;">
+                        <li *ngIf="UpdateRCATypeQualititive" class="list-group-item" style="width: 31em;">
                             <div class="input-group mb-3">
                                 <label style=" margin-right: 12px;">Asset</label>
                                 <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
@@ -166,7 +175,7 @@
                                 </select>
                             </div>
                         </li>
-                        <li class="list-group-item">
+                        <li  *ngIf="UpdateRCATypeQualititive" class="list-group-item">
                             <div class="input-group mb-3" style="width: 29em;">
                                 <label style=" margin-right: 12px;">Failure Mode</label>
                                 <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
@@ -176,7 +185,10 @@
                                 </select>
                             </div>
                         </li>
-                        <li class="list-group-item">
+                        <li *ngIf="UpdateRCATypeQuantitive" class="list-group-item" style="width: 31em;">
+                            Quantitative Failure Mode : {{andOrLogicTreeFailureMode}}
+                        </li>
+                        <!-- <li class="list-group-item">
                             <div class="input-group mb-3" style="width: 29em;">
                                 <div class="form-check">
                                     <input [(ngModel)]="UpdateRCATypeQualititive" (change)="UpdateRCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Qualitative">
@@ -191,11 +203,11 @@
                                     </label>
                                   </div>
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
 
-                <div class="classname" id="scene1" #scene1>
+                <div *ngIf="UpdateRCATypeQualititive" class="classname" id="scene1" #scene1>
                     <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single"
                         [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)"
                         (uploadRCAAttachment)="uploadRCAAttachment($event)"  (RCAUpdateDeleteFromList)="RCAUpdateDeleteFromList($event)"
@@ -204,7 +216,7 @@
                 </div>
                 <div *ngIf="UpdateRCATypeQuantitive" id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%; padding-bottom: 20em;">
                     <p-card>
-                        <p-organizationChart [value]="RCAUpdateQuantitivefiles" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
+                        <p-organizationChart [value]="RCAUpdateQuantitivefiles" (AddNode)="onAddNode($event)" (FailureMode)="AndOrLogicTreeFailureMode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
                         </p-organizationChart>
                     </p-card>
                 </div>

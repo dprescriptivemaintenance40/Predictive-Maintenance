@@ -42,7 +42,7 @@ export class RCAComponent {
     public SelectBoxEnabled: boolean = true
     public SelectUpdateBoxEnabled: boolean = true
     public UpdateSelectedTagNumber: string = ""
-    public UpdateSelectedLabel: string = ""
+    public UpdateSelectedLabel: any = []
     public RCAListRecords: any = [];
     public UpdateTagNumberList: any = [];
     public UpdateRecordList: any = [];
@@ -86,6 +86,7 @@ export class RCAComponent {
     public finalRCATypeQualititive : boolean = false;
     public finalRCATypeQuantitive : boolean = false;
     public andOrItemCount?: number = 100;
+    public andOrLogicTreeFailureMode : string = "";
     public ANDORLOGICTREE: TreeNode[] = [
         {
             id: this.andOrItemCount,
@@ -105,6 +106,8 @@ export class RCAComponent {
     public FailureModeNamesList: any[] = [];
     public RCAUpdateUpload: any;
     public RCAUpdateUploadData: any;
+    public UpdateRCATypeList : any;
+    public UpdateRCATypeSelected: string = "";
 
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
@@ -175,7 +178,7 @@ export class RCAComponent {
                     this.UpdateTagNumberList = []
                     this.RCAListRecords = res
                     this.RCAListRecords.forEach(element => {
-                        this.UpdateTagNumberList.push(element.RCALabel)
+                        this.UpdateTagNumberList.push(element)
                     });
                 }, err => { console.log(err.error) }
             )
@@ -335,9 +338,9 @@ export class RCAComponent {
             RCAQualitativeTree = JSON.stringify(this.files);
             RCAQuantitiveTree  = JSON.stringify(this.ANDORLOGICTREE),
             RCAQualitativeEquipment = this.ADDRCAMachineType;
-            RCAQuantitiveEquipment  = this.ADDRCAMachineType;
+            RCAQuantitiveEquipment  = "Centrifugal Pump";
             RCAQualitativeFailureMode  = this.ADDRCAFailureMode ;
-            RCAQuantitiveFailureMode = this.ADDRCAFailureMode;
+            RCAQuantitiveFailureMode = this.andOrLogicTreeFailureMode;
         }else if(this.RCATypeQualititive === true ){
             RCAQualitativeTree = JSON.stringify(this.files);
             RCAQuantitiveTree  = "None",
@@ -349,9 +352,9 @@ export class RCAComponent {
             RCAQualitativeTree = "None";
             RCAQuantitiveTree  = JSON.stringify(this.ANDORLOGICTREE),
             RCAQualitativeEquipment = "None";
-            RCAQuantitiveEquipment  = this.ADDRCAMachineType;
+            RCAQuantitiveEquipment  = "Centrifugal Pump";
             RCAQualitativeFailureMode  = "None" ;
-            RCAQuantitiveFailureMode = this.ADDRCAFailureMode;
+            RCAQuantitiveFailureMode = this.andOrLogicTreeFailureMode;
         }
         let RCAOBJ = {
             RCAID: 0,
@@ -447,24 +450,32 @@ export class RCAComponent {
     }
 
     UpdateTagNumberSelect() {
-        if (this.UpdateSelectedLabel.length > 0) {
+        if (this.UpdateSelectedLabel.RCACode !== '' && this.UpdateRCATypeSelected !== "") {
             this.UpdateRCATypeQualititive = false;
             this.UpdateRCATypeQuantitive = false;
             this.RCAListRecords.forEach(element => {
-                if (element.RCALabel == this.UpdateSelectedLabel) {
+                if (element.RCACode == this.UpdateSelectedLabel.RCACode) {
                     this.UpdateRecordList = [];
                     this.Updatefiles = [];
                     this.RCAUpdateQuantitivefiles = [];
-                    if(element.RCAQualitativeTree !== 'None'){
-                        this.Updatefiles = JSON.parse(element.RCAQualitativeTree);
-                        this.TraverseNestedJson(this.Updatefiles, 'update')
-                        this.UpdateRCATypeQualititive = true;
+                    this.UpdateRCATypeQualititive = false;
+                    this.UpdateRCATypeQuantitive = false;
+                    this.andOrLogicTreeFailureMode = "";
+                    this.UpdateRCADataForSaveAuth = [];
+                    if(this.UpdateRCATypeSelected === 'Qualitative'){
+                        if(element.RCAQualitativeTree !== 'None'){
+                            this.Updatefiles = JSON.parse(element.RCAQualitativeTree);
+                            this.UpdateRCADataForSaveAuth = JSON.parse(this.Updatefiles[0].update);
+                            this.TraverseNestedJson(this.Updatefiles, 'update')
+                            this.UpdateRCATypeQualititive = true;
+                        }
+                    }else {
+                        if(element.RCAQuantitiveTree !== 'None'){
+                            this.RCAUpdateQuantitivefiles = JSON.parse(element.RCAQuantitiveTree);
+                            this.UpdateRCATypeQuantitive = true;
+                            this.andOrLogicTreeFailureMode = element.RCAQuantitiveFailureMode
+                        }
                     }
-                    if(element.RCAQuantitiveTree !== 'None'){
-                        this.RCAUpdateQuantitivefiles = JSON.parse(element.RCAQuantitiveTree);
-                        this.UpdateRCATypeQuantitive = true;
-                    }
-                    this.UpdateRCADataForSaveAuth = JSON.parse(this.Updatefiles[0].update);
                     this.UpdateRecordList.push(element)
                     this.ADDRCAFailureMode = element.RCAQualitativeFailureMode;
                     this.ADDRCAMachineType = element.RCAQualitativeEquipment;
@@ -535,26 +546,19 @@ export class RCAComponent {
             var RCAQuantitiveEquipment :string = "";
             var RCAQualitativeFailureMode :string = "";
             var RCAQuantitiveFailureMode :string = "";
-            if(this.UpdateRCATypeQualititive === true && this.UpdateRCATypeQuantitive === true){
+            if(this.UpdateRCATypeQualititive === true ){
                 RCAQualitativeTree = JSON.stringify(this.Updatefiles);
-                RCAQuantitiveTree  = JSON.stringify(this.RCAUpdateQuantitivefiles),
+                RCAQuantitiveTree  = this.UpdateSelectedLabel.RCAQuantitiveTree;
                 RCAQualitativeEquipment = this.UpdateRecordList[0].RCAQualitativeEquipment;
-                RCAQuantitiveEquipment  = this.UpdateRecordList[0].RCAQuantitiveEquipment;
+                RCAQuantitiveEquipment  = this.UpdateSelectedLabel.RCAQuantitiveEquipment;
                 RCAQualitativeFailureMode  = this.UpdateRecordList[0].RCAQualitativeFailureMode; 
-                RCAQuantitiveFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode;
-            }else if(this.UpdateRCATypeQualititive === true ){
-                RCAQualitativeTree = JSON.stringify(this.Updatefiles);
-                RCAQuantitiveTree  = "None",
-                RCAQualitativeEquipment = this.UpdateRecordList[0].RCAQualitativeEquipment;
-                RCAQuantitiveEquipment  = "None";
-                RCAQualitativeFailureMode  = this.UpdateRecordList[0].RCAQualitativeFailureMode; 
-                RCAQuantitiveFailureMode = "None";
+                RCAQuantitiveFailureMode = this.UpdateSelectedLabel.RCAQuantitiveFailureMode;
             }else if(this.UpdateRCATypeQuantitive === true ){
-                RCAQualitativeTree = "None";
+                RCAQualitativeTree = this.UpdateSelectedLabel.RCAQualitativeTree;
                 RCAQuantitiveTree  = JSON.stringify(this.RCAUpdateQuantitivefiles),
-                RCAQualitativeEquipment = "None";
+                RCAQualitativeEquipment = this.UpdateSelectedLabel.RCAQualitativeEquipment;
                 RCAQuantitiveEquipment  = this.UpdateRecordList[0].RCAQuantitiveEquipment; 
-                RCAQualitativeFailureMode  = "None" ;
+                RCAQualitativeFailureMode  = this.andOrLogicTreeFailureMode;
                 RCAQuantitiveFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode; 
             }
             let obj = {
@@ -576,7 +580,7 @@ export class RCAComponent {
                         this.ADDRCAFailureMode = "";
                         this.UpdateTreeshow = false;
                         this.SelectUpdateBoxEnabled = true;
-                        this.UpdateSelectedLabel = "";
+                        this.UpdateSelectedLabel = [];
                         this.Updatefiles = [];
                         this.RCAUpdateQuantitivefiles = [];
                         this.UpdateRCATypeQualititive = false;
@@ -1089,31 +1093,6 @@ export class RCAComponent {
         }
     }
 
-
-    UpdateRCATypeSelect(){
-        if(this.UpdateRCATypeQualititive == false && this.UpdateRCATypeQuantitive == false){
-            this.messageService.add({severity : 'warn', summary: 'warn', detail : 'You cannot unselect both'});
-            this.UpdateRCATypeQualititive = true;
-            this.changeDetectorRef.detectChanges();
-        }else if(this.UpdateRCATypeQuantitive == true){
-              if(this.RCAUpdateQuantitivefiles.length == 0){
-                this.RCAUpdateQuantitivefiles = [
-                    {
-                        id: this.andOrItemCount,
-                        label: 'Top Event',
-                        text: '',
-                        years: 0,
-                        hours: 0,
-                        expanded: true,
-                        ANDORLogic: true,
-                        children: [],
-                        nodeType: "TopEvent"
-                    }
-                ]
-              }
-        }
-    }
-
     onAddNode(event: any) {
         this.andOrItemCount++;
         let obj = {
@@ -1333,4 +1312,21 @@ export class RCAComponent {
         ]
         this.andOrItemCount = 100;
     }
+
+    UpdateLabeselect(){
+        this.UpdateSelectedLabel;
+        this.UpdateRCATypeList = [];
+        if(this.UpdateSelectedLabel.RCAQualitativeTree != 'None'){
+            this.UpdateRCATypeList.push('Qualitative');
+        }
+        if(this.UpdateSelectedLabel.RCAQuantitiveTree != 'None'){
+            this.UpdateRCATypeList.push('Quantitative');
+        }
+    }
+
+
+    AndOrLogicTreeFailureMode(event){
+     this.andOrLogicTreeFailureMode =  event['Failure mode']
+    }
+
 }
