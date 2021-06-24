@@ -387,11 +387,11 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         var forFn = async (arr, id) => {
             for (var i = 0; i < arr.length; i++) {
                 var item = arr[i];
-                if (i === 0)
-                    level++;
-                arr[i].level = level;
+                // if (i === 0)
+                //     level++;
+                // arr[i].level = level;
                 if (item.id === id) {
-                    findLevel = level - 1;
+                    findLevel = arr[i].level - 1;
                     return await this.findLevel(arr1, arr, findLevel);
                 } else {
                     if (item.children) {
@@ -409,24 +409,25 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         var forFn = async (arr, level) => {
             for (var i = 0; i < arr.length; i++) {
                 var item = arr[i];
+                let len = 1;
+                len += i;
                 if (item.level === level) {
-                    // calculation
-                    arr[i].years = 0;
-                    arr[i].hours = 0;
-                    arr[i].Availability = 0;
+                    // calculation                    
                     var years = 0;
                     var hours = 0;
                     let lamb = 0;
                     let tau = 0;
                     let tauPOW = 0;
-                    let eventRepeat = 0;
                     if (item.nodeType === 'TopEvent') {
+                        arr[i].years = 0;
+                        arr[i].hours = 0;
+                        arr[i].Availability = 0;
                         years = 0;
                         hours = 0;
                         lamb = 1;
                         tau = 0;
                         tauPOW = 0;
-                        basicEvntArr.forEach(basic => {
+                        item.children.forEach(basic => {
                             if (item.ANDIcon) {
                                 lamb *= parseFloat(basic.years);
                                 tau += parseFloat(basic.hours);
@@ -436,19 +437,26 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                                 tau += (parseFloat(basic.years) * parseFloat(basic.hours))
                             }
                         });
-                        years = parseFloat((lamb * (tau / 8766)).toFixed(2));
-                        hours = parseFloat((tauPOW / (2 / tau)).toFixed(2));
+                        if (item.ANDIcon) {
+                            years = parseFloat((lamb * (tau / 8766)).toFixed(3));
+                            hours = parseFloat((tauPOW / (2 * tau)).toFixed(3));
+                        } else if (item.ORIcon) {
+                            years = lamb;
+                            hours = parseFloat(((tau) / (years)).toFixed(3));
+                        }
                         arr[i].years = years;
                         arr[i].hours = hours;
                         arr[i].Availability = parseFloat(((1 / (1 + (arr[i].hours / 8766) * arr[i].years)) * 100).toFixed(3));
                         return arr1;
                     } else if (item.nodeType === 'Event') {
-                        eventRepeat++;
+                        arr[i].years = 0;
+                        arr[i].hours = 0;
+                        arr[i].Availability = 0;
                         years = 0;
                         hours = 0;
                         lamb = 0;
                         tau = 0;
-                        basicEvntArr.forEach(basic => {
+                        item.children.forEach(basic => {
                             if (item.ANDIcon) {
                                 lamb *= parseFloat(basic.years);
                                 tau += parseFloat(basic.hours);
@@ -458,15 +466,21 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                                 tau += (parseFloat(basic.years) * parseFloat(basic.hours))
                             }
                         });
-                        years = lamb;
-                        hours = parseFloat(((tau) / (years)).toFixed(2));
+                        if (item.ANDIcon) {
+                            years = parseFloat((lamb * (tau / 8766)).toFixed(3));
+                            hours = parseFloat((tauPOW / (2 * tau)).toFixed(3));
+                        } else if (item.ORIcon) {
+                            years = lamb;
+                            hours = parseFloat(((tau) / (years)).toFixed(3));
+                        }
                         arr[i].years = years;
                         arr[i].hours = hours;
                         arr[i].Availability = parseFloat(((1 / (1 + (arr[i].hours / 8766) * arr[i].years)) * 100).toFixed(3));
-                        let findLevel = item.level - 1;
-                        await this.findLevel(arr1, arr, findLevel);
+                        if (arr.length === len) {
+                            let findLevel = item.level - 1;
+                            await this.findLevel(arr1, arr, findLevel);
+                        }
                     }
-                    break;
                 } else {
                     if (item.children) {
                         forFn(item.children, level);
@@ -476,6 +490,14 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         }
         forFn(arr1, level);
         return await temp;
+    }
+
+    public AllowNumber(event) {
+        const pattern = /[0-9.]/;
+        let inputChar = String.fromCharCode(event.charCode);
+        if (!pattern.test(inputChar)) {
+            event.preventDefault();
+        }
     }
 
     ngOnDestroy() {
