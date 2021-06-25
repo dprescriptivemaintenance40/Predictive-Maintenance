@@ -474,8 +474,8 @@
     </p-card>
 </div><br><br>
 
-<div *ngIf="ConsequencesTree" class="col-md-12 stepsdemo-content shadow">
-    <p-card>
+<div *ngIf="ConsequencesTree" class="col-md-12 stepsdemo-content shadow" style="overflow: scroll;">
+    <!-- <p-card> -->
         <span *ngIf="ConsequenceTreeADDConsequenceEnable">
             <small class="form-text text-muted"><h4>Your {{LSFailureMode}} Tree</h4></small>
         </span>
@@ -496,7 +496,7 @@
                 {{node.label}}
             </ng-template>
         </p-organizationChart>
-    </p-card>
+    <!-- </p-card> -->
 </div>
 
 

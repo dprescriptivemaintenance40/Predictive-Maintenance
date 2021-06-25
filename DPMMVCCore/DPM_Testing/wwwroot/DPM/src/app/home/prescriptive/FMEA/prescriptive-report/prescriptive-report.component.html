@@ -46,19 +46,19 @@
             tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
     </div>
     <div style="margin: 20px;" id="contentToConvert">
-        <div class="page">
+        <div class="page" id="pdfTable2" #pdfTable2>
             <div class="text-center">
                 <h4><b>{{ReportRCMType}} Report Analysis </b></h4>
             </div>
-            <div class="sidebar-brand-icon col-sm-2">
+            <!-- <div class="sidebar-brand-icon col-sm-2">
 
                 <div class="image-container">
                     <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                 </div>
 
-            </div>
+            </div> -->
 
-            <div id="div1" style="margin:10px;">
+            <div>
                 <h5><b>Executive Summary </b></h5>
                 <p>
                     This document provides guidance and insight into the analysis process for {{ReportRCMType}} .
@@ -116,7 +116,7 @@
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeCurrentandfuture"
                     placeholder="Type Current and future actions *"></textarea>
             </div>
-            <div id="div2" style="margin-top: 10px;">
+            <div  style="margin-top: 10px;">
                 <h5><b>Conclusion </b></h5>
                 <p>
                     The objective of the task was to analyze the current condition of {{data.EquipmentType}} with Tag No
@@ -132,7 +132,7 @@
                     elaborated. The team came up with some current actions and proposed future recommendations for
                     implementation.
                 </p>
-                <div id="div3" style="page-break-after: always;"></div>
+                <div  style="page-break-after: always;"></div>
                 <span>
                     <h6><b>Chair Person: {{ChairPerson}} </b></h6>
                 </span><br>
@@ -140,7 +140,9 @@
                     <h6><b>Participants: {{Participants}} </b></h6>
                 </span>
             </div>
-            <div id="div3" style="page-break-before: always;">
+        </div>
+        <div id="image2" #image2 >
+            <div  style="page-break-before: always;">
                 <p> Block diagrams.</p>
                 <p-organizationChart [value]="data1" selectionMode="single" styleClass="company">
                     <ng-template let-node pTemplate="person">
@@ -154,9 +156,9 @@
                     </ng-template>
                 </p-organizationChart>
             </div>
-            <div id="div4" style="page-break-before: always;">
+            <div  style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
-                    <div style="overflow: scroll;">
+                    <div style="overflow: scroll;overflow: hidden;">
                         <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                         <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode"
                             styleClass="company">
@@ -237,18 +239,16 @@
             tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
     </div>
     <div style="margin:20px;" id="MSScontentToConvert">
-        <div class="page">
+        <div class="page" id="pdfTable1" #pdfTable1>
             <div class="text-center">
                 <h4><b>{{ReportRCMType}} Report Analysis </b></h4>
             </div>
-            <div class="sidebar-brand-icon col-sm-2">
-
+            <!-- <div class="sidebar-brand-icon col-sm-2">
                 <div class="image-container">
-                    <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                    <img style="width:15px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                 </div>
-
-            </div>
-            <div id="div1" style="margin:20px;">
+            </div> -->
+            <div>
                 <h5><b>Executive Summary </b></h5>
                 <p>
                     This report analysis is based on variables and effective criteria in selecting an adequate
@@ -261,15 +261,15 @@
                 <p>
                     The maintenance strategies are commonly considered for the analysis are:
                 </p>
-                <p>
-                    • Preventive maintenance (PM): This approach is based on component reliability characteristics.This
-                    data makes it possible to analyze the behavior of the element and allows the maintenance engineer to
-                    define a periodic maintenance program for the machine.<br><br>
-                    • Predictive maintenance (PDM): The acquired controlled parameters data are analyzed to find a
-                    possible temporal trend. This makes it possible to predict when the controlled quantity value will
-                    reach the threshold values.<br><br>
-                    • Corrective maintenance (CM): Maintenance is not implemented until failure occurs.
-                </p>
+                    <ul>
+                        <li> Preventive maintenance (PM): This approach is based on component reliability characteristics.This
+                            data makes it possible to analyze the behavior of the element and allows the maintenance engineer to
+                            define a periodic maintenance program for the machine.</li>
+                        <li>Predictive maintenance (PDM): The acquired controlled parameters data are analyzed to find a
+                            possible temporal trend. This makes it possible to predict when the controlled quantity value will
+                            reach the threshold values.</li>
+                        <li> Corrective maintenance (CM): Maintenance is not implemented until failure occurs.</li>
+                    </ul> 
                 <p>
                     A brief introduction of the system data and considerations are briefly described. MSS inputs
                     outlines the current actions the team had to proceed.
@@ -299,7 +299,7 @@
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="ActionRecommendation"
                     placeholder="Actions and recommendations  *"></textarea>
             </div>
-            <div id="div2" style="margin:20px;">
+            <div>
                 <h5><b>Conclusion </b></h5>
                 <p>
                     In this study, MSS approach method has been provided for deciding best maintenance strategy. Three
@@ -318,7 +318,9 @@
                     <h6><b>Participants: {{Participants}} </b></h6>
                 </span>
             </div>
-            <div id="div3" style="page-break-before: always;">
+        </div>
+            <div id="image1" #image1>
+            <div  style="page-break-before: always;">
                 <h5><b>
                         <p> Block diagrams.</p>
                     </b></h5>
@@ -334,8 +336,8 @@
                     </ng-template>
                 </p-organizationChart>
             </div>
-            <div id="div4" style="page-break-before: always;">
-                <div *ngFor="let tree of AnnexuresTreeList">
+            <div style="page-break-before: always;">
+                <div id="image1" #image1 *ngFor="let tree of AnnexuresTreeList">
                     <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                     <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode"
                         styleClass="company">
@@ -349,6 +351,7 @@
                             {{node.label}}
                         </ng-template>
                     </p-organizationChart>
+                    <div  style="page-break-before: always;"></div>
                     <div class="div-in-middle" *ngIf="tree[0].imgPath && ReportRCMType == 'FMEA' ">
                         <label for="file" class="custom-label">Uploaded File</label>
                         <div id="file ">
@@ -377,11 +380,9 @@
                                 rows="4">{{tree[0].pdfRemark}}</textarea>
                         </div>
                     </div>
-                    <div style="page-break-before: always;">
-                    </div>
                 </div>
             </div>
-        </div>
+            </div>
     </div>
 </div>
 
@@ -389,13 +390,14 @@
     <div class="print">
         <a (click)="DownloadRCMPDF()" title="Download RCM Report Analysis"><i
                 style="float: right;margin: 10px;font-size: 2.5em; color: red;" class="pi pi-file-pdf"></i></a>
-        <a (click)="RCMprintPage()" title="Print RCM Report Analysis"><i
+        <!-- <a (click)="RCMprintPage()" title="Print RCM Report Analysis"><i
                 style="float: right;margin: 10px;font-size: 2.5em; color: rgb(26, 26, 226);"
-                class="pi pi-print"></i></a>
+                class="pi pi-print"></i></a> -->
         <button style="margin: 20px;" class="btn btn-dark" (click)="ReportBack()" pTooltip=" Back to Select Report type"
             tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
     </div>
-     <div style="margin: 20px;height: 100%;width: 100%;" id="pdfTable" #pdfTable>
+    <div id="RCMcontentToConvert">
+     <div id="pdfTable" #pdfTable style="margin: 20px;height: 100%;width: 100%;">
         <div class="text-center">
             <h4><b>{{ReportRCMType}} Report Analysis </b></h4>
         </div>
@@ -463,7 +465,7 @@
             </span>
         </div>
         </div>
-        <div id="image" #image>
+        <div id="image" #image style="overflow:hidden;page-break-before:always;">
                 <h5><b>Decision Logic Tree </b></h5>
                 <p-organizationChart [value]="data1" selectionMode="single" styleClass="company">
                     <ng-template let-node pTemplate="person">
@@ -476,7 +478,7 @@
                         {{node.label}}
                     </ng-template>
                 </p-organizationChart>
-                <div style="page-break-before: always;">
+                <div style="overflow:hidden;page-break-before:always;">
                 <div  id="image" #image *ngFor="let tree of AnnexuresTreeList">
                     <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                     <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode"
@@ -497,7 +499,6 @@
                             <img width="100%" [src]="tree[0].imgPath">
                         </div>
                     </div>
-                    <div style="page-break-before: always;"> </div>
                     <div *ngIf="tree[0].Remark && ReportRCMType == 'RCM'" class="div-in-middle">
                         <label for="remark" class="custom-label">Remark</label>
                         <div id="remark">
@@ -506,15 +507,13 @@
                                 rows="4">{{tree[0].Remark}}</textarea>
                         </div>
                     </div>
-                    <div style="page-break-before: always;"> </div>
                     <div class="div-in-middle" *ngIf="tree[0].pdfPath && ReportRCMType == 'RCM'">
                         <label for="file" class="custom-label">Uploaded File</label>
                         <div id="file ">
                             <a href={{tree[0].pdfPath}} download> Download Attachments </a>
                         </div>
                     </div>
-                    <div style="page-break-before: always;"> </div>
-                    <div *ngIf="tree[0].pdfRemark && ReportRCMType == 'RCM'" class="div-in-middle">
+                    <div  *ngIf="tree[0].pdfRemark && ReportRCMType == 'RCM'" class="div-in-middle">
                         <label for="remark" class="custom-label">Remark</label>
                         <div id="remark">
                             <span *ngIf="hide">{{tree[0].pdfRemark}}</span>
@@ -522,10 +521,11 @@
                                 rows="4">{{tree[0].pdfRemark}}</textarea>
                         </div>
                     </div>
-                    <div class="row">
+                    <div style="overflow:hidden;page-break-before:always;"></div>
+                    <div class="row" id="image" #image >
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
-                            <div style="width: 13em;height: 7em; margin-left: 140px;">
+                            <div id="chartContainer" style="width: 13em;height: 7em; margin-left: 140px;">
                                 <canvas id={{tree[0].Pattern}}></canvas>
                             </div>
                         </div>
@@ -534,5 +534,6 @@
                     <div style="page-break-before: always;"> </div>
                 </div>
                 </div>
-        </div>   
+        </div>
+     </div>   
 </div>
