@@ -17,10 +17,11 @@ import { saveAs } from 'file-saver';
 
 })
 export class PrescriptiveReportComponent implements OnInit {
-  @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
+  @ViewChild('pdfTable',{ static: false }) pdfTable: ElementRef;
   @ViewChild('image') image
-  @ViewChild('pdfTable1', { static: false }) pdfTable1: ElementRef;
+  @ViewChild('pdfTable1') pdfTable1: ElementRef;
   @ViewChild('image1') image1
+  @ViewChild('input') input:ElementRef; 
   @ViewChild('pdfTable2', { static: false }) pdfTable2: ElementRef;
   @ViewChild('image2') image2
   public FileUrl: any;
@@ -142,7 +143,7 @@ export class PrescriptiveReportComponent implements OnInit {
   //   }
   // }
   public DownloadPDF() {
-    // if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
+    if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
       this.hide= true
     const doc = new jsPDF();
     const specialElementHandlers = {
@@ -158,21 +159,22 @@ export class PrescriptiveReportComponent implements OnInit {
 
     var imageLink: any
     let imageData = document.getElementById('image2');
-    domtoimage.toPng(this.image2.nativeElement).then(res => {
-        imageLink = res;
+    // domtoimage.toPng(this.image2.nativeElement).then(res => {
+    //     imageLink = res;
+        var pdfdata = html2canvas(imageData).then(canvas => {
+        const imgProps = doc.getImageProperties(canvas);
         doc.addPage('a4','mm','p');
-        const imgProps = doc.getImageProperties(imageLink);
         var imgWidth = 187;
           var pageHeight = 299;
           var imgHeight = imgProps.height * imgWidth / imgProps.width;
           var heightLeft = imgHeight;
           var position = 0;
-          doc.addImage(imageLink, 'PNG',10, position, imgWidth, imgHeight /1);
+          doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight /1);
           heightLeft -= pageHeight;
           while (heightLeft >= 2) {
             position = heightLeft - imgHeight;
             doc.addPage();
-            doc.addImage(imageLink, 'PNG', 10, position, imgWidth, imgHeight /1);
+            doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight /1);
             heightLeft -= pageHeight;
           }
         const arrbf = doc.output("arraybuffer");
@@ -180,13 +182,13 @@ export class PrescriptiveReportComponent implements OnInit {
         this.mergePdfs(arrbf);
         this.commonLoadingDirective.showLoading(false, 'Downloading....');
     })
-  // } else if (this.Time.length == 0) {
-  //       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Time is missing' });
-  //     } else if (this.TypeMethodology.length == 0) {
-  //       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Methodology is missing' });
-  //     } else if (this.TypeCurrentandfuture.length == 0) {
-  //       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Current and future actions are  missing' });
-  //     }
+  } else if (this.Time.length == 0) {
+        this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Time is missing' });
+      } else if (this.TypeMethodology.length == 0) {
+        this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Methodology is missing' });
+      } else if (this.TypeCurrentandfuture.length == 0) {
+        this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Current and future actions are  missing' });
+      }
   }
   async mergePdfs(pdfsToMerges: ArrayBuffer) {
     const mergedPdf = await PDFDocument.create();
@@ -656,24 +658,24 @@ export class PrescriptiveReportComponent implements OnInit {
       width: 190,
       'elementHandlers': specialElementHandlers
     });
-
     var imageLink: any
     let imageData = document.getElementById('image1');
-    domtoimage.toPng(this.image1.nativeElement).then(res => {
-        imageLink = res;
+    // domtoimage.toPng(imageData).then(res => {
+        // imageLink = res;
+        var pdfdata = html2canvas(imageData).then(canvas => {
         doc.addPage('a4','mm','p');
-        const imgProps = doc.getImageProperties(imageLink);
+        const imgProps = doc.getImageProperties(canvas);
         var imgWidth = 192;
           var pageHeight = 298;
           var imgHeight = imgProps.height * imgWidth / imgProps.width;
           var heightLeft = imgHeight;
           var position = 0;
-          doc.addImage(imageLink, 'PNG',10, position, imgWidth, imgHeight/1 );
+          doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight/1 );
           heightLeft -= pageHeight;
           while (heightLeft >= 2) {
             position = heightLeft - imgHeight;
             doc.addPage();
-            doc.addImage(imageLink, 'PNG',10, position, imgWidth, imgHeight/1 );
+            doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight/1 );
             heightLeft -= pageHeight;
           }
         const arrbf = doc.output("arraybuffer");
@@ -857,21 +859,22 @@ export class PrescriptiveReportComponent implements OnInit {
 
     var imageLink: any
     let imageData = document.getElementById('image');
-    domtoimage.toPng(this.image.nativeElement).then(res => {
-        imageLink = res;
+    // domtoimage.toPng(this.image.nativeElement).then(res => {
+    //     imageLink = res;
+    var pdfdata = html2canvas(imageData).then(canvas => {
         doc.addPage('a4','mm','p');
-        const imgProps = doc.getImageProperties(imageLink);
+        const imgProps = doc.getImageProperties(canvas);
         var imgWidth = 190;
           var pageHeight = 298;
           var imgHeight = imgProps.height * imgWidth / imgProps.width;
           var heightLeft = imgHeight;
           var position = 0;
-          doc.addImage(imageLink, 'PNG',10, position, imgWidth, imgHeight );
+          doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
           heightLeft -= pageHeight;
           while (heightLeft >= 2) {
             position = heightLeft - imgHeight;
             doc.addPage();
-            doc.addImage(imageLink, 'PNG',10, position, imgWidth, imgHeight );
+            doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
             heightLeft -= pageHeight;
           }
         const arrbf = doc.output("arraybuffer");

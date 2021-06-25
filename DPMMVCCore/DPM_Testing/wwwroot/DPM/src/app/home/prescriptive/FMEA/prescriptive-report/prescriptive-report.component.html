@@ -39,24 +39,22 @@
     <div class="print">
         <a (click)="DownloadPDF()" title="Download {{ReportRCMType}} Report Analysis"><i
                 style="float: right;margin: 10px;font-size: 2.5em; color: red;" class="pi pi-file-pdf"></i></a>
-        <a  (click)="printPage()" title="Print {{ReportRCMType}}  Report Analysis"><i
+        <!-- <a  (click)="printPage()" title="Print {{ReportRCMType}}  Report Analysis"><i
                 style="float: right;margin: 10px;font-size: 2.5em; color: rgb(26, 26, 226);"
-                class="pi pi-print"></i></a>
+                class="pi pi-print"></i></a> -->
         <button style="margin: 20px;" class="btn btn-dark" (click)="ReportBack()" pTooltip=" Back to Select Report type"
             tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
     </div>
     <div style="margin: 20px;" id="contentToConvert">
         <div class="page" id="pdfTable2" #pdfTable2>
-            <div class="text-center">
+            <div class="text-center" style="text-align: center">
                 <h4><b>{{ReportRCMType}} Report Analysis </b></h4>
             </div>
-            <!-- <div class="sidebar-brand-icon col-sm-2">
-
+            <div class="sidebar-brand-icon col-sm-2">
                 <div class="image-container">
-                    <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                    <img style="width:20px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                 </div>
-
-            </div> -->
+            </div>
 
             <div>
                 <h5><b>Executive Summary </b></h5>
@@ -97,9 +95,10 @@
                 <p>
                     {{ReportRCMType}} analysis completed on {{data.Date}} for {{data.EquipmentType}} with Tag No
                     {{data.TagNumber}}. {{ReportRCMType}} finalized by using the current data of the asset and
-                    considering the failure history for a time domain of &ensp;
-                    <span *ngIf="hide">{{Time}}</span> <input type="text" *ngIf="!hide" class="custom-form-control"
-                        [(ngModel)]="Time" placeholder="Year/months *"> &ensp;
+                    considering the failure history for a time domain of &ensp; {{Time}}
+                    <!-- <span *ngIf="hide">{{Time}}</span>  -->
+                    <input type="text" *ngIf="!hide" class="custom-form-control"
+                        [(ngModel)]="Time" placeholder="Year/months *">   &ensp;
                 </p>
                 <p>
                     An understanding of the system to be analyzed was essential prior to the development of a
@@ -108,13 +107,13 @@
                     techniques used to understand system hierarchies
                 </p>
                 <h5><b>{{ReportRCMType}} Methodology</b></h5>
-                <span *ngIf="hide">{{TypeMethodology}}</span>
+                <!-- <span *ngIf="hide">{{TypeMethodology}}</span> -->
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeMethodology"
-                    placeholder="Type Methodology *"></textarea>
+                    placeholder="Type Methodology *"> {{TypeMethodology}}</textarea>
                 <h5><b>Current and future actions</b></h5>
                 <span *ngIf="hide">{{TypeCurrentandfuture}}</span>
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeCurrentandfuture"
-                    placeholder="Type Current and future actions *"></textarea>
+                    placeholder="Type Current and future actions *"> {{TypeCurrentandfuture}}</textarea>
             </div>
             <div  style="margin-top: 10px;">
                 <h5><b>Conclusion </b></h5>
@@ -132,10 +131,9 @@
                     elaborated. The team came up with some current actions and proposed future recommendations for
                     implementation.
                 </p>
-                <div  style="page-break-after: always;"></div>
                 <span>
                     <h6><b>Chair Person: {{ChairPerson}} </b></h6>
-                </span><br>
+                </span>
                 <span>
                     <h6><b>Participants: {{Participants}} </b></h6>
                 </span>
@@ -240,14 +238,14 @@
     </div>
     <div style="margin:20px;" id="MSScontentToConvert">
         <div class="page" id="pdfTable1" #pdfTable1>
-            <div class="text-center">
+            <div class="text-center" style="text-align:center">
                 <h4><b>{{ReportRCMType}} Report Analysis </b></h4>
             </div>
-            <!-- <div class="sidebar-brand-icon col-sm-2">
+            <div class="sidebar-brand-icon col-sm-2">
                 <div class="image-container">
-                    <img style="width:15px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                    <img style="width:20px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                 </div>
-            </div> -->
+            </div>
             <div>
                 <h5><b>Executive Summary </b></h5>
                 <p>
@@ -264,10 +262,12 @@
                     <ul>
                         <li> Preventive maintenance (PM): This approach is based on component reliability characteristics.This
                             data makes it possible to analyze the behavior of the element and allows the maintenance engineer to
-                            define a periodic maintenance program for the machine.</li>
+                            define a periodic maintenance program for the machine.
+                        </li>
                         <li>Predictive maintenance (PDM): The acquired controlled parameters data are analyzed to find a
                             possible temporal trend. This makes it possible to predict when the controlled quantity value will
-                            reach the threshold values.</li>
+                            reach the threshold values.
+                        </li>
                         <li> Corrective maintenance (CM): Maintenance is not implemented until failure occurs.</li>
                     </ul> 
                 <p>
@@ -291,13 +291,13 @@
                     proceed with a reliable and accurate analysis.
                 </p>
                 <h5><b> MSS inputs </b></h5>
-                <span *ngIf="hide">{{MSSInput}}</span>
-                <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="MSSInput"
-                    placeholder="MSS inputs   *"></textarea>
+                <!-- <span >{{MSSInput}}</span> -->
+                <textarea *ngIf="!hide" class="custom-textarea1 form-control"[(ngModel)]="MSSInput"
+                    placeholder="MSS inputs * " > {{MSSInput}} </textarea>
                 <h5><b>Actions and recommendations </b></h5>
-                <span *ngIf="hide">{{ActionRecommendation}}</span>
-                <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="ActionRecommendation"
-                    placeholder="Actions and recommendations  *"></textarea>
+                <!-- <span *ngIf="!hide">{{ActionRecommendation}}</span> -->
+                <textarea *ngIf="!hide" class="custom-textarea1 form-control" [(ngModel)]="ActionRecommendation"
+                    placeholder="Actions and recommendations  * "> {{ActionRecommendation}}</textarea>
             </div>
             <div>
                 <h5><b>Conclusion </b></h5>
@@ -398,14 +398,14 @@
     </div>
     <div id="RCMcontentToConvert">
      <div id="pdfTable" #pdfTable style="margin: 20px;height: 100%;width: 100%;">
-        <div class="text-center">
+        <div class="text-center" style="text-align:center">
             <h4><b>{{ReportRCMType}} Report Analysis </b></h4>
         </div>
-        <!-- <div class="sidebar-brand-icon col-sm-2">
+        <div class="sidebar-brand-icon col-sm-2">
             <div class="image-container">
-                <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                <img style="width:20px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
             </div>
-        </div> -->
+        </div>
         <div>
             <h5><b>Summary </b></h5>
             <p>
