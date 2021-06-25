@@ -15,7 +15,8 @@
                     <span class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="onDeleteNode(node)"></span>
                     <div *ngIf="!chart.getTemplateForNode(node) && !node.BasicEvent">
                         <div>
-                            <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}">
+                            <textarea [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control custom-textarea" name="{{node.label}}" id="{{node.label}}"></textarea>
+                            <!-- <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}"> -->
                         </div>
                         <hr>
                         <div class="row" *ngIf="node.years || node.hours">
