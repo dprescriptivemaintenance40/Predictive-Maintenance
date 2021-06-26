@@ -52,7 +52,7 @@ export class FCAADDComponent implements OnInit {
   public data1: any;
   public data1Clone: any;
   public CFPPrescriptiveId: number = 0;
-
+  public PatternAddNext: boolean = true;
   public interval: string = ""
   public intervalValue: number = 0;
 
@@ -79,7 +79,7 @@ export class FCAADDComponent implements OnInit {
   public FCAFreeTextSave1: boolean = true
   public patternaddshow: boolean = false
   public PatternFailuerAll: boolean = false
-
+   
 
   public PrescriptiveTreeList: any = [];
   public TagList: any = [];
@@ -648,18 +648,20 @@ export class FCAADDComponent implements OnInit {
     this.PatternNextOnPrescriptiveTree = false;
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
-    if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+    if (this.ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard))' || this.ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)') {
       this.UsefulLife = 0;
-    } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+    } else if (this.ConsequenceFM == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || this.ConsequenceFM == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' || this.ConsequenceFM == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)') {
       this.SafeLife = 0;
     }
   }
   PatternBack() {
     this.prescriptiveTree = true
     this.FailureModePatternTree = false
+    this.PatternAddNext = false
     if (this.PatternCounter == 0) {
       this.PatternNextOnPrescriptiveTree = true;
     }
+    this.PatternAddNext = false
   }
 
   async PatternSave() {
@@ -713,7 +715,7 @@ export class FCAADDComponent implements OnInit {
 
         let SUNode = {}
 
-        if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+        if (this.ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || this.ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)') {
           this.UsefulLife = 0;
           SUNode = {
             label: "SafeLife",
@@ -724,7 +726,7 @@ export class FCAADDComponent implements OnInit {
               name: this.SafeLife
             }
           }
-        } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+        } else if (this.ConsequenceFM == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || this.ConsequenceFM == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' || this.ConsequenceFM == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)') {
           this.SafeLife = 0;
           SUNode = {
             label: "UsefulLife",
@@ -979,7 +981,7 @@ export class FCAADDComponent implements OnInit {
 
       let SUNode = {}
 
-      if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+      if (this.ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || this.ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)') {
         this.UsefulLife = 0;
         SUNode = {
           label: "SafeLife",
@@ -990,7 +992,7 @@ export class FCAADDComponent implements OnInit {
             name: this.SafeLife
           }
         }
-      } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+      } else if (this.ConsequenceFM == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || this.ConsequenceFM == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' || this.ConsequenceFM == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)') {
         this.SafeLife = 0
         SUNode = {
           label: "UsefulLife",
@@ -1272,9 +1274,9 @@ export class FCAADDComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
     this.GetChartData();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
-    if (this.ConsequenceFM == 'A' || this.ConsequenceFM == 'B') {
+    if (this.ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || this.ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)') {
       this.UsefulLife = 0;
-    } else if (this.ConsequenceFM == 'D' || this.ConsequenceFM == 'E' || this.ConsequenceFM == 'C') {
+    } else if (this.ConsequenceFM == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || this.ConsequenceFM == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment))' || this.ConsequenceFM == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)') {
       this.SafeLife = 0;
     }
   }

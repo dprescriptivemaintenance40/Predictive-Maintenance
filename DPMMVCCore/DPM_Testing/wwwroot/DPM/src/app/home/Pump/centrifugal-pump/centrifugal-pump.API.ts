@@ -16,5 +16,13 @@ export class CentrifugalPumpConstantAPI{
 
     public getCentrifugalPumpTrainList : string = '/CentrifugalPumpTrainAPI/getConfiguration';
     public CentrifugalPumpTrainAddData : string = '/CentrifugalPumpTrainAPI/PumpConfiguration';
+
+    public getCentrifugalPredictionPredictionList : string = '/CentrifugalPumpPredictionAPI/GetAllPredictionRecords';
+    public CentrifugalPumpPredictionAddData : string = '/CentrifugalPumpPredictionAPI/CentrifugalPumpPredictionPost';
+    public getCentrifugalPumpPredictedList : string = '/CentrifugalPumpPredictionAPI/GetAllPredictionRecords';
+    public getPredictedListByDate : string = '/CentrifugalPumpPredictionAPI/GetCentrifugalPumpPredictionByDate';
+    public getPredictionById : string = '/CentrifugalPumpPredictionAPI/GetCentrifugalPumpPredictionById';
+    public Prediction : string = '/CentrifugalPumpPredictionAPI/CentrifugalPumpSinglePrediction';
+
   
 }

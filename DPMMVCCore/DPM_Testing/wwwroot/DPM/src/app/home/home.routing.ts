@@ -17,6 +17,7 @@ import { CentrifugalPumpComponent } from "./Pump/centrifugal-pump/centrifugal-pu
 import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
 import { AndorlogicComponent } from "./ANDORLogic/andorlogic.component";
 import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component";
+import { CentrifugalPumpPredictionComponent } from "./Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component";
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifug
                 { path: 'CentrifugalPump', component: CentrifugalPumpComponent },
                 { path: 'RecycleBin', component: RecycleBinComponent },
                 { path: 'ANDORLOGIC', component: AndorlogicComponent },
-                { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent }
+                { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent },
+                { path: 'CentrifugalPumpPrediction', component: CentrifugalPumpPredictionComponent },
             ]
         }
     ])],
