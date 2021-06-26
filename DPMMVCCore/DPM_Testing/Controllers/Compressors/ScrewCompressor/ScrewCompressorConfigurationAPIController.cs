@@ -75,10 +75,19 @@ namespace DPM_Testing.Controllers
         [HttpPost]
         public async Task<ActionResult<ScrewCompressorConfigurationModel>> PostAddRuleModel(ScrewCompressorConfigurationModel addRuleModel)
         {
-            _context.AddRuleModels.Add(addRuleModel);
-            await _context.SaveChangesAsync();
+            try
+            {
+                addRuleModel.AddRuleId = 0;
+                _context.AddRuleModels.Add(addRuleModel);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAddRuleModel", new { id = addRuleModel.AddRuleId }, addRuleModel);
+                return CreatedAtAction("GetAddRuleModel", new { id = addRuleModel.AddRuleId }, addRuleModel);
+            }
+            catch (System.Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
         }
 
         private bool AddRuleModelExists(int id)

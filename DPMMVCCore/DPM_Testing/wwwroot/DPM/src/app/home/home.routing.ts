@@ -16,6 +16,7 @@ import { PrescriptiveDisplayComponent } from "./prescriptive/FMEA/prescriptive-d
 import { CentrifugalPumpComponent } from "./Pump/centrifugal-pump/centrifugal-pump.component";
 import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
 import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component";
+import { CentrifugalPumpPredictionComponent } from "./Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component";
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifug
                 { path: 'Report', component: ReportComponent },
                 { path: 'CentrifugalPump', component: CentrifugalPumpComponent },
                 { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent },
+                { path: 'CentrifugalPumpPrediction', component: CentrifugalPumpPredictionComponent },
                 { path: 'RecycleBin', component: RecycleBinComponent }
             ]
         }
