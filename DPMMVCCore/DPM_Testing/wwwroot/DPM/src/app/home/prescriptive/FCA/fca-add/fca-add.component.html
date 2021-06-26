@@ -136,7 +136,7 @@
         <ng-template pTemplate="footer">
             <div>
                 <button label="Back" type="button" (click)="PatternBack()" class="btn btn-dark" pTooltip=" Back to the Add FCA Tree" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
-                <button label="Next" style="float: right;" type="button" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-down"> Add & Next</i></button>
+                <button label="Next" style="float: right;" type="button" *ngIf="PatternAddNext" (click)="PatternSave()" class="btn btn-dark" pTooltip="" tooltipPosition="top"><i class="fas fa-arrow-down"> Add & Next</i></button>
 
             </div>
         </ng-template>
@@ -422,11 +422,11 @@
                 <ng-template pTemplate="title">
                 </ng-template>
                 <ng-template pTemplate="subtitle">
-                    <p><b> 9. {{(ConsequenceFM == 'A' || ConsequenceFM == 'B') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}
+                    <p><b> 9. {{(ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}
                     </b></p>
                 </ng-template>
                 <ng-template pTemplate="content">
-                    <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A' || ConsequenceFM == 'B' ">
+                    <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)' ">
                         <div class="col-md-3">
                             <label> Safe Life in years : </label>
                         </div>
@@ -440,7 +440,7 @@
                             <input style="width: 30%;" type="number" [(ngModel)]="SafeLife" name="safelife" class="form-control" disabled>
                         </div>
                     </div>
-                    <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D' || ConsequenceFM == 'E' || ConsequenceFM == 'C' ">
+                    <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || ConsequenceFM == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' || ConsequenceFM == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)' ">
                         <div class="col-md-3">
                             <label> Useful Life</label>
                         </div>
