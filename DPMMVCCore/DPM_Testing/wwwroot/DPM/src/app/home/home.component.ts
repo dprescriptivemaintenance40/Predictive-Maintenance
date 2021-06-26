@@ -27,6 +27,165 @@ export class HomeComponent implements OnInit {
   public staticEquitment: boolean = false;
   public recycleBin: boolean = false;
   public prescriptiveConfiguration: boolean = false;
+  public MenuItems: any[] = [
+    {
+      label: 'A',
+      items: [
+        {
+          label: 'Asset’s list',
+          items: [
+            { label: 'User'},
+            { label: 'Filter'}
+          ]
+        },
+        { label: 'Criticality Assessment' },
+        { separator: true },
+        { label: 'Maintenance History' },
+        {
+          label: 'Library Of Failure',
+          items: [
+            { label: 'DPM Library' },
+            { label: 'Customer Library' }
+          ]
+        },
+        { label: 'RCA of critical failure' },
+        { label: 'List credible failure modes' },
+      ]
+    },
+    {
+      label: 'B',
+      items: [
+        {
+          label: 'Data collection',
+          items: [
+            {
+              label: 'Big data',
+              items: [
+                {
+                  label: 'Digital data',
+                  items: [
+                    {
+                      label: 'Analog data',
+                      items: [
+                        { label: 'Analog to digital conversion' }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              label: 'Moderate data',
+              items: [
+                {
+                  label: 'Digital data',
+                  items: [
+                    {
+                      label: 'Analog data',
+                      items: [
+                        { label: 'Analog to digital conversion' }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: 'Configuration',
+        },
+        {
+          label: 'Forecast',
+          items: [
+            {
+              label: 'Big data',
+              items: [
+                {
+                  label: 'Application / Machine Learning'
+                }
+              ]
+            },
+            {
+              label: 'Moderate data',
+              items: [
+                {
+                  label: 'Statistical analysis'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'C',
+      items: [
+        {
+          label: 'Develop maintenance strategy',
+          items: [
+            {
+              label: 'RCM (Relaibility Centered Maintenance)',
+            },
+            {
+              label: 'RBI (Risk Based Inspection)',
+            },
+            {
+              label: 'IPF (Intrumenated Protective Function)',
+            },
+            {
+              label: 'HAZOP (Hazard Operability Analysis)',
+            }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'D',
+      items: [
+        {
+          label: 'APM (Assets Performance Management) Platform',
+          items: [
+            {
+              label: 'Cost Benefit Analysis'
+            },
+            {
+              label: 'Residual Risk Analysis'
+            },
+            {
+              label: 'Optimum Spares Analysis'
+            }
+          ]
+        },
+        {
+          label: 'APM (Assets Performance Management) Library',
+          items: [
+            {
+              label: 'Repair Time'
+            },
+            {
+              label: 'Repair Cost'
+            },
+            {
+              label: 'Resource'
+            },
+            {
+              label: 'Special Tools'
+            },
+            {
+              label: 'Skill Pool'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'E',
+      items: [
+        { label: 'Prescriptive Recommendation' }
+      ]
+    }
+  ];
   constructor(public builder: FormBuilder,
     public http: HttpClient,
     public router: Router,

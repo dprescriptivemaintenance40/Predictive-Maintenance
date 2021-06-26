@@ -15,17 +15,18 @@ import { StepsModule } from "primeng/steps";
 import { TableModule } from "primeng/table";
 import { TreeModule } from "./P-Tree/p-tree";
 import { ToastModule } from "primeng/toast";
-import {SliderModule} from 'primeng/slider';
-import {DialogModule} from 'primeng/dialog';
+import { SliderModule } from 'primeng/slider';
+import { DialogModule } from 'primeng/dialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
-import {TooltipModule} from 'primeng/tooltip';
+import { TooltipModule } from 'primeng/tooltip';
 import { TabViewModule } from 'primeng/tabview';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PanelMenuModule } from 'primeng/panelmenu';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
-    imports: [CommonModule,      
+    imports: [CommonModule,
         TableModule,
         FormsModule,
         ReactiveFormsModule,
@@ -35,7 +36,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         InputTextModule,
         PasswordModule,
         MessagesModule,
-        MessageModule, 
+        MessageModule,
         OrganizationChartModule,
         CardModule,
         StepsModule,
@@ -46,7 +47,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         OverlayPanelModule,
         TreeModule,
         ConfirmDialogModule,
-        TooltipModule],
+        TooltipModule,
+        PanelMenuModule],
     exports: [CommonModule,
         CommonLoadingComponent,
         TableModule,
@@ -58,7 +60,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         InputTextModule,
         PasswordModule,
         MessagesModule,
-        MessageModule,     
+        MessageModule,
         OrganizationChartModule,
         CardModule,
         StepsModule,
@@ -71,7 +73,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         OverlayPanelModule,
         TabViewModule,
         ConfirmDialogModule,
-        TooltipModule]
+        TooltipModule,
+        PanelMenuModule]
 })
 export class SharedModule {
 

@@ -1,3 +1,41 @@
+<!-- <div *ngIf="prescriptiveSelect">
+    <div class="card shadow div-in-middle">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Select</b></li>
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <label style=" margin-right: 12px;">Assets</label>
+                    <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
+                        class="form-control">
+                        <option value="">Choose..</option>
+                        <option value="Pump" selected>Pump</option>
+                    </select>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <label style="    margin-right: 12px;">Sub Units</label>
+                    <select [(ngModel)]="EquipmentType" class="form-select" class="form-control">
+                        <option value="">Choose..</option>
+                        <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
+                    </select>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group mb-3">
+                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber"
+                        class="form-control" placeholder="Tag Number" aria-label="Tag Number"
+                        aria-describedby="basic-addon1">
+                </div>
+            </li>
+            <li class="list-group-item">
+                <button class="btn btn-dark" (click)="GeneratePrescription()">Done</button>
+            </li>
+
+        </ul>
+    </div>
+</div> -->
+
 <div class="row">
     <div class="col-xl-12 col-lg-11">
         <div class="card shadow mb-4 con">

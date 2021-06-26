@@ -22,6 +22,10 @@
                 <span>Dashboard</span></a>
         </li> -->
         <hr class="sidebar-divider ">
+
+        <p-panelMenu [model]="MenuItems" [style]="{'width':'220px'}"></p-panelMenu>
+
+        <hr class="sidebar-divider ">
         <li class="nav-item active">
             <a [routerLink]="[ '/Home/Education']" class="nav-link">
                 <i [routerLink]="[ '/Home/Education']" class="fas fa-graduation-cap"></i>
