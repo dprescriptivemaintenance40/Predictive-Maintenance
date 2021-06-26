@@ -1,2 +1,46 @@
+.row{
+    display: visibility !important;
+    display: flex!important;
+    justify-content: center!important;
+    align-items: center!important;
+}
 
+:host ::ng-deep .p-organizationchart {
+    .p-person {
+        padding: 0;
+        border: 0 none;
+    }
 
+    .p-person1 {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(123, 201, 123)
+    }
+    .StylePattern {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(108, 212, 219) 
+    }
+    .StylePattern1 {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(245, 148, 172) 
+    }
+    .StylePattern2 {
+        padding: 0;
+        border: 0 none;
+        background-color: rgb(212, 218, 211) 
+    }  
+}
+.custom-textarea1 {
+    border: none;
+    border-radius: 0.2em;
+     outline: 1px solid;
+    background-color: white !important;
+    // line-height: 1ch;
+    background-image: linear-gradient(transparent, transparent calc(3ch - 1px), white 0px);
+    background-size: 100% 3ch;
+    height: 58px;
+
+   
+}

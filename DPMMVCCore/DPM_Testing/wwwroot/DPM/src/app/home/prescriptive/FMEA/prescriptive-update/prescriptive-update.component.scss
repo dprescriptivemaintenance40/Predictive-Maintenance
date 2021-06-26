@@ -39,6 +39,14 @@
         border: 0 none;
         background-color: rgb(212, 218, 211) 
     }
+    .node-content {
+        text-align: center;
+        border: 1px solid #495ebb;
+        padding: 12px;
+        width: 192px;
+        resize: both;
+        overflow: auto;
+    }
 
 }
 
@@ -114,4 +122,12 @@
 }
 .mssbtn{
     margin: 20px;
+}
+.node-content {
+    text-align: center;
+    border: 1px solid #495ebb;
+    padding: 12px;
+    width: 192px;
+    resize: both;
+    overflow: auto;
 }

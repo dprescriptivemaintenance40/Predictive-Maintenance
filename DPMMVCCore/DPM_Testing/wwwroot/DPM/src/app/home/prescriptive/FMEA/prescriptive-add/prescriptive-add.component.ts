@@ -1051,7 +1051,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
         this.finalConsequence = ""
-        this.finalConsequence = "B"
+        this.finalConsequence = "B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)"
         console.log(this.ConsequencesAnswer)
         this.Consequences3 = false;
         this.Consequences2 = false;
@@ -1081,7 +1081,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       if (this.dropedConsequenceCombinationFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "A"
+        this.finalConsequence = "A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)"
         this.consequenceA = 'p-person1'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -1097,7 +1097,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "E"
+        this.finalConsequence = "E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -1125,7 +1125,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       if (this.dropedConsequenceAffectFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "C"
+        this.finalConsequence = "C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person1'
@@ -1141,7 +1141,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "D"
+        this.finalConsequence = "D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
