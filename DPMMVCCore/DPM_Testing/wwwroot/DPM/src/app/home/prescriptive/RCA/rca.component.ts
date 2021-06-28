@@ -482,6 +482,7 @@ export class RCAComponent {
                         }
                     }
                     this.UpdateRecordList.push(element)
+                    this.andOrLogicTreeFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode; 
                     this.ADDRCAFailureMode = element.RCAQualitativeFailureMode;
                     this.ADDRCAMachineType = element.RCAQualitativeEquipment;
                 }
@@ -548,6 +549,7 @@ export class RCAComponent {
                         ) 
                     });
                 }
+          }
         }
         
             var RCAQualitativeTree :string = "";
@@ -568,8 +570,8 @@ export class RCAComponent {
                 RCAQuantitiveTree  = JSON.stringify(this.RCAUpdateQuantitivefiles),
                 RCAQualitativeEquipment = this.UpdateSelectedLabel.RCAQualitativeEquipment;
                 RCAQuantitiveEquipment  = this.UpdateRecordList[0].RCAQuantitiveEquipment; 
-                RCAQualitativeFailureMode  = this.andOrLogicTreeFailureMode;
-                RCAQuantitiveFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode; 
+                RCAQualitativeFailureMode  = this.UpdateSelectedLabel.RCAQualitativeFailureMode;
+                RCAQuantitiveFailureMode = this.andOrLogicTreeFailureMode;  
             }
             let obj = {
                 RCAID: this.UpdateRecordList[0].RCAID,
@@ -599,15 +601,15 @@ export class RCAComponent {
                         this.UpdateAttachmentBuffer = [] ;
                         this.getRecordsList();
                         this.RCAUpdateItemCount = 1000;
+                        this.UpdateRCATypeSelected = "";
                     }
                 )
-        }
-
     }
 
     cancelRCAUpdate() {
         this.RCAUpdateItemCount = 1000;
         this.Updatefiles = [];
+        this.RCAUpdateQuantitivefiles =[];
         this.RCAUpdateQuantitivefiles = [];
         this.UpdateRCATypeQuantitive = false;
         this.UpdateRCATypeQualititive = false;
