@@ -383,17 +383,13 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
 
     private async familyTree(arr1, id) {
         var temp = [];
-        let level = 0;
         let findLevel;
         var forFn = async (arr, id) => {
             for (var i = 0; i < arr.length; i++) {
                 var item = arr[i];
-                // if (i === 0)
-                //     level++;
-                // arr[i].level = level;
                 if (item.id === id) {
                     findLevel = arr[i].level - 1;
-                    return await this.findLevel(arr1, arr, findLevel);
+                    return await this.findLevel(arr1, findLevel);
                 } else {
                     if (item.children) {
                         forFn(item.children, id);
@@ -405,7 +401,7 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         return await temp;
     }
 
-    private async findLevel(arr1, basicEvntArr, level) {
+    private async findLevel(arr1, level) {
         var temp = [];
         var forFn = async (arr, level) => {
             for (var i = 0; i < arr.length; i++) {
@@ -479,7 +475,7 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                         arr[i].Availability = parseFloat(((1 / (1 + (arr[i].hours / 8766) * arr[i].years)) * 100).toFixed(3));
                         if (arr.length === len) {
                             let findLevel = item.level - 1;
-                            await this.findLevel(arr1, arr, findLevel);
+                            await this.findLevel(arr1, findLevel);
                         }
                     }
                 } else {
