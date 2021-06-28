@@ -73,4 +73,25 @@ export class CommonBLService {
             }));
     }
 
+    public GetFailureComponents() {
+        return this.commonDLService.GetFailureComponents()
+            .pipe(map(res => {
+                return res;
+            }));
+    }
+
+    public GetFailureCause() {
+        return this.commonDLService.GetFailureCause()
+            .pipe(map(res => {
+                return res;
+            }));
+    }
+
+    public GetFailureModeNames() {
+        return this.commonDLService.GetFailureModeNames()
+            .pipe(map(res => {
+                return res;
+            }));
+    }
+
 }

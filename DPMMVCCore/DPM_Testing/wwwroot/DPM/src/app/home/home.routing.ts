@@ -15,6 +15,7 @@ import { PrescriptiveAddComponent } from "./prescriptive/FMEA/prescriptive-add/p
 import { PrescriptiveDisplayComponent } from "./prescriptive/FMEA/prescriptive-display/prescriptive-display.component";
 import { CentrifugalPumpComponent } from "./Pump/centrifugal-pump/centrifugal-pump.component";
 import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
+import { AndorlogicComponent } from "./ANDORLogic/andorlogic.component";
 import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component";
 import { CentrifugalPumpPredictionComponent } from "./Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component";
 
@@ -32,9 +33,10 @@ import { CentrifugalPumpPredictionComponent } from "./Pump/centrifugal-pump/cent
                 { path: 'Profile', component: ProfileComponent },
                 { path: 'Report', component: ReportComponent },
                 { path: 'CentrifugalPump', component: CentrifugalPumpComponent },
+                { path: 'RecycleBin', component: RecycleBinComponent },
+                { path: 'ANDORLOGIC', component: AndorlogicComponent },
                 { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent },
                 { path: 'CentrifugalPumpPrediction', component: CentrifugalPumpPredictionComponent },
-                { path: 'RecycleBin', component: RecycleBinComponent }
             ]
         }
     ])],
