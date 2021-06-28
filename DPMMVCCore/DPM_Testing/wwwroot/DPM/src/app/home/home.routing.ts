@@ -17,6 +17,7 @@ import { CentrifugalPumpComponent } from "./Pump/centrifugal-pump/centrifugal-pu
 import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
 import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component";
 import { PrescriptivePocComponent } from "./Prescriptive_poc/prescriptive-poc.component";
+import { CentrifugalPumpPredictionComponent } from "./Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component";
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { PrescriptivePocComponent } from "./Prescriptive_poc/prescriptive-poc.co
                 { path: 'CentrifugalPump', component: CentrifugalPumpComponent },
                 { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent },
                 { path: 'RecycleBin', component: RecycleBinComponent },
+                { path: 'CentrifugalPumpPrediction', component: CentrifugalPumpPredictionComponent },
                 { path: 'PrescriptivePoc', component: PrescriptivePocComponent }
             ]
         }

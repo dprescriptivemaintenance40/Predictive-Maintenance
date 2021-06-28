@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DPM.Models.PumpModel
 {
-    public class CentrifugalPumpTrainModel
+    public class CentrifugalPumpPredictionModel
     {
         [Key]
-        public int CentrifugalTrainID { get; set; }
+        public int CentifugalPumpPID { get; set; }
+        public string TagNumber { get; set; }
+        public string BatchId { get; set; }
         public string UserId { get; set; }
         public decimal P1 { get; set; }
         public decimal P2 { get; set; }
-        public decimal I { get; set; }
+        public decimal Amperage { get; set; }
         public decimal Q { get; set; }
         public DateTime InsertedDate { get; set; }
-        public string Classification { get; set; }
-
+        public string Prediction { get; set; }
     }
 }

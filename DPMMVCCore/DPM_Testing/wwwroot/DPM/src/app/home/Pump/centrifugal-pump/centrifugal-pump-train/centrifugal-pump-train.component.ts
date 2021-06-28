@@ -77,7 +77,7 @@ export class CentrifugalPumpTrainComponent implements OnInit {
       this.CentrifugalPumpMethod.postWithHeaders(url, this.CompDetailList)
         .subscribe(async res => {
               this.pumpListWithClassification = res;
-              // this.getCentrifugalPumpList();
+              this.getCentrifugalPumpList();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
             }, err => {
               console.log(err.error);
@@ -94,4 +94,53 @@ export class CentrifugalPumpTrainComponent implements OnInit {
     link.click();
   }
 
+  exportToExcel() {
+    const dataArray = this.pumpListWithClassification
+    if (dataArray != 0) {
+      const dataArrayList = dataArray.map(obj => {
+        const { BatchId, TenantId,UserId,CentrifugalTrainID, InsertedDate, ...rest } = obj;
+        return rest;
+      })
+
+      var csvData = this.ConvertToCSV(dataArrayList);
+      var a = document.createElement("a");
+      a.setAttribute('style', 'display:none;');
+      document.body.appendChild(a);
+      var blob = new Blob([csvData], { type: 'text/csv' });
+      var url = window.URL.createObjectURL(blob);
+      a.href = url;
+      // var x = new Date();
+      var link: string = "DPMTrain" + '.csv';
+      a.download = link.toLocaleLowerCase();
+      a.click();
+      this.messageService.add({ severity: 'info', detail: 'Excel Downloaded Successfully', sticky: true });
+
+    } else {
+      this.messageService.add({ severity: 'warn', detail: 'No Records are Found to Download in Excel', sticky: true });
+    }
+  }
+  ConvertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    var row = "";
+
+    for (var index in objArray[0]) {
+      //Now convert each value to string and comma-separated
+      row += index + ',';
+    }
+    row = row.slice(0, -1);
+    //append Label row with line break
+    str += row + '\r\n';
+
+    for (var i = 0; i < array.length; i++) {
+      var line = '';
+      for (var index in array[i]) {
+        if (line != '') line += ','
+
+        line += array[i][index];
+      }
+      str += line + '\r\n';
+    }
+    return str;
+  }
 }

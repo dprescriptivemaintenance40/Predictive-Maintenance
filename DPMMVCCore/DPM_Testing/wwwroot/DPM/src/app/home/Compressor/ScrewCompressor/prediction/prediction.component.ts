@@ -172,7 +172,7 @@ export class PredictionComponent implements OnInit {
   }
 
 
-  addfile(event) {
+  async addfile(event) {
     let fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       this.file = fileList[0];
@@ -195,14 +195,21 @@ export class PredictionComponent implements OnInit {
       this.screwCompressorMethod.postWithHeaders(url, XLSX.utils.sheet_to_json(worksheet, { raw: true }))
      // this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
         .subscribe(async res => {
-          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=${this.UserDetails.UserId}`, { responseType: 'text' })
-            .subscribe(res => {
-              this.getPredictedList();
-              this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-            }, err => {
-              console.log(err.error);
-              this.commonLoadingDirective.showLoading(false, "");
-            })
+          var TrainList : any = await this.GetTrainDataList();
+          if(TrainList.length >= 20){
+            await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=prediction&type=compressor`, { responseType: 'text' })
+                  .subscribe(res => {
+                    this.getPredictedList();
+                    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+                  }, err => {
+                    console.log(err.error);
+                    this.commonLoadingDirective.showLoading(false, "");
+                  })
+          }else{
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'For prediction you should have minimum 20 records in train' }); 
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Prediction cannot be done' });      
+          }
+          
         }, err => {
           // this.loading = false;
           //this.commonLoadingDirective.showLoading(false, "");
@@ -254,7 +261,7 @@ export class PredictionComponent implements OnInit {
     }
   }
 
-  Prediction() {
+ async Prediction() {
     //  if (this.configurationObj) {
     this.configurationObj.Prediction = "";
     this.configurationObj.PredictionId = 0;
@@ -267,19 +274,31 @@ export class PredictionComponent implements OnInit {
       .subscribe(async (res : any) => {
         this.configurationObj = res;
         this.PridictedId = res.PredictionId;
-        await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=prediction`, { responseType: 'text' })
-          .subscribe(res => {
-            this.getPredictedById(this.PridictedId);
-            this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-          }, err => {
-            console.log(err.error);
-            this.commonLoadingDirective.showLoading(false, "");
-          })
+        var UserId = res.UserId;
+        var TrainList : any = await this.GetTrainDataList();
+        if(TrainList.length >= 20){
+          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${UserId}&name=prediction&type=compressor`, { responseType: 'text' })
+                  .subscribe(res => {
+                    this.getPredictedById(this.PridictedId);
+                    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+                  }, err => {
+                    console.log(err.error);
+                    this.commonLoadingDirective.showLoading(false, "");
+                  })
+        }else{
+          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'For prediction you should have minimum 20 records in train' }); 
+          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Prediction cannot be done' });      
+        }
       }, err => {
         this.commonLoadingDirective.showLoading(false, "");
         console.log(err.error);
       });
 
+  }
+
+  async GetTrainDataList(){
+    return await this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.getTrainList)
+                 .toPromise();
   }
 
   exportToExcel() {
@@ -345,7 +364,7 @@ export class PredictionComponent implements OnInit {
   //  this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage')
       .subscribe(async res => {
         if (res === 1) {
-          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}name=futureprediction`, { responseType: 'text' })
+          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=futureprediction&type=compressor`, { responseType: 'text' })
             .subscribe(res => {
               this.getFuturePredictionRecords();
               this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
