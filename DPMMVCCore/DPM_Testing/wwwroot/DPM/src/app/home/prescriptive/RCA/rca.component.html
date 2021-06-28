@@ -296,23 +296,10 @@
                 </button>
             </div>
             <div class="modal-body" style="overflow: scroll; height: 30em;" class="classname">
-                <!-- <div style="padding: 14px; margin-left: 10px;" class="form-check">
-                    <input [(ngModel)]="finalRCATypeQualititive"  class="form-check-input" type="checkbox" name="RCA" id="Qualitative" checked>
-                    <label class="form-check-label" for="Qualitative">
-                        Qualitative
-                    </label>
-                  </div> -->
-                  
-                  <!-- <div style="padding: 14px; margin-left: 10px;" class="form-check">
-                    <input [(ngModel)]="finalRCATypeQuantitive"  class="form-check-input" type="checkbox" name="RCA" id="Quantitive">
-                    <label class="form-check-label" for="Quantitive">
-                        Quantitative
-                    </label>
-                  </div> -->
-                <div id="scene3" #scene3>
+                <div *ngIf="UpdateRCATypeQualititive" id="scene3" #scene3>
                     <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
                 </div><br><br>
-                <div>
+                <div *ngIf="UpdateRCATypeQuantitive">
                     <p-organizationChart [value]="displayQuantitativeTree">
                     </p-organizationChart>
                 </div>

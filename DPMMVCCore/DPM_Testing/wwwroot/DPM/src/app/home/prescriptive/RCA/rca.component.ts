@@ -303,14 +303,18 @@ export class RCAComponent {
     RCACheckValidation(){
         this.ADDDataForSaveAuth[0].label = this.files[0].label
             var Data = this.ADDDataForSaveAuth.find(f => f['label'] === '');
-            var RCAFILE = this.ADDDataForSaveAuth.find(f => f['RCAFILE'] === '');
+          //  var RCAFILE = this.ADDDataForSaveAuth.find(f => f['RCAFILE'] === '');
             if (Data !== undefined) {
                 this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please fill data to all nodes' });
     
-            } else if (RCAFILE !== undefined) {
-                this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please add attachment to all nodes' });
+            } 
+            // else if (RCAFILE !== undefined) {
+            //     this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please add attachment to all nodes' });
     
-            } else if (Data == undefined && RCAFILE == undefined) {
+            // }
+             else if (Data == undefined 
+                //&& RCAFILE == undefined
+                ) {
                 this.files[0].update = JSON.stringify(this.ADDDataForSaveAuth);
                 this.AddRCAmodal = document.getElementById("ADDRCAModal")
                 this.AddRCAmodal.style.display = 'block'
@@ -675,13 +679,17 @@ export class RCAComponent {
 
     RCATreeDisplay(p) {
         this.RCADisplayLabel = p.RCALabel
-        if(p.RCAQualitativeTree !== undefined){
+        this.UpdateRCATypeQualititive = false
+        this.UpdateRCATypeQuantitive = false
+        if(p.RCAQualitativeTree !== undefined &&  p.RCAQualitativeTree !== 'None'){
+            this.UpdateRCATypeQualititive = true
             this.RCADisplayFile = JSON.parse(p.RCAQualitativeTree);
             this.TraverseNestedJson(this.RCADisplayFile, 'disable');
         }
-        if(p.RCAQuantitiveTree !== undefined){
+        if(p.RCAQuantitiveTree !== undefined && p.RCAQuantitiveTree !== 'None'){
+            this.UpdateRCATypeQuantitive = true
             this.displayQuantitativeTree = JSON.parse(p.RCAQuantitiveTree);
-            // this.TraverseNestedJson(this.RCADisplayFile, 'disable');
+            this.TraverseNestedJson(this.displayQuantitativeTree, 'quantitativeDisable');
         }
     }
 
@@ -722,7 +730,9 @@ export class RCAComponent {
                 val[index].addTree = false;
                 val[index].deleteTree = false;
                 val[index].disable = true;
-            } else if (fun === 'update') {
+            } else if (fun === 'quantitativeDisable') {
+                val[index].disable = true;
+            }else if (fun === 'update') {
                 val[index].currentStage = 'update';
             } else if (fun === 'add') {
                 this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
@@ -756,7 +766,7 @@ export class RCAComponent {
 
                 }
             }
-            if (val[index].children.length > 0) {
+            if (val[index].children !== undefined && val[index].children.length > 0) {
                 var Data: any = val[index].children;
                 for (let index1 = 0; index1 < Data.length; index1++) {
                     if (fun === 'count') {
@@ -782,6 +792,8 @@ export class RCAComponent {
                         Data[index1].addTree = false;
                         Data[index1].deleteTree = false;
                         Data[index1].disable = true;
+                    } else if (fun === 'quantitativeDisable') {
+                        val[index].disable = true;
                     } else if (fun === 'update') {
                         Data[index1].currentStage = 'update';
                     } else if (fun === 'add') {
