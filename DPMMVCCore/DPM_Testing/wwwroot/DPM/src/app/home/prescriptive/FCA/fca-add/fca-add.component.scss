@@ -58,8 +58,12 @@
     .node-content {
         text-align: center;
         border: 1px solid #495ebb;
-        // resize: both;
-        // overflow: auto;        
+        padding: 12px;
+        width: 146px;
+        resize: both;
+        overflow: auto;
+        height:60px
+
     }
 
     .node-content img {

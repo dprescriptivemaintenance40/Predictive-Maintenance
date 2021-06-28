@@ -23,6 +23,15 @@ export class PrescriptiveReportComponent implements OnInit {
   @ViewChild('input') input:ElementRef; 
   @ViewChild('pdfTable2', { static: false }) pdfTable2: ElementRef;
   @ViewChild('image2') image2
+  @ViewChild('pdfTable3', { static: false }) pdfTable3: ElementRef;
+  @ViewChild('image3') image3
+  public isShowimage: boolean = false ;
+  public imagedivFMEA: boolean = true
+  public imagedivFCA: boolean = true
+  public imagedivMSS: boolean = true
+  public imagedivRCM: boolean = true
+  public imagediv1: boolean = false
+  public failuerrate: boolean = true
   public FileUrl: any;
   public data: any = []
   public EditdbPathURL: SafeUrl;
@@ -36,6 +45,7 @@ export class PrescriptiveReportComponent implements OnInit {
   public prescriptveReportSelect: boolean = true;
   public ImageEnable: boolean = true;
   public ReportSelect: boolean = false;
+  public FCAReportSelect: boolean = false;
   public MSSReportSelect: boolean = false;
   public ReportSelect1: boolean = false;
   public RCMReportSelect: boolean = false;
@@ -49,6 +59,8 @@ export class PrescriptiveReportComponent implements OnInit {
   public hide: boolean = false;
   public TypeMethodology: string = "";
   public TypeCurrentandfuture: string = "";
+  public FCAInput: string = "";
+  public FCAActionRecommendation: string = ""
   public MSSInput: string = "";
   public ActionRecommendation: string = "";
   public ParentAttachmentFile: string = ""
@@ -101,6 +113,7 @@ export class PrescriptiveReportComponent implements OnInit {
   ReportBack() {
     this.prescriptveReportSelect = true;
     this.ReportSelect = false
+    this.FCAReportSelect = false
     this.MSSReportSelect = false
     this.RCMReportSelect = false
     this.RefreshTree()
@@ -142,6 +155,8 @@ export class PrescriptiveReportComponent implements OnInit {
   //   }
   // }
   public DownloadPDF() {
+    this.imagedivFMEA= false
+    this.changeDetectorRef.detectChanges();
     if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
       this.hide= true
     const doc = new jsPDF();
@@ -262,6 +277,7 @@ export class PrescriptiveReportComponent implements OnInit {
     if (this.ChairPerson.length > 0 && this.Participants.length > 0) {
       this.prescriptveReportSelect = false
       this.ReportSelect = true
+      this.FCAReportSelect = true
       this.MSSReportSelect = true
       this.RCMReportSelect = true
       this.ChairPerson = this.ChairPerson.toUpperCase()
@@ -282,6 +298,7 @@ export class PrescriptiveReportComponent implements OnInit {
       this.PDFURL = []
       this.AnnexuresTreeList = []
       this.ReportSelect = false;
+      this.FCAReportSelect = false;
       this.MSSReportSelect = false;
       this.FCAPatternEnable = true;
       if (this.data.CAttachmentDBPath != null) {
@@ -414,6 +431,7 @@ export class PrescriptiveReportComponent implements OnInit {
             var extn = this.getFileExtension(this.attachmentRemark[index].AttachmentDBPath)
             this.FCAPatternEnable = false
             this.MSSPatternEnable = false
+            this.FCAReportSelect = false
             this.RCMReportSelect = false
             this.MSSReportSelect = false
             this.changeDetectorRef.detectChanges()
@@ -453,6 +471,7 @@ export class PrescriptiveReportComponent implements OnInit {
             this.MSSPatternEnable = false
             this.MSSReportSelect = false
             this.RCMReportSelect = false
+            this.ReportSelect = false
             this.changeDetectorRef.detectChanges()
             res.Pattern = patternIds[index];
             if (extn.toLowerCase() == 'pdf') {
@@ -517,6 +536,7 @@ export class PrescriptiveReportComponent implements OnInit {
             this.MSSPatternEnable = true
             this.RCMReportSelect = false
             this.ReportSelect = false;
+            this.FCAReportSelect = false;
             this.changeDetectorRef.detectChanges()
             if (extn.toLowerCase() == 'pdf') {
               let obj = {}
@@ -645,6 +665,8 @@ export class PrescriptiveReportComponent implements OnInit {
 
   public DownloadMSSPDF() {
     // if (this.MSSInput.length > 0 && this.ActionRecommendation.length > 0) {
+      this.imagedivMSS= false
+    this.changeDetectorRef.detectChanges();
     this.hide= true
     const doc = new jsPDF();
     const specialElementHandlers = {
@@ -844,6 +866,8 @@ export class PrescriptiveReportComponent implements OnInit {
   // };
 
   public DownloadRCMPDF() {
+    this.imagedivRCM= false
+    this.changeDetectorRef.detectChanges();
     const doc = new jsPDF();
     const specialElementHandlers = {
       '#editor': function (element, renderer) {
@@ -864,7 +888,7 @@ export class PrescriptiveReportComponent implements OnInit {
         doc.addPage('a4','mm','p');
         const imgProps = doc.getImageProperties(canvas);
         var imgWidth = 190;
-          var pageHeight = 298;
+          var pageHeight = 300;
           var imgHeight = imgProps.height * imgWidth / imgProps.width;
           var heightLeft = imgHeight;
           var position = 0;
@@ -911,6 +935,83 @@ export class PrescriptiveReportComponent implements OnInit {
   }
 
   saveRCMByteArray(reportName, byte) {
+    var blob = new Blob([byte], { type: "application/pdf" });
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    var fileName = reportName;
+    link.download = fileName;
+    link.click();
+  };
+
+
+  public DownloadFCAPDF() {
+    this.imagedivFCA= false
+    this.changeDetectorRef.detectChanges();
+    const doc = new jsPDF();
+    const specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    const pdfTable3 = this.pdfTable3.nativeElement;
+    doc.fromHTML(pdfTable3.innerHTML, 15, 15, {
+      width: 190,
+      'elementHandlers': specialElementHandlers
+    });
+
+    var imageLink: any
+    let imageData = document.getElementById('image3');
+    var pdfdata = html2canvas(imageData).then(canvas => {
+        doc.addPage('a4','mm','p');
+        const imgProps = doc.getImageProperties(canvas);
+        var imgWidth = 190;
+          var pageHeight = 298;
+          var imgHeight = imgProps.height * imgWidth / imgProps.width;
+          var heightLeft = imgHeight;
+          var position = 0;
+          doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
+          heightLeft -= pageHeight;
+          while (heightLeft >= 2) {
+            position = heightLeft - imgHeight;
+            doc.addPage();
+            doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
+            heightLeft -= pageHeight;
+          }
+        const arrbf = doc.output("arraybuffer");
+        doc.addPage();
+        this.mergeFCAPdfs(arrbf);
+        this.commonLoadingDirective.showLoading(false, 'Downloading....');
+    })
+  }
+  async mergeFCAPdfs(pdfsToMerges: ArrayBuffer) {
+    const mergedPdf = await PDFDocument.create();
+    const pdf = await PDFDocument.load(pdfsToMerges);
+    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    copiedPages.forEach((page) => {
+      mergedPdf.addPage(page);
+    });
+
+    let pdfsToMerge = [];
+    if (this.PDFURL.length > 0) {
+      this.PDFURL.forEach(item => {
+        pdfsToMerge.push(`${this.BrowserURl}${item.Link}`);
+      });
+    }
+    for (const pdfCopyDoc of pdfsToMerge) {
+      const pdfBytes = await fetch(pdfCopyDoc).then(res => res.arrayBuffer())
+      const pdf = await PDFDocument.load(pdfBytes);
+      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      copiedPages.forEach((page) => {
+        mergedPdf.addPage(page);
+      });
+    }
+    const savedpdf = await mergedPdf.save();
+    this.saveFCAByteArray("FCA Analysis Report", savedpdf);
+    this.hide = false;
+    this.change.detectChanges();
+  }
+
+  saveFCAByteArray(reportName, byte) {
     var blob = new Blob([byte], { type: "application/pdf" });
     var link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
