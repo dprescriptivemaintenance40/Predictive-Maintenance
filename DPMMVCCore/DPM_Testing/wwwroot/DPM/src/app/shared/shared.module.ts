@@ -8,7 +8,6 @@ import { DragDropModule } from "primeng/dragdrop";
 import { InputTextModule } from "primeng/inputtext";
 import { MessageModule } from "primeng/message";
 import { MessagesModule } from "primeng/messages";
-import { OrganizationChartModule } from "primeng/organizationchart";
 import { PasswordModule } from "primeng/password";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { StepsModule } from "primeng/steps";
@@ -22,6 +21,7 @@ import { CommonLoadingComponent } from "./Loading/common-loading.component";
 import { SafePipe } from "./safe.pipe";
 import { TooltipModule } from 'primeng/tooltip';
 import { TabViewModule } from 'primeng/tabview';
+import { OrganizationChartModule } from "./organization-chart/organization-chart.component";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PanelMenuModule } from 'primeng/panelmenu';
 @NgModule({

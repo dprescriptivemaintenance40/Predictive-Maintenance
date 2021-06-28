@@ -31,9 +31,9 @@
                                     <colgroup>
                                         <col style="width:5em;">
                                         <col style="width:9em;">
-                                        <col style="width:9em;">
                                         <col style="width:14em;">
                                         <col style="width:9em;">
+                                        <col style="width:15em;">
                                         <col style="width:15em;">
                                         <col style="width:9em;">
                                     </colgroup>
@@ -41,24 +41,24 @@
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Sr.No</th>
-                                        <th>RCA Asset</th>
                                         <th>RCA Label</th>
                                         <th>RCA code</th>
                                         <th>Tag No.</th>
-                                        <th>Failure Mode</th>
+                                        <th> Qualitative Failure Mode</th>
+                                        <th> Quantitative Failure Mode</th>
                                         <th>Action</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                                     <tr>
                                         <td>{{rowIndex + 1}}</td>
-                                        <td>{{p.RCAEquipment}}</td>
                                         <td>{{p.RCALabel}}</td>
                                         <td>{{p.RCACode}}</td>
                                         <td>{{p.TagNumber}}</td>
-                                        <td>{{p.RCAFailureMode}}</td>
+                                        <td>{{p.RCAQualitativeFailureMode}}</td>
+                                        <td>{{p.RCAQuantitiveFailureMode}}</td>
                                         <td>
-                                            <a (click)="RCAReport(p)" data-toggle="modal" data-target="#rcaReport" title="Report for {{p.RCALabel}}" ><i class="fa fa-file"
+                                            <a (click)="RCAReport(p)" data-toggle="modal" data-target="#rcaReport" title="Report for {{p.RCALabel}}"><i class="fa fa-file"
                                                     aria-hidden="true"></i></a>&nbsp;&nbsp;
                                             <a title="View {{p.RCALabel}}" data-toggle="modal" data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i
                                                     class="pi pi-eye"></i> </a>&nbsp;&nbsp;
@@ -98,17 +98,42 @@
                     </li>
                 </ul>
             </div>
-            
-            <div [hidden]="!Treeshow" style="overflow: scroll;">
+
+            <div [hidden]="!Treeshow" class="row" style="margin: 1em;">
+                <div class="col-md-2 form-check">
+                    <input [(ngModel)]="RCATypeQualititive" (change)="RCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Qualitative" checked>
+                    <label class="form-check-label" for="Qualitative">
+                        Qualitative
+                    </label>
+                </div>
+                <div class="col-md-2 form-check">
+                    <input [(ngModel)]="RCATypeQuantitive" (change)="RCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Quantitive">
+                    <label class="form-check-label" for="Quantitive">
+                        Quantitative
+                    </label>
+                </div>
+            </div>
+
+            <div *ngIf="RCATypeQualititive === true" style="overflow: scroll;">
                 <div class="classname" id="scene" #scene>
-                    <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
-                    </p-tree><br><br>
+                    <p-card>
+                        <button (click)="ClearRCAQualitiveTree()" class="btn btn-dark" pTooltip="Clear Qualititive tree data" tooltipPosition="top">clear</button>
+                        <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
+                        </p-tree><br><br>
+                    </p-card>
                 </div>
-                <div style="margin: 10px;">
-                    <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i
+            </div>
+            <div *ngIf="RCATypeQuantitive === true" id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%; padding-bottom: 20em;">
+                <p-card>
+                    <button (click)="ClearRCAQuantiveTree()" class="btn btn-dark" pTooltip="Clear Quantitive tree data" tooltipPosition="top">clear</button>
+                    <p-organizationChart [value]="ANDORLOGICTREE" (FailureMode)="AndOrLogicTreeFailureMode($event)" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
+                    </p-organizationChart>
+                </p-card>
+            </div>
+            <div *ngIf="Treeshow" style="margin: 10px;">
+                <a class="btn btn-dark" (click)="CancelADDRCA()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data" tooltipPosition="top">save</a>
-                </div>
+                <a *ngIf="RCATypeQualititive === true || RCATypeQuantitive === true " class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data" tooltipPosition="top">save</a>
             </div>
         </p-tabPanel>
         <p-tabPanel header="Update"><br>
@@ -118,9 +143,18 @@
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Label</label>
-                            <select class="form-select" [(ngModel)]="UpdateSelectedLabel" class="form-control">
+                            <select class="form-select" (change)="UpdateLabeselect()" [(ngModel)]="UpdateSelectedLabel" class="form-control">
                                 <option value="">Choose..</option>
-                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL}}</option>
+                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL.RCALabel}}</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="input-group mb-3">
+                            <label style=" margin-right: 12px;">Type</label>
+                            <select class="form-select" [(ngModel)]="UpdateRCATypeSelected" class="form-control">
+                                <option value="">Choose..</option>
+                                <option *ngFor="let EL of UpdateRCATypeList" [ngValue]="EL">{{EL}}</option>
                             </select>
                         </div>
                     </li>
@@ -132,7 +166,7 @@
             <div [hidden]="!UpdateTreeshow" style="overflow: scroll;">
                 <div style="margin: 20px; border: 1px solid;">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" style="width: 31em;">
+                        <li *ngIf="UpdateRCATypeQualititive" class="list-group-item" style="width: 31em;">
                             <div class="input-group mb-3">
                                 <label style=" margin-right: 12px;">Asset</label>
                                 <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
@@ -141,7 +175,7 @@
                                 </select>
                             </div>
                         </li>
-                        <li class="list-group-item">
+                        <li *ngIf="UpdateRCATypeQualititive" class="list-group-item">
                             <div class="input-group mb-3" style="width: 29em;">
                                 <label style=" margin-right: 12px;">Failure Mode</label>
                                 <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
@@ -151,15 +185,38 @@
                                 </select>
                             </div>
                         </li>
+                        <li *ngIf="UpdateRCATypeQuantitive" class="list-group-item" style="width: 31em;">
+                            Quantitative Failure Mode : {{andOrLogicTreeFailureMode}}
+                        </li>
+                        <!-- <li class="list-group-item">
+                            <div class="input-group mb-3" style="width: 29em;">
+                                <div class="form-check">
+                                    <input [(ngModel)]="UpdateRCATypeQualititive" (change)="UpdateRCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Qualitative">
+                                    <label class="form-check-label" for="Qualitative">
+                                        Qualititive
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input [(ngModel)]="UpdateRCATypeQuantitive" (change)="UpdateRCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Quantitive">
+                                    <label class="form-check-label" for="Quantitive">
+                                        Quantitive
+                                    </label>
+                                  </div>
+                            </div>
+                        </li> -->
                     </ul>
                 </div>
 
-                <div class="classname" id="scene1" #scene1>
-                    <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single"
-                        [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)"
-                        (uploadRCAAttachment)="uploadRCAAttachment($event)"  (RCAUpdateDeleteFromList)="RCAUpdateDeleteFromList($event)"
-                        (deleteTreeRow)="UpdatedeleteTreeRow($event)"  (RCAUpdateAttachmentFromList)="RCAUpdateAttachmentFromList($event)"></p-tree>
-                        <br><br>
+                <div *ngIf="UpdateRCATypeQualititive" class="classname" id="scene1" #scene1>
+                    <p-tree [value]="Updatefiles" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="UpdateaddTreeRow($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (RCAUpdateDeleteFromList)="RCAUpdateDeleteFromList($event)"
+                        (deleteTreeRow)="UpdatedeleteTreeRow($event)" (RCAUpdateAttachmentFromList)="RCAUpdateAttachmentFromList($event)"></p-tree>
+                    <br><br>
+                </div>
+                <div *ngIf="UpdateRCATypeQuantitive" id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%; padding-bottom: 20em;">
+                    <p-card>
+                        <p-organizationChart [value]="RCAUpdateQuantitivefiles" (AddNode)="onAddNode($event)" (FailureMode)="AndOrLogicTreeFailureMode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
+                        </p-organizationChart>
+                    </p-card>
                 </div>
                 <div style="margin: 10px;">
                     <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
@@ -177,7 +234,7 @@
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title"> Add Failure Mode to RCA </h6><br>
+                <h6 class="modal-title"> Add Failure Mode to Qualititive RCA Tree </h6><br>
                 <button type="button" class="close" data-dismiss="ADDRCAModal" aria-label="Close" (click)="closeRCAAddModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -185,6 +242,22 @@
             <div class="ADDRCAModal modal-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
+                        <div style="padding-bottom: 20px;">
+                            <div *ngIf="RCATypeQualititive" class="form-check">
+                                <input [(ngModel)]="finalRCATypeQualititive" class="form-check-input" type="checkbox" name="RCA" id="Qualitative" checked>
+                                <label class="form-check-label" for="Qualitative">
+                                    Qualititive
+                                </label>
+                            </div>
+                            <div *ngIf="RCATypeQuantitive" class="form-check">
+                                <input [(ngModel)]="finalRCATypeQuantitive" class="form-check-input" type="checkbox" name="RCA" id="Quantitive">
+                                <label class="form-check-label" for="Quantitive">
+                                    Quantitive
+                                </label>
+                            </div>
+                        </div>
+                    </li>
+                    <li *ngIf="finalRCATypeQualititive" class="list-group-item">
                         <div class="input-group mb-3">
                             <label style=" margin-right: 12px;">Assets</label>
                             <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
@@ -193,7 +266,7 @@
                             </select>
                         </div>
                     </li>
-                    <li class="list-group-item">
+                    <li *ngIf="finalRCATypeQualititive" class="list-group-item">
                         <div class="input-group mb-3">
                             <label style="margin-right: 12px;">Failure Mode</label>
                             <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
@@ -206,7 +279,7 @@
             </div>
             <div class="ADDRCAModal modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeRCAAddModal()" data-dismiss="ADDRCAModal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()" data-dismiss="ADDRCAModal">Save changes</button>
+                <button *ngIf="finalRCATypeQualititive === true || finalRCATypeQuantitive === true" type="button" class="btn btn-primary" (click)="SaveAddRCAToDatabase()" data-dismiss="ADDRCAModal">Save changes</button>
             </div>
         </div>
     </div>
@@ -220,10 +293,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 20em;" class="classname">
-                <div id="scene3" #scene3>
+            <div class="modal-body" style="overflow: scroll; height: 30em;" class="classname">
+                <div *ngIf="UpdateRCATypeQualititive" id="scene3" #scene3>
                     <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
                 </div><br><br>
+                <div *ngIf="UpdateRCATypeQuantitive">
+                    <p-organizationChart [value]="displayQuantitativeTree">
+                    </p-organizationChart>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="CloseRCATreeDisplay()" data-dismiss="modal">Close</button>
@@ -251,8 +328,7 @@
                         <label><u><b>Summary</b></u></label>
                     </div>
                     <div>
-                        <p>This report is based on the results of a technical process for investigation and analysis of failure causes. 
-                             Root Cause Analysis (RCA) method used is based on following steps: </p>
+                        <p>This report is based on the results of a technical process for investigation and analysis of failure causes. Root Cause Analysis (RCA) method used is based on following steps: </p>
                     </div>
                     <div>
                         <ul style="list-style-type:disc; margin: left 40px;">
@@ -271,8 +347,7 @@
                             The results of the analysis integrated into an assessment process and providing a set of consistent conclusions
                         </p>
                         <p>
-                            A brief introduction of the system data and considerations are briefly described.
-                             RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments
+                            A brief introduction of the system data and considerations are briefly described. RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments
                             conducted.
                         </p>
                         <p>
@@ -330,43 +405,43 @@
                     </div>
                 </div>
                 <!-- <div style="overflow: scroll; height: 30em;width:450%;"> -->
-                    <div style="overflow: scroll;">
+                <div style="overflow: scroll;">
                     <label><u><b>Annexures</b></u></label>
-                    <div  id="image" #image >
-                        <p-tree  [value]="RCAReportTree" layout="horizontal"></p-tree>
+                    <div id="image" #image>
+                        <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
                     </div>
-                    </div>
-             <div class="modal-footer">
-                <!-- <button type="button" (click)="RCAReportPrint()" class="btn btn-secondary">Print</button> -->
-                <button type="button" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" (click)="RCAReportPrint()" class="btn btn-secondary">Print</button> -->
+                    <button type="button" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal" id="UpdateAttachmentInUpdateFle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Upload attachment for update</h5>
-          <button type="button" class="close" data-dismiss="modal" (click)="CloseRCAUpdateUploadFile()" aria-label="Close">
+    <div class="modal" id="UpdateAttachmentInUpdateFle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload attachment for update</h5>
+                    <button type="button" class="close" data-dismiss="modal" (click)="CloseRCAUpdateUploadFile()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
-        <div class="modal-body">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="uploadAttachments">Upload</span>
                 </div>
-                <div class="custom-file">
-                    <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="RCAUpdateUploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
-                    <label class="custom-file-label" for="inputGroupFile01">Attachment</label>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="uploadAttachments">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="RCAUpdateUploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                            <label class="custom-file-label" for="inputGroupFile01">Attachment</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="CloseRCAUpdateUploadFile()" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="CloseRCAUpdateUploadFile()" data-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>

@@ -95,13 +95,16 @@ namespace DPM.Controllers.Prescriptive.RCA
             {
                 string userID = User.Claims.First(c => c.Type == "UserID").Value;
                 RCAModel Data = await _context.rCAModels.FirstOrDefaultAsync(a => a.RCAID == RCA.RCAID && a.UserId == userID);
-                Data.RCATree = RCA.RCATree;
+                Data.RCAQualitativeTree = RCA.RCAQualitativeTree;
+                Data.RCAQuantitiveTree = RCA.RCAQuantitiveTree;
                 DateTime Date = DateTime.Now;
                 var Code = Convert.ToString(Date.TimeOfDay);
                 Data.RCACode = Code;
                 Data.RCALabel = RCA.RCALabel;
-                Data.RCAFailureMode = RCA.RCAFailureMode;
-                Data.RCAEquipment = RCA.RCAEquipment;
+                Data.RCAQualitativeFailureMode = RCA.RCAQualitativeFailureMode;
+                Data.RCAQualitativeEquipment = RCA.RCAQualitativeEquipment;
+                Data.RCAQuantitiveFailureMode = RCA.RCAQuantitiveFailureMode;
+                Data.RCAQuantitiveEquipment = RCA.RCAQuantitiveEquipment;
                 _context.Entry(Data).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return Ok();
@@ -121,14 +124,13 @@ namespace DPM.Controllers.Prescriptive.RCA
             {
                 string userID = User.Claims.First(c => c.Type == "UserID").Value;
                 RCAModel Data = await _context.rCAModels.FirstOrDefaultAsync(a => a.RCAID == RCA.RCAID && a.UserId == userID);
-                Data.RCATree = RCA.RCATree;
+                Data.RCAQualitativeTree = RCA.RCAQualitativeTree;
                 _context.Entry(Data).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception exe)
             {
-
                 return BadRequest(exe.Message);
             }
         }

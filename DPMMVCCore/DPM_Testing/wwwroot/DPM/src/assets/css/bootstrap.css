@@ -2116,7 +2116,7 @@ pre code {
     font-weight: 400;
     line-height: 1.5;
     color: #495057;
-    background-color:#F5F5F5;
+    background-color: #F5F5F5;
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: .25rem;
@@ -10643,4 +10643,12 @@ a.text-dark:hover {
     font-weight: bold;
     border-bottom: 2px solid;
     margin: 13px;
+}
+
+.custom-delete-bttn {
+    position: absolute;
+    cursor: pointer;
+    color: red;
+    left: 0px;
+    top: -9px;
 }

@@ -8,7 +8,6 @@ import { PDFDocument } from 'pdf-lib';
 import * as Chart from 'chart.js';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import domtoimage from 'dom-to-image';
-
 @Component({
   selector: 'app-prescriptive-report',
   templateUrl: './prescriptive-report.component.html',
