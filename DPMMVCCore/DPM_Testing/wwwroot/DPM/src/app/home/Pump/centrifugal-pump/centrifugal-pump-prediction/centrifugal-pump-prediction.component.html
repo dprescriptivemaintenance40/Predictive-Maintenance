@@ -44,8 +44,8 @@
         <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.P2" class="form-control" placeholder="Enter value">
     </div>
     <div class="td">
-        <label data-toggle="tooltip" data-placement="top" title="">Amperage</label>
-        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Amperage" class="form-control"placeholder="Enter value">
+        <label data-toggle="tooltip" data-placement="top" title="">I</label>
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.I" class="form-control"placeholder="Enter value">
     </div>
     <div class="td">
         <label data-toggle="tooltip" data-placement="top" title="">Q</label>
@@ -84,8 +84,8 @@
                     <th pSortableColumn="P2">P2
                         <p-sortIcon field="PD"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="Amperage">Amperage
-                        <p-sortIcon field="Amperage"></p-sortIcon>
+                    <th pSortableColumn="I">I
+                        <p-sortIcon field="I"></p-sortIcon>
                     </th>
                     <th pSortableColumn="Q">Q
                         <p-sortIcon field="Q"></p-sortIcon>
@@ -102,7 +102,7 @@
                 <tr>
                     <td>{{centrifugalPumpWithPrediction.P1}}</td>
                     <td>{{centrifugalPumpWithPrediction.P2}}</td>
-                    <td>{{centrifugalPumpWithPrediction.Amperage}}</td>
+                    <td>{{centrifugalPumpWithPrediction.I}}</td>
                     <td>{{centrifugalPumpWithPrediction.Q}}</td>
                     <td>{{centrifugalPumpWithPrediction.InsertedDate | date}}</td>
                     <td>{{centrifugalPumpWithPrediction.Prediction}}</td>
