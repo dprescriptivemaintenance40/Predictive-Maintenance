@@ -1,5 +1,5 @@
-
-<p-toast position="top-right"></p-toast>
+<p-toast position="top-right">
+</p-toast>
 
 <div style="padding: 5px;" class="row">
     <div class="col-sm col-md-4 form-group">
@@ -7,9 +7,10 @@
     </div>
 </div>
 
-<div style="padding: 5px;"  style="overflow: scroll;">
+<div style="padding: 5px;" style="overflow: scroll;">
     <div class="card">
-        <p-table id="exportexcel" [value]="UploadcentrifugalPumpWithPrediction" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
+        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="UploadcentrifugalPumpWithPrediction" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
                     <col style="width:8em;">

@@ -5,30 +5,28 @@
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
     </div>
 
-    <div class="col-sm">  
+    <div class="col-sm">
     </div>
     <div class="col-sm">
     </div>
 
     <div class="col-sm">
-       
+
     </div>
 </div>
 <br>
 <div style="padding: 5px;">
     <div class="card">
-        <p-table id="exportexcel" [value]="uploadpumpListWithClassification" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
-            [loading]="loading">
+        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="uploadpumpListWithClassification" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
-                  
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
-                    <col style="width:8em;">
-                 
+                    <!-- <col style="width:8em;"> -->
                 </colgroup>
             </ng-template>
             <ng-template pTemplate="header">
@@ -51,7 +49,7 @@
                     <!-- <th pSortableColumn="Classification">Classification
                         <p-sortIcon field="Classification"></p-sortIcon>
                     </th> -->
-                    
+
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-uploadpumpListWithClassification>

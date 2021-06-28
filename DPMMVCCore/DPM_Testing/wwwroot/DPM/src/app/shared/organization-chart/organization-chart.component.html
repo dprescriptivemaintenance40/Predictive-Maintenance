@@ -113,7 +113,7 @@
         <tr [ngClass]="!leaf && node.expanded  ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'">
             <td [attr.colspan]="colspan">
                 <div class="p-organizationchart-line-down"></div>
-                <a *ngIf="!leaf && (node.ANDORLogic)" tabindex="0" class="p-node-toggler" (click)="toggleNode($event, node)" (keydown.enter)="toggleNode($event, node)">
+                <a *ngIf="!leaf && (node.ANDORLogic)" tabindex="0" class="p-node-toggler" (keydown.enter)="toggleNode($event, node)">
                     <i class="p-node-toggler-icon pi and-image-url" *ngIf="node.ANDIcon" style="margin: -2px 0 -10px 5px;"></i>
                     <i class="p-node-toggler-icon pi or-image-url" *ngIf="node.ORIcon" style="margin: 0 -13px -17px 0px;"></i>
                 </a>
