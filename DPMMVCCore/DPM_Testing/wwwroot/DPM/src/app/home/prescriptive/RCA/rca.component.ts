@@ -745,8 +745,9 @@ export class RCAComponent {
                 val[index].currentStage = 'update';
             } else if (fun === 'add') {
                 this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
-                if (val[index].RCAFILE !== undefined && val[index].RCAFILE !== '') {
+                if (val[index].RCAFILE !== '') {
                     let filess = val[index].RCAFILE
+                    if(filess != undefined){
                     var FC: number = 1;
                     for (let FI = 0; FI < filess.length; FI++) {
                         var prevName = filess[FI][0].target.files[0].name
@@ -772,10 +773,11 @@ export class RCAComponent {
                     if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
                         this.SaveADDRCAFilesToDatabase();
                     }
-
+   
+                }
                 }
             }
-            if (val[index].children !== undefined && val[index].children.length > 0) {
+            if (val[index].children.length > 0) {
                 var Data: any = val[index].children;
                 for (let index1 = 0; index1 < Data.length; index1++) {
                     if (fun === 'count') {
@@ -809,6 +811,7 @@ export class RCAComponent {
                         this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
                         if (Data[index1].RCAFILE !== undefined && Data[index1].RCAFILE !== '') {
                             let filess = Data[index1].RCAFILE
+                            if(filess != undefined){
                             var FC: number = 1;
                             for (let FI = 0; FI < filess.length; FI++) {
                                 var prevName = filess[FI][0].target.files[0].name
@@ -834,7 +837,7 @@ export class RCAComponent {
                             if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
                                 this.SaveADDRCAFilesToDatabase();
                             }
-
+                        }
                         }
                     }
                     if (Data[index1].children.length > 0) {
