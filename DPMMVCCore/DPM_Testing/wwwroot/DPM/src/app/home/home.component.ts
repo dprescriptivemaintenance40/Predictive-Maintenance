@@ -101,9 +101,11 @@ export class HomeComponent implements OnInit {
                       items: [
                         {
                           label: 'Train Data Upload',
+                          url: '#/Home/CompTrainUploadData'
                         },
                         {
                           label: 'Prediction Data Upload',
+                          url: '#/Home/CompPredictionUploadData'
                         }
                       ]
                     },
@@ -112,9 +114,11 @@ export class HomeComponent implements OnInit {
                       items: [
                         {
                           label: 'Train Data Upload',
+                          url: '#/Home/TrainUploadData'
                         },
                         {
                           label: 'Prediction Data Upload',
+                          url: '#/Home/PredictionUploadData'
                         }
                       ]
                     }

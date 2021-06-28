@@ -1,0 +1,74 @@
+
+<p-toast position="top-right"></p-toast>
+
+<div style="padding: 5px;" class="row">
+    <div class="col-sm col-md-4 form-group">
+        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+
+    </div>
+</div>
+<br>
+<div style="padding: 5px;">
+    <div class="card">
+        <p-table id="exportexcel" [value]="uploadpumpListWithClassification" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
+        [loading]="loading">
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:12em;">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="PS1">PS1
+                        <p-sortIcon field="PS1"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="PD1">PD1
+                        <p-sortIcon field="PD1"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="PS2">PS2
+                        <p-sortIcon field="PS2"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="PD2">PD2
+                        <p-sortIcon field="PD2"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TS1">TS1
+                        <p-sortIcon field="TS1"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TD2">TD1
+                        <p-sortIcon field="TD2"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TS2">TS2
+                        <p-sortIcon field="TS2"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TD2">TD2
+                        <p-sortIcon field="TD2"></p-sortIcon>
+                    </th>
+                    <!-- <th pSortableColumn="CLASSIFICATION">CLASSIFICATION</th> -->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-UploadcompListWithClassification>
+                <tr>
+
+                    <td>{{UploadcompListWithClassification.PS1}}</td>
+                    <td>{{UploadcompListWithClassification.PD1}}</td>
+                    <td>{{UploadcompListWithClassification.PS2}}</td>
+                    <td>{{UploadcompListWithClassification.PD2}}</td>
+                    <td>{{UploadcompListWithClassification.TS1}}</td>
+                    <td>{{UploadcompListWithClassification.TD1}}</td>
+                    <td>{{UploadcompListWithClassification.TS2}}</td>
+                    <td>{{UploadcompListWithClassification.TD2}}</td>
+                    <!-- <td>{{UploadcompListWithClassification.Classification}}</td> -->
+
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

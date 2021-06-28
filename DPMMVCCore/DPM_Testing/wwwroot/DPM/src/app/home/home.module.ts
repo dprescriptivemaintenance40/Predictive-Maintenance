@@ -17,6 +17,8 @@ import { AndorlogicComponent } from "./ANDORLogic/andorlogic.component";
 import { CentrifugalPumpTrainComponent } from './Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component';
 import { PrescriptivePocComponent } from "./Prescriptive_poc/prescriptive-poc.component";
 import { CentrifugalPumpPredictionComponent } from './Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component';
+import { CentrifugalPumpTraindataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-traindata-upload/centrifugal-pump-traindata-upload.component';
+import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +32,9 @@ import { CentrifugalPumpPredictionComponent } from './Pump/centrifugal-pump/cent
         AndorlogicComponent,
         CentrifugalPumpTrainComponent,
         PrescriptivePocComponent,
-        CentrifugalPumpPredictionComponent
+        CentrifugalPumpPredictionComponent,
+        CentrifugalPumpTraindataUploadComponent,
+        CentrifugalPumpPredictiondataUploadComponent,
     ],
     imports: [        
         HomeRoutingModule,       
