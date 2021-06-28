@@ -7,6 +7,7 @@ import { CommonLoadingDirective } from '../shared/Loading/common-loading.directi
 import { UserService } from './Services/user.services';
 import { EventEmitterService } from './Services/event-emitter.service';
 import { Title } from '@angular/platform-browser';
+import { url } from 'node:inspector';
 
 @Component({
   selector: 'app-home',
@@ -29,31 +30,58 @@ export class HomeComponent implements OnInit {
   public prescriptiveConfiguration: boolean = false;
   public MenuItems: any[] = [
     {
-      label: 'A',
+      label: 'DPM-Education',
+      url: '#/Home/Education'
+    },
+    {
+      label: 'Failure Mode Library',
       items: [
         {
           label: 'Asset’s list',
           items: [
-            { label: 'User'},
-            { label: 'Filter'}
+            {
+              label: 'User',
+              url: '#/Home/FailureModesLibrary/User-Library'
+            },
+            {
+              label: 'Filter',
+              url: '#/Home/FailureModesLibrary/User-Library'
+            }
           ]
         },
-        { label: 'Criticality Assessment' },
-        { separator: true },
-        { label: 'Maintenance History' },
+        {
+          label: 'Criticality Assessment',
+          url: '#/Home/FailureModesLibrary/CriticalityAssessment'
+        },
+        {
+          label: 'Maintenance History',
+          url: '#/Home/FailureModesLibrary/MaintenanceHistory'
+        },
         {
           label: 'Library Of Failure',
           items: [
-            { label: 'DPM Library' },
-            { label: 'Customer Library' }
+            {
+              label: 'DPM Library',
+              url: '#/Home/FailureModesLibrary/DPMLibrary'
+            },
+            {
+              label: 'Customer Library',
+              url: '#/Home/FailureModesLibrary/CustomerLibrary'
+            }
           ]
         },
-        { label: 'RCA of critical failure' },
-        { label: 'List credible failure modes' },
+        {
+          label: 'RCA of critical failure',
+          url: '#/Home/Prescriptive/RCA'
+        },
+        {
+          label: 'List credible failure modes',
+          url: '#/Home/FailureModesLibrary/ListCredibleFailureModes'
+        },
       ]
     },
     {
-      label: 'B',
+      label: 'Customer database',
       items: [
         {
           label: 'Data collection',
@@ -67,7 +95,28 @@ export class HomeComponent implements OnInit {
                     {
                       label: 'Analog data',
                       items: [
-                        { label: 'Analog to digital conversion' }
+                        {
+                          label: 'Screw Compressor',
+                          items: [
+                            {
+                              label: 'Train Data Upload',
+                            },
+                            {
+                              label: 'Prediction Data Upload',
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Centrifugal Pump',
+                          items: [
+                            {
+                              label: 'Train Data Upload',
+                            },
+                            {
+                              label: 'Prediction Data Upload',
+                            }
+                          ]
+                        }
                       ]
                     }
                   ]
@@ -83,7 +132,10 @@ export class HomeComponent implements OnInit {
                     {
                       label: 'Analog data',
                       items: [
-                        { label: 'Analog to digital conversion' }
+                        {
+                          label: 'Pump Data Upload',
+                          url: '#/Home/CentrifugalPump'
+                        }
                       ]
                     }
                   ]
@@ -94,6 +146,7 @@ export class HomeComponent implements OnInit {
         },
         {
           label: 'Configuration',
+          url: '#/Home/Compressor/ScrewConfiguration'
         },
         {
           label: 'Forecast',
@@ -102,89 +155,148 @@ export class HomeComponent implements OnInit {
               label: 'Big data',
               items: [
                 {
-                  label: 'Application / Machine Learning'
+                  label: 'Application / Machine Learning',
+                  items: [
+                    {
+                      label: 'Screw Compressor',
+                      items: [
+                        {
+                          label: 'Train',
+                          url: '#/Home/Compressor/ScrewTrain'
+                        },
+                        {
+                          label: 'Prediction',
+                          url: '#/Home/Compressor/ScrewPrediction'
+                        }
+                      ]
+                    },
+                    {
+                      label: 'Centrifugal Pump',
+                      items: [
+                        {
+                          label: 'Train',
+                          url: '#/Home/CentrifugalPumpTrain'
+                        },
+                        {
+                          label: 'Prediction',
+                          url: '#/Home/CentrifugalPumpPrediction'
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             },
-            {
-              label: 'Moderate data',
-              items: [
-                {
-                  label: 'Statistical analysis'
-                }
-              ]
-            }
+            // {
+            //   label: 'Moderate data',
+            //   items: [
+            //     {
+            //       label: 'Statistical analysis'
+            //     }
+            //   ]
+            // }
           ]
         }
       ]
     },
     {
-      label: 'C',
+      label: 'Strategic Analysis',
       items: [
         {
           label: 'Develop maintenance strategy',
           items: [
             {
               label: 'RCM (Relaibility Centered Maintenance)',
+              items: [
+                {
+                  label: 'Configuration',
+                  url: '#/Home/Prescriptive/Configuration'
+                },
+                {
+                  label: 'FMEA Add',
+                  url: '#/Home/Prescriptive/ADD'
+                },
+                {
+                  label: 'FCA Add',
+                  url: '#/Home/Prescriptive/FCAAdd'
+                },
+                {
+                  label: 'MSS Add',
+                  url: '#/Home/Prescriptive/MSSAdd'
+                },
+                {
+                  label: 'Display',
+                  url: '#/Home/Prescriptive/Display'
+                }
+              ]
             },
-            {
-              label: 'RBI (Risk Based Inspection)',
-            },
-            {
-              label: 'IPF (Intrumenated Protective Function)',
-            },
-            {
-              label: 'HAZOP (Hazard Operability Analysis)',
-            }
+            // {
+            //   label: 'RBI (Risk Based Inspection)',
+            // },
+            // {
+            //   label: 'IPF (Intrumenated Protective Function)',
+            // },
+            // {
+            //   label: 'HAZOP (Hazard Operability Analysis)',
+            // }
           ]
         }
       ]
     },
     {
-      label: 'D',
+      label: 'Resource Optimization',
       items: [
         {
           label: 'APM (Assets Performance Management) Platform',
           items: [
             {
-              label: 'Cost Benefit Analysis'
+              label: 'Cost Benefit Analysis',
+              url: '#/Home/Report'
             },
             {
-              label: 'Residual Risk Analysis'
+              label: 'Residual Risk Analysis',
+              url: '#/Home/PrescriptivePoc'
             },
-            {
-              label: 'Optimum Spares Analysis'
-            }
+            // {
+            //   label: 'Optimum Spares Analysis'
+            // }
           ]
         },
+        // {
+        //   label: 'APM (Assets Performance Management) Library',
+        //   items: [
+        //     {
+        //       label: 'Repair Time'
+        //     },
+        //     {
+        //       label: 'Repair Cost'
+        //     },
+        //     {
+        //       label: 'Resource'
+        //     },
+        //     {
+        //       label: 'Special Tools'
+        //     },
+        //     {
+        //       label: 'Skill Pool'
+        //     }
+        //   ]
+        // }
+      ]
+    },
+    {
+      label: 'Prescriptive Maintenance',
+      items: [
         {
-          label: 'APM (Assets Performance Management) Library',
-          items: [
-            {
-              label: 'Repair Time'
-            },
-            {
-              label: 'Repair Cost'
-            },
-            {
-              label: 'Resource'
-            },
-            {
-              label: 'Special Tools'
-            },
-            {
-              label: 'Skill Pool'
-            }
-          ]
+          label: 'Prescriptive Recommendation',
+          url: '#/Home/Prescriptive/List'
         }
       ]
     },
     {
-      label: 'E',
-      items: [
-        { label: 'Prescriptive Recommendation' }
-      ]
-    }
+      label: 'Recycle Bin',
+      url: '#/Home/RecycleBin'
+    },
   ];
   constructor(public builder: FormBuilder,
     public http: HttpClient,
