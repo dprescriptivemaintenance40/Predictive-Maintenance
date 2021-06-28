@@ -156,7 +156,7 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
   }
 
   CentrifugalPumpPrediction() {
- if(this.CentrifugalPumpconfigurationObj.P1 >0 && this.CentrifugalPumpconfigurationObj.P2 >0 || this.CentrifugalPumpconfigurationObj.Amperage >0 || this.CentrifugalPumpconfigurationObj.Q >0){
+ if(this.CentrifugalPumpconfigurationObj.P1 >0 && this.CentrifugalPumpconfigurationObj.P2 >0 || this.CentrifugalPumpconfigurationObj.I >0 || this.CentrifugalPumpconfigurationObj.Q >0){
     this.CentrifugalPumpconfigurationObj.Prediction = "";
     this.CentrifugalPumpconfigurationObj.UserId = "";
     this.CentrifugalPumpconfigurationObj.InsertedDate = moment().format("YYYY-MM-DD");
