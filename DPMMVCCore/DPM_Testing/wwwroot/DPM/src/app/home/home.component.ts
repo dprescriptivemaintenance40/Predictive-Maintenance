@@ -7,6 +7,7 @@ import { CommonLoadingDirective } from '../shared/Loading/common-loading.directi
 import { UserService } from './Services/user.services';
 import { EventEmitterService } from './Services/event-emitter.service';
 import { Title } from '@angular/platform-browser';
+import { url } from 'node:inspector';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,278 @@ export class HomeComponent implements OnInit {
   public staticEquitment: boolean = false;
   public recycleBin: boolean = false;
   public prescriptiveConfiguration: boolean = false;
+  public MenuItems: any[] = [
+    {
+      label: 'DPM-Education',
+      url: '#/Home/Education'
+    },
+    {
+      label: 'Failure Mode Library',
+      items: [
+        {
+          label: 'Asset’s list',
+          items: [
+            {
+              label: 'User',
+              url: '#/Home/FailureModesLibrary/User-Library'
+            },
+            {
+              label: 'Filter',
+              url: '#/Home/FailureModesLibrary/User-Library'
+            }
+          ]
+        },
+        {
+          label: 'Criticality Assessment',
+          url: '#/Home/FailureModesLibrary/CriticalityAssessment'
+        },
+        {
+          label: 'Maintenance History',
+          url: '#/Home/FailureModesLibrary/MaintenanceHistory'
+        },
+        {
+          label: 'Library Of Failure',
+          items: [
+            {
+              label: 'DPM Library',
+              url: '#/Home/FailureModesLibrary/DPMLibrary'
+            },
+            {
+              label: 'Customer Library',
+              url: '#/Home/FailureModesLibrary/CustomerLibrary'
+            }
+          ]
+        },
+        {
+          label: 'RCA of critical failure',
+          url: '#/Home/Prescriptive/RCA'
+        },
+        {
+          label: 'List credible failure modes',
+          url: '#/Home/FailureModesLibrary/ListCredibleFailureModes'
+        },
+      ]
+    },
+    {
+      label: 'Customer database',
+      items: [
+        {
+          label: 'Configuration',
+          url: '#/Home/Compressor/ScrewConfiguration'
+        },
+        {
+          label: 'Data collection',
+          items: [
+            {
+              label: 'Big data',
+              items: [
+                {
+                  label: 'Digital data',
+                  items: [
+                    {
+                      label: 'Screw Compressor',
+                      items: [
+                        {
+                          label: 'Train Data Upload',
+                        },
+                        {
+                          label: 'Prediction Data Upload',
+                        }
+                      ]
+                    },
+                    {
+                      label: 'Centrifugal Pump',
+                      items: [
+                        {
+                          label: 'Train Data Upload',
+                        },
+                        {
+                          label: 'Prediction Data Upload',
+                        }
+                      ]
+                    }
+                  ],
+                  // items: [
+                  //   {
+                  //     label: 'Analog data',
+
+                  //   }
+                  // ]
+                }
+              ]
+            },
+            {
+              label: 'Moderate data',
+              items: [
+                {
+                  label: 'Digital data',
+                  items: [
+                    {
+                      label: 'Pump Data Upload',
+                      url: '#/Home/CentrifugalPump'
+                    }
+                  ]
+                  // items: [
+                  //   {
+                  //     label: 'Analog data',
+
+                  //   }
+                  // ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: 'Forecast',
+          items: [
+            {
+              label: 'Big data',
+              items: [
+                {
+                  label: 'Application / Machine Learning',
+                  items: [
+                    {
+                      label: 'Screw Compressor',
+                      items: [
+                        {
+                          label: 'Train',
+                          url: '#/Home/Compressor/ScrewTrain'
+                        },
+                        {
+                          label: 'Prediction',
+                          url: '#/Home/Compressor/ScrewPrediction'
+                        }
+                      ]
+                    },
+                    {
+                      label: 'Centrifugal Pump',
+                      items: [
+                        {
+                          label: 'Train',
+                          url: '#/Home/CentrifugalPumpTrain'
+                        },
+                        {
+                          label: 'Prediction',
+                          url: '#/Home/CentrifugalPumpPrediction'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            // {
+            //   label: 'Moderate data',
+            //   items: [
+            //     {
+            //       label: 'Statistical analysis'
+            //     }
+            //   ]
+            // }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'Strategic Analysis',
+      items: [
+        {
+          label: 'Develop maintenance strategy',
+          items: [
+            {
+              label: 'RCM (Relaibility Centered Maintenance)',
+              items: [
+                {
+                  label: 'Configuration',
+                  url: '#/Home/Prescriptive/Configuration'
+                },
+                {
+                  label: 'FMEA Add',
+                  url: '#/Home/Prescriptive/ADD'
+                },
+                {
+                  label: 'FCA Add',
+                  url: '#/Home/Prescriptive/FCAAdd'
+                },
+                {
+                  label: 'MSS Add',
+                  url: '#/Home/Prescriptive/MSSAdd'
+                },
+                {
+                  label: 'Display',
+                  url: '#/Home/Prescriptive/Display'
+                }
+              ]
+            },
+            // {
+            //   label: 'RBI (Risk Based Inspection)',
+            // },
+            // {
+            //   label: 'IPF (Intrumenated Protective Function)',
+            // },
+            // {
+            //   label: 'HAZOP (Hazard Operability Analysis)',
+            // }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'Resource Optimization',
+      items: [
+        {
+          label: 'APM (Assets Performance Management) Platform',
+          items: [
+            {
+              label: 'Cost Benefit Analysis',
+              url: '#/Home/Report'
+            },
+            {
+              label: 'Residual Risk Analysis',
+              url: '#/Home/PrescriptivePoc'
+            },
+            // {
+            //   label: 'Optimum Spares Analysis'
+            // }
+          ]
+        },
+        // {
+        //   label: 'APM (Assets Performance Management) Library',
+        //   items: [
+        //     {
+        //       label: 'Repair Time'
+        //     },
+        //     {
+        //       label: 'Repair Cost'
+        //     },
+        //     {
+        //       label: 'Resource'
+        //     },
+        //     {
+        //       label: 'Special Tools'
+        //     },
+        //     {
+        //       label: 'Skill Pool'
+        //     }
+        //   ]
+        // }
+      ]
+    },
+    {
+      label: 'Prescriptive Maintenance',
+      items: [
+        {
+          label: 'Prescriptive Recommendation',
+          url: '#/Home/Prescriptive/List'
+        }
+      ]
+    },
+    {
+      label: 'Recycle Bin',
+      url: '#/Home/RecycleBin'
+    },
+  ];
   constructor(public builder: FormBuilder,
     public http: HttpClient,
     public router: Router,

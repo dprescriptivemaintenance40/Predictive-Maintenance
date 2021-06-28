@@ -22,13 +22,17 @@
                 <span>Dashboard</span></a>
         </li> -->
         <hr class="sidebar-divider ">
+
+        <p-panelMenu [model]="MenuItems" [style]="{'width':'220px'}"></p-panelMenu>
+
+        <!-- <hr class="sidebar-divider ">
         <li class="nav-item active">
             <a [routerLink]="[ '/Home/Education']" class="nav-link">
                 <i [routerLink]="[ '/Home/Education']" class="fas fa-graduation-cap"></i>
                 <span> DPM-Education</span>
             </a>
-        </li>
-        <hr class="sidebar-divider">
+        </li> -->
+        <!-- <hr class="sidebar-divider">
         <li class="nav-item">
             <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-industry"></i>
@@ -41,14 +45,6 @@
                     </a>
                 </li>
             </div>
-            <!-- <div>
-                <li *ngIf="screwCompressor" class="nav-item">
-                    <a [routerLink]="['/Home/Compressor/ScrewConfiguration']" class="nav-link">
-                        <i [routerLink]="['/Home/Compressor/ScrewConfiguration']"></i>
-                        <span>Configuration</span>
-                    </a>
-                </li>
-            </div> -->
             <div *ngIf="screwCompressor" id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
                 <li>
                     <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
@@ -65,8 +61,7 @@
                 </li>
             </div>
             <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <!-- <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewConfiguration']">Configuration</a> -->
+                <div class="bg-white py-2 collapse-inner rounded">                   
                     <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewTrain']">Train</a>
                     <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewPrediction']">Predict</a>
 
@@ -95,7 +90,7 @@
                     </div>
                 </li>
             </div>
-        </li>
+        </li> -->
         <!-- <li class="nav-item" *ngIf="staticEquitment">
             <a class="nav-link collapsed" aria-expanded="true">
                 <i class="fas fa-toolbox"></i>
@@ -103,15 +98,15 @@
             </a>
         </li> -->
 
-        <li *ngIf="report" class="nav-item">
+        <!-- <li *ngIf="report" class="nav-item">
             <a [routerLink]="[ '/Home/Report']" class="nav-link">
                 <i [routerLink]="[ '/Home/Report']"></i>
                 <i class="fas fa-file-pdf"></i>
                 <span>Report</span>
             </a>
-        </li>
+        </li> -->
 
-        <li class="nav-item" *ngIf="prescriptive">
+        <!-- <li class="nav-item" *ngIf="prescriptive">
             <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
                 <i class="fas fa-industry"></i>
                 <span>Prescriptive</span>
@@ -175,13 +170,13 @@
                     </a>
                 </li>
             </div>
-        </li>
-        <li class="nav-item" *ngIf="recycleBin">
+        </li> -->
+        <!-- <li class="nav-item" *ngIf="recycleBin">
             <a [routerLink]="[ '/Home/RecycleBin']" class="nav-link">
                 <i class="fas fa-trash"></i>
                 <span>Recycle Bin</span>
             </a>
-        </li>
+        </li> -->
         <!-- <li class="nav-item">
             <a [routerLink]="[ '/Home/ANDORLOGIC']" class="nav-link">
                 <i class="fas fa-trash"></i>

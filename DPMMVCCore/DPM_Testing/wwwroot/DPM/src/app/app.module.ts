@@ -19,7 +19,7 @@ import { ConfigModule } from './shared/config.service';
     AppComponent,
     LoginRegistrationComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

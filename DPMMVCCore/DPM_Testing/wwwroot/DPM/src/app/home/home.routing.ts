@@ -1,25 +1,16 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { HomeComponent } from "./home.component";
-import { ConfigurationComponent } from "./Compressor/ScrewCompressor/configuration/configuration.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { AuthGuard } from "../auth.guard";
-import { TrainComponent } from "./Compressor/ScrewCompressor/train/train.component";
-import { PredictionComponent } from "./Compressor/ScrewCompressor/prediction/prediction.component";
 import { EducationComponent } from "./education/education.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { ReportComponent } from "./report/report.component";
-import { PrescriptiveUpdateComponent } from "./prescriptive/FMEA/prescriptive-update/prescriptive-update.component";
-import { PrescriptiveConfigurationComponent } from "./prescriptive/FMEA/prescriptive-configuration/prescriptive-configuration.component";
-import { PrescriptiveAddComponent } from "./prescriptive/FMEA/prescriptive-add/prescriptive-add.component";
-import { PrescriptiveDisplayComponent } from "./prescriptive/FMEA/prescriptive-display/prescriptive-display.component";
 import { CentrifugalPumpComponent } from "./Pump/centrifugal-pump/centrifugal-pump.component";
 import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
 import { AndorlogicComponent } from "./ANDORLogic/andorlogic.component";
 import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component";
+import { PrescriptivePocComponent } from "./Prescriptive_poc/prescriptive-poc.component";
 import { CentrifugalPumpPredictionComponent } from "./Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component";
-
-
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -36,7 +27,10 @@ import { CentrifugalPumpPredictionComponent } from "./Pump/centrifugal-pump/cent
                 { path: 'RecycleBin', component: RecycleBinComponent },
                 { path: 'ANDORLOGIC', component: AndorlogicComponent },
                 { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent },
+                { path: 'RecycleBin', component: RecycleBinComponent },
                 { path: 'CentrifugalPumpPrediction', component: CentrifugalPumpPredictionComponent },
+                { path: 'PrescriptivePoc', component: PrescriptivePocComponent },
+                { path: 'FailureModesLibrary', loadChildren: () => import('./FailureModeLibrary/failure-modes-library.module').then(a => a.FailureModesLibraryModule)},                
             ]
         }
     ])],
