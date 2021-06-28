@@ -91,7 +91,8 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
                         item.InsertedDate = DateTime.Now.Date;
                     }
                     item.InsertedDate = DateTime.Now.Date;
-                    item.Prediction = "pending";
+                    item.UserId = userId;
+                    item.Prediction = "pending";                    
                     _context.CentrifugalPumpPredictions.Add(item);
                     await _context.SaveChangesAsync();
                 }

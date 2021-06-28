@@ -1,12 +1,9 @@
 <p-toast position="top-right"></p-toast>
 
-<button type="button" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;"
-    (click)="CPChangeToBulkPrediction()" class="btn btn-primary">{{SingleCentrifugalPumpBulkPredictionName}}</button><br>
+<button type="button" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;" (click)="CPChangeToBulkPrediction()" class="btn btn-primary">{{SingleCentrifugalPumpBulkPredictionName}}</button><br>
 <div style="padding-left: 5px;" class="row" *ngIf="showCentrifugalPumpBulkPrediction">
     <div class="col-sm col-md-4 form-group">
-        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)"
-            placeholder="Upload file"
-            accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
     </div>
     <b>From Date :</b>
     <div class="col-sm">
@@ -23,12 +20,11 @@
 <div style="padding-left: 5px;" class="row" *ngIf="showCentrifugalPumpBulkPrediction">
 
     <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()"
-            class="btn btn-primary">Get Excel Format</button>
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
     </div>
 
     <div class="col-sm">
-       <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button> 
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
     </div>
     <div class="col-sm">
     </div>
@@ -45,11 +41,11 @@
     </div>
     <div class="td">
         <label data-toggle="tooltip" data-placement="top" title="">I</label>
-        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.I" class="form-control"placeholder="Enter value">
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.I" class="form-control" placeholder="Enter value">
     </div>
     <div class="td">
         <label data-toggle="tooltip" data-placement="top" title="">Q</label>
-        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Q" class="form-control"placeholder="Enter value">
+        <input type="number" [(ngModel)]="CentrifugalPumpconfigurationObj.Q" class="form-control" placeholder="Enter value">
     </div>
     <div class="td">
         <label>
@@ -64,8 +60,8 @@
 
 <div style="padding: 5px;" *ngIf="showCentrifugalPumpBulkPrediction">
     <div class="card">
-        <p-table id="exportexcel" [value]="centrifugalPumpWithPrediction" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
-            [loading]="loading">
+        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="centrifugalPumpWithPrediction" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
                     <col style="width:8em;">
@@ -95,7 +91,7 @@
                     </th>
                     <th pSortableColumn="Prediction">Prediction
                         <p-sortIcon field="Prediction"></p-sortIcon>
-                    </th>  
+                    </th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-centrifugalPumpWithPrediction>
@@ -108,6 +104,11 @@
                     <td>{{centrifugalPumpWithPrediction.Prediction}}</td>
                 </tr>
             </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="6">No records to show.</td>
+                </tr>
+            </ng-template>
         </p-table>
     </div>
-</div> 
+</div>

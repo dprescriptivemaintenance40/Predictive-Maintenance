@@ -37,7 +37,10 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     private configService: ConfigService,
     private CentrifugalPumpPredictionName: CentrifugalPumpConstantAPI,
     private CentrifugalPumpPredictionMethod: CommonBLService,
-   ) { }
+   ) { 
+    this.FromDate = moment().format('YYYY-MM-DD');
+    this.ToDate = moment().format('YYYY-MM-DD');
+   }
 
   ngOnInit(): void {
     this.title.setTitle('CentrifugalPump Prediction | Dynamic Prescriptive Maintenence');
