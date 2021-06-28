@@ -84,6 +84,10 @@ export class HomeComponent implements OnInit {
       label: 'Customer database',
       items: [
         {
+          label: 'Configuration',
+          url: '#/Home/Compressor/ScrewConfiguration'
+        },
+        {
           label: 'Data collection',
           items: [
             {
@@ -93,33 +97,34 @@ export class HomeComponent implements OnInit {
                   label: 'Digital data',
                   items: [
                     {
-                      label: 'Analog data',
+                      label: 'Screw Compressor',
                       items: [
                         {
-                          label: 'Screw Compressor',
-                          items: [
-                            {
-                              label: 'Train Data Upload',
-                            },
-                            {
-                              label: 'Prediction Data Upload',
-                            }
-                          ]
+                          label: 'Train Data Upload',
                         },
                         {
-                          label: 'Centrifugal Pump',
-                          items: [
-                            {
-                              label: 'Train Data Upload',
-                            },
-                            {
-                              label: 'Prediction Data Upload',
-                            }
-                          ]
+                          label: 'Prediction Data Upload',
+                        }
+                      ]
+                    },
+                    {
+                      label: 'Centrifugal Pump',
+                      items: [
+                        {
+                          label: 'Train Data Upload',
+                        },
+                        {
+                          label: 'Prediction Data Upload',
                         }
                       ]
                     }
-                  ]
+                  ],
+                  // items: [
+                  //   {
+                  //     label: 'Analog data',
+
+                  //   }
+                  // ]
                 }
               ]
             },
@@ -130,23 +135,20 @@ export class HomeComponent implements OnInit {
                   label: 'Digital data',
                   items: [
                     {
-                      label: 'Analog data',
-                      items: [
-                        {
-                          label: 'Pump Data Upload',
-                          url: '#/Home/CentrifugalPump'
-                        }
-                      ]
+                      label: 'Pump Data Upload',
+                      url: '#/Home/CentrifugalPump'
                     }
                   ]
+                  // items: [
+                  //   {
+                  //     label: 'Analog data',
+
+                  //   }
+                  // ]
                 }
               ]
             }
           ]
-        },
-        {
-          label: 'Configuration',
-          url: '#/Home/Compressor/ScrewConfiguration'
         },
         {
           label: 'Forecast',
