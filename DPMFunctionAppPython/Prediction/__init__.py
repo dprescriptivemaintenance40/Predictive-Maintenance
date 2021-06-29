@@ -20,7 +20,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             user="postgres",
             password="Admin@123")
     cur = conn.cursor()
-    if type == "screwcompressor":
+    if type == "compressor":
         if name == "prediction":
             classSQL = """select * from "compressurewithclassification" where "UserId" = %s ORDER BY "CompClassID" ASC   """                
             cur.execute(classSQL, [UserId])
@@ -115,17 +115,17 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 return func.HttpResponse(f"Hello, Future Prediction. Process completed")
     elif type == "pump":
         if name == "prediction":
-            classSQL = """select * from "centrifugalpumpTraindetails" ORDER BY "CentrifugalTrainID" ASC   """                                  
-            cur.execute(classSQL)
+            classSQL = """select * from "centrifugalpumpTraindetails" where "UserId" = %s ORDER BY "CentrifugalTrainID" ASC   """                                  
+            cur.execute(classSQL, [UserId])
 
             row_header = [x[0] for x in cur.description]
             # provide path of TrainWithClassification
             centrifugalpumpClassificationdata = pd.DataFrame(
                 cur.fetchall(), columns=row_header)
 
-            predictSQL = """select * from "centrifugalpumppredictiontable" where ("Prediction" isnull or "Prediction" = 'pending')  
+            predictSQL = """select * from "centrifugalpumppredictiontable" where "UserId" = %s and ("Prediction" isnull or "Prediction" = 'pending')  
                 ORDER BY "CentifugalPumpPID" ASC  """
-            cur.execute(predictSQL)
+            cur.execute(predictSQL, [UserId])
 
             row_header = [x[0] for x in cur.description]
             # provide path of Test Data for Prediction
@@ -140,10 +140,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 print(train.head())
                 lr = LogisticRegression(
                     random_state=0, solver='lbfgs', max_iter=10000)
-                lr.fit(train[['P1', 'P2', 'Amperage', 'Q']], train['Classification'])
+                lr.fit(train[['P1', 'P2', 'Q', 'I']], train['Classification'])
                 print("======================================Test Data set================================================")
                 centrifugalpumpTestdata["Predicted"] = lr.predict(
-                    centrifugalpumpTestdata[['P1', 'P2', 'Amperage', 'Q']])
+                    centrifugalpumpTestdata[['P1', 'P2', 'Q', 'I']])
                 print(centrifugalpumpTestdata.head())
                 count = 0
                 for row in centrifugalpumpTestdata.itertuples():
