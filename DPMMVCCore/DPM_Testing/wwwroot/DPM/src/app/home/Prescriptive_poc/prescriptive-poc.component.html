@@ -1,53 +1,54 @@
-<!-- <div *ngIf="prescriptiveSelect">
-    <div class="card shadow div-in-middle">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Select</b></li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">Assets</label>
-                    <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
-                        class="form-control">
-                        <option value="">Choose..</option>
-                        <option value="Pump" selected>Pump</option>
-                    </select>
+<p-toast position="top-right"></p-toast>
+<div class="card shadow div-in-middle" style="width: 70rem;">
+    <div class="row">
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Machine type</h5>
+            </label>
+            <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
+                <option value="">Choose..</option>
+                <!-- <option value="Compressor" selected>Compressor</option> -->
+                <option value="Pump" selected>Pump</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Equipment Type</h5>
+            </label>
+            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
+                <option value="">Choose..</option>
+                <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;"> <h5>Tag Number</h5></label>
+            <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                 <option value="">Choose..</option>
+                 <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <div class="row">
+                <div class="col-sm" style="padding:30px;">
+                    <a class="btn btn-dark" (click)="getPrescriptiveRecordsByEqui()">Done</a>
                 </div>
-            </li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style="    margin-right: 12px;">Sub Units</label>
-                    <select [(ngModel)]="EquipmentType" class="form-select" class="form-control">
-                        <option value="">Choose..</option>
-                        <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
-                    </select>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber"
-                        class="form-control" placeholder="Tag Number" aria-label="Tag Number"
-                        aria-describedby="basic-addon1">
-                </div>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-dark" (click)="GeneratePrescription()">Done</button>
-            </li>
-
-        </ul>
+            </div>
+        </div>
     </div>
-</div> -->
+</div>
 
-<div class="row">
-    <div class="col-xl-12 col-lg-11">
+<div class="row" *ngIf="showPrescriptive">
+    <div class="div-in-middle col-md-11">
         <div class="card shadow mb-4 con">
             <div class="card-header">
-                Equipment Type : Centrifugal Pump
+                Equipment Type : {{EquipmentType}}
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6" *ngFor="let row of prescriptiveRecords[0]?.centrifugalPumpPrescriptiveFailureModes">
+                    <div class="col-md-6" *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
                         <div class="row">
                             <div class="col-md-6">
-                                <b>Tag Number</b> : {{prescriptiveRecords[0].TagNumber}}
+                                <b>Tag Number</b> : {{SelectedTagNumber}}
                             </div>
                             <div class="col-md-6">
                                 <b>  Failure Mode</b> : {{row.FunctionMode}}

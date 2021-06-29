@@ -30,11 +30,13 @@
 </div>
 
 <p-toast position="top-right"></p-toast>
-<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
-    <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark"(click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
+<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12">
+    <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark" (click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
     <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="float: right;" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
     <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="float: right;" (click)="ADDNextFCA()" pTooltip="Select To Add FCA" tooltipPosition="top"><i class="pi pi-plus">Add FCA</i></button><br>
-    <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="float: right;"  (click)="SaveFCA()">Save FCA</button>
+    <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="float: right;" (click)="SaveFCA()">Save FCA</button>
+</div>
+<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-organizationChart [value]="data1" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -397,126 +399,126 @@
                 <button class="btn btn-dark " style="float:right;" (click)="CommentFourth()"> <i class="fa fa-check" aria-hidden="true"></i></button>
             </ng-template>
         </p-card>
-        </div>
-        <div class="card" style="margin: 20px;" *ngIf="FailuerComments" id="PatternFailuerComments">
-            <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}">
-                <ng-template pTemplate="title">
-                </ng-template>
-                <ng-template pTemplate="subtitle">
-                    <p><b> 8. Do you have any comments regarding the failure of this equipment or how the maintenance of the equipment
+    </div>
+    <div class="card" style="margin: 20px;" *ngIf="FailuerComments" id="PatternFailuerComments">
+        <p-card [ngClass]=" {disableddiv: failuercomments  ? true : false}">
+            <ng-template pTemplate="title">
+            </ng-template>
+            <ng-template pTemplate="subtitle">
+                <p><b> 8. Do you have any comments regarding the failure of this equipment or how the maintenance of the equipment
                 could be improved
             </b></p>
-                </ng-template>
-                <ng-template pTemplate="content">
-                    <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText" id="message" name="body" rows="3" placeholder="Add comments here (Optional)"></textarea>
-                </ng-template>
-                <ng-template pTemplate="footer">
-                    <!-- <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1" (click)="FCAFreeTextCancel()"><i class="fa fa-times" aria-hidden="true"></i></button> -->
-                    <a class="btn btn-white" style="border:none"> </a>
-                    <button class="btn btn-dark" *ngIf="FCAFreeTextSave1" style="float:right;" (click)="FCAFreeTextSave()"><i class="fa fa-check" aria-hidden="true" ></i></button>
-                </ng-template>
-            </p-card>
-        </div>
-        <div class="card" style="margin: 20px;" *ngIf="SafeUsefulLife" id="SafeUsefulLife">
-            <p-card [ngClass]=" {disableddiv: SafeUsefulLife  ? false : true}">
-                <ng-template pTemplate="title">
-                </ng-template>
-                <ng-template pTemplate="subtitle">
-                    <p><b> 9. {{(ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}
+            </ng-template>
+            <ng-template pTemplate="content">
+                <textarea class="form-control custom-textarea" [(ngModel)]="FCAFreeText" id="message" name="body" rows="3" placeholder="Add comments here (Optional)"></textarea>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <!-- <button class="btn btn-dark" *ngIf="FCAFreeTextCancel1" (click)="FCAFreeTextCancel()"><i class="fa fa-times" aria-hidden="true"></i></button> -->
+                <a class="btn btn-white" style="border:none"> </a>
+                <button class="btn btn-dark" *ngIf="FCAFreeTextSave1" style="float:right;" (click)="FCAFreeTextSave()"><i class="fa fa-check" aria-hidden="true" ></i></button>
+            </ng-template>
+        </p-card>
+    </div>
+    <div class="card" style="margin: 20px;" *ngIf="SafeUsefulLife" id="SafeUsefulLife">
+        <p-card [ngClass]=" {disableddiv: SafeUsefulLife  ? false : true}">
+            <ng-template pTemplate="title">
+            </ng-template>
+            <ng-template pTemplate="subtitle">
+                <p><b> 9. {{(ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)') ? 'Safe Life' : 'Useful life'}} for {{PatternFMName}}
                     </b></p>
-                </ng-template>
-                <ng-template pTemplate="content">
-                    <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)' ">
-                        <div class="col-md-3">
-                            <label> Safe Life in years : </label>
-                        </div>
-                        <div class="col-md-3">
-                            <select #value (change)="SafeLifeCalculation(value.value)" style="width: 50%;" class="form-control">
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)' || ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)' ">
+                    <div class="col-md-3">
+                        <label> Safe Life in years : </label>
+                    </div>
+                    <div class="col-md-3">
+                        <select #value (change)="SafeLifeCalculation(value.value)" style="width: 50%;" class="form-control">
                             <option value="L10">L10 life</option>
                             <option value="L20">L20 life</option>
                         </select>
-                        </div>
-                        <div class="col-md-3">
-                            <input style="width: 30%;" type="number" [(ngModel)]="SafeLife" name="safelife" class="form-control" disabled>
-                        </div>
                     </div>
-                    <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || ConsequenceFM == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' || ConsequenceFM == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)' ">
-                        <div class="col-md-3">
-                            <label> Useful Life</label>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="number" [(ngModel)]="UsefulLife" name="usefullife" class="form-control">
-                        </div>
+                    <div class="col-md-3">
+                        <input style="width: 30%;" type="number" [(ngModel)]="SafeLife" name="safelife" class="form-control" disabled>
                     </div>
-                    <div class="row" style="padding: 15px;">
-                        <div class="col-md-3">
-                            <label>Do you want weibull analysis for alpha and beta</label>
+                </div>
+                <div class="row" style="padding: 15px;" *ngIf="ConsequenceFM == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || ConsequenceFM == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' || ConsequenceFM == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)' ">
+                    <div class="col-md-3">
+                        <label> Useful Life</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" [(ngModel)]="UsefulLife" name="usefullife" class="form-control">
+                    </div>
+                </div>
+                <div class="row" style="padding: 15px;">
+                    <div class="col-md-3">
+                        <label>Do you want weibull analysis for alpha and beta</label>
 
-                        </div>
-                        <div class="col-sm">
-                            Yes
-                            <td><input type="radio" [(ngModel)]="WebalYN" value="YES" name="ABYN" />
-                        </div>
-                        <div class="col-sm">
-                            No
-                            <td><input type="radio" [(ngModel)]="WebalYN" value="No" name="ABYN" />
-                        </div>
                     </div>
-                    <div class="row" style="padding: 15px;" *ngIf="WebalYN == 'No'">
-                        <small>Please provide values for alpha and beta</small>
+                    <div class="col-sm">
+                        Yes
+                        <td><input type="radio" [(ngModel)]="WebalYN" value="YES" name="ABYN" />
                     </div>
-                    <div class="row" style="padding: 15px;" *ngIf="WebalYN == 'No'">
-                        <div class="col-md-3">
-                            <label>Alpha</label>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="number" [(ngModel)]="alpha" name="WebalYN" class="form-control">
-                        </div>
+                    <div class="col-sm">
+                        No
+                        <td><input type="radio" [(ngModel)]="WebalYN" value="No" name="ABYN" />
                     </div>
-                    <div class="row" style="padding: 15px;" *ngIf="WebalYN == 'No'">
-                        <div class="col-md-3">
-                            <label>Beta</label>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="number" [(ngModel)]="beta" name="WebalYN" class="form-control">
-                        </div>
+                </div>
+                <div class="row" style="padding: 15px;" *ngIf="WebalYN == 'No'">
+                    <small>Please provide values for alpha and beta</small>
+                </div>
+                <div class="row" style="padding: 15px;" *ngIf="WebalYN == 'No'">
+                    <div class="col-md-3">
+                        <label>Alpha</label>
                     </div>
-                </ng-template>
-                <ng-template pTemplate="footer">
-                    <a class="btn btn-white" style="border:none"> </a>
-                    <button class="btn btn-dark" style="float:right;" (click)="SafeUsefulLifeSave()"><i class="fa fa-check" aria-hidden="true" ></i></button>
-                </ng-template>
-            </p-card>
-        </div>
-        <div class="card" style="margin: 20px;" *ngIf="alphaBeta && WebalYN == 'YES' " id="alphaBeta">
-            <p-card [ngClass]=" {disableddiv: alphaBeta  ? false : true}">
-                <ng-template pTemplate="title">
+                    <div class="col-md-3">
+                        <input type="number" [(ngModel)]="alpha" name="WebalYN" class="form-control">
+                    </div>
+                </div>
+                <div class="row" style="padding: 15px;" *ngIf="WebalYN == 'No'">
+                    <div class="col-md-3">
+                        <label>Beta</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" [(ngModel)]="beta" name="WebalYN" class="form-control">
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-white" style="border:none"> </a>
+                <button class="btn btn-dark" style="float:right;" (click)="SafeUsefulLifeSave()"><i class="fa fa-check" aria-hidden="true" ></i></button>
+            </ng-template>
+        </p-card>
+    </div>
+    <div class="card" style="margin: 20px;" *ngIf="alphaBeta && WebalYN == 'YES' " id="alphaBeta">
+        <p-card [ngClass]=" {disableddiv: alphaBeta  ? false : true}">
+            <ng-template pTemplate="title">
 
-                </ng-template>
-                <ng-template pTemplate="subtitle">
-                    <p><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha, beta.
+            </ng-template>
+            <ng-template pTemplate="subtitle">
+                <p><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha, beta.
             </b></p>
-                    <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-dark" (click)="ExcelDownload()" title="Click here to get webal excel format" ><a class="pi pi-download"></a></button></small></p>
-                </ng-template>
-                <ng-template pTemplate="content">
-                    <div class="row" style="padding: 15px;">
-                        <div class="col-sm col-md-4 form-group">
-                            <input type="file" class="form-control-file btn btn-secondary" (change)="Webal($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-dark" (click)="ExcelDownload()" title="Click here to get webal excel format" ><a class="pi pi-download"></a></button></small></p>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div class="row" style="padding: 15px;">
+                    <div class="col-sm col-md-4 form-group">
+                        <input type="file" class="form-control-file btn btn-secondary" (change)="Webal($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
-                        </div>
                     </div>
-                    <div class="row" style="padding: 15px;">
-                        <label>Alpha  :  {{alpha  | number : '1.0-2' }}</label>
-                    </div>
-                    <div class="row" style="padding: 15px;">
-                        <label>Beta : {{beta  | number : '1.0-2' }}</label>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="footer">
-                    <a class="btn btn-white" style="border:none"> </a>
-                    <button class="btn btn-dark" style="float:right;" (click)="alphaBetaSave()"><i class="fa fa-check" aria-hidden="true" ></i></button>
-                </ng-template>
-            </p-card>
-        </div>
+                </div>
+                <div class="row" style="padding: 15px;">
+                    <label>Alpha  :  {{alpha  | number : '1.0-2' }}</label>
+                </div>
+                <div class="row" style="padding: 15px;">
+                    <label>Beta : {{beta  | number : '1.0-2' }}</label>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-white" style="border:none"> </a>
+                <button class="btn btn-dark" style="float:right;" (click)="alphaBetaSave()"><i class="fa fa-check" aria-hidden="true" ></i></button>
+            </ng-template>
+        </p-card>
+    </div>
     <!-- </div> -->
 </div>

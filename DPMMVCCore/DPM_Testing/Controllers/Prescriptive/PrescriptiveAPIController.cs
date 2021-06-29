@@ -47,6 +47,27 @@ namespace DPM.Controllers.Prescriptive
         }
 
         [HttpGet]
+        [Route("GetPrescriptiveByEquipmentType")]
+        public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetPrescriptiveByEquipmentType(string machine, string Equi, string TagNumber)
+        {
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                var prescriptiveModelData = await _context.PrescriptiveModelData.FirstOrDefaultAsync(a => a.UserId == userId
+                                                                                 && a.MachineType == machine
+                                                                                 && a.EquipmentType == Equi
+                                                                                 && a.TagNumber == TagNumber);
+                prescriptiveModelData.centrifugalPumpPrescriptiveFailureModes = await _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == prescriptiveModelData.CFPPrescriptiveId).ToListAsync();
+                return Ok(prescriptiveModelData);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("GetPrescriptiveById")]
         public async Task<ActionResult<CentrifugalPumpPrescriptiveModel>> GetPrescriptiveById(int id)
         {
@@ -89,6 +110,22 @@ namespace DPM.Controllers.Prescriptive
             }
         }
 
+        [HttpGet]
+        [Route("GetTagNumber")]
+        public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetTagNumber()
+        {
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return await _context.PrescriptiveModelData.Where(a => a.UserId == userId).ToListAsync();
+
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
 
         [HttpGet]
         [Route("GetPrescriptiveRecordsForFCA")]
@@ -120,22 +157,22 @@ namespace DPM.Controllers.Prescriptive
         {
             try
             {
-		        var childData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
-		        prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
+                var childData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
+                prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
                 prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = null;
                 _context.PrescriptiveModelData.Add(prescriptiveModel);
                 await _context.SaveChangesAsync();
-		
-	            int ID = prescriptiveModel.CFPPrescriptiveId;
-		
-	    	    foreach (var item in childData)
+
+                int ID = prescriptiveModel.CFPPrescriptiveId;
+
+                foreach (var item in childData)
                 {
-		          item.CPPFMId = 0;
-		          item.CFPPrescriptiveId = ID;
-		          _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
-                  await _context.SaveChangesAsync();
-		        }
-                  
+                    item.CPPFMId = 0;
+                    item.CFPPrescriptiveId = ID;
+                    _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
+                    await _context.SaveChangesAsync();
+                }
+
 
                 return Ok();
 
@@ -231,10 +268,10 @@ namespace DPM.Controllers.Prescriptive
                 var rSquared = dblR * dblR;
                 var yIntercept = meanY - ((sCo / ssX) * meanX);
                 var slope = sCo / ssX;
-                var alpha = Math.Exp(yIntercept) ;
+                var alpha = Math.Exp(yIntercept);
                 var beta = 1 / slope;
 
-                return Ok(new { rSquared , alpha , beta });
+                return Ok(new { rSquared, alpha, beta });
             }
             catch (Exception)
             {
@@ -381,7 +418,8 @@ namespace DPM.Controllers.Prescriptive
                 var collection = centrifugalPumpPrescriptiveModel[0].centrifugalPumpPrescriptiveFailureModes.ToList();
                 foreach (var item in collection)
                 {
-                    if(item.CPPFMId == prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].CPPFMId) {
+                    if (item.CPPFMId == prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].CPPFMId)
+                    {
                         item.Pattern = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].Pattern;
                         item.FCACondition = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].FCACondition;
                         item.FCAInterval = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].FCAInterval;
@@ -469,7 +507,7 @@ namespace DPM.Controllers.Prescriptive
 
                 _context.Entry(centrifugalPumpPrescriptiveModel[0]).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-               
+
                 var collection = centrifugalPumpPrescriptiveModel[0].centrifugalPumpPrescriptiveFailureModes.ToList();
                 foreach (var item in collection)
                 {

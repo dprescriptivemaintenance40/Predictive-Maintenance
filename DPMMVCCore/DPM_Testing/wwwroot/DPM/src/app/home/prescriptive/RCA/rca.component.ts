@@ -862,11 +862,13 @@ export class RCAComponent {
         this.RCAReportBodyEnabled = false
         this.RCAReportData = []
         this.RCAReportTree = []
-        this.RCAReportData = p
-        if(p.RCAQuantitiveTree !== 'None'){
-            this.RCAReportTree = JSON.parse(p.RCAQuantitiveTree);
-            this.TraverseNestedJson(this.RCAReportTree, "disable");
+        this.RCAReportData = p;
+        if(p.RCAQuantitiveTree !== 'None'){            
+            this.RCAReportTree = JSON.parse(p.RCAQuantitiveTree);           
+        }else{
+            this.RCAReportTree = JSON.parse(p.RCAQualitativeTree);
         }
+        this.TraverseNestedJson(this.RCAReportTree, "disable");
         this.RCAReportBodyEnabled = true
         this.changeDetectorRef.detectChanges()
 

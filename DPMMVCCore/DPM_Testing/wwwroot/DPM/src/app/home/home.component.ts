@@ -7,7 +7,6 @@ import { CommonLoadingDirective } from '../shared/Loading/common-loading.directi
 import { UserService } from './Services/user.services';
 import { EventEmitterService } from './Services/event-emitter.service';
 import { Title } from '@angular/platform-browser';
-import { url } from 'node:inspector';
 
 @Component({
   selector: 'app-home',
@@ -36,48 +35,48 @@ export class HomeComponent implements OnInit {
     {
       label: 'Failure Mode Library',
       items: [
-        {
-          label: 'Asset’s list',
-          items: [
-            {
-              label: 'User',
-              url: '#/Home/FailureModesLibrary/User-Library'
-            },
-            {
-              label: 'Filter',
-              url: '#/Home/FailureModesLibrary/User-Library'
-            }
-          ]
-        },
-        {
-          label: 'Criticality Assessment',
-          url: '#/Home/FailureModesLibrary/CriticalityAssessment'
-        },
-        {
-          label: 'Maintenance History',
-          url: '#/Home/FailureModesLibrary/MaintenanceHistory'
-        },
-        {
-          label: 'Library Of Failure',
-          items: [
-            {
-              label: 'DPM Library',
-              url: '#/Home/FailureModesLibrary/DPMLibrary'
-            },
-            {
-              label: 'Customer Library',
-              url: '#/Home/FailureModesLibrary/CustomerLibrary'
-            }
-          ]
-        },
+        // {
+        //   label: 'Asset’s list',
+        //   items: [
+        //     {
+        //       label: 'User',
+        //       url: '#/Home/FailureModesLibrary/User-Library'
+        //     },
+        //     {
+        //       label: 'Filter',
+        //       url: '#/Home/FailureModesLibrary/User-Library'
+        //     }
+        //   ]
+        // },
+        // {
+        //   label: 'Criticality Assessment',
+        //   url: '#/Home/FailureModesLibrary/CriticalityAssessment'
+        // },
+        // {
+        //   label: 'Maintenance History',
+        //   url: '#/Home/FailureModesLibrary/MaintenanceHistory'
+        // },
+        // {
+        //   label: 'Library Of Failure',
+        //   items: [
+        //     {
+        //       label: 'DPM Library',
+        //       url: '#/Home/FailureModesLibrary/DPMLibrary'
+        //     },
+        //     {
+        //       label: 'Customer Library',
+        //       url: '#/Home/FailureModesLibrary/CustomerLibrary'
+        //     }
+        //   ]
+        // },
         {
           label: 'RCA of critical failure',
           url: '#/Home/Prescriptive/RCA'
         },
-        {
-          label: 'List credible failure modes',
-          url: '#/Home/FailureModesLibrary/ListCredibleFailureModes'
-        },
+        // {
+        //   label: 'List credible failure modes',
+        //   url: '#/Home/FailureModesLibrary/ListCredibleFailureModes'
+        // },
       ]
     },
     {

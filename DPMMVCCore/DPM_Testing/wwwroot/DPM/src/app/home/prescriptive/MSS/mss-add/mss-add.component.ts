@@ -129,15 +129,14 @@ export class MSSAddComponent implements OnInit {
 
   getPrescriptiveRecords() {
     this.SelectBoxEnabled = true;
-    var url: string = this.prescriptiveContantAPI.PrescriptiveRecordsForMSS
-    this.prescriptiveBLService.getWithoutParameters(url).subscribe(
-      (res: any) => {
-        this.PrescriptiveTreeList = res;
-        res.forEach(element => {
-          this.TagList.push(element.TagNumber)
+    var url: string = this.prescriptiveContantAPI.PrescriptiveRecordsForMSS;
+    this.prescriptiveBLService.getWithoutParameters(url)
+      .subscribe((res: any) => {
+          this.PrescriptiveTreeList = res;
+          res.forEach(element => {
+            this.TagList.push(element.TagNumber)
+          });
         });
-      }
-    )
   }
 
   TagNumberSelect() {

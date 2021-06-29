@@ -143,7 +143,7 @@
                             <td>{{p.MaintainenancePractice}}</td>
                             <td class="text-truncate" pTooltip="{{p.FrequencyMaintainenance}}" tooltipPosition="top">{{p.FrequencyMaintainenance}}</td>
                             <td>{{p.ConditionMonitoring}}</td>
-                            <td>{{p.Consequence}}</td>
+                            <td class="text-truncate" pTooltip="{{p.Consequence}}" tooltipPosition="top">{{p.Consequence}}</td>
                         </tr>
                         <tr *ngIf="FailureModeDataTabe2.length == 0">
                             <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>
