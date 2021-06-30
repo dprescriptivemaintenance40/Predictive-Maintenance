@@ -430,8 +430,10 @@ export class RCAComponent {
     }
 
     async DeleteRCARecord(p) {
-        var j = JSON.parse(p.RCATree)
-        await this.TraverseNestedJson(j, 'delete')
+        if(p.RCAQualitativeTree != 'None'){
+            var j = JSON.parse(p.RCAQualitativeTree)
+            await this.TraverseNestedJson(j, 'delete')   
+        }
         const params = new HttpParams()
             .set('id', p.RCAID)
         this.commonBL.DeleteWithParam(this.RCAAPIName.RCADeleteAPI, params)
