@@ -1,9 +1,10 @@
 <p-toast position="top-right"></p-toast>
-<div id="BackToNext" class="col-md-12">
-    <p-card>
-        <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()"><i class="pi pi-arrow-right"></i></button> <br><br>
-        <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#ConsequenceSubmitModal">Save Consequences</button><br><br>
-
+<div id="BackToNext"  class="col-md-12">
+    <button *ngIf="prescriptiveTreeNextEnable" label="Back" type="button" class="btn btn-dark" style="margin-left: 40px" (click)="treeNext()"  pTooltip="Add Consequences" tooltipPosition="top"><i class="pi pi-arrow-right"></i></button> <br><br>
+    <button *ngIf="SaveConcequencesEnable" label="Save Concequences" type="button" class="btn btn-dark" style="margin-left: 30px" data-toggle="modal" data-target="#ConsequenceSubmitModal">Save Consequences</button><br><br>
+</div>
+<div class="col-md-12"style="overflow: scroll;">
+    <!-- <p-card> -->
         <p-organizationChart [value]="data1" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
@@ -15,7 +16,7 @@
                 {{node.label}}
             </ng-template>
         </p-organizationChart>
-    </p-card>
+    <!-- </p-card> -->
 </div>
 
 <!--    Consequences -->
@@ -153,8 +154,8 @@
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
+            <a class="btn btn-white" style="border:none"> </a>
             <button label="Next" type="button" class="btn btn-dark" style="float: right;" (click)="Consequence4Next()"><i class="pi pi-arrow-right"></i></button>
-
         </ng-template>
     </p-card>
 </div>
@@ -165,7 +166,7 @@
             <small class="form-text text-muted"><h5> Your {{FMLSConsequenceName}} Tree </h5></small>
         </span>
         <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()"><i class="pi pi-arrow-left"></i></button> &nbsp; &nbsp;
-        <button label="Back" type="button" class="btn btn-dark" (click)="ADDConsequence()"><i class="pi pi-plus"></i> Consequence</button> <br><br>
+        <button label="Back" type="button" class="btn btn-dark" (click)="ADDConsequence()"><i class="pi pi-plus"></i> ADD</button> <br><br>
         <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>

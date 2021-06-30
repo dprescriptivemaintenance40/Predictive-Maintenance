@@ -813,6 +813,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     )
     const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    
   }
 
   treeSave() {
@@ -919,11 +920,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.consequenceTreeColorNodeD = 'p-person'
 
     this.changeDetectorRef.detectChanges();
-    // const element = document.querySelector("#scolltoAddConsequence")
-    // if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     const element = document.querySelector("#prescriptive")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    
+  
   }
   FailureEffectNext() {
     this.prescriptiveFailureMode = false;
