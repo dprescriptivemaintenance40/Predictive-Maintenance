@@ -23,7 +23,12 @@ import { TreeNode } from 'src/app/shared/organization-chart/tree.node';
 })
 export class RCAComponent {
     @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
+    @ViewChild('pdfTable1', { static: false }) pdfTable1: ElementRef;
     @ViewChild('image') image;
+    public imagedivRCA: boolean = true
+    public hide: boolean = false;
+    public RCAInput: string = "";
+    public ActionRecommendation: string = "";
     tree: RCAComponent;
     panZoomController;
     panZoomController1;
