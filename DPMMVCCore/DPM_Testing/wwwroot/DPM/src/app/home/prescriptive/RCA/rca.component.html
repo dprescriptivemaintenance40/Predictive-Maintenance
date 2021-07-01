@@ -62,7 +62,7 @@
                                                     aria-hidden="true"></i></a>&nbsp;&nbsp;
                                             <a title="View {{p.RCALabel}}" data-toggle="modal" data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i
                                                     class="pi pi-eye"></i> </a>&nbsp;&nbsp;
-                                            <!-- <a title="Delete {{p.RCALabel}}" style="color: red;" (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a> -->
+                                            <a title="Delete {{p.RCALabel}}" style="color: red;" (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -320,100 +320,183 @@
           </button>
             </div>
             <div class="modal-body" style="overflow: scroll; height: 80em;padding-left: 50;">
-                <div id="pdfTable" #pdfTable *ngIf="RCAReportBodyEnabled">
-                    <div>
-                        <label><u><b>Root Cause Analysis (RCA)</b></u></label>
-                    </div>
-                    <div>
-                        <label><u><b>Summary</b></u></label>
-                    </div>
-                    <div>
-                        <p>This report is based on the results of a technical process for investigation and analysis of failure causes. Root Cause Analysis (RCA) method used is based on following steps: </p>
-                    </div>
-                    <div>
-                        <ul style="list-style-type:disc; margin: left 40px;">
-                            <li>Problem identification</li>
-                            <li>Judgment of problem criticality. </li>
-                            <li>Identification of the basic causes preceding the problem </li>
-                            <li>Identification of the reason of the preceding causes. </li>
-                        </ul>
-                        <label>Root cause analysis is based on a wide range of data collection including:</label>
-                        <ul style="list-style-type:disc; margin: left 40px;">
-                            <li>Operation data </li>
-                            <li>Asset data and drawing </li>
-                            <li>Historical data </li>
-                        </ul>
-                        <p>
-                            The results of the analysis integrated into an assessment process and providing a set of consistent conclusions
-                        </p>
-                        <p>
-                            A brief introduction of the system data and considerations are briefly described. RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments
-                            conducted.
-                        </p>
-                        <p>
-                            Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.
-                        </p>
-                    </div>
-                    <div>
-                        <label><u><b>Introduction</b></u></label>
-                    </div>
-                    <div>
-                        <p>RCA analysis completed on
+                    <ul *ngIf="!RCAQualitativeReport || !RCAQuantitativeReport" class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div style="padding-bottom: 20px;">
+                            <label style="margin-right: 12px;">Select</label>
+                            <select (change)="RCATypeReport()" [(ngModel)]="RCAReportType" class="form-select" class="form-control">
+                                <option value="">Choose..</option>
+                                <option *ngFor="let EL of RCAReportTypeList" [ngValue]="EL">{{EL}}</option>
+                            </select>
+                            </div>
+                        </li>
+                    </ul> 
+                    <div *ngIf="RCAQualitativeReport">
+                    <div id="pdfTable" #pdfTable>
+                        <div>
+                            <label><u><b>Root Cause Analysis (RCA)</b></u></label>
+                        </div>
+                        <div>
+                            <label><u><b>Summary</b></u></label>
+                        </div>
+                        <div>
+                            <p>This report is based on the results of a technical process for investigation and analysis of failure causes. Root Cause Analysis (RCA) method used is based on following steps: </p>
+                        </div>
+                        <div>
+                            <ul style="list-style-type:disc; margin: left 40px;">
+                                <li>Problem identification</li>
+                                <li>Judgment of problem criticality. </li>
+                                <li>Identification of the basic causes preceding the problem </li>
+                                <li>Identification of the reason of the preceding causes. </li>
+                            </ul>
+                            <label>Root cause analysis is based on a wide range of data collection including:</label>
+                            <ul style="list-style-type:disc; margin: left 40px;">
+                                <li>Operation data </li>
+                                <li>Asset data and drawing </li>
+                                <li>Historical data </li>
+                            </ul>
+                            <p>
+                                The results of the analysis integrated into an assessment process and providing a set of consistent conclusions
+                            </p>
+                            <p>
+                                A brief introduction of the system data and considerations are briefly described. RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments
+                                conducted.
+                            </p>
+                            <p>
+                                Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.
+                            </p>
+                        </div>
+                        <div>
+                            <label><u><b>Introduction</b></u></label>
+                        </div>
+                        <div>
+                            <p>RCA analysis completed on
+                                <span *ngIf="!RCAReportfileds">
+                        <input type="date" class="form-control" style="width: 10em;" [(ngModel)]="RCAReportDate" name="reportDate" />
+                    </span>&ensp;
+                                <span *ngIf="RCAReportfileds">
+                        {{RCAReportDate}}
+                    </span> for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. RCA finalized by using the current data and considering the failure history of the asset.</p>
+                            <p>An understanding of the system to be analyzed was essential prior to the development of the RCA. The initial step was to collect the data and identify whether adequate information was </p>
+                        </div>
+                        <div>
+                            <label><u><b>RCA inputs</b></u></label>
                             <span *ngIf="!RCAReportfileds">
-                       <input type="date" class="form-control" style="width: 10em;" [(ngModel)]="RCAReportDate" name="reportDate" />
-                   </span>&ensp;
-                            <span *ngIf="RCAReportfileds">
-                       {{RCAReportDate}}
-                   </span> for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. RCA finalized by using the current data and considering the failure history of the asset.</p>
-                        <p>An understanding of the system to be analyzed was essential prior to the development of the RCA. The initial step was to collect the data and identify whether adequate information was </p>
-                    </div>
-                    <div>
-                        <label><u><b>RCA inputs</b></u></label>
-                        <span *ngIf="!RCAReportfileds">
-               <textarea [(ngModel)]="RCAReportinputs" class="form-control custom-textarea" name="RCAInput"></textarea>
-                </span>
+                <textarea [(ngModel)]="RCAReportinputs" class="form-control custom-textarea" name="RCAInput"></textarea>
+                    </span>
+                            <div>
+                                <span *ngIf="RCAReportfileds">
+                        {{RCAReportinputs}}
+                    </span>
+                            </div>
+                        </div>
                         <div>
-                            <span *ngIf="RCAReportfileds">
-                    {{RCAReportinputs}}
+                            <label><u><b>Actions and recommendations </b></u></label>
+
+                            <span *ngIf="!RCAReportfileds">
+                    <textarea [(ngModel)]="RCAReportRecommadtion" class="form-control custom-textarea" name="RCARecommedation"></textarea>
                 </span>
+                            <div>
+                                <span *ngIf="RCAReportfileds">
+                        {{RCAReportRecommadtion}}
+                    </span>
+                            </div>
+                        </div>
+
+                        <div style="page-break-before: always;">
+                            <label><u><b>Conclussion</b></u></label>
+                            <p>
+                                The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} {{RCAReportData.TagNumber}} and propose technical solutions to prevent similar failures in future
+                            </p>
+                            <p>
+                                The reliability methodology was based on RCA order to take into consideration the objectives and recommended actions to eliminate the failures.
+                            </p>
+                            <p>
+                                During RCA the main failure defects and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation.
+                            </p>
                         </div>
                     </div>
-                    <div>
-                        <label><u><b>Actions and recommendations </b></u></label>
-
-                        <span *ngIf="!RCAReportfileds">
-                <textarea [(ngModel)]="RCAReportRecommadtion" class="form-control custom-textarea" name="RCARecommedation"></textarea>
-               </span>
-                        <div>
-                            <span *ngIf="RCAReportfileds">
-                    {{RCAReportRecommadtion}}
-                </span>
+                    <!-- <div style="overflow: scroll; height: 30em;width:450%;"> -->
+                    <div style="overflow: scroll;">
+                        <label><u><b>Annexures</b></u></label>
+                        <div id="image" #image>
+                            <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
                         </div>
                     </div>
-
-                    <div style="page-break-before: always;">
-                        <label><u><b>Conclussion</b></u></label>
-                        <p>
-                            The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} {{RCAReportData.TagNumber}} and propose technical solutions to prevent similar failures in future
-                        </p>
-                        <p>
-                            The reliability methodology was based on RCA order to take into consideration the objectives and recommended actions to eliminate the failures.
-                        </p>
-                        <p>
-                            During RCA the main failure defects and causes analyzed and technically elaborated. The team came up with some current actions and proposed future recommendations for implementation.
-                        </p>
                     </div>
-                </div>
-                <!-- <div style="overflow: scroll; height: 30em;width:450%;"> -->
-                <div style="overflow: scroll;">
-                    <label><u><b>Annexures</b></u></label>
-                    <div id="image" #image>
-                        <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
-                    </div>
+                <div style="overflow: scroll;" *ngIf="RCAQuantitativeReport">
+                    <div id="pdfTable1" #pdfTable1 style="margin: 20px;height: 100%;width: 100%;">
+                        <div class="text-center" style="text-align:center">
+                            <h4><b>Root Cause Analysis (RCA) Quantitative approach</b></h4>
+                        </div>
+                        <div class="sidebar-brand-icon col-sm-2" *ngIf="imagedivRCA" >
+                            <div class="image-container" >
+                                <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png"  alt="">
+                            </div>
+                        </div>
+                        <div class="sidebar-brand-icon col-sm-2" *ngIf="!imagedivRCA" id="pdfTable1" #pdfTable1>
+                            <div class="image-container" >
+                                <img style="width:20px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                            </div>
+                        </div>
+                        <div>
+                            <h5><b>Summary </b></h5>
+                            <p>
+                                This report is based on the results of a quantitative approach for investigation and analysis of failure causes. 
+                                The Root Cause Analysis (RCA) method used is “Fault Tree” technique analysis. An initial effect is taken as the top event of a tree and all concerns are branched out of it.  
+                            </p>
+                            <p>
+                                The tree diagram is a graphic display of “5 Why’s method”. 
+                                It displays the layers of cause looking in detail for the root of the failure.  
+                            </p>
+                            <p>
+                                The results of the analysis integrated into an assessment process and providing a set of consistent conclusions 
+                            </p>
+                            <p>
+                                A brief introduction of the system data and considerations are briefly described. 
+                                RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments conducted. 
+                            </p>
+                            <p>
+                                Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.  
+                            </p>
+                
+                            <h5><b>Introduction</b></h5>
+                            <p>
+                                RCA analysis completed on  {{RCAReportDate}} for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
+                                RCA finalized by using the current data and considering the failure history of the asset
+                            </p>
+                            <p>
+                                An understanding of the system to be analyzed was essential prior to the development of the RCA. 
+                                The initial step was to collect the data and identify whether adequate information was sufficient to proceed with a reliable and accurate analysis.  
+                            </p>
+                            <h5><b> RCA inputs </b></h5>
+                            <textarea *ngIf="!RCAReportfileds" class="custom-textarea1 form-control"[(ngModel)]="RCAInput"
+                                placeholder="RCA inputs * " > {{RCAInput}} </textarea>
+                            <h5><b>Actions and recommendations </b></h5>
+                
+                            <textarea *ngIf="!RCAReportfileds" class="custom-textarea1 form-control" [(ngModel)]="ActionRecommendation"
+                                placeholder="Actions and recommendations  * "> {{ActionRecommendation}}</textarea>
+                            <h5><b>Conclusion </b></h5>
+                            <p>
+                                The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
+                                and propose technical solutions to prevent similar failures in future
+                            </p>
+                            <p>
+                                The reliability methodology was based on “Fault Tree” analysis. 
+                                The root causes were well defined, analyzed and documented. 
+                                The recommended actions should be considered along with recommendation to formulate a corrective future action plan that can eliminate the failures and increase reliability of the asset. 
+                            </p>
+                            <label><u><b>Annexures</b></u></label>
+    
+                        </div>
+                        </div>
+                        <p-card  id="image1" #image1>
+                            <p-organizationChart [value]="RCAReportTree">
+                            </p-organizationChart>
+                        </p-card>
                 </div>
                 <div class="modal-footer">
-                    <!-- <button type="button" (click)="RCAReportPrint()" class="btn btn-secondary">Print</button> -->
-                    <button type="button" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
+                    <button type="button" *ngIf="RCAQuantitativeReport || RCAQualitativeReport" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
                 </div>
             </div>
         </div>
@@ -447,69 +530,3 @@
     </div>
  </div>
 
-<div style="overflow: scroll;">
-    <div id="pdfTable1" #pdfTable1 style="margin: 20px;height: 100%;width: 100%;">
-        <div class="text-center" style="text-align:center">
-            <h4><b>Root Cause Analysis (RCA) Quantitative approach</b></h4>
-        </div>
-        <div class="sidebar-brand-icon col-sm-2" *ngIf="imagedivRCA" >
-            <div class="image-container" >
-                <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png"  alt="">
-            </div>
-        </div>
-        <div class="sidebar-brand-icon col-sm-2" *ngIf="!imagedivRCA" id="pdfTable1" #pdfTable1>
-            <div class="image-container" >
-                <img style="width:20px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
-            </div>
-        </div>
-        <div>
-            <h5><b>Summary </b></h5>
-            <p>
-                This report is based on the results of a quantitative approach for investigation and analysis of failure causes. 
-                The Root Cause Analysis (RCA) method used is “Fault Tree” technique analysis. An initial effect is taken as the top event of a tree and all concerns are branched out of it.  
-            </p>
-            <p>
-                The tree diagram is a graphic display of “5 Why’s method”. 
-                It displays the layers of cause looking in detail for the root of the failure.  
-            </p>
-            <p>
-                The results of the analysis integrated into an assessment process and providing a set of consistent conclusions 
-            </p>
-            <p>
-                A brief introduction of the system data and considerations are briefly described. 
-                RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments conducted. 
-            </p>
-            <p>
-                Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.  
-            </p>
-
-            <h5><b>Introduction</b></h5>
-            <p>
-                RCA analysis completed on  {{RCAReportDate}} for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
-                RCA finalized by using the current data and considering the failure history of the asset
-            </p>
-            <p>
-                An understanding of the system to be analyzed was essential prior to the development of the RCA. 
-                The initial step was to collect the data and identify whether adequate information was sufficient to proceed with a reliable and accurate analysis.  
-            </p>
-            <h5><b> RCA inputs </b></h5>
-            <textarea *ngIf="!hide" class="custom-textarea1 form-control"[(ngModel)]="RCAInput"
-                placeholder="RCA inputs * " > {{MSSInput}} </textarea>
-            <h5><b>Actions and recommendations </b></h5>
-
-            <textarea *ngIf="!hide" class="custom-textarea1 form-control" [(ngModel)]="ActionRecommendation"
-                placeholder="Actions and recommendations  * "> {{ActionRecommendation}}</textarea>
-            <h5><b>Conclusion </b></h5>
-            <p>
-                The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
-                and propose technical solutions to prevent similar failures in future
-            </p>
-            <p>
-                The reliability methodology was based on “Fault Tree” analysis. 
-                The root causes were well defined, analyzed and documented. 
-                The recommended actions should be considered along with recommendation to formulate a corrective future action plan that can eliminate the failures and increase reliability of the asset. 
-            </p>
-            <label><u><b>Annexures</b></u></label>
-        </div>
-        </div>
-</div>

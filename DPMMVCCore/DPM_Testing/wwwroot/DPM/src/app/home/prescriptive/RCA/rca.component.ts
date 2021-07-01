@@ -25,6 +25,7 @@ export class RCAComponent {
     @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
     @ViewChild('pdfTable1', { static: false }) pdfTable1: ElementRef;
     @ViewChild('image') image;
+    @ViewChild('image1') image1;
     public imagedivRCA: boolean = true
     public hide: boolean = false;
     public RCAInput: string = "";
@@ -70,18 +71,17 @@ export class RCAComponent {
     zoomLevels: number[];
     zoomLevels1: number[];
     zoomLevels2: number[];
-    public RCAReportData: any = []
-    public RCAReportTree: any = []
-    public RCAReportDate: string = ""
-    public RCAFILE: any = []
-    public RCAReportRecommadtion: string = ""
-    public RCAReportinputs: string = ""
-    public RCAReportBodyEnabled: boolean = false
-    public RCAReportfileds: boolean = false
+    public RCAReportData: any = [];
+    public RCAReportTree: any = [];
+    public RCAReportDate: string = "";
+    public RCAFILE: any = [];
+    public RCAReportRecommadtion: string = "";
+    public RCAReportinputs: string = "";
+    public RCAReportfileds: boolean = false;
     public RCAFileSafeUrl: any;
     public FileUrl: any;
-    public RCAImageViewEnable: boolean = false
-    public RCAPdfViewEnable: boolean = false
+    public RCAImageViewEnable: boolean = false;
+    public RCAPdfViewEnable: boolean = false;
     public XYZ: any
     private UpdateAttachmentBuffer: any = [];
     public RCATypeQualititive: boolean = false;
@@ -114,7 +114,10 @@ export class RCAComponent {
     public RCAUpdateUploadData: any;
     public UpdateRCATypeList: any;
     public UpdateRCATypeSelected: string = "";
-
+    public RCAQualitativeReport : boolean = false;
+    public RCAQuantitativeReport : boolean = false;
+    public RCAReportType : string = "";
+    public RCAReportTypeList : any = [];
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
@@ -866,27 +869,51 @@ export class RCAComponent {
     RCAReport(p) {
         this.RCAReportfileds = false
         this.RCAReportDate = moment().format('YYYY-MM-DD');
-        this.RCAReportBodyEnabled = false
+        this.RCAQualitativeReport = false
+        this.RCAQuantitativeReport = false;
         this.RCAReportData = []
         this.RCAReportTree = []
         this.RCAReportData = p;
-        if(p.RCAQuantitiveTree !== 'None'){            
-            this.RCAReportTree = JSON.parse(p.RCAQuantitiveTree);           
-        }else{
-            this.RCAReportTree = JSON.parse(p.RCAQualitativeTree);
+        this.RCAReportTypeList = [];
+        this.RCAReportType = "";
+        if(p.RCAQualitativeTree !== 'None'){             
+            this.RCAReportTypeList.push('Qualitative');
         }
-        this.TraverseNestedJson(this.RCAReportTree, "disable");
-        this.RCAReportBodyEnabled = true
+        if(p.RCAQuantitiveTree !== 'None'){ 
+            this.RCAReportTypeList.push('Quantitative');
+        }
+        this.RCAReportType = this.RCAReportTypeList[0];
+        // else{
+        //     this.RCAReportTree = JSON.parse(p.RCAQuantitiveTree);
+        // }
+      //  this.TraverseNestedJson(this.RCAReportTree, "disable");
+       // this.RCAQualitativeReport = true
         this.changeDetectorRef.detectChanges()
+        this.RCATypeReport();
 
+    }
+
+    RCATypeReport(){
+       if(this.RCAReportType === 'Qualitative'){
+        this.RCAReportTree = [];
+        this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQualitativeTree);
+        this.RCAQualitativeReport = true;
+        this.RCAQuantitativeReport = false;
+       }else{
+        this.RCAReportTree = [];
+        this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQuantitiveTree);
+        this.RCAQualitativeReport = false;
+        this.RCAQuantitativeReport = true;
+       }
+       this.changeDetectorRef.detectChanges()
     }
 
 
 
     RCAReportDownload() {
         this.changeDetectorRef.detectChanges()
-        this.commonLoadingDirective.showLoading(true, 'Downloading....');
-        if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
+       // this.commonLoadingDirective.showLoading(true, 'Downloading....');
+        if ((this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) || (this.RCAInput != "" && this.ActionRecommendation!= "")) {
             const doc = new jsPDF('p', 'pt', 'a4', true);
             this.RCAReportfileds = true
             this.changeDetectorRef.detectChanges()
@@ -895,14 +922,25 @@ export class RCAComponent {
                     return true;
                 }
             };
-            const pdfTable = this.pdfTable.nativeElement;
-            doc.fromHTML(pdfTable.innerHTML, 15, 15, {
+            var finalTable;
+            if(this.RCAReportType === 'Qualitative'){
+                finalTable = this.pdfTable.nativeElement;
+               }else{
+                finalTable = this.pdfTable1.nativeElement;
+               }
+            doc.fromHTML(finalTable.innerHTML, 15, 15, {
                 'width': 590,
                 'elementHandlers': specialElementHandlers
             });
             var imageLink: any
             let imageData = document.getElementById('image');
-            domtoimage.toPng(this.image.nativeElement).then(res => {
+            var finalImage;
+            if(this.RCAReportType === 'Qualitative'){
+                finalImage = this.image.nativeElement;
+               }else{
+                finalImage = this.image1.nativeElement;
+               }
+            domtoimage.toPng(finalImage).then(res => {
                 imageLink = res;
                 // doc.addPage('a4', 'l');
                 doc.addPage('a4', 'l');
@@ -911,7 +949,7 @@ export class RCAComponent {
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
                 doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
                 doc.save('RCA Report');
-                this.commonLoadingDirective.showLoading(false, 'Downloading....');
+               // this.commonLoadingDirective.showLoading(false, 'Downloading....');
             })
             //  html2canvas(imageData).then( (canvas) =>
             //  {
@@ -929,7 +967,13 @@ export class RCAComponent {
             this.RCAReportinputs = ""
             this.RCAReportRecommadtion = ""
             this.RCAReportfileds = false
-            this.RCAReportBodyEnabled = true
+            if(this.RCAReportType === 'Qualitative'){
+                this.RCAQualitativeReport = true;
+                this.RCAQuantitativeReport = false;
+               }else{
+                this.RCAQualitativeReport = false;
+                this.RCAQuantitativeReport = true;
+               }
         } else {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please fill the details' })
         }
