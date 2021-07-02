@@ -429,14 +429,16 @@
                     <div style="overflow: scroll;">
                         <label><u><b>Annexures</b></u></label>
                         <div id="image" #image>
-                            <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
+                            <!-- <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree> -->
+                            <p-organizationChart [value]="RCAReportTree">
+                            </p-organizationChart>
                         </div>
                     </div>
                     </div>
                 <div style="overflow: scroll;" *ngIf="RCAQuantitativeReport">
                     <div id="pdfTable1" #pdfTable1 style="margin: 20px;height: 100%;width: 100%;">
                         <div class="text-center" style="text-align:center">
-                            <h4><b>Root Cause Analysis (RCA) Quantitative approach</b></h4>
+                            <h4><b>Root Cause Analysis (RCA)  Qualitative approach</b></h4>
                         </div>
                         <div class="sidebar-brand-icon col-sm-2" *ngIf="imagedivRCA" >
                             <div class="image-container" >
@@ -451,7 +453,7 @@
                         <div>
                             <h5><b>Summary </b></h5>
                             <p>
-                                This report is based on the results of a quantitative approach for investigation and analysis of failure causes. 
+                                This report is based on the results of a qualitative approach for investigation and analysis of failure causes. 
                                 The Root Cause Analysis (RCA) method used is Fault Tree  technique analysis. An initial effect is taken as the top event of a tree and all concerns are branched out of it.  
                             </p>
                             <p>
@@ -507,8 +509,9 @@
                         </div>
                         <div  style="page-break-before: always;"></div>
                         <div id="image1" #image1 >
-                            <p-organizationChart [value]="RCAReportTree">
-                            </p-organizationChart>
+                            <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
+                            <!-- <p-organizationChart [value]="RCAReportTree">
+                            </p-organizationChart> -->
                         </div>
                 </div>
                 <div class="modal-footer">

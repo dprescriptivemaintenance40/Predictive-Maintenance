@@ -936,7 +936,29 @@ export class RCAComponent {
             let imageData = document.getElementById('image');
             var finalImage;
             if(this.RCAReportType === 'Qualitative'){
-                domtoimage.toPng(this.image.nativeElement).then(res => {
+                let imageData = document.getElementById('image');
+                var pdfdata = html2canvas(imageData).then(canvas => {
+                doc.addPage('a4','mm','p');
+                const imgProps = doc.getImageProperties(canvas);
+                var imgWidth = 292;
+                  var pageHeight = 298;
+                  var imgHeight = imgProps.height * imgWidth / imgProps.width;
+                  var heightLeft = imgHeight;
+                  var position = 0;
+                  doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
+                  heightLeft -= pageHeight;
+                  while (heightLeft >= 2) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
+                    heightLeft -= pageHeight;
+                  }
+                doc.save('RCA Report');
+                this.commonLoadingDirective.showLoading(false, 'Downloading....');
+            })
+               }else{
+                let imageData = document.getElementById('image1');
+                domtoimage.toPng(this.image1.nativeElement).then(res => {
                     imageLink = res;
                     doc.addPage('a4', 'l');
                     const imgProps = doc.getImageProperties(imageLink);
@@ -944,27 +966,6 @@ export class RCAComponent {
                     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
                     doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
                     doc.save('RCA Report');
-                })
-               }else{
-                let imageData = document.getElementById('image1');
-                    var pdfdata = html2canvas(imageData).then(canvas => {
-                    doc.addPage('a4','mm','p');
-                    const imgProps = doc.getImageProperties(canvas);
-                    var imgWidth = 292;
-                      var pageHeight = 298;
-                      var imgHeight = imgProps.height * imgWidth / imgProps.width;
-                      var heightLeft = imgHeight;
-                      var position = 0;
-                      doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
-                      heightLeft -= pageHeight;
-                      while (heightLeft >= 2) {
-                        position = heightLeft - imgHeight;
-                        doc.addPage();
-                        doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
-                        heightLeft -= pageHeight;
-                      }
-                    doc.save('RCA Report');
-                    this.commonLoadingDirective.showLoading(false, 'Downloading....');
                 })
                }
             this.RCAReportinputs = ""
