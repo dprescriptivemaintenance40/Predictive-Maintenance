@@ -1,10 +1,12 @@
 <p-toast position="top-right"></p-toast>
 
-<p-card>
-    <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="prescriptive">
+<!-- <p-card> -->
+    <div *ngIf="prescriptiveTree" class="col-md-12">
         <button *ngIf="FinalUpdate" label="Back" type="button" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal">Update</button> <br><br>
         <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark"(click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
         <button *ngIf="AddFailureMode" type="button" class="btn btn-dark" style="float: right" (click)="AddFailureModeToTree()" pTooltip="If you want to update the tree click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button><br><br>
+    </div><br>
+    <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="prescriptive"> 
         <p-organizationChart [value]="data1" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">
@@ -23,7 +25,7 @@
             </ng-template>
         </p-organizationChart>
     </div>
-</p-card>
+<!-- </p-card> -->
 
 <div id="ScrollUpdateTree5" class="modal fade" id="treeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

@@ -204,6 +204,9 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     this.FMCount += 1;
     if (this.FMCount <= this.FMTree.length - 1) {
       this.FMLSConsequenceName = this.FMTree[this.FMCount].data.name
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Add Next Consequences, So click on +Consequence button' });
+    }else{
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Save Consequence' });
     }
     if (this.FMCount == this.FMTree.length) {
       this.prescriptiveTreeNextEnable = false;
@@ -262,7 +265,6 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences4 = false;
       }
     } else {
-
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
     }
 
@@ -283,7 +285,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.consequenceD = 'p-person'
         this.consequenceE = 'p-person'
         this.finalConsequence = ""
-        this.finalConsequence = "B"
+        this.finalConsequence = "B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)"
         console.log(this.ConsequencesAnswer)
         this.Consequences3 = false;
         this.Consequences2 = false;
@@ -313,7 +315,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
       if (this.dropedConsequenceCombinationFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "A"
+        this.finalConsequence = "A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)"
         this.consequenceA = 'p-person1'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -329,7 +331,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "E"
+        this.finalConsequence = "E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -355,7 +357,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
       if (this.dropedConsequenceAffectFailureMode[0] == 'YES') {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "C"
+        this.finalConsequence = "C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person1'
@@ -371,7 +373,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
-        this.finalConsequence = "D"
+        this.finalConsequence = "D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)"
         this.consequenceA = 'p-person'
         this.consequenceB = 'p-person'
         this.consequenceC = 'p-person'
@@ -565,9 +567,5 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.router.navigateByUrl('/Home/Prescriptive/List');
       }, err => { console.log(err.err) }
     )
-
-
   }
-
-
 }

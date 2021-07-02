@@ -410,9 +410,6 @@ export class MSSAddComponent implements OnInit {
     } else if (this.MSSStratergy.length == 0) {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stratergy is Missing" })
     }
-
-
-
   }
 
   async SaveMSS() {

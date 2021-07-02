@@ -35,7 +35,7 @@
     <button *ngIf="PatternNextOnPrescriptiveTree" label="Back" type="button" class="btn btn-dark" style="float: right;" (click)="ADDFMToFCA()" title="Add FCA"><i class="pi pi-plus"> FCA</i></button>
     <button *ngIf="!(Pattern == '')" label="Back" type="button" class="btn btn-dark" style="float: right;" (click)="ADDNextFCA()" pTooltip="Select To Add FCA" tooltipPosition="top"><i class="pi pi-plus">Add FCA</i></button><br>
     <button *ngIf="SaveFCAEnable" label="Back" type="button" class="btn btn-dark" style="float: right;" (click)="SaveFCA()">Save FCA</button>
-</div>
+</div><br>
 <div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
     <p-organizationChart [value]="data1" styleClass="company">
         <ng-template let-node pTemplate="person">

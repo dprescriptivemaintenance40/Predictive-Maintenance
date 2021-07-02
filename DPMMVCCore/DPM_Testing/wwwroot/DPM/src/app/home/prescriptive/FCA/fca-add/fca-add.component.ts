@@ -1210,7 +1210,9 @@ export class FCAADDComponent implements OnInit {
       this.data1[0].children[0].children[0].children[this.PatternCounter].children.push(FCATree1)
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
         this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
-
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Add Next FCA, So click on +FCA button' });
+      }else{
+        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Save FCA' });
       }
       this.PatternCounter = this.PatternCounter + 1
       if (this.PatternCounter == this.data1[0].children[0].children[0].children.length) {
