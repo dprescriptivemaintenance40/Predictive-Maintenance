@@ -490,10 +490,12 @@
     
                         </div>
                         </div>
-                        <p-card  id="image1" #image1>
+                        <div id="image1" #image1>
+                        <p-card>
                             <p-organizationChart [value]="RCAReportTree">
                             </p-organizationChart>
                         </p-card>
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" *ngIf="RCAQuantitativeReport || RCAQualitativeReport" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
