@@ -911,8 +911,8 @@ export class RCAComponent {
 
 
     RCAReportDownload() {
+        this.imagedivRCA= false;
         this.changeDetectorRef.detectChanges()
-       // this.commonLoadingDirective.showLoading(true, 'Downloading....');
         if ((this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) || (this.RCAInput != "" && this.ActionRecommendation!= "")) {
             const doc = new jsPDF('p', 'pt', 'a4', true);
             this.RCAReportfileds = true
@@ -938,52 +938,44 @@ export class RCAComponent {
             if(this.RCAReportType === 'Qualitative'){
                 domtoimage.toPng(this.image.nativeElement).then(res => {
                     imageLink = res;
-                    // doc.addPage('a4', 'l');
                     doc.addPage('a4', 'l');
                     const imgProps = doc.getImageProperties(imageLink);
                     const pdfWidth = doc.internal.pageSize.getWidth();
                     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
                     doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
                     doc.save('RCA Report');
-                   // this.commonLoadingDirective.showLoading(false, 'Downloading....');
                 })
                }else{
-                domtoimage.toPng(this.image1.nativeElement).then(res => {
-                    imageLink = res;
-                    // doc.addPage('a4', 'l');
-                    doc.addPage('a4', 'l');
-                    const imgProps = doc.getImageProperties(imageLink);
-                    const pdfWidth = doc.internal.pageSize.getWidth();
-                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                    doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
+                // domtoimage.toPng(this.image1.nativeElement).then(res => {
+                //     imageLink = res;
+                //     doc.addPage('a4', 'l');
+                //     const imgProps = doc.getImageProperties(imageLink);
+                //     const pdfWidth = doc.internal.pageSize.getWidth();
+                //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                //     doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
+                //     doc.save('RCA Report');
+                // })
+                let imageData = document.getElementById('image1');
+                    var pdfdata = html2canvas(imageData).then(canvas => {
+                    doc.addPage('a4','mm','p');
+                    const imgProps = doc.getImageProperties(canvas);
+                    var imgWidth = 192;
+                      var pageHeight = 298;
+                      var imgHeight = imgProps.height * imgWidth / imgProps.width;
+                      var heightLeft = imgHeight;
+                      var position = 0;
+                      doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
+                      heightLeft -= pageHeight;
+                      while (heightLeft >= 2) {
+                        position = heightLeft - imgHeight;
+                        doc.addPage();
+                        doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
+                        heightLeft -= pageHeight;
+                      }
                     doc.save('RCA Report');
-                   // this.commonLoadingDirective.showLoading(false, 'Downloading....');
+                    this.commonLoadingDirective.showLoading(false, 'Downloading....');
                 })
                }
-            // domtoimage.toPng(finalImage).then(res => {
-            //     imageLink = res;
-            //     // doc.addPage('a4', 'l');
-            //     doc.addPage('a4', 'l');
-            //     const imgProps = doc.getImageProperties(imageLink);
-            //     const pdfWidth = doc.internal.pageSize.getWidth();
-            //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            //     doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
-            //     doc.save('RCA Report');
-            //    // this.commonLoadingDirective.showLoading(false, 'Downloading....');
-            // })
-            //  html2canvas(imageData).then( (canvas) =>
-            //  {
-            //     doc.addPage('a4', 'l');
-            //     var img = canvas.toDataURL('image/png', 1.5,);
-            //     doc.addImage(img, 'PNG', 10, 190, 1500, 190);
-            //     doc.setFontSize(22);
-            //     doc.setTextColor(0, 0, 0);
-            //     doc.text(20, 20, 'Annexures');
-            //     doc.save('RCA Report');
-            //     this.commonLoadingDirective.showLoading(false, 'Downloading....');
-            //     this.changeDetectorRef.detectChanges();
-
-            //  })
             this.RCAReportinputs = ""
             this.RCAReportRecommadtion = ""
             this.RCAReportfileds = false

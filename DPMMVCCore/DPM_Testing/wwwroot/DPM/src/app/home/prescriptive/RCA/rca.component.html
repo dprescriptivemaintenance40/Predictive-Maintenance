@@ -333,8 +333,18 @@
                     </ul> 
                     <div *ngIf="RCAQualitativeReport">
                     <div id="pdfTable" #pdfTable>
-                        <div>
+                        <div class="text-center" style="text-align:center">
                             <label><u><b>Root Cause Analysis (RCA)</b></u></label>
+                        </div>
+                        <div class="sidebar-brand-icon col-sm-2" *ngIf="imagedivRCA" >
+                            <div class="image-container" >
+                                <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png"  alt="">
+                            </div>
+                        </div>
+                        <div class="sidebar-brand-icon col-sm-2" *ngIf="!imagedivRCA" id="pdfTable" #pdfTable>
+                            <div class="image-container" >
+                                <img style="width:30px;height:25px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                            </div>
                         </div>
                         <div>
                             <label><u><b>Summary</b></u></label>
@@ -416,7 +426,6 @@
                             </p>
                         </div>
                     </div>
-                    <!-- <div style="overflow: scroll; height: 30em;width:450%;"> -->
                     <div style="overflow: scroll;">
                         <label><u><b>Annexures</b></u></label>
                         <div id="image" #image>
@@ -436,14 +445,14 @@
                         </div>
                         <div class="sidebar-brand-icon col-sm-2" *ngIf="!imagedivRCA" id="pdfTable1" #pdfTable1>
                             <div class="image-container" >
-                                <img style="width:20px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                                <img style="width:30px;height:25px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                             </div>
                         </div>
                         <div>
                             <h5><b>Summary </b></h5>
                             <p>
                                 This report is based on the results of a quantitative approach for investigation and analysis of failure causes. 
-                                The Root Cause Analysis (RCA) method used is “Fault Tree” technique analysis. An initial effect is taken as the top event of a tree and all concerns are branched out of it.  
+                                The Root Cause Analysis (RCA) method used is Fault Tree  technique analysis. An initial effect is taken as the top event of a tree and all concerns are branched out of it.  
                             </p>
                             <p>
                                 The tree diagram is a graphic display of “5 Why’s method”. 
@@ -481,20 +490,24 @@
                                 The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
                                 and propose technical solutions to prevent similar failures in future
                             </p>
-                            <p>
-                                The reliability methodology was based on “Fault Tree” analysis. 
-                                The root causes were well defined, analyzed and documented. 
-                                The recommended actions should be considered along with recommendation to formulate a corrective future action plan that can eliminate the failures and increase reliability of the asset. 
-                            </p>
+                            <ul>
+                                <li>
+                                    The reliability methodology was based on Fault Tree analysis. 
+                                </li>
+                                <li>
+                                    The root causes were well defined, analyzed and documented. 
+                                </li>
+                                <li>
+                                    The recommended actions should be considered along with recommendation to formulate a corrective future action plan that can eliminate the failures and increase reliability of the asset.  
+                                </li>
+                            </ul>
                             <label><u><b>Annexures</b></u></label>
     
                         </div>
                         </div>
                         <div id="image1" #image1>
-                        <p-card>
                             <p-organizationChart [value]="RCAReportTree">
                             </p-organizationChart>
-                        </p-card>
                         </div>
                 </div>
                 <div class="modal-footer">
