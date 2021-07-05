@@ -7,7 +7,7 @@
         text-decoration: none;
         color: grey !important;
     }
-    
+
     .classname {
         -ms-touch-action: none;
         -ms-touch-action: pan-y;
@@ -330,9 +330,9 @@
                             </select>
                             </div>
                         </li>
-                    </ul> 
+                    </ul>
                     <div *ngIf="RCAQualitativeReport">
-                    <div id="pdfTable" #pdfTable>
+                    <div id="pdfTable" #pdfTable style="margin: 20px;height: 100%;width: 100%;">
                         <div class="text-center" style="text-align:center">
                             <label><u><b>Root Cause Analysis (RCA)</b></u></label>
                         </div>
@@ -392,24 +392,25 @@
                         <div>
                             <label><u><b>RCA inputs</b></u></label>
                             <span *ngIf="!RCAReportfileds">
-                <textarea [(ngModel)]="RCAReportinputs" class="form-control custom-textarea" name="RCAInput"></textarea>
-                    </span>
+                                <textarea [(ngModel)]="RCAReportinputs" class="form-control custom-textarea" name="RCAInput"></textarea>
+                            </span>
                             <div>
                                 <span *ngIf="RCAReportfileds">
-                        {{RCAReportinputs}}
-                    </span>
+                                    {{RCAReportinputs}}
+                                </span>
                             </div>
                         </div>
                         <div>
                             <label><u><b>Actions and recommendations </b></u></label>
-
+                        
                             <span *ngIf="!RCAReportfileds">
-                    <textarea [(ngModel)]="RCAReportRecommadtion" class="form-control custom-textarea" name="RCARecommedation"></textarea>
-                </span>
+                                <textarea [(ngModel)]="RCAReportRecommadtion" class="form-control custom-textarea"
+                                    name="RCARecommedation"></textarea>
+                            </span>
                             <div>
                                 <span *ngIf="RCAReportfileds">
-                        {{RCAReportRecommadtion}}
-                    </span>
+                                    {{RCAReportRecommadtion}}
+                                </span>
                             </div>
                         </div>
 
@@ -450,43 +451,66 @@
                                 <img style="width:30px;height:25px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                             </div>
                         </div>
-                        <div class="page">
+                        <!-- <div class="page"> -->
                             <h5><b>Summary </b></h5>
                             <p>
-                                This report is based on the results of a qualitative approach for investigation and analysis of failure causes. 
-                                The Root Cause Analysis (RCA) method used is Fault Tree  technique analysis. An initial effect is taken as the top event of a tree and all concerns are branched out of it.  
+                                This report is based on the results of a qualitative approach for investigation and analysis of failure causes.
+                                The Root Cause Analysis (RCA) method used is Fault Tree  technique analysis. An initial effect is taken as the top event of a tree and all concerns are branched out of it.
                             </p>
                             <p>
-                                The tree diagram is a graphic display of 5 Whys method. 
-                                It displays the layers of cause looking in detail for the root of the failure.  
+                                The tree diagram is a graphic display of 5 Whys method.
+                                It displays the layers of cause looking in detail for the root of the failure.
                             </p>
                             <p>
-                                The results of the analysis integrated into an assessment process and providing a set of consistent conclusions 
+                                The results of the analysis integrated into an assessment process and providing a set of consistent conclusions
                             </p>
                             <p>
-                                A brief introduction of the system data and considerations are briefly described. 
-                                RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments conducted. 
+                                A brief introduction of the system data and considerations are briefly described.
+                                RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments conducted.
                             </p>
                             <p>
-                                Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.  
+                                Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.
                             </p>
-                
+
                             <h5><b>Introduction</b></h5>
                             <p>
                                 RCA analysis completed on  {{RCAReportDate}} for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
                                 RCA finalized by using the current data and considering the failure history of the asset
                             </p>
                             <p>
-                                An understanding of the system to be analyzed was essential prior to the development of the RCA. 
-                                The initial step was to collect the data and identify whether adequate information was sufficient to proceed with a reliable and accurate analysis.  
+                                An understanding of the system to be analyzed was essential prior to the development of the RCA.
+                                The initial step was to collect the data and identify whether adequate information was sufficient to proceed with a reliable and accurate analysis.
                             </p>
-                            <h5><b> RCA inputs </b></h5>
+                            <!-- <h5><b> RCA inputs </b></h5>
                             <textarea *ngIf="!RCAReportfileds" class="custom-textarea1 form-control"[(ngModel)]="RCAInput"
                                 placeholder="RCA inputs * " > {{RCAInput}} </textarea>
                             <h5><b>Actions and recommendations </b></h5>
-                
+
                             <textarea *ngIf="!RCAReportfileds" class="custom-textarea1 form-control" [(ngModel)]="ActionRecommendation"
-                                placeholder="Actions and recommendations  * "> {{ActionRecommendation}}</textarea>
+                                placeholder="Actions and recommendations  * "> {{ActionRecommendation}}</textarea> -->
+                                <div>
+                                    <label><u><b>RCA inputs</b></u></label>
+                                    <span *ngIf="!RCAReportfileds">
+                                        <textarea [(ngModel)]="RCAInput" class="form-control custom-textarea" name="RCAInput">{{RCAInput}}</textarea>
+                                    </span> 
+                                    <div>
+                                        <span *ngIf="RCAReportfileds">
+                                            {{RCAInput}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                        <label><u><b>Actions and recommendations </b></u></label>
+                                        <span *ngIf="!RCAReportfileds">
+                                            <textarea [(ngModel)]="ActionRecommendation" class="form-control custom-textarea"
+                                                name="RCARecommedation"> {{ActionRecommendation}}</textarea>
+                                        </span> 
+                                        <div>
+                                            <span *ngIf="RCAReportfileds">
+                                                {{ActionRecommendation}}
+                                            </span>
+                                        </div>
+                                    </div>
                             <h5><b>Conclusion </b></h5>
                             <p>
                                 The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
@@ -494,20 +518,19 @@
                             </p>
                             <ul>
                                 <li>
-                                    The reliability methodology was based on Fault Tree analysis. 
+                                    The reliability methodology was based on Fault Tree analysis.
                                 </li>
                                 <li>
-                                    The root causes were well defined, analyzed and documented. 
+                                    The root causes were well defined, analyzed and documented.
                                 </li>
                                 <li>
-                                    The recommended actions should be considered along with recommendation to formulate a corrective future action plan that can eliminate the failures and increase reliability of the asset.  
+                                    The recommended actions should be considered along with recommendation to formulate a corrective future action plan that can eliminate the failures and increase reliability of the asset.
                                 </li>
                             </ul>
                             <label><u><b>Annexures</b></u></label>
-    
+
+                        <!-- </div> -->
                         </div>
-                        </div>
-                        <div  style="page-break-before: always;"></div>
                         <div id="image1" #image1 >
                             <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
                             <!-- <p-organizationChart [value]="RCAReportTree">

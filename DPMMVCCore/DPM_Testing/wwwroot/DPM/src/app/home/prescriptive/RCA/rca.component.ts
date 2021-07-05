@@ -940,17 +940,17 @@ export class RCAComponent {
                 var pdfdata = html2canvas(imageData).then(canvas => {
                 doc.addPage('a4','mm','p');
                 const imgProps = doc.getImageProperties(canvas);
-                var imgWidth = 292;
-                  var pageHeight = 298;
+                var imgWidth = 492;
+                  var pageHeight = 398;
                   var imgHeight = imgProps.height * imgWidth / imgProps.width;
                   var heightLeft = imgHeight;
                   var position = 0;
-                  doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
+                  doc.addImage(canvas, 'PNG',40, 10, imgWidth, imgHeight*2);
                   heightLeft -= pageHeight;
                   while (heightLeft >= 2) {
                     position = heightLeft - imgHeight;
                     doc.addPage();
-                    doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
+                    doc.addImage(canvas, 'PNG',40, 10, imgWidth, imgHeight*2);
                     heightLeft -= pageHeight;
                   }
                 doc.save('RCA Report');
