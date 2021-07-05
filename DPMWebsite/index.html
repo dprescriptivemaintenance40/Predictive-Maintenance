@@ -787,141 +787,155 @@
     <script src="assets/js/script.min.js"></script>
 
     <style>
-        body {font-family: Arial, Helvetica, sans-serif;}
-        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
         /* The Modal (background) */
+        
         .modal {
-          display: none; /* Hidden by default */
-          position: fixed; /* Stay in place */
-          z-index: 100; /* Sit on top */
-          padding-top: 100px; /* Location of the box */
-          left: 0;
-          top: 0;
-          width: 100%; /* Full width */
-          height: 100%; /* Full height */
-          overflow: auto; /* Enable scroll if needed */
-          background-color: rgb(0,0,0); /* Fallback color */
-          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 100;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
         }
-        
         /* Modal Content */
-        .modal-content {
-          background-color: #fefefe;
-          margin: auto;
-          padding: 20px;
-          border: 1px solid #888;
-          width: 80%;
-        }
         
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
         /* The Close Button */
+        
         .close {
-          color: #aaaaaa;
-          float: right;
-          font-size: 28px;
-          font-weight: bold;
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
         }
         
         .close:hover,
         .close:focus {
-          color: #000;
-          text-decoration: none;
-          cursor: pointer;
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
         }
+        
         @media screen and (max-width: 800px) {
-            .modal, .modal-content {
-                width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
+            .modal,
+            .modal-content {
+                width: 100%;
+                /* The width is 100%, when the viewport is 800px or smaller */
             }
-            }
-        </style>
-        <!-- <button id="myBtn">Open Modal</button> -->
+        }
+    </style>
+    <!-- <button id="myBtn">Open Modal</button> -->
 
     <div id="myModal" class="modal">
 
         <!-- Modal content -->
         <div class="modal-content">
-          <span class="close">&times;</span>
-          <div class="about">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12 div-in-middle">
-                        <img src="assets/img/8step.jpg" style="width: 87%">
+            <span class="close">&times;</span>
+            <div class="about">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 div-in-middle">
+                            <img src="assets/img/8step.jpg" style="width:100%">
+                        </div>
                     </div>
-                </div>
-                <div class="about content-section" style="padding: 20px;">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-10">
-                               <ul style=" list-style-type: circle;">
-				  <li>Data collection, conversion to digital, and mining</li>
-				 <li>Configuration- empirical logic building. Establish Normal, Incipient & Degraded limits.</li>
-                                 <li> Train, Test & Validation- ML process.</li>  <span id="dots">...</span><span id="more">
+                    <div class="about content-section" style="padding: 20px;">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <ul style=" list-style-type: circle;">
+                                        <li>Data collection, conversion to digital, and mining</li>
+                                        <li>Configuration- empirical logic building. Establish Normal, Incipient & Degraded limits.</li>
+                                        <li> Train, Test & Validation- ML process.</li> <span id="dots">...</span><span id="more">
 				<li> Mathematical Model - Rule Engine. </li>
 				<li>Prediction- Forecast future Failures & Cost. </li>
 				<li>Root cause failure analysis- if existing strategies unable to eliminate; or new failure mode.</li>
 				<li> Reliability centered maintenance methodology to develop maintenance strategies. </li>
 				<li> Resource Leveling, Report consolidation for Just-in-time maintenance, and Dashboard. </li></span>
-				 </ul>
-				 
-                                <a onclick="myFunction()" id="myBtn" class="btn btn-warning btn-md" style="background-color:#585570; border-color:#585570;">Read more</a>
-                           
-                                <!-- <button onclick="myFunction()" id="myBtn">Read more</button> -->
+                                    </ul>
+
+                                    <a onclick="myFunction()" id="myBtn" class="btn btn-warning btn-md" style="background-color:#585570; border-color:#585570;">Read more</a>
+
+                                    <!-- <button onclick="myFunction()" id="myBtn">Read more</button> -->
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- .row -->
                 </div>
-                <!-- .row -->
+                <!-- .container -->
             </div>
-            <!-- .container -->
         </div>
-        </div>
-      
-      </div>
-      <script>
+
+    </div>
+    <script>
         // Get the modal
         var modal = document.getElementById("myModal");
-        
+
         // Get the button that opens the modal
         var btn = document.getElementById("myBtn");
-        
+
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
-        
+
         // When the user clicks the button, open the modal 
         function OpenModal() {
-         var dots = document.getElementById("dots");
-         dots.style.display = "none";
-          modal.style.display = "block";
-          myFunction();
+            var dots = document.getElementById("dots");
+            dots.style.display = "none";
+            modal.style.display = "block";
+            myFunction();
         }
-        
+
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
-          modal.style.display = "none";
+            modal.style.display = "none";
         }
-        
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
 
         function myFunction() {
-                var dots = document.getElementById("dots");
-                var moreText = document.getElementById("more");
-                var btnText = document.getElementById("myBtn");
+            var dots = document.getElementById("dots");
+            var moreText = document.getElementById("more");
+            var btnText = document.getElementById("myBtn");
 
-                if (dots.style.display === "none") {
-                    dots.style.display = "inline";
-                    btnText.innerHTML = "Read more"; 
-                    moreText.style.display = "none";
-                } else {
-                    dots.style.display = "none";
-                    btnText.innerHTML = "Read less"; 
-                    moreText.style.display = "inline";
-                }
-                }
-        </script>
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Read more";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Read less";
+                moreText.style.display = "inline";
+            }
+        }
+    </script>
 </body>
 
 </html>

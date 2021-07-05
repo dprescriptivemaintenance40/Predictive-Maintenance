@@ -4245,7 +4245,7 @@ hr {
 
 .site-branding .site-title {
     position: relative;
-    z-index: 10000;
+    z-index: 100;
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 10px;
