@@ -77,4 +77,14 @@
         border: 0 none;
         background-color: rgb(212, 218, 211)
     }
+    .node-content {
+        text-align: center;
+        border: 1px solid #495ebb;
+        padding: 12px;
+        width: 146px;
+        resize: both;
+        overflow: auto;
+        height:60px
+
+    }
 }
