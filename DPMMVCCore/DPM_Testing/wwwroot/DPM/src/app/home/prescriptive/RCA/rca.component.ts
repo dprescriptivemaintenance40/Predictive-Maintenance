@@ -23,7 +23,13 @@ import { TreeNode } from 'src/app/shared/organization-chart/tree.node';
 })
 export class RCAComponent {
     @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
+    @ViewChild('pdfTable1', { static: false }) pdfTable1: ElementRef;
     @ViewChild('image') image;
+    @ViewChild('image1') image1;
+    public imagedivRCA: boolean = true
+    public hide: boolean = false;
+    public RCAInput: string = "";
+    public ActionRecommendation: string = "";
     tree: RCAComponent;
     panZoomController;
     panZoomController1;
@@ -65,18 +71,17 @@ export class RCAComponent {
     zoomLevels: number[];
     zoomLevels1: number[];
     zoomLevels2: number[];
-    public RCAReportData: any = []
-    public RCAReportTree: any = []
-    public RCAReportDate: string = ""
-    public RCAFILE: any = []
-    public RCAReportRecommadtion: string = ""
-    public RCAReportinputs: string = ""
-    public RCAReportBodyEnabled: boolean = false
-    public RCAReportfileds: boolean = false
+    public RCAReportData: any = [];
+    public RCAReportTree: any = [];
+    public RCAReportDate: string = "";
+    public RCAFILE: any = [];
+    public RCAReportRecommadtion: string = "";
+    public RCAReportinputs: string = "";
+    public RCAReportfileds: boolean = false;
     public RCAFileSafeUrl: any;
     public FileUrl: any;
-    public RCAImageViewEnable: boolean = false
-    public RCAPdfViewEnable: boolean = false
+    public RCAImageViewEnable: boolean = false;
+    public RCAPdfViewEnable: boolean = false;
     public XYZ: any
     private UpdateAttachmentBuffer: any = [];
     public RCATypeQualititive: boolean = false;
@@ -109,7 +114,10 @@ export class RCAComponent {
     public RCAUpdateUploadData: any;
     public UpdateRCATypeList: any;
     public UpdateRCATypeSelected: string = "";
-
+    public RCAQualitativeReport : boolean = false;
+    public RCAQuantitativeReport : boolean = false;
+    public RCAReportType : string = "";
+    public RCAReportTypeList : any = [];
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
@@ -430,8 +438,10 @@ export class RCAComponent {
     }
 
     async DeleteRCARecord(p) {
-        var j = JSON.parse(p.RCATree)
-        await this.TraverseNestedJson(j, 'delete')
+        if(p.RCAQualitativeTree != 'None'){
+            var j = JSON.parse(p.RCAQualitativeTree)
+            await this.TraverseNestedJson(j, 'delete')   
+        }
         const params = new HttpParams()
             .set('id', p.RCAID)
         this.commonBL.DeleteWithParam(this.RCAAPIName.RCADeleteAPI, params)
@@ -859,27 +869,51 @@ export class RCAComponent {
     RCAReport(p) {
         this.RCAReportfileds = false
         this.RCAReportDate = moment().format('YYYY-MM-DD');
-        this.RCAReportBodyEnabled = false
+        this.RCAQualitativeReport = false
+        this.RCAQuantitativeReport = false;
         this.RCAReportData = []
         this.RCAReportTree = []
         this.RCAReportData = p;
-        if(p.RCAQuantitiveTree !== 'None'){            
-            this.RCAReportTree = JSON.parse(p.RCAQuantitiveTree);           
-        }else{
-            this.RCAReportTree = JSON.parse(p.RCAQualitativeTree);
+        this.RCAReportTypeList = [];
+        this.RCAReportType = "";
+        if(p.RCAQualitativeTree !== 'None'){             
+            this.RCAReportTypeList.push('Qualitative');
         }
-        this.TraverseNestedJson(this.RCAReportTree, "disable");
-        this.RCAReportBodyEnabled = true
+        if(p.RCAQuantitiveTree !== 'None'){ 
+            this.RCAReportTypeList.push('Quantitative');
+        }
+        this.RCAReportType = this.RCAReportTypeList[0];
+        // else{
+        //     this.RCAReportTree = JSON.parse(p.RCAQuantitiveTree);
+        // }
+      //  this.TraverseNestedJson(this.RCAReportTree, "disable");
+       // this.RCAQualitativeReport = true
         this.changeDetectorRef.detectChanges()
+        this.RCATypeReport();
 
+    }
+
+    RCATypeReport(){
+       if(this.RCAReportType === 'Qualitative'){
+        this.RCAReportTree = [];
+        this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQualitativeTree);
+        this.RCAQualitativeReport = true;
+        this.RCAQuantitativeReport = false;
+       }else{
+        this.RCAReportTree = [];
+        this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQuantitiveTree);
+        this.RCAQualitativeReport = false;
+        this.RCAQuantitativeReport = true;
+       }
+       this.changeDetectorRef.detectChanges()
     }
 
 
 
     RCAReportDownload() {
+        this.imagedivRCA= false;
         this.changeDetectorRef.detectChanges()
-        this.commonLoadingDirective.showLoading(true, 'Downloading....');
-        if (this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) {
+        if ((this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) || (this.RCAInput != "" && this.ActionRecommendation!= "")) {
             const doc = new jsPDF('p', 'pt', 'a4', true);
             this.RCAReportfileds = true
             this.changeDetectorRef.detectChanges()
@@ -888,41 +922,62 @@ export class RCAComponent {
                     return true;
                 }
             };
-            const pdfTable = this.pdfTable.nativeElement;
-            doc.fromHTML(pdfTable.innerHTML, 15, 15, {
+            var finalTable;
+            if(this.RCAReportType === 'Qualitative'){
+                finalTable = this.pdfTable.nativeElement;
+               }else{
+                finalTable = this.pdfTable1.nativeElement;
+               }
+            doc.fromHTML(finalTable.innerHTML, 15, 15, {
                 'width': 590,
                 'elementHandlers': specialElementHandlers
             });
             var imageLink: any
             let imageData = document.getElementById('image');
-            domtoimage.toPng(this.image.nativeElement).then(res => {
-                imageLink = res;
-                // doc.addPage('a4', 'l');
-                doc.addPage('a4', 'l');
-                const imgProps = doc.getImageProperties(imageLink);
-                const pdfWidth = doc.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
+            var finalImage;
+            if(this.RCAReportType === 'Qualitative'){
+                let imageData = document.getElementById('image');
+                var pdfdata = html2canvas(imageData).then(canvas => {
+                doc.addPage('a4','mm','p');
+                const imgProps = doc.getImageProperties(canvas);
+                var imgWidth = 292;
+                  var pageHeight = 298;
+                  var imgHeight = imgProps.height * imgWidth / imgProps.width;
+                  var heightLeft = imgHeight;
+                  var position = 0;
+                  doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
+                  heightLeft -= pageHeight;
+                  while (heightLeft >= 2) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
+                    heightLeft -= pageHeight;
+                  }
                 doc.save('RCA Report');
                 this.commonLoadingDirective.showLoading(false, 'Downloading....');
             })
-            //  html2canvas(imageData).then( (canvas) =>
-            //  {
-            //     doc.addPage('a4', 'l');
-            //     var img = canvas.toDataURL('image/png', 1.5,);
-            //     doc.addImage(img, 'PNG', 10, 190, 1500, 190);
-            //     doc.setFontSize(22);
-            //     doc.setTextColor(0, 0, 0);
-            //     doc.text(20, 20, 'Annexures');
-            //     doc.save('RCA Report');
-            //     this.commonLoadingDirective.showLoading(false, 'Downloading....');
-            //     this.changeDetectorRef.detectChanges();
-
-            //  })
+               }else{
+                let imageData = document.getElementById('image1');
+                domtoimage.toPng(this.image1.nativeElement).then(res => {
+                    imageLink = res;
+                    doc.addPage('a4', 'l');
+                    const imgProps = doc.getImageProperties(imageLink);
+                    const pdfWidth = doc.internal.pageSize.getWidth();
+                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
+                    doc.save('RCA Report');
+                })
+               }
             this.RCAReportinputs = ""
             this.RCAReportRecommadtion = ""
             this.RCAReportfileds = false
-            this.RCAReportBodyEnabled = true
+            if(this.RCAReportType === 'Qualitative'){
+                this.RCAQualitativeReport = true;
+                this.RCAQuantitativeReport = false;
+               }else{
+                this.RCAQualitativeReport = false;
+                this.RCAQuantitativeReport = true;
+               }
         } else {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please fill the details' })
         }
