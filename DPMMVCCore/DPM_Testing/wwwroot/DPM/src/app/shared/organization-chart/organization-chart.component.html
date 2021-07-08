@@ -12,10 +12,10 @@
                     </div>
                 </div>
                 <div *ngIf="node.ANDORLogic">
-                    <span class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="onDeleteNode(node)"></span>
+                    <span [hidden]="node.disable" class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="onDeleteNode(node)"></span>
                     <div *ngIf="!chart.getTemplateForNode(node) && !node.BasicEvent">
                         <div>
-                            <textarea [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control custom-textarea" name="{{node.label}}" id="{{node.label}}"></textarea>
+                            <textarea [disabled]="node.disable" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control custom-textarea" name="{{node.label}}" id="{{node.label}}"></textarea>
                             <!-- <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}"> -->
                         </div>
                         <hr>
@@ -53,13 +53,13 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <select [(ngModel)]="node.SelectedFailureComponents" (ngModelChange)="onFailureComponents($event)" class="form-control">
+                                    <select [disabled]="node.disable" [(ngModel)]="node.SelectedFailureComponents" (ngModelChange)="onFailureComponents($event)" class="form-control">
                                     <option value="">Select Failure Components</option>
                                     <option *ngFor="let FailureComp of FailureComponents" [ngValue]="FailureComp">{{FailureComp.FailureComponents}}</option>
                                 </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <select [(ngModel)]="node.SelectedFailureCauses" (ngModelChange)="onFailureCauses($event)" class="form-control">
+                                    <select [disabled]="node.disable" [(ngModel)]="node.SelectedFailureCauses" (ngModelChange)="onFailureCauses($event)" class="form-control">
                                     <option value="">Select Failure Causes</option>
                                     <option *ngFor="let FailCause of FailureCause" [ngValue]="FailCause">{{FailCause.FailureCause}}</option>
                                 </select>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button type="button" class="btn btn-dark" (click)="GetLibrary()">Done</button>
+                                <button [hidden]="node.disable" type="button" class="btn btn-dark" (click)="GetLibrary()">Done</button>
                             </div>
                         </div>
                         <div *ngIf="node.ScheduledDowntime">
@@ -83,21 +83,21 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input (keypress)=AllowNumber($event) [(ngModel)]="node.years" class="form-control" placeholder="Set Years" name="years" id="years">
+                                    <input [disabled]="node.disable" (keypress)=AllowNumber($event) [(ngModel)]="node.years" class="form-control" placeholder="Set Years" name="years" id="years">
                                 </div>
                                 <div class="col-md-6">
-                                    <input (keypress)=AllowNumber($event) [(ngModel)]="node.hours" class="form-control" placeholder="Set hours" name="hours" id="hours">
+                                    <input [disabled]="node.disable" (keypress)=AllowNumber($event) [(ngModel)]="node.hours" class="form-control" placeholder="Set hours" name="hours" id="hours">
                                 </div>
                             </div>
                             <hr>
                             <div>
-                                <button type="button" class="btn btn-dark" (click)="onScheduledDowntime(node)">Done</button>
+                                <button type="button" [hidden]="node.disable" class="btn btn-dark" (click)="onScheduledDowntime(node)">Done</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div *ngIf="node.ANDORLogic && !node.BasicEvent">
-                    <a style="cursor:pointer; text-decoration: none;" title="Add new node for AND / OR" class="pi pi-plus" (click)="onAddNode(node)"></a>
+                    <a [hidden]="node.disable" style="cursor:pointer; text-decoration: none;" title="Add new node for AND / OR" class="pi pi-plus" (click)="onAddNode(node)"></a>
                     <p-menu #menu [popup]="true" [model]="items" [appendTo]="appendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                     <p-menu #submenu [popup]="true" [model]="subItems" [appendTo]="subappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                     <p-menu #basicmenu [popup]="true" [model]="basicItems" [appendTo]="basicappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>

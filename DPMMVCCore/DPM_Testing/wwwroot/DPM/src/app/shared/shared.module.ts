@@ -24,6 +24,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { OrganizationChartModule } from "./organization-chart/organization-chart.component";
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import {CalendarModule} from 'primeng/calendar';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
@@ -48,7 +49,8 @@ import { PanelMenuModule } from 'primeng/panelmenu';
         TreeModule,
         ConfirmDialogModule,
         TooltipModule,
-        PanelMenuModule],
+        PanelMenuModule,
+        CalendarModule],
     exports: [CommonModule,
         CommonLoadingComponent,
         TableModule,
@@ -74,7 +76,8 @@ import { PanelMenuModule } from 'primeng/panelmenu';
         TabViewModule,
         ConfirmDialogModule,
         TooltipModule,
-        PanelMenuModule]
+        PanelMenuModule,
+        CalendarModule]
 })
 export class SharedModule {
 
