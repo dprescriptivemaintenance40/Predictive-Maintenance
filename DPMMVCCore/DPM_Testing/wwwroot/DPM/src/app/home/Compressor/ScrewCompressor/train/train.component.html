@@ -15,7 +15,23 @@
     </div>
 </div>
 <div style="padding: 5px;" class="row">
-    <div class="col-sm col-md-4 form-group">
+    <div class="col-sm">
+        <div class="row">
+            <div class="col">
+                <label>
+                    <h6>Failure Mode</h6>
+                </label>
+            </div>
+            <div class="col">
+                <select style="width: 10em;" [(ngModel)]="failureModeType" (change)="SelectFailureModeType()" class="form-select" class="form-control">
+                    <option value="RotarDamage">Rotar Damage</option>
+                    <option value="SSRB" selected>Second stage rotar breakdown</option>
+                    <option value="CoolerFailure" selected>Cooler Failure</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm" style="width: 17em;">
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
     </div>
@@ -41,12 +57,12 @@
             [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
-                    <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
+                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:12em;">
@@ -54,28 +70,28 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="PS1">PS1
+                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="PS1">PS1
                         <p-sortIcon field="PS1"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="PD1">PD1
+                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="PD1">PD1
                         <p-sortIcon field="PD1"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="PS2">PS2
+                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="PS2">PS2
                         <p-sortIcon field="PS2"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="PD2">PD2
+                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="PD2">PD2
                         <p-sortIcon field="PD2"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="TS1">TS1
+                    <th pSortableColumn="TS1">{{failureModeType =='CoolerFailure'? 'T1':'TS1' }}
                         <p-sortIcon field="TS1"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="TD2">TD1
+                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="TD2">TD1
                         <p-sortIcon field="TD2"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="TS2">TS2
+                    <th pSortableColumn="TS2">{{failureModeType =='CoolerFailure'? 'T2':'TS2' }} 
                         <p-sortIcon field="TS2"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="TD2">TD2
+                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="TD2">TD2
                         <p-sortIcon field="TD2"></p-sortIcon>
                     </th>
                     <th pSortableColumn="CLASSIFICATION">CLASSIFICATION</th>
@@ -84,14 +100,14 @@
             <ng-template pTemplate="body" let-compListWithClassification>
                 <tr>
 
-                    <td>{{compListWithClassification.PS1}}</td>
-                    <td>{{compListWithClassification.PD1}}</td>
-                    <td>{{compListWithClassification.PS2}}</td>
-                    <td>{{compListWithClassification.PD2}}</td>
+                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.PS1}}</td>
+                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.PD1}}</td>
+                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.PS2}}</td>
+                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.PD2}}</td>
                     <td>{{compListWithClassification.TS1}}</td>
-                    <td>{{compListWithClassification.TD1}}</td>
+                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.TD1}}</td>
                     <td>{{compListWithClassification.TS2}}</td>
-                    <td>{{compListWithClassification.TD2}}</td>
+                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.TD2}}</td>
                     <td>{{compListWithClassification.Classification}}</td>
 
                 </tr>

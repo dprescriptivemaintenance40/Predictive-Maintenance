@@ -22,7 +22,7 @@ namespace DPM_Testing.Models
         public decimal TD2 { get; set; }
         public DateTime InsertedDate { get; set; }
         public string ProcessingStage { get; set; }
-
+        public string FailureModeType { get; set; }
 
     }
 

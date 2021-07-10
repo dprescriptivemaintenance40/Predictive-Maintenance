@@ -30,12 +30,14 @@ namespace DPM_Testing.Controllers
             _context = context;
         }
         
-        public async Task<IActionResult> GetClassification()
+        [HttpGet]
+        [Route("GetClassification")]
+        public async Task<IActionResult> GetClassification(string type)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
             {
-                List<ScrewCompressorTrainClassificationModel> screwCompressorClassification = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).ToListAsync();
+                List<ScrewCompressorTrainClassificationModel> screwCompressorClassification = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId && a.FailureModeType == type).ToListAsync();
                 var ClassificationData = screwCompressorClassification.ToList();
                 return Ok(ClassificationData);
             }
@@ -65,6 +67,7 @@ namespace DPM_Testing.Controllers
                     DateTime dateOnly = dt.Date;
                     item.InsertedDate = dateOnly;
                     item.UserId = userId;
+                    item.FailureModeType = "RotarDamage";
                     item.TenantId = 1;
                     _context.ScrewCompressureTrainData.Add(item);
                     await _context.SaveChangesAsync();
@@ -77,6 +80,116 @@ namespace DPM_Testing.Controllers
                 return BadRequest(exe.Message);
             }
 
+        }
+
+        [HttpPost]
+        [Route("PostSSRBData")]
+        public async Task<IActionResult> PostSSRBData([FromBody] List<ScrewCompressorTrainClassificationModel> trainClassificationModels)
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+
+            try
+            {
+                foreach (var item in trainClassificationModels)
+                {
+                    DateTime datetime = item.InsertedDate;
+                    if (datetime == DateTime.MinValue)
+                    {
+                        item.InsertedDate = DateTime.Now;
+                    }
+                    DateTime dt = item.InsertedDate;
+                    DateTime dateOnly = dt.Date;
+                    item.InsertedDate = dateOnly;
+                    item.UserId = userId;
+                    item.FailureModeType = "SSRB";
+                    item.TenantId = 1;
+                    var PD1a = item.PD1 + Convert.ToDecimal(1.03);
+                    var PS1a = item.PS1 + Convert.ToDecimal(1.03);
+
+                    var PD2a = item.PD2 + Convert.ToDecimal(1.03);
+                    var PS2a = item.PS2 + Convert.ToDecimal(1.03);
+                    if (item.TD1 > 210 || ( (PD1a/PS1a) > Convert.ToDecimal(3.5) ) || ((PD2a / PS2a) > Convert.ToDecimal(3.3)))
+                    {
+                        item.Classification = "degarde";
+                    }
+                    else if (item.TD1 > 190 || ((PD1a / PS1a) > Convert.ToDecimal(3.3)) || ((PD2a / PS2a) > Convert.ToDecimal(3.1)))
+                    {
+                        item.Classification = "incipient";
+                    }
+                    else
+                    {
+                        item.Classification = "normal";
+                    }
+                    _context.ScrewCompressureTrainClassifications.Add(item);
+                    await _context.SaveChangesAsync();
+
+                }
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("PostCoolerFailure")]
+        public async Task<IActionResult> PostCoolerFailure([FromBody] List<ScrewCompressorTrainClassificationModel> trainClassificationModels)
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+
+            try
+            {
+                foreach (var item in trainClassificationModels)
+                {
+                    DateTime datetime = item.InsertedDate;
+                    if (datetime == DateTime.MinValue)
+                    {
+                        item.InsertedDate = DateTime.Now;
+                    }
+                    DateTime dt = item.InsertedDate;
+                    DateTime dateOnly = dt.Date;
+                    item.InsertedDate = dateOnly;
+                    item.UserId = userId;
+                    item.FailureModeType = "CoolerFailure";
+                    item.TenantId = 1;
+                    // Q=mCp(T2-T1) (KJ/sec)
+                    //m=0.233 kgr/sec
+                    //Cp=1.005 kJ/kgrK
+                    item.TS1 = item.T1;
+                    item.TS2 = item.T2;
+                    decimal Q = (Convert.ToDecimal(0.233) * Convert.ToDecimal(1.005) * (item.T2 - item.T1));
+
+                    if ( Q < 0)
+                    {
+                        item.Classification = "bad";
+                    }
+                    else if(((38.0m < Q) && (Q <= 40.0m) ) 
+                        || ( (190m < item.T2) && (item.T2 <= 220m) )
+                        || ( (30m <  item.T1) && (item.T1 <= 50m)  ) )
+                    {
+                        item.Classification = "degarde";
+                    }
+                    else if (((34.0m <= Q) && (Q <= 38.0m))
+                        || ((170m <= item.T2) && (item.T2 <= 190m))
+                        || ((25m <= item.T1) && (item.T1 <= 30m)))
+                    {
+                        item.Classification = "incipient";
+                    }
+                    else
+                    {
+                        item.Classification = "normal";
+                    }
+                   _context.ScrewCompressureTrainClassifications.Add(item);
+                    await _context.SaveChangesAsync();
+
+                }
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
         }
 
         [HttpGet]
