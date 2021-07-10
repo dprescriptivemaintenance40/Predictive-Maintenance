@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
+import * as pbi from 'powerbi-client'; 
+declare var powerbi: any;
 @Component({
   selector: 'app-education',
   templateUrl: './education.component.html',
   styleUrls: ['./education.component.scss']
 })
 export class EducationComponent {
-  constructor(private title: Title) {
+
+   constructor(private title: Title) {
     this.title.setTitle('Education | Dynamic Prescriptive Maintenence');
   }
-
+  ngOnInit() {
+    this.showReport()
+  }
   article1() {
     let link = document.createElement("a");
     link.download = "DPM Article 1.1-v0.2";
@@ -19,4 +24,11 @@ export class EducationComponent {
   }
 
 
+  showReport() {
+    let embedUrl = 'https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D';
+    let embedReportId = '8229f0b7-523d-46d9-9a54-b53438061991';
+    let reportContainer = <HTMLElement>document.getElementById('reportContainer');
+    let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
+ 
+}
 }

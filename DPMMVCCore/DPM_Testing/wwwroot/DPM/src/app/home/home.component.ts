@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { UserService } from './Services/user.services';
 import { EventEmitterService } from './Services/event-emitter.service';
 import { Title } from '@angular/platform-browser';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,7 +17,6 @@ import { Title } from '@angular/platform-browser';
 })
 export class HomeComponent implements OnInit {
   FormData: FormGroup;
-
   public user: any = [];
   public screwCompressor: boolean = false;
   public screwCompressorData: boolean = false;
@@ -315,7 +315,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  ngOnInit() { 
     this.FormData = this.builder.group({
       Subject: new FormControl('', [Validators.required]),
       Email: new FormControl('', [Validators.compose([Validators.required, Validators.email])]),
@@ -415,4 +415,8 @@ export class HomeComponent implements OnInit {
         }
       );
   }
+
+
+
+
 }
