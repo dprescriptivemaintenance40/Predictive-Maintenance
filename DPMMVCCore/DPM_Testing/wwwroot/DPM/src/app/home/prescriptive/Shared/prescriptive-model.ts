@@ -21,7 +21,7 @@
         public CRemarks 
         public FCAAdded 
         public MSSAdded 
-        public CentrifugalPumpPrescriptiveFailureMode : any = []
+        public centrifugalPumpPrescriptiveFailureModes : any = []
         
 
     }
