@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,6 +24,8 @@ namespace DPM_Testing.Models
         public DateTime InsertedDate { get; set; }
         public string ProcessingStage { get; set; }
         public string FailureModeType { get; set; }
+        [NotMapped]
+        public string Date { get; set; }
 
     }
 

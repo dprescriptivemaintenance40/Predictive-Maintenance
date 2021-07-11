@@ -243,7 +243,7 @@ export class TrainComponent implements OnInit {
     }
     if (dataArray.length != 0) {
       const dataArrayList = dataArray.map(obj => {
-        const { CompClassID, BatchId, TenantId, ClassificationId, InsertedDate, ...rest } = obj;
+        const { CompClassID, BatchId, TenantId, ClassificationId, ...rest } = obj;
         return rest;
       })
 

@@ -58,14 +58,12 @@ namespace DPM_Testing.Controllers
             {
                 foreach (var item in compressuredetails)
                 {
-                    DateTime datetime = item.InsertedDate;
+                    DateTime datetime = Convert.ToDateTime(item.Date).Date;
+                    item.InsertedDate = datetime;
                     if (datetime == DateTime.MinValue)
                     {
-                        item.InsertedDate = DateTime.Now;
+                        item.InsertedDate = DateTime.Now.Date;
                     }
-                    DateTime dt = item.InsertedDate;
-                    DateTime dateOnly = dt.Date;
-                    item.InsertedDate = dateOnly;
                     item.UserId = userId;
                     item.FailureModeType = "RotarDamage";
                     item.TenantId = 1;
@@ -92,14 +90,12 @@ namespace DPM_Testing.Controllers
             {
                 foreach (var item in trainClassificationModels)
                 {
-                    DateTime datetime = item.InsertedDate;
+                    DateTime datetime = Convert.ToDateTime(item.Date).Date;
+                    item.InsertedDate = datetime;
                     if (datetime == DateTime.MinValue)
                     {
-                        item.InsertedDate = DateTime.Now;
+                        item.InsertedDate = DateTime.Now.Date;
                     }
-                    DateTime dt = item.InsertedDate;
-                    DateTime dateOnly = dt.Date;
-                    item.InsertedDate = dateOnly;
                     item.UserId = userId;
                     item.FailureModeType = "SSRB";
                     item.TenantId = 1;
@@ -142,14 +138,12 @@ namespace DPM_Testing.Controllers
             {
                 foreach (var item in trainClassificationModels)
                 {
-                    DateTime datetime = item.InsertedDate;
+                    DateTime datetime = Convert.ToDateTime(item.Date).Date;
+                    item.InsertedDate = datetime;
                     if (datetime == DateTime.MinValue)
                     {
-                        item.InsertedDate = DateTime.Now;
+                        item.InsertedDate = DateTime.Now.Date;
                     }
-                    DateTime dt = item.InsertedDate;
-                    DateTime dateOnly = dt.Date;
-                    item.InsertedDate = dateOnly;
                     item.UserId = userId;
                     item.FailureModeType = "CoolerFailure";
                     item.TenantId = 1;

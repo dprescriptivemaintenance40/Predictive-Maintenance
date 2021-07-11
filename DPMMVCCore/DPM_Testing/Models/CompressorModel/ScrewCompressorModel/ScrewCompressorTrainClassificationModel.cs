@@ -31,5 +31,7 @@ namespace DPM_Testing.Models
         public decimal T1 { get; set; }
         [NotMapped]
         public decimal T2 { get; set; }
+        [NotMapped]
+        public string Date { get; set; }
     }
 }
