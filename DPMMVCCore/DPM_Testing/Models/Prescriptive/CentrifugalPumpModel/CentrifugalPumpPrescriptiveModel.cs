@@ -68,11 +68,26 @@ namespace DPM.Models.Prescriptive
         public decimal FCAUsefulLife { get; set; }
         public string FCAUpdateIntervals { get; set; }
         public string FCAUpdateConditions { get; set; }
+        public string MSSStartergy { get; set; }
         public string MSSMaintenanceInterval { get; set; }
         public string MSSAvailability { get; set; }
-        public string MSSStartergy { get; set; }
         public string MSSMaintenanceTask { get; set; }
         public string MSSIntervalSelectionCriteria { get; set; }
+        public List<CentrifugalPumpMssModel> CentrifugalPumpMssModel { get; set; }
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
+    }
+
+    public class CentrifugalPumpMssModel
+    {
+        [Key]
+        public int CentrifugalPumpMssId { get; set; }
+        public int CFPPrescriptiveId { get; set; }
+        public int CPPFMId { get; set; }
+        public string MSSStartergy { get; set; }
+        public string MSSMaintenanceInterval { get; set; }
+        public string MSSAvailability { get; set; }
+        public string MSSMaintenanceTask { get; set; }
+        public string MSSIntervalSelectionCriteria { get; set; }
+        public CentrifugalPumpPrescriptiveFailureMode CentrifugalPumpPrescriptiveFailureMode { get; set; }
     }
 }
