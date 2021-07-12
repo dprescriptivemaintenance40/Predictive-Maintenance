@@ -17,6 +17,11 @@ export class CostBenefitAnalysisComponent {
     public SelectedTagNumber: string = "";
     public showPrescriptive: boolean = false;
     public UserDetails: any;
+    public showCostBenefitAnalysis: boolean = false;
+    public Site: string = '';
+    public Plant: string = '';
+    public Unit: string = '';
+    public ETBF: string = '';
     constructor(private messageService: MessageService,
         private http: HttpClient) {
         this.MachineEquipmentSelect();
@@ -64,13 +69,17 @@ export class CostBenefitAnalysisComponent {
                             row.MSSMaintenanceInterval = `${parseFloat(annu[0]).toFixed(1)} ${annu[1]}`;
                             row.Status = 'Retained';
                             row.TotalAnnualPOC = row.AnnualPOC;
-                            row.ETBC = 30;
+                            row.ETBC = 10;
                             row.TotalPONC = 20796;
-                            row.ETBF = 2;
+                            row.ETBF = this.ETBF ? this.ETBF : 2;
                             row.TotalAnnualCostWithMaintenance = 1.777;
                             row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
                             row.ResidualRiskWithMaintenance = row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC;
-                            row.MEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / row.TotalAnnualPOC).toFixed(0);
+                            let WithETBCAndPONC = row.TotalPONC / row.ETBC;
+                            let WithoutETBCAndPONC = row.TotalPONC / 5;
+                            row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
+                            row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
+                            row.ConsequenceCategory = row.Consequence.split(' ')[0];
                         }
                     });
                     this.showPrescriptive = true;
@@ -81,5 +90,13 @@ export class CostBenefitAnalysisComponent {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please select all three fields." })
         }
 
+    }
+
+    public GenerateCostBenefitReport() {
+        if (this.Site && this.Plant && this.Unit) {
+            this.showCostBenefitAnalysis = true;
+        } else {
+            this.messageService.add({ severity: 'info', summary: 'note', detail: "Please fill all three fields Site, Plant, Unit. " })
+        }
     }
 }
