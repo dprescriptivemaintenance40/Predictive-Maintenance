@@ -35,6 +35,7 @@ namespace DPM.Controllers.Prescriptive
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
                 return await _context.PrescriptiveModelData.Where(a => a.UserId == userId)
                                                            .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                           .ThenInclude(a => a.CentrifugalPumpMssModel)
                                                            .OrderBy(a => a.CFPPrescriptiveId)
                                                            .ToListAsync();
 
@@ -469,16 +470,17 @@ namespace DPM.Controllers.Prescriptive
                 var collection = centrifugalPumpPrescriptiveModel[0].centrifugalPumpPrescriptiveFailureModes.ToList();
                 foreach (var item in collection)
                 {
-                    for (int ii = 0; ii < item.CentrifugalPumpMssModel.Count; ii++)
-                    {
-                        item.CentrifugalPumpMssModel[ii].MSSMaintenanceInterval = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].CentrifugalPumpMssModel[ii].MSSMaintenanceInterval;
-                        item.CentrifugalPumpMssModel[ii].MSSMaintenanceTask = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].CentrifugalPumpMssModel[ii].MSSMaintenanceTask;
-                        item.CentrifugalPumpMssModel[ii].MSSStartergy = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].CentrifugalPumpMssModel[ii].MSSStartergy;
-                        item.CentrifugalPumpMssModel[ii].MSSAvailability = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].CentrifugalPumpMssModel[ii].MSSAvailability;
-                        item.CentrifugalPumpMssModel[ii].MSSIntervalSelectionCriteria = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].CentrifugalPumpMssModel[ii].MSSIntervalSelectionCriteria;
-                        _context.Entry(item.CentrifugalPumpMssModel[ii]).State = EntityState.Modified;
-                        await _context.SaveChangesAsync();
-                    }
+                   
+                        foreach (var item1 in prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].CentrifugalPumpMssModel)
+                        {
+                            item1.CPPFMId = item.CPPFMId;
+                            _context.CentrifugalPumpMssModels.Add(item1);
+                            await _context.SaveChangesAsync();
+                        }
+
+                    item.MSSStartergyList = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSStartergyList;
+                    _context.Entry(item).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
                     i = i + 1;
                 }
 

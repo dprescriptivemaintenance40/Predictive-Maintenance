@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -73,6 +74,8 @@ namespace DPM.Models.Prescriptive
         public string MSSAvailability { get; set; }
         public string MSSMaintenanceTask { get; set; }
         public string MSSIntervalSelectionCriteria { get; set; }
+        [NotMapped]
+        public string MSSStartergyList { get; set; }
         public List<CentrifugalPumpMssModel> CentrifugalPumpMssModel { get; set; }
         public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
     }
@@ -88,6 +91,7 @@ namespace DPM.Models.Prescriptive
         public string MSSAvailability { get; set; }
         public string MSSMaintenanceTask { get; set; }
         public string MSSIntervalSelectionCriteria { get; set; }
+        public decimal MSSFinalAvaliability { get; set; }
         public CentrifugalPumpPrescriptiveFailureMode CentrifugalPumpPrescriptiveFailureMode { get; set; }
     }
 }

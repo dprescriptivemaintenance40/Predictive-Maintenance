@@ -59,6 +59,7 @@
         public FCAUsefulLife 
         public FCAUpdateIntervals 
         public FCAUpdateConditions 
+        public MSSStartergyList
         public CentrifugalPumpMssModel : any = []
         
     }
