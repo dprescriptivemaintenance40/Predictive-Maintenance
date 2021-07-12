@@ -104,7 +104,11 @@ namespace DPM_Testing.Controllers
 
                     var PD2a = item.PD2 + Convert.ToDecimal(1.03);
                     var PS2a = item.PS2 + Convert.ToDecimal(1.03);
-                    if (item.TD1 > 210 || ( (PD1a/PS1a) > Convert.ToDecimal(3.5) ) || ((PD2a / PS2a) > Convert.ToDecimal(3.3)))
+                    if (item.TD1 < 150 || item.TD2 < 100 || item.PD1 < 1.5m || item.PD2 < 6 || item.PS2 < 1.5m)
+                    {
+                        item.Classification = "bad";
+                    }
+                    else if (item.TD1 > 210 || ( (PD1a/PS1a) > Convert.ToDecimal(3.5) ) || ((PD2a / PS2a) > Convert.ToDecimal(3.3)))
                     {
                         item.Classification = "degarde";
                     }
@@ -154,7 +158,7 @@ namespace DPM_Testing.Controllers
                     item.TD1 = Decimal.Round(item.T2, 1);
                     decimal Q = (Convert.ToDecimal(0.233) * Convert.ToDecimal(1.005) * (item.T2 - item.T1));
 
-                    if ( Q < 0)
+                    if ( Q < 0 )
                     {
                         item.Classification = "bad";
                     }
@@ -174,7 +178,7 @@ namespace DPM_Testing.Controllers
                     {
                         item.Classification = "normal";
                     }
-                   _context.ScrewCompressureTrainClassifications.Add(item);
+                    _context.ScrewCompressureTrainClassifications.Add(item);
                     await _context.SaveChangesAsync();
 
                 }

@@ -234,7 +234,7 @@ export class TrainComponent implements OnInit {
         let obj ={}
         obj['InsertedDate'] = element.InsertedDate;
         obj['T1']= element.TS1;
-        obj['T2'] = element.TS2;
+        obj['T2'] = element.TD1;
         obj['Classification'] = element.Classification;
         list.push(obj);
       });
