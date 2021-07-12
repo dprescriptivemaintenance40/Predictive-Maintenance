@@ -89,7 +89,7 @@ export class CostBenefitAnalysisComponent {
         } else {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please select all three fields." })
         }
-
+        
     }
 
     public GenerateCostBenefitReport() {
