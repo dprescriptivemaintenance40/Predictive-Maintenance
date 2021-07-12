@@ -55,6 +55,7 @@ export class PredictionComponent implements OnInit {
  public FromDate : string = ""
  public ToDate : string = ""
  public SingleBulkPredictionName : string = ""
+ public FailureModeSelect : string ="All"
 
   constructor(public title: Title,
     public http: HttpClient,

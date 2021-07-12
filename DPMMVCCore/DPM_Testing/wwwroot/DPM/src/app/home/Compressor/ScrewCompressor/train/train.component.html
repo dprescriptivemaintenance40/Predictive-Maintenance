@@ -85,10 +85,10 @@
                     <th pSortableColumn="TS1">{{failureModeType =='CoolerFailure'? 'T1':'TS1' }}
                         <p-sortIcon field="TS1"></p-sortIcon>
                     </th>
-                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="TD2">TD1
-                        <p-sortIcon field="TD2"></p-sortIcon>
+                    <th pSortableColumn="TD1">{{failureModeType =='CoolerFailure'? 'T2':'TD1' }} 
+                        <p-sortIcon field="TD1"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="TS2">{{failureModeType =='CoolerFailure'? 'T2':'TS2' }} 
+                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="TS2">TS2
                         <p-sortIcon field="TS2"></p-sortIcon>
                     </th>
                     <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="TD2">TD2

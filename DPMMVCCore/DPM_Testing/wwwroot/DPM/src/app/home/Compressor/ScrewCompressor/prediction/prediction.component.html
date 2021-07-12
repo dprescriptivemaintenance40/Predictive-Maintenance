@@ -11,7 +11,7 @@
         <div class="card-body">
             <span>
                 <img (click)="imgDowd()" class="img-fluid px-3 px-sm-4 mt-3 mb-2" style="width: 50rem;"
-                    src="/dist/DPM/assets/img/compressor.PNG "alt="">
+                    src="/dist/DPM/assets/img/compressor.PNG " alt="">
             </span>
         </div>
     </div>
@@ -19,7 +19,21 @@
 
 
 
-<button type="button" style="background-color:#585570 ; border-color:#585570 ;    margin: 0.3em;" (click)="ChangeToBulkPrediction()" class="btn btn-primary">{{SingleBulkPredictionName}}</button>
+<button type="button" style="background-color:#585570 ; border-color:#585570 ;    margin: 0.3em;"
+    (click)="ChangeToBulkPrediction()" class="btn btn-primary">{{SingleBulkPredictionName}}</button>
+<div *ngIf="showBulkPrediction" class="row">
+    <div class="col-sm-3">
+        <label class="form-control">Failure Mode</label>
+    </div>
+    <div class="col-sm-6">
+        <select [(ngModel)]="FailureModeSelect" class="form-control form-select">
+            <option value="All">All</option>
+            <option value="RotaryDamage">Rotar Damage</option>
+            <option value="SSRB">Second stage Rotar breakdown</option>
+            <option value="CF">Cooler Failure</option>
+        </select>
+    </div>
+</div>
 
 <div class="modal fade " tabindex="-1" id="Future" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-xl">
@@ -32,14 +46,18 @@
             </div>
             <div class="modal-body">
                 <div class="form-group col-sm-3">
-                    <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()" [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
-                            <option value="">Select date</option>
-                            <option *ngFor="let item of futurePredictionDatesToShow" [value]="item">{{item}}</option>  
-                          </select>
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
+                        [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
+                        <option value="">Select date</option>
+                        <option *ngFor="let item of futurePredictionDatesToShow" [value]="item">{{item}}</option>
+                    </select>
                 </div>
                 <div class="card">
 
-                    <p-table [value]="futurePredictionDataTableList" [paginator]="true" [rowHover]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10,15]" [loading]="loading">
+                    <p-table [value]="futurePredictionDataTableList" [paginator]="true" [rowHover]="true" [rows]="5"
+                        [showCurrentPageReport]="true"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="[5,10,15]" [loading]="loading">
                         <ng-template pTemplate="colgroup">
                             <colgroup>
                                 <col style="width:3em;">
@@ -96,7 +114,9 @@
 
 <div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
     <div class="col-sm col-md-4 form-group">
-        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)"
+            placeholder="Upload file"
+            accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
     </div>
     <b>From Date :</b>
     <div class="col-sm">
@@ -107,20 +127,25 @@
         <input type="date" style="width: 10em;" [(ngModel)]="ToDate" class="form-control" id="ToDate">
     </div>
     <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ; width: 10em;" (click)="getPredictedListRecordsByDate()" class="btn btn-primary">Show</button>
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ; width: 10em;"
+            (click)="getPredictedListRecordsByDate()" class="btn btn-primary">Show</button>
     </div>
- </div>
- <div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
+</div>
+<div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
 
     <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()"
+            class="btn btn-primary">Get Excel Format</button>
     </div>
 
     <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()"
+            class="btn btn-primary">Download Excel</button>
     </div>
     <div class="col-sm">
-        <button type="button" [disabled]="enableFuturePredictionButton" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;" class="btn btn-primary" data-target="#Future" data-toggle="modal" (click)="FuturePrediction()">Future Prediction</button>
+        <button type="button" [disabled]="enableFuturePredictionButton"
+            style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;" class="btn btn-primary"
+            data-target="#Future" data-toggle="modal" (click)="FuturePrediction()">Future Prediction</button>
     </div>
 </div>
 
@@ -160,19 +185,23 @@
     </div>
     <div class="td">
         <label>
-            <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Prediction()" class="btn btn-primary">Predictions</button>
-            </label>
+            <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Prediction()"
+                class="btn btn-primary">Predictions</button>
+        </label>
         <span *ngIf="notification">
-                <i class="fas fa-check-circle {{notification.class}}"></i>
-                {{notification.message}}
-            </span>
+            <i class="fas fa-check-circle {{notification.class}}"></i>
+            {{notification.message}}
+        </span>
     </div>
 
 </div>
 
 <div style="padding: 5px;" *ngIf="showBulkPrediction" style="overflow: scroll;">
     <div class="card">
-        <p-table id="exportexcel" [value]="screwWithPrediction" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
+        <p-table id="exportexcel" [value]="screwWithPrediction" [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="10"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
                     <col style="width:8em;">
@@ -183,7 +212,9 @@
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
-                    <col style="width:8em;">
+                    <col *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'RotaryDamage'" style="width:12em;">
+                    <col *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'SSRB'" style="width:15em;">
+                    <col *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'CF'" style="width:15em;">
                     <col style="width:12em;">
                 </colgroup>
             </ng-template>
@@ -197,7 +228,9 @@
                     <th>TD1 </th>
                     <th>TS2 </th>
                     <th>TD2</th>
-                    <th>PREDICTION</th>
+                    <th *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'RotaryDamage'">Rotar Damage PRED.</th>
+                    <th *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'SSRB'">Second Stage Rotar breakdown PRED.</th>
+                    <th *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'CF'">Cooler Failure PRED</th>
                     <th>DATE</th>
                 </tr>
             </ng-template>
@@ -211,13 +244,15 @@
                     <td>{{screwWithPrediction.TD1}}</td>
                     <td>{{screwWithPrediction.TS2}}</td>
                     <td>{{screwWithPrediction.TD2}}</td>
-                    <td>{{screwWithPrediction.Prediction}}</td>
+                    <td *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'RotaryDamage'">{{screwWithPrediction.Prediction}}</td>
+                    <td *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'SSRB'">{{screwWithPrediction.Prediction}}</td>
+                    <td *ngIf="FailureModeSelect == 'All' || FailureModeSelect == 'CF'">{{screwWithPrediction.Prediction}}</td>
                     <td>{{screwWithPrediction.InsertedDate | date}}</td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="8">No data found.</td>
+                    <td colspan="30">No data found.</td>
                 </tr>
             </ng-template>
         </p-table>

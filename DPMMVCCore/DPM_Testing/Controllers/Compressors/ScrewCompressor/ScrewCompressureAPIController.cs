@@ -150,8 +150,8 @@ namespace DPM_Testing.Controllers
                     // Q=mCp(T2-T1) (KJ/sec)
                     //m=0.233 kgr/sec
                     //Cp=1.005 kJ/kgrK
-                    item.TS1 = item.T1;
-                    item.TS2 = item.T2;
+                    item.TS1 = Decimal.Round(item.T1, 1);
+                    item.TD1 = Decimal.Round(item.T2, 1);
                     decimal Q = (Convert.ToDecimal(0.233) * Convert.ToDecimal(1.005) * (item.T2 - item.T1));
 
                     if ( Q < 0)
