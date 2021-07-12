@@ -21,6 +21,9 @@ export class PrescriptiveConfigurationComponent implements OnInit {
   public EquipmentTypeCompressor: boolean = false;
   public EquipmentTypePump: boolean = false;
 
+  public MachineTypeSelectCompressor: string = "";
+  public MachineTypeSelectPump: string = "";
+
   constructor(public fb: FormBuilder,
     public title: Title,
     private prescriptiveBLService: CommonBLService,
@@ -51,8 +54,8 @@ export class PrescriptiveConfigurationComponent implements OnInit {
               description: [prescriptiveLookUpModel.Description, Validators.required]
             }));
           });
-          this.EquipmentTypeSelect = false
-          this.EquipmentTypePump = true
+          //  this.EquipmentTypePump = true
+          this.EquipmentTypeCompressor = true
         }
       }, err => {
         console.log(err.error);
@@ -63,11 +66,10 @@ export class PrescriptiveConfigurationComponent implements OnInit {
     if (fg.value.machineType == 'Pump') {
       this.EquipmentTypePump = true;
       this.EquipmentTypeCompressor = false;
-      this.EquipmentTypeSelect = false;
     } else {
-      this.EquipmentTypePump = false;
       this.EquipmentTypeCompressor = true;
-      this.EquipmentTypeSelect = false;
+      this.EquipmentTypePump = false;
+    
     }
   }
 
@@ -132,7 +134,4 @@ export class PrescriptiveConfigurationComponent implements OnInit {
       this.notification = null;
     }, 3000);
   }
-
-
-
 }
