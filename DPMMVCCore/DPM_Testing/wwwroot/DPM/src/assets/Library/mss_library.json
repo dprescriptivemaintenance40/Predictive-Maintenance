@@ -102,6 +102,21 @@
         "id": 19,
         "name": "Plugged/ Choked",
         "mtbf" : 0 
+      },
+      { 
+        "id": 20,
+        "name": "Rotary Damage",
+        "mtbf" : 0  
+      },
+      { 
+        "id": 21,
+        "name": "Cooler failure",
+        "mtbf" : 0 
+      },
+      { 
+        "id": 21,
+        "name": "second stage rotor breakdown",
+        "mtbf" : 0 
       }
 
 ]

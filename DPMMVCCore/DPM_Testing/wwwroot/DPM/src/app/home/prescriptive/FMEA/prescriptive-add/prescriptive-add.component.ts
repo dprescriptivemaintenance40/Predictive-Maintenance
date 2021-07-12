@@ -417,7 +417,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
     if (this.MachineType == "Compressor") {
       this.EquipmentList = null
-      this.EquipmentList = ["Compressor"]
+      this.EquipmentList = ["Screw Compressor"]
     }
     console.log(this.EquipmentType)
   }
