@@ -18,31 +18,26 @@
                 <button class="btn btn-white btn-sm" (click)="prescriptiveLookUpForm()">
                         <i class="fa fa-plus mr-2"></i>Record
                 </button>
-            </div>
-           
+            </div>           
         </div>
         
     </div>
     <div class="w-100">
         <form class="w-100" [formGroup]="fg" *ngFor="let fg of prescriptiveLookUpForms.controls ; let i=index;" (submit)="recordSubmit(fg)">
-                <div class="td col-sm-2">
-                    <select class="form-control" (change)="SelectMachineType(fg)" formControlName="machineType">
+                <div class="td">
+                    <select class="form-control" (change)="SelectMachineType(fg,i)" formControlName="machineType">
                         <option>Pump</option> 
-                        <option disabled>Compressor</option>
+                        <option>Compressor</option>
                     </select>
                 </div>
-          
-            <div *ngIf="EquipmentTypeSelect" class="td col-sm-2">
-                <select class="form-control" formControlName="equipmentType" disabled>
+                
+            <div *ngIf="fg.value.machineType != 'Pump'" class="td">
+                <select class="form-control"  formControlName="equipmentType">
+                    <option ng-disabled="Pump">Screw Compressor</option> 
+                    <option disabled>Compressor 2</option>  
                 </select>
             </div>
-            <div *ngIf="EquipmentTypeCompressor" class="td col-sm-2">
-                <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="MachineTypeSelect" formControlName="equipmentType">
-                    <option>Screw Compressor</option> 
-                    <option disabled>Compressor 2</option>
-                </select>
-            </div>
-            <div *ngIf="EquipmentTypePump" class="td col-sm-2">
+            <div *ngIf="fg.value.machineType == 'Pump'"  class="td">
                 <select class="form-control" formControlName="equipmentType">
                     <option>Centrifugal Pump</option> 
                     <option disabled>Pump 2</option>
@@ -52,7 +47,7 @@
             <div class="td col-sm-2">
                 <select class="form-control" formControlName="function">
                         <option value="Function Failure">Function Failure</option> 
-                        <option value="Function Mode" disabled>Failure Mode</option>
+                        <option value="Function Mode">Failure Mode</option>
                         <option value="Heat Exchanger">Heat Exchanger</option>
                 </select>
             </div>

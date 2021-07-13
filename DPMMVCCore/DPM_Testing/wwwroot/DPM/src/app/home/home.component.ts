@@ -262,11 +262,11 @@ export class HomeComponent implements OnInit {
           items: [
             {
               label: 'Cost Benefit Analysis',
-              url: '#/Home/Report'
+              url: '#/Home/CostBenefitAnalysis'
             },
             {
               label: 'Residual Risk Analysis',
-              url: '#/Home/PrescriptivePoc'
+              url: '#/Home/Report'
             },
             // {
             //   label: 'Optimum Spares Analysis'

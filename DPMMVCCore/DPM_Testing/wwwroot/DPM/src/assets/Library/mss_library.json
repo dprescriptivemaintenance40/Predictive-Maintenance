@@ -1,107 +1,122 @@
 [
-     { 
-      "id": 0,
-      "name": "Abnormal instrument reading",
-      "mtbf" : 9.07  
-    },
-    { 
-        "id": 1,
-        "name": "Breakdown",
-        "mtbf" : 5.39 
-      },
-      { 
-        "id": 2,
-        "name": "Erratic output",
-        "mtbf" : 51.42  
-      },
-      { 
-        "id": 3,
-        "name": "External leakage - Process medium",
-        "mtbf" : 3.00  
-      },
-      { 
-        "id": 4,
-        "name": "External leakage - Utility medium",
-        "mtbf" : 4.28 
-      },
-      { 
-        "id": 5,
-        "name": "Fail to start on demand",
-        "mtbf" : 2.04  
-      },
+  { 
+   "id": 0,
+   "name": "Abnormal instrument reading",
+   "mtbf" : 9.07  
+ },
+ { 
+     "id": 1,
+     "name": "Breakdown",
+     "mtbf" : 5.39 
+   },
+   { 
+     "id": 2,
+     "name": "Erratic output",
+     "mtbf" : 51.42  
+   },
+   { 
+     "id": 3,
+     "name": "External leakage - Process medium",
+     "mtbf" : 3.00  
+   },
+   { 
+     "id": 4,
+     "name": "External leakage - Utility medium",
+     "mtbf" : 4.28 
+   },
+   { 
+     "id": 5,
+     "name": "Fail to start on demand",
+     "mtbf" : 2.04  
+   },
 
-      { 
-        "id": 6,
-        "name": "Fail to stop on demand",
-        "mtbf" : 73.65  
-      },
+   { 
+     "id": 6,
+     "name": "Fail to stop on demand",
+     "mtbf" : 73.65  
+   },
 
-      { 
-        "id": 7,
-        "name": "High output",
-        "mtbf" : 8.31  
-      },
+   { 
+     "id": 7,
+     "name": "High output",
+     "mtbf" : 8.31  
+   },
 
-      { 
-        "id": 8,
-        "name": "Internal leakage",
-        "mtbf" : 43.41  
-      },
+   { 
+     "id": 8,
+     "name": "Internal leakage",
+     "mtbf" : 43.41  
+   },
 
-      { 
-        "id": 9,
-        "name": "Low output",
-        "mtbf" : 14.65  
-      },
-      { 
-        "id": 10,
-        "name": "Minor in-service problems",
-        "mtbf" : 2.65  
-      },
-      { 
-        "id": 11,
-        "name": "Noise",
-        "mtbf" : 48.78  
-      },
-      { 
-        "id": 12,
-        "name": "Other",
-        "mtbf" : 14.15  
-      },
-      { 
-        "id": 13,
-        "name": "Overheating",
-        "mtbf" : 3.07  
-      },
-      { 
-        "id": 14,
-        "name": "Parameter deviation",
-        "mtbf" : 15.02  
-      },
-      { 
-        "id": 15,
-        "name": "Spurious stop",
-        "mtbf" : 1.64 
-      },
-      { 
-        "id": 16,
-        "name": "Structural deficiency",
-        "mtbf" : 34.38 
-      },
-      { 
-        "id": 17,
-        "name": "Unknown",
-        "mtbf" : 0
-      },
-      { 
-        "id": 18,
-        "name": "Vibration",
-        "mtbf" : 6.15  
-      },
-      { 
-        "id": 19,
-        "name": "Plugged/ Choked",
-        "mtbf" : 0 
-      }
+   { 
+     "id": 9,
+     "name": "Low output",
+     "mtbf" : 14.65  
+   },
+   { 
+     "id": 10,
+     "name": "Minor in-service problems",
+     "mtbf" : 2.65  
+   },
+   { 
+     "id": 11,
+     "name": "Noise",
+     "mtbf" : 48.78  
+   },
+   { 
+     "id": 12,
+     "name": "Other",
+     "mtbf" : 14.15  
+   },
+   { 
+     "id": 13,
+     "name": "Overheating",
+     "mtbf" : 3.07  
+   },
+   { 
+     "id": 14,
+     "name": "Parameter deviation",
+     "mtbf" : 15.02  
+   },
+   { 
+     "id": 15,
+     "name": "Spurious stop",
+     "mtbf" : 1.64 
+   },
+   { 
+     "id": 16,
+     "name": "Structural deficiency",
+     "mtbf" : 34.38 
+   },
+   { 
+     "id": 17,
+     "name": "Unknown",
+     "mtbf" : 0
+   },
+   { 
+     "id": 18,
+     "name": "Vibration",
+     "mtbf" : 6.15  
+   },
+   { 
+     "id": 19,
+     "name": "Plugged/ Choked",
+     "mtbf" : 0 
+   },
+   { 
+     "id": 20,
+     "name": "Rotary Damage",
+     "mtbf" : 0  
+   },
+   { 
+     "id": 21,
+     "name": "Cooler failure",
+     "mtbf" : 0 
+   },
+   { 
+     "id": 21,
+     "name": "second stage rotor breakdown",
+     "mtbf" : 0 
+   }
 
 ]
