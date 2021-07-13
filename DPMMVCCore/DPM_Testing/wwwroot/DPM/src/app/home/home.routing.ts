@@ -9,7 +9,7 @@ import { CentrifugalPumpComponent } from "./Pump/centrifugal-pump/centrifugal-pu
 import { RecycleBinComponent } from "./recycle-bin/recycle-bin.component";
 import { AndorlogicComponent } from "./ANDORLogic/andorlogic.component";
 import { CentrifugalPumpTrainComponent } from "./Pump/centrifugal-pump/centrifugal-pump-train/centrifugal-pump-train.component";
-import { PrescriptivePocComponent } from "./Prescriptive_poc/prescriptive-poc.component";
+import { CostBenefitAnalysisComponent } from "./CostBenefitAnalysis/cost-benefit-analysis.component";
 import { CentrifugalPumpPredictionComponent } from "./Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component";
 import { CentrifugalPumpTraindataUploadComponent } from "./Pump/centrifugal-pump/centrifugal-pump-traindata-upload/centrifugal-pump-traindata-upload.component";
 import { CentrifugalPumpPredictiondataUploadComponent } from "./Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component";
@@ -33,7 +33,7 @@ import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/Screw
                 { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent },
                 { path: 'RecycleBin', component: RecycleBinComponent },
                 { path: 'CentrifugalPumpPrediction', component: CentrifugalPumpPredictionComponent },
-                { path: 'PrescriptivePoc', component: PrescriptivePocComponent },
+                { path: 'CostBenefitAnalysis', component: CostBenefitAnalysisComponent },
                 { path: 'FailureModesLibrary', loadChildren: () => import('./FailureModeLibrary/failure-modes-library.module').then(a => a.FailureModesLibraryModule)}, 
                 { path: 'TrainUploadData', component: CentrifugalPumpTraindataUploadComponent },
                 { path: 'PredictionUploadData', component: CentrifugalPumpPredictiondataUploadComponent }, 

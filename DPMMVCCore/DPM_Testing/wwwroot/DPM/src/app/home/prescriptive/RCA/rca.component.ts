@@ -95,7 +95,7 @@ export class RCAComponent {
     public displayQuantitativeTree: any = []
     public ANDORLOGICTREE: TreeNode[] = [
         {
-            id: this.andOrItemCount,
+            id: 100,
             label: 'Top Event',
             text: '',
             years: 0,
@@ -290,7 +290,7 @@ export class RCAComponent {
         this.ANDORLOGICTREE = [];
         this.ANDORLOGICTREE = [
             {
-                id: this.andOrItemCount,
+                id: 100,
                 label: 'Top Event',
                 text: '',
                 years: 0,
@@ -398,7 +398,7 @@ export class RCAComponent {
                     this.andOrItemCount = 100;
                     this.ANDORLOGICTREE = [];
                     this.ANDORLOGICTREE = [{
-                        id: this.andOrItemCount,
+                        id: 100,
                         label: 'Top Event',
                         text: '',
                         years: 0,
@@ -1184,9 +1184,8 @@ export class RCAComponent {
     }
 
     onAddNode(event: any) {
-        this.andOrItemCount++;
         let obj = {
-            id: this.andOrItemCount,
+            id: event.node.id + 1,
             text: '',
             expanded: true,
             ANDORLogic: true,
@@ -1389,7 +1388,7 @@ export class RCAComponent {
         this.ANDORLOGICTREE = [];
         this.ANDORLOGICTREE = [
             {
-                id: this.andOrItemCount,
+                id: 100,
                 label: 'Top Event',
                 text: '',
                 years: 0,

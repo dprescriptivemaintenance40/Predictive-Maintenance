@@ -124,31 +124,6 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         ];
     }
 
-    // public getMenuItemsForSubMenu(node: TreeNode) {
-    //     if (node.children.length > 0 && node.children[0].Event) {
-    //         this.subItems = [
-    //             {
-    //                 label: 'Event', command: () => {
-    //                     this.Event();
-    //                 }
-    //             }
-    //         ];          
-    //     } else {
-    //         this.subItems = [
-    //             {
-    //                 label: 'Event', command: () => {
-    //                     this.Event();
-    //                 }
-    //             },
-    //             {
-    //                 label: 'Basic Event', command: () => {
-    //                     this.BasicEvent();
-    //                 }
-    //             }
-    //         ];           
-    //     }
-    // }
-
     public AND() {
         this.ANDIcon = true;
         this.ORIcon = false;
@@ -208,8 +183,36 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
             this.menu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.appendTo == null });
         }
     }
-    public onDeleteNode(node) {
-        this.chart.DeleteNode.emit(node);
+    public async onDeleteNode(node) {
+        this.containsInNestedObjectDF(this.chart.value, node.id);
+        await this.familyTree(this.chart.value, node.id - 1);
+        this.cd.detectChanges();
+    }
+
+    private containsInNestedObjectDF(obj, val) {
+        if (obj === val) {
+            return true;
+        }
+
+        const keys = obj instanceof Object ? Object.keys(obj) : [];
+
+        for (const key of keys) {
+
+            const objval = obj[key];
+
+            const isMatch = this.containsInNestedObjectDF(objval, val);
+
+            if (isMatch) {
+                if (Array.isArray(obj) && obj.length > 0) {
+                    const deleteNode = obj.findIndex(a => a.id === val);
+                    obj.splice(deleteNode, 1);
+                    break;
+                }
+                return true;
+            }
+        }
+
+        return false;
     }
     get leaf(): boolean {
         return this.node.leaf == false ? false : !(this.node.children && this.node.children.length);
@@ -252,10 +255,6 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
     public onDeleteFailureCauses(index) {
         this.node.SelectedFailureCausesList.splice(index, 1);
     }
-
-    // public GetLibrary() {
-    //     this.chart.Library.emit({ node: this.node, SelectedFailureComponentsList: this.node.SelectedFailureComponentsList, SelectedFailureCausesList: this.node.SelectedFailureCausesList });
-    // }
 
     private GetFailureComponents() {
         this.commonBLService.GetFailureComponents()
