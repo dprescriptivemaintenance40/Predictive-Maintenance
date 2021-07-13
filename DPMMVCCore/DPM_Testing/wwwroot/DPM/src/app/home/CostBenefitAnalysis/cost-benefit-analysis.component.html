@@ -168,12 +168,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="left strong">{{row.MSSMaintenanceTask}}</td>
-                                        <td class="left">{{row.MSSMaintenanceInterval}}</td>
-                                        <td class="left">{{row.POC}}</td>
-                                        <td class="left">{{row.AnnualPOC}}</td>
-                                        <td class="left">{{row.Status}}</td>
+                                    <tr *ngFor="let mss of row.CentrifugalPumpMssModel">
+                                        <td class="left strong">{{mss.MSSMaintenanceTask}}</td>
+                                        <td class="left">{{mss.MSSMaintenanceInterval}}</td>
+                                        <td class="left">{{mss.POC}}</td>
+                                        <td class="left">{{mss.AnnualPOC}}</td>
+                                        <td class="left">{{mss.Status}}</td>
                                     </tr>
                                 </tbody>
                             </table>
