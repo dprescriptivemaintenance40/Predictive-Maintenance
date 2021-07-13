@@ -68,7 +68,7 @@ namespace DPM.Controllers.Prescriptive
                                                            .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                            .ThenInclude(a => a.CentrifugalPumpMssModel)
                                                            .OrderBy(a => a.CFPPrescriptiveId)
-                                                           .ToListAsync();
+                                                           .FirstOrDefaultAsync();
                 return Ok(prescriptiveModelData);
 
             }

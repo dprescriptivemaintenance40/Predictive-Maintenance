@@ -53,34 +53,37 @@ export class CostBenefitAnalysisComponent {
                 .subscribe((res: any) => {
                     this.prescriptiveRecords = res;
                     this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
-                        if (!row.MSSMaintenanceInterval || row.MSSMaintenanceInterval === 'NA' || row.MSSMaintenanceInterval === 'Not Applicable') {
-                            row.POC = 0;
-                            row.AnnualPOC = 0;
-                            row.Status = '';
-                        } else {
-                            let annu = row.MSSMaintenanceInterval.split(' ');
-                            if (row.MSSMaintenanceInterval.toLowerCase().includes('week')) {
-                                row.POC = 0.00025;
-                                row.AnnualPOC = (parseFloat(annu[0]) * 0.00025).toFixed(3);
-                            } else if (row.MSSMaintenanceInterval.toLowerCase().includes('month')) {
-                                row.POC = 0.02;
-                                row.AnnualPOC = (parseFloat(annu[0]) * 0.02).toFixed(3);
+                        row.TotalAnnualPOC = 0;
+                        row.CentrifugalPumpMssModel.forEach(mss => {
+                            if (!mss.MSSMaintenanceInterval || mss.MSSMaintenanceInterval === 'NA' || mss.MSSMaintenanceInterval === 'Not Applicable') {
+                                mss.POC = 0;
+                                mss.AnnualPOC = 0;
+                                mss.Status = '';
+                            } else {
+                                let annu = mss.MSSMaintenanceInterval.split(' ');
+                                if (mss.MSSMaintenanceInterval.toLowerCase().includes('week')) {
+                                    mss.POC = 0.00025;
+                                    mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * 0.00025).toFixed(3));
+                                } else if (mss.MSSMaintenanceInterval.toLowerCase().includes('month')) {
+                                    mss.POC = 0.02;
+                                    mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * 0.02).toFixed(3));
+                                }
+                                mss.MSSMaintenanceInterval = `${parseFloat(annu[0]).toFixed(1)} ${annu[1]}`;
+                                mss.Status = 'Retained';
+                                row.TotalAnnualPOC += mss.AnnualPOC;
                             }
-                            row.MSSMaintenanceInterval = `${parseFloat(annu[0]).toFixed(1)} ${annu[1]}`;
-                            row.Status = 'Retained';
-                            row.TotalAnnualPOC = row.AnnualPOC;
-                            row.ETBC = 10;
-                            row.TotalPONC = 20796;
-                            row.ETBF = this.ETBF ? this.ETBF : 2;
-                            row.TotalAnnualCostWithMaintenance = 1.777;
-                            row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
-                            row.ResidualRiskWithMaintenance = row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC;
-                            let WithETBCAndPONC = row.TotalPONC / row.ETBC;
-                            let WithoutETBCAndPONC = row.TotalPONC / 5;
-                            row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
-                            row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
-                            row.ConsequenceCategory = row.Consequence.split(' ')[0];
-                        }
+                        });
+                        row.ETBC = 10;
+                        row.TotalPONC = 20796;
+                        row.ETBF = this.ETBF ? this.ETBF : 2;
+                        row.TotalAnnualCostWithMaintenance = 1.777;
+                        row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
+                        row.ResidualRiskWithMaintenance =  parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
+                        let WithETBCAndPONC = row.TotalPONC / row.ETBC;
+                        let WithoutETBCAndPONC = row.TotalPONC / 5;
+                        row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
+                        row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
+                        row.ConsequenceCategory = row.Consequence.split(' ')[0];
                     });
                     this.showPrescriptive = true;
                 }, err => {
@@ -89,7 +92,7 @@ export class CostBenefitAnalysisComponent {
         } else {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Please select all three fields." })
         }
-        
+
     }
 
     public GenerateCostBenefitReport() {
