@@ -54,12 +54,23 @@ namespace DPM.Controllers.Prescriptive
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                var prescriptiveModelData = await _context.PrescriptiveModelData.FirstOrDefaultAsync(a => a.UserId == userId
-                                                                                 && a.MachineType == machine
-                                                                                 && a.EquipmentType == Equi
-                                                                                 && a.TagNumber == TagNumber);
-                prescriptiveModelData.centrifugalPumpPrescriptiveFailureModes = await _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == prescriptiveModelData.CFPPrescriptiveId).ToListAsync();
+                //var prescriptiveModelData = await _context.PrescriptiveModelData.FirstOrDefaultAsync(a => a.UserId == userId
+                //                                                                 && a.MachineType == machine
+                //                                                                 && a.EquipmentType == Equi
+                //                                                                 && a.TagNumber == TagNumber);
+                //prescriptiveModelData.centrifugalPumpPrescriptiveFailureModes = await _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == prescriptiveModelData.CFPPrescriptiveId).ToListAsync();
+                //return Ok(prescriptiveModelData);
+
+                var prescriptiveModelData  = await _context.PrescriptiveModelData.Where(a => a.UserId == userId
+                                                            && a.MachineType == machine
+                                                            && a.EquipmentType == Equi
+                                                            && a.TagNumber == TagNumber)
+                                                           .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                           .ThenInclude(a => a.CentrifugalPumpMssModel)
+                                                           .OrderBy(a => a.CFPPrescriptiveId)
+                                                           .ToListAsync();
                 return Ok(prescriptiveModelData);
+
             }
             catch (Exception exe)
             {
