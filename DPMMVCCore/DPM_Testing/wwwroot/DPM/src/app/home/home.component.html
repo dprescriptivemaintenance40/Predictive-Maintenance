@@ -6,15 +6,9 @@
 </style>
 <p-toast position="top-right"></p-toast>
 
-<div id="wrapper">
-    <ul style="background-color: #585570;" class="navbar-nav bg-gradient sidebar sidebar-dark accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center">
-            <div class="sidebar-brand-icon">
-                <div class="image-container">
-                    <img src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
-                </div>
-            </div>
-        </a>
+<div id="wrapper"  [class.menu-open]="menuOpened">
+    <ul style="background-color: #585570;" class="navbar-nav bg-gradient sidebar sidebar-dark accordion"
+        id="accordionSidebar">       
         <!-- <hr class="sidebar-divider "> -->
         <!-- <li class="nav-item active">
             <a class="nav-link" [routerLink]="['/Home/Dashboard']">
@@ -23,7 +17,7 @@
         </li> -->
         <hr class="sidebar-divider ">
 
-        <p-panelMenu [model]="MenuItems" [multiple]="false" [style]="{'width':'220px'}"></p-panelMenu>
+        <p-panelMenu [model]="MenuItems" [multiple]="false"></p-panelMenu>
 
         <!-- <hr class="sidebar-divider ">
         <li class="nav-item active">
@@ -185,24 +179,34 @@
         </li> -->
 
         <hr class="sidebar-divider">
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        <div class="text-center d-none d-md-inline" style="position: relative;z-index: 999;">
+            <button class="rounded-circle border-0 btn-primary" id="sidebarToggle" (click)="menuOpened = !menuOpened"></button>
         </div>
     </ul>
 
     <div id="content-wrapper" class="d-flex flex-column">
         <div id="content">
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <nav class="shadow navbar navbar-expand navbar-light bg-white topbar mb-4 static-top navbar-fixed">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center">
+                    <div class="sidebar-brand-icon">
+                        <div class="image-container">
+                            <img src="dist/DPM/assets/img/DPM_LOGO.png" alt="" height="45">
+                        </div>
+                    </div>
+                </a>
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+                    <i class="fa fa-bars"></i>
+                </button>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span style="color:#585570;">Contact Us</span>
-                            <i class="fas fa-envelope fa-fw"></i>
+                        <a class="nav-link dropdown-toggle" id="messagesDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="lnr lnr-envelope"></i>
+                            <span>Contact Us</span>
+                           
                         </a>
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="messagesDropdown">
                             <h6 class="dropdown-header">
                                 Message Center
                             </h6>
@@ -210,12 +214,16 @@
                                 <form [formGroup]="FormData" (submit)="Send(FormData.value)">
                                     <div class="form-group">
                                         <label for="Email">Email</label>
-                                        <input type="email" class="form-control" name="Email" aria-describedby="emailHelp" placeholder="Enter email" formControlName="Email" />
-                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                        <input type="email" class="form-control" name="Email"
+                                            aria-describedby="emailHelp" placeholder="Enter email"
+                                            formControlName="Email" />
+                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email
+                                            with anyone else.</small>
                                     </div>
                                     <div class="form-group">
                                         <label for="Subject">Subject</label>
-                                        <input type="text" class="form-control" name="Subject" placeholder="Subject" formControlName="Subject" />
+                                        <input type="text" class="form-control" name="Subject" placeholder="Subject"
+                                            formControlName="Subject" />
                                     </div>
                                     <div class="form-group">
                                         <label for="comment">Comment</label>
@@ -223,20 +231,22 @@
                                           </textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary" [disabled]="FormData.invalid">
-                                          Send
-                                        </button>
+                                        Send
+                                    </button>
                                 </form>
                             </a>
 
                         </div>
                     </li>
                     <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.UserName}}</span>
-                            <img *ngIf="!user.ImageUrl" class="img-profile rounded-circle" src="dist/DPM/assets/img/undraw_profile.svg">
+                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
                             <img *ngIf="user.ImageUrl" class="img-profile rounded-circle" [src]="user.ImageUrl">
+                            <i *ngIf="!user.ImageUrl" class="lnr lnr-user"></i>
+                            <span class="mr-2 d-none d-lg-inline">{{user.UserName}}</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="userDropdown">
                             <a class="dropdown-item" [routerLink]="[ '/Home/Profile']">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 <a class="collapse-item"></a>
@@ -262,13 +272,14 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
+                    <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>

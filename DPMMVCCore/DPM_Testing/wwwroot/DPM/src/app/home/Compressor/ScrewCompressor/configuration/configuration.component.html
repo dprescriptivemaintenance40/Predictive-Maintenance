@@ -1,9 +1,9 @@
 <p-toast position="top-right"></p-toast>
-<div class="card shadow div-in-middle" style="width: 50rem;" *ngIf="AssetList">
+<div class="card search-card div-in-middle w-100" *ngIf="AssetList">
     <div class="row">
-        <div class="col-sm" style="padding:30px;">
-            <label style=" margin-right: 12px;">
-                <h5>Machine type</h5>
+        <div class="col-sm">
+            <label>
+                Machine type
             </label>
             <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
                 class="form-control">
@@ -12,9 +12,9 @@
                 <option value="Pump" selected>Pump</option>
             </select>
         </div>
-        <div class="col-sm" style="padding:30px;">
-            <label style=" margin-right: 12px;">
-                <h5>Equipment Type</h5>
+        <div class="col-sm">
+            <label>
+               Equipment Type
             </label>
             <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()"
                 class="form-control">
@@ -22,10 +22,13 @@
                 <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
             </select>
         </div>
-        <div class="col-sm" style="padding:30px;">
+        <div class="col-sm">
             <div class="row">
-                <div class="col-sm" style="padding:30px;">
-                    <a class="btn btn-dark" (click)="GenerateConfiguration()">Done</a>
+                <div class="col-sm">
+                    <label class="hidden d-block" style="visibility: hidden;">
+                       search
+                    </label>
+                    <a class="btn btn-primary" (click)="GenerateConfiguration()"><i class="pi pi-search mr-1"></i>Search</a>
                 </div>
             </div>
         </div>
@@ -36,34 +39,31 @@
 
 </div> -->
 <br>
-<div class="container" *ngIf="configurationrecords">
-    <div class="shadow-sm p-3 mb-5 bg-white rounded" style=" margin-right: 80px;">
+<div class="" *ngIf="configurationrecords">
+    <div class="bg-white rounded">
         <div class="table-responsive">
-            <div style="padding:10px;">
-                <div class="container">
-                    <div class="row">
-                        <div style="text-align: center;" class="col-sm-2">Column</div>
-                        <div style="text-align: right;" class="col-sm-2">Alarm</div>
-                        <div  class="col-sm-2"></div>  
-                        <div style="text-align: right;" class="col-sm">Trigger</div>
-                        <div  class="col-xl"></div> 
-                        <div style="text-align: center;" class="col-sm">Condition</div>
-                        <div style="text-align: center;" class="col-sm">
-                            <button class="btn btn-outline-primary btn-sm" (click)="addRuleForm()">
+            <div style="padding:30px;">
+                <div class="">
+                    <div class="td col-sm-12">
+                        <span *ngIf="notification" class="elementToFadeInAndOut">
+                            <i class="fas fa-check-circle {{notification.class}}"></i>
+                            {{notification.message}}
+                        </span>
+                    </div>
+                    <div class="row tbl-head">
+                        <div style="text-align: left;" class="col-sm-2">Column</div>
+                        <div style="text-align: left;" class="col-sm-2">Alarm</div>
+                        <div style="text-align: left;" class="col-sm-2">Trigger</div>
+                        <div style="text-align: left;" class="col-sm-2">Condition</div>
+                        <div style="text-align: right;" class="col-sm-4">
+                            <button class="btn btn-white btn-sm" (click)="addRuleForm()">
                                 <i class="fa fa-plus"></i> New Record
                             </button>
-                        </div>
-                        <div style="text-align: center;" class="col-sm-2"></div>
-                        <div class="td col-sm">
-                            <span *ngIf="notification" class="elementToFadeInAndOut">
-                                <i class="fas fa-check-circle {{notification.class}}"></i>
-                                {{notification.message}}
-                            </span>
-                        </div>
+                        </div>                        
                     </div>
 
-                    <div class="tbody">
-                        <form class="tr" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;"
+                    <div class="w-100">
+                        <form class="w-100" [formGroup]="fg" *ngFor="let fg of addRuleForms.controls ; let i=index;"
                             (submit)="recordSubmit(fg)">
                             <!-- <div class="td">
                         <input type="text" class="form-control" formControlName="machineType" [(ngModel)]="MachineType" [attr.disabled] />
@@ -71,18 +71,19 @@
                     <div class="td">
                         <input type="text" class="form-control" formControlName="equipmentType" [(ngModel)]="EquipmentType" [attr.disabled] />
                     </div> -->
-                            <div class="td">
+                    <div class="row">
+                            <div class="td col-sm-2">
                                 <input class="form-control" data-toggle="tooltip" data-placement="right"
                                     title="{{addRuleResponse[i]}}" formControlName="columns">
                             </div>
-                            <div class="td">
+                            <div class="td col-sm-2">
                                 <input class="form-control" formControlName="alarm">
                             </div>
-                            <div class="td">
+                            <div class="td col-sm-2">
                                 <input class="form-control" formControlName="trigger">
                             </div>
 
-                            <div class="td" style="width:70px">
+                            <div class="td col-sm-2" style="width:70px">
                                 <select class="form-control" formControlName="condition">
                                     <option> > </option>
                                     <option>
@@ -90,18 +91,17 @@
                                     <option> = </option>
                                 </select>
                             </div>
-                            <div class="td">
+                            <div class="td col-sm-4">
                                 <button type="submit" class="btn btn-sm" [disabled]="fg.invalid"
-                                    [ngClass]="(fg.get('addRuleId').value==0)?'btn btn-sm':'btn-outline-dark'"><i
+                                    [ngClass]="(fg.get('addRuleId').value==0)?'btn btn-sm btn-dark':'btn-primary'"><i
                                         class="far fa-save"></i>
                                     {{fg.get('addRuleId').value==0?'Submit':'Update'}}
                                 </button>
 
-                            </div>
-                            <div class="td">
-                                <button class="btn btn-light ml-1" (click)="onDelete(fg.get('addRuleId').value,i)">
-                                    <i class="far fa-trash-alt fa-lg text-danger"></i>
+                                <button class="btn btn-danger btn-sm ml-1" (click)="onDelete(fg.get('addRuleId').value,i)">
+                                    <i class="far fa-trash-alt fa-sm text-white"></i>
                                 </button>
+                            </div>
                             </div>
                         </form>
                     </div>

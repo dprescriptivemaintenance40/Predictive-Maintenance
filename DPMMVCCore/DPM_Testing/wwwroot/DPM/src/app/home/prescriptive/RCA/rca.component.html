@@ -19,13 +19,13 @@
         touch-action: auto;
     }
 </style>
-<div class="card shadow" style="margin: 20px;">
+<div class="card dpm-card">
     <p-tabView (onChange)="RCAHandleChange($event)">
-        <p-tabPanel header="RCA List">
+        <p-tabPanel header="RCA List" leftIcon="pi pi-align-left">
             <div class="row">
-                <div class="col-xl-12 col-lg-11">
-                    <div class="card rca shadow mb-4 con">
-                        <div class="card-body">
+                <div class="col-xl-12 col-lg-11 p-0">
+                    <div class="mb-4 con">
+                        <div class="card-body p-0">
                             <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                                 <ng-template pTemplate="colgroup">
                                     <colgroup>
@@ -77,8 +77,8 @@
                 </div>
             </div>
         </p-tabPanel>
-        <p-tabPanel header="Add"><br>
-            <div class="card shadow div-in-middle" *ngIf="SelectBoxEnabled">
+        <p-tabPanel header="Add" leftIcon="pi pi-plus">
+            <div class="card dpm-card div-in-middle w-100" *ngIf="SelectBoxEnabled">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>Add Label and Tag Number to RCA</b></li>
                     <li class="list-group-item">
@@ -136,8 +136,8 @@
                 <a *ngIf="RCATypeQualititive === true || RCATypeQuantitive === true " class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data" tooltipPosition="top">save</a>
             </div>
         </p-tabPanel>
-        <p-tabPanel header="Update"><br>
-            <div class="card shadow div-in-middle" *ngIf="SelectUpdateBoxEnabled">
+        <p-tabPanel header="Update" leftIcon="pi pi-refresh"><br>
+            <div class="card dpm-card div-in-middle" *ngIf="SelectUpdateBoxEnabled">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>Select Label to Update RCA</b></li>
                     <li class="list-group-item">

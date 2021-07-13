@@ -15,6 +15,7 @@ import { Title } from '@angular/platform-browser';
   providers: [MessageService]
 })
 export class HomeComponent implements OnInit {
+  menuOpened: boolean = true;
   FormData: FormGroup;
 
   public user: any = [];
@@ -30,10 +31,12 @@ export class HomeComponent implements OnInit {
   public MenuItems: any[] = [
     {
       label: 'DPM-Education',
-      url: '#/Home/Education'
+      url: '#/Home/Education',
+      icon: 'pi pi-book',
     },
     {
       label: 'Failure Mode Library',
+      icon: 'pi pi-bookmark',
       items: [
         // {
         //   label: 'Asset’s list',
@@ -81,6 +84,7 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Customer database',
+      icon: 'pi pi-users',
       items: [
         {
           label: 'Configuration',
@@ -206,6 +210,7 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Strategic Analysis',
+      icon: 'pi pi-chart-line',
       items: [
         {
           label: 'Develop maintenance strategy',
@@ -250,6 +255,7 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Resource Optimization',
+      icon: 'pi pi-sitemap',
       items: [
         {
           label: 'APM (Assets Performance Management) Platform',
@@ -291,6 +297,7 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Prescriptive Maintenance',
+      icon: 'pi pi-sliders-v',
       items: [
         {
           label: 'Prescriptive Recommendation',
@@ -300,6 +307,7 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Recycle Bin',
+      icon: 'pi pi-trash',
       url: '#/Home/RecycleBin'
     },
   ];
