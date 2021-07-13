@@ -88,6 +88,15 @@ namespace DPM_Testing.Controllers
 
             try
             {
+                var ScrewCompressorConfigurationModel = await _context.AddRuleModels.Where(a => a.MachineType == "Compressor" && a.EquipmentType == "Screw Compressor" && a.FailureModeType == "SSRB").OrderBy(a => a.AddRuleId).ToListAsync();
+
+                double a = Convert.ToDouble(ScrewCompressorConfigurationModel[0].Alarm);
+                double TD1Alaram = Convert.ToDouble(ScrewCompressorConfigurationModel[1].Alarm);
+                double TD1Trigger = Convert.ToDouble(ScrewCompressorConfigurationModel[1].Trigger);
+                double PD1aPS1aAlaram = Convert.ToDouble(ScrewCompressorConfigurationModel[2].Alarm);
+                double PD1aPS1aTrigger = Convert.ToDouble(ScrewCompressorConfigurationModel[2].Trigger);
+                double PD2aPS2aAlaram = Convert.ToDouble(ScrewCompressorConfigurationModel[3].Alarm);
+                double PD2aPS2aTrigger = Convert.ToDouble(ScrewCompressorConfigurationModel[3].Trigger);
                 foreach (var item in trainClassificationModels)
                 {
                     DateTime datetime = Convert.ToDateTime(item.Date).Date;
@@ -99,20 +108,20 @@ namespace DPM_Testing.Controllers
                     item.UserId = userId;
                     item.FailureModeType = "SSRB";
                     item.TenantId = 1;
-                    var PD1a = item.PD1 + Convert.ToDecimal(1.03);
-                    var PS1a = item.PS1 + Convert.ToDecimal(1.03);
+                    var PD1a = item.PD1 + Convert.ToDecimal(a);
+                    var PS1a = item.PS1 + Convert.ToDecimal(a);
 
-                    var PD2a = item.PD2 + Convert.ToDecimal(1.03);
-                    var PS2a = item.PS2 + Convert.ToDecimal(1.03);
+                    var PD2a = item.PD2 + Convert.ToDecimal(a);
+                    var PS2a = item.PS2 + Convert.ToDecimal(a);
                     if (item.TD1 < 150 || item.TD2 < 100 || item.PD1 < 1.5m || item.PD2 < 6 || item.PS2 < 1.5m)
                     {
                         item.Classification = "bad";
                     }
-                    else if (item.TD1 > 210 || ( (PD1a/PS1a) > Convert.ToDecimal(3.5) ) || ((PD2a / PS2a) > Convert.ToDecimal(3.3)))
+                    else if (item.TD1 > Convert.ToDecimal(TD1Trigger) || ( (PD1a/PS1a) > Convert.ToDecimal(PD1aPS1aTrigger) ) || ((PD2a / PS2a) > Convert.ToDecimal(PD2aPS2aTrigger)))
                     {
                         item.Classification = "degarde";
                     }
-                    else if (item.TD1 > 190 || ((PD1a / PS1a) > Convert.ToDecimal(3.3)) || ((PD2a / PS2a) > Convert.ToDecimal(3.1)))
+                    else if (item.TD1 > Convert.ToDecimal(TD1Alaram) || ((PD1a / PS1a) > Convert.ToDecimal(PD1aPS1aAlaram)) || ((PD2a / PS2a) > Convert.ToDecimal(PD2aPS2aAlaram)))
                     {
                         item.Classification = "incipient";
                     }
