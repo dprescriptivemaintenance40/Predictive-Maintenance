@@ -16,6 +16,10 @@
                     <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable1()">Back</button>
 
                 </div>
+                <div class="col" *ngIf="Table4">
+                    <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable3()">Back</button>
+
+                </div>
             </div>
             <div class="card-body">
                 <p-table *ngIf="Table1" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="prescriptiveRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -155,10 +159,8 @@
                     <ng-template pTemplate="colgroup">
                         <colgroup>
                             <col style="width:5em;">
-                            <col style="width:10em;">
-                            <col style="width:10em;">
-                            <col style="width:10em;">
-                            <col style="width:10em;">
+                            <col style="width:15em;">
+                            <!-- <col style="width:15em;"> -->
                             <col style="width:15em;">
                         </colgroup>
                     </ng-template>
@@ -166,10 +168,8 @@
                         <tr>
                             <th>Sr. No</th>
                             <th>Failure Mode</th>
-                            <th>Maintenance Strategy</th>
-                            <th>Maintenance Interval</th>
-                            <th>Maintainenance Practice</th>
-                            <th>Interval Selection Criteria</th>
+                            <!-- <th>Maintenance Strategy</th> -->
+                            <th>View</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
@@ -177,15 +177,56 @@
                             <td>{{rowIndex + 1}}</td>
                             <td>{{p.FunctionMode}}</td>
                             <td>{{p.MSSStartergy}}</td>
-                            <td>{{p.MSSMaintenanceInterval}}</td>
-                            <td>{{p.MSSMaintenanceTask}}</td>
-                            <td>{{p.MSSIntervalSelectionCriteria}}</td>
+                            <td>
+                                <a style="color: black;" title="View more" (click)="getMSSStrategyTable(p)"><i class="fa fa-eye"></i></a>
+                            
+                            </td>
+                            
                         </tr>
                         <!-- <tr *ngIf="FailureModeDataTabe2.length == 0">
                             <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>
                         </tr> -->
                     </ng-template>
                 </p-table>
+                
+
+
+                <p-table *ngIf="Table4"  [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe4" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
+                    <ng-template pTemplate="colgroup">
+                        <colgroup>
+                            <col style="width:5em;">
+                            <col style="width:15em;">
+                            <col style="width:15em;">
+                            <col style="width:10em;">
+                            <col style="width:15em;">
+                            <col style="width:20em;">
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th> Sr. No </th>
+                            <th> Maintenance Strategy </th>
+                            <th> MSSMaintenance Interval </th>
+                            <th> MSSAvailability </th>
+                            <th> MSSMaintenance Task </th>
+                            <th> MSSInterval Selection Criteria </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                        <tr>
+                            <td>{{rowIndex + 1}}</td>
+                            <td> {{p.MSSStartergy}} </td>
+                            <td> {{p.MSSMaintenanceInterval}} </td>
+                            <td> {{p.MSSFinalAvaliability}} </td>
+                            <td> {{p.MSSMaintenanceTask}} </td>
+                            <td> {{p.MSSIntervalSelectionCriteria}} </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+
             </div>
         </div>
     </div>
