@@ -248,7 +248,7 @@ export class MSSAddComponent implements OnInit {
       }
       this.StrategyList.push(obj)
     }
-    else if (this.ConsequenceBasedMSS == "C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)") {
+    else if (this.ConsequenceBasedMSS == "C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)") {
       this.StrategyTemp = []
       if (this.OCM == true) {
         obj['OCM'] = "C-OCM (On condition Maintainenance Task)"
