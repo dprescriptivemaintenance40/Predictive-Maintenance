@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DPM.Models.CompressorModel.ScrewCompressorModel
 {
@@ -20,9 +17,12 @@ namespace DPM.Models.CompressorModel.ScrewCompressorModel
         public decimal TS1 { get; set; }
         public decimal TD1 { get; set; }
         public decimal TS2 { get; set; }
-        public decimal TD2 { get; set; }
-        public DateTime PredictedDate { get; set; }
+        public decimal TD2 { get; set; }        
         public string Prediction { get; set; }
+        public string RD { get; set; }
+        public string SSRB { get; set; }
+        public string CF { get; set; }
+        public DateTime PredictedDate { get; set; }
     }
 
 }
