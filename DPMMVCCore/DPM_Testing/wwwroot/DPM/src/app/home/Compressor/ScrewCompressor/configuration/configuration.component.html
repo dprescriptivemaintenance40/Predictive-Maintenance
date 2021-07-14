@@ -16,10 +16,20 @@
             <label style=" margin-right: 12px;">
                 <h5>Equipment Type</h5>
             </label>
-            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()"
+            <select [(ngModel)]="EquipmentType" class="form-select" (change)="FailureModeSelect()"
                 class="form-control">
                 <option value="">Choose..</option>
                 <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Failure Mode</h5>
+            </label>
+            <select [(ngModel)]="FailureMode" class="form-select"
+                class="form-control">
+                <option value="">Choose..</option>
+                <option *ngFor="let EL of FailureModeList" [ngValue]="EL.value">{{EL.name}}</option>
             </select>
         </div>
         <div class="col-sm" style="padding:30px;">

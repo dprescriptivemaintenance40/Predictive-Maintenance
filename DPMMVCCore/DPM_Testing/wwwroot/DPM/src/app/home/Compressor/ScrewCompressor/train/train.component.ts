@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { MessageService } from 'primeng/api';
@@ -31,6 +31,7 @@ export class TrainComponent implements OnInit {
   public Image = false;
   public enableImage = true;
   public CancelImage = false;
+  public failureModeType : string ="RotarDamage";
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -57,11 +58,17 @@ export class TrainComponent implements OnInit {
     this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
   }
 
+  SelectFailureModeType(){
+    this.getScrewCompressureList();
+  }
+
   getScrewCompressureList() {
      this.compListWithClassification = [];
     this.loading = true;
+    const params = new HttpParams()
+          .set('type', this.failureModeType)
     const url : string = this.screwCompressorAPIName.getTrainList
-    this.screwCompressorMethod.getWithoutParameters(url)
+    this.screwCompressorMethod.getWithParameters(url, params)
    // this.http.get<any>("api/ScrewCompressureAPI")
       .subscribe((res: any) => {
         if (res.length > 0) {
@@ -132,6 +139,7 @@ export class TrainComponent implements OnInit {
       this.CompDetailList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
       this.loading = true;
       this.commonLoadingDirective.showLoading(true, "Please wait to get the uploaded rules....");
+      if(this.failureModeType === "RotarDamage"){
       const url : string = this.screwCompressorAPIName.TrainAddData;
       this.screwCompressorMethod.postWithHeaders(url, this.CompDetailList)
         .subscribe(async res => {
@@ -149,6 +157,19 @@ export class TrainComponent implements OnInit {
           console.log(err.error);
         }
         );
+      }else if(this.failureModeType === "SSRB") {
+        this.screwCompressorMethod.postWithHeaders(this.screwCompressorAPIName.TrainAddDataSSRB, this.CompDetailList)
+        .subscribe(res => { 
+          this.getScrewCompressureList();
+        },
+          err => { console.log(err.error);})
+      } else if(this.failureModeType === "CoolerFailure") {
+        this.screwCompressorMethod.postWithHeaders(this.screwCompressorAPIName.TrainAddDataCoolerFailure, this.CompDetailList)
+        .subscribe(res => { 
+          this.getScrewCompressureList();
+        },
+          err => { console.log(err.error);})
+      } 
     }
   }
 
@@ -205,10 +226,24 @@ export class TrainComponent implements OnInit {
 
 
   exportToExcel() {
-    const dataArray = this.compListWithClassification
-    if (dataArray != 0) {
+    var dataArray : any= [];
+    dataArray = this.compListWithClassification
+    if(this.failureModeType === "CoolerFailure") {
+      var list : any = [];
+      this.compListWithClassification.forEach(element => {
+        let obj ={}
+        obj['InsertedDate'] = element.InsertedDate;
+        obj['T1']= element.TS1;
+        obj['T2'] = element.TD1;
+        obj['Classification'] = element.Classification;
+        list.push(obj);
+      });
+      dataArray = [];
+      dataArray = list;
+    }
+    if (dataArray.length != 0) {
       const dataArrayList = dataArray.map(obj => {
-        const { CompClassID, BatchId, TenantId, ClassificationId, InsertedDate, ...rest } = obj;
+        const { CompClassID, BatchId, TenantId, ClassificationId, ...rest } = obj;
         return rest;
       })
 

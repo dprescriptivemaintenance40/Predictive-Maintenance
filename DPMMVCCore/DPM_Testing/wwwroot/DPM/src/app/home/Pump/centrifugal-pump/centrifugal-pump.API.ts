@@ -24,5 +24,9 @@ export class CentrifugalPumpConstantAPI{
     public getPredictionById : string = '/CentrifugalPumpPredictionAPI/GetCentrifugalPumpPredictionById';
     public Prediction : string = '/CentrifugalPumpPredictionAPI/CentrifugalPumpSinglePrediction';
 
+    public FuturePrediction : string = "/CentrifugalPumpFuturePredictionAPI/FuturePrediction";
+    public GetFuturePredictionRecords : string = "/CentrifugalPumpFuturePredictionAPI/GetAllPredictionRecords";
+    public GetFuturePredictionRecordsByDate : string = "/CentrifugalPumpFuturePredictionAPI/GetPredictionRecordsByDate";
+
   
 }

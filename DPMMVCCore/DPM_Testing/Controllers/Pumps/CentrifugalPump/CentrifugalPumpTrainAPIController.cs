@@ -55,7 +55,7 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
 
             try
             {
-                var ScrewCompressorConfigurationModel = await _context.AddRuleModels.Where(a => a.MachineType == "Pump" && a.EquipmentType == "Centrifugal Pump").OrderBy(a => a.AddRuleId).ToListAsync();
+                var ScrewCompressorConfigurationModel = await _context.AddRuleModels.Where(a => a.MachineType == "Pump" && a.EquipmentType == "Centrifugal Pump" && a.FailureModeType == "FM1").OrderBy(a => a.AddRuleId).ToListAsync();
 
                 double Dcustomer = Convert.ToDouble(ScrewCompressorConfigurationModel[0].Alarm);
                 double HAlaram = Convert.ToDouble(ScrewCompressorConfigurationModel[1].Alarm);

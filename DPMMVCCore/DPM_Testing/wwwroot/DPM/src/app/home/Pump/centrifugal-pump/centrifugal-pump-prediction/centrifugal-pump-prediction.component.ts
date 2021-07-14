@@ -29,8 +29,12 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
   public notification = null;
   public FromDate : string = ""
   public ToDate : string = ""
+  public minDate = new Date();
+  public maxDate = new Date();
+  public rangeDates: Date[];
+  public UserDetails: any = [];
   public CentrifugalPumpconfigurationObj: CentrifugalPumpPredictionModel = new CentrifugalPumpPredictionModel();
-
+  public futurePredictionDataTableList : any =[];
   constructor(public http: HttpClient,
     public title: Title,
     public messageService: MessageService,
@@ -40,12 +44,50 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
    ) { 
     this.FromDate = moment().format('YYYY-MM-DD');
     this.ToDate = moment().format('YYYY-MM-DD');
+    this.GetFuturePredictionRecords();
+    this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
+    // this.maxDate.setDate(this.maxDate.getDate() + 3); 
+    
+    // this.maxDate = moment().add(10, 'days').toDate();
+    // this.minDate = moment().subtract(10, 'days').toDate();
+    // console.log(this.minDate)
+    // console.log(this.maxDate)
    }
 
   ngOnInit(): void {
     this.title.setTitle('CentrifugalPump Prediction | Dynamic Prescriptive Maintenence');
     this.CPChangeToBulkPrediction();
     this.getPredictedList();
+  }
+
+  GetFuturePredictionRecords(){
+    this.CentrifugalPumpPredictionMethod.getWithoutParameters(this.CentrifugalPumpPredictionName.GetFuturePredictionRecords)
+    .subscribe(
+      (res: any)=>{
+        if(res.length>0){
+          this.minDate = moment(res[0].FPDate).toDate();
+          this.maxDate = moment(res[res.length-1].FPDate).toDate();
+        }
+      }
+    )
+  }
+
+
+  SelectedFutureDate(){
+    var  toDate : any =[];
+    toDate = this.rangeDates[1]
+    if(this.rangeDates[1] == null || this.rangeDates[1] == undefined){
+      toDate = this.rangeDates[0]
+    }
+    const params = new HttpParams()
+          .set('fromDate', moment(this.rangeDates[0]).format('YYYY-MM-DD'))
+          .set('toDate', moment(toDate).format('YYYY-MM-DD'))
+    this.CentrifugalPumpPredictionMethod.getWithParameters(this.CentrifugalPumpPredictionName.GetFuturePredictionRecordsByDate, params)
+    .subscribe(
+      (res : any) =>{
+        this.futurePredictionDataTableList = res;
+      }, err => { console.log(err.error)}
+    )
   }
 
   Downloadfile() {
@@ -128,6 +170,23 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       }, err => {
         console.log(err.error);
       });
+  }
+
+  FuturePrediction(){
+    this.CentrifugalPumpPredictionMethod.getWithoutParameters(this.CentrifugalPumpPredictionName.FuturePrediction)
+    .subscribe(async (res : any)=>{
+      if(res.length>5){
+        await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=futureprediction&type=pump`, { responseType: 'text' })
+        .subscribe(res => {
+          this.GetFuturePredictionRecords();
+        }, err=>{console.log(err.error)})
+        //logic to hit future prediction
+      }else if(res.length > 0){
+        this.messageService.add({ severity: 'info', summary: 'info', detail: `Need more ${(res.length-5)} more day's of data to do future prediction on prediction records.` }); 
+      }else{
+        this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please upload data in prediction to do future prediction' }); 
+      }
+    }, err=>console.log(err.error));
   }
 
   getPredictedList() {
