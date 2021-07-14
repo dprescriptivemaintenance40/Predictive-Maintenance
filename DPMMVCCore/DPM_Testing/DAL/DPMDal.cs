@@ -26,6 +26,7 @@ namespace DPM_ServerSide.DAL
         public DbSet<RegistrationModel> RegisterUsers { get; set; }
         public DbSet<CentrifugalPumpModel> CentrifugalPumpModelData { get; set; }
         public DbSet<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
+        public DbSet<CentrifugalPumpMssModel> CentrifugalPumpMssModels { get; set; }
         public DbSet<RecycleBinCentrifugalPumpPrescriptiveModel> recycleCentrifugalPumpModelData { get; set; }
         public DbSet<RestoreCentrifugalPumpPrescriptiveFailureMode> restoreCentrifugalPumpPrescriptiveFailureModes { get; set; }
         public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
@@ -52,6 +53,12 @@ namespace DPM_ServerSide.DAL
                         .HasOne(p => p.CentrifugalPumpPrescriptiveModel)
                         .WithMany(b => b.centrifugalPumpPrescriptiveFailureModes)
                         .HasForeignKey(a => a.CFPPrescriptiveId);
+            modelBuilder.Entity<CentrifugalPumpMssModel>().ToTable("centrifugalpumpmsstable");
+            modelBuilder.Entity<CentrifugalPumpMssModel>()
+                        .HasOne(p => p.CentrifugalPumpPrescriptiveFailureMode)
+                        .WithMany(b => b.CentrifugalPumpMssModel)
+                        .HasForeignKey(a => a.CPPFMId);
+
             modelBuilder.Entity<RecycleBinCentrifugalPumpPrescriptiveModel>().ToTable("recycledpmprescriptive");
             modelBuilder.Entity<RestoreCentrifugalPumpPrescriptiveFailureMode>().ToTable("recyclecentrifugalpumpfailuremodes");
             modelBuilder.Entity<RestoreCentrifugalPumpPrescriptiveFailureMode>()

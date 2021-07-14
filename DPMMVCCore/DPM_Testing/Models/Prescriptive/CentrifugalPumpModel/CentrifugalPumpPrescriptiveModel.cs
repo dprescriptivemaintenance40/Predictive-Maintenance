@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DPM.Models.Prescriptive
 {
@@ -68,11 +66,28 @@ namespace DPM.Models.Prescriptive
         public decimal FCAUsefulLife { get; set; }
         public string FCAUpdateIntervals { get; set; }
         public string FCAUpdateConditions { get; set; }
+        //public string MSSStartergy { get; set; }
+        //public string MSSMaintenanceInterval { get; set; }
+        //public string MSSAvailability { get; set; }
+        //public string MSSMaintenanceTask { get; set; }
+        //public string MSSIntervalSelectionCriteria { get; set; }
+        public string MSSStartergyList { get; set; }
+        public List<CentrifugalPumpMssModel> CentrifugalPumpMssModel { get; set; }
+        public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
+    }
+
+    public class CentrifugalPumpMssModel
+    {
+        [Key]
+        public int CentrifugalPumpMssId { get; set; }
+        public int CFPPrescriptiveId { get; set; }
+        public int CPPFMId { get; set; }
+        public string MSSStartergy { get; set; }
         public string MSSMaintenanceInterval { get; set; }
         public string MSSAvailability { get; set; }
-        public string MSSStartergy { get; set; }
         public string MSSMaintenanceTask { get; set; }
         public string MSSIntervalSelectionCriteria { get; set; }
-        public CentrifugalPumpPrescriptiveModel CentrifugalPumpPrescriptiveModel { get; set; }
+        public decimal MSSFinalAvaliability { get; set; }
+        public CentrifugalPumpPrescriptiveFailureMode CentrifugalPumpPrescriptiveFailureMode { get; set; }
     }
 }
