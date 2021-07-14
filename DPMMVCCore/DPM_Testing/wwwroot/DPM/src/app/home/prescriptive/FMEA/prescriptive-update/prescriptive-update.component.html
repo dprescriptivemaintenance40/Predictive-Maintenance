@@ -2168,10 +2168,48 @@
     </ng-template>
     <ng-template pTemplate="content">
         <div class="row">
-            <div class="col" *ngFor="let a of UpdateMSSImageValues" ><br>
+            <!-- <div class="col" *ngFor="let a of UpdateMSSImageValues" ><br>
                 <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                    <input type="radio"[(ngModel)]="UpdatedMSSStartegy" value="{{a}}" name="name1" />&nbsp;
+                    <input type="checkbox"[(ngModel)]="UpdatedMSSStartegy" value="{{a}}" name="name1" />&nbsp;
                     <label> {{a}}</label>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
+                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateOCM" value="{{UpdateMSSConsequence}}-OCM (On Condition Maintainenance Task)" name="name1" />&nbsp;
+                        <label> {{UpdateMSSConsequence}}-OCM</label>
+                    </div>
+                </div>
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateSO" value="{{UpdateMSSConsequence}}-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                        <label> {{UpdateMSSConsequence}}-SO</label>
+                    </div>
+                </div>
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateSR" value="{{UpdateMSSConsequence}}-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                        <label> {{UpdateMSSConsequence}}-SR</label>
+                    </div>
+                </div>
+                <div class="col" *ngIf="UpdateMSSConsequence == 'A' || UpdateMSSConsequence == 'E'"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateFFT" value="{{UpdateMSSConsequence}}-FFT (Failure Finding Task)" name="name1" />&nbsp;
+                        <label> {{UpdateMSSConsequence}}-FFT</label>
+                    </div>
+                </div>
+                <div class="col"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateRED" value="{{UpdateMSSConsequence}}-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                        <label> {{UpdateMSSConsequence}}-RED</label>
+                    </div>
+                </div>
+                <div class="col" *ngIf="UpdateMSSConsequence != 'A' || UpdateMSSConsequence != 'B'"><br>
+                    <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
+                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateOFM" value="{{UpdateMSSConsequence}}-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                        <label> {{UpdateMSSConsequence}}-OFM</label>
+                    </div>
                 </div>
             </div>
         </div> 

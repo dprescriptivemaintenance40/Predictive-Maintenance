@@ -24,9 +24,9 @@
             </div>
             <div class="col">
                 <select style="width: 10em;" [(ngModel)]="failureModeType" (change)="SelectFailureModeType()" class="form-select" class="form-control">
-                    <option value="RotarDamage">Rotar Damage</option>
+                    <option value="RD">Rotar Damage</option>
                     <option value="SSRB" selected>Second stage rotar breakdown</option>
-                    <option value="CoolerFailure" selected>Cooler Failure</option>
+                    <option value="CF" selected>Cooler Failure</option>
                 </select>
             </div>
         </div>
@@ -57,12 +57,12 @@
             [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
-                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
-                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
-                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
-                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
-                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
-                    <col *ngIf="failureModeType !='CoolerFailure'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CF'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CF'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CF'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CF'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CF'" style="width:8em;">
+                    <col *ngIf="failureModeType !='CF'" style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:12em;">
@@ -70,28 +70,28 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="PS1">PS1
+                    <th *ngIf="failureModeType !='CF'" pSortableColumn="PS1">PS1
                         <p-sortIcon field="PS1"></p-sortIcon>
                     </th>
-                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="PD1">PD1
+                    <th *ngIf="failureModeType !='CF'" pSortableColumn="PD1">PD1
                         <p-sortIcon field="PD1"></p-sortIcon>
                     </th>
-                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="PS2">PS2
+                    <th *ngIf="failureModeType !='CF'" pSortableColumn="PS2">PS2
                         <p-sortIcon field="PS2"></p-sortIcon>
                     </th>
-                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="PD2">PD2
+                    <th *ngIf="failureModeType !='CF'" pSortableColumn="PD2">PD2
                         <p-sortIcon field="PD2"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="TS1">{{failureModeType =='CoolerFailure'? 'T1':'TS1' }}
+                    <th pSortableColumn="TS1">{{failureModeType =='CF'? 'T1':'TS1' }}
                         <p-sortIcon field="TS1"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="TD1">{{failureModeType =='CoolerFailure'? 'T2':'TD1' }} 
+                    <th pSortableColumn="TD1">{{failureModeType =='CF'? 'T2':'TD1' }} 
                         <p-sortIcon field="TD1"></p-sortIcon>
                     </th>
-                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="TS2">TS2
+                    <th *ngIf="failureModeType !='CF'" pSortableColumn="TS2">TS2
                         <p-sortIcon field="TS2"></p-sortIcon>
                     </th>
-                    <th *ngIf="failureModeType !='CoolerFailure'" pSortableColumn="TD2">TD2
+                    <th *ngIf="failureModeType !='CF'" pSortableColumn="TD2">TD2
                         <p-sortIcon field="TD2"></p-sortIcon>
                     </th>
                     <th pSortableColumn="CLASSIFICATION">CLASSIFICATION</th>
@@ -100,14 +100,14 @@
             <ng-template pTemplate="body" let-compListWithClassification>
                 <tr>
 
-                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.PS1}}</td>
-                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.PD1}}</td>
-                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.PS2}}</td>
-                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.PD2}}</td>
+                    <td *ngIf="failureModeType !='CF'">{{compListWithClassification.PS1}}</td>
+                    <td *ngIf="failureModeType !='CF'">{{compListWithClassification.PD1}}</td>
+                    <td *ngIf="failureModeType !='CF'">{{compListWithClassification.PS2}}</td>
+                    <td *ngIf="failureModeType !='CF'">{{compListWithClassification.PD2}}</td>
                     <td>{{compListWithClassification.TS1}}</td>
                     <td >{{compListWithClassification.TD1}}</td>
-                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.TS2}}</td>
-                    <td *ngIf="failureModeType !='CoolerFailure'">{{compListWithClassification.TD2}}</td>
+                    <td *ngIf="failureModeType !='CF'">{{compListWithClassification.TS2}}</td>
+                    <td *ngIf="failureModeType !='CF'">{{compListWithClassification.TD2}}</td>
                     <td>{{compListWithClassification.Classification}}</td>
 
                 </tr>

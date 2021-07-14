@@ -274,7 +274,14 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                             await _context.SaveChangesAsync();
 
                         }
-                        
+                        foreach (var item in screwCompressors)
+                        {
+                            item.FuturePrediction = "Done";
+                            _context.ScrewCompressurePredictionData.Attach(item);
+                            _context.Entry(item).State = EntityState.Modified;
+                            await _context.SaveChangesAsync();
+                        }
+
                     }
                 }
                 return Ok(0);

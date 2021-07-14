@@ -13,6 +13,7 @@ import { ExcelFormatService } from 'src/app/home/Services/excel-format.service';
 import * as XLSX from 'xlsx';
 import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { CentrifugalPumpPrescriptiveFailureMode, CentrifugalPumpPrescriptiveModels } from '../../Shared/prescriptive-model';
 
 @Component({
   selector: 'app-prescriptive-update',
@@ -349,7 +350,7 @@ public UpdateBeta : number = 0
   public UpdateMSSDirectAvailability : boolean = false
   public UpdateMSSIndirectAvailability : boolean = false
   public ADDMSSFinalAvailability : any = []
-
+  public presObj : CentrifugalPumpPrescriptiveModels = new CentrifugalPumpPrescriptiveModels();
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -3112,33 +3113,48 @@ UpdateWebal(event){
 
 }
 
+public UpdatedUserMSSStartegyList : any = []
+public UpdateOCM: boolean = false;
+public UpdateSO: boolean = false;
+public UpdateSR: boolean = false;
+public UpdateFFT: boolean = false;
+public UpdateRED: boolean = false;
+public UpdateOFM: boolean = false;
+public UpdateStrategyList : any = []
+public UpdateStrategyTemp : any =[]
+public UserPreviousList : any = [];
+public UserMSSDataToBeModified : any = [];
+
   SelectNodeToEditMSS(p){
     this.FCAUpdatePageEnable = false
     this.FailureModePatternTree = false
     this.FCAViewEnabled = false
     this.MSSViewEnabled = true
     this.UpdateMSSTreeLabel = p.label
-   this.UpdatedMSSStartegy = p.children[0].data.name
+    this.UpdatedMSSStartegy = p.children[0].data.name
+    // this.UpdatedUserMSSStartegyList = this.UpdatedMSSStartegy.split(',').map(n => {
+    //     return n;
+    // });
    this.UpdateMSSConsequence = this.UpdatedMSSStartegy.split('-')[0]
    var Data : any, FMName, LocalEffect, SystemEffect, Consequence;
    if(this.UpdateMSSConsequence == 'A'){
-    Data = ['A-OCM (On condition Maintainenance Task)', 'A-SO (Scheduled Overhaul Task)', 'A-SR (Scheduled Replacement Task)', 'A-FFT (Failure Findind Task)', 'A-RED (Redsigned Mandatory)']
+    // Data = ['A-OCM (On Condition Maintainenance Task)', 'A-SO (Scheduled Overhaul Task)', 'A-SR (Scheduled Replacement Task)', 'A-FFT (Failure Findind Task)', 'A-RED (Redsigned Mandatory)']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/A.JPG"
    }else if(this.UpdateMSSConsequence == 'B'){
-    Data = ['B-OCM (On condition Maintainenance Task)', 'B-SO (Scheduled Overhaul Task)', 'B-SR (Scheduled Replacement Task)', 'B-RED']
+    // Data = ['B-OCM (On Condition Maintainenance Task)', 'B-SO (Scheduled Overhaul Task)', 'B-SR (Scheduled Replacement Task)', 'B-RED (Redsigned Mandatory)']
       this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/B.JPG"
    }else if(this.UpdateMSSConsequence == 'C'){
-    Data = ['C-OCM (On condition Maintainenance Task)', 'C-SO (Scheduled Overhaul Task)', 'C-SR (Scheduled Replacement Task)', 'C-OFM (On Failure Maintainenance)', 'C-RED']
+    // Data = ['C-OCM (On Condition Maintainenance Task)', 'C-SO (Scheduled Overhaul Task)', 'C-SR (Scheduled Replacement Task)', 'C-OFM (On Failure Maintainenance)', 'C-RED (Redsigned Mandatory)']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/C.JPG"
   }else if(this.UpdateMSSConsequence == 'D'){
-    Data = ['D-OCM (On condition Maintainenance Task)', 'D-SO (Scheduled Overhaul Task)', 'D-SR (Scheduled Replacement Task)','D-OFM (On Failure Maintainenance)', 'D-RED']
+    // Data = ['D-OCM (On Condition Maintainenance Task)', 'D-SO (Scheduled Overhaul Task)', 'D-SR (Scheduled Replacement Task)','D-OFM (On Failure Maintainenance)', 'D-RED (Redsigned Mandatory)']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/D.JPG"
   }else if(this.UpdateMSSConsequence == 'E'){
-    Data = ['E-OCM (On condition Maintainenance Task)', 'E-SO (Scheduled Overhaul Task)', 'E-SR (Scheduled Replacement Task)', 'E-FFT (Failure Findind Task)', 'E-OFM (On Failure Maintainenance)', 'E-RED']
+    Data = ['E-OCM (On Condition Maintainenance Task)', 'E-SO (Scheduled Overhaul Task)', 'E-SR (Scheduled Replacement Task)', 'E-FFT (Failure Findind Task)', 'E-OFM (On Failure Maintainenance)', 'E-RED (Redsigned Mandatory)']
     this.UpdateMSSImagePath = "/dist/DPM/assets/MSS/E.JPG"
  }
    
-    this.UpdateMSSImageValues = Data;
+//     this.UpdateMSSImageValues = Data;
     this.data1[0].children[0].children[0].children.forEach(element => {
       if (element.label === p.label){
         FMName = element.data.name;
@@ -3147,7 +3163,17 @@ UpdateWebal(event){
         Consequence  = element.children[0].children[2].data.name
   
         var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence)
-        var d = JSON.parse(UpdateData.MSSAvailability)
+        this.UserMSSDataToBeModified = UpdateData;
+        var oldSelection : any = JSON.parse(UpdateData.MSSStartergyList);
+        var d1 = oldSelection[0]
+        this.UserPreviousList = d1;
+        d1.OCM === undefined ? this.UpdateOCM = false : this.UpdateOCM = true;
+        d1.SO ===  undefined ? this.UpdateSO =  false :  this.UpdateSO = true;
+        d1.SR ===  undefined ? this.UpdateSR =  false :  this.UpdateSR = true;
+        d1.FFT === undefined ? this.UpdateFFT = false : this.UpdateFFT = true; 
+        d1.RED === undefined ? this.UpdateRED = false : this.UpdateRED = true;  
+        d1.OFM === undefined ? this.UpdateOFM = false : this.UpdateOFM = true;        
+        var d = JSON.parse(UpdateData.CentrifugalPumpMssModel[0].MSSAvailability)
         if(d.length > 4){
           this.UpdateMSSAvailabilityY = d[0]
           this.UpdateMSSstoppageDays = d[1]
@@ -3169,7 +3195,7 @@ UpdateWebal(event){
           this.UpdateMSSDirectAvailability = true
         }
        // this.UpdateMSSAvailability = d.MSSAvailability
-        this.UpdateMSSIntervalSelectionCriteria = UpdateData.MSSIntervalSelectionCriteria
+        this.UpdateMSSIntervalSelectionCriteria = UpdateData.CentrifugalPumpMssModel[0].MSSIntervalSelectionCriteria
       }
     })
 
@@ -3187,6 +3213,134 @@ UpdateWebal(event){
     this.UpdateMSSIndirectAvailability = true
     this.UpdateMSSDirectAvailability = false
    }
+  }
+
+  
+  UpdateStrategySelect(){
+    let obj = {}
+    this.UpdateStrategyList =[]
+    if (this.UpdateMSSConsequence == 'A') {
+      this.UpdateStrategyTemp = []
+      if (this.UpdateOCM == true) {
+        obj['OCM'] = "A-OCM (On Condition Maintainenance Task)"
+        this.UpdateStrategyTemp.push("A-OCM (On Condition Maintainenance Task)")
+      }
+      if (this.UpdateSO == true) {
+        obj['SO'] = "A-SO (Scheduled Overhaul Task)"
+        this.UpdateStrategyTemp.push("A-SO (Scheduled Overhaul Task)")
+      }
+      if (this.UpdateSR == true) {
+        obj['SR'] = "A-SR (Scheduled Replacement Task)"
+        this.UpdateStrategyTemp.push("A-SR (Scheduled Replacement Task)")
+      }
+      if (this.UpdateFFT == true) {
+        obj['FFT'] = "A-FFT (Failure Finding Task)"
+        this.UpdateStrategyTemp.push("A-FFT (Failure Finding Task)")
+      }
+      if (this.UpdateRED == true) {
+        obj['RED'] = "A-RED (Redsigned Mandatory)"
+        this.UpdateStrategyTemp.push("A-RED (Redsigned Mandatory)")
+      }
+      if (this.UpdateOFM == true) {
+        obj['OFM'] = "A-OFM (On Failure Maintainenance)"
+        this.UpdateStrategyTemp.push("A-OFM (On Failure Maintainenance)")
+      }
+      this.UpdateStrategyList.push(obj)
+    } else if (this.UpdateMSSConsequence == "B") {
+      this.UpdateStrategyTemp = []
+      if (this.UpdateOCM == true) {
+        obj['OCM'] = "B-OCM (On condition Maintainenance Task)"
+        this.UpdateStrategyTemp.push("B-OCM (On Condition Maintainenance Task)")
+      }
+      if (this.UpdateSO == true) {
+        obj['SO'] = "B-SO (Scheduled Overhaul Task)"
+        this.UpdateStrategyTemp.push("B-SO (Scheduled Overhaul Task)")
+      }
+      if (this.UpdateSR == true) {
+        obj['SR'] = "B-SR (Scheduled Replacement Task)"
+        this.UpdateStrategyTemp.push("B-SR (Scheduled Replacement Task)")
+      }
+      if (this.UpdateRED == true) {
+        obj['RED'] = "B-RED (Redsigned Mandatory)"
+        this.UpdateStrategyTemp.push("B-RED (Redsigned Mandatory)")
+      }
+      this.UpdateStrategyList.push(obj)
+    }
+    else if (this.UpdateMSSConsequence == "C") {
+      this.UpdateStrategyTemp = []
+      if (this.UpdateOCM == true) {
+        obj['OCM'] = "C-OCM (On condition Maintainenance Task)"
+        this.UpdateStrategyTemp.push("C-OCM (On Condition Maintainenance Task)")
+      }
+      if (this.UpdateSO == true) {
+        obj['SO'] = "C-SO (Scheduled Overhaul Task)"
+        this.UpdateStrategyTemp.push("C-SO (Scheduled Overhaul Task)")
+      }
+      if (this.UpdateSR == true) {
+        obj['SR'] = "C-SR (Scheduled Replacement Task)"
+        this.UpdateStrategyTemp.push("C-SR (Scheduled Replacement Task)")
+      }
+      if (this.UpdateRED == true) {
+        obj['RED'] = "C-RED (Redsigned Mandatory)"
+        this.UpdateStrategyTemp.push("C-RED (Redsigned Mandatory)")
+      }
+      if (this.UpdateOFM == true) {
+        obj['OFM'] = "C-OFM (On Failure Maintainenance)"
+        this.UpdateStrategyTemp.push("C-OFM (On Failure Maintainenance)")
+      }
+      this.UpdateStrategyList.push(obj)
+    } else if (this.UpdateMSSConsequence == "D") {
+      this.UpdateStrategyTemp = []
+      if (this.UpdateOCM == true) {
+        obj['OCM'] = "D-OCM (On condition Maintainenance Task)"
+        this.UpdateStrategyTemp.push("D-OCM (On Condition Maintainenance Task)")
+      }
+      if (this.UpdateSO == true) {
+        obj['SO'] = "D-SO (Scheduled Overhaul Task)"
+        this.UpdateStrategyTemp.push("D-SO (Scheduled Overhaul Task)")
+      }
+      if (this.UpdateSR == true) {
+        obj['SR'] = "D-SR (Scheduled Replacement Task)"
+        this.UpdateStrategyTemp.push("D-SR (Scheduled Replacement Task)")
+      }
+      if (this.UpdateRED == true) {
+        obj['RED'] = "D-RED (Redsigned Mandatory)"
+        this.UpdateStrategyTemp.push("D-RED (Redsigned Mandatory)")
+      }
+      if (this.UpdateOFM == true) {
+        obj['OFM'] = "D-OFM (On Failure Maintainenance)"
+        this.UpdateStrategyTemp.push("D-OFM (On Failure Maintainenance)")
+      }
+      this.UpdateStrategyList.push(obj)
+    }
+    else if (this.UpdateMSSConsequence == "E") {
+      this.UpdateStrategyTemp = []
+      if (this.UpdateOCM == true) {
+        obj['OCM'] = "E-OCM (On condition Maintainenance Task)"
+        this.UpdateStrategyTemp.push("E-OCM (On Condition Maintainenance Task)")
+      }
+      if (this.UpdateSO == true) {
+        obj['SO'] = "E-SO (Scheduled Overhaul Task)"
+        this.UpdateStrategyTemp.push("E-SO (Scheduled Overhaul Task)")
+      }
+      if (this.UpdateSR == true) {
+        obj['SR'] = "E-SR SR (Scheduled Replacement Task)"
+        this.UpdateStrategyTemp.push("E-SR (Scheduled Replacement Task)")
+      }
+      if (this.UpdateFFT == true) {
+        obj['FFT'] = "E-FFT (Failure Findind Task)"
+        this.UpdateStrategyTemp.push("E-FFT (Failure Findind Task)")
+      }
+      if (this.UpdateRED == true) {
+        obj['RED'] = "E-RED (Redsigned Mandatory)"
+        this.UpdateStrategyTemp.push("E-RED (Redsigned Mandatory)")
+      }
+      if (this.UpdateOFM == true) {
+        obj['OFM'] = "E-OFM (On Failure Maintainenance)"
+        this.UpdateStrategyTemp.push("E-OFM (On Failure Maintainenance)")
+      }
+      this.UpdateStrategyList.push(obj)
+    }
   }
 
   UpdateMSSClose(){
@@ -3207,11 +3361,26 @@ UpdateWebal(event){
   }
 
   UpdateMSSToTree(){
+    var data : any = Object.keys(this.UpdateStrategyList[0]);
+    var data1 : any = Object.keys(this.UserPreviousList);
+    var intersection = data1.filter(x => data.includes(x));
+    var difference = data1.filter(x => !data.includes(x));
+    if(data.length == data1.length == intersection.length){
+      this.UserMSSDataToBeModified
+      //  No changes In Mss Stratergy
+    }else if(intersection.length == 0){
+     // Delete All
+     // add all new data
+    }else{
+      // interaction not to delete
+      // difference to be delete
+      // data - interaction = new save part
+    }
     this.UpdateMSSTaskObj = []
     var availablilityCal1,availablilityCal2, AVAL, FinalAvailability : any = []
     
-    this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[2].children[0].data.name = this.UpdatedMSSStartegy
-    this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[0].data.name = this.UpdatedMSSStartegy
+    this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[2].children[0].data.name = this.UpdateStrategyTemp.toString();
+    this.data1[0].children[0].children[0].MSS[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[0].data.name = this.UpdateStrategyTemp.toString();
      
       FinalAvailability.push(this.UpdateMSSAvailabilityY)
       if(this.UpdateMSSAvailabilityY == "No"){
@@ -3257,177 +3426,256 @@ UpdateWebal(event){
       var LN =  Math.log((2*(this.UpdateMSSAvailability/100))-1) 
       var INTERVAl : number =  -(MTBF*LN) 
       var intervalWeek = (INTERVAl*365)/7;
+
+      var FMObj = new CentrifugalPumpPrescriptiveFailureMode();
+
+      this.UpdateStrategyTemp.forEach(element => {
+        this.UpdatedMSSStartegy = element;
     
-    if(this.UpdatedMSSStartegy == 'A-FFT (Failure Finding Task)'    ||  this.UpdatedMSSStartegy == 'A-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'A-SO (Scheduled Overhaul Task)'
-        || this.UpdatedMSSStartegy == 'A-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'A-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'A-OFM (On Failure Maintainenance)'
-        || this.UpdatedMSSStartegy == 'B-FFT (Failure Finding Task)'||  this.UpdatedMSSStartegy == 'B-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'B-SO (Scheduled Overhaul Task)'
-        || this.UpdatedMSSStartegy == 'B-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'B-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'B-OFM (On Failure Maintainenance)' ){
+        if(this.UpdatedMSSStartegy == 'A-FFT (Failure Finding Task)'    ||  this.UpdatedMSSStartegy == 'A-OCM (On Condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'A-SO (Scheduled Overhaul Task)'
+            || this.UpdatedMSSStartegy == 'A-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'A-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'A-OFM (On Failure Maintainenance)'
+            || this.UpdatedMSSStartegy == 'B-FFT (Failure Finding Task)'||  this.UpdatedMSSStartegy == 'B-OCM (On Condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'B-SO (Scheduled Overhaul Task)'
+            || this.UpdatedMSSStartegy == 'B-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'B-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'B-OFM (On Failure Maintainenance)' ){
 
-          if(this.UpdatedMSSStartegy == 'A-OFM (On Failure Maintainenance)' ||     this.UpdatedMSSStartegy == 'B-FFT (Failure Finding Task)'){
-            let obj = {}
-            obj['MSSMaintenanceInterval'] = 'Not Applicable'
-            obj['MSSMaintenanceTask'] = 'Not Applicable'
-            obj['MSSStartergy'] = this.UpdatedMSSStartegy
-            obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
-            obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-            this.UpdateMSSTaskObj.push(obj)
-          } else{
-            //  var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
-            //  var ocmWeek : number = ocmHours.split(" ")[0]
-            //     ocmWeek = Math.round((ocmWeek / 24) / 7)
-
-            var ocmweek:number  = this.FCAInterval
-            var result = (ocmweek/ 24)
-            var a= result/7
-             
-                var strategy = this.UpdatedMSSStartegy.split('-')[1];
-              let obj = {}
-              if(this.MSSStratergy == 'A-FFT (Failure Finding Task)'){
-                obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
-                obj['MSSMaintenanceTask'] = 'Function Check'
+              if(this.UpdatedMSSStartegy == 'A-OFM (On Failure Maintainenance)' ||     this.UpdatedMSSStartegy == 'B-FFT (Failure Finding Task)'){
+                let obj = {}
+                obj['CentrifugalPumpMssId'] = 0;
+                obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                obj['MSSMaintenanceInterval'] = 'Not Applicable'
+                obj['MSSMaintenanceTask'] = 'Not Applicable'
                 obj['MSSStartergy'] = this.UpdatedMSSStartegy
                 obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                 obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                this.MSSTaskObj.push(obj)
-              }else{
-                 if(strategy == 'FFT (Failure Finding Task)'){
-                   obj['MSSMaintenanceInterval'] = this.UpdateMSSAvailability;
-                   obj['MSSMaintenanceTask'] = 'Function Check'
-                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
-                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                   this.UpdateMSSTaskObj.push(obj)
-   
-                 }else if(strategy == 'OCM (On condition Maintainenance Task)'){
-                   obj['MSSMaintenanceInterval'] = `${a}${" "}${"Week"}` 
-                   obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
-                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
-                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                   this.UpdateMSSTaskObj.push(obj)
-   
-                 }else if(strategy == 'SO (Scheduled Overhaul Task)'){
-                   var safeL : number = 0;
-                   safeL = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife ;
-                   safeL = ((safeL*365)/7)
-                   obj['MSSMaintenanceInterval'] = `${safeL}${" "}${"Week"}` 
-                   obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
-                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
-                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                   this.UpdateMSSTaskObj.push(obj)
-   
-                 }else if(strategy == 'SR (Scheduled Replacement Task)'){
-                   var safeL1 : number = 0;
-                   safeL1 =  this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife ;
-                   safeL1 = ((safeL1*365)/7)
-                   obj['MSSMaintenanceInterval'] = `${safeL1}${" "}${"Week"}` 
-                   obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
-                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
-                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                   this.UpdateMSSTaskObj.push(obj)
-   
-                 }else if(strategy == 'RED (Redsigned Mandatory)'){
-                   obj['MSSMaintenanceInterval'] = 'NA'
-                   obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
-                   obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                   obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
-                   obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                   this.UpdateMSSTaskObj.push(obj)
-   
-                 }
-             }  
-          }
-      }else if(  this.UpdatedMSSStartegy == 'C-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'C-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'C-SO (Scheduled Overhaul Task)'
-              || this.UpdatedMSSStartegy == 'C-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'C-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'C-OFM (On Failure Maintainenance)'
-              || this.UpdatedMSSStartegy == 'D-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'D-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'D-SO (Scheduled Overhaul Task)'
-              || this.UpdatedMSSStartegy == 'D-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'D-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'D-OFM (On Failure Maintainenance)'
-              || this.UpdatedMSSStartegy == 'E-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'E-OCM (On condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'E-SO (Scheduled Overhaul Task)'
-              || this.UpdatedMSSStartegy == 'E-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'E-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'E-OFM (On Failure Maintainenance)'){
+                obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                FMObj.CentrifugalPumpMssModel.push(obj);
+              // this.UpdateMSSTaskObj.push(obj)
+              } else{
+                //  var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
+                //  var ocmWeek : number = ocmHours.split(" ")[0]
+                //     ocmWeek = Math.round((ocmWeek / 24) / 7)
 
-                if(this.UpdatedMSSStartegy == 'C-FFT (Failure Findind Task)' ||     this.UpdatedMSSStartegy == 'D-FFT (Failure Findind Task)'){
-                  let obj = {}
-                  obj['MSSMaintenanceInterval'] = 'Not Applicable'
-                  obj['MSSMaintenanceTask'] = 'Not Applicable'
-                  obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                  obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
-                  obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                  this.UpdateMSSTaskObj.push(obj)
-                } else{
-
-                    // var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
-                    // var ocmWeek : number = ocmHours.split(" ")[0]
-                    // ocmWeek = Math.round((ocmWeek / 24) / 7)
-                    var ocmHourss:number  = this.FCAFFInterval
-                    var result = (ocmHourss/ 24)
-                    var x= result/7
-                   
-              
+                var ocmweek:number  = this.FCAInterval
+                var result = (ocmweek/ 24)
+                var a= result/7
+                
                     var strategy = this.UpdatedMSSStartegy.split('-')[1];
-                    let obj = {}
-                    if(strategy == 'FFT (Failure Findind Task)'){
-                      obj['MSSMaintenanceInterval'] = 'NA'
-                      obj['MSSMaintenanceTask'] = 'Function check'
+                  let obj = {}
+                  if(this.MSSStratergy == 'A-FFT (Failure Finding Task)'){
+                    obj['CentrifugalPumpMssId'] = 0;
+                    obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                    obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                    obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
+                    obj['MSSMaintenanceTask'] = 'Function Check'
+                    obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                    obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                    obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                    obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                    FMObj.CentrifugalPumpMssModel.push(obj);
+                    //this.MSSTaskObj.push(obj)
+                  }else{
+                    if(strategy == 'FFT (Failure Finding Task)'){
+                      obj['CentrifugalPumpMssId'] = 0;
+                      obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                      obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                      obj['MSSMaintenanceInterval'] = this.UpdateMSSAvailability;
+                      obj['MSSMaintenanceTask'] = 'Function Check'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
-                      obj['MSSAvailability'] = this.UpdateMSSAvailability
+                      obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                      this.UpdateMSSTaskObj.push(obj)
-                    }else if(strategy == 'OCM (On condition Maintainenance Task)'){
-                      obj['MSSMaintenanceInterval'] = `${x}${" "}${"Week"}` 
+                      obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                      FMObj.CentrifugalPumpMssModel.push(obj);
+                        //this.MSSTaskObj.push(obj)
+      
+                    }else if(strategy == 'OCM (On Condition Maintainenance Task)'){
+                      obj['CentrifugalPumpMssId'] = 0;
+                      obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                      obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                      obj['MSSMaintenanceInterval'] = `${a}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
                       obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                      this.UpdateMSSTaskObj.push(obj)
-
+                      obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                      FMObj.CentrifugalPumpMssModel.push(obj);
+                    //this.MSSTaskObj.push(obj) 
+      
                     }else if(strategy == 'SO (Scheduled Overhaul Task)'){
-                      obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}` 
+                      var safeL : number = 0;
+                      safeL = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife ;
+                      safeL = ((safeL*365)/7)
+                      obj['CentrifugalPumpMssId'] = 0;
+                      obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                      obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                      obj['MSSMaintenanceInterval'] = `${safeL}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
                       obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                      this.UpdateMSSTaskObj.push(obj)
-
+                      obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                      FMObj.CentrifugalPumpMssModel.push(obj);
+                        //this.MSSTaskObj.push(obj)
+      
                     }else if(strategy == 'SR (Scheduled Replacement Task)'){
-                      obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}`  
+                      var safeL1 : number = 0;
+                      safeL1 =  this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCASafeLife ;
+                      safeL1 = ((safeL1*365)/7)
+                      obj['CentrifugalPumpMssId'] = 0;
+                      obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                      obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                      obj['MSSMaintenanceInterval'] = `${safeL1}${" "}${"Week"}` 
                       obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
                       obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                      this.UpdateMSSTaskObj.push(obj)
-
+                      obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                      FMObj.CentrifugalPumpMssModel.push(obj);
+                    //this.MSSTaskObj.push(obj)
+      
                     }else if(strategy == 'RED (Redsigned Mandatory)'){
+                      obj['CentrifugalPumpMssId'] = 0;
+                      obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                      obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
                       obj['MSSMaintenanceInterval'] = 'NA'
                       obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
                       obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                      this.UpdateMSSTaskObj.push(obj)
-
+                      obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                      FMObj.CentrifugalPumpMssModel.push(obj);
+                        //this.MSSTaskObj.push(obj)
+      
                     }
-                    else if(strategy == 'OFM (On Failure Maintainenance)'){
-                      obj['MSSMaintenanceInterval'] = 'NA'
-                      obj['MSSMaintenanceTask'] = 'No Task'
+                }  
+              }
+          }else if(  this.UpdatedMSSStartegy == 'C-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'C-OCM (On Condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'C-SO (Scheduled Overhaul Task)'
+                  || this.UpdatedMSSStartegy == 'C-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'C-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'C-OFM (On Failure Maintainenance)'
+                  || this.UpdatedMSSStartegy == 'D-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'D-OCM (On Condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'D-SO (Scheduled Overhaul Task)'
+                  || this.UpdatedMSSStartegy == 'D-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'D-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'D-OFM (On Failure Maintainenance)'
+                  || this.UpdatedMSSStartegy == 'E-FFT (Failure Findind Task)'||  this.UpdatedMSSStartegy == 'E-OCM (On Condition Maintainenance Task)' || this.UpdatedMSSStartegy == 'E-SO (Scheduled Overhaul Task)'
+                  || this.UpdatedMSSStartegy == 'E-SR (Scheduled Replacement Task)' ||  this.UpdatedMSSStartegy == 'E-RED (Redsigned Mandatory)' || this.UpdatedMSSStartegy == 'E-OFM (On Failure Maintainenance)'){
+
+                    if(this.UpdatedMSSStartegy == 'C-FFT (Failure Findind Task)' ||     this.UpdatedMSSStartegy == 'D-FFT (Failure Findind Task)'){
+                      let obj = {}
+                      obj['CentrifugalPumpMssId'] = 0;
+                      obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                      obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                      obj['MSSMaintenanceInterval'] = 'Not Applicable'
+                      obj['MSSMaintenanceTask'] = 'Not Applicable'
                       obj['MSSStartergy'] = this.UpdatedMSSStartegy
                       obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
                       obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
-                      this.UpdateMSSTaskObj.push(obj)
+                      obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                      FMObj.CentrifugalPumpMssModel.push(obj);
+                      //this.MSSTaskObj.push(obj)
+                    } else{
 
-                    }
-              }
-      }
- 
-      var CPObj: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
-      CPObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId
-      CPObj.FMWithConsequenceTree = JSON.stringify(this.data1)
-      this.UpdateMSSTaskObj.forEach(element => {
-        element.CPPFMId = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].CPPFMId
-      
+                        // var ocmHours = this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[1].FCAData.children[2].data.name
+                        // var ocmWeek : number = ocmHours.split(" ")[0]
+                        // ocmWeek = Math.round((ocmWeek / 24) / 7)
+                        var ocmHourss:number  = this.FCAFFInterval
+                        var result = (ocmHourss/ 24)
+                        var x= result/7
+                      
+                  
+                        var strategy = this.UpdatedMSSStartegy.split('-')[1];
+                        let obj = {}
+                        if(strategy == 'FFT (Failure Findind Task)'){
+                          obj['CentrifugalPumpMssId'] = 0;
+                          obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                          obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                          obj['MSSMaintenanceInterval'] = 'NA'
+                          obj['MSSMaintenanceTask'] = 'Function check'
+                          obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                          obj['MSSAvailability'] = this.UpdateMSSAvailability
+                          obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                          obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                          FMObj.CentrifugalPumpMssModel.push(obj);
+                          //this.MSSTaskObj.push(obj)
+                        }else if(strategy == 'OCM (On Condition Maintainenance Task)'){
+                          obj['CentrifugalPumpMssId'] = 0;
+                          obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                          obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                          obj['MSSMaintenanceInterval'] = `${x}${" "}${"Week"}` 
+                          obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation'
+                          obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                          obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                          obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                          obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                          FMObj.CentrifugalPumpMssModel.push(obj);
+                          //this.MSSTaskObj.push(obj)
+                        }else if(strategy == 'SO (Scheduled Overhaul Task)'){
+                          obj['CentrifugalPumpMssId'] = 0;
+                          obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                          obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                          obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}` 
+                          obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify'
+                          obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                          obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                          obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                          obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                          FMObj.CentrifugalPumpMssModel.push(obj);
+                          //this.MSSTaskObj.push(obj)
+
+                        }else if(strategy == 'SR (Scheduled Replacement Task)'){
+                          obj['CentrifugalPumpMssId'] = 0;
+                          obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                          obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                          obj['MSSMaintenanceInterval'] = `${this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].FCAUsefulLife}${" "}${"Week"}`  
+                          obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission'
+                          obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                          obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                          obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                          obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                          FMObj.CentrifugalPumpMssModel.push(obj);
+                          //this.MSSTaskObj.push(obj)
+                        }else if(strategy == 'RED (Redsigned Mandatory)'){
+                          obj['CentrifugalPumpMssId'] = 0;
+                          obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                          obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                          obj['MSSMaintenanceInterval'] = 'NA'
+                          obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective'
+                          obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                          obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                          obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                          obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                          FMObj.CentrifugalPumpMssModel.push(obj);
+                          //this.MSSTaskObj.push(obj)
+
+                        }
+                        else if(strategy == 'OFM (On Failure Maintainenance)'){
+                          obj['CentrifugalPumpMssId'] = 0;
+                          obj['CFPPrescriptiveId'] = this.UserMSSDataToBeModified.CFPPrescriptiveId;
+                          obj['CPPFMId'] = this.UserMSSDataToBeModified.CPPFMId;
+                          obj['MSSMaintenanceInterval'] = 'NA'
+                          obj['MSSMaintenanceTask'] = 'No Task'
+                          obj['MSSStartergy'] = this.UpdatedMSSStartegy
+                          obj['MSSAvailability'] = JSON.stringify(FinalAvailability)
+                          obj['MSSIntervalSelectionCriteria'] = this.UpdateMSSIntervalSelectionCriteria
+                          obj['MSSFinalAvaliability'] = this.UpdateMSSAvailability;
+                          FMObj.CentrifugalPumpMssModel.push(obj);
+                          //this.MSSTaskObj.push(obj)
+                        }
+                  }
+          }
+
       });
-      CPObj.centrifugalPumpPrescriptiveFailureModes = this.UpdateMSSTaskObj
+      FMObj.MSSStartergyList = JSON.stringify(this.UpdateStrategyList)
+      this.presObj.centrifugalPumpPrescriptiveFailureModes.push(FMObj);
+ 
+     // var CPObj: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
+      this.presObj = new CentrifugalPumpPrescriptiveModels();
+      this.presObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId
+      this.presObj.FMWithConsequenceTree = JSON.stringify(this.data1)
+     // CPObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId
+     // CPObj.FMWithConsequenceTree = JSON.stringify(this.data1)
+      // this.UpdateMSSTaskObj.forEach(element => {
+      //   element.CPPFMId = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[this.UpdateMSSTreeLabel - 1].CPPFMId
+      
+      // });
+     // CPObj.centrifugalPumpPrescriptiveFailureModes = this.UpdateMSSTaskObj
       var url : string =  this.prescriptiveContantAPI.UpdateMSSToTree;
-      this.prescriptiveBLService.PutData(url, CPObj).subscribe(
+      this.prescriptiveBLService.PutData(url, this.presObj).subscribe(
     //  this.http.put<any>('api/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate', CPObj).subscribe(
         (res: any) =>{
          this.UpdateMSSImageFlag = false

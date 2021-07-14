@@ -65,7 +65,7 @@ namespace DPM_Testing.Controllers
                         item.InsertedDate = DateTime.Now.Date;
                     }
                     item.UserId = userId;
-                    item.FailureModeType = "RotarDamage";
+                    item.FailureModeType = "RD";
                     item.TenantId = 1;
                     _context.ScrewCompressureTrainData.Add(item);
                     await _context.SaveChangesAsync();
@@ -158,7 +158,7 @@ namespace DPM_Testing.Controllers
                         item.InsertedDate = DateTime.Now.Date;
                     }
                     item.UserId = userId;
-                    item.FailureModeType = "CoolerFailure";
+                    item.FailureModeType = "CF";
                     item.TenantId = 1;
                     // Q=mCp(T2-T1) (KJ/sec)
                     //m=0.233 kgr/sec
