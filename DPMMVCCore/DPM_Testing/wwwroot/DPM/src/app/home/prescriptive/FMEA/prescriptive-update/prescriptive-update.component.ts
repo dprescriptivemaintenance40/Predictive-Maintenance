@@ -3174,6 +3174,7 @@ public UserMSSDataToBeModified : any = [];
         d1.RED === undefined ? this.UpdateRED = false : this.UpdateRED = true;  
         d1.OFM === undefined ? this.UpdateOFM = false : this.UpdateOFM = true;        
         var d = JSON.parse(UpdateData.CentrifugalPumpMssModel[0].MSSAvailability)
+        this.UpdateStrategySelect();
         if(d.length > 4){
           this.UpdateMSSAvailabilityY = d[0]
           this.UpdateMSSstoppageDays = d[1]
@@ -3219,6 +3220,7 @@ public UserMSSDataToBeModified : any = [];
   UpdateStrategySelect(){
     let obj = {}
     this.UpdateStrategyList =[]
+    this.UpdateStrategyTemp = []
     if (this.UpdateMSSConsequence == 'A') {
       this.UpdateStrategyTemp = []
       if (this.UpdateOCM == true) {
@@ -3361,22 +3363,6 @@ public UserMSSDataToBeModified : any = [];
   }
 
   UpdateMSSToTree(){
-    var data : any = Object.keys(this.UpdateStrategyList[0]);
-    var data1 : any = Object.keys(this.UserPreviousList);
-    var intersection = data1.filter(x => data.includes(x));
-    var difference = data1.filter(x => !data.includes(x));
-    if(data.length == data1.length == intersection.length){
-      this.UserMSSDataToBeModified
-      //  No changes In Mss Stratergy
-    }else if(intersection.length == 0){
-     // Delete All
-     // add all new data
-    }else{
-      // interaction not to delete
-      // difference to be delete
-      // data - interaction = new save part
-    }
-    this.UpdateMSSTaskObj = []
     var availablilityCal1,availablilityCal2, AVAL, FinalAvailability : any = []
     
     this.data1[0].children[0].children[0].children[this.UpdateMSSTreeLabel - 1].children[2].children[0].data.name = this.UpdateStrategyTemp.toString();
@@ -3428,6 +3414,7 @@ public UserMSSDataToBeModified : any = [];
       var intervalWeek = (INTERVAl*365)/7;
 
       var FMObj = new CentrifugalPumpPrescriptiveFailureMode();
+      this.presObj = new CentrifugalPumpPrescriptiveModels();
 
       this.UpdateStrategyTemp.forEach(element => {
         this.UpdatedMSSStartegy = element;
@@ -3664,7 +3651,6 @@ public UserMSSDataToBeModified : any = [];
       this.presObj.centrifugalPumpPrescriptiveFailureModes.push(FMObj);
  
      // var CPObj: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
-      this.presObj = new CentrifugalPumpPrescriptiveModels();
       this.presObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId
       this.presObj.FMWithConsequenceTree = JSON.stringify(this.data1)
      // CPObj.CFPPrescriptiveId =  this.CPPrescriptiveUpdateData.CFPPrescriptiveId

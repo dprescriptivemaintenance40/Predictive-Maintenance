@@ -525,22 +525,13 @@ namespace DPM.Controllers.Prescriptive
                 _context.Entry(centrifugalPumpPrescriptiveModel[0]).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
-                var MSSRecords = await _context.CentrifugalPumpMssModels.Where(a => a.CPPFMId == prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].CentrifugalPumpMssModel[0].CPPFMId).ToListAsync();
+                var failureModeRecord = await _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CPPFMId == prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].CentrifugalPumpMssModel[0].CPPFMId).FirstOrDefaultAsync();
+                failureModeRecord.MSSStartergyList = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSStartergyList;
+                _context.Entry(failureModeRecord).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+               
 
-                //var collection = centrifugalPumpPrescriptiveModel[0].centrifugalPumpPrescriptiveFailureModes.ToList();
-                //foreach (var item in collection)
-                //{
-                //if (item.CPPFMId == prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].CPPFMId)
-                //{
-                //    item.MSSMaintenanceInterval = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSMaintenanceInterval;
-                //    item.MSSMaintenanceTask = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSMaintenanceTask;
-                //    item.MSSStartergy = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSStartergy;
-                //    item.MSSAvailability = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSAvailability;
-                //    item.MSSIntervalSelectionCriteria = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSIntervalSelectionCriteria;
-                //    _context.Entry(item).State = EntityState.Modified;
-                //    await _context.SaveChangesAsync();
-                //}
-                // }
+                var MSSRecords = await _context.CentrifugalPumpMssModels.Where(a => a.CPPFMId == prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].CentrifugalPumpMssModel[0].CPPFMId).ToListAsync();
                 foreach (var item in MSSRecords)
                 {
                     _context.CentrifugalPumpMssModels.Remove(item);
