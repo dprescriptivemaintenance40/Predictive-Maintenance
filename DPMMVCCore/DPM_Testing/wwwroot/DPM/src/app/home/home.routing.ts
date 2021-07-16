@@ -20,7 +20,7 @@ import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/Screw
         {
             path: '', component: HomeComponent,
             children: [
-                { path: '', redirectTo: 'Education', pathMatch: 'full' },
+                { path: '', redirectTo: 'Dashboard', pathMatch: 'full' },
                 { path: 'Education', component: EducationComponent },
                 { path: 'Dashboard', component: DashboardComponent },
                 { path: 'Compressor', loadChildren: () => import('./Compressor/ScrewCompressor/compressor.module').then(a => a.CompressorModule) },
