@@ -1,4 +1,4 @@
-import { HttpClient,HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
@@ -24,35 +24,35 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
   public centrifugalPumpDetailList: any;
   public centrifugalPumpWithPrediction: any = [];
   public showCentrifugalPumpBulkPrediction: boolean = false;
-  public SingleCentrifugalPumpBulkPredictionName : string = "";
+  public SingleCentrifugalPumpBulkPredictionName: string = "";
   public PridictedId: number = 0;
   public notification = null;
-  public FromDate : string = ""
-  public ToDate : string = ""
+  public FromDate: string = ""
+  public ToDate: string = ""
   public minDate = new Date();
   public maxDate = new Date();
   public rangeDates: Date[];
   public UserDetails: any = [];
   public CentrifugalPumpconfigurationObj: CentrifugalPumpPredictionModel = new CentrifugalPumpPredictionModel();
-  public futurePredictionDataTableList : any =[];
+  public futurePredictionDataTableList: any = [];
   constructor(public http: HttpClient,
     public title: Title,
     public messageService: MessageService,
     private configService: ConfigService,
     private CentrifugalPumpPredictionName: CentrifugalPumpConstantAPI,
     private CentrifugalPumpPredictionMethod: CommonBLService,
-   ) { 
+  ) {
     this.FromDate = moment().format('YYYY-MM-DD');
     this.ToDate = moment().format('YYYY-MM-DD');
     this.GetFuturePredictionRecords();
     this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
     // this.maxDate.setDate(this.maxDate.getDate() + 3); 
-    
+
     // this.maxDate = moment().add(10, 'days').toDate();
     // this.minDate = moment().subtract(10, 'days').toDate();
     // console.log(this.minDate)
     // console.log(this.maxDate)
-   }
+  }
 
   ngOnInit(): void {
     this.title.setTitle('CentrifugalPump Prediction | Dynamic Prescriptive Maintenence');
@@ -60,34 +60,34 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     this.getPredictedList();
   }
 
-  GetFuturePredictionRecords(){
+  GetFuturePredictionRecords() {
     this.CentrifugalPumpPredictionMethod.getWithoutParameters(this.CentrifugalPumpPredictionName.GetFuturePredictionRecords)
-    .subscribe(
-      (res: any)=>{
-        if(res.length>0){
-          this.minDate = moment(res[0].FPDate).toDate();
-          this.maxDate = moment(res[res.length-1].FPDate).toDate();
+      .subscribe(
+        (res: any) => {
+          if (res.length > 0) {
+            this.minDate = moment(res[0].FPDate).toDate();
+            this.maxDate = moment(res[res.length - 1].FPDate).toDate();
+          }
         }
-      }
-    )
+      )
   }
 
 
-  SelectedFutureDate(){
-    var  toDate : any =[];
+  SelectedFutureDate() {
+    var toDate: any = [];
     toDate = this.rangeDates[1]
-    if(this.rangeDates[1] == null || this.rangeDates[1] == undefined){
+    if (this.rangeDates[1] == null || this.rangeDates[1] == undefined) {
       toDate = this.rangeDates[0]
     }
     const params = new HttpParams()
-          .set('fromDate', moment(this.rangeDates[0]).format('YYYY-MM-DD'))
-          .set('toDate', moment(toDate).format('YYYY-MM-DD'))
+      .set('fromDate', moment(this.rangeDates[0]).format('YYYY-MM-DD'))
+      .set('toDate', moment(toDate).format('YYYY-MM-DD'))
     this.CentrifugalPumpPredictionMethod.getWithParameters(this.CentrifugalPumpPredictionName.GetFuturePredictionRecordsByDate, params)
-    .subscribe(
-      (res : any) =>{
-        this.futurePredictionDataTableList = res;
-      }, err => { console.log(err.error)}
-    )
+      .subscribe(
+        (res: any) => {
+          this.futurePredictionDataTableList = res;
+        }, err => { console.log(err.error) }
+      )
   }
 
   Downloadfile() {
@@ -97,7 +97,7 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
     link.click();
   }
 
- async addfile(event) {
+  async addfile(event) {
     this.file = event.target.files[0];
     let fileReader = new FileReader();
     fileReader.readAsArrayBuffer(this.file);
@@ -113,28 +113,28 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       console.log(XLSX.utils.sheet_to_json(worksheet, { raw: true }));
       this.centrifugalPumpDetailList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
       this.loading = true;
-      const url : string = this.CentrifugalPumpPredictionName.CentrifugalPumpPredictionAddData;
+      const url: string = this.CentrifugalPumpPredictionName.CentrifugalPumpPredictionAddData;
       this.CentrifugalPumpPredictionMethod.postWithHeaders(url, this.centrifugalPumpDetailList)
         .subscribe(async res => {
-              var UserId = res[0].UserId;
-              var Data : any = await this.GetTrainDataList();
-              if(Data.length >= 10){
-                await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${UserId}&name=prediction&type=pump`, { responseType: 'text' })
-                      .subscribe(res => {
-                        this.getPredictedList();
-                        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-                      }, err => {
-                        console.log(err.error);
-                      })
-              }else{
+          var UserId = res[0].UserId;
+          var Data: any = await this.GetTrainDataList();
+          if (Data.length >= 10) {
+            await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${UserId}&name=prediction&type=pump`, { responseType: 'text' })
+              .subscribe(res => {
                 this.getPredictedList();
-                this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'For prediction you should have minimum 20 records in train' }); 
-                this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Prediction cannot be done' });      
-              }
-            }, err => {
-              console.log(err.error);
-            })
-          this.loading = false;  
+                this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+              }, err => {
+                console.log(err.error);
+              })
+          } else {
+            this.getPredictedList();
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'For prediction you should have minimum 20 records in train' });
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Prediction cannot be done' });
+          }
+        }, err => {
+          console.log(err.error);
+        })
+      this.loading = false;
     }
   }
   showNotification(category) {
@@ -162,44 +162,44 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
   getPredictedById(PredictedId) {
     this.showNotification("")
     const params = new HttpParams()
-          .set("PredictedId", PredictedId)
-     var url : string = this.CentrifugalPumpPredictionName.getPredictionById
-     this.CentrifugalPumpPredictionMethod.getWithParameters(url, params)
-     .subscribe((res: any) => {
+      .set("PredictedId", PredictedId)
+    var url: string = this.CentrifugalPumpPredictionName.getPredictionById
+    this.CentrifugalPumpPredictionMethod.getWithParameters(url, params)
+      .subscribe((res: any) => {
         this.showNotification(res.Prediction)
       }, err => {
         console.log(err.error);
       });
   }
 
-  FuturePrediction(){
+  FuturePrediction() {
     this.CentrifugalPumpPredictionMethod.getWithoutParameters(this.CentrifugalPumpPredictionName.FuturePrediction)
-    .subscribe(async (res : any)=>{
-      if(res.length>5){
-        await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=futureprediction&type=pump`, { responseType: 'text' })
-        .subscribe(res => {
-          this.GetFuturePredictionRecords();
-        }, err=>{console.log(err.error)})
-        //logic to hit future prediction
-      }else if(res.length > 0){
-        this.messageService.add({ severity: 'info', summary: 'info', detail: `Need more ${(res.length-5)} more day's of data to do future prediction on prediction records.` }); 
-      }else{
-        this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please upload data in prediction to do future prediction' }); 
-      }
-    }, err=>console.log(err.error));
+      .subscribe(async (res: any) => {
+        if (res.length > 5) {
+          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=futureprediction&type=pump`, { responseType: 'text' })
+            .subscribe(res => {
+              this.GetFuturePredictionRecords();
+            }, err => { console.log(err.error) })
+          //logic to hit future prediction
+        } else if (res.length > 0) {
+          this.messageService.add({ severity: 'info', summary: 'info', detail: `Need more ${(res.length - 5)} more day's of data to do future prediction on prediction records.` });
+        } else {
+          this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please upload data in prediction to do future prediction' });
+        }
+      }, err => console.log(err.error));
   }
 
   getPredictedList() {
-    var url : string = this.CentrifugalPumpPredictionName.getCentrifugalPumpPredictedList;
+    var url: string = this.CentrifugalPumpPredictionName.getCentrifugalPumpPredictedList;
     this.CentrifugalPumpPredictionMethod.getWithoutParameters(url)
-        .subscribe((res: any) => {
-            this.centrifugalPumpWithPrediction = res;
-            this.loading = false;
+      .subscribe((res: any) => {
+        this.centrifugalPumpWithPrediction = res;
+        this.loading = false;
       }, err => {
         console.log(err.error);
       });
   }
-  
+
   CPChangeToBulkPrediction() {
     if (!this.showCentrifugalPumpBulkPrediction) {
       this.CentrifugalPumpconfigurationObj = new CentrifugalPumpPredictionModel();
@@ -218,59 +218,59 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
   }
 
   CentrifugalPumpPrediction() {
- if(this.CentrifugalPumpconfigurationObj.P1 >0 && this.CentrifugalPumpconfigurationObj.P2 >0 || this.CentrifugalPumpconfigurationObj.I >0 || this.CentrifugalPumpconfigurationObj.Q >0){
-    this.CentrifugalPumpconfigurationObj.Prediction = "";
-    this.CentrifugalPumpconfigurationObj.UserId = "";
-    this.CentrifugalPumpconfigurationObj.InsertedDate = moment().format("YYYY-MM-DD");
-    var url : string =  this.CentrifugalPumpPredictionName.Prediction
-    this.CentrifugalPumpPredictionMethod.postWithoutHeaders(url, this.CentrifugalPumpconfigurationObj)
-      .subscribe(async (res : any) => {
-        this.CentrifugalPumpconfigurationObj = new CentrifugalPumpPredictionModel();
-         var UserId = res.UserId;
-         var PridictedId = res.CentifugalPumpPID;
-         var Data : any = await this.GetTrainDataList();
-         if(Data.length >= 20){ 
-          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${UserId}&name=prediction&type=pump`, { responseType: 'text' })
-                .subscribe(res => {
-                  this.getPredictedById(PridictedId);
-                  this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-                }, err => {
-                  console.log(err.error);
-                })
-         }else{
-          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'For prediction you should have minimum 20 records in train' }); 
-          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Prediction cannot be done' });      
-        }
-         
-      }, err => {
-        console.log(err.error);
-      });
-    }else {
-      this.messageService.add({ severity: 'warn', detail: 'No Records are Found for Prediction'});
+    if (this.CentrifugalPumpconfigurationObj.P1 > 0 && this.CentrifugalPumpconfigurationObj.P2 > 0 || this.CentrifugalPumpconfigurationObj.I > 0 || this.CentrifugalPumpconfigurationObj.Q > 0) {
+      this.CentrifugalPumpconfigurationObj.Prediction = "";
+      this.CentrifugalPumpconfigurationObj.UserId = "";
+      this.CentrifugalPumpconfigurationObj.InsertedDate = moment().format("YYYY-MM-DD");
+      var url: string = this.CentrifugalPumpPredictionName.Prediction
+      this.CentrifugalPumpPredictionMethod.postWithoutHeaders(url, this.CentrifugalPumpconfigurationObj)
+        .subscribe(async (res: any) => {
+          this.CentrifugalPumpconfigurationObj = new CentrifugalPumpPredictionModel();
+          var UserId = res.UserId;
+          var PridictedId = res.CentifugalPumpPID;
+          var Data: any = await this.GetTrainDataList();
+          if (Data.length >= 20) {
+            await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${UserId}&name=prediction&type=pump`, { responseType: 'text' })
+              .subscribe(res => {
+                this.getPredictedById(PridictedId);
+                this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+              }, err => {
+                console.log(err.error);
+              })
+          } else {
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'For prediction you should have minimum 20 records in train' });
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Prediction cannot be done' });
+          }
+
+        }, err => {
+          console.log(err.error);
+        });
+    } else {
+      this.messageService.add({ severity: 'warn', detail: 'No Records are Found for Prediction' });
     }
   }
 
-  async GetTrainDataList(){
+  async GetTrainDataList() {
     return await this.CentrifugalPumpPredictionMethod.getWithoutParameters(this.CentrifugalPumpPredictionName.getCentrifugalPumpTrainList)
-                 .toPromise()
+      .toPromise()
   }
 
-  getPredictedListRecordsByDate(){
+  getPredictedListRecordsByDate() {
     const params = new HttpParams()
-          .set('FromDate', this.FromDate)
-          .set('ToDate', this.ToDate)
-     this.CentrifugalPumpPredictionMethod.getWithParameters(this.CentrifugalPumpPredictionName.getPredictedListByDate, params)
-     .subscribe(
-       (res : any) => {
-        this.centrifugalPumpWithPrediction = res;
-       }, err => { console.log(err.error)}
-     )
+      .set('FromDate', this.FromDate)
+      .set('ToDate', this.ToDate)
+    this.CentrifugalPumpPredictionMethod.getWithParameters(this.CentrifugalPumpPredictionName.getPredictedListByDate, params)
+      .subscribe(
+        (res: any) => {
+          this.centrifugalPumpWithPrediction = res;
+        }, err => { console.log(err.error) }
+      )
   }
   exportToExcel() {
     const dataArray = this.centrifugalPumpWithPrediction
     if (dataArray != 0) {
       const dataArrayList = dataArray.map(obj => {
-        const {CentifugalPumpPID,UserId,BatchId, InsertedDate, ...rest } = obj;
+        const { CentifugalPumpPID, UserId, BatchId, InsertedDate, ...rest } = obj;
         return rest;
       })
 
@@ -285,10 +285,10 @@ export class CentrifugalPumpPredictionComponent implements OnInit {
       var link: string = "DPMPrediction" + '.csv';
       a.download = link.toLocaleLowerCase();
       a.click();
-      this.messageService.add({ severity: 'info', detail: 'Excel Downloaded Successfully'});
+      this.messageService.add({ severity: 'info', detail: 'Excel Downloaded Successfully' });
 
     } else {
-      this.messageService.add({ severity: 'warn', detail: 'No Records are Found to Download in Excel'});
+      this.messageService.add({ severity: 'warn', detail: 'No Records are Found to Download in Excel' });
     }
   }
   ConvertToCSV(objArray) {
