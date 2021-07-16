@@ -682,6 +682,7 @@ namespace DPM.Controllers.Prescriptive
                 List<int> Calculation = new List<int>();
 
                 var CentrifugalPumpPrescriptiveFailureModeData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
+                var ToAddMMS = CentrifugalPumpPrescriptiveFailureModeData[0].CentrifugalPumpMssModel;
                 prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
 
                 var CFData = await _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId).ToListAsync();
@@ -808,8 +809,26 @@ namespace DPM.Controllers.Prescriptive
 
                 foreach (var item in ToAddFM)
                 {
-                    item.CPPFMId = 0;
-                    _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
+                    if(item.CPPFMId == 0)
+                    {
+                        item.CPPFMId = 0;
+                        _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        _context.Entry(item).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                    }
+                    
+                }
+
+                
+                foreach (var item in ToAddMMS)
+                {
+                    item.CentrifugalPumpMssId = 0;
+                    item.CPPFMId = ToAddFM[ToAddFM.Count -1].CPPFMId;
+                    _context.CentrifugalPumpMssModels.Add(item);
                     await _context.SaveChangesAsync();
                 }
 
