@@ -29,6 +29,7 @@
         "moment": "^2.29.1",
         "panzoom": "^9.4.2",
         "pdf-lib": "^1.6.0",
+        "powerbi-client": "^2.18.0",
         "primeicons": "^4.1.0",
         "primeng": "^10.0.3",
         "rxjs": "~6.6.0",
