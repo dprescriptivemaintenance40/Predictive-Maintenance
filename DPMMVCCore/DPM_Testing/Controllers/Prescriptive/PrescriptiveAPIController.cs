@@ -817,10 +817,20 @@ namespace DPM.Controllers.Prescriptive
                     }
                     else
                     {
-                        _context.Entry(item).State = EntityState.Modified;
+                        List<CentrifugalPumpMssModel> MssData = await _context.CentrifugalPumpMssModels.Where(a => a.CPPFMId == item.CPPFMId).ToListAsync();
+                        item.CPPFMId = 0;
+                        _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
                         await _context.SaveChangesAsync();
+                        foreach (var mssItem in MssData)
+                        {
+                            _context.CentrifugalPumpMssModels.Remove(mssItem);
+                            await _context.SaveChangesAsync();
+                            mssItem.CentrifugalPumpMssId = 0;
+                            mssItem.CPPFMId = item.CPPFMId;
+                            _context.CentrifugalPumpMssModels.Add(mssItem);
+                            await _context.SaveChangesAsync();
+                        }
                     }
-                    
                 }
 
                 
@@ -863,6 +873,12 @@ namespace DPM.Controllers.Prescriptive
                 CentrifugalPumpPrescriptiveFailureMode FailuerMode = await _context.centrifugalPumpPrescriptiveFailureModes.FindAsync(mode.CPPFMId);
                 MinusCF = FailuerMode.CriticalityFactor;
                 _context.centrifugalPumpPrescriptiveFailureModes.Remove(FailuerMode);
+
+                var mssModel = await _context.CentrifugalPumpMssModels.Where(a => a.CPPFMId == mode.CPPFMId).ToListAsync();
+                foreach (var MSSItem in mssModel)
+                {
+                    _context.CentrifugalPumpMssModels.Remove(MSSItem);
+                }
 
                 recycleChild.RCPPMId = 0;
                 recycleChild.UserId = userId;
