@@ -104,5 +104,49 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 return BadRequest(exe.Message);
             }
         }
+
+
+        [HttpGet]
+        [Route("ScrewTrainFilter")]
+
+        public async Task<IActionResult> GetScrewTrainFilter(string FailuerModeType, string ToDate, string FromDate)
+        {
+            try
+            {
+
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                DateTime td = Convert.ToDateTime(ToDate);
+                DateTime fd = Convert.ToDateTime(FromDate);
+                var Records = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId &&
+                                                                                        a.FailureModeType == FailuerModeType && 
+                                                                                        (a.InsertedDate.Date >= td.Date && a.InsertedDate.Date <= fd.Date)).ToListAsync();
+                    
+                return Ok(Records);
+              
+            }
+            catch (Exception obj)
+            {
+                return BadRequest(obj.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("GetAllRecords")]
+        public async Task<IActionResult> GetAllRecords()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            try
+            {
+                List<ScrewCompressorTrainClassificationModel> screwCompressorClassification = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).ToListAsync();
+                var ClassificationData = screwCompressorClassification.ToList();
+                return Ok(ClassificationData);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
+        }
     }
 }

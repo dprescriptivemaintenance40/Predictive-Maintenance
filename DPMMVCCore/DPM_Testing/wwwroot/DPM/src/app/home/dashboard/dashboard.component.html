@@ -3,6 +3,106 @@
     <iframe  width="1140" height="561.25" src="https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
 
 </div>
-<!-- <div style="margin:20px" id="reportContainer1">
-    <iframe width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=2c517729-b2cc-413b-9b52-c641d53085e3&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
-</div> -->
+<!-- <div style="display: block; width: 400px">
+    <canvas id="canvas" height="320">{{ chart }}</canvas>
+  </div> -->
+
+  <div class="card shadow div-in-middle" style="width: 70rem;">
+    <div class="row">
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+            <h5>Machine type</h5>
+        </label>
+            <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
+            <option value="">Choose..</option>
+            <option value="Compressor" selected>Compressor</option>
+            <option value="Pump" selected>Pump</option>
+        </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+            <h5>Equipment Type</h5>
+        </label>
+            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
+            <option value="">Choose..</option>
+            <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
+        </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;"> <h5>Tag Number</h5></label>
+            <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+             <option value="">Choose..</option>
+             <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+        </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <div class="row">
+                <div class="col-sm" style="padding:30px;">
+                    <a class="btn btn-dark" (click)="getRecordsByEqui()">Done</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="CostRisk">
+    <div class="card" style="margin: 20px;" *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
+        <div style="text-align: center">
+            <h5><b>Cost Benifit Risk Anyalysis</b> </h5>
+        </div><br>
+        <div class="container" style="margin: 10px;">
+            <div class="row">
+                <div class="card">
+                    <div class="col-sm">
+                        <b>Total PONC: {{row.TotalPONC}} K</b>
+                    </div>
+                </div>
+                <div class="col col-lg-2"></div> 
+                <div class="card">
+                    <div class="col-sm">
+                        <b>ETBF: {{row.ETBF}} Y</b>
+                    </div>
+                </div>
+                <div class="col-sm">  </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="container">
+            <div class="row">
+                <div class="card">
+                    <div class="col-sm">
+                        <b>Criticality Maintenance Factor : M</b>
+                    </div>
+                </div>
+                <div class="col-sm"></div>
+                <div class="card">
+                    <div class="col-sm">
+                        <b>Cost Without DPM (Total Cost): {{row.EconomicRiskWithoutMaintenance}} K</b>
+                    </div>
+                </div>
+                <div class="col-sm"></div>
+                <div class="card">
+                    <div class="col-sm">
+                        <b>Cost With DPM (Total Cost): {{row.ResidualRiskWithMaintenance}} K</b>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+            <div class="row">
+                <div class="col-sm" style="margin: 20px;">
+                    <div class="card">
+                        <b>With D.P.M. MEI </b>
+                        <canvas id="gaugechart"></canvas>
+                    </div>
+                </div>
+                    <div class="col-sm" style="margin: 20px;">
+                        <div class="card">
+                            <b>Without D.P.M. MEI</b>
+                            <div style="display: block">
+                                <canvas id="canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+</div>
+</div>
