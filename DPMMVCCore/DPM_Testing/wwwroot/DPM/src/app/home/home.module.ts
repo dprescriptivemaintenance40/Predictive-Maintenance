@@ -19,6 +19,7 @@ import { CostBenefitAnalysisComponent } from "./CostBenefitAnalysis/cost-benefit
 import { CentrifugalPumpPredictionComponent } from './Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component';
 import { CentrifugalPumpTraindataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-traindata-upload/centrifugal-pump-traindata-upload.component';
 import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component';
+import { PrescriptionComponent } from './prescription/prescription.component';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal
         CentrifugalPumpPredictionComponent,
         CentrifugalPumpTraindataUploadComponent,
         CentrifugalPumpPredictiondataUploadComponent,
+        PrescriptionComponent,
     ],
     imports: [        
         HomeRoutingModule,       

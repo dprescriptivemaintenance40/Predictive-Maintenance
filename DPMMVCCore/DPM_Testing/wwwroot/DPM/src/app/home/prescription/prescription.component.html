@@ -1,0 +1,67 @@
+<div *ngIf="SelectionEnable" class="card shadow div-in-middle" style="width: 70rem;">
+    <div class="row">
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Machine type</h5>
+            </label>
+            <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
+                class="form-control">
+                <option value="">Choose..</option>
+                <option value="Compressor" selected>Compressor</option>
+                <option value="Pump" selected>Pump</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Equipment Type</h5>
+            </label>
+            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()"
+                class="form-control">
+                <option value="">Choose..</option>
+                <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Tag Number</h5>
+            </label>
+            <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                <option value="">Choose..</option>
+                <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <div class="row">
+                <div class="col-sm" style="padding:30px;">
+                    <a class="btn btn-dark" (click)="getPrescriptiveRecordsByEqui()">Done</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div *ngIf="InputsEnable">
+    <p-treeTable [value]="files" [columns]="cols" [paginator]="true" [rows]="10" [lazy]="true"
+        (onLazyLoad)="loadNodes($event)" [totalRecords]="10" [loading]="loading" (onNodeExpand)="onNodeExpand($event)">
+        <ng-template pTemplate="header" let-columns>
+            <h4 style="margin-left:15em;">Based On Inputs</h4>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+                <!-- <h4 style="padding-left: 20px;">Inputs</h4> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns; let i = index">
+                    <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                    {{rowData[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-treeTable>
+</div>
