@@ -167,15 +167,15 @@ namespace DPM_Testing.Controllers
                     item.TD1 = Decimal.Round(item.T2, 1);
                     decimal Q = (Convert.ToDecimal(0.233) * Convert.ToDecimal(1.005) * (item.T2 - item.T1));
 
-                    if ( Q < 0 )
+                    if (Q < 0)
                     {
                         item.Classification = "bad";
                     }
-                    else if(((38.0m < Q) && (Q <= 40.0m) ) 
-                        || ( (190m < item.T2) && (item.T2 <= 220m) )
-                        || ( (30m <  item.T1) && (item.T1 <= 50m)  ) )
+                    else if (((38.0m < Q) && (Q <= 40.0m))
+                        || ((190m < item.T2) && (item.T2 <= 220m))
+                        || ((30m < item.T1) && (item.T1 <= 50m)))
                     {
-                        item.Classification = "degarde";
+                        item.Classification = "degrade";
                     }
                     else if (((34.0m <= Q) && (Q <= 38.0m))
                         || ((170m <= item.T2) && (item.T2 <= 190m))
@@ -187,6 +187,21 @@ namespace DPM_Testing.Controllers
                     {
                         item.Classification = "normal";
                     }
+                    //item.TS1 = Decimal.Round(item.T2, 1);
+                    //item.TS2 = Decimal.Round(item.T1, 1);
+                    //if(( item.T1 > (item.TS1 + 30) )|| (item.T2 > 190) )
+                    //{
+                    //    item.Classification = "degrade";
+                    //}
+                    //else if ((item.T1 > (item.TS1 + 10)) && (item.T1< (item.TS1+30)))
+                    //{
+                    //    item.Classification = "incipient";
+                    //}
+                    //else
+                    //{
+                    //    item.Classification = "normal";
+                    //}
+
                     _context.ScrewCompressureTrainClassifications.Add(item);
                     await _context.SaveChangesAsync();
 
