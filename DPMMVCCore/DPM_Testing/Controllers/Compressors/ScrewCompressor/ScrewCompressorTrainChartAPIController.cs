@@ -119,7 +119,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 DateTime fd = Convert.ToDateTime(FromDate);
                 var Records = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId &&
                                                                                         a.FailureModeType == FailuerModeType && 
-                                                                                        (a.InsertedDate.Date >= td.Date && a.InsertedDate.Date <= fd.Date)).ToListAsync();
+                                                                                        (a.InsertedDate >= td && a.InsertedDate <= fd)).ToListAsync();
                     
                 return Ok(Records);
               
@@ -148,5 +148,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
             }
 
         }
+
+
     }
 }

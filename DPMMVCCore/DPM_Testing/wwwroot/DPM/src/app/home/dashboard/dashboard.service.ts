@@ -16,6 +16,4 @@ export class DashboardConstantAPI{
     public ScrewPredictionPreviousWeek : string = '/ScrewCompressorPredictionChartAPI/GetPredictionPreviousWeek'
     public GetAllRecords: string = '/ScrewCompressorTrainChartAPI/GetAllRecords'
     public GetFilterRecords: string = '/ScrewCompressorTrainChartAPI/ScrewTrainFilter'
-
-
 }
