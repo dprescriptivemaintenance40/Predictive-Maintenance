@@ -20,14 +20,14 @@ export class DashboardComponent {
   public FailuerModeType: string = ""
   public ToDate: string = "";
   public ClassificationData: string = "";
-  public FailuerModes: string=""
+  public FailuerModes: string = ""
   public InsertedDate: any = [];
   public classi: any = [];
   public Prediction: any = [];
   public inserteddate: any = [];
   public ScrewCompressorAllData: any;
   public ScrewPredictionAllData: any;
-  public getAllFilterData:any;
+  public getAllFilterData: any;
   public MachineType: string = "";
   public EquipmentType: string = "";
   public TagNumber: string = "";
@@ -36,27 +36,27 @@ export class DashboardComponent {
   public TagList: any = [];
   public ETBF: string = '';
   public SelectedTagNumber: string = "";
-  public CostRisk: boolean = false; 
+  public CostRisk: boolean = false;
   public filterdata: boolean = false;
   public DPMMEI: number
   public DPMWithoutMEI: number;
-  public Degradecount : number=0;
-  public Normalcount : number=0 ;
-  public Incipientcount : number=0 ;
-  public badcount : number =0;
+  public Degradecount: number = 0;
+  public Normalcount: number = 0;
+  public Incipientcount: number = 0;
+  public badcount: number = 0;
 
-  public PredictionDegradecount : number=0;
-  public PredictionNormalcount : number=0 ;
-  public PredictionIncipientcount : number=0 ;
-  public Predictionbadcount : number =0;
+  public PredictionDegradecount: number = 0;
+  public PredictionNormalcount: number = 0;
+  public PredictionIncipientcount: number = 0;
+  public Predictionbadcount: number = 0;
 
   public SelectDateType: string = "LastUpload";
   public DatesList: any = [];
-  public failuermodeType: string="";
+  public failuermodeType: string = "";
   public ScrewTrainLastUploadList: any = [];
   public ScrewTrainPreviousWeekList: any = [];
   public ScrewTrainPreviousMonthList: any = [];
-  availableYears = [2016,2017,2018,2019,2020];
+  availableYears = [2016, 2017, 2018, 2019, 2020];
   availableMonths = [{ name: 'January', selected: false },
   { name: 'February', selected: false },
   { name: 'March', selected: false },
@@ -75,11 +75,11 @@ export class DashboardComponent {
   selectedMonths = {}
   public selectedMonth: string;
 
-  public ComponentCriticalityFactor: string="" ;
+  public ComponentCriticalityFactor: string = "";
   public ComponentRating: string = "";
-  public CConditionMonitoring:string = ""
+  public CConditionMonitoring: string = ""
   public CFrequencyMaintainenance: string = "";
-  public PrescriptiveMaintenance:boolean = false;
+  public PrescriptiveMaintenance: boolean = false;
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -104,73 +104,80 @@ export class DashboardComponent {
       this.selectionModel[year] = this.availableMonths.map(obj => ({ ...obj }));
     })
   }
-  onChangeYear() {
-    this.selectedYear 
-    this.selectionModel[this.selectedYear]
-    this.ToDate =`${this.selectedYear}${this.selectedMonth} `;
-    this.ToDate =`${this.selectedYear}-01-01 `;
-    this.FromDate =`${this.selectedYear}-12-31 `;
-    this.GetFilterRecords()
+  isDateInArray(needle, haystack) {
+    for (var i = 0; i < haystack.length; i++) {
+      if (needle.getDate() === haystack[i].getDate()) {
+        return true;
+      }
+    }
+    return false;
   }
-
-  onChangeMonth() {
-   }
-  
   showReport() {
     let embedUrl = 'https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D';
+  }
+  onChangeYear() {
+    this.selectedYear
+    this.selectionModel[this.selectedYear]
+    this.ToDate = `${this.selectedYear}${this.selectedMonth} `;
+    this.ToDate = `${this.selectedYear}-01-01 `;
+    this.FromDate = `${this.selectedYear}-12-31 `;
+    this.GetFilterRecords()
   }
 
   GerAllPredictionRecords() {
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.PredictionDataList)
       .subscribe(
         res => {
-            this.ScrewPredictionAllData= res;
-            this.ScrewPredictionAllData.forEach(element => {
-              this.Prediction.push(element.Prediction);
-            });
-            for(var i=0; i<this.ScrewPredictionAllData.length; i++){
-              if(this.Prediction[i]=="degarde"){
-                this.PredictionDegradecount= this.PredictionDegradecount+1
-              }else if(this.Prediction[i]=="incipient"){
-                this.PredictionIncipientcount= this.PredictionIncipientcount+1
-              }else  if(this.Prediction[i]=="normal"){
-                this.PredictionNormalcount= this.PredictionNormalcount+1
-              }else  
-                this.Predictionbadcount= this.Predictionbadcount+1 
-            }
-            this.PredictionAllRecordDonught()
-            this.PredictionAllRecordDonught();
-            this.PredictionOfAllpolarchart()
-            // this.PredictionOfAllRecordbar()
-            // this.PredictionAllRecordBarcharts()
-            this.PredictionAllRecordPie()
-          }, error => {
+          this.ScrewPredictionAllData = res;
+          this.ScrewPredictionAllData.forEach(element => {
+            this.Prediction.push(element.Prediction);
+          });
+          for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+            if (this.Prediction[i] == "degarde") {
+              this.PredictionDegradecount = this.PredictionDegradecount + 1
+            } else if (this.Prediction[i] == "incipient") {
+              this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+            } else if (this.Prediction[i] == "normal") {
+              this.PredictionNormalcount = this.PredictionNormalcount + 1
+            } else
+              this.Predictionbadcount = this.Predictionbadcount + 1
+          }
+          this.PredictionAllRecordDonught()
+          this.PredictionAllRecordDonught();
+          this.PredictionOfAllpolarchart()
+          // this.PredictionOfAllRecordbar()
+          // this.PredictionAllRecordBarcharts()
+          this.PredictionAllRecordPie()
+        }, error => {
           console.log(error.error)
         })
   }
+  public n:number = 0
+  public i:number = 0
+  public d:number = 0
   GetAllRecords() {
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.GetAllRecords)
       .subscribe(
         res => {
           this.ScrewCompressorAllData = res;
-      //   this.ScrewCompressorAllData.forEach(res => {
-      //   res.Classification
-      //   res.Date
-      //   this.ClassificationData= res.Classification;
-      //   this.InsertedDate = res.Date;
-      //  })
+            this.ScrewCompressorAllData.forEach(res => {
+            res.Classification
+            res.Date
+            this.ClassificationData= res.Classification;
+            this.InsertedDate = res.Date;
+           })
           this.ScrewCompressorAllData.forEach(element => {
             this.classi.push(element.Classification);
           });
-          for(var i=0; i<this.ScrewCompressorAllData.length; i++){
-            if(this.classi[i]=="degarde"){
-              this.Degradecount= this.Degradecount+1
-            }else if(this.classi[i]=="incipient"){
-              this.Incipientcount= this.Incipientcount+1
-            }else  if(this.classi[i]=="normal"){
-              this.Normalcount= this.Normalcount+1
-            }else  
-              this.badcount= this.badcount+1 
+          for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+            if (this.classi[i] == "degarde") {
+              this.Degradecount = this.Degradecount + 1
+            } else if (this.classi[i] == "incipient") {
+              this.Incipientcount = this.Incipientcount + 1
+            } else if (this.classi[i] == "normal") {
+              this.Normalcount = this.Normalcount + 1
+            } else
+              this.badcount = this.badcount + 1
           }
           this.AllRecordBarcharts();
           this.ClassificationOfAllRecordDonught();
@@ -184,19 +191,19 @@ export class DashboardComponent {
 
   GetFilterRecords() {
     const params = new HttpParams()
-               .set("FailuerModeType", this.FailuerModeType)
-               .set("ToDate", this.ToDate)
-               .set("FromDate", this.FromDate)
-      
+      .set("FailuerModeType", this.FailuerModeType)
+      .set("ToDate", this.ToDate)
+      .set("FromDate", this.FromDate)
+
     var url: string = this.dashboardContantAPI.GetFilterRecords;
     this.dashboardContantMethod.getWithParameters(url, params)
       .subscribe(
         res => {
-          this.getAllFilterData=res
+          this.getAllFilterData = res
         })
   }
 
-  FailureModeType(){
+  FailureModeType() {
     if (this.failuermodeType == 'CH') {
       console.log('Failure Mode selected');
     } else if (this.failuermodeType == 'SSRB') {
@@ -206,28 +213,28 @@ export class DashboardComponent {
     }
   }
 
-  SCClassification(){
+  SCClassification() {
     if (this.SelectDateType.length > 0) {
-      if(this.failuermodeType=="CH"||this.failuermodeType=="SSRB" && this.SelectDateType == '2016'){
+      if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2016') {
         this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-       
-      }else  if(this.failuermodeType=="CH"||this.failuermodeType=="SSRB" && this.SelectDateType == '2017'){
- 
-        this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-        
-      }else  if(this.failuermodeType=="CH"||this.failuermodeType=="SSRB" && this.SelectDateType == '2018'){
+
+      } else if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2017') {
 
         this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-       this.onChangeYear()
-       this.ClassificationOfAllpolarchart()
-      }else  if(this.failuermodeType=="CH"||this.failuermodeType=="SSRB" && this.SelectDateType == '2019'){
+
+      } else if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2018') {
 
         this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-       
-      }else  if(this.failuermodeType=="CH"||this.failuermodeType=="SSRB" && this.SelectDateType == '2020'){
+        this.onChangeYear()
+        this.ClassificationOfAllpolarchart()
+      } else if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2019') {
 
         this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-       
+
+      } else if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2020') {
+
+        this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
+
       }
     }
   }
@@ -258,10 +265,10 @@ export class DashboardComponent {
         .subscribe((res: any) => {
           this.prescriptiveRecords = res;
 
-          this.ComponentCriticalityFactor= res.ComponentCriticalityFactor
-          this.CFrequencyMaintainenance= res.CFrequencyMaintainenance
-          this.CConditionMonitoring= res.CConditionMonitoring
-          this.ComponentRating= res.ComponentRating
+          this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
+          this.CFrequencyMaintainenance = res.CFrequencyMaintainenance
+          this.CConditionMonitoring = res.CConditionMonitoring
+          this.ComponentRating = res.ComponentRating
 
           this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
             row.TotalAnnualPOC = 0;
@@ -285,7 +292,7 @@ export class DashboardComponent {
               }
             });
             row.ETBC = 10;
-            row.TotalPONC = 20796;
+            row.TotalPONC = 194.4872;
             row.ETBF = this.ETBF ? this.ETBF : 2;
             row.TotalAnnualCostWithMaintenance = 1.777;
             row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
@@ -299,10 +306,10 @@ export class DashboardComponent {
             row.ConsequenceCategory = row.Consequence.split(' ')[0];
           });
           this.CostRisk = true;
-          this.PrescriptiveMaintenance= true
+          this.PrescriptiveMaintenance = true
           this.gaugechartwithDPM()
           this.gaugechartwithoutDPM()
-          this.ComponentCriticalityFactorBar()
+          // this.ComponentCriticalityFactorBar()
         }, err => {
           console.log(err.err);
         });
@@ -356,7 +363,7 @@ export class DashboardComponent {
       }
     });
   }
-  
+
   ClassificationOfAllRecordDonught() {
     this.chart = new Chart('canvasClass', {
       type: 'doughnut',
@@ -365,7 +372,7 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [ this.Normalcount,this.Incipientcount,this.Degradecount]
+            data: [this.Normalcount, this.Incipientcount, this.Degradecount]
           }
         ]
       },
@@ -373,36 +380,98 @@ export class DashboardComponent {
 
   }
 
-  ClassificationOfAllRecordbar() {
 
+  ClassificationOfAllRecordbar() {
     this.changeDetectorRef.detectChanges();
     let dateForFilter = [];
     for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-     if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
-       dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
-     }
-   }
-   let dateForFilter1 = [];
-   dateForFilter .forEach((value) => {
-     var Date = moment(value).format('YYYY-MM-DD');
-     dateForFilter1.push(Date);
-   });
+      if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
+        dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
+      }
+    }
+    let dateForFilter1 = [];
+    let Normal = [];
+    let Incipient = [];
+    let Degarde = [];
+    let Bad = [];
+    dateForFilter.forEach((value) => {
+      var Date = moment(value).format('YYYY-MM-DD');
+      dateForFilter1.push(Date);
+    });
+    for (var i = 0; i < dateForFilter1.length; i++) {
+      var a = [];
+      this.ScrewCompressorAllData.forEach(element => {
+        if(moment(element.InsertedDate).format('YYYY-MM-DD')==dateForFilter1[i]){
+        a.push(element.Classification)
+        }
+      });
+      console.log(a);
+      var result = {};
+      // var i =0; 
+      // var d =0; 
+      // var n =0; 
+      // var b =0; 
+      // a.forEach(element => {
+      //   if(element.incipient =="incipient"){
+      //     i=i+1
+      //   }
+      //   if(element.normal =="normal"){
+      //     n=n+1
+      //   }
+      //   if(element.degarde =="degarde"){
+      //     d=d+1
+      //   } 
+      // });
+      // Normal.push(n)
+      // Incipient.push(i)
+      // Degarde.push(d)
+
+      //  for (var i = 0; i < a.length; ++i) {
+      //    if (!result[a[i]])
+      //      result[a[i]] = 0;
+      //    ++result[a[i]];
+      //  } 
+      //  console.log(result);
+      //  let arr = [];  
+      //  Object.keys(a).map(function(key){  
+      //      arr.push({[key]:a[key]})  
+      //      return arr;  
+      //  });  
+       
+      //  arr.forEach(element => {
+      //   if (element.degarde != undefined) {
+      //     Degarde.push(element.degarde)
+      //   } else {
+      //     Degarde.push(0)
+      //   }
+      //   if (element.incipient != undefined) {
+      //     Incipient.push(element.incipient)
+      //   } else {
+      //     Incipient.push(0)
+      //   }
+      //   if (element.normal != undefined) {
+      //     Normal.push(element.normal)
+      //   } else {
+      //     Normal.push(0)
+      //   }
+      //  });
+    }
+
     this.chart = new Chart('barline', {
       type: 'bar',
       data: {
-         labels:dateForFilter1,
-        //  labels: ["Normal", "incipient", "Degrade"],
+        labels:  dateForFilter1,
         datasets: [
           {
             backgroundColor: ["#008000"],
-            data: [ this.Normalcount]
+            data: [this.Normalcount]
           },
-          { 
-            backgroundColor: [ "#FFA500",],
+          {
+            backgroundColor: ["#FFA500",],
             data: [this.Incipientcount]
           },
-          { 
-            backgroundColor: [ "#FF0000"],
+          {
+            backgroundColor: ["#FF0000"],
             data: [this.Degradecount]
           },
         ]
@@ -412,6 +481,18 @@ export class DashboardComponent {
   }
 
   ClassificationOfAllpolarchart() {
+    this.changeDetectorRef.detectChanges();
+    let dateForFilter = [];
+    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+      if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
+        dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
+      }
+    }
+    let dateForFilter1 = [];
+    dateForFilter.forEach((value) => {
+      var Date = moment(value).format('YYYY-MM-DD');
+      dateForFilter1.push(Date);
+    });
     this.chart = new Chart('polarArea', {
       type: 'polarArea',
       data: {
@@ -419,24 +500,23 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [ this.Normalcount,this.Incipientcount,this.Degradecount]
+            data: [this.Normalcount, this.Incipientcount, this.Degradecount]
           }
         ]
       },
     });
-
   }
 
-  AllRecordBarcharts(){
+  AllRecordBarcharts() {
     this.changeDetectorRef.detectChanges();
-     let dateForFilter = [];
-     for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+    let dateForFilter = [];
+    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
       if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
         dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
       }
     }
     let dateForFilter11 = [];
-    dateForFilter .forEach((value) => {
+    dateForFilter.forEach((value) => {
       var Date = moment(value).format('YYYY-MM-DD');
       dateForFilter11.push(Date);
     });
@@ -444,7 +524,6 @@ export class DashboardComponent {
       type: "bar",
       data: {
         labels: dateForFilter11,
-        fill: true,
         datasets: [
           {
             label: "Normal",
@@ -473,18 +552,18 @@ export class DashboardComponent {
       },
       options: {
         scales: {
-              xAxes: [{
-                  stacked: true,
-              }],
-              yAxes: [{
-                  stacked: true,
-              }]
-          }
+          xAxes: [{
+            stacked: true,
+          }],
+          yAxes: [{
+            stacked: true,
+          }]
+        }
       }
     });
-   } 
+  }
 
-   PredictionAllRecordDonught() {
+  PredictionAllRecordDonught() {
     this.chart = new Chart('PredictioncanvasClass', {
       type: 'doughnut',
       data: {
@@ -492,12 +571,11 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [ this.PredictionNormalcount,this.PredictionIncipientcount,this.PredictionDegradecount]
+            data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
           }
         ]
       },
     });
-
   }
 
   PredictionAllRecordPie() {
@@ -508,12 +586,11 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [ this.PredictionNormalcount,this.PredictionIncipientcount,this.PredictionDegradecount]
+            data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
           }
         ]
       },
     });
-
   }
 
   PredictionOfAllpolarchart() {
@@ -524,34 +601,31 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [ this.PredictionNormalcount,this.PredictionIncipientcount,this.PredictionDegradecount]
+            data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
           }
         ]
       },
     });
-
   }
 
-  ComponentCriticalityFactorBar() {
-    this.chart = new Chart('ComponentCriticalityFactor', {
-      type: 'doughnut',
-      data: {
-        // labels: ["ComponentCriticalityFactor",],
-        datasets: [
-          {
-            backgroundColor: [ "#12239E",],
-            data: [ this.ComponentCriticalityFactor],
-            
-          }
-        ]
-      },
-      options: {
-        cutoutPercentage: 50,
-        text: 'this.ComponentCriticalityFactor',
-      }
-    });
+  // ComponentCriticalityFactorBar() {
+  //   this.chart = new Chart('ComponentCriticalityFactor', {
+  //     type: 'doughnut',
+  //     data: {
+  //       datasets: [
+  //         {
+  //           backgroundColor: ["#12239E",],
+  //           data: [this.ComponentCriticalityFactor],
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       cutoutPercentage: 50,
+  //       text: 'this.ComponentCriticalityFactor',
+  //     }
+  //   });
+  // }
 
-  }
 
   // PredictionOfAllRecordbar() {
   //   this.changeDetectorRef.detectChanges();
@@ -646,13 +720,4 @@ export class DashboardComponent {
   //     }
   //   });
   //  } 
-
-  isDateInArray(needle, haystack) {
-    for (var i = 0; i < haystack.length; i++) {
-      if (needle.getDate() === haystack[i].getDate()) {
-        return true;
-      }
-    }
-    return false;
-  }
 }
