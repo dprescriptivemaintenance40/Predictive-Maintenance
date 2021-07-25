@@ -155,7 +155,20 @@ export class DashboardComponent {
   public n:number = 0
   public i:number = 0
   public d:number = 0
+
+  public screwPredictionDataNormalCount: any = [];
+  public screwPredictionDataIncipientCount: any = [];
+  public screwPredictonDataDegradeCount: any = [];
   GetAllRecords() {
+    this.screwPredictionDataNormalCount = null;
+    this.screwPredictionDataIncipientCount = null;
+    this.screwPredictonDataDegradeCount = null;
+    var normalCount: any = [];
+    var normalValuation: number = 0;
+    var incipientCount: any = [];
+    var incipientValuation: number = 0;
+    var degradeCount: any = [];
+    var degradeValuation: number = 0;
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.GetAllRecords)
       .subscribe(
         res => {
@@ -169,6 +182,34 @@ export class DashboardComponent {
           this.ScrewCompressorAllData.forEach(element => {
             this.classi.push(element.Classification);
           });
+          
+      this.classi.forEach((value) => {
+        if (value == 'normal') {
+          normalValuation = normalValuation + 1;
+          normalCount.push(normalValuation);
+          incipientCount.push(incipientValuation);
+          degradeCount.push(degradeValuation)
+  
+        } else if (value == 'incipient') {
+  
+          incipientValuation = incipientValuation + 1;
+          incipientCount.push(incipientValuation);
+          normalCount.push(normalValuation);
+          degradeCount.push(degradeValuation)
+  
+        } else {
+  
+          degradeValuation = degradeValuation + 1;
+          degradeCount.push(degradeValuation)
+          normalCount.push(normalValuation);
+          incipientCount.push(incipientValuation);
+  
+        }
+        this.screwPredictionDataNormalCount = normalCount;
+        this.screwPredictionDataIncipientCount = incipientCount;
+        this.screwPredictonDataDegradeCount = degradeCount;
+  
+      });
           for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
             if (this.classi[i] == "degarde") {
               this.Degradecount = this.Degradecount + 1
@@ -390,10 +431,6 @@ export class DashboardComponent {
       }
     }
     let dateForFilter1 = [];
-    let Normal = [];
-    let Incipient = [];
-    let Degarde = [];
-    let Bad = [];
     dateForFilter.forEach((value) => {
       var Date = moment(value).format('YYYY-MM-DD');
       dateForFilter1.push(Date);
@@ -406,74 +443,30 @@ export class DashboardComponent {
         }
       });
       console.log(a);
-      var result = {};
-      // var i =0; 
-      // var d =0; 
-      // var n =0; 
-      // var b =0; 
-      // a.forEach(element => {
-      //   if(element.incipient =="incipient"){
-      //     i=i+1
-      //   }
-      //   if(element.normal =="normal"){
-      //     n=n+1
-      //   }
-      //   if(element.degarde =="degarde"){
-      //     d=d+1
-      //   } 
-      // });
-      // Normal.push(n)
-      // Incipient.push(i)
-      // Degarde.push(d)
-
-      //  for (var i = 0; i < a.length; ++i) {
-      //    if (!result[a[i]])
-      //      result[a[i]] = 0;
-      //    ++result[a[i]];
-      //  } 
-      //  console.log(result);
-      //  let arr = [];  
-      //  Object.keys(a).map(function(key){  
-      //      arr.push({[key]:a[key]})  
-      //      return arr;  
-      //  });  
-       
-      //  arr.forEach(element => {
-      //   if (element.degarde != undefined) {
-      //     Degarde.push(element.degarde)
-      //   } else {
-      //     Degarde.push(0)
-      //   }
-      //   if (element.incipient != undefined) {
-      //     Incipient.push(element.incipient)
-      //   } else {
-      //     Incipient.push(0)
-      //   }
-      //   if (element.normal != undefined) {
-      //     Normal.push(element.normal)
-      //   } else {
-      //     Normal.push(0)
-      //   }
-      //  });
     }
-
+    this.changeDetectorRef.detectChanges();
     this.chart = new Chart('barline', {
       type: 'bar',
       data: {
-        labels:  dateForFilter1,
+        labels: dateForFilter1,
         datasets: [
           {
-            backgroundColor: ["#008000"],
-            data: [this.Normalcount]
+            label: "Incipent",
+            data: this.screwPredictionDataIncipientCount,
+            borderWidth: 1,
+            backgroundColor: "#FFA500",
+          }, {
+            label: "Normal",
+            data: this.screwPredictionDataNormalCount,
+            borderWidth: 1,
+            backgroundColor: "#008000",
           },
           {
-            backgroundColor: ["#FFA500",],
-            data: [this.Incipientcount]
-          },
-          {
-            backgroundColor: ["#FF0000"],
-            data: [this.Degradecount]
-          },
+            label: "Degrade",
+            data: this.screwPredictonDataDegradeCount,
+            borderWidth: 2,
+            backgroundColor: "#FF0000",
+          }
         ]
       },
     });
@@ -515,38 +508,42 @@ export class DashboardComponent {
         dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
       }
     }
-    let dateForFilter11 = [];
+    let dateForFilter1 = [];
     dateForFilter.forEach((value) => {
       var Date = moment(value).format('YYYY-MM-DD');
-      dateForFilter11.push(Date);
+      dateForFilter1.push(Date);
     });
+    for (var i = 0; i < dateForFilter1.length; i++) {
+      var a = [];
+      this.ScrewCompressorAllData.forEach(element => {
+        if(moment(element.InsertedDate).format('YYYY-MM-DD')==dateForFilter1[i]){
+        a.push(element.Classification)
+        }
+      });
+      console.log(a);
+    }
+    this.changeDetectorRef.detectChanges();
     this.chart = new Chart("canvas1", {
       type: "bar",
       data: {
-        labels: dateForFilter11,
+        labels: dateForFilter1,
         datasets: [
           {
-            label: "Normal",
-            data: [this.Normalcount],
-            borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
-            fill: true,
-          }, {
             label: "Incipent",
-            data: [this.Incipientcount],
+            data: this.screwPredictionDataIncipientCount,
             borderWidth: 1,
-            borderColor: "#FFA500",
-            backgroundColor: '#FFA500',
-            fill: true,
+            backgroundColor: "#FFA500",
+          }, {
+            label: "Normal",
+            data: this.screwPredictionDataNormalCount,
+            borderWidth: 1,
+            backgroundColor: "#008000",
           },
           {
             label: "Degrade",
-            data: [this.Degradecount],
-            borderWidth: 1,
-            borderColor: " #FF0000",
-            backgroundColor: '#FF0000',
-            fill: true,
+            data: this.screwPredictonDataDegradeCount,
+            borderWidth: 2,
+            backgroundColor: "#FF0000",
           }
         ]
       },
