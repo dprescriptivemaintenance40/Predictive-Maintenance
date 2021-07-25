@@ -23,9 +23,9 @@ namespace DPM_Testing.Controllers
 
         [HttpGet]
         [Route("GetAllConfigurationRecords")]
-        public async Task<ActionResult<IEnumerable<ScrewCompressorConfigurationModel>>> GetAddRuleModels(string MachineType, string EquipmentType)
+        public async Task<ActionResult<IEnumerable<ScrewCompressorConfigurationModel>>> GetAddRuleModels(string MachineType, string EquipmentType, string failureMode)
         {
-              return await _context.AddRuleModels.Where(a=>a.MachineType == MachineType && a.EquipmentType == EquipmentType)
+              return await _context.AddRuleModels.Where(a=>a.MachineType == MachineType && a.EquipmentType == EquipmentType && a.FailureModeType == failureMode)
                                                  .OrderBy(a=> a.AddRuleId).ToListAsync();
         }
 
@@ -77,7 +77,6 @@ namespace DPM_Testing.Controllers
         {
             try
             {
-                addRuleModel.AddRuleId = 0;
                 _context.AddRuleModels.Add(addRuleModel);
                 await _context.SaveChangesAsync();
 

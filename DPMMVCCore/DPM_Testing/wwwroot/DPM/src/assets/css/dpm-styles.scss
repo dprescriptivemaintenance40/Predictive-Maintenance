@@ -371,7 +371,7 @@ p {
 }
 .form-control,
 textarea.form-control {
-  background-color: #f1f5ff !important;
+  background-color: #e8f0fe !important;
   font-size: 13px;
   height: 38px;
   padding: 7px 10px;
@@ -465,7 +465,7 @@ table {
       }
       &:nth-of-type(even) {
         td {
-          background-color: #e4ebfd !important;
+          background-color: #e4ebfd;
         }
       }
     }
@@ -583,4 +583,108 @@ label {
 .pr-t5 {
   position: relative;
   top: -6px;
+}
+
+.p-organizationchart {
+  .p-person {
+    background-color: #effaff;
+    border: 1px solid #09a1a6 !important;
+    width: auto;
+    min-width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    &:hover {
+      background-color: #fff !important;
+      border: 1px solid $primary-color !important;
+      .node-content,
+      .node-header {
+        color: #333 !important;
+      }
+      .node-header {
+        border-right: 1px solid $primary-color !important;
+      }
+    }
+  }
+  .p-organizationchart-node-content .p-node-toggler {
+    background-color: #09a1a6 !important;
+    box-shadow: none;
+    i {
+      color: #fff !important;
+    }
+  }
+  .p-organizationchart-table {
+    .p-organizationchart-nodes {
+      td {
+        .p-organizationchart-table {
+          .p-organizationchart-node-content {
+            div {
+              display: flex !important;
+              width: 100%;
+              align-items: center;
+              padding: 3px;
+              flex-direction: column;
+              div {
+                .node-header {
+                  height: 16px;
+                  width: auto;
+                  justify-content: center;
+                  align-items: center;
+                  background: #609092;
+                  color: #fff;
+                  font-weight: 600;
+                  font-size: 12px;
+                  box-shadow: none;
+                  min-width: auto;
+                  border-radius: 3px;
+                  padding: 0px 6px;
+                }
+              }
+              .node-content {
+                display: inline-flex !important;
+                border: none !important;
+                text-align: left !important;
+                padding: 0 !important;
+                color: #555;
+                justify-content: center;
+                font-weight: 500;
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.factor-desc {
+  position: relative;
+  + .badge {
+    line-height: 18px;
+    font-weight: 400;
+    text-align: left;
+    padding: 15px;
+    width: 90%;
+    white-space: break-spaces;
+    position: absolute;
+    z-index: 999;
+    right: 30px;
+    top: 72px;
+    font-size: 12px;
+    display: none;
+    transition: 0.3s ease-in-out;
+    height: 300px;
+    overflow: auto;
+    li {
+      margin-bottom: 10px;
+    }
+  }
+}
+.factor-desc:hover + .badge {
+  display: block;
+}
+.dpm-heading {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }

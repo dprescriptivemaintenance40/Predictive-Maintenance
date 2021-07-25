@@ -34,6 +34,7 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpHQLibraryModel> CentrifugalPumpHQLibraryModels { get; set; }
         public DbSet<CentrifugalPumpPredictionModel> CentrifugalPumpPredictions { get; set; }
         public DbSet<CentrifugalPumpTrainModel> CentrifugalPumpTrainData { get; set; }
+        public DbSet<CentrifugalPumpFuturePredictionModel> CentrifugalPumpFuturePredictionModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -68,6 +69,7 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<CentrifugalPumpHQLibraryModel>().ToTable("centrifugalpumpHQtable");
             modelBuilder.Entity<CentrifugalPumpTrainModel>().ToTable("centrifugalpumpTraindetails");
             modelBuilder.Entity<CentrifugalPumpPredictionModel>().ToTable("centrifugalpumppredictiontable");
+            modelBuilder.Entity<CentrifugalPumpFuturePredictionModel>().ToTable("centrifugalpumpfuturepredictiontable");
         }
 
     }

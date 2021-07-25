@@ -27,6 +27,7 @@
         <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
     </div>
     <div class="col-sm">
+        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" data-target="#Future" data-toggle="modal" (click)="FuturePrediction()" class="btn btn-primary">FuturePrediction</button>
     </div>
 </div>
 
@@ -110,5 +111,69 @@
                 </tr>
             </ng-template>
         </p-table>
+    </div>
+</div>
+
+
+<div class="modal fade " tabindex="-1" id="Future" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <h4 class="modal-title">Future Predictions</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom: 2em;">
+                    <div class="col-md-9">
+                          Select Range <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range" [minDate]="minDate" [maxDate]="maxDate"></p-calendar>
+                      
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" class="btn btn-primary" (click)="SelectedFutureDate()">Show</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <p-table [value]="futurePredictionDataTableList" [paginator]="true" [rowHover]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10,15]" [loading]="loading">
+                        <ng-template pTemplate="colgroup">
+                            <colgroup>
+                                <col style="width:5em;">
+                                <col style="width:5em;">
+                                <col style="width:5em;">
+                                <col style="width:5em;">
+                                <col style="width:7em;">
+                                <col style="width:7em;">
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>P1</th>
+                                <th>P2</th>
+                                <th>I</th>
+                                <th>Q</th>
+                                <th>PREDICTION DATES</th>
+                                <th>FUTURE PREDICTION</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-futurePredictionDataTableList>
+                            <tr>
+                                <td>{{futurePredictionDataTableList.P1}}</td>
+                                <td>{{futurePredictionDataTableList.P2}}</td>
+                                <td>{{futurePredictionDataTableList.I}}</td>
+                                <td>{{futurePredictionDataTableList.Q}}</td>
+                                <td>{{futurePredictionDataTableList.FPDate | date:'medium'}}</td>
+                                <td>{{futurePredictionDataTableList.FuturePrediction}}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="2">No records to show.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

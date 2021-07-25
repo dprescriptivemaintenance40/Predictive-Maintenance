@@ -20,9 +20,12 @@ namespace DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel
         public decimal TS1 { get; set; }
         public decimal TD1 { get; set; }
         public decimal TS2 { get; set; }
-        public decimal TD2 { get; set; }
-        public DateTime InsertedDate { get; set; }
+        public decimal TD2 { get; set; }        
         public string Prediction { get; set; }
-		 public string FuturePrediction { get; set; }
+        public string RD { get; set; }
+        public string SSRB { get; set; }
+        public string CF { get; set; }
+        public string FuturePrediction { get; set; }
+        public DateTime InsertedDate { get; set; }
     }
 }

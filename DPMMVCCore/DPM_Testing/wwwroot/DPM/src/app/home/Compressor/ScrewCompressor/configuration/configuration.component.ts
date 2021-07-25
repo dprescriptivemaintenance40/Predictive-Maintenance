@@ -35,6 +35,8 @@ export class ConfigurationComponent {
   public Image=false;
   public enableImage =true;  
   public CancelImage=false;
+  public FailureMode : string ="";
+  public FailureModeList: any = [];
 
   public MachineType: string = "";
   public EquipmentType: string = "";
@@ -77,6 +79,7 @@ export class ConfigurationComponent {
       addRuleId: [0],
       machineType: [this.MachineType, Validators.required],
       equipmentType: [this.EquipmentType, Validators.required],
+      failureModeType: [this.FailureMode, Validators.required],
       columns: ['', Validators.required],
       alarm: ['', Validators.required],
       trigger: ['', Validators.required],
@@ -145,6 +148,23 @@ export class ConfigurationComponent {
     console.log(this.EquipmentType)
   }
 
+  FailureModeSelect(){
+    if (this.MachineType == "Pump" && this.EquipmentType=="Centrifugal Pump") {
+      this.FailureModeList = []
+      this.FailureModeList = [
+      {'id': 0, 'value':'FM1', 'name':'Failure Mode1'},
+    ]
+    }
+    if (this.MachineType == "Compressor" && this.EquipmentType == 'Screw Compressor') {
+      this.FailureModeList = []
+      this.FailureModeList = [
+        {'id': 0, 'value':'RD', 'name':'Rotar Damage'},
+        {'id': 1, 'value':'SSRB', 'name':'Second stage rotar breakdown'},
+        {'id': 2, 'value':'CF', 'name':'Cooler Failure'}
+      ]
+    }
+  }
+
   BackToConfiglist(){
     this.AssetList= true
     this.configurationrecords= false
@@ -157,8 +177,9 @@ export class ConfigurationComponent {
     this.addRuleForms = this.fb.array([]);
     var url : string = this.screwCompressorAPIName.ADDRuleAPI;
     const params = new HttpParams()
-                .set('machineType',this.MachineType )
-                .set('equipmentType',this.EquipmentType )
+                .set('machineType',this.MachineType)
+                .set('equipmentType',this.EquipmentType)
+                .set('failureMode',this.FailureMode)
     this.screwCompressorMethod.getWithParameters(url, params).subscribe(
       res => {
         if (res == [])
@@ -169,6 +190,7 @@ export class ConfigurationComponent {
               addRuleId: [addRuleModel.AddRuleId],
               machineType: [addRuleModel.MachineType, Validators.required],
               equipmentType: [addRuleModel.EquipmentType, Validators.required],
+              failureModeType: [addRuleModel.FailureModeType, Validators.required],
               columns: [addRuleModel.Columns, Validators.required],
               alarm: [addRuleModel.Alarm, Validators.required],
               trigger: [addRuleModel.Trigger, Validators.required],

@@ -16,9 +16,11 @@ export class SCConstantsAPI{
   public FuturePrediction : string = '/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage';
   public getFuturePredictionRecords : string = '/ScrewCompressorFuturePredictionAPI/GetFuturePredictionRecords';
   public FuturePredictionDates : string = '/ScrewCompressorFuturePredictionAPI/FuturePredictionMonth';
-  public getTrainList : string = '/ScrewCompressureAPI';
+  public getTrainList : string = '/ScrewCompressureAPI/GetClassification';
   public UploadCSV : string = '/ScrewCompressureAPI/UploadCSV';
   public TrainAddData : string = '/ScrewCompressureAPI/Configuration';
+  public TrainAddDataSSRB : string = '/ScrewCompressureAPI/PostSSRBData';
+  public TrainAddDataCoolerFailure : string = '/ScrewCompressureAPI/PostCoolerFailure';
   public ChangeInConfiguration : string = '/ScrewCompressureAPI/ConfigurationChange';
   public getPredictedListByDate : string = '/ScrewCompressureAPI/GetPredictionByDate';
 

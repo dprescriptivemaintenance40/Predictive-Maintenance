@@ -34,10 +34,10 @@ export class CostBenefitAnalysisComponent {
             this.EquipmentList = []
             this.EquipmentList = ["Centrifugal Pump"]
         }
-        // if (this.MachineType == "Compressor") {
-        //     this.EquipmentList = []
-        //     this.EquipmentList = ["Screw Compressor"]
-        // }
+        if (this.MachineType == "Compressor") {
+            this.EquipmentList = []
+            this.EquipmentList = ["Screw Compressor"]
+        }
     }
     getPrescriptiveRecords() {
         this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -49,6 +49,7 @@ export class CostBenefitAnalysisComponent {
     }
     getPrescriptiveRecordsByEqui() {
         if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
+            this.prescriptiveRecords = [];
             this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
                 .subscribe((res: any) => {
                     this.prescriptiveRecords = res;
@@ -78,7 +79,7 @@ export class CostBenefitAnalysisComponent {
                         row.ETBF = this.ETBF ? this.ETBF : 2;
                         row.TotalAnnualCostWithMaintenance = 1.777;
                         row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
-                        row.ResidualRiskWithMaintenance =  parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
+                        row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
                         let WithETBCAndPONC = row.TotalPONC / row.ETBC;
                         let WithoutETBCAndPONC = row.TotalPONC / 5;
                         row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);

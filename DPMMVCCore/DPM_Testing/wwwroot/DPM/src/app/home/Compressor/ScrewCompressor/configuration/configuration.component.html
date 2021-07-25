@@ -16,16 +16,26 @@
             <label>
                Equipment Type
             </label>
-            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()"
+            <select [(ngModel)]="EquipmentType" class="form-select" (change)="FailureModeSelect()"
                 class="form-control">
                 <option value="">Choose..</option>
                 <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
             </select>
         </div>
         <div class="col-sm">
+            <label>
+                <label>Failure Mode</label>
+            </label>
+            <select [(ngModel)]="FailureMode" class="form-select"
+                class="form-control">
+                <option value="">Choose..</option>
+                <option *ngFor="let EL of FailureModeList" [ngValue]="EL.value">{{EL.name}}</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
             <div class="row">
                 <div class="col-sm">
-                    <label class="hidden d-block" style="visibility: hidden;">
+                    <label class="hidden d-none" style="visibility: hidden;">
                        search
                     </label>
                     <a class="btn btn-primary" (click)="GenerateConfiguration()"><i class="pi pi-search mr-1"></i>Search</a>

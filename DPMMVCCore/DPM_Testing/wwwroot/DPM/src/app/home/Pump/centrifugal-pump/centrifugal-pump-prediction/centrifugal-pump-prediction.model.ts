@@ -8,4 +8,5 @@ export class CentrifugalPumpPredictionModel {
     public Q: number = 0;
     public InsertedDate: string = "";
     public Prediction: string = "";
+    public FuturePrediction : string ="";
 }

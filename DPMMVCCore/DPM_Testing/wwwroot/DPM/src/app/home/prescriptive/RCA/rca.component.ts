@@ -708,12 +708,33 @@ export class RCAComponent {
         if (p.RCAQuantitiveTree !== undefined && p.RCAQuantitiveTree !== 'None') {
             this.UpdateRCATypeQuantitive = true
             this.displayQuantitativeTree = JSON.parse(p.RCAQuantitiveTree);
-            this.TraverseNestedJson(this.displayQuantitativeTree, 'quantitativeDisable');
+            this.TraverseNestedJsonForQuantitative(this.displayQuantitativeTree, 'quantitativeDisable');
+            this.displayQuantitativeTree;
         }
     }
 
     CloseRCATreeDisplay() {
         this.RCADisplayFile = []
+    }
+
+    async TraverseNestedJsonForQuantitative(val: any, fun: string) {
+        for (let index = 0; index < val.length; index++) {
+             val[index].disable = true; 
+             if (val[index].children !== undefined && val[index].children.length > 0) { 
+                var Data: any = val[index].children;
+                for (let index1 = 0; index1 < Data.length; index1++) { 
+                    Data[index1].disable = true; 
+                    if (Data[index1].children !== undefined && Data[index1].children.length > 0) { 
+                        var Data2 = Data[index1].children
+                        for (let index3 = 0; index3 < Data2.length; index3++) {
+                            var d = []
+                            d.push(Data2[index3])
+                            this.TraverseNestedJsonForQuantitative(d, fun)
+                        }
+                    }
+                }
+             } 
+        }
     }
 
 
@@ -897,13 +918,14 @@ export class RCAComponent {
        if(this.RCAReportType === 'Qualitative'){
         this.RCAReportTree = [];
         this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQualitativeTree);
-        this.RCAQualitativeReport = true;
-        this.RCAQuantitativeReport = false;
+        this.RCAQualitativeReport = false;
+        this.RCAQuantitativeReport = true;
        }else{
         this.RCAReportTree = [];
         this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQuantitiveTree);
-        this.RCAQualitativeReport = false;
-        this.RCAQuantitativeReport = true;
+        this.TraverseNestedJsonForQuantitative(this.RCAReportTree, 'quantitativeDisable');
+        this.RCAQualitativeReport = true;
+        this.RCAQuantitativeReport = false;
        }
        this.changeDetectorRef.detectChanges()
     }
@@ -924,19 +946,19 @@ export class RCAComponent {
             };
             var finalTable;
             if(this.RCAReportType === 'Qualitative'){
-                finalTable = this.pdfTable.nativeElement;
-               }else{
                 finalTable = this.pdfTable1.nativeElement;
+               }else{
+                finalTable = this.pdfTable.nativeElement;
                }
             doc.fromHTML(finalTable.innerHTML, 15, 15, {
                 'width': 590,
                 'elementHandlers': specialElementHandlers
             });
             var imageLink: any
-            let imageData = document.getElementById('image');
+            let imageData = document.getElementById('image1');
             var finalImage;
             if(this.RCAReportType === 'Qualitative'){
-                let imageData = document.getElementById('image');
+                let imageData = document.getElementById('image1');
                 var pdfdata = html2canvas(imageData).then(canvas => {
                 doc.addPage('a4','mm','p');
                 const imgProps = doc.getImageProperties(canvas);
@@ -957,8 +979,8 @@ export class RCAComponent {
                 this.commonLoadingDirective.showLoading(false, 'Downloading....');
             })
                }else{
-                let imageData = document.getElementById('image1');
-                domtoimage.toPng(this.image1.nativeElement).then(res => {
+                let imageData = document.getElementById('image');
+                domtoimage.toPng(this.image.nativeElement).then(res => {
                     imageLink = res;
                     doc.addPage('a4', 'l');
                     const imgProps = doc.getImageProperties(imageLink);
@@ -972,11 +994,11 @@ export class RCAComponent {
             this.RCAReportRecommadtion = ""
             this.RCAReportfileds = false
             if(this.RCAReportType === 'Qualitative'){
-                this.RCAQualitativeReport = true;
-                this.RCAQuantitativeReport = false;
-               }else{
                 this.RCAQualitativeReport = false;
                 this.RCAQuantitativeReport = true;
+               }else{
+                this.RCAQualitativeReport = true;
+                this.RCAQuantitativeReport = false;
                }
         } else {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please fill the details' })

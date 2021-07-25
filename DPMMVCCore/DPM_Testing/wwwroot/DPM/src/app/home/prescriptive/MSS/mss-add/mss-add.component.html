@@ -1,8 +1,5 @@
 <style>
-    .btn {
-        margin: 20px
-    }
-    
+   
     .disableddiv {
         pointer-events: none;
         cursor: default;
@@ -14,23 +11,21 @@
 </style>
 <p-toast position="top-right"></p-toast>
 <div *ngIf="SelectBoxEnabled">
-    <div class="card shadow div-in-middle">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Select Tag Number to add MSS</b></li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">Tag Number</label>
-                    <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
-                          <option value="">Choose..</option>
-                          <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
-                        </select>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
-            </li>
-        </ul>
+    <h4 class="dpm-heading">Select Tag Number to add MSS</h4>
+    <div class="card dpm-card w-100 p-3">
+        <div class="row">
+            <div class="col-md-4">
+                <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                    <option value="">Choose Tag Number</option>
+                    <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                </select>
+            </div>
+            <div class="col-md-4 pl-0">
+                <button class="btn btn-primary" (click)="TagNumberSelect()">Done</button>
+            </div>
+        </div>
     </div>
+
 </div>
 <div *ngIf="PrescriptiveTree" class="col-md-12" id="GoToTheSaveMSS">
     <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark" (click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>

@@ -27,19 +27,18 @@ namespace RuleEngine
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string Userid = req.Query["UserId"];
-
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             Userid = Userid ?? data?.Userid;
 
-             using (var context = new RuleDbContext())
+            using (var context = new RuleDbContext())
             {
 
                 try
                 {
                     DataTable t = new DataTable();
                     IQueryable<CompressureDetailsModel> compressDetail = context.compressDetail
-                                                                                .Where(a => string.IsNullOrEmpty(a.ProcessingStage) 
+                                                                                .Where(a => string.IsNullOrEmpty(a.ProcessingStage)
                                                                                          && a.UserId == Userid).OrderBy(a => a.InsertedDate)
                                                                                          .AsQueryable();
                     DataTable dt = ToDataTable<CompressureDetailsModel>(compressDetail.ToList());
@@ -51,10 +50,8 @@ namespace RuleEngine
                     dc2.AllowDBNull = true;
                     t.Columns.Add(dc2);
 
-                    IQueryable<AddRuleModel> ruleDetails = context.AddRuleModels.OrderBy(a => a.AddRuleId).AsQueryable();
+                    List<AddRuleModel> ruleDetails = context.AddRuleModels.Where(a => a.MachineType == "Compressor" && a.EquipmentType == "Screw Compressor" && a.FailureModeType == "RD").OrderBy(a => a.AddRuleId).ToList();
                     DataTable dtRules = ToDataTable<AddRuleModel>(ruleDetails.ToList());
-
-
 
                     foreach (DataRow row in dt.Rows)
                     {
@@ -132,6 +129,7 @@ namespace RuleEngine
                             compressurewithclassification.InsertedDate = DateTime.Now;
                             compressurewithclassification.ClassificationId = Convert.ToInt32(row["ClassificationId"]);
                             compressurewithclassification.Classification = Convert.ToString(row["Classification"]);
+                            compressurewithclassification.FailureModeType = Convert.ToString(row["FailureModeType"]);
                             context.compressureWithClassifications.Add(compressurewithclassification);
 
                             CompressureDetailsModel compressuredetails = new CompressureDetailsModel();
@@ -148,7 +146,7 @@ namespace RuleEngine
                             compressuredetails.TenantId = Convert.ToInt32(row["TenantId"]);
                             compressuredetails.InsertedDate = InsertedDate;
                             compressuredetails.ProcessingStage = Convert.ToString(row["ProcessingStage"]);
-
+                            compressuredetails.FailureModeType = Convert.ToString(row["FailureModeType"]);
                             var dbEntity = context.Find<CompressureDetailsModel>(compressuredetails.BatchId);
                             context.Entry(dbEntity).State = EntityState.Detached;
                             context.Entry(compressuredetails).State = EntityState.Modified;
@@ -229,6 +227,9 @@ namespace RuleEngine
             public float Alarm { get; set; }
             public float Trigger { get; set; }
             public string Condition { get; set; }
+            public string MachineType { get; set; }
+            public string EquipmentType { get; set; }
+            public string FailureModeType { get; set; }
 
         }
         public class CompressureDetailsModel
@@ -247,8 +248,7 @@ namespace RuleEngine
             public decimal TD2 { get; set; }
             public DateTime InsertedDate { get; set; }
             public string ProcessingStage { get; set; }
-
-
+            public string FailureModeType { get; set; }
         }
         public class CompressureWithClassificationModel
         {
@@ -268,6 +268,7 @@ namespace RuleEngine
             public decimal TD2 { get; set; }
             public DateTime InsertedDate { get; set; }
             public string Classification { get; set; }
+            public string FailureModeType { get; set; }
         }
     }
 

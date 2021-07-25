@@ -55,6 +55,7 @@ export class PredictionComponent implements OnInit {
  public FromDate : string = ""
  public ToDate : string = ""
  public SingleBulkPredictionName : string = ""
+ public FailureModeSelect : string ="All"
 
   constructor(public title: Title,
     public http: HttpClient,
@@ -195,8 +196,8 @@ export class PredictionComponent implements OnInit {
       this.screwCompressorMethod.postWithHeaders(url, XLSX.utils.sheet_to_json(worksheet, { raw: true }))
      // this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
         .subscribe(async res => {
-          var TrainList : any = await this.GetTrainDataList();
-          if(TrainList.length >= 15){
+          // var TrainList : any = await this.GetTrainDataList();
+          // if(TrainList.length >= 15){
             await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=prediction&type=compressor`, { responseType: 'text' })
                   .subscribe(res => {
                     this.getPredictedList();
@@ -205,10 +206,10 @@ export class PredictionComponent implements OnInit {
                     console.log(err.error);
                     this.commonLoadingDirective.showLoading(false, "");
                   })
-          }else{
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'For prediction you should have minimum 20 records in train' }); 
-            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Prediction cannot be done' });      
-          }
+          // }else{
+          //   this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'For prediction you should have minimum 20 records in train' }); 
+          //   this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Prediction cannot be done' });      
+          // }
           
         }, err => {
           // this.loading = false;
@@ -275,7 +276,7 @@ export class PredictionComponent implements OnInit {
         this.configurationObj = res;
         this.PridictedId = res.PredictionId;
         var UserId = res.UserId;
-        var TrainList : any = await this.GetTrainDataList();
+        // var TrainList : any = await this.GetTrainDataList();
         // if(TrainList.length >= 20){
           await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${UserId}&name=prediction&type=compressor`, { responseType: 'text' })
                   .subscribe(res => {

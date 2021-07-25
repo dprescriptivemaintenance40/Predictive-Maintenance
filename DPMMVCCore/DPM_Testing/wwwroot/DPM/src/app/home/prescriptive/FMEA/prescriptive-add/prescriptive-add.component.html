@@ -6,6 +6,9 @@ border: 1px solid #09a1a6 !important;
     background: #f2f4ff;
     border-radius: 5px;
     }
+    .failure-tree td {
+    background-color: transparent !important;
+}
 </style>
 <p-toast position="top-right"></p-toast>
 <div *ngIf="prescriptiveSelect">
@@ -133,6 +136,7 @@ border: 1px solid #09a1a6 !important;
         <ng-template pTemplate="content">
             <div class="p-fluid p-formgrid p-grid">
                 <div class="bdg">
+                   
                     <div class="d-flex flex-row flex-wrap">
                         <div *ngFor="let func of failuerMode" class="badge badge-primary-outline mr-2" pDraggable="func"
                             (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
@@ -167,10 +171,10 @@ border: 1px solid #09a1a6 !important;
         </ng-template>
     </p-card>
 </div>
-<div *ngIf="prescriptiveEffect1" class="col-md-12" style="overflow: scroll;">
+<div *ngIf="prescriptiveEffect1" class="col-md-12 bg-white p-3 my-2" style="overflow: scroll;">
     <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode"
         (onNodeSelect)="onNodeSelect($event)" styleClass="company">
-        <ng-template let-node pTemplate="person">
+        <ng-template let-node pTemplate="person" class="d-flex flex-row failure-tree">
             <div class="node-header p-corner-top">{{node.label}}</div>
             <div class="node-content">
                 <div class="a">{{node.data.name}}</div>
@@ -190,7 +194,7 @@ border: 1px solid #09a1a6 !important;
 </div>
 <div class="row">
     <div class="col-md-6">
-<div *ngIf="prescriptiveEffect" class="stepsdemo-content dpm-card" id="FactorstoLocal">
+<div *ngIf="prescriptiveEffect" class="stepsdemo-content dpm-card mt-2" id="FactorstoLocal">
     <p-card>
         <ng-template pTemplate="title" class="mb-0">
             Failure Mode Effects<strong><span class="text-primary ml-1">{{FMLSEffectModeName}}</span></strong>
@@ -227,7 +231,7 @@ border: 1px solid #09a1a6 !important;
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="input-group mb-3">
+                            <div class="input-group mt-3">
                                 <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message"
                                     name="body" rows="3" placeholder="Add Remark Here"></textarea>
                             </div>
@@ -242,45 +246,40 @@ border: 1px solid #09a1a6 !important;
 </div>
 <div class="col-md-6">
 <div *ngIf="prescriptiveEffect" class="stepsdemo-content dpm-card mt-2" id="scrollToTop">
-    <p-card>
-        <ng-template pTemplate="title mb-0">
-            Factors
-            <p-overlayPanel #panel>
-                <div>
+        <p-card>
+            <ng-template pTemplate="title" class="mb-0">
+            <h5 class="p-card-title" style="">Enter Factors for <span class="text-primary" ><strong>{{FMLSEffectModeName}}</strong></span>
+                <a (click)="panel.show($event)" class="factor-desc" title="Explaination of each factors." style="">
+                    <i class="fas fa-info-circle fa-1px ml-2 text-primary"></i>
+                </a>
+                <div class="badge badge-warning">
                     <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to
                         the equipment. More the down time more is the factor, less the down time less is the factor.
                     </li>
-
+            
                     <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of
                         failure are high then the scrap factor value is taken more and in the case of less chance to
                         scrape the equipment or component factor
                         value is taken less. </li>
-
+            
                     <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of
                         injury (both man and machine) are high in the case of equipment failure, more is the value given
                         to the safety factor and less the chances
                         of injury, less is the value given to the safety factor.</li>
-
+            
                     <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment
                         from failure. Minimum no. is given when protection against the failure is easy. Maximum no. is
                         given when protection against the failure
                         is very difficult.
                     </li>
-
+            
                     <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the
                         no. of failure more is the value given to the factor.
                     </li>
                 </div>
-            </p-overlayPanel>
-           
-        </ng-template>
-        <ng-template pTemplate="subtitle">
-            <h5 class="p-card-title">Enter Factors for <span
-                    class="text-primary"><strong>{{FMLSEffectModeName}}</strong></span><a (click)="panel.show($event)" style="width: 20rem;" title="Explaination of each factors." style="color: black;"><i
-                            class="fas fa-info-circle fa-1px"></i> </a></h5>
-                   
-        </ng-template>
-        <ng-template pTemplate="content">
+            </h5>
+            </ng-template>
+    <ng-template pTemplate="content">
             <div class="p-fluid">
                 <div class="row d-flex justify-content-space-between align-items-center">
                     <div class="col-md-5">
@@ -459,7 +458,7 @@ border: 1px solid #09a1a6 !important;
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Done</button>
             </div>
 
         </div>
@@ -528,7 +527,7 @@ border: 1px solid #09a1a6 !important;
 </div>
 
 <!--    Consequences -->
-<div id="ScrollUpdateTree1" *ngIf="Consequences1" style="margin: 40px;" class="stepsdemo-content shadow">
+<div id="ScrollUpdateTree1" *ngIf="Consequences1"  class="stepsdemo-content dpm-card">
     <p-card>
         <ng-template pTemplate="title">
             Consequences for {{FMLSConsequenceName}}
@@ -542,8 +541,8 @@ border: 1px solid #09a1a6 !important;
                     <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during
                         normal operation of the plant?</p>
                 </div>
-                <div class="container">
-                    <div *ngFor="let con1 of draggedConsequencesYesNO" class="border" pDraggable="con1"
+                <div class="d-flex flex-row flex-wrap">
+                    <div *ngFor="let con1 of draggedConsequencesYesNO" class="badge badge-primary-outline mr-2" pDraggable="con1"
                         (onDragStart)="dragStartC1($event,con1)" (onDragEnd)="dragEndC1($event)">
                         {{con1}}
                     </div>
@@ -551,15 +550,15 @@ border: 1px solid #09a1a6 !important;
                         <div *ngFor="let c of dropedConsequenceFailureMode">{{c}}</div>
 
                     </div>
-                    <small class="form-text text-muted">Drag and Drop here, from above List</small> <br>
+                    <small class="alert alert-warning">Drag and Drop here, from above List</small> <br>
                 </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="Consequence1Back()" pTooltip=" Back to the Tree " tooltipPosition="top">
+            <a class="btn btn-secondary btn-sm" (click)="Consequence1Back()" pTooltip=" Back to the Tree " tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence1Next()"
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-primary btn-sm" style="float: right;" (click)="Consequence1Next()"
                 pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
@@ -582,8 +581,8 @@ border: 1px solid #09a1a6 !important;
                     <p> Does the effect of the failure mode(or the secondary effect resulting from the failuer) have
                         direct adverse effect on operational safety or the environment?</p>
                 </div>
-                <div class="container">
-                    <div *ngFor="let con2 of draggedConsequencesYesNO" class="border" pDraggable="con2"
+                <div class="d-flex flex-row flex-wrap">
+                    <div *ngFor="let con2 of draggedConsequencesYesNO" class="badge badge-primary-outline mr-2" pDraggable="con2"
                         (onDragStart)="dragStartC2($event,con2)" (onDragEnd)="dragEndC2($event)">
                         {{con2}}
                     </div>
@@ -596,11 +595,11 @@ border: 1px solid #09a1a6 !important;
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="Consequence2Back()" pTooltip=" Back to the First Consequence"
+            <a class="btn btn-secondary btn-sm" (click)="Consequence2Back()" pTooltip=" Back to the First Consequence"
                 tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence2Next()"
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-primary btn-sm" style="float: right;" (click)="Consequence2Next()"
                 pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
@@ -623,24 +622,24 @@ border: 1px solid #09a1a6 !important;
                     <p>Does the combination of the failure mode and one additonal failure or event result in an adverse
                         effect safety of the environment? </p>
                 </div>
-                <div class="container">
-                    <div *ngFor="let con3 of draggedConsequencesYesNO" class="border" pDraggable="con3"
+            <div class="d-flex flex-row flex-wrap">
+                    <div *ngFor="let con3 of draggedConsequencesYesNO" class="badge badge-primary-outline mr-2" pDraggable="con3"
                         (onDragStart)="dragStartC3($event,con3)" (onDragEnd)="dragEndC3($event)">
                         {{con3}}
                     </div>
                     <div class="drop" pDroppable="con3" (onDrop)="dropC3($event)">
                         <div *ngFor="let c of dropedConsequenceCombinationFailureMode">{{c}}</div>
                     </div>
-                    <small class="form-text text-muted">Drag and Drop here, from above List </small> <br>
+                    <small class="alert alert-warning">Drag and Drop here, from above List </small> <br>
                 </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="Consequence3Back()" pTooltip=" Back to the Second Consequence"
+            <a class="btn btn-secondary btn-sm" (click)="Consequence3Back()" pTooltip=" Back to the Second Consequence"
                 tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence3Next()"
+            <a *ngIf="NextFailureLSEDiasble" class="btn btn-primary btn-sm" style="float: right;" (click)="Consequence3Next()"
                 pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
@@ -659,11 +658,11 @@ border: 1px solid #09a1a6 !important;
         </ng-template>
         <ng-template pTemplate="content">
             <div class="p-fluid p-formgrid p-grid">
-                <div style="margin-left: 20px;" class="p-fluid">
+                <div class="p-fluid">
                     <p>Does the Failure mode adversily affect operational capabilities of the plant? </p>
                 </div>
-                <div class="container">
-                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="border" pDraggable="con4"
+                <div class="d-flex flex-row flex-wrap">
+                    <div *ngFor="let con4 of draggedConsequencesYesNO" class="badge badge-primary-outline mr-2" pDraggable="con4"
                         (onDragStart)="dragStartC4($event,con4)" (onDragEnd)="dragEndC4($event)">
                         {{con4}}
                     </div>
@@ -671,18 +670,18 @@ border: 1px solid #09a1a6 !important;
                         <div *ngFor="let c of dropedConsequenceAffectFailureMode">{{c}}</div>
 
                     </div>
-                    <small class="form-text text-muted">Drag and Drop here, from above List or you can type
+                    <small class="alert alert-warning">Drag and Drop here, from above List or you can type
                         below</small> <br>
 
                 </div>
             </div>
         </ng-template>
         <ng-template pTemplate="footer">
-            <a class="btn btn-dark" (click)="Consequence4Back()" pTooltip=" Back to the Third Consequence"
+            <a class="btn btn-secondary btn-sm" (click)="Consequence4Back()" pTooltip=" Back to the Third Consequence"
                 tooltipPosition="top">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="Consequence4Next()"
+            <a *ngIf="NextFailureLSEDiasble"  class="btn btn-primary btn-sm"  style="float: right;" (click)="Consequence4Next()"
                 pTooltip=" Click To add next Consequence " tooltipPosition="top">
                 <i class="fas fa-arrow-right"></i>
             </a>
