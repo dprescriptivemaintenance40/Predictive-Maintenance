@@ -31,7 +31,7 @@ export class TrainComponent implements OnInit {
   public Image = false;
   public enableImage = true;
   public CancelImage = false;
-  public failureModeType : string ="RotarDamage";
+  public failureModeType : string ="RD";
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -139,7 +139,7 @@ export class TrainComponent implements OnInit {
       this.CompDetailList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
       this.loading = true;
       this.commonLoadingDirective.showLoading(true, "Please wait to get the uploaded rules....");
-      if(this.failureModeType === "RotarDamage"){
+      if(this.failureModeType === "RD"){
       const url : string = this.screwCompressorAPIName.TrainAddData;
       this.screwCompressorMethod.postWithHeaders(url, this.CompDetailList)
         .subscribe(async res => {
@@ -163,7 +163,7 @@ export class TrainComponent implements OnInit {
           this.getScrewCompressureList();
         },
           err => { console.log(err.error);})
-      } else if(this.failureModeType === "CoolerFailure") {
+      } else if(this.failureModeType === "CF") {
         this.screwCompressorMethod.postWithHeaders(this.screwCompressorAPIName.TrainAddDataCoolerFailure, this.CompDetailList)
         .subscribe(res => { 
           this.getScrewCompressureList();
@@ -228,7 +228,7 @@ export class TrainComponent implements OnInit {
   exportToExcel() {
     var dataArray : any= [];
     dataArray = this.compListWithClassification
-    if(this.failureModeType === "CoolerFailure") {
+    if(this.failureModeType === "CF") {
       var list : any = [];
       this.compListWithClassification.forEach(element => {
         let obj ={}

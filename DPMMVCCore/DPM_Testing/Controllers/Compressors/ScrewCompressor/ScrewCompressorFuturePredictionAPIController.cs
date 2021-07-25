@@ -25,7 +25,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
         [Route("FuturePredictionMonth")]
         public async Task<IActionResult> GetFuturePredictionMonth(string FromDate, string ToDate)
         {
-      
+
             try
             {
 
@@ -194,20 +194,20 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                                         LTD1List.Add(Convert.ToDouble(screwCompressors[ii].TD1));
                                         LTS2List.Add(Convert.ToDouble(screwCompressors[ii].TS2));
                                         LTD2List.Add(Convert.ToDouble(screwCompressors[ii].TD2));
-                                  
+
                                         count = count + 1;
                                     }
                                 }
                                 else if (count == 5)
                                 {
-                                    SPS1List.Add(LPS1List.Sum() /5);
-                                    SPD1List.Add(LPD1List.Sum() /5);
-                                    SPS2List.Add(LPS2List.Sum() /5);
-                                    SPD2List.Add(LPD2List.Sum() /5);
-                                    STS1List.Add(LTS1List.Sum() /5);
-                                    STD1List.Add(LTD1List.Sum() /5);
-                                    STS2List.Add(LTS2List.Sum() /5);
-                                    STD2List.Add(LTD2List.Sum() /5);
+                                    SPS1List.Add(LPS1List.Sum() / 5);
+                                    SPD1List.Add(LPD1List.Sum() / 5);
+                                    SPS2List.Add(LPS2List.Sum() / 5);
+                                    SPD2List.Add(LPD2List.Sum() / 5);
+                                    STS1List.Add(LTS1List.Sum() / 5);
+                                    STD1List.Add(LTD1List.Sum() / 5);
+                                    STS2List.Add(LTS2List.Sum() / 5);
+                                    STD2List.Add(LTD2List.Sum() / 5);
                                     SDate.Add(Date[i]);
                                     break;
                                 }
@@ -218,14 +218,14 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                         {
 
                             List<ScrewCompressorPredictionModel> PredictionRecord = screwCompressors.FindAll(a => a.InsertedDate == Date[i]);
-                            LPS1List.Add(Convert.ToDouble(PredictionRecord[0].PS1));
-                            LPD1List.Add(Convert.ToDouble(PredictionRecord[0].PD1));
-                            LPS2List.Add(Convert.ToDouble(PredictionRecord[0].PS2));
-                            LPD2List.Add(Convert.ToDouble(PredictionRecord[0].PD2));
-                            LTS1List.Add(Convert.ToDouble(PredictionRecord[0].TS1));
-                            LTD1List.Add(Convert.ToDouble(PredictionRecord[0].TD1));
-                            LTS2List.Add(Convert.ToDouble(PredictionRecord[0].TS2));
-                            LTD2List.Add(Convert.ToDouble(PredictionRecord[0].TD2));
+                            SPS1List.Add(Convert.ToDouble(PredictionRecord[0].PS1));
+                            SPD1List.Add(Convert.ToDouble(PredictionRecord[0].PD1));
+                            SPS2List.Add(Convert.ToDouble(PredictionRecord[0].PS2));
+                            SPD2List.Add(Convert.ToDouble(PredictionRecord[0].PD2));
+                            STS1List.Add(Convert.ToDouble(PredictionRecord[0].TS1));
+                            STD1List.Add(Convert.ToDouble(PredictionRecord[0].TD1));
+                            STS2List.Add(Convert.ToDouble(PredictionRecord[0].TS2));
+                            STD2List.Add(Convert.ToDouble(PredictionRecord[0].TD2));
                             SDate.Add(Date[i]);
                         }
                     }
@@ -274,10 +274,16 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                             await _context.SaveChangesAsync();
 
                         }
-                        
+
+                        foreach (var item in screwCompressors)
+                        {
+                            _context.ScrewCompressurePredictionData.Attach(item);
+                            item.FuturePrediction = "Done";
+                            await _context.SaveChangesAsync();
+                        }
                     }
                 }
-                return Ok(0);
+                return Ok(x);
 
             }
             catch (Exception exe)
