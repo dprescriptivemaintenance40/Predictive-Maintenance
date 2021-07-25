@@ -21,11 +21,17 @@ export class DashboardComponent {
   public ToDate: string = "";
   public ClassificationData: string = "";
   public FailuerModes: string = ""
-  public InsertedDate: any = [];
+  public InsertedDate = [];
+  public InsertedDateForMonth = [];
+  public failuerModetype:[];
+  public yearlist = [];
+  public Monthlist = [];
   public classi: any = [];
   public Prediction: any = [];
-  public inserteddate: any = [];
   public ScrewCompressorAllData: any;
+  public ScrewCompressorFilteredData:any;
+  public FailuerModetypeFilteredData:any;
+  public FailuerModetypeFilteredData1:any;
   public ScrewPredictionAllData: any;
   public getAllFilterData: any;
   public MachineType: string = "";
@@ -56,25 +62,13 @@ export class DashboardComponent {
   public ScrewTrainLastUploadList: any = [];
   public ScrewTrainPreviousWeekList: any = [];
   public ScrewTrainPreviousMonthList: any = [];
-  availableYears = [2016, 2017, 2018, 2019, 2020];
-  availableMonths = [{ name: 'January', selected: false },
-  { name: 'February', selected: false },
-  { name: 'March', selected: false },
-  { name: 'April', selected: false },
-  { name: 'May', selected: false },
-  { name: 'June', selected: false },
-  { name: 'July', selected: false },
-  { name: 'August', selected: false },
-  { name: 'September', selected: false },
-  { name: 'October', selected: false },
-  { name: 'November', selected: false },
-  { name: 'December', selected: false }]
-
+  public selectedMode: string;
+ 
   selectionModel = {}
   public selectedYear: string;
+  public fmtype: string;
   selectedMonths = {}
   public selectedMonth: string;
-
   public ComponentCriticalityFactor: string = "";
   public ComponentRating: string = "";
   public CConditionMonitoring: string = ""
@@ -98,11 +92,9 @@ export class DashboardComponent {
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
     // this.GetFilterRecords()
-    this.SCClassification()
     this.GerAllPredictionRecords()
-    this.availableYears.forEach(year => {
-      this.selectionModel[year] = this.availableMonths.map(obj => ({ ...obj }));
-    })
+    this.FModeType()
+ 
   }
   isDateInArray(needle, haystack) {
     for (var i = 0; i < haystack.length; i++) {
@@ -116,12 +108,9 @@ export class DashboardComponent {
     let embedUrl = 'https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D';
   }
   onChangeYear() {
-    this.selectedYear
-    this.selectionModel[this.selectedYear]
-    this.ToDate = `${this.selectedYear}${this.selectedMonth} `;
-    this.ToDate = `${this.selectedYear}-01-01 `;
-    this.FromDate = `${this.selectedYear}-12-31 `;
-    this.GetFilterRecords()
+    this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.selectedYear.toString());
+    this.ClassificationOfAllRecordbar();
+    this.AllRecordBarcharts();
   }
 
   GerAllPredictionRecords() {
@@ -152,13 +141,10 @@ export class DashboardComponent {
           console.log(error.error)
         })
   }
-  public n:number = 0
-  public i:number = 0
-  public d:number = 0
-
   public screwPredictionDataNormalCount: any = [];
   public screwPredictionDataIncipientCount: any = [];
   public screwPredictonDataDegradeCount: any = [];
+
   GetAllRecords() {
     this.screwPredictionDataNormalCount = null;
     this.screwPredictionDataIncipientCount = null;
@@ -169,47 +155,69 @@ export class DashboardComponent {
     var incipientValuation: number = 0;
     var degradeCount: any = [];
     var degradeValuation: number = 0;
+
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.GetAllRecords)
       .subscribe(
         res => {
+          this.ScrewCompressorFilteredData = res; // actual data
           this.ScrewCompressorAllData = res;
-            this.ScrewCompressorAllData.forEach(res => {
-            res.Classification
-            res.Date
-            this.ClassificationData= res.Classification;
-            this.InsertedDate = res.Date;
-           })
+          this.FailuerModetypeFilteredData1= res
+          this.ScrewCompressorAllData.forEach(r => {
+            r.Classification
+            r.Date
+            this.ClassificationData = r.Classification;
+            r.FailureModeType
+            this.FailuerModetypeFilteredData = r.FailureModeType
+       
+
+            let newyeardata = { yearId:0,yearname: '' };
+            newyeardata.yearname = moment(r.InsertedDate).format('YYYY')
+            this.InsertedDate.push(newyeardata);
+
+            let newMonthdata = { yearId:0,Monthname: '' };
+            newMonthdata.Monthname = moment(r.InsertedDate).format('MM')
+            this.InsertedDateForMonth.push(newMonthdata);
+          }) 
+          this.yearlist =  this.InsertedDate.reduce((m, o) => {
+                                                      var found = m.find(p => p.yearname === o.yearname);
+                                                      if (found) { 
+                                                      } else {
+                                                          m.push(o);
+                                                      }
+                                                      return m;
+                                                  }, []);
+
           this.ScrewCompressorAllData.forEach(element => {
             this.classi.push(element.Classification);
           });
-          
-      this.classi.forEach((value) => {
-        if (value == 'normal') {
-          normalValuation = normalValuation + 1;
-          normalCount.push(normalValuation);
-          incipientCount.push(incipientValuation);
-          degradeCount.push(degradeValuation)
-  
-        } else if (value == 'incipient') {
-  
-          incipientValuation = incipientValuation + 1;
-          incipientCount.push(incipientValuation);
-          normalCount.push(normalValuation);
-          degradeCount.push(degradeValuation)
-  
-        } else {
-  
-          degradeValuation = degradeValuation + 1;
-          degradeCount.push(degradeValuation)
-          normalCount.push(normalValuation);
-          incipientCount.push(incipientValuation);
-  
-        }
-        this.screwPredictionDataNormalCount = normalCount;
-        this.screwPredictionDataIncipientCount = incipientCount;
-        this.screwPredictonDataDegradeCount = degradeCount;
-  
-      });
+
+          this.classi.forEach((value) => {
+            if (value == 'normal') {
+              normalValuation = normalValuation + 1;
+              normalCount.push(normalValuation);
+              incipientCount.push(incipientValuation);
+              degradeCount.push(degradeValuation)
+
+            } else if (value == 'incipient') {
+
+              incipientValuation = incipientValuation + 1;
+              incipientCount.push(incipientValuation);
+              normalCount.push(normalValuation);
+              degradeCount.push(degradeValuation)
+
+            } else {
+
+              degradeValuation = degradeValuation + 1;
+              degradeCount.push(degradeValuation)
+              normalCount.push(normalValuation);
+              incipientCount.push(incipientValuation);
+
+            }
+            this.screwPredictionDataNormalCount = normalCount;
+            this.screwPredictionDataIncipientCount = incipientCount;
+            this.screwPredictonDataDegradeCount = degradeCount;
+
+          });
           for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
             if (this.classi[i] == "degarde") {
               this.Degradecount = this.Degradecount + 1
@@ -230,6 +238,17 @@ export class DashboardComponent {
       )
   }
 
+  groupBy(list, keyGetter) {
+    list.reduce((m, o) => {
+      var found = m.find(p => p.yearname === o.yearname);
+      if (found) {}  
+      else{
+        m.push(o);
+      }
+      return m;
+  }, 
+  []);
+}
   GetFilterRecords() {
     const params = new HttpParams()
       .set("FailuerModeType", this.FailuerModeType)
@@ -244,41 +263,18 @@ export class DashboardComponent {
         })
   }
 
-  FailureModeType() {
-    if (this.failuermodeType == 'CH') {
-      console.log('Failure Mode selected');
-    } else if (this.failuermodeType == 'SSRB') {
-      console.log('FailureMode Type 2 selected');
-    } else {
-      console.log('FailureMode Type not selected');
-    }
+  FModeType() {
+
+    // if (this.failuermodeType == 'CH') {
+    //   console.log('Failure Mode selected');
+    // } else if (this.failuermodeType == 'SSRB') {
+    //   console.log('FailureMode Type 2 selected');
+    // } else {
+    //   console.log('FailureMode Type not selected');
+    // }
   }
 
-  SCClassification() {
-    if (this.SelectDateType.length > 0) {
-      if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2016') {
-        this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
 
-      } else if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2017') {
-
-        this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-
-      } else if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2018') {
-
-        this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-        this.onChangeYear()
-        this.ClassificationOfAllpolarchart()
-      } else if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2019') {
-
-        this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-
-      } else if (this.failuermodeType == "CH" || this.failuermodeType == "SSRB" && this.SelectDateType == '2020') {
-
-        this.commonLoadingDirective.showLoading(true, "Please wait to get ready graph....");
-
-      }
-    }
-  }
 
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
@@ -438,8 +434,8 @@ export class DashboardComponent {
     for (var i = 0; i < dateForFilter1.length; i++) {
       var a = [];
       this.ScrewCompressorAllData.forEach(element => {
-        if(moment(element.InsertedDate).format('YYYY-MM-DD')==dateForFilter1[i]){
-        a.push(element.Classification)
+        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
+          a.push(element.Classification)
         }
       });
       console.log(a);
@@ -516,8 +512,8 @@ export class DashboardComponent {
     for (var i = 0; i < dateForFilter1.length; i++) {
       var a = [];
       this.ScrewCompressorAllData.forEach(element => {
-        if(moment(element.InsertedDate).format('YYYY-MM-DD')==dateForFilter1[i]){
-        a.push(element.Classification)
+        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
+          a.push(element.Classification)
         }
       });
       console.log(a);

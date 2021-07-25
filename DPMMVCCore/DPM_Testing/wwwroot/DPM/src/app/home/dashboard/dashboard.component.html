@@ -14,11 +14,11 @@
                     <label style=" margin-right: 12px;">
                         <h6>Failure Modes</h6>
                     </label>
-                    <select [(ngModel)]="FailuerModeType" class="form-select" (change)="FailureModeType()"
-                        class="form-control">
-                        <option value="">Choose..</option>
-                        <option value="CF" selected>CF</option>
-                        <option value="SSRB" selected>SSRB</option>
+                    <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="onChangeYear()">
+                        <option selected="true" disabled="true">Select Failuer Mode</option> Type
+                        <ng-container *ngFor="let mode of failuerModetype" >
+                            <option [value]="mode.failuerModetype" name="fmtype" >{{mode.failuerModetype}}</option>
+                        </ng-container>
                     </select>
                 </div>
             </div>
@@ -29,27 +29,25 @@
                 <div class="form-group mx-sm-3 mb-2">
                     <select name="selectedYear" [(ngModel)]="selectedYear" (ngModelChange)="onChangeYear()">
                         <option selected="true" disabled="true">Select Year</option>
-                        <ng-container *ngFor="let year of availableYears">
-                            <option [ngValue]="year" name="selectedYear">{{year}}</option>
+                        <ng-container *ngFor="let year of yearlist" >
+                            <option [value]="year.yearname" name="selectedYear" >{{year.yearname}}</option>
                         </ng-container>
                     </select>
-                    <!-- <ul *ngIf="selectedYear">
-                        <li *ngFor="let month of availableMonths; let i = index">
-                            <input type="checkbox" id="month.name" name="month.name"
-                                [(ngModel)]="selectionModel[selectedYear][i]['selected']"
-                                (ngModelChange)="onChangeMonth()" /> {{month.name}}
-                        </li>
-                    </ul> -->
+
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
-                    <div style="display: block; width: 500px;">
                         <strong> Screw Compressor Classification chart</strong>
-                        <canvas id="canvas1" height="220">{{ chart }}</canvas>
-                    </div>
+                        <canvas id="canvas1" >{{ chart }}</canvas>
+                </div>
+            </div>
+            <div class="col-sm" style="margin: 20px;">
+                <div class="card">
+                    <strong> Screw Compressor Classification chart</strong>
+                    <canvas id="barline"></canvas>
                 </div>
             </div>
             <div class="col-sm" style="margin: 20px;">
@@ -64,12 +62,7 @@
                     <canvas id="polarArea"></canvas>
                 </div>
             </div>
-            <div class="col-sm" style="margin: 20px;">
-                <div class="card">
-                    <strong> Screw Compressor Classification chart</strong>
-                    <canvas id="barline"></canvas>
-                </div>
-            </div>
+         
         </div>
     </div>
     </div><br><br>
