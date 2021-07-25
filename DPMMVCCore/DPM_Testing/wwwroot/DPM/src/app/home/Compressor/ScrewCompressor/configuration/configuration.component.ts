@@ -158,9 +158,9 @@ export class ConfigurationComponent {
     if (this.MachineType == "Compressor" && this.EquipmentType == 'Screw Compressor') {
       this.FailureModeList = []
       this.FailureModeList = [
-        {'id': 0, 'value':'RotarDamage', 'name':'Rotar Damage'},
+        {'id': 0, 'value':'RD', 'name':'Rotar Damage'},
         {'id': 1, 'value':'SSRB', 'name':'Second stage rotar breakdown'},
-        {'id': 2, 'value':'CoolerFailure', 'name':'Cooler Failure'}
+        {'id': 2, 'value':'CF', 'name':'Cooler Failure'}
       ]
     }
   }

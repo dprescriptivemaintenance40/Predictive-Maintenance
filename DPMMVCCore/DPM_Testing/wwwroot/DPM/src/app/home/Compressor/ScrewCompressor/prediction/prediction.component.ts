@@ -306,7 +306,7 @@ export class PredictionComponent implements OnInit {
     const dataArray = this.screwWithPrediction
     if (dataArray != 0) {
       const dataArrayList = dataArray.map(obj => {
-        const { PredictionId, BatchId, TenantId, InsertedDate, ...rest } = obj;
+        const { PredictionId, BatchId, TenantId, ...rest } = obj;
         return rest;
       })
 
