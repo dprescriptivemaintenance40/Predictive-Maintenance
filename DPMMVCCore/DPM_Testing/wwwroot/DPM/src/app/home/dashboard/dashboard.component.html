@@ -7,17 +7,17 @@
     <div style="text-align: center">
         <h5><b>Compressor With Classification data</b> </h5>
     </div><br>
-    <div style="margin: 20px;">
+    <div>
         <div class="row">
             <div class="col-sm">
                 <div class="col-sm" style="padding:30px;">
                     <label style=" margin-right: 12px;">
                         <h6>Failure Modes</h6>
                     </label>
-                    <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="onChangeYear()">
-                        <option selected="true" disabled="true">Select Failuer Mode</option> Type
-                        <ng-container *ngFor="let mode of failuerModetype" >
-                            <option [value]="mode.failuerModetype" name="fmtype" >{{mode.failuerModetype}}</option>
+                    <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FModeType()">
+                        <option value="">Select Failuer Mode</option> Type
+                        <ng-container *ngFor="let mode of FMList">
+                            <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
                         </ng-container>
                     </select>
                 </div>
@@ -28,28 +28,38 @@
                 </label>
                 <div class="form-group mx-sm-3 mb-2">
                     <select name="selectedYear" [(ngModel)]="selectedYear" (ngModelChange)="onChangeYear()">
-                        <option selected="true" disabled="true">Select Year</option>
-                        <ng-container *ngFor="let year of yearlist" >
-                            <option [value]="year.yearname" name="selectedYear" >{{year.yearname}}</option>
+                        <option value="">Select Year</option>
+                        <ng-container *ngFor="let year of yearlist">
+                            <option [value]="year.yearname" name="selectedYear">{{year.yearname}}</option>
                         </ng-container>
                     </select>
-
+                </div>
+            </div>
+            <div class="col-sm" style="padding:30px;"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm" style="padding:30px;">
+                <div class="card" style="width:15rem">
+                    <strong style="text-align: left;color:#008000">Normal </strong><br>
+                    <h1 style="text-align: center;color:#008000">{{Normalcount}}</h1>
+                </div>
+            </div>
+            <div class="col-sm" style="padding:30px;">
+                <div class="card" style="width:15rem">
+                    <strong style="text-align: left;color:#FFA500">Incipient</strong><br>
+                    <h1 style="text-align: center;color:#FFA500">{{Incipientcount}}</h1>
+                </div>
+            </div>
+            <div class="col-sm" style="padding:30px;">
+                <div class="card" style="width:15rem">
+                    <strong style="text-align: left;color:#FF0000">Degrade</strong><br>
+                    <h1 style="text-align: center;color:#FF0000">{{Degradecount}}</h1>
                 </div>
             </div>
         </div>
+    </div>
+    <div style="margin: 20px;">
         <div class="row">
-            <div class="col-sm" style="margin: 20px;">
-                <div class="card">
-                        <strong> Screw Compressor Classification chart</strong>
-                        <canvas id="canvas1" >{{ chart }}</canvas>
-                </div>
-            </div>
-            <div class="col-sm" style="margin: 20px;">
-                <div class="card">
-                    <strong> Screw Compressor Classification chart</strong>
-                    <canvas id="barline"></canvas>
-                </div>
-            </div>
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
                     <strong> Screw Compressor Classification chart</strong>
@@ -62,170 +72,225 @@
                     <canvas id="polarArea"></canvas>
                 </div>
             </div>
-         
+        </div>
+        <div style="margin: 5rem;">
+            <div class="card">
+                <strong> Screw Compressor Classification chart</strong>
+                <canvas id="canvas1">{{ chart }}</canvas>
+            </div>
         </div>
     </div>
-    </div><br><br>
-    <div class="card shadow div-in-middle" style="width: 70rem;">
+
+</div><br><br>
+<div class="card shadow div-in-middle" style="width: 70rem;">
+    <div style="text-align: center">
+        <h5><b> Screw Compressor Prediction data</b> </h5>
+    </div><br>
+
+    <div style="margin: 20px;">
+        <div class="row">
+            <div class="col-sm">
+                <div class="col-sm" style="padding:30px;">
+                    <label style=" margin-right: 12px;">
+                        <h6>Failure Modes</h6>
+                    </label>
+                    <select name="predictionfmtype" [(ngModel)]="predictionfmtype" (ngModelChange)="PredictFModeType()">
+                        <option value="">Select Failuer Mode</option> Type
+                        <ng-container *ngFor="let mode of PredictionFMList">
+                            <option [value]="mode.PredictFMname" name="predictionfmtype">{{mode.PredictFMname}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm" style="padding:30px;">
+                <label style=" text-align: center;">
+                    <h6>Choose Dates</h6>
+                </label>
+                <div class="form-group mx-sm-3 mb-2">
+                    <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
+                        (ngModelChange)="onPredictionChangeYear()">
+                        <option value="">Select Year</option>
+                        <ng-container *ngFor="let year of Predictyearlist">
+                            <option [value]="year.Predictyearname" name="PredictionselectedYear">
+                                {{year.Predictyearname}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm" style="padding:30px;"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm" style="padding:30px;">
+                <div class="card" style="width:15rem">
+                    <strong style="text-align: left;color:#008000">Normal </strong><br>
+                    <h1 style="text-align: center;color:#008000">{{PredictionNormalcount}}</h1>
+                </div>
+            </div>
+            <div class="col-sm" style="padding:30px;">
+                <div class="card" style="width:15rem">
+                    <strong style="text-align: left;color:#FFA500">Incipient</strong><br>
+                    <h1 style="text-align: center;color:#FFA500">{{PredictionIncipientcount}}</h1>
+                </div>
+            </div>
+            <div class="col-sm" style="padding:30px;">
+                <div class="card" style="width:15rem">
+                    <strong style="text-align: left;color:#FF0000">Degrade</strong><br>
+                    <h1 style="text-align: center;color:#FF0000">{{PredictionDegradecount}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm" style="margin: 20px;">
+            <div class="card">
+                <strong> Prediction Pie chart</strong>
+                <canvas id="PredictionPie"></canvas>
+            </div>
+        </div>
+        <div class="col-sm" style="margin: 20px;">
+            <div class="card">
+                <strong> Prediction Donut chart</strong>
+                <canvas id="PredictioncanvasClass"></canvas>
+            </div>
+        </div>
+    </div>
+    <div style="margin: 5rem;">
+        <div class="card">
+            <strong> Prediction chart</strong>
+            <canvas id="Predictionbarline"></canvas>
+        </div>
+    </div>
+</div>
+<br><br>
+
+<div class="card shadow div-in-middle" style="width: 70rem;">
+    <div class="row">
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Machine type</h5>
+            </label>
+            <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
+                class="form-control">
+                <option value="">Choose..</option>
+                <option value="Compressor" selected>Compressor</option>
+                <option value="Pump" selected>Pump</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Equipment Type</h5>
+            </label>
+            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()"
+                class="form-control">
+                <option value="">Choose..</option>
+                <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <label style=" margin-right: 12px;">
+                <h5>Tag Number</h5>
+            </label>
+            <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                <option value="">Choose..</option>
+                <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+            </select>
+        </div>
+        <div class="col-sm" style="padding:30px;">
+            <div class="row">
+                <div class="col-sm" style="padding:30px;">
+                    <a class="btn btn-dark" (click)="getRecordsByEqui()">Done</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="CostRisk">
+    <div class="card" style="margin: 20px;"
+        *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
         <div style="text-align: center">
-            <h5><b> Screw Compressor Prediction data</b> </h5>
+            <h5><b>Cost benefit Risk Analysis</b> </h5>
+        </div><br>
+        <div class="container" style="margin: 10px;">
+            <div class="row">
+                <div class="card">
+                    <div class="col-sm">
+                        <b>Total PONC: {{row.TotalPONC}} K</b>
+                    </div>
+                </div>
+                <div class="col col-lg-2"></div>
+                <div class="card">
+                    <div class="col-sm">
+                        <b>ETBF: {{row.ETBF}} Y</b>
+                    </div>
+                </div>
+                <div class="col-sm"> </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="container">
+            <div class="row">
+                <div class="card">
+                    <div class="col-sm">
+                        <b>Criticality Maintenance Factor : M</b>
+                    </div>
+                </div>
+                <div class="col-sm"></div>
+                <div class="card">
+                    <div class="col-sm">
+                        <b>Cost Without DPM (Total Cost): {{row.EconomicRiskWithoutMaintenance}} K</b>
+                    </div>
+                </div>
+                <div class="col-sm"></div>
+                <div class="card">
+                    <div class="col-sm">
+                        <b>Cost With DPM (Total Cost): {{row.ResidualRiskWithMaintenance}} K</b>
+                    </div>
+                </div>
+            </div>
         </div><br>
         <div class="row">
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
-                    <!-- <div style="display: block; width: 400px;">
-                        <strong> Prediction chart</strong>
-                        <canvas id="Predictioncanvas1" height="320">{{ chart }}</canvas>
-                    </div> -->
-                    <strong> Prediction Pie chart</strong>
-                    <canvas id="PredictionPie"></canvas>
+                    <b>With D.P.M. MEI </b>
+                    <canvas id="gaugechart"></canvas>
+                    <h1 style="text-align: center;color: blue;">{{DPMMEI}}</h1>
                 </div>
             </div>
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
-                    <strong> Prediction Donut chart</strong>
-                    <canvas id="PredictioncanvasClass"></canvas>
-                </div>
-            </div>
-            <div class="col-sm" style="margin: 15px;">
-                <div class="card">
-                    <strong> Prediction Polar Area chart</strong>
-                    <canvas id="PredictionpolarArea"></canvas>
-                </div>
-            </div>
-            <div class="col-sm" style="margin: 20px;">
-                <!-- <div class="card">
-                    <strong> Prediction chart</strong>
-                    <canvas id="Predictionbarline"></canvas>
-                </div> -->
-            </div>
-        </div>
-    </div>
-<br><br>
-
-    <div class="card shadow div-in-middle" style="width: 70rem;">
-        <div class="row">
-            <div class="col-sm" style="padding:30px;">
-                <label style=" margin-right: 12px;">
-                    <h5>Machine type</h5>
-                </label>
-                <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
-                    class="form-control">
-                    <option value="">Choose..</option>
-                    <option value="Compressor" selected>Compressor</option>
-                    <option value="Pump" selected>Pump</option>
-                </select>
-            </div>
-            <div class="col-sm" style="padding:30px;">
-                <label style=" margin-right: 12px;">
-                    <h5>Equipment Type</h5>
-                </label>
-                <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()"
-                    class="form-control">
-                    <option value="">Choose..</option>
-                    <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
-                </select>
-            </div>
-            <div class="col-sm" style="padding:30px;">
-                <label style=" margin-right: 12px;">
-                    <h5>Tag Number</h5>
-                </label>
-                <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
-                    <option value="">Choose..</option>
-                    <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
-                </select>
-            </div>
-            <div class="col-sm" style="padding:30px;">
-                <div class="row">
-                    <div class="col-sm" style="padding:30px;">
-                        <a class="btn btn-dark" (click)="getRecordsByEqui()">Done</a>
+                    <b>Without D.P.M. MEI</b>
+                    <div style="display: block">
+                        <canvas id="canvasDPM"></canvas>
+                        <h1 style="text-align: center;color: red;">{{DPMWithoutMEI}}</h1>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div *ngIf="CostRisk">
-        <div class="card" style="margin: 20px;"
-            *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
-            <div style="text-align: center">
-                <h5><b>Cost benefit Risk Analysis</b> </h5>
-            </div><br>
-            <div class="container" style="margin: 10px;">
-                <div class="row">
-                    <div class="card">
-                        <div class="col-sm">
-                            <b>Total PONC: {{row.TotalPONC}} K</b>
-                        </div>
-                    </div>
-                    <div class="col col-lg-2"></div>
-                    <div class="card">
-                        <div class="col-sm">
-                            <b>ETBF: {{row.ETBF}} Y</b>
-                        </div>
-                    </div>
-                    <div class="col-sm"> </div>
-                </div>
-            </div>
-            <br><br>
-            <div class="container">
-                <div class="row">
-                    <div class="card">
-                        <div class="col-sm">
-                            <b>Criticality Maintenance Factor : M</b>
-                        </div>
-                    </div>
-                    <div class="col-sm"></div>
-                    <div class="card">
-                        <div class="col-sm">
-                            <b>Cost Without DPM (Total Cost): {{row.EconomicRiskWithoutMaintenance}} K</b>
-                        </div>
-                    </div>
-                    <div class="col-sm"></div>
-                    <div class="card">
-                        <div class="col-sm">
-                            <b>Cost With DPM (Total Cost): {{row.ResidualRiskWithMaintenance}} K</b>
-                        </div>
-                    </div>
-                </div>
-            </div><br>
-            <div class="row">
-                <div class="col-sm" style="margin: 20px;">
-                    <div class="card">
-                        <b>With D.P.M. MEI </b>
-                        <canvas id="gaugechart"></canvas>
-                        <h1 style="text-align: center;color: blue;">{{DPMMEI}}</h1>
-                    </div>
-                </div>
-                <div class="col-sm" style="margin: 20px;">
-                    <div class="card">
-                        <b>Without D.P.M. MEI</b>
-                        <div style="display: block">
-                            <canvas id="canvasDPM"></canvas>
-                            <h1 style="text-align: center;color: red;">{{DPMWithoutMEI}}</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <br><br>
-    <div *ngIf="PrescriptiveMaintenance">
+</div> <br><br>
+<div *ngIf="PrescriptiveMaintenance">
     <div class="card shadow div-in-middle" style="width: 70rem;">
         <div style="text-align: center">
             <h5><b> Prescriptive & Maintainenance</b> </h5>
         </div><br>
         <div class="row">
-            <div class="col-sm" >
+            <div class="col-sm">
                 <div class="card"><br>
-                <strong style="text-align: center;color:mediumvioletred">Machine Type : {{MachineType}} </strong><br>
-            </div> </div>
-            <div class="col-sm" >
-                <div class="card"><br>
-                <strong style="text-align: center;color:mediumvioletred">Equipment Type : {{EquipmentType}} </strong><br>
-            </div> </div>
-            <div class="col-sm" >
-                <div class="card"><br>
-                <strong style="text-align: center;color:mediumvioletred">Tag Number : {{SelectedTagNumber}} </strong><br>
+                    <strong style="text-align: center;color:mediumvioletred">Machine Type : {{MachineType}}
+                    </strong><br>
+                </div>
             </div>
+            <div class="col-sm">
+                <div class="card"><br>
+                    <strong style="text-align: center;color:mediumvioletred">Equipment Type : {{EquipmentType}}
+                    </strong><br>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card"><br>
+                    <strong style="text-align: center;color:mediumvioletred">Tag Number : {{SelectedTagNumber}}
+                    </strong><br>
+                </div>
             </div>
         </div><br>
         <div class="row">
@@ -237,10 +302,10 @@
                 </div>
             </div>
             <div class="col-sm" style="margin: 10px;">
-                 <div class="card"><br>
+                <div class="card"><br>
                     <strong style="text-align: center;">Component Rating </strong><br>
                     <h1 style="text-align: center;color: darkblue">{{ComponentRating}}</h1>
-                </div> 
+                </div>
             </div>
         </div>
         <div class="row">
@@ -258,5 +323,4 @@
             </div>
         </div>
     </div>
-    </div>
-    
+</div>

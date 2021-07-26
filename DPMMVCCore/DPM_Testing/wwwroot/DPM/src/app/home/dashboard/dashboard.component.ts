@@ -19,15 +19,22 @@ export class DashboardComponent {
   public FromDate: string = "";
   public FailuerModeType: string = ""
   public ToDate: string = "";
+  public PredictionData: string = "";
   public ClassificationData: string = "";
   public FailuerModes: string = ""
   public InsertedDate = [];
+  public XYZ = [];
+  public PredictFMMode = [];
   public InsertedDateForMonth = [];
   public failuerModetype:[];
   public yearlist = [];
+  public Predictyearlist = [];
+  public FMList = [];
+  public PredictionFMList = [];
   public Monthlist = [];
   public classi: any = [];
   public Prediction: any = [];
+  public PredictionFilteredData:any;
   public ScrewCompressorAllData: any;
   public ScrewCompressorFilteredData:any;
   public FailuerModetypeFilteredData:any;
@@ -65,16 +72,23 @@ export class DashboardComponent {
   public selectedMode: string;
  
   selectionModel = {}
-  public selectedYear: string;
-  public fmtype: string;
-  selectedMonths = {}
-  public selectedMonth: string;
+  public selectedYear: string ="";
+  public PredictionselectedYear: string="";
+  public fmtype: string="";
+  public predictionfmtype: string="";
   public ComponentCriticalityFactor: string = "";
   public ComponentRating: string = "";
   public CConditionMonitoring: string = ""
   public CFrequencyMaintainenance: string = "";
   public PrescriptiveMaintenance: boolean = false;
-
+  //For Train
+  public TrainDataNormalCount: any = [];
+  public TrainDataIncipientCount: any = [];
+  public TrainDataDegradeCount: any = [];
+  //For Prediction
+  public PredictionDataNormalCount: any = [];
+  public PredictionDataIncipientCount: any = [];
+  public PredictonDataDegradeCount: any = [];
   constructor(private title: Title,
     private http: HttpClient,
     private messageService: MessageService,
@@ -91,9 +105,7 @@ export class DashboardComponent {
     this.GetAllRecords()
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
-    // this.GetFilterRecords()
     this.GerAllPredictionRecords()
-    this.FModeType()
  
   }
   isDateInArray(needle, haystack) {
@@ -109,18 +121,97 @@ export class DashboardComponent {
   }
   onChangeYear() {
     this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.selectedYear.toString());
-    this.ClassificationOfAllRecordbar();
+    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+      if (this.ScrewCompressorAllData[i].Classification == "degarde") {
+        this.Degradecount = this.Degradecount + 1
+      } else if (this.ScrewCompressorAllData[i].Classification == "incipient") {
+        this.Incipientcount = this.Incipientcount + 1
+      } else if (this.ScrewCompressorAllData[i].Classification == "normal") {
+        this.Normalcount = this.Normalcount + 1
+      } else
+        this.badcount = this.badcount + 1
+    }
     this.AllRecordBarcharts();
+    this.ClassificationOfAllpolarchart()
+    this.ClassificationOfAllRecordDonught()
   }
 
   GerAllPredictionRecords() {
+    this.PredictionDataNormalCount = null;
+    this.PredictionDataIncipientCount = null;
+    this.PredictonDataDegradeCount = null;
+    var PredictionnormalCount: any = [];
+    var PredictionnormalValuation: number = 0;
+    var PredictionincipientCount: any = [];
+    var PredictionincipientValuation: number = 0;
+    var PredictiondegradeCount: any = [];
+    var PredictiondegradeValuation: number = 0;
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.PredictionDataList)
       .subscribe(
         res => {
           this.ScrewPredictionAllData = res;
+          this.PredictionFilteredData = res;
           this.ScrewPredictionAllData.forEach(element => {
             this.Prediction.push(element.Prediction);
           });
+          this.Prediction.forEach((value) => {
+            if (value == 'normal') {
+              PredictionnormalValuation = PredictionnormalValuation + 1;
+              PredictionnormalCount.push(PredictionnormalValuation);
+              PredictionincipientCount.push(PredictionincipientValuation);
+              PredictiondegradeCount.push(PredictiondegradeValuation)
+
+            } else if (value == 'incipient') {
+
+              PredictionincipientValuation = PredictionincipientValuation + 1;
+              PredictionincipientCount.push(PredictionincipientValuation);
+              PredictionnormalCount.push(PredictionnormalValuation);
+              PredictiondegradeCount.push(PredictiondegradeValuation)
+
+            } else {
+
+              PredictiondegradeValuation = PredictiondegradeValuation + 1;
+              PredictiondegradeCount.push(PredictiondegradeValuation)
+              PredictionnormalCount.push(PredictionnormalValuation);
+              PredictionincipientCount.push(PredictionincipientValuation);
+
+            }
+            this.PredictionDataNormalCount = PredictionnormalCount;
+            this.PredictionDataIncipientCount = PredictionincipientCount;
+            this.PredictonDataDegradeCount = PredictiondegradeCount;
+
+          });
+          this.ScrewPredictionAllData.forEach(predict => {
+            this.PredictionData = predict.Prediction;
+            let Predictyeardata = { PredictyearId:0,Predictyearname: '' };
+
+            Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
+            this.InsertedDate.push(Predictyeardata);
+
+             let predictFMMode = { PredictFMId:0,PredictFMname: '' };
+             predictFMMode.PredictFMname =  predict.RD
+             predictFMMode.PredictFMname =  predict.SSRB
+             predictFMMode.PredictFMname =  predict.CF
+             this.PredictFMMode.push(predictFMMode);
+          
+          }) 
+          this.Predictyearlist =  this.InsertedDate.reduce((m, o) => {
+                                                      var found = m.find(p => p.Predictyearname === o.Predictyearname);
+                                                      if (found) { 
+                                                      } else {
+                                                          m.push(o);
+                                                      }
+                                                      return m;
+                                                  }, []);
+           this.PredictionFMList = this.PredictFMMode.reduce((o, m) => {
+                                                    var found = o.find(p => p.PredictFMname === m.PredictFMname);
+                                                    if (found) { 
+                                                    } else {
+                                                        o.push(m);
+                                                    }
+                                                    return o;
+                                                }, []);
+
           for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
             if (this.Prediction[i] == "degarde") {
               this.PredictionDegradecount = this.PredictionDegradecount + 1
@@ -131,24 +222,73 @@ export class DashboardComponent {
             } else
               this.Predictionbadcount = this.Predictionbadcount + 1
           }
-          this.PredictionAllRecordDonught()
           this.PredictionAllRecordDonught();
-          this.PredictionOfAllpolarchart()
-          // this.PredictionOfAllRecordbar()
-          // this.PredictionAllRecordBarcharts()
+          // this.PredictionOfAllpolarchart()
+           this.PredictionAllRecordBarcharts()
           this.PredictionAllRecordPie()
         }, error => {
           console.log(error.error)
         })
   }
-  public screwPredictionDataNormalCount: any = [];
-  public screwPredictionDataIncipientCount: any = [];
-  public screwPredictonDataDegradeCount: any = [];
+  groupByPredict(list, keyGetter) {
+    list.reduce((m, o) => {
+      var found = m.find(p => p.Predictyearname === o.Predictyearname);
+      if (found) {}  
+      else{
+        m.push(o);
+      }
+      return m;
+  }, 
+  []);
+}
+groupByPredictFMNames(list, keyGetter) {
+  list.reduce((o,m) => {
+    var found = o.find(p => p.PredictFMname === m.PredictFMname);
+    if (found) { 
+    } else {
+        o.push(m);
+    }
+    return o;
+}, 
+[]);
+}
+onPredictionChangeYear(){
+  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.PredictionselectedYear.toString() );
+  for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+    if (this.ScrewPredictionAllData[i].Prediction == "degarde") {
+      this.Degradecount = this.Degradecount + 1
+    } else if (this.ScrewPredictionAllData[i].Prediction == "incipient") {
+      this.Incipientcount = this.Incipientcount + 1
+    } else if (this.ScrewPredictionAllData[i].Prediction == "normal") {
+      this.Normalcount = this.Normalcount + 1
+    } else
+      this.badcount = this.badcount + 1
+  }
+  this.PredictionAllRecordBarcharts()
+  this.PredictionAllRecordDonught()
+  this.PredictionAllRecordPie()
+}
+PredictFModeType(){
+  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> (val.FailuerModeType === this.predictionfmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.predictionfmtype.toString() );
+  for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+    if (this.ScrewPredictionAllData[i].Prediction == "degarde") {
+      this.Degradecount = this.Degradecount + 1
+    } else if (this.ScrewPredictionAllData[i].Prediction == "incipient") {
+      this.Incipientcount = this.Incipientcount + 1
+    } else if (this.ScrewPredictionAllData[i].Prediction == "normal") {
+      this.Normalcount = this.Normalcount + 1
+    } else
+      this.badcount = this.badcount + 1
+  }
+  this.PredictionAllRecordBarcharts()
+  this.PredictionAllRecordDonught()
+  this.PredictionAllRecordPie()
+}
 
   GetAllRecords() {
-    this.screwPredictionDataNormalCount = null;
-    this.screwPredictionDataIncipientCount = null;
-    this.screwPredictonDataDegradeCount = null;
+    this.TrainDataNormalCount = null;
+    this.TrainDataIncipientCount = null;
+    this.TrainDataDegradeCount = null;
     var normalCount: any = [];
     var normalValuation: number = 0;
     var incipientCount: any = [];
@@ -163,20 +303,17 @@ export class DashboardComponent {
           this.ScrewCompressorAllData = res;
           this.FailuerModetypeFilteredData1= res
           this.ScrewCompressorAllData.forEach(r => {
-            r.Classification
-            r.Date
             this.ClassificationData = r.Classification;
             r.FailureModeType
-            this.FailuerModetypeFilteredData = r.FailureModeType
+            this.FailuerModetypeFilteredData 
        
+           this.FailuerModetypeFilteredData1 = { FMId:0,FMname: '' };
+           this.FailuerModetypeFilteredData1.FMname =  r.FailureModeType
+            this.XYZ.push(this.FailuerModetypeFilteredData1);
 
             let newyeardata = { yearId:0,yearname: '' };
             newyeardata.yearname = moment(r.InsertedDate).format('YYYY')
             this.InsertedDate.push(newyeardata);
-
-            let newMonthdata = { yearId:0,Monthname: '' };
-            newMonthdata.Monthname = moment(r.InsertedDate).format('MM')
-            this.InsertedDateForMonth.push(newMonthdata);
           }) 
           this.yearlist =  this.InsertedDate.reduce((m, o) => {
                                                       var found = m.find(p => p.yearname === o.yearname);
@@ -186,6 +323,14 @@ export class DashboardComponent {
                                                       }
                                                       return m;
                                                   }, []);
+          this.FMList = this.XYZ.reduce((s, n) => {
+                                                    var found = s.find(p => p.FMname === n.FMname);
+                                                    if (found) { 
+                                                    } else {
+                                                        s.push(n);
+                                                    }
+                                                    return s;
+                                                }, []);
 
           this.ScrewCompressorAllData.forEach(element => {
             this.classi.push(element.Classification);
@@ -199,23 +344,21 @@ export class DashboardComponent {
               degradeCount.push(degradeValuation)
 
             } else if (value == 'incipient') {
-
               incipientValuation = incipientValuation + 1;
               incipientCount.push(incipientValuation);
               normalCount.push(normalValuation);
               degradeCount.push(degradeValuation)
 
             } else {
-
               degradeValuation = degradeValuation + 1;
               degradeCount.push(degradeValuation)
               normalCount.push(normalValuation);
               incipientCount.push(incipientValuation);
 
             }
-            this.screwPredictionDataNormalCount = normalCount;
-            this.screwPredictionDataIncipientCount = incipientCount;
-            this.screwPredictonDataDegradeCount = degradeCount;
+            this.TrainDataNormalCount = normalCount;
+            this.TrainDataIncipientCount = incipientCount;
+            this.TrainDataDegradeCount = degradeCount;
 
           });
           for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
@@ -231,7 +374,6 @@ export class DashboardComponent {
           this.AllRecordBarcharts();
           this.ClassificationOfAllRecordDonught();
           this.ClassificationOfAllpolarchart()
-          this.ClassificationOfAllRecordbar()
         }, error => {
           console.log(error.error)
         }
@@ -249,6 +391,18 @@ export class DashboardComponent {
   }, 
   []);
 }
+groupBy1(list, keyGetter) {
+  list.reduce((s, n) => {
+    var found = s.find(p => p.FMname === n.FMname);
+    if (found) {}  
+    else{
+      s.push(n);
+    }
+    return s;
+}, 
+[]);
+}
+
   GetFilterRecords() {
     const params = new HttpParams()
       .set("FailuerModeType", this.FailuerModeType)
@@ -264,14 +418,20 @@ export class DashboardComponent {
   }
 
   FModeType() {
-
-    // if (this.failuermodeType == 'CH') {
-    //   console.log('Failure Mode selected');
-    // } else if (this.failuermodeType == 'SSRB') {
-    //   console.log('FailureMode Type 2 selected');
-    // } else {
-    //   console.log('FailureMode Type not selected');
-    // }
+    this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> (val.FailuerModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString() );
+    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+      if (this.ScrewCompressorAllData[i].Classification == "degarde") {
+        this.Degradecount = this.Degradecount + 1
+      } else if (this.ScrewCompressorAllData[i].Classification == "incipient") {
+        this.Incipientcount = this.Incipientcount + 1
+      } else if (this.ScrewCompressorAllData[i].Classification == "normal") {
+        this.Normalcount = this.Normalcount + 1
+      } else
+        this.badcount = this.badcount + 1
+    }
+    this.AllRecordBarcharts();
+    this.ClassificationOfAllpolarchart()
+    this.ClassificationOfAllRecordDonught()
   }
 
 
@@ -413,75 +573,16 @@ export class DashboardComponent {
           }
         ]
       },
-    });
-
-  }
-
-
-  ClassificationOfAllRecordbar() {
-    this.changeDetectorRef.detectChanges();
-    let dateForFilter = [];
-    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-      if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
-        dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
+      options: {
+         events:[],
       }
-    }
-    let dateForFilter1 = [];
-    dateForFilter.forEach((value) => {
-      var Date = moment(value).format('YYYY-MM-DD');
-      dateForFilter1.push(Date);
-    });
-    for (var i = 0; i < dateForFilter1.length; i++) {
-      var a = [];
-      this.ScrewCompressorAllData.forEach(element => {
-        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
-          a.push(element.Classification)
-        }
-      });
-      console.log(a);
-    }
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart('barline', {
-      type: 'bar',
-      data: {
-        labels: dateForFilter1,
-        datasets: [
-          {
-            label: "Incipent",
-            data: this.screwPredictionDataIncipientCount,
-            borderWidth: 1,
-            backgroundColor: "#FFA500",
-          }, {
-            label: "Normal",
-            data: this.screwPredictionDataNormalCount,
-            borderWidth: 1,
-            backgroundColor: "#008000",
-          },
-          {
-            label: "Degrade",
-            data: this.screwPredictonDataDegradeCount,
-            borderWidth: 2,
-            backgroundColor: "#FF0000",
-          }
-        ]
-      },
     });
 
   }
+
 
   ClassificationOfAllpolarchart() {
     this.changeDetectorRef.detectChanges();
-    let dateForFilter = [];
-    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-      if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
-        dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
-      }
-    }
-    let dateForFilter1 = [];
-    dateForFilter.forEach((value) => {
-      var Date = moment(value).format('YYYY-MM-DD');
-      dateForFilter1.push(Date);
-    });
     this.chart = new Chart('polarArea', {
       type: 'polarArea',
       data: {
@@ -493,6 +594,9 @@ export class DashboardComponent {
           }
         ]
       },
+      options: {
+        events:[],
+      }
     });
   }
 
@@ -526,24 +630,25 @@ export class DashboardComponent {
         datasets: [
           {
             label: "Incipent",
-            data: this.screwPredictionDataIncipientCount,
+            data: this.TrainDataIncipientCount,
             borderWidth: 1,
             backgroundColor: "#FFA500",
           }, {
             label: "Normal",
-            data: this.screwPredictionDataNormalCount,
+            data: this.TrainDataNormalCount,
             borderWidth: 1,
             backgroundColor: "#008000",
           },
           {
             label: "Degrade",
-            data: this.screwPredictonDataDegradeCount,
+            data: this.TrainDataDegradeCount,
             borderWidth: 2,
             backgroundColor: "#FF0000",
           }
         ]
       },
       options: {
+        events:[],
         scales: {
           xAxes: [{
             stacked: true,
@@ -568,10 +673,35 @@ export class DashboardComponent {
           }
         ]
       },
+      options: {
+        events:[],
+      }
     });
   }
 
   PredictionAllRecordPie() {
+    this.changeDetectorRef.detectChanges();
+    let dateForFilter = [];
+    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+     if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
+       dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
+     }
+   }
+   let dateForFilter1 = [];
+   dateForFilter.forEach((value) => {
+     var Date = moment(value).format('YYYY-MM-DD');
+     dateForFilter1.push(Date);
+   });
+   for (var i = 0; i < dateForFilter1.length; i++) {
+     var a = [];
+     this.ScrewPredictionAllData.forEach(element => {
+       if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
+         a.push(element.Prediction)
+       }
+     });
+     console.log(a);
+   }
+   this.changeDetectorRef.detectChanges();
     this.chart = new Chart('PredictionPie', {
       type: 'pie',
       data: {
@@ -582,135 +712,79 @@ export class DashboardComponent {
             data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
           }
         ]
-      },
+      }, 
+      options: {
+        events:[],
+      }
     });
   }
 
-  PredictionOfAllpolarchart() {
-    this.chart = new Chart('PredictionpolarArea', {
-      type: 'polarArea',
+  PredictionAllRecordBarcharts(){
+    this.changeDetectorRef.detectChanges();
+     let dateForFilter = [];
+     for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+      if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
+        dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
+      }
+    }
+    let dateForFilter1 = [];
+    dateForFilter.forEach((value) => {
+      var Date = moment(value).format('YYYY-MM-DD');
+      dateForFilter1.push(Date);
+    });
+    for (var i = 0; i < dateForFilter1.length; i++) {
+      var a = [];
+      this.ScrewPredictionAllData.forEach(element => {
+        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
+          a.push(element.Prediction)
+        }
+      });
+      console.log(a);
+    }
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("Predictionbarline", {
+      type: "bar",
       data: {
-        labels: ["Normal", "incipient", "Degrade"],
+        labels: dateForFilter1,
+        fill: true,
         datasets: [
           {
-            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
+            label: "Normal",
+            data: this.PredictionDataNormalCount,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
+          }, {
+            label: "Incipent",
+            data:  this.PredictionDataIncipientCount,
+            borderWidth: 1,
+            borderColor: "#FFA500",
+            backgroundColor: '#FFA500',
+            fill: true,
+          },
+          {
+            label: "Degrade",
+            data:  this.PredictonDataDegradeCount,
+            borderWidth: 1,
+            borderColor: " #FF0000",
+            backgroundColor: '#FF0000',
+            fill: true,
           }
         ]
       },
+      options: {
+          events:[],
+        scales: {
+              xAxes: [{
+                  stacked: true,
+              }],
+              yAxes: [{
+                  stacked: true,
+              }]
+          }
+      }
     });
-  }
-
-  // ComponentCriticalityFactorBar() {
-  //   this.chart = new Chart('ComponentCriticalityFactor', {
-  //     type: 'doughnut',
-  //     data: {
-  //       datasets: [
-  //         {
-  //           backgroundColor: ["#12239E",],
-  //           data: [this.ComponentCriticalityFactor],
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       cutoutPercentage: 50,
-  //       text: 'this.ComponentCriticalityFactor',
-  //     }
-  //   });
-  // }
-
-
-  // PredictionOfAllRecordbar() {
-  //   this.changeDetectorRef.detectChanges();
-  //   let dateForFilter = [];
-  //   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-  //    if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
-  //      dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
-  //    }
-  //  }
-  //  let dateForFilter1 = [];
-  //  dateForFilter .forEach((value) => {
-  //    var Date = moment(value).format('YYYY-MM-DD');
-  //    dateForFilter1.push(Date);
-  //  });
-  //   this.chart = new Chart('Predictionbarline', {
-  //     type: 'bar',
-  //     data: {
-  //        labels:dateForFilter1,
-  //       datasets: [
-  //         {
-  //           backgroundColor: ["#008000"],
-  //           data: [ this.PredictionNormalcount]
-  //         },
-  //         { 
-  //           backgroundColor: [ "#FFA500",],
-  //           data: [this.PredictionIncipientcount]
-  //         },
-  //         { 
-  //           backgroundColor: [ "#FF0000"],
-  //           data: [this.PredictionDegradecount]
-  //         },
-  //       ]
-  //     },
-  //   });
-
-  // }
-
-
-  // PredictionAllRecordBarcharts(){
-  //   this.changeDetectorRef.detectChanges();
-  //    let dateForFilter = [];
-  //    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-  //     if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
-  //       dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
-  //     }
-  //   }
-  //   let dateForFilter11 = [];
-  //   dateForFilter .forEach((value) => {
-  //     var Date = moment(value).format('YYYY-MM-DD');
-  //     dateForFilter11.push(Date);
-  //   });
-  //   this.chart = new Chart("Predictioncanvas1", {
-  //     type: "bar",
-  //     data: {
-  //       labels: dateForFilter11,
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           label: "Normal",
-  //           data: [this.PredictionNormalcount],
-  //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
-  //           fill: true,
-  //         }, {
-  //           label: "Incipent",
-  //           data: [this.PredictionIncipientcount],
-  //           borderWidth: 1,
-  //           borderColor: "#FFA500",
-  //           backgroundColor: '#FFA500',
-  //           fill: true,
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: [this.PredictionDegradecount],
-  //           borderWidth: 1,
-  //           borderColor: " #FF0000",
-  //           backgroundColor: '#FF0000',
-  //           fill: true,
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       scales: {
-  //             xAxes: [{
-  //                 stacked: true,
-  //             }],
-  //             yAxes: [{
-  //                 stacked: true,
-  //             }]
-  //         }
-  //     }
-  //   });
-  //  } 
+   } 
+   
 }
