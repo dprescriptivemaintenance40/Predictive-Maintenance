@@ -29,6 +29,10 @@ export class HomeComponent implements OnInit {
   public prescriptiveConfiguration: boolean = false;
   public MenuItems: any[] = [
     {
+      label: 'Dashboard',
+      url: '#/Home/Dashboard'
+    },
+    {
       label: 'DPM-Education',
       url: '#/Home/Education'
     },
