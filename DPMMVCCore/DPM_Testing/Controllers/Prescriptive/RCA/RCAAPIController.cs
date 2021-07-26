@@ -63,6 +63,24 @@ namespace DPM.Controllers.Prescriptive.RCA
             }
         }
 
+        // GET api/<RCAAPIController>/5
+        [HttpGet]
+        [Route("GetRCARecordByTagNumber")]
+        public async Task<IActionResult> GetRCARecordByTagNumber(string tagNumber)
+        {
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                var RCAModel = await _context.rCAModels.Where(a => a.UserId == userId && a.TagNumber == tagNumber).ToListAsync();
+                return Ok(RCAModel);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
         // POST api/<RCAAPIController>
         [HttpPost]
         [Route("SaveNewRCA")]

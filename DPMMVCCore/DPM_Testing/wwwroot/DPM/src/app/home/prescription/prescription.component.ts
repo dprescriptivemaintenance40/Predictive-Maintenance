@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
@@ -24,6 +24,7 @@ export class PrescriptionComponent implements OnInit {
   public InputsEnable: boolean = false;
   public prescriptiveRecords: any = []
   private CBADataList: any = [];
+  private RCARecords : any = [];
 
   constructor(private http: HttpClient) {
     this.SelectionEnable = true
@@ -70,11 +71,25 @@ export class PrescriptionComponent implements OnInit {
         });
       });
   }
+
+  getRCARecordsByTagNumber(){
+    const params = new HttpParams()
+          .set('tagNumber',this.SelectedTagNumber)
+    this.http.get('api/RCAAPI/GetRCARecordByTagNumber', {params}).subscribe(
+      res =>{
+        this.RCARecords = res;
+        var RCAQuantitiveTree = JSON.parse(res[0].RCAQuantitiveTree);
+      }, err => {
+        console.log(err.error)
+      }
+    )
+  }
   getPrescriptiveRecordsByEqui() {
     if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
       this.prescriptiveRecords = [];
       this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
         .subscribe((res: any) => {
+          this.getRCARecordsByTagNumber();
           this.prescriptiveRecords = res;
           this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
             row.TotalAnnualPOC = 0;
@@ -152,7 +167,32 @@ export class PrescriptionComponent implements OnInit {
         }
         node.children = children;
       }
+      if (node.data.name === 'RCA') {
+        let children = []
+        for (let index = 0; index < this.RCARecords.length; index++) {
+          children.push(
+            { data: { name: `Label : ${this.RCARecords[index].RCALabel}  &  Type : ${JSON.parse(this.RCARecords[index].RCAQuantitiveTree) !== 'None'? 'Quantitative' : 'Qualitative'}`, type: node.data.name, label :`${this.RCARecords[index].RCALabel}`, discription: `Tag Number :${this.RCARecords[index].TagNumber}` }, leaf: false },
+          )
+        }
+        node.children = children;
+      }
       if (node.data.name !== 'CBA' || node.data.name !== 'RCA' || node.data.name !== 'FCA' || node.data.name !== 'FMEA' || node.data.name !== 'MSS' || node.data.name !== 'Prediction' || node.data.name !== 'Future Prediction') {
+        if(node.data.type === 'RCA'){
+          let children = [];
+          this.RCARecords.forEach(element => {
+              let Availabilty;
+              let Year;
+              if((element.RCALabel === node.data.label) && (JSON.parse(element.RCAQuantitiveTree) !== 'None')){
+                Availabilty =  JSON.parse(element.RCAQuantitiveTree)[0].Availability;
+                Year =  JSON.parse(element.RCAQuantitiveTree)[0].years;
+                children.push(
+                  { data: { name:  'Availabilty',  discription: Availabilty } },
+                  { data: { name:  'Years',  discription: Year } },
+                )
+              }
+          });
+          node.children = children;
+        }
         if (node.data.type === 'CBA') {
           let children = [];
           this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(element => {
