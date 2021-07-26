@@ -422,6 +422,40 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     console.log(this.EquipmentType)
   }
 
+  FailureModeSelected(value, event){
+    if(event.target.checked === false){
+      var findIndexOF = value.PrescriptiveLookupMasterId
+      var index = -1;
+      var filteredObj = this.dropedMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === findIndexOF) {
+          index = i;
+          return i;
+        }
+      });
+      this.failuerMode[index].checked = false;
+      this.dropedMode.splice(index, 1)
+    }else{
+      let obj = {}
+      obj['Date']= value.Date;
+      obj['Description']= value.Description;
+      obj['EquipmentType']= value.EquipmentType;
+      obj['Function']= value.Function;
+      obj['MachineType']= value.MachineType;
+      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
+      this.dropedMode.push(obj);
+
+      var fIO = value.PrescriptiveLookupMasterId
+      var index1 = -1;
+      var filtObj = this.failuerMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === fIO) {
+          index1 = i;
+          return i;
+        }
+      });
+      this.failuerMode[index1].checked = true;
+    }
+  }
+
 
   getDropDownLookMasterData() {
     const params = new HttpParams()

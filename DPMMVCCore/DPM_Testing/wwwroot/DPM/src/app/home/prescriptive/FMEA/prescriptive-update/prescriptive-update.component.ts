@@ -433,6 +433,7 @@ public UpdateBeta : number = 0
   }
 
   CloseFailureModeUpdate() {
+    this.EditFM = false;
     this.UpdateFailureModeConsequence = ""
     this.FailureModediv.style.display = 'none'
   }
@@ -445,6 +446,7 @@ public UpdateBeta : number = 0
 
   EditFailureMode(p) {
     this.FreshUploadUpdate = false;
+    this.dropedMode = []    
     this.FailureModediv = document.getElementById("FailureModeUpdate2")
     this.FailureModediv.style.display = 'block'
     this.IndexCount = p.label
@@ -1507,6 +1509,16 @@ async AddPatternToNewFM() {
           }
         });
         this.failuerMode = functionModeData;
+        if(this.EditFM === true){
+          this.failuerMode.forEach(element => {
+            if(element.checked !== undefined){
+              element.checked = false
+            }
+            if(element.Description == this.UpdateFailureMode){
+             element.checked = true;
+            }
+         });
+        }
       });
   }
 
@@ -4496,5 +4508,48 @@ async ADDMSSToTree() {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stratergy is Missing" }) 
     }
   } 
+
+
+  FailureModeSelected(value, event){
+    if(event.target.checked === false){
+      var findIndexOF = value.PrescriptiveLookupMasterId
+      var index = -1;
+      var filteredObj = this.dropedMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === findIndexOF) {
+          index = i;
+          return i;
+        }
+      });
+      this.failuerMode[index].checked = false;
+      this.dropedMode.splice(index, 1)
+    }else{
+      this.dropedMode = []
+      let obj = {}
+      obj['Date']= value.Date;
+      obj['Description']= value.Description;
+      obj['EquipmentType']= value.EquipmentType;
+      obj['Function']= value.Function;
+      obj['MachineType']= value.MachineType;
+      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
+      this.dropedMode.push(obj);
+
+      var fIO = value.PrescriptiveLookupMasterId
+      var index1 = -1;
+      var filtObj = this.failuerMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === fIO) {
+          index1 = i;
+          return i;
+        }
+      });
+      this.failuerMode[index1].checked = true;
+      for (let index = 0; index < this.failuerMode.length; index++) {
+        if(index != index1){
+         if(this.failuerMode[index].checked !== undefined){
+            this.failuerMode[index].checked = false
+         }
+        }
+      }
+    }
+  }
 }
 

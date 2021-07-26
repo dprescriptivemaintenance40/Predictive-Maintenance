@@ -89,7 +89,7 @@
                 <div class="container-fluid">
                    <div class="container">
                         <div style="overflow: scroll; height:20rem; ">  
-                            <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
+                            <!-- <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                                 {{func.Description}}
                             </div>
                         </div>
@@ -101,9 +101,24 @@
                                         <i class="far fa-times-circle "></i>
                                     </a>
                                 </div>
-                            </div>
+                            </div> -->
+                            <table>
+                                <tr *ngFor="let func of failuerMode; let i=index;">
+                                    <td>
+                                        <label>
+                                            <input type="checkbox"
+                                                   name = "{{i}}"
+                                                   (change)="FailureModeSelected(func, $event)"
+                                                    [checked]="func.values"
+                                                    [(ngModel)]="func.checked"
+                                                    />
+                                                   {{func.Description}}
+                                        </label>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
-                        <small class="form-text text-muted">Drag and Drop here, from above List </small>
+                        <!-- <small class="form-text text-muted">Drag and Drop here, from above List </small> -->
 
                     </div>
                 </div>
@@ -521,19 +536,36 @@
                             <button type="button" class="btn btn-secondary btn-sm" (click)="UpdateFM()" pTooltip="Update Failure modes" tooltipPosition="top">Update Failure Mode</button>
                         </div>
                         <div *ngIf="EditFM" class="form-group">
-                            <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
+                            <!-- <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                                 {{func.Description}}
-                            </div>
-                            <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
+                            </div> -->
+
+                            <!-- <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                                 <div *ngFor="let c of dropedMode">
                                     <span>{{c?.Description}}</span>
                                     <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
                                         <i class="far fa-times-circle fa-2x"></i>
                                     </a>
                                 </div>
+                            </div> -->
+                            <!-- <small class="form-text text-muted">Drag and Drop here, from above List </small> -->
+                            <div style="overflow: scroll; height:20rem;">
+                                <table>
+                                    <tr *ngFor="let func of failuerMode; let i=index;">
+                                        <td>
+                                            <label>
+                                                <input type="checkbox"
+                                                       name = "{{i}}"
+                                                       (change)="FailureModeSelected(func, $event)"
+                                                        [checked]="func.values"
+                                                        [(ngModel)]="func.checked"
+                                                        />
+                                                       {{func.Description}}
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </table> 
                             </div>
-                            <small class="form-text text-muted">Drag and Drop here, from above List </small>
-
                             <button type="button" class="btn btn-secondary btn-sm" (click)="CancelFM()">Close</button>
                             <button type="button" class="btn btn-secondary btn-sm" (click)="SaveFMToTreee()">Save</button>
 

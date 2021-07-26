@@ -117,12 +117,27 @@
             <div class="p-fluid p-formgrid p-grid">
                 <div class="container">
                     <div style="overflow: scroll; height:20rem;">
-                        <div *ngFor="let func of failuerMode" class="border" pDraggable="func"
+                        <!-- <div *ngFor="let func of failuerMode" class="border" pDraggable="func"
                             (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                             {{func.Description}}
-                        </div>
+                        </div> -->
+                        <table>
+                            <tr *ngFor="let func of failuerMode; let i=index;">
+                                <td>
+                                    <label>
+                                        <input type="checkbox"
+                                               name = "{{i}}"
+                                               (change)="FailureModeSelected(func, $event)"
+                                                [checked]="func.values"
+                                                [(ngModel)]="func.checked"
+                                                />
+                                               {{func.Description}}
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
+                    <!-- <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                         <div *ngFor="let c of dropedMode">
                             <span>{{c?.Description}} </span>
                             <a class="cell-icon-button cdk-close" style="float:right;color: black;"
@@ -130,8 +145,8 @@
                                 <i class="far fa-times-circle "></i>
                             </a>
                         </div>
-                    </div>
-                    <small class="form-text text-muted">Drag and Drop here, from above List </small><br><br>
+                    </div> -->
+                    <!-- <small class="form-text text-muted">Drag and Drop here, from above List </small><br><br> -->
                 </div>
             </div>
         </ng-template>
