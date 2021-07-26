@@ -167,6 +167,18 @@ export class PrescriptionComponent implements OnInit {
         }
         node.children = children;
       }
+      if (node.data.name === 'Prediction') {
+        node.children = [
+          { data: { name:  'Last 7 Days',  discription: 'Normal 80%, Incipient 15%, Degrade 5% ' } },
+          { data: { name:  'Last 30 Days',  discription: 'Normal 70%, Incipient 25%, Degrade 5% ' } },
+        ]
+      }
+      if (node.data.name === 'Future Prediction') {
+        node.children = [
+          { data: { name:  'Last 7 Days',  discription: 'Normal 80%, Incipient 15%, Degrade 5% ' } },
+          { data: { name:  'Last 30 Days',  discription: 'Normal 70%, Incipient 25%, Degrade 5% ' } },
+        ]
+      }
       if (node.data.name === 'RCA') {
         let children = []
         for (let index = 0; index < this.RCARecords.length; index++) {
