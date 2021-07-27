@@ -253,7 +253,7 @@ groupByPredictFMNames(list, keyGetter) {
 []);
 }
 onPredictionChangeYear(){
-  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.PredictionselectedYear.toString() );
+  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.PredictionselectedYear.toString());
   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
     if (this.ScrewPredictionAllData[i].Prediction == "degarde") {
       this.Degradecount = this.Degradecount + 1
@@ -269,20 +269,20 @@ onPredictionChangeYear(){
   this.PredictionAllRecordPie()
 }
 PredictFModeType(){
-  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> (val.FailuerModeType === this.predictionfmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.predictionfmtype.toString() );
-  for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-    if (this.ScrewPredictionAllData[i].Prediction == "degarde") {
-      this.Degradecount = this.Degradecount + 1
-    } else if (this.ScrewPredictionAllData[i].Prediction == "incipient") {
-      this.Incipientcount = this.Incipientcount + 1
-    } else if (this.ScrewPredictionAllData[i].Prediction == "normal") {
-      this.Normalcount = this.Normalcount + 1
-    } else
-      this.badcount = this.badcount + 1
-  }
-  this.PredictionAllRecordBarcharts()
-  this.PredictionAllRecordDonught()
-  this.PredictionAllRecordPie()
+  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=>moment(val.InsertedDate).format('YYYY') === this.fmtype.toString() );
+ for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+   if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
+     this.Degradecount = this.Degradecount + 1
+   } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
+     this.Incipientcount = this.Incipientcount + 1
+   } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
+     this.Normalcount = this.Normalcount + 1
+   } else
+     this.badcount = this.badcount + 1
+ }
+ this.PredictionAllRecordBarcharts()
+ this.PredictionAllRecordDonught()
+ this.PredictionAllRecordPie()
 }
 
   GetAllRecords() {
