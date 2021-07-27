@@ -92,6 +92,8 @@ export class DashboardComponent {
   public PredictionDataNormalCount: any = [];
   public PredictionDataIncipientCount: any = [];
   public PredictonDataDegradeCount: any = [];
+  public PredictionDataBadCount: any = [];
+  
   constructor(private title: Title,
     private http: HttpClient,
     private messageService: MessageService,
@@ -229,17 +231,11 @@ export class DashboardComponent {
   []);
 }
 onPredictionChangeYear(){
-  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.PredictionselectedYear.toString());
-  // for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-  //   if (this.ScrewPredictionAllData[i].Prediction == "degarde") {
-  //     this.Degradecount = this.Degradecount + 1
-  //   } else if (this.ScrewPredictionAllData[i].Prediction == "incipient") {
-  //     this.Incipientcount = this.Incipientcount + 1
-  //   } else if (this.ScrewPredictionAllData[i].Prediction == "normal") {
-  //     this.Normalcount = this.Normalcount + 1
-  //   } else
-  //     this.badcount = this.badcount + 1
-  // }
+ this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.PredictionselectedYear.toString());
+  this.Degradecount =0
+  this.Incipientcount=0
+  this.Normalcount=0
+  this.badcount=0
   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
     if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
       this.Degradecount = this.Degradecount + 1
@@ -255,8 +251,13 @@ onPredictionChangeYear(){
   this.PredictionAllRecordPie()
 }
 PredictFModeType(){
-  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=>moment(val.InsertedDate).format('YYYY') === this.fmtype.toString() );
- for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=>moment(val.InsertedDate).format('YYYY') === this.fmtype.toString() );
+  this.Degradecount =0
+  this.Incipientcount=0
+  this.Normalcount=0
+  this.badcount=0
+ 
+  for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
    if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
      this.Degradecount = this.Degradecount + 1
    } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
@@ -765,6 +766,9 @@ PredictFModeType(){
   PredictionAllRecordBarcharts(){
     this.changeDetectorRef.detectChanges();
      let dateForFilter = [];
+     this.PredictionDataNormalCount=[]
+     this.PredictionDataNormalCount =[]
+     this.PredictonDataDegradeCount=[]
      for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
       if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
         dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
@@ -783,6 +787,30 @@ PredictFModeType(){
         }
       });
       console.log(a);
+      var normal =0
+      var incipient =0
+      var degrade =0
+      var bad =0
+      a.forEach((value) => {
+        if (value == 'normal') {
+          normal=normal+1
+
+        } else if (value == 'incipient') {
+          incipient=incipient+1
+         
+
+        }else if (value == 'degarde'||value == 'degrade') {
+          degrade=degrade+1
+        }else{
+          bad=bad+1
+        }
+        
+
+      });
+      this.PredictionDataNormalCount.push(normal)
+      this.PredictionDataNormalCount.push(incipient) 
+      this.PredictonDataDegradeCount.push(degrade)
+      this.PredictionDataBadCount.push(bad)
     }
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("Predictionbarline", {
@@ -825,7 +853,7 @@ PredictFModeType(){
               yAxes: [{
                 stacked: true,
                 ticks: {
-                  max: 40,
+                  max: 20,
                 }
               }]
           }
