@@ -119,21 +119,19 @@ export class DashboardComponent {
   showReport() {
     let embedUrl = 'https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D';
   }
-  onChangeYear() {
-    this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.selectedYear.toString());
-    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-      if (this.ScrewCompressorAllData[i].Classification == "degarde") {
-        this.Degradecount = this.Degradecount + 1
-      } else if (this.ScrewCompressorAllData[i].Classification == "incipient") {
-        this.Incipientcount = this.Incipientcount + 1
-      } else if (this.ScrewCompressorAllData[i].Classification == "normal") {
-        this.Normalcount = this.Normalcount + 1
-      } else
-        this.badcount = this.badcount + 1
-    }
-    this.AllRecordBarcharts();
-    this.ClassificationOfAllpolarchart()
-    this.ClassificationOfAllRecordDonught()
+
+  GetFilterRecords() {
+    const params = new HttpParams()
+      .set("FailuerModeType", this.FailuerModeType)
+      .set("ToDate", this.ToDate)
+      .set("FromDate", this.FromDate)
+
+    var url: string = this.dashboardContantAPI.GetFilterRecords;
+    this.dashboardContantMethod.getWithParameters(url, params)
+      .subscribe(
+        res => {
+          this.getAllFilterData = res
+        })
   }
 
   GerAllPredictionRecords() {
@@ -188,11 +186,6 @@ export class DashboardComponent {
             Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
             this.InsertedDate.push(Predictyeardata);
 
-             let predictFMMode = { PredictFMId:0,PredictFMname: '' };
-             predictFMMode.PredictFMname =  predict.RD
-             predictFMMode.PredictFMname =  predict.SSRB
-             predictFMMode.PredictFMname =  predict.CF
-             this.PredictFMMode.push(predictFMMode);
           
           }) 
           this.Predictyearlist =  this.InsertedDate.reduce((m, o) => {
@@ -203,14 +196,6 @@ export class DashboardComponent {
                                                       }
                                                       return m;
                                                   }, []);
-           this.PredictionFMList = this.PredictFMMode.reduce((o, m) => {
-                                                    var found = o.find(p => p.PredictFMname === m.PredictFMname);
-                                                    if (found) { 
-                                                    } else {
-                                                        o.push(m);
-                                                    }
-                                                    return o;
-                                                }, []);
 
           for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
             if (this.Prediction[i] == "degarde") {
@@ -240,17 +225,6 @@ export class DashboardComponent {
       return m;
   }, 
   []);
-}
-groupByPredictFMNames(list, keyGetter) {
-  list.reduce((o,m) => {
-    var found = o.find(p => p.PredictFMname === m.PredictFMname);
-    if (found) { 
-    } else {
-        o.push(m);
-    }
-    return o;
-}, 
-[]);
 }
 onPredictionChangeYear(){
   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.PredictionselectedYear.toString());
@@ -403,20 +377,23 @@ groupBy1(list, keyGetter) {
 []);
 }
 
-  GetFilterRecords() {
-    const params = new HttpParams()
-      .set("FailuerModeType", this.FailuerModeType)
-      .set("ToDate", this.ToDate)
-      .set("FromDate", this.FromDate)
 
-    var url: string = this.dashboardContantAPI.GetFilterRecords;
-    this.dashboardContantMethod.getWithParameters(url, params)
-      .subscribe(
-        res => {
-          this.getAllFilterData = res
-        })
+  onChangeYear() {
+    this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.selectedYear.toString());
+    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+      if (this.ScrewCompressorAllData[i].Classification == "degarde") {
+        this.Degradecount = this.Degradecount + 1
+      } else if (this.ScrewCompressorAllData[i].Classification == "incipient") {
+        this.Incipientcount = this.Incipientcount + 1
+      } else if (this.ScrewCompressorAllData[i].Classification == "normal") {
+        this.Normalcount = this.Normalcount + 1
+      } else
+        this.badcount = this.badcount + 1
+    }
+    this.AllRecordBarcharts();
+    this.ClassificationOfAllpolarchart()
+    this.ClassificationOfAllRecordDonught()
   }
-
   FModeType() {
     this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> (val.FailuerModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString() );
     for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
@@ -433,7 +410,6 @@ groupBy1(list, keyGetter) {
     this.ClassificationOfAllpolarchart()
     this.ClassificationOfAllRecordDonught()
   }
-
 
 
   MachineEquipmentSelect() {
@@ -655,6 +631,9 @@ groupBy1(list, keyGetter) {
           }],
           yAxes: [{
             stacked: true,
+            ticks: {
+              max: 50,
+            }
           }]
         }
       }
@@ -780,7 +759,10 @@ groupBy1(list, keyGetter) {
                   stacked: true,
               }],
               yAxes: [{
-                  stacked: true,
+                stacked: true,
+                ticks: {
+                  max: 40,
+                }
               }]
           }
       }
