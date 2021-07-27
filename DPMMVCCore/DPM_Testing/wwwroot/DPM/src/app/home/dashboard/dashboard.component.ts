@@ -26,6 +26,8 @@ export class DashboardComponent {
   public XYZ = [];
   public PredictFMMode = [];
   public InsertedDateForMonth = [];
+  public abc = [];
+  public ab = [];
   public failuerModetype:[];
   public yearlist = [];
   public Predictyearlist = [];
@@ -85,6 +87,7 @@ export class DashboardComponent {
   public TrainDataNormalCount: any = [];
   public TrainDataIncipientCount: any = [];
   public TrainDataDegradeCount: any = [];
+  public TrainDataBadCount: any = [];
   //For Prediction
   public PredictionDataNormalCount: any = [];
   public PredictionDataIncipientCount: any = [];
@@ -208,7 +211,6 @@ export class DashboardComponent {
               this.Predictionbadcount = this.Predictionbadcount + 1
           }
           this.PredictionAllRecordDonught();
-          // this.PredictionOfAllpolarchart()
            this.PredictionAllRecordBarcharts()
           this.PredictionAllRecordPie()
         }, error => {
@@ -228,12 +230,22 @@ export class DashboardComponent {
 }
 onPredictionChangeYear(){
   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.PredictionselectedYear.toString());
+  // for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+  //   if (this.ScrewPredictionAllData[i].Prediction == "degarde") {
+  //     this.Degradecount = this.Degradecount + 1
+  //   } else if (this.ScrewPredictionAllData[i].Prediction == "incipient") {
+  //     this.Incipientcount = this.Incipientcount + 1
+  //   } else if (this.ScrewPredictionAllData[i].Prediction == "normal") {
+  //     this.Normalcount = this.Normalcount + 1
+  //   } else
+  //     this.badcount = this.badcount + 1
+  // }
   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-    if (this.ScrewPredictionAllData[i].Prediction == "degarde") {
+    if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
       this.Degradecount = this.Degradecount + 1
-    } else if (this.ScrewPredictionAllData[i].Prediction == "incipient") {
+    } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
       this.Incipientcount = this.Incipientcount + 1
-    } else if (this.ScrewPredictionAllData[i].Prediction == "normal") {
+    } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
       this.Normalcount = this.Normalcount + 1
     } else
       this.badcount = this.badcount + 1
@@ -276,6 +288,7 @@ PredictFModeType(){
           this.ScrewCompressorFilteredData = res; // actual data
           this.ScrewCompressorAllData = res;
           this.FailuerModetypeFilteredData1= res
+
           this.ScrewCompressorAllData.forEach(r => {
             this.ClassificationData = r.Classification;
             r.FailureModeType
@@ -365,7 +378,7 @@ PredictFModeType(){
   }, 
   []);
 }
-groupBy1(list, keyGetter) {
+ groupBy1(list, keyGetter) {
   list.reduce((s, n) => {
     var found = s.find(p => p.FMname === n.FMname);
     if (found) {}  
@@ -377,9 +390,17 @@ groupBy1(list, keyGetter) {
 []);
 }
 
-
   onChangeYear() {
-    this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.selectedYear.toString());
+    // this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.selectedYear.toString());
+    if(this.fmtype == ""&& this.selectedYear !=""){
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.selectedYear.toString());
+    }else  if(this.fmtype != ""&& this.selectedYear !=""){
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> (val.FailureModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    }
+    this.Degradecount =0
+    this.Incipientcount=0
+    this.Normalcount=0
+    this.badcount=0
     for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
       if (this.ScrewCompressorAllData[i].Classification == "degarde") {
         this.Degradecount = this.Degradecount + 1
@@ -394,8 +415,17 @@ groupBy1(list, keyGetter) {
     this.ClassificationOfAllpolarchart()
     this.ClassificationOfAllRecordDonught()
   }
+
   FModeType() {
-    this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> (val.FailuerModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString() );
+    if(this.fmtype != ""&& this.selectedYear ==""){
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> (val.FailureModeType === this.fmtype.toString()));
+    }else  if(this.fmtype != ""&& this.selectedYear !=""){
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> (val.FailureModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    }
+    this.Degradecount =0
+    this.Incipientcount=0
+    this.Normalcount=0
+    this.badcount=0
     for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
       if (this.ScrewCompressorAllData[i].Classification == "degarde") {
         this.Degradecount = this.Degradecount + 1
@@ -579,6 +609,9 @@ groupBy1(list, keyGetter) {
   AllRecordBarcharts() {
     this.changeDetectorRef.detectChanges();
     let dateForFilter = [];
+    this.TrainDataIncipientCount=[]
+    this.TrainDataNormalCount =[]
+    this.TrainDataDegradeCount=[]
     for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
       if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
         dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
@@ -597,6 +630,31 @@ groupBy1(list, keyGetter) {
         }
       });
       console.log(a);
+      var normal =0
+      var incipient =0
+      var degrade =0
+      var bad =0
+      a.forEach((value) => {
+        if (value == 'normal') {
+          normal=normal+1
+
+        } else if (value == 'incipient') {
+          incipient=incipient+1
+         
+
+        }else if (value == 'degarde'||value == 'degrade') {
+          degrade=degrade+1
+        }else{
+          bad=bad+1
+        }
+        
+
+      });
+      this.TrainDataIncipientCount.push(incipient)
+      this.TrainDataNormalCount.push(normal)
+      this.TrainDataDegradeCount.push(degrade)
+      this.TrainDataBadCount.push(bad)
+
     }
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("canvas1", {
@@ -620,6 +678,12 @@ groupBy1(list, keyGetter) {
             data: this.TrainDataDegradeCount,
             borderWidth: 2,
             backgroundColor: "#FF0000",
+          }, 
+          {
+            label: "Bad",
+            data: this.TrainDataBadCount,
+            borderWidth: 1,
+            backgroundColor: "blue",
           }
         ]
       },
@@ -632,7 +696,7 @@ groupBy1(list, keyGetter) {
           yAxes: [{
             stacked: true,
             ticks: {
-              max: 50,
+              max: 10,
             }
           }]
         }

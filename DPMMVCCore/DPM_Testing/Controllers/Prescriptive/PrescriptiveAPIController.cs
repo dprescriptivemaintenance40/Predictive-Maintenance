@@ -339,14 +339,14 @@ namespace DPM.Controllers.Prescriptive
                         item.Rating = "D";
                         item.MaintainenancePractice = "TBM";
                         item.FrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
-                        item.ConditionMonitoring = "Nan";
+                        item.ConditionMonitoring = "Not Answered";
                     }
                     else if ((0 < MULT) && (MULT < 100))
                     {
                         item.Rating = "E";
                         item.MaintainenancePractice = "Breakdown Maintenance";
                         item.FrequencyMaintainenance = "All the time of Failure";
-                        item.ConditionMonitoring = "Nan";
+                        item.ConditionMonitoring = "Not Answered";
                     }
 
                     item.CriticalityFactor = MULT;
@@ -384,14 +384,14 @@ namespace DPM.Controllers.Prescriptive
                     prescriptiveModel.ComponentRating = "D";
                     prescriptiveModel.CMaintainenancePractice = "TBM";
                     prescriptiveModel.CFrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
-                    prescriptiveModel.CConditionMonitoring = "Nan";
+                    prescriptiveModel.CConditionMonitoring = "Not Answered";
                 }
                 else if ((0 < CF) && (CF < 100))
                 {
                     prescriptiveModel.ComponentRating = "E";
                     prescriptiveModel.CMaintainenancePractice = "Breakdown Maintenance";
                     prescriptiveModel.CFrequencyMaintainenance = "All the time of Failure";
-                    prescriptiveModel.CConditionMonitoring = "Nan";
+                    prescriptiveModel.CConditionMonitoring = "Not Answered";
                 }
 
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
@@ -724,14 +724,14 @@ namespace DPM.Controllers.Prescriptive
                         item.Rating = "D";
                         item.MaintainenancePractice = "TBM";
                         item.FrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
-                        item.ConditionMonitoring = "Nan";
+                        item.ConditionMonitoring = "Not Answered";
                     }
                     else if ((0 < MULT) && (MULT < 100))
                     {
                         item.Rating = "E";
                         item.MaintainenancePractice = "Breakdown Maintenance";
                         item.FrequencyMaintainenance = "All the time of Failure";
-                        item.ConditionMonitoring = "Nan";
+                        item.ConditionMonitoring = "Not Answered";
                     }
 
                     item.CriticalityFactor = MULT;
@@ -773,14 +773,14 @@ namespace DPM.Controllers.Prescriptive
                     prescriptiveModel.ComponentRating = "D";
                     prescriptiveModel.CMaintainenancePractice = "TBM";
                     prescriptiveModel.CFrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
-                    prescriptiveModel.CConditionMonitoring = "Nan";
+                    prescriptiveModel.CConditionMonitoring = "Not Answered";
                 }
                 else if ((0 < CF) && (CF < 100))
                 {
                     prescriptiveModel.ComponentRating = "E";
                     prescriptiveModel.CMaintainenancePractice = "Breakdown Maintenance";
                     prescriptiveModel.CFrequencyMaintainenance = "All the time of Failure";
-                    prescriptiveModel.CConditionMonitoring = "Nan";
+                    prescriptiveModel.CConditionMonitoring = "Not Answered";
                 }
 
 
@@ -902,14 +902,14 @@ namespace DPM.Controllers.Prescriptive
                 centrifugalPumpPrescriptiveModel.ComponentRating = "D";
                 centrifugalPumpPrescriptiveModel.CMaintainenancePractice = "TBM";
                 centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
-                centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Nan";
+                centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Not Answered";
             }
             else if ((0 < CF) && (CF < 100))
             {
                 centrifugalPumpPrescriptiveModel.ComponentRating = "E";
                 centrifugalPumpPrescriptiveModel.CMaintainenancePractice = "Breakdown Maintenance";
                 centrifugalPumpPrescriptiveModel.CFrequencyMaintainenance = "All the time of Failure";
-                centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Nan";
+                centrifugalPumpPrescriptiveModel.CConditionMonitoring = "Not Answered";
             }
 
             _context.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
@@ -976,14 +976,14 @@ namespace DPM.Controllers.Prescriptive
                         item.Rating = "D";
                         item.MaintainenancePractice = "TBM";
                         item.FrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
-                        item.ConditionMonitoring = "Nan";
+                        item.ConditionMonitoring = "Not Answered";
                     }
                     else if ((0 < MULT) && (MULT < 100))
                     {
                         item.Rating = "E";
                         item.MaintainenancePractice = "Breakdown Maintenance";
                         item.FrequencyMaintainenance = "All the time of Failure";
-                        item.ConditionMonitoring = "Nan";
+                        item.ConditionMonitoring = "Not Answered";
                     }
 
                     item.CriticalityFactor = MULT;
@@ -1036,14 +1036,14 @@ namespace DPM.Controllers.Prescriptive
                     prescriptiveModel.ComponentRating = "D";
                     prescriptiveModel.CMaintainenancePractice = "TBM";
                     prescriptiveModel.CFrequencyMaintainenance = "Half of PF interval, typically Monthly or fortnightly, time based maintenance";
-                    prescriptiveModel.CConditionMonitoring = "Nan";
+                    prescriptiveModel.CConditionMonitoring = "Not Answered";
                 }
                 else if ((0 < CF) && (CF < 100))
                 {
                     prescriptiveModel.ComponentRating = "E";
                     prescriptiveModel.CMaintainenancePractice = "Breakdown Maintenance";
                     prescriptiveModel.CFrequencyMaintainenance = "All the time of Failure";
-                    prescriptiveModel.CConditionMonitoring = "Nan";
+                    prescriptiveModel.CConditionMonitoring = "Not Answered";
                 }
 
                 CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.FindAsync(prescriptiveModel.CFPPrescriptiveId);
