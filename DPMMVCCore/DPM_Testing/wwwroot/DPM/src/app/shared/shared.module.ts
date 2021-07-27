@@ -25,6 +25,7 @@ import { OrganizationChartModule } from "./organization-chart/organization-chart
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import {CalendarModule} from 'primeng/calendar';
+import {CheckboxModule} from 'primeng/checkbox';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
@@ -50,6 +51,7 @@ import {CalendarModule} from 'primeng/calendar';
         ConfirmDialogModule,
         TooltipModule,
         PanelMenuModule,
+        CheckboxModule,
         CalendarModule],
     exports: [CommonModule,
         CommonLoadingComponent,
@@ -77,6 +79,7 @@ import {CalendarModule} from 'primeng/calendar';
         ConfirmDialogModule,
         TooltipModule,
         PanelMenuModule,
+        CheckboxModule,
         CalendarModule]
 })
 export class SharedModule {

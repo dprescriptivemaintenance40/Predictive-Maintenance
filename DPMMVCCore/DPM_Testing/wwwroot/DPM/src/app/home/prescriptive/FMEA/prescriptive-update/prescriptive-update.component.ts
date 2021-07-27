@@ -53,6 +53,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public FinalDelete: boolean = false;
   public AddFailureMode: boolean = true;
   public FinalBack: boolean = true;
+  public StartConsequences: boolean = false;
   public Consequences1: boolean = false;
   public Consequences2: boolean = false;
   public Consequences3: boolean = false;
@@ -1041,6 +1042,7 @@ public UpdateBeta : number = 0
       this.LSEdiv.style.display = 'none'
 
       this.prescriptiveTree = false
+      this.StartConsequences = true;
       this.Consequences1 = true;
     } else if(this.ADDDownTimeFactor == 0  ) {
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'DownTime Factor is Missing' });
@@ -1578,6 +1580,7 @@ async AddPatternToNewFM() {
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         if (this.UpdateFailureModeConsequence == "") {
           this.ConsequenceTreeADDConsequenceEnable = true
@@ -1601,6 +1604,7 @@ async AddPatternToNewFM() {
 
   }
   Consequence3Back() {
+    this.StartConsequences = true;
     this.Consequences1 = true
     this.Consequences3 = false;
   }
@@ -1620,6 +1624,7 @@ async AddPatternToNewFM() {
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         if (this.UpdateFailureModeConsequence == "") {
           this.ConsequenceTreeADDConsequenceEnable = true
@@ -1643,6 +1648,7 @@ async AddPatternToNewFM() {
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         if (this.UpdateFailureModeConsequence == "") {
           this.ConsequenceTreeADDConsequenceEnable = true
@@ -1678,6 +1684,7 @@ async AddPatternToNewFM() {
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         if (this.UpdateFailureModeConsequence == "") {
           this.ConsequenceTreeADDConsequenceEnable = true
@@ -1701,6 +1708,7 @@ async AddPatternToNewFM() {
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         if (this.UpdateFailureModeConsequence == "") {
           this.ConsequenceTreeADDConsequenceEnable = true
@@ -2011,7 +2019,8 @@ async AddPatternToNewFM() {
 
   }
   colorForUpdateTree() {
-    if (this.UpdateFailureModeConsequence == "E") {
+    var con : string = this.UpdateFailureModeConsequence.charAt(0) 
+    if (con == "E") {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person'
       this.SavedconsequenceTreeColorNodeC = 'p-person1'
@@ -2022,7 +2031,7 @@ async AddPatternToNewFM() {
       this.SavedconsequenceD = 'p-person'
       this.SavedconsequenceE = 'p-person1'
       this.SavedConsequenceTree();
-    } else if (this.UpdateFailureModeConsequence == 'B') {
+    } else if (con == 'B') {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person1'
       this.SavedconsequenceTreeColorNodeC = 'p-person'
@@ -2033,7 +2042,7 @@ async AddPatternToNewFM() {
       this.SavedconsequenceD = 'p-person'
       this.SavedconsequenceE = 'p-person'
       this.SavedConsequenceTree();
-    } else if (this.UpdateFailureModeConsequence == 'C') {
+    } else if (con == 'C') {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person'
       this.SavedconsequenceTreeColorNodeC = 'p-person1'
@@ -2044,7 +2053,7 @@ async AddPatternToNewFM() {
       this.SavedconsequenceD = 'p-person'
       this.SavedconsequenceE = 'p-person'
       this.SavedConsequenceTree();
-    } else if (this.UpdateFailureModeConsequence == 'D') {
+    } else if (con == 'D') {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person1'
       this.SavedconsequenceTreeColorNodeC = 'p-person'
@@ -2055,7 +2064,7 @@ async AddPatternToNewFM() {
       this.SavedconsequenceD = 'p-person1'
       this.SavedconsequenceE = 'p-person'
       this.SavedConsequenceTree();
-    } else if (this.UpdateFailureModeConsequence == 'A') {
+    } else if (con == 'A') {
       this.SavedconsequenceTreeColorNodeA = 'p-person1'
       this.SavedconsequenceTreeColorNodeB = 'p-person'
       this.SavedconsequenceTreeColorNodeC = 'p-person'
@@ -2070,6 +2079,7 @@ async AddPatternToNewFM() {
     }
   }
   async ChangeConsequence() {
+    this.StartConsequences = true;
     this.Consequences1 = true
     this.UpdateColorTreeEnable = true;
     this.changeDetectorRef.detectChanges();
@@ -4509,6 +4519,21 @@ async ADDMSSToTree() {
     }
   } 
 
+  ConsequenceSelected(a){
+    if(this.Consequences1 === true){
+      this.dropedConsequenceFailureMode = []
+      this.dropedConsequenceFailureMode.push(a)
+    }else if(this.Consequences2 === true){
+      this.dropedConsequenceEffectFailureMode = []
+      this.dropedConsequenceEffectFailureMode.push(a)
+    }else if(this.Consequences3 === true){
+      this.dropedConsequenceCombinationFailureMode = []
+      this.dropedConsequenceCombinationFailureMode.push(a)
+    }else if(this.Consequences4 === true){
+      this.dropedConsequenceAffectFailureMode = []
+      this.dropedConsequenceAffectFailureMode.push(a)
+    }
+  }
 
   FailureModeSelected(value, event){
     if(event.target.checked === false){
@@ -4551,5 +4576,6 @@ async ADDMSSToTree() {
       }
     }
   }
+
 }
 
