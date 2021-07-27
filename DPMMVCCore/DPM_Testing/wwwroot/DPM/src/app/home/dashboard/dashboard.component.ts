@@ -190,8 +190,6 @@ export class DashboardComponent {
 
             Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
             this.InsertedDate.push(Predictyeardata);
-
-          
           }) 
           this.Predictyearlist =  this.InsertedDate.reduce((m, o) => {
                                                       var found = m.find(p => p.Predictyearname === o.Predictyearname);
@@ -203,7 +201,7 @@ export class DashboardComponent {
                                                   }, []);
 
           for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-            if (this.Prediction[i] == "degarde") {
+            if (this.Prediction[i] == "degarde"|| this.Prediction[i] == "degrade") {
               this.PredictionDegradecount = this.PredictionDegradecount + 1
             } else if (this.Prediction[i] == "incipient") {
               this.PredictionIncipientcount = this.PredictionIncipientcount + 1
@@ -212,6 +210,7 @@ export class DashboardComponent {
             } else
               this.Predictionbadcount = this.Predictionbadcount + 1
           }
+
           this.PredictionAllRecordDonught();
            this.PredictionAllRecordBarcharts()
           this.PredictionAllRecordPie()
@@ -232,41 +231,41 @@ export class DashboardComponent {
 }
 onPredictionChangeYear(){
  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=> moment(val.InsertedDate).format('YYYY')  === this.PredictionselectedYear.toString());
-  this.Degradecount =0
-  this.Incipientcount=0
-  this.Normalcount=0
-  this.badcount=0
+ 
+ this.PredictionDegradecount =0
+  this.PredictionIncipientcount=0
+  this.PredictionNormalcount=0
+  this.Predictionbadcount=0
   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
     if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
-      this.Degradecount = this.Degradecount + 1
+      this.PredictionDegradecount = this.PredictionDegradecount + 1
     } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
-      this.Incipientcount = this.Incipientcount + 1
+      this.PredictionIncipientcount = this.PredictionIncipientcount + 1
     } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
-      this.Normalcount = this.Normalcount + 1
+      this.PredictionNormalcount = this.PredictionNormalcount + 1
     } else
-      this.badcount = this.badcount + 1
+      this.Predictionbadcount = this.Predictionbadcount + 1
   }
   this.PredictionAllRecordBarcharts()
   this.PredictionAllRecordDonught()
   this.PredictionAllRecordPie()
 }
 PredictFModeType(){
-   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=>moment(val.InsertedDate).format('YYYY') === this.fmtype.toString() );
-  this.Degradecount =0
-  this.Incipientcount=0
-  this.Normalcount=0
-  this.badcount=0
- 
-  for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-   if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
-     this.Degradecount = this.Degradecount + 1
-   } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
-     this.Incipientcount = this.Incipientcount + 1
-   } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
-     this.Normalcount = this.Normalcount + 1
-   } else
-     this.badcount = this.badcount + 1
- }
+   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=>moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()  );
+this.PredictionDegradecount =0
+this.PredictionIncipientcount=0
+this.PredictionNormalcount=0
+this.Predictionbadcount=0
+for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+  if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
+    this.PredictionDegradecount = this.PredictionDegradecount + 1
+  } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
+    this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+  } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
+    this.PredictionNormalcount = this.PredictionNormalcount + 1
+  } else
+    this.Predictionbadcount = this.Predictionbadcount + 1
+}
  this.PredictionAllRecordBarcharts()
  this.PredictionAllRecordDonught()
  this.PredictionAllRecordPie()
@@ -350,7 +349,7 @@ PredictFModeType(){
 
           });
           for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-            if (this.classi[i] == "degarde") {
+            if (this.classi[i] == "degarde" ||this.classi[i]  =="degrade") {
               this.Degradecount = this.Degradecount + 1
             } else if (this.classi[i] == "incipient") {
               this.Incipientcount = this.Incipientcount + 1
@@ -403,7 +402,7 @@ PredictFModeType(){
     this.Normalcount=0
     this.badcount=0
     for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-      if (this.ScrewCompressorAllData[i].Classification == "degarde") {
+      if (this.ScrewCompressorAllData[i].Classification == "degarde" || this.ScrewCompressorAllData[i].Classification == "degrade") {
         this.Degradecount = this.Degradecount + 1
       } else if (this.ScrewCompressorAllData[i].Classification == "incipient") {
         this.Incipientcount = this.Incipientcount + 1
@@ -428,7 +427,7 @@ PredictFModeType(){
     this.Normalcount=0
     this.badcount=0
     for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-      if (this.ScrewCompressorAllData[i].Classification == "degarde") {
+      if (this.ScrewCompressorAllData[i].Classification == "degarde"|| this.ScrewCompressorAllData[i].Classification == "degrade") {
         this.Degradecount = this.Degradecount + 1
       } else if (this.ScrewCompressorAllData[i].Classification == "incipient") {
         this.Incipientcount = this.Incipientcount + 1
@@ -638,18 +637,13 @@ PredictFModeType(){
       a.forEach((value) => {
         if (value == 'normal') {
           normal=normal+1
-
         } else if (value == 'incipient') {
           incipient=incipient+1
-         
-
         }else if (value == 'degarde'||value == 'degrade') {
           degrade=degrade+1
         }else{
           bad=bad+1
         }
-        
-
       });
       this.TrainDataIncipientCount.push(incipient)
       this.TrainDataNormalCount.push(normal)
@@ -697,7 +691,7 @@ PredictFModeType(){
           yAxes: [{
             stacked: true,
             ticks: {
-              max: 10,
+              max: 30,
             }
           }]
         }
@@ -740,10 +734,20 @@ PredictFModeType(){
      var a = [];
      this.ScrewPredictionAllData.forEach(element => {
        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
-         a.push(element.Prediction)
+         if(this.fmtype !=""){
+           if(this.fmtype =="SSRB"){
+             a.push(element.SSRB)
+           }else if(this.fmtype =="CF"){
+             a.push(element.CF)
+           }  if(this.fmtype =="RD"){
+             a.push(element.RD)
+           }
+         }else{
+           a.push(element.Prediction)
+         }
        }
      });
-     console.log(a);
+ 
    }
    this.changeDetectorRef.detectChanges();
     this.chart = new Chart('PredictionPie', {
@@ -767,7 +771,7 @@ PredictFModeType(){
     this.changeDetectorRef.detectChanges();
      let dateForFilter = [];
      this.PredictionDataNormalCount=[]
-     this.PredictionDataNormalCount =[]
+     this.PredictionDataIncipientCount =[]
      this.PredictonDataDegradeCount=[]
      for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
       if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
@@ -783,32 +787,39 @@ PredictFModeType(){
       var a = [];
       this.ScrewPredictionAllData.forEach(element => {
         if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
-          a.push(element.Prediction)
+          if(this.fmtype !=""){
+            if(this.fmtype =="SSRB"){
+              a.push(element.SSRB)
+            }else if(this.fmtype =="CF"){
+              a.push(element.CF)
+            }  if(this.fmtype =="RD"){
+              a.push(element.RD)
+            }
+          }else{
+            a.push(element.Prediction)
+          }
         }
       });
+
       console.log(a);
       var normal =0
       var incipient =0
       var degrade =0
       var bad =0
+
       a.forEach((value) => {
         if (value == 'normal') {
           normal=normal+1
-
         } else if (value == 'incipient') {
           incipient=incipient+1
-         
-
         }else if (value == 'degarde'||value == 'degrade') {
           degrade=degrade+1
         }else{
           bad=bad+1
         }
-        
-
       });
       this.PredictionDataNormalCount.push(normal)
-      this.PredictionDataNormalCount.push(incipient) 
+      this.PredictionDataIncipientCount.push(incipient) 
       this.PredictonDataDegradeCount.push(degrade)
       this.PredictionDataBadCount.push(bad)
     }
@@ -853,7 +864,7 @@ PredictFModeType(){
               yAxes: [{
                 stacked: true,
                 ticks: {
-                  max: 20,
+                  max: 100,
                 }
               }]
           }

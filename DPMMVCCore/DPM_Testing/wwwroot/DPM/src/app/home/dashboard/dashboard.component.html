@@ -96,7 +96,7 @@
             <div class="col-md-2">
                 <div class="card">
                     <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
-                        (ngModelChange)="onPredictionChangeYear()">
+                        (ngModelChange)="PredictFModeType()">
                         <option value="">Select Year</option>
                         <ng-container *ngFor="let year of Predictyearlist">
                             <option [value]="year.Predictyearname" name="PredictionselectedYear">
