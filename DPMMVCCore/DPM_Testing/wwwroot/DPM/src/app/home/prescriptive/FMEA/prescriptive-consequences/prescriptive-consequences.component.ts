@@ -51,6 +51,8 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
   private consequenceE = 'p-person';
   private finalConsequence;
   private ConsequencesData;
+  public StartConsequences : boolean = false;
+  public RadioValue : string = ''
 
   public prescriptiveTreeNextEnable: boolean = false;
   public SaveConcequencesEnable: boolean = false;
@@ -172,6 +174,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
 
   async treeNext() {
     this.prescriptiveTree = false;
+    this.StartConsequences = true;
     this.Consequences1 = true;
     this.FMLSConsequenceName = this.FMTree[this.FMCount].data.name
     this.changeDetectorRef.detectChanges();
@@ -256,6 +259,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences1 = false;
         this.Consequences3 = false;
         this.Consequences4 = false;
+        this.RadioValue = ""
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceFailureMode[0])
         console.log(this.ConsequencesAnswer)
@@ -263,9 +267,10 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.RadioValue = ""
       }
     } else {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, please select any one' });
     }
 
 
@@ -273,6 +278,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
   Consequence2Back() {
     this.Consequences1 = true;
     this.Consequences2 = false;
+    this.RadioValue = ""
 
   }
   Consequence2Next() {
@@ -291,7 +297,9 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
+        this.RadioValue = ""
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceEffectFailureMode[0])
@@ -300,15 +308,17 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = true;
+        this.RadioValue = ""
       }
     } else {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, please select any one' });
     }
 
   }
   Consequence3Back() {
     this.Consequences1 = true
     this.Consequences3 = false;
+    this.RadioValue = ""
   }
   Consequence3Next() {
     if (this.dropedConsequenceCombinationFailureMode.length == 1) {
@@ -326,7 +336,9 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
+        this.RadioValue = ""
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
@@ -342,12 +354,14 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
+        this.RadioValue = ""
         this.colorConsequenceTree()
       }
     } else {
 
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, please select any one' });
     }
 
   }
@@ -368,7 +382,9 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
+        this.RadioValue = ""
         this.colorConsequenceTree()
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
@@ -384,11 +400,13 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
+        this.RadioValue = ""
         this.colorConsequenceTree()
       }
     } else {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, please select any one' });
     }
 
   }
@@ -409,6 +427,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     this.consequenceTreeColorNodeB = 'p-person'
     this.consequenceTreeColorNodeC = 'p-person'
     this.consequenceTreeColorNodeD = 'p-person'
+    this.RadioValue = "";
   }
 
   colorConsequenceTree() {
@@ -568,4 +587,22 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
       }, err => { console.log(err.err) }
     )
   }
+
+  ConsequenceSelected(a){
+    if(this.Consequences1 === true){
+      this.dropedConsequenceFailureMode = []
+      this.dropedConsequenceFailureMode.push(a)
+    }else if(this.Consequences2 === true){
+      this.dropedConsequenceEffectFailureMode = []
+      this.dropedConsequenceEffectFailureMode.push(a)
+    }else if(this.Consequences3 === true){
+      this.dropedConsequenceCombinationFailureMode = []
+      this.dropedConsequenceCombinationFailureMode.push(a)
+    }else if(this.Consequences4 === true){
+      this.dropedConsequenceAffectFailureMode = []
+      this.dropedConsequenceAffectFailureMode.push(a)
+    }
+
+  }
+
 }
