@@ -65,6 +65,9 @@
                                 <col style="width:3em;">
                                 <col style="width:8em;">
                                 <col style="width:5em;">
+                                <col style="width:5em;">
+                                <col style="width:5em;">
+                                <col style="width:5em;">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -79,6 +82,9 @@
                                 <th>TD2</th>
                                 <th>PREDICTION DATES</th>
                                 <th>PREDICTION</th>
+                                <th>RD</th>
+                                <th>SSRB</th>
+                                <th>CF</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-futurePredictionDataTableList>
@@ -93,6 +99,9 @@
                                 <td>{{futurePredictionDataTableList.TD2}}</td>
                                 <td>{{futurePredictionDataTableList.PredictedDate | date:'medium'}}</td>
                                 <td>{{futurePredictionDataTableList.Prediction}}</td>
+                                <td>{{futurePredictionDataTableList.RD}}</td>
+                                <td>{{futurePredictionDataTableList.SSRB}}</td>
+                                <td>{{futurePredictionDataTableList.CF}}</td>
 
                             </tr>
                         </ng-template>
