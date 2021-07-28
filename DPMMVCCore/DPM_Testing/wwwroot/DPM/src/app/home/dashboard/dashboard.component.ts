@@ -236,6 +236,7 @@ onPredictionChangeYear(){
   this.PredictionIncipientcount=0
   this.PredictionNormalcount=0
   this.Predictionbadcount=0
+
   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
     if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
       this.PredictionDegradecount = this.PredictionDegradecount + 1
@@ -252,10 +253,22 @@ onPredictionChangeYear(){
 }
 PredictFModeType(){
    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val=>moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()  );
-this.PredictionDegradecount =0
-this.PredictionIncipientcount=0
-this.PredictionNormalcount=0
-this.Predictionbadcount=0
+    this.PredictionDegradecount =0
+    this.PredictionIncipientcount=0
+    this.PredictionNormalcount=0
+    this.Predictionbadcount=0
+
+    // for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+    //   if (`${this.ScrewPredictionAllData[i].Prediction}.${this.fmtype}`== "degarde") {
+    //     this.PredictionDegradecount = this.PredictionDegradecount + 1
+    //   } else if (`${this.ScrewPredictionAllData[i].Prediction}.${this.fmtype}` == "incipient") {
+    //     this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+    //   } else if (`${this.ScrewPredictionAllData[i].Prediction}.${this.fmtype}` == "normal") {
+    //     this.PredictionNormalcount = this.PredictionNormalcount + 1
+    //   } else
+    //     this.Predictionbadcount = this.Predictionbadcount + 1
+    // }
+
 for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
   if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}`== "degarde") {
     this.PredictionDegradecount = this.PredictionDegradecount + 1
@@ -422,6 +435,7 @@ for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
     }else  if(this.fmtype != ""&& this.selectedYear !=""){
       this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val=> (val.FailureModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
     }
+
     this.Degradecount =0
     this.Incipientcount=0
     this.Normalcount=0
@@ -512,7 +526,6 @@ for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
           this.PrescriptiveMaintenance = true
           this.gaugechartwithDPM()
           this.gaugechartwithoutDPM()
-          // this.ComponentCriticalityFactorBar()
         }, err => {
           console.log(err.err);
         });
@@ -700,26 +713,11 @@ for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
   }
 
   PredictionAllRecordDonught() {
-    this.chart = new Chart('PredictioncanvasClass', {
-      type: 'doughnut',
-      data: {
-        labels: ["Normal", "incipient", "Degrade"],
-        datasets: [
-          {
-            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
-          }
-        ]
-      },
-      options: {
-        events:[],
-      }
-    });
-  }
-
-  PredictionAllRecordPie() {
     this.changeDetectorRef.detectChanges();
     let dateForFilter = [];
+    this.PredictionDataNormalCount=[]
+    this.PredictionDataIncipientCount =[]
+    this.PredictonDataDegradeCount=[]
     for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
      if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
        dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
@@ -747,24 +745,109 @@ for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
          }
        }
      });
- 
+  
+     console.log(a);
+     var normal =0
+     var incipient =0
+     var degrade =0
+     var bad =0
+  
+     a.forEach((value) => {
+       if (value == 'normal') {
+         normal=normal+1
+       } else if (value == 'incipient') {
+         incipient=incipient+1
+       }else if (value == 'degarde'||value == 'degrade') {
+         degrade=degrade+1
+       }else{
+         bad=bad+1
+       }
+     });
+     this.PredictionDataNormalCount.push(normal)
+     this.PredictionDataIncipientCount.push(incipient) 
+     this.PredictonDataDegradeCount.push(degrade)
+     this.PredictionDataBadCount.push(bad)
    }
    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart('PredictionPie', {
+    this.chart = new Chart('PredictioncanvasClass', {
+      type: 'bar',
+      data: {
+        labels: dateForFilter1,
+        datasets: [
+          {
+            label: "Normal",
+            data: this.PredictionDataNormalCount,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+          }, {
+            label: "Incipent",
+            data:  this.PredictionDataIncipientCount,
+            borderWidth: 1,
+            borderColor: "#FFA500",
+            backgroundColor: '#FFA500',
+          },
+          {
+            label: "Degrade",
+            data:  this.PredictonDataDegradeCount,
+            borderWidth: 1,
+            borderColor: " #FF0000",
+            backgroundColor: '#FF0000',
+          }
+        ]
+      },
+      options: {
+          events:[],
+      }
+    });
+  }
+
+  PredictionAllRecordPie() {
+    var a: any = [];
+    this.PredictionNormalcount = 0,
+      this.PredictionIncipientcount = 0,
+      this.PredictionDegradecount = 0;
+    this.ScrewPredictionAllData.forEach(element => {
+      if (this.fmtype != "") {
+        if (this.fmtype == "SSRB") {
+          a.push(element.SSRB)
+        } else if (this.fmtype == "CF") {
+          a.push(element.CF)
+        } if (this.fmtype == "RD") {
+          a.push(element.RD)
+        }
+      } else {
+        a.push(element.Prediction)
+      }
+ 
+    });
+    a.forEach(element => {
+      if (element == 'normal') {
+        this.PredictionNormalcount = this.PredictionNormalcount + 1;
+      } else if (element == 'incipient') {
+        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+      } else if (element == 'degrade' || element == 'degarde') {
+        this.PredictionDegradecount = this.PredictionDegradecount + 1;
+      }
+    });
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("PredictionPie", {
       type: 'pie',
       data: {
         labels: ["Normal", "incipient", "Degrade"],
+        fill: true,
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
             data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
           }
         ]
-      }, 
+      },
       options: {
-        events:[],
+        events: [],
       }
     });
+
   }
 
   PredictionAllRecordBarcharts(){
@@ -864,7 +947,7 @@ for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
               yAxes: [{
                 stacked: true,
                 ticks: {
-                  max: 100,
+                  max: 50,
                 }
               }]
           }
