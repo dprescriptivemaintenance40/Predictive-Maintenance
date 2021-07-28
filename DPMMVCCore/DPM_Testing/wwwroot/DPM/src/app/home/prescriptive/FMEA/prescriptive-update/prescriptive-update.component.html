@@ -105,7 +105,12 @@
                             <table>
                                 <tr *ngFor="let func of failuerMode; let i=index;">
                                     <td>
-                                        <label>
+                                        <p-checkbox name="{{i}}" 
+                                        (onChange)="FailureModeSelectedForPrimeNg(func, $event)"
+                                        [checked]="func.values"
+                                        label="{{func.Description}}"
+                                        [(ngModel)]="func.checked"></p-checkbox>
+                                        <!-- <label>
                                             <input type="checkbox"
                                                    name = "{{i}}"
                                                    (change)="FailureModeSelected(func, $event)"
@@ -113,7 +118,7 @@
                                                     [(ngModel)]="func.checked"
                                                     />
                                                    {{func.Description}}
-                                        </label>
+                                        </label> -->
                                     </td>
                                 </tr>
                             </table>
@@ -508,10 +513,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                            <!-- <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> -->
                         </td>
                     </tr>
                 </table>
@@ -531,10 +538,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                            <!-- <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> -->
                         </td>
                     </tr>
                 </table>
@@ -557,10 +566,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                            <!-- <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> -->
                         </td>
                     </tr>
                 </table>
@@ -582,10 +593,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                            <!-- <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> -->
                         </td>
                     </tr>
                 </table>
@@ -664,7 +677,12 @@
                                 <table>
                                     <tr *ngFor="let func of failuerMode; let i=index;">
                                         <td>
-                                            <label>
+                                            <p-checkbox name="{{i}}" 
+                                            (onChange)="FailureModeSelectedForPrimeNg(func, $event)"
+                                            [checked]="func.values"
+                                            label="{{func.Description}}"
+                                            [(ngModel)]="func.checked"></p-checkbox>
+                                            <!-- <label>
                                                 <input type="checkbox"
                                                        name = "{{i}}"
                                                        (change)="FailureModeSelected(func, $event)"
@@ -672,7 +690,7 @@
                                                         [(ngModel)]="func.checked"
                                                         />
                                                        {{func.Description}}
-                                            </label>
+                                            </label> -->
                                         </td>
                                     </tr>
                                 </table> 

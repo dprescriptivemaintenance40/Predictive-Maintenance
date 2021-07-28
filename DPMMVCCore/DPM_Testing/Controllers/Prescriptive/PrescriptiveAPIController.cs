@@ -972,7 +972,8 @@ namespace DPM.Controllers.Prescriptive
             try
             {
                 List<int> Calculation = new List<int>();
-
+                var MTBF = Convert.ToDouble(prescriptiveModel.TagNumber);
+                prescriptiveModel.TagNumber = "";
                 var CentrifugalPumpPrescriptiveFailureModeData = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes;
                 prescriptiveModel.centrifugalPumpPrescriptiveFailureModes = new List<CentrifugalPumpPrescriptiveFailureMode>();
                 var ParentId = 0;
@@ -1099,6 +1100,23 @@ namespace DPM.Controllers.Prescriptive
                 _context.Entry(centrifugalPumpPrescriptiveModel).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
+
+                string con = CentrifugalPumpPrescriptiveFailureModeData[0].Consequence.Substring(0, 1);
+                if(con == "A")
+                {
+                    var MSSData = await _context.CentrifugalPumpMssModels.Where(a => a.CPPFMId == ChildId && a.MSSStartergy == "A-FFT (Failure Finding Task)").ToListAsync();
+                    if(MSSData.Count != 0)
+                    {
+                        double availablility = Convert.ToDouble(MSSData[0].MSSFinalAvaliability);
+                        var LN = Math.Log((2 * (availablility / 100)) - 1);
+                        var INTERVAl = -(MTBF * LN);
+                        var intervalWeek = (INTERVAl * 365) / 7;
+                        MSSData[0].MSSMaintenanceInterval = intervalWeek + " " + "weeks";
+                        _context.Entry(MSSData[0]).State = EntityState.Modified;
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                
             }
             catch (DbUpdateConcurrencyException)
             {
