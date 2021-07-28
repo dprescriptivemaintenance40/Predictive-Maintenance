@@ -92,7 +92,7 @@
   text-align: center;
   vertical-align: top;
   padding: 0;
-  background-color: #fff !important;
+  background-color: transparent !important;
   padding-right: 2px;
 }
 .p-organizationchart-table > tbody > tr > td table {
@@ -187,4 +187,13 @@
   color: #ffffff;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+}
+.p-organizationchart .StylePattern {
+  padding: 0;
+  border: 0 none;
+  background-color: #1a949c !important;
+  border-radius: 10px;
+}
+.p-organizationchart .StylePattern div {
+  color: #fff;
 }

@@ -19,12 +19,14 @@
                             <!-- <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}"> -->
                         </div>
                         <hr>
-                        <div class="row" *ngIf="node.years || node.hours">
-                            <div class="col-md-6" style="color: red;">
-                                {{node.years}} years
-                            </div>
-                            <div class="col-md-6" style="color: red;">
-                                {{node.hours}} hours
+                        <div class="row d-flex" *ngIf="node.years || node.hours">
+                            <div class="col-md-12" class="d-flex flex-row justify-content-between">
+                                 <div class="d-flex flex-row badge badge-danger mr-1">
+                                    <small><i class="pi pi-calendar small"></i></small>&nbsp;{{node.years}} Yrs
+                                </div>
+                                 <div class="d-flex flex-row badge badge-danger">
+                                    <small><i class="pi pi-clock small"></i></small>&nbsp;{{node.hours}} Hrs
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,13 +54,13 @@
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <select [disabled]="node.disable" [(ngModel)]="node.SelectedFailureComponents" (ngModelChange)="onFailureComponents($event)" class="form-control">
                                     <option value="">Select Failure Components</option>
                                     <option *ngFor="let FailureComp of FailureComponents" [ngValue]="FailureComp">{{FailureComp.FailureComponents}}</option>
                                 </select>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <select [disabled]="node.disable" [(ngModel)]="node.SelectedFailureCauses" (ngModelChange)="onFailureCauses($event)" class="form-control">
                                     <option value="">Select Failure Causes</option>
                                     <option *ngFor="let FailCause of FailureCause" [ngValue]="FailCause">{{FailCause.FailureCause}}</option>
@@ -67,11 +69,13 @@
                             </div>
                             <hr>
                             <div class="row" *ngIf="node.years || node.hours">
-                                <div class="col-md-6" style="color: red;">
-                                    {{node.years}} years
-                                </div>
-                                <div class="col-md-6" style="color: red;">
-                                    {{node.hours}} hours
+                                <div class="col-md-12" class="d-flex flex-row justify-content-between">
+                                    <div class="d-flex flex-row badge badge-danger mr-1">
+                                        <small><i class="pi pi-calendar small"></i></small>&nbsp;{{node.years}} Yrs
+                                    </div> 
+                                    <div class="d-flex flex-row badge badge-danger">
+                                        <small><i class="pi pi-clock small"></i></small>&nbsp;{{node.hours}} Hrs
+                                    </div>
                                 </div>
                             </div>
                             <div>
@@ -89,15 +93,14 @@
                                     <input [disabled]="node.disable" (keypress)=AllowNumber($event) [(ngModel)]="node.hours" class="form-control" placeholder="Set hours" name="hours" id="hours">
                                 </div>
                             </div>
-                            <hr>
                             <div>
-                                <button type="button" [hidden]="node.disable" class="btn btn-dark" (click)="onScheduledDowntime(node)">Done</button>
+                                <button type="button" [hidden]="node.disable" class="btn btn-primary btn-sm" (click)="onScheduledDowntime(node)">Done</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div *ngIf="node.ANDORLogic && !node.BasicEvent">
-                    <a [hidden]="node.disable" style="cursor:pointer; text-decoration: none;" title="Add new node for AND / OR" class="pi pi-plus" (click)="onAddNode(node)"></a>
+                    <a [hidden]="node.disable"  title="Add new node for AND / OR" class="org-add" (click)="onAddNode(node)"><i class="pi pi-plus"></i></a>
                     <p-menu #menu [popup]="true" [model]="items" [appendTo]="appendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                     <p-menu #submenu [popup]="true" [model]="subItems" [appendTo]="subappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                     <p-menu #basicmenu [popup]="true" [model]="basicItems" [appendTo]="basicappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
