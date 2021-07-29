@@ -820,3 +820,35 @@ td span.btn-white i {
 td span.btn-white:hover i {
   color: $primary-color !important;
 }
+.dpm-modal .p-field-checkbox {
+  background-color: #f0f4fe !important;
+  border: 1px solid #f0f4fe !important;
+  margin-bottom: 15px;
+  padding: 15px;
+  p {
+    margin-bottom: 7px;
+    color: #666;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  label {
+    margin-bottom: 0;
+    margin-left: 7px;
+  }
+  p-checkbox {
+    margin-bottom: 0;
+    margin-left: 0px;
+  }
+}
+.p-radiobutton-checked .p-highlight,
+.p-checkbox .p-checkbox-box.p-highlight {
+  border-color: $primary-color !important;
+  background: $primary-color !important;
+}
+p-radiobutton.ng-touched + label,
+.p-checkbox-checked label {
+  color: $primary-color !important;
+}
+label.p-checkbox-label-active {
+  color: $primary-color !important;
+}

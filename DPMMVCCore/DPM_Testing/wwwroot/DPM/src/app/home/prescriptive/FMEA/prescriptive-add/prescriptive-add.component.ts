@@ -67,6 +67,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public TagNumber: string = "";
   public dropDownData: any = [];
   public treeResponseData: any = [];
+  public RadioValue : string = '';
 
   public FunctionFluidType: string = "";
   public FunctionRatedHead: string = "";
@@ -83,6 +84,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   private consequenceC;
   private consequenceD;
   private consequenceE;
+  public StartConsequences : boolean = false;
   private finalConsequence;
   public functionfailure: any = [];
   public failuerMode: any = [];
@@ -433,6 +435,75 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.EquipmentList = ["Screw Compressor"]
     }
     console.log(this.EquipmentType)
+  }
+
+  FailureModeSelected(value, event){
+    if(event.target.checked === false){
+      var findIndexOF = value.PrescriptiveLookupMasterId
+      var index = -1;
+      var filteredObj = this.dropedMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === findIndexOF) {
+          index = i;
+          return i;
+        }
+      });
+      this.failuerMode[index].checked = false;
+      this.dropedMode.splice(index, 1)
+    }else{
+      let obj = {}
+      obj['Date']= value.Date;
+      obj['Description']= value.Description;
+      obj['EquipmentType']= value.EquipmentType;
+      obj['Function']= value.Function;
+      obj['MachineType']= value.MachineType;
+      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
+      this.dropedMode.push(obj);
+
+      var fIO = value.PrescriptiveLookupMasterId
+      var index1 = -1;
+      var filtObj = this.failuerMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === fIO) {
+          index1 = i;
+          return i;
+        }
+      });
+      this.failuerMode[index1].checked = true;
+    }
+  }
+
+
+  FailureModeSelectedForPrimeNg(value, event){
+    if(event.checked === false){
+      var findIndexOF = value.PrescriptiveLookupMasterId
+      var index = -1;
+      var filteredObj = this.dropedMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === findIndexOF) {
+          index = i;
+          return i;
+        }
+      });
+      this.failuerMode[index].checked = false;
+      this.dropedMode.splice(index, 1)
+    }else{
+      let obj = {}
+      obj['Date']= value.Date;
+      obj['Description']= value.Description;
+      obj['EquipmentType']= value.EquipmentType;
+      obj['Function']= value.Function;
+      obj['MachineType']= value.MachineType;
+      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
+      this.dropedMode.push(obj);
+
+      var fIO = value.PrescriptiveLookupMasterId
+      var index1 = -1;
+      var filtObj = this.failuerMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === fIO) {
+          index1 = i;
+          return i;
+        }
+      });
+      this.failuerMode[index1].checked = true;
+    }
   }
 
 
@@ -1011,6 +1082,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   async treeNext() {
     this.prescriptiveTree = true;
+    this.StartConsequences = true;
     this.Consequences1 = true;
     this.activeIndex = 5
     this.changeDetectorRef.detectChanges();
@@ -1034,6 +1106,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.Consequences1 = false;
         this.Consequences3 = false;
         this.Consequences4 = false;
+        this.RadioValue = "";
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceFailureMode[0])
         console.log(this.ConsequencesAnswer)
@@ -1041,6 +1114,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.RadioValue = "";
       }
     } else {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
@@ -1051,6 +1125,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   Consequence2Back() {
     this.Consequences1 = true;
     this.Consequences2 = false;
+    this.RadioValue = "";
 
   }
   Consequence2Next() {
@@ -1069,8 +1144,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         this.colorConsequenceTree()
+        this.RadioValue = "";
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceEffectFailureMode[0])
         console.log(this.ConsequencesAnswer)
@@ -1078,6 +1155,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = true;
+        this.RadioValue = "";
       }
     } else {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
@@ -1087,6 +1165,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   Consequence3Back() {
     this.Consequences1 = true
     this.Consequences3 = false;
+    this.RadioValue = "";
   }
   Consequence3Next() {
     if (this.dropedConsequenceCombinationFailureMode.length == 1) {
@@ -1104,8 +1183,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         this.colorConsequenceTree()
+        this.RadioValue = "";
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
@@ -1120,8 +1201,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         this.colorConsequenceTree()
+        this.RadioValue = "";
       }
     } else {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
@@ -1131,6 +1214,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   Consequence4Back() {
     this.Consequences2 = true
     this.Consequences4 = false;
+    this.RadioValue = "";
   }
   Consequence4Next() {
     if (this.dropedConsequenceAffectFailureMode.length == 1) {
@@ -1148,8 +1232,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         this.colorConsequenceTree()
+        this.RadioValue = "";
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
@@ -1164,8 +1250,10 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.StartConsequences = false;
         this.ConsequencesTree = true;
         this.colorConsequenceTree()
+        this.RadioValue = "";
       }
     } else {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
@@ -1189,6 +1277,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.consequenceTreeColorNodeB = 'p-person'
     this.consequenceTreeColorNodeC = 'p-person'
     this.consequenceTreeColorNodeD = 'p-person'
+    this.RadioValue = "";
   }
 
   colorConsequenceTree() {
@@ -1416,6 +1505,24 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
  
+  ConsequenceSelected(a){
+    if(this.Consequences1 === true){
+      this.dropedConsequenceFailureMode = []
+      this.dropedConsequenceFailureMode.push(a)
+    }else if(this.Consequences2 === true){
+      this.dropedConsequenceEffectFailureMode = []
+      this.dropedConsequenceEffectFailureMode.push(a)
+    }else if(this.Consequences3 === true){
+      this.dropedConsequenceCombinationFailureMode = []
+      this.dropedConsequenceCombinationFailureMode.push(a)
+    }else if(this.Consequences4 === true){
+      this.dropedConsequenceAffectFailureMode = []
+      this.dropedConsequenceAffectFailureMode.push(a)
+    }
+
+  }
+
+
 
 }
   
