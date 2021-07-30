@@ -245,8 +245,9 @@ export class DashboardComponent {
     this.PredictionAllRecordBarcharts()
     this.PredictionAllRecordDonught()
     this.PredictionAllRecordPie()
-  }
+}
   PredictFModeType() {
+    
     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
@@ -267,6 +268,7 @@ export class DashboardComponent {
     this.PredictionAllRecordDonught()
     this.PredictionAllRecordPie()
   }
+
 
   GetAllRecords() {
     this.TrainDataNormalCount = null;
