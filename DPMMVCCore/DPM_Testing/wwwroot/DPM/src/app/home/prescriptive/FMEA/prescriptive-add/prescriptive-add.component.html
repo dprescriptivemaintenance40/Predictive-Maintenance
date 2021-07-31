@@ -43,61 +43,6 @@ border: 1px solid #09a1a6 !important;
             </div>
     </div>
 </div>
-<p-button (click)="showModalDialog()" icon="pi pi-plus" label="Add Consequence"></p-button>
-<p-dialog header="Please answer the following Consequences" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-    [draggable]="false" [resizable]="false" class="dpm-modal">
-    <div>
-        <div class="p-field-checkbox">
-            <p>Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal operation of the
-            plant?</p>
-            <div class="dpm-radio d-flex">
-                <div class="p-field-radiobutton mr-2">
-                    <p-radioButton name="yes" value="yes"  inputId="yes"></p-radioButton>
-                    <label for="city1">Yes</label>
-                </div>
-                <div class="p-field-radiobutton">
-                    <p-radioButton name="No" value="No"  inputId="No"></p-radioButton>
-                    <label for="city2">No</label>
-                </div>
-            </div>
-        </div>
-        <div class="p-field-checkbox">
-            <p>Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the
-            environment?</p>
-            <div class="dpm-radio d-flex">
-                <div class="p-field-radiobutton mr-2">
-                    <p-radioButton name="yes" value="yes"  inputId="yes"></p-radioButton>
-                    <label for="city1">Yes</label>
-                </div>
-                <div class="p-field-radiobutton">
-                    <p-radioButton name="No" value="No"  inputId="No"></p-radioButton>
-                    <label for="city2">No</label>
-                </div>
-            </div>
-        </div>
-        <div class="p-field-checkbox">
-            <p>Does the Failure mode adversily affect operational capabilities of the plant?</p>
-            <div class="dpm-radio d-flex">
-                <div class="p-field-radiobutton  mr-2">
-                    <p-radioButton name="yes" value="yes"  inputId="yes"></p-radioButton>
-                    <label for="city1">Yes</label>
-                </div>
-                <div class="p-field-radiobutton">
-                    <p-radioButton name="No" value="No"  inputId="No"></p-radioButton>
-                    <label for="city2">No</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <ng-template pTemplate="footer" class="mt-4">
-        <button class="btn btn-link btn-sm"><i class="pi-pi-times text-dark"></i>Cancel</button>
-       <button class="btn btn-primary btn-sm"><i class="pi pi-check"></i>Done</button>
-    </ng-template>
-</p-dialog>
-
-
-
-
 
 <div *ngIf="prescriptiveSteps"  class="card dpm-card p-3">
     <div>

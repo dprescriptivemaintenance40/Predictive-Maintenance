@@ -18,7 +18,10 @@ import { CentrifugalPumpPrescriptiveModel } from '../prescriptive-add/prescripti
   providers: [MessageService],
 })
 export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDeactivate {
-
+ displayModal: boolean;
+  // showModalDialog() {
+  //       this.displayModal = true;
+  // };
   public draggedConsequencesYesNO: any = ['YES', 'NO']
   public droppedYesNo = null;
   public dropedConsequenceFailureMode = []
@@ -173,6 +176,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
   }
 
   async treeNext() {
+    this.displayModal = true;
     this.prescriptiveTree = false;
     this.StartConsequences = true;
     this.Consequences1 = true;

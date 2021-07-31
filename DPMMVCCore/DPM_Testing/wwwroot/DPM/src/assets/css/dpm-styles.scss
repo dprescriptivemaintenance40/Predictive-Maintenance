@@ -849,6 +849,82 @@ p-radiobutton.ng-touched + label,
 .p-checkbox-checked label {
   color: $primary-color !important;
 }
-label.p-checkbox-label-active {
+label.p-checkbox-label-active,
+.p-radiobutton-checked + label {
   color: $primary-color !important;
+}
+p-radiobutton {
+  margin-right: 7px;
+}
+.dpm-modal .p-card {
+  border: none;
+  box-shadow: none;
+
+  .p-card-body,
+  .p-card-content {
+    padding: 0px;
+    box-shadow: none !important;
+  }
+}
+.dpm-modal {
+  .p-card {
+    .p-field-checkbox {
+      animation: fadeIn 2s;
+      -webkit-animation: fadeIn 2s;
+      -moz-animation: fadeIn 2s;
+      -o-animation: fadeIn 2s;
+      -ms-animation: fadeIn 2s;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.9rem 1rem !important;
+  .pi {
+    font-size: 13px !important;
+  }
 }
