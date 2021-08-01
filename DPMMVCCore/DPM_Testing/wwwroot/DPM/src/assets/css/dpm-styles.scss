@@ -757,6 +757,14 @@ label {
   .form-control {
     background-color: #fff !important;
   }
+  .p-button-outlined {
+    border: 2px solid #bbb;
+    background: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 3px;
+    padding: 0px 7px;
+  }
 }
 .p-tree.p-tree-horizontal .p-treenode .p-treenode-content {
   position: relative;
@@ -926,5 +934,35 @@ p-radiobutton {
   padding: 0.9rem 1rem !important;
   .pi {
     font-size: 13px !important;
+  }
+}
+small .pi {
+  font-size: 12px;
+}
+.link-primary {
+  color: #555 !important;
+  font-weight: 600;
+}
+.prescriptive-card {
+  border-radius: 0px;
+  border-top: 1px solid #ddd;
+  .link-primary.disabled {
+    display: none;
+  }
+  .link-primary {
+    background: #fff;
+    padding: 3px 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    display: inline-block;
+    border: 1px solid #bbb;
+    font-weight: 500;
+    font-size: 13px;
+    &:hover {
+      color: $primary-color !important;
+      border: 1px solid $primary-color;
+      text-decoration: none;
+      cursor: pointer;
+    }
   }
 }
