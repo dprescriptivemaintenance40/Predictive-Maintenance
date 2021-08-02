@@ -73,7 +73,7 @@
                         <span (click)="FailureModeTable(p)" class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1"></i>Maintainenance Practice:{{p.CMaintainenancePractice}}</span></span>
                         </h1>
                             <span class="">
-                                <a class="link-primary mr-1" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded != 1}"><small><i class="pi pi-pencil mr-2"></i></small>Update FMEA</a>
+                                <a class="link-primary mr-1" *ngIf="p.MSSAdded == 1" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded != 1}"><small><i class="pi pi-pencil mr-2"></i></small>Update RCM</a>
                             </span>
                             <span class="">
                                 <a title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add Consequence</a>
@@ -83,7 +83,7 @@
                                 <a  [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}" (click)="getFCAData(p)" title="Add FCA" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add FCA</a>
                             </span>
                             <span class="">
-                                <a [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}" title="Update MSS Tree" (click)="getMSSData(p)" class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Update MSS</a>
+                                <a *ngIf="p.FCAAdded == 1" [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}" title="Add MSS to tree" (click)="getMSSData(p)" class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Add MSS</a>
                             </span>
                             
                             <span class="">

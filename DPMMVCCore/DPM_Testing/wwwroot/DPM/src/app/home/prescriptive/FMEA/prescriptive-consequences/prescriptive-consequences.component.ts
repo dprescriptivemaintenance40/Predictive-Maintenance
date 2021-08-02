@@ -180,6 +180,24 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     this.prescriptiveTree = false;
     this.StartConsequences = true;
     this.Consequences1 = true;
+    this.Consequences3 = false;
+    this.Consequences2 = false;
+    this.Consequences4 = false;
+    this.consequenceA = 'p-person';
+    this.consequenceB = 'p-person';
+    this.consequenceC = 'p-person';
+    this.consequenceD = 'p-person';
+    this.consequenceE = 'p-person';
+    this.ConsequencesTree = false;
+    this.consequenceTreeColorNodeA = 'p-person1';
+    this.consequenceTreeColorNodeB = 'p-person';
+    this.consequenceTreeColorNodeC = 'p-person';
+    this.consequenceTreeColorNodeD = 'p-person';
+    this.dropedConsequenceAffectFailureMode = [];
+    this.dropedConsequenceCombinationFailureMode = [];
+    this.dropedConsequenceFailureMode = [];
+    this.dropedConsequenceEffectFailureMode = [];
+    this.ConsequenceNode = [];
     this.FMLSConsequenceName = this.FMTree[this.FMCount].data.name
     this.changeDetectorRef.detectChanges();
     const element = document.querySelector("#ScrollUpdateTree2")
@@ -222,7 +240,9 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     }
     this.prescriptiveTree = true;
     this.Consequences1 = false;
+    this.changeDetectorRef.detectChanges();
     this.ConsequencesTree = false;
+    this.changeDetectorRef.detectChanges();
     this.dropedConsequenceEffectFailureMode = []
     this.dropedConsequenceFailureMode = []
     this.dropedConsequenceCombinationFailureMode = []
@@ -302,7 +322,10 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences1 = false;
         this.Consequences4 = false;
         this.StartConsequences = false;
+        this.changeDetectorRef.detectChanges();
         this.ConsequencesTree = true;
+        this.displayModal = false;
+        this.changeDetectorRef.detectChanges();
         this.RadioValue = ""
         this.colorConsequenceTree()
       } else {
@@ -341,7 +364,10 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences1 = false;
         this.Consequences4 = false;
         this.StartConsequences = false;
+        this.changeDetectorRef.detectChanges();
         this.ConsequencesTree = true;
+        this.displayModal = false;
+        this.changeDetectorRef.detectChanges();
         this.RadioValue = ""
         this.colorConsequenceTree()
       } else {
@@ -359,7 +385,10 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences1 = false;
         this.Consequences4 = false;
         this.StartConsequences = false;
+        this.changeDetectorRef.detectChanges();
         this.ConsequencesTree = true;
+        this.displayModal = false;
+        this.changeDetectorRef.detectChanges();
         this.RadioValue = ""
         this.colorConsequenceTree()
       }
@@ -387,7 +416,10 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences1 = false;
         this.Consequences4 = false;
         this.StartConsequences = false;
+        this.changeDetectorRef.detectChanges();
         this.ConsequencesTree = true;
+        this.displayModal = false;
+        this.changeDetectorRef.detectChanges();
         this.RadioValue = ""
         this.colorConsequenceTree()
       } else {
@@ -405,7 +437,10 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         this.Consequences1 = false;
         this.Consequences4 = false;
         this.StartConsequences = false;
+        this.changeDetectorRef.detectChanges();
         this.ConsequencesTree = true;
+        this.displayModal = false;
+        this.changeDetectorRef.detectChanges();
         this.RadioValue = ""
         this.colorConsequenceTree()
       }
@@ -420,8 +455,13 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     this.dropedConsequenceCombinationFailureMode = [];
     this.dropedConsequenceFailureMode = [];
     this.dropedConsequenceEffectFailureMode = [];
+    this.changeDetectorRef.detectChanges();
     this.ConsequencesTree = false
+    this.changeDetectorRef.detectChanges();
+    this.displayModal = true;
+    this.changeDetectorRef.detectChanges();
     this.Consequences1 = true;
+    this.changeDetectorRef.detectChanges();
     this.consequenceA = 'p-person'
     this.consequenceB = 'p-person'
     this.consequenceC = 'p-person'
@@ -446,6 +486,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
     }
     this.ConsequenceTreeGeneration();
     this.ConsequencesAnswer = []
+    this.changeDetectorRef.detectChanges();
 
   }
 
@@ -546,6 +587,7 @@ export class PrescriptiveConsequencesComponent implements OnInit, CanComponentDe
         ]
       }
     ];
+    this.changeDetectorRef.detectChanges();
   }
 
   SubmitConsequenceTree() {

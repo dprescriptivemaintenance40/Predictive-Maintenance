@@ -117,160 +117,33 @@
     </div>
 </p-dialog>
 
+<p-dialog [(visible)]="ConsequencesTree" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" class="dpm-modal">
+    <div class="p-fluid p-formgrid p-grid">
+        <span>
+            <small class="form-text text-muted">
+                <h5> Your {{FMLSConsequenceName}} Tree </h5>
+            </small>
+        </span>
 
+        <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode"
+            (onNodeSelect)="onNodeSelect($event)" styleClass="company">
+            <ng-template let-node pTemplate="person">
+                <div class="node-header p-corner-top">{{node.label}}</div>
+                <div class="node-content">
+                    <div>{{node.data.name}}</div>
+                </div>
+            </ng-template>
+            <ng-template let-node pTemplate="department">
+                {{node.label}}
+            </ng-template>
+        </p-organizationChart>
 
-
-
-
-
-
-
-
-
-
-
-<div id="ScrollUpdateTree2" *ngIf="StartConsequences" style="margin: 40px;" class="stepsdemo-content shadow d-none">
-    <p-card>
-        <ng-template pTemplate="title">
-            Consequences for {{FMLSConsequenceName}}
-        </ng-template>
-        <ng-template pTemplate="subtitle">
-            Choose your Consequences
-        </ng-template>
-        <div *ngIf="Consequences1" class="p-fluid p-formgrid p-grid">
-            <div style="margin-left: 20px;" class="p-fluid">
-                <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal
-                    operation of the plant?</p>
-            </div>
-            <div class="container">
-                <table>
-                    <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
-                        <td>
-                            <!-- <label>
-                                <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
-                                {{con1}}
-                            </label> -->
-                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}}
-                                (onClick)="ConsequenceSelected(con1)"></p-radioButton>
-
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
-        <div *ngIf="Consequences1">
-            <button label="Next" type="button" class="btn btn-dark" (click)="Consequence1Next()"><i
-                    class="pi pi-arrow-right"></i></button>
-        </div>
-        <div *ngIf="Consequences2" class="p-fluid p-formgrid p-grid">
-            <div style="margin-left: 20px;" class="p-fluid">
-                <p> Does the effect of the failure mode(or the secondary effect resulting from the failuer) have direct
-                    adverse effect on operational safety or the environment?</p>
-            </div>
-            <div class="container">
-                <table>
-                    <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
-                        <td>
-                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}}
-                                (onClick)="ConsequenceSelected(con1)"></p-radioButton>
-                            <!-- <label>
-                                <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
-                                {{con1}}
-                            </label> -->
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
-        <div *ngIf="Consequences2">
-            <button label="Back" type="button" class="btn btn-dark" (click)="Consequence2Back()"><i
-                    class="pi pi-arrow-left"></i></button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right;"
-                (click)="Consequence2Next()"><i class="pi pi-arrow-right"></i></button>
-
-        </div>
-        <div *ngIf="Consequences3" class="p-fluid p-formgrid p-grid">
-            <div style="margin-left: 20px;" class="p-fluid">
-                <p>Does the combination of the failure mode and one additonal failure or event result in an adverse
-                    effect safety of the environment? </p>
-            </div>
-            <div class="container">
-                <table>
-                    <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
-                        <td>
-                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}}
-                                (onClick)="ConsequenceSelected(con1)"></p-radioButton>
-                            <!-- <label>
-                                <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
-                                {{con1}}
-                            </label> -->
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
-        <div *ngIf="Consequences3">
-            <button label="Back" type="button" class="btn btn-dark" (click)="Consequence3Back()"><i
-                    class="pi pi-arrow-left"></i></button>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right; "
-                (click)="Consequence3Next()"><i class="pi pi-arrow-right"></i></button>
-
-        </div>
-        <div *ngIf="Consequences4" class="p-fluid p-formgrid p-grid">
-            <div style="margin-left: 20px;" class="p-fluid">
-                <p>Does the Failure mode adversily affect operational capabilities of the plant? </p>
-            </div>
-            <div class="container">
-                <table>
-                    <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
-                        <td>
-                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}}
-                                (onClick)="ConsequenceSelected(con1)"></p-radioButton>
-                            <!-- <label>
-                                <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
-                                {{con1}}
-                            </label> -->
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
-        <div *ngIf="Consequences4">
-            <a class="btn btn-white" style="border:none"> </a>
-            <button label="Next" type="button" class="btn btn-dark" style="float: right;"
-                (click)="Consequence4Next()"><i class="pi pi-arrow-right"></i></button>
-        </div>
-        <div *ngIf="ConsequencesTree" style="margin: 20px;" class="stepsdemo-content shadow">
-            <p-card>
-                <span>
-                    <small class="form-text text-muted">
-                        <h5> Your {{FMLSConsequenceName}} Tree </h5>
-                    </small>
-                </span>
-                <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()"><i
-                        class="pi pi-arrow-left"></i></button> &nbsp; &nbsp;
-                <button label="Back" type="button" class="btn btn-dark" (click)="ADDConsequence()"><i class="pi pi-plus"></i>
-                    ADD</button> <br><br>
-                <p-organizationChart [value]="ConsequenceNode" selectionMode="single" [(selection)]="selectedNode"
-                    (onNodeSelect)="onNodeSelect($event)" styleClass="company">
-                    <ng-template let-node pTemplate="person">
-                        <div class="node-header p-corner-top">{{node.label}}</div>
-                        <div class="node-content">
-                            <div>{{node.data.name}}</div>
-                        </div>
-                    </ng-template>
-                    <ng-template let-node pTemplate="department">
-                        {{node.label}}
-                    </ng-template>
-                </p-organizationChart>
-            </p-card>
-        </div>
-    </p-card>
-</div>
+        <br><br>
+        <button label="Back" type="button" class="btn btn-dark" (click)="ADDConsequence()"><i class="pi pi-plus"></i>
+            ADD</button>
+    </div>
+</p-dialog>
 
 
 <div class="modal fade" id="ConsequenceSubmitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
