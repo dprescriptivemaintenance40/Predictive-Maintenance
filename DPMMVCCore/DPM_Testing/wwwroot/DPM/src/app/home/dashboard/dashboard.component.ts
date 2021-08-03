@@ -89,6 +89,25 @@ export class DashboardComponent {
   public PredictonDataDegradeCount: any = [];
   public PredictionDataBadCount: any = [];
 
+    //For FutuerPrediction
+    public FutuerselectedYear: string = "";
+    public FutuerPredictedDate = [];
+    public FuterPredictyearlist = [];
+    public FutuerPredictionData: string = "";
+    public FutuerPredictionAllData: any;
+    public FutuerPredictionDataNormalCount: any = [];
+    public FutuerPredictionDataIncipientCount: any = [];
+    public FutuerPredictonDataDegradeCount: any = [];
+    public FutuerPredictionDataBadCount: any = [];
+    public FutuerPredictionDegradecount: number = 0;
+    public FutuerPredictionNormalcount: number = 0;
+    public FutuerPredictionIncipientcount: number = 0;
+    public FutuerPredictionbadcount: number = 0;
+    public FutuerPrediction: any = [];
+
+    public PredictionShow:boolean = true;
+    public FuterPredictionShow:boolean = false;
+    
   constructor(private title: Title,
     private http: HttpClient,
     private messageService: MessageService,
@@ -105,8 +124,8 @@ export class DashboardComponent {
     this.GetAllRecords()
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
-    this.GerAllPredictionRecords()
-
+    this.GerAllPredictionRecords();
+    // this.GerAllFutuerPredictionRecords();
   }
   isDateInArray(needle, haystack) {
     for (var i = 0; i < haystack.length; i++) {
@@ -209,6 +228,7 @@ export class DashboardComponent {
           this.PredictionAllRecordDonught();
           this.PredictionAllRecordBarcharts()
           this.PredictionAllRecordPie()
+          this.ComboChart()
         }, error => {
           console.log(error.error)
         })
@@ -247,7 +267,6 @@ export class DashboardComponent {
     this.PredictionAllRecordPie()
 }
   PredictFModeType() {
-    
     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
@@ -438,6 +457,7 @@ export class DashboardComponent {
     this.AllRecordBarcharts();
     this.ClassificationOfAllpolarchart()
     this.ClassificationOfAllRecordDonught()
+    this.ComboChart();
   }
 
 
@@ -897,4 +917,517 @@ export class DashboardComponent {
     });
   }
 
+
+
+  GerAllFutuerPredictionRecords() {
+    this.FutuerPredictionDataNormalCount = null;
+    this.FutuerPredictionDataIncipientCount = null;
+    this.FutuerPredictonDataDegradeCount = null;
+    var FutuerPredictionnormalCount: any = [];
+    var FutuerPredictionnormalValuation: number = 0;
+    var FutuerPredictionincipientCount: any = [];
+    var FutuerPredictionincipientValuation: number = 0;
+    var FutuerPredictiondegradeCount: any = [];
+    var FutuerPredictiondegradeValuation: number = 0;
+    this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.GetAllFutuerRecords)
+      .subscribe(
+        res => {
+          this.FutuerPredictionAllData = res;
+          this.FutuerPredictionAllData.forEach(element => {
+            this.FutuerPrediction.push(element.Prediction);
+          });
+          this.FutuerPrediction.forEach((value) => {
+            if (value == 'normal') {
+              FutuerPredictionnormalValuation = FutuerPredictionnormalValuation + 1;
+              FutuerPredictionnormalCount.push(FutuerPredictionnormalValuation);
+              FutuerPredictionincipientCount.push(FutuerPredictionincipientValuation);
+              FutuerPredictiondegradeCount.push(FutuerPredictiondegradeValuation)
+
+            } else if (value == 'incipient') {
+
+              FutuerPredictionincipientValuation = FutuerPredictionincipientValuation + 1;
+              FutuerPredictionincipientCount.push(FutuerPredictionincipientValuation);
+              FutuerPredictionnormalCount.push(FutuerPredictionnormalValuation);
+              FutuerPredictiondegradeCount.push(FutuerPredictiondegradeValuation)
+
+            } else {
+
+              FutuerPredictiondegradeValuation = FutuerPredictiondegradeValuation + 1;
+              FutuerPredictiondegradeCount.push(FutuerPredictiondegradeValuation)
+              FutuerPredictionnormalCount.push(FutuerPredictionnormalValuation);
+              FutuerPredictionincipientCount.push(FutuerPredictionincipientValuation);
+
+            }
+            this.FutuerPredictionDataNormalCount = FutuerPredictionnormalCount;
+            this.FutuerPredictionDataIncipientCount = FutuerPredictionincipientCount;
+            this.FutuerPredictonDataDegradeCount = FutuerPredictiondegradeCount;
+
+          });
+          this.FutuerPredictionAllData.forEach(Futuerpredict => {
+            this.FutuerPredictionData = Futuerpredict.Prediction;
+            let FutuerPredictyeardata = { FutuerPredictyearId: 0, FutuerPredictyearname: '' };
+
+            FutuerPredictyeardata.FutuerPredictyearname = moment(Futuerpredict.PredictedDate).format('YYYY')
+            this.FutuerPredictedDate.push(FutuerPredictyeardata);
+          })
+          this.FuterPredictyearlist = this.FutuerPredictedDate.reduce((m, o) => {
+            var found = m.find(p => p.FutuerPredictyearname === o.FutuerPredictyearname);
+            if (found) {
+            } else {
+              m.push(o);
+            }
+            return m;
+          }, []);
+
+          for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
+            if (this.FutuerPrediction[i] == "degarde" || this.FutuerPrediction[i] == "degrade") {
+              this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1
+            } else if (this.FutuerPrediction[i] == "incipient") {
+              this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1
+            } else if (this.FutuerPrediction[i] == "normal") {
+              this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1
+            } else
+              this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
+          }
+          this.FutuerlineChart()
+          this.FutuerdDonughtchart()
+          this.Futuerpiechart()
+        }, error => {
+          console.log(error.error)
+        })
+  }
+
+  FutuergroupBy(list, keyGetter) {
+    list.reduce((m, o) => {
+      var found = m.find(p => p.FutuerPredictyearname === o.FutuerPredictyearname);
+      if (found) { }
+      else {
+        m.push(o);
+      }
+      return m;
+    },
+      []);
+  }
+
+  FutuerDates() {
+    let SN = this.FutuerPredictionAllData.filter(val => moment(val.PredictedDate).format('YYYY') === this.FutuerselectedYear.toString());
+    this.FutuerPredictionDegradecount = 0
+    this.FutuerPredictionIncipientcount = 0
+    this.FutuerPredictionNormalcount = 0
+    this.FutuerPredictionbadcount = 0
+
+    //  for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
+    //   if (this.FutuerPrediction[i] == "degarde" || this.FutuerPrediction[i] == "degrade") {
+    //     this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1
+    //   } else if (this.FutuerPrediction[i] == "incipient") {
+    //     this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1
+    //   } else if (this.FutuerPrediction[i] == "normal") {
+    //     this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1
+    //   } else
+    //     this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
+    // }
+    for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
+      if (`${this.FutuerPredictionAllData[i]}.${this.fmtype}` == "degarde") {
+        this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1
+      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype}` == "incipient") {
+        this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1
+      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype}` == "normal") {
+        this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1
+      } else
+        this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
+    }
+
+    this.FutuerlineChart()
+    this.FutuerdDonughtchart()
+    this.Futuerpiechart()
+    }
+
+  FutuerlineChart() {
+    this.changeDetectorRef.detectChanges();
+    let FutuerdateForFilter = [];
+    this.FutuerPredictionDataNormalCount = []
+    this.FutuerPredictionDataIncipientCount = []
+    this.FutuerPredictonDataDegradeCount = []
+    for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
+      if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
+        FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
+      }
+    }
+    let FutuerdateForFilter1 = [];
+    FutuerdateForFilter.forEach((value) => {
+      var Date = moment(value).format('YYYY-MM-DD');
+      FutuerdateForFilter1.push(Date);
+    });
+
+    for (var i = 0; i < FutuerdateForFilter1.length; i++) {
+      var a = [];
+      this.FutuerPredictionAllData.forEach(element => {
+        if (moment(element.PredictedDate).format('YYYY-MM-DD') == FutuerdateForFilter1[i]) {
+          if (this.fmtype != "") {
+            if (this.fmtype == "SSRB") {
+              a.push(element.SSRB)
+            } else if (this.fmtype == "CF") {
+              a.push(element.CF)
+            } if (this.fmtype == "RD") {
+              a.push(element.RD)
+            }
+          } else {
+            a.push(element.Prediction)
+          }
+        }
+      });
+
+      console.log(a);
+      var normal = 0
+      var incipient = 0
+      var degrade = 0
+      var bad = 0
+
+      a.forEach((value) => {
+        if (value == 'normal') {
+          normal = normal + 1
+        } else if (value == 'incipient') {
+          incipient = incipient + 1
+        } else if (value == 'degarde' || value == 'degrade') {
+          degrade = degrade + 1
+        } else {
+          bad = bad + 1
+        }
+      });
+      this.FutuerPredictionDataNormalCount.push(normal)
+      this.FutuerPredictionDataIncipientCount.push(incipient)
+      this.FutuerPredictonDataDegradeCount.push(degrade)
+      this.FutuerPredictionDataBadCount.push(bad)
+    }
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("BarChart", {
+      type: 'bar',
+      data: {
+        labels: FutuerdateForFilter1,
+        fill: true,
+        datasets: [
+          {
+            label: "Normal",
+            data: this.FutuerPredictionDataNormalCount,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+          }, {
+            label: "Incipent",
+            data: this.FutuerPredictionDataIncipientCount,
+            borderWidth: 1,
+            borderColor: "#FFA500",
+            backgroundColor: '#FFA500',
+          },
+          {
+            label: "Degrade",
+            data: this.FutuerPredictonDataDegradeCount,
+            borderWidth: 1,
+            borderColor: " #FF0000",
+            backgroundColor: '#FF0000',
+          }
+        ]
+      },
+      options: {
+        events: [],
+        scales: {
+          xAxes: [{
+            stacked: true,
+          }],
+          yAxes: [{
+            stacked: true,
+            ticks: {
+              max: 30,
+            }
+          }]
+        }
+      }
+      
+    });
+  }
+
+  FutuerdDonughtchart() {
+    var a: any = [];
+    this.FutuerPredictionNormalcount = 0,
+      this.FutuerPredictionIncipientcount = 0,
+      this.FutuerPredictionDegradecount = 0;
+    this.FutuerPredictionAllData.forEach(element => {
+      if (this.fmtype != "") {
+        if (this.fmtype == "SSRB") {
+          a.push(element.SSRB)
+        } else if (this.fmtype == "CF") {
+          a.push(element.CF)
+        } if (this.fmtype == "RD") {
+          a.push(element.RD)
+        }
+      } else {
+        a.push(element.Prediction)
+      }
+
+    });
+    a.forEach(element => {
+      if (element == 'normal') {
+        this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1;
+      } else if (element == 'incipient') {
+        this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1;
+      } else if (element == 'degrade' || element == 'degarde') {
+        this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1;
+      }
+    });
+    this.chart = new Chart('donughtChart', {
+      type: 'doughnut',
+      data: {
+        labels: ["Normal", "incipient", "Degrade"],
+        datasets: [
+          {
+            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+            data: [this.FutuerPredictionNormalcount, this.FutuerPredictionIncipientcount, this.FutuerPredictionDegradecount]
+          }
+        ]
+      },
+      options: {
+        events: [],
+      }
+    });
+
+  }
+
+
+  Futuerpiechart() {
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart('FutuerPredictionPie', {
+      type: 'polarArea',
+      data: {
+        labels: ["Normal", "incipient", "Degrade"],
+        datasets: [
+          {
+            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+            data: [this.FutuerPredictionNormalcount, this.FutuerPredictionIncipientcount, this.FutuerPredictionDegradecount]
+          }
+        ]
+      },
+      options: {
+        events: [],
+      }
+    });
+  }
+  FutuerPredictionClick(){
+    this.changeDetectorRef.detectChanges();
+    this.GerAllFutuerPredictionRecords();
+    this.FuterPredictionShow= true;
+    this.PredictionShow=false;
+    this.PredictionselectedYear=""
+    this.fmtype =""
+
+  }
+  PredictionOnClick(){
+    this.changeDetectorRef.detectChanges();
+    this.GerAllPredictionRecords();
+    this.FuterPredictionShow=false ;
+    this.PredictionShow=true;
+    this.FutuerselectedYear=""
+    this.fmtype =""
+  }
+
+  ComboChart(){
+    this.changeDetectorRef.detectChanges();
+    let dateForFilter = [];
+    this.PredictionDataNormalCount = []
+    this.PredictionDataIncipientCount = []
+    this.PredictonDataDegradeCount = []
+
+    var Glitches_PredictionDataNormalCount = []
+    var Glitches_PredictionDataIncipientCount = []
+    var Glitches_PredictonDataDegradeCount = []
+
+    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+      if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
+        dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
+      }
+    }
+    let dateForFilter1 = [];
+    dateForFilter.forEach((value) => {
+      var Date = moment(value).format('YYYY-MM-DD');
+      dateForFilter1.push(Date);
+    });
+    for (var i = 0; i < dateForFilter1.length; i++) {
+      var a = [];
+      this.ScrewPredictionAllData.forEach(element => {
+        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
+          if (this.fmtype != "") {
+            if (this.fmtype == "SSRB") {
+              a.push(element.SSRB)
+            } else if (this.fmtype == "CF") {
+              a.push(element.CF)
+            } if (this.fmtype == "RD") {
+              a.push(element.RD)
+            }
+          } else {
+            a.push(element.Prediction)
+          }
+        }
+      });
+
+      console.log(a);
+      var normal = 0
+      var incipient = 0
+      var degrade = 0
+      var bad = 0
+
+      a.forEach((value) => {
+        if (value == 'normal') {
+          normal = normal + 1
+        } else if (value == 'incipient') {
+          incipient = incipient + 1
+        } else if (value == 'degarde' || value == 'degrade') {
+          degrade = degrade + 1
+        } else {
+          bad = bad + 1
+        }
+      });
+      this.PredictionDataNormalCount.push(normal)
+      this.PredictionDataIncipientCount.push(incipient)
+      this.PredictonDataDegradeCount.push(degrade)
+      this.PredictionDataBadCount.push(bad)
+
+       Glitches_PredictionDataNormalCount.push(normal) 
+       Glitches_PredictionDataIncipientCount.push(incipient) 
+       Glitches_PredictonDataDegradeCount.push(degrade)
+     
+    }
+    let SCdateForFilter = [];
+    this.TrainDataIncipientCount = []
+    this.TrainDataNormalCount = []
+    this.TrainDataDegradeCount = []
+
+    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+      if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), SCdateForFilter)) {
+        SCdateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
+      }
+    }
+    let dateForFilter2 = [];
+    SCdateForFilter.forEach((value) => {
+      var Date = moment(value).format('YYYY-MM-DD');
+      dateForFilter2.push(Date);
+      dateForFilter1.push(Date);
+    });
+    for (var i = 0; i < dateForFilter2.length; i++) {
+      var sc = [];
+      this.ScrewCompressorAllData.forEach(element => {
+        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter2[i]) {
+          sc.push(element.Classification)
+        }
+      });
+      console.log(sc);
+      var normal = 0
+      var incipient = 0
+      var degrade = 0
+      var bad = 0
+      sc.forEach((value) => {
+        if (value == 'normal') {
+          normal = normal + 1
+        } else if (value == 'incipient') {
+          incipient = incipient + 1
+        } else if (value == 'degarde' || value == 'degrade') {
+          degrade = degrade + 1
+        } else {
+          bad = bad + 1
+        }
+      });
+      this.PredictionDataNormalCount.push(normal)
+      this.PredictionDataIncipientCount.push(incipient)
+      this.PredictonDataDegradeCount.push(degrade)
+      this.PredictionDataBadCount.push(bad)
+
+      Glitches_PredictionDataNormalCount.push()
+      Glitches_PredictionDataIncipientCount.push()
+      Glitches_PredictonDataDegradeCount.push()
+     
+    }
+    // let FutuerdateForFilter = [];
+    // this.FutuerPredictionDataNormalCount = []
+    // this.FutuerPredictionDataIncipientCount = []
+    // this.FutuerPredictonDataDegradeCount = []
+    // for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
+    //   if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
+    //     FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
+    //   }
+    // }
+    // let FutuerdateForFilter1 = [];
+    // FutuerdateForFilter.forEach((value) => {
+    //   var Date = moment(value).format('YYYY-MM-DD');
+    //   FutuerdateForFilter1.push(Date);
+    // });
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("ComboChart", {
+      type: 'line',
+      data: {
+        labels: dateForFilter1,
+        datasets: [{
+          label: "Forcast_Normal",
+          data: this.PredictionDataNormalCount,
+          borderColor: '#008000',
+          borderDash: [1, 1],
+          pointBackgroundColor: "transparent"
+        }, {
+          label: "Normal",
+          data: Glitches_PredictionDataNormalCount,
+          borderColor: '#008000',
+          pointBackgroundColor: "transparent"
+        }, {
+          label: "Forcast_Incipient",
+          data: this.PredictionDataIncipientCount,
+          borderColor: '#FFA500',
+          borderDash: [1, 1],
+          pointBackgroundColor: "transparent"
+        }, {
+          label: "Incipient",
+          data: Glitches_PredictionDataIncipientCount,
+          borderColor: '#FFA500',
+          pointBackgroundColor: "transparent"
+        }, {
+          label: "Forcast_Degrade",
+          data: this.PredictonDataDegradeCount,
+          borderColor: '#FF0000',
+          borderDash: [1, 1],
+          pointBackgroundColor: "transparent"
+        }, {
+          label: "Degrade",
+          data: Glitches_PredictonDataDegradeCount,
+          borderColor: '#FF0000',
+          pointBackgroundColor: "transparent"
+        }]
+      },
+      options: {
+        responsive: true,
+        scrollbar: {
+          enabled: true
+      },
+        events: [],
+        elements: {
+          line: {
+            fill: false
+          }
+        },
+        scales: {
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true
+              }
+            }
+          ],
+          yAxes: [{
+            ticks: {
+              min: 0,
+              beginAtZero: true,
+              // stepSize: 1
+               max: 10,
+            }
+          }]
+        },
+      }
+      
+    });
+  }
 }

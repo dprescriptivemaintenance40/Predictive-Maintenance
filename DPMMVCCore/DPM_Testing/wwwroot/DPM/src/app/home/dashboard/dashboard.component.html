@@ -85,11 +85,19 @@
     </div>
 </div><br><br>
 
-<div class="card shadow div-in-middle" style="width: 70rem;">
+<div class="card shadow div-in-middle" style="width: 70rem;" *ngIf="PredictionShow">
     <div style="text-align: center">
         <h5><b> Prediction data</b> </h5>
     </div><br>
     <div style="margin: 20px;">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="card">
+                <button class="btn btn-dark"  (click)="FutuerPredictionClick()">Futuer Prediction</button>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-2">
                 <div class="card">
@@ -141,7 +149,6 @@
             </div>
         </div>
     </div>
-
     <div class="container">
         <div class="row">
             <div>
@@ -170,7 +177,109 @@
     </div>
 </div>
 <br><br>
+<div class="card shadow div-in-middle" style="width: 70rem;" *ngIf="FuterPredictionShow">
+    <div style="text-align: center">
+        <h5><b> Futuer Prediction data</b> </h5>
+    </div><br>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card">
+            <button class="btn btn-dark"  (click)="PredictionOnClick()"> Prediction</button>
+            </div>
+        </div>
+    </div>
+    <div style="margin: 20px;">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="card">
+                    <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FutuerDates()">
+                        <option value="">Select Failuer Mode</option> Type
+                        <ng-container *ngFor="let mode of FMList">
+                            <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card">
+                    <select name="FutuerselectedYear" [(ngModel)]="FutuerselectedYear"
+                        (ngModelChange)="FutuerDates()">
+                        <option value="">Select Year</option>
+                        <ng-container *ngFor="let year of FuterPredictyearlist">
+                            <option [value]="year.FutuerPredictyearname" name="FutuerselectedYear">
+                                {{year.FutuerPredictyearname}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card" style="width:12rem;border:none">
+                    <p-card>
+                        <strong style="text-align: left;color:#008000">Normal </strong><br>
+                        <h1 style="text-align: center;color:#008000">{{FutuerPredictionNormalcount}}</h1>
+                    </p-card>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card" style="width:12rem;border:none">
+                    <p-card>
+                        <strong style="text-align: left;color:#FFA500">Incipient</strong><br>
+                        <h1 style="text-align: center;color:#FFA500">{{FutuerPredictionIncipientcount}}</h1>
+                    </p-card>
+                </div>
 
+            </div>
+            <div class="col-sm">
+                <div class="card" style="width:12rem;border:none">
+                    <p-card>
+                        <strong style="text-align: left;color:#FF0000">Degrade</strong><br>
+                        <h1 style="text-align: center;color:#FF0000">{{FutuerPredictionDegradecount}}</h1>
+                    </p-card>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="card">
+                            <strong> Futuer Prediction Pie chart</strong>
+                            <canvas id="FutuerPredictionPie"></canvas>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="col-sm">
+                    <div class="card">
+                        <strong>Futuer Prediction Donut chart</strong>
+                        <canvas id="donughtChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="card">
+                    <strong>Futuer Prediction chart</strong>
+                    <canvas id="BarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<div class="card shadow div-in-middle" style="width: 100%;overflow: scroll;">
+    <div class="card">
+        <div class="chartWrapper">
+            <div class="chartAreaWrapper">
+                <strong> Combination Of Prediction & Futuer Prediction </strong>
+                <canvas id="ComboChart" height="400" width="1200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
 <div class="card shadow div-in-middle" style="width: 70rem;">
     <div class="row">
         <div class="col-sm" style="padding:30px;">
@@ -338,4 +447,8 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div>
+        <canvas id="Combochart"></canvas>
     </div>
