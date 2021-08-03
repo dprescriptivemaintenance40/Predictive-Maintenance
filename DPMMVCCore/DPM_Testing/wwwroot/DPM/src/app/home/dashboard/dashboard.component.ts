@@ -1400,9 +1400,6 @@ export class DashboardComponent {
       },
       options: {
         responsive: true,
-        scrollbar: {
-          enabled: true
-      },
         events: [],
         elements: {
           line: {
@@ -1419,7 +1416,6 @@ export class DashboardComponent {
           ],
           yAxes: [{
             ticks: {
-              min: 0,
               beginAtZero: true,
               // stepSize: 1
                max: 10,

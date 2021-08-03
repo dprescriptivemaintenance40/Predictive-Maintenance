@@ -6,13 +6,10 @@
   
   .chartWrapper > canvas {
     position: absolute;
-    left: 0;
-    top: 0;
-    pointer-events: none;
     width: 100%;
   }
   
   .chartAreaWrapper {
-    width: 1500px;
+    width: 2000px;
   }
   
