@@ -121,10 +121,12 @@
                             <tr *ngFor="let func of failuerMode; let i=index;">
                                 <td>
                                         <p-checkbox name="{{i}}" 
-                                                (onChange)="FailureModeSelectedForPrimeNg(func, $event)"
-                                                [checked]="func.values"
-                                                label="{{func.Description}}"
-                                                [(ngModel)]="func.checked"></p-checkbox>
+                                                (click)="FailureModeSelected(func, $event)"
+                                                [binary]="true"
+                                                [(ngModel)]="func.checked">
+                                        </p-checkbox>
+                                                <label >{{func.Description}}</label>
+                                                <!-- (click)="FailureModeSelected(func, $event)" -->
                                     <!-- <label> <input type="checkbox"
                                                name = "{{i}}"
                                                (change)="FailureModeSelected(func, $event)"
