@@ -4169,7 +4169,8 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Interval v
  }
 
  async ADDalphaBetaSave(){
-   this.ADDpatternaddshow = true
+  // this.ADDpatternaddshow = true
+  this.AddFMPatternAddEnable = true;
    this.changeDetectorRef.detectChanges();
    const element = document.querySelector("#ScrollToFCATree")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
