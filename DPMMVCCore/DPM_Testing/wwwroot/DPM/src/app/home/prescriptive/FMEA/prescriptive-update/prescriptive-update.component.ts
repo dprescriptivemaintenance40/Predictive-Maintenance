@@ -4567,9 +4567,8 @@ async ADDMSSToTree() {
       this.dropedConsequenceAffectFailureMode.push(a)
     }
   }
-
   FailureModeSelected(value, event){
-    if(event.target.checked === false){
+    if(event.target.ariaChecked === null){
       var findIndexOF = value.PrescriptiveLookupMasterId
       var index = -1;
       var filteredObj = this.dropedMode.find((item, i) => {
@@ -4580,8 +4579,9 @@ async ADDMSSToTree() {
       });
       this.failuerMode[index].checked = false;
       this.dropedMode.splice(index, 1)
-    }else{
-      this.dropedMode = []
+    }
+    
+    if(event.target.ariaChecked === 'true'){
       let obj = {}
       obj['Date']= value.Date;
       obj['Description']= value.Description;
@@ -4590,7 +4590,7 @@ async ADDMSSToTree() {
       obj['MachineType']= value.MachineType;
       obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
       this.dropedMode.push(obj);
-
+  
       var fIO = value.PrescriptiveLookupMasterId
       var index1 = -1;
       var filtObj = this.failuerMode.find((item, i) => {
@@ -4600,13 +4600,6 @@ async ADDMSSToTree() {
         }
       });
       this.failuerMode[index1].checked = true;
-      for (let index = 0; index < this.failuerMode.length; index++) {
-        if(index != index1){
-         if(this.failuerMode[index].checked !== undefined){
-            this.failuerMode[index].checked = false
-         }
-        }
-      }
     }
   }
 

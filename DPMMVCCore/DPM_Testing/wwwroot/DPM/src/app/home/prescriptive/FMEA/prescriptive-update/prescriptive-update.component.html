@@ -106,10 +106,11 @@
                                 <tr *ngFor="let func of failuerMode; let i=index;">
                                     <td>
                                         <p-checkbox name="{{i}}" 
-                                        (onChange)="FailureModeSelectedForPrimeNg(func, $event)"
-                                        [checked]="func.values"
-                                        label="{{func.Description}}"
-                                        [(ngModel)]="func.checked"></p-checkbox>
+                                                (click)="FailureModeSelected(func, $event)"
+                                                [binary]="true"
+                                                [(ngModel)]="func.checked">
+                                        </p-checkbox>
+                                                <label >{{func.Description}}</label>
                                         <!-- <label>
                                             <input type="checkbox"
                                                    name = "{{i}}"
@@ -506,7 +507,7 @@
         </ng-template>
         <div *ngIf="Consequences1" class="p-fluid p-formgrid p-grid">
             <div style="margin-left: 20px;" class="p-fluid">
-                <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal
+                <p> Will the occurrence of the failure mode ( on its own) be evident to operational staff during normal
                     operation of the plant?</p>
             </div>
             <div class="container">
@@ -678,10 +679,11 @@
                                     <tr *ngFor="let func of failuerMode; let i=index;">
                                         <td>
                                             <p-checkbox name="{{i}}" 
-                                            (onChange)="FailureModeSelectedForPrimeNg(func, $event)"
-                                            [checked]="func.values"
-                                            label="{{func.Description}}"
-                                            [(ngModel)]="func.checked"></p-checkbox>
+                                            (click)="FailureModeSelected(func, $event)"
+                                            [binary]="true"
+                                            [(ngModel)]="func.checked">
+                                            </p-checkbox>
+                                            <label >{{func.Description}}</label>
                                             <!-- <label>
                                                 <input type="checkbox"
                                                        name = "{{i}}"
@@ -1377,7 +1379,7 @@
                                             </div>
                                             <div class="row" style="padding: 15px;">
                                                 <div class="col-md-3">
-                                                    <label>Do you want webal analysis for alpha and beta</label>
+                                                    <label>Do you want weibull analysis for alpha and beta</label>
 
                                                 </div>
                                                 <div class="col-sm">
@@ -2269,7 +2271,7 @@
             </div>
             <div class="row" style="padding: 15px;">
                 <div class="col-md-3">
-                    <label>Do you want new alpha and beta values using webal or you can directly change alpha and beta values from the above</label>
+                    <label>Do you want new alpha and beta values using weibull or you can directly change alpha and beta values from the above</label>
                     
                 </div>
                 <div class="col-sm">
