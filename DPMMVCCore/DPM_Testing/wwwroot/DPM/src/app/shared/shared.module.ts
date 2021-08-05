@@ -26,6 +26,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import {CalendarModule} from 'primeng/calendar';
 import {TreeTableModule} from 'primeng/treetable';
+import {CheckboxModule} from 'primeng/checkbox';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
@@ -52,6 +53,7 @@ import {TreeTableModule} from 'primeng/treetable';
         TooltipModule,
         PanelMenuModule,
         TreeTableModule,
+        CheckboxModule,
         CalendarModule],
     exports: [CommonModule,
         CommonLoadingComponent,
@@ -80,6 +82,7 @@ import {TreeTableModule} from 'primeng/treetable';
         TooltipModule,
         PanelMenuModule,
         TreeTableModule,
+        CheckboxModule,
         CalendarModule]
 })
 export class SharedModule {

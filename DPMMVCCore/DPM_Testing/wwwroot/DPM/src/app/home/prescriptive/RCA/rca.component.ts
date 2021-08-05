@@ -427,7 +427,7 @@ export class RCAComponent {
             this.ADDRCAForSaveNodeCount = 0;
             await this.TraverseNestedJson(this.files, 'count')
             if (this.ADDRCAMachineType.length > 0 && this.ADDRCAFailureMode.length > 0) {
-                await this.TraverseNestedJson(this.files, 'add')
+                 this.TraverseNestedJson(this.files, 'add')
 
             } else {
                 this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Fill all details' })
@@ -807,6 +807,9 @@ export class RCAComponent {
    
                 }
                 }
+                if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
+                    this.SaveADDRCAFilesToDatabase();
+                }
             }
             if (val[index].children.length > 0) {
                 var Data: any = val[index].children;
@@ -869,6 +872,9 @@ export class RCAComponent {
                                 this.SaveADDRCAFilesToDatabase();
                             }
                         }
+                        }
+                        if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
+                            this.SaveADDRCAFilesToDatabase();
                         }
                     }
                     if (Data[index1].children.length > 0) {
@@ -1442,3 +1448,7 @@ export class RCAComponent {
     }
 
 }
+
+
+
+
