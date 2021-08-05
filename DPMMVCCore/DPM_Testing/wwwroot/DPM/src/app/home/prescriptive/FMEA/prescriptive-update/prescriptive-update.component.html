@@ -7,8 +7,8 @@
     <button *ngIf="AddFailureMode" type="button" class="btn btn-dark" style="float: right" (click)="AddFailureModeToTree()" pTooltip="If you want to update the tree click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button><br><br>
 </div><br>
 <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="prescriptive">
-    <button *ngIf="showFullScreen" pButton pRipple type="button" (click)="FullScreen()" icon="pi-window-maximize" class="p-button-rounded p-button-secondary p-button-text">Max</button>
-    <button *ngIf="!showFullScreen" pButton pRipple type="button" (click)="ExitFullScreen()" icon="pi-window-minimize" class="p-button-rounded p-button-secondary p-button-text">Min</button>
+    <button *ngIf="showFullScreen" pButton pRipple type="button" (click)="FullScreen()"  class="p-button-rounded p-button-secondary p-button-text fixed-max-btn" aria-placeholder="Click to view tree"><i class="pi pi-window-maximize"></i></button>
+    <button *ngIf="!showFullScreen" pButton pRipple type="button" (click)="ExitFullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn"><i class="pi pi-window-minimize"></i></button>
     <p-organizationChart [value]="data1" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
             <div class="node-header p-corner-top">
