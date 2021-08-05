@@ -1019,7 +1019,7 @@ small .pi {
   }
 
   .dropdown-menu {
-    box-shadow: none !important;
+    box-shadow: rgb(0 0 0 / 13%) 0px 25px 20px -20px !important;
     border-radius: 0;
     left: -5px !important;
     top: 8px !important;
@@ -1030,11 +1030,23 @@ small .pi {
     justify-content: flex-start;
     align-items: center;
     padding: 15px;
+
     .alert-dpmprimary {
       margin-bottom: 0;
     }
   }
-
+  .dpm-menu-icons {
+    label {
+      margin: 0;
+      a {
+        border: none !important;
+        padding: 0 !important;
+        font-size: 14px;
+        margin: 0;
+        padding: 0 10px;
+      }
+    }
+  }
   .dpm-menu-icons {
     flex-direction: row;
     position: relative;
@@ -1042,12 +1054,23 @@ small .pi {
       margin-bottom: 10px;
       display: inline-block;
     }
+    a.nav-link {
+      border: none;
+      width: auto;
+      color: $primary-color;
+      text-align: left;
+      padding-left: 0;
+      display: block;
+      i {
+        font-size: 11px;
+      }
+    }
     a {
       background-color: #fff;
       border: 1px solid $primary-color;
       text-decoration: none;
       color: $primary-color;
-      font-size: 14px;
+      font-size: 13px;
       padding: 9px 10px;
       border-radius: 5px;
       margin: 5px 0;
