@@ -303,6 +303,10 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
+      label: 'Summary Report',
+      url: '#/Home/Prescription'
+    },
+    {
       label: 'Recycle Bin',
       url: '#/Home/RecycleBin'
     },

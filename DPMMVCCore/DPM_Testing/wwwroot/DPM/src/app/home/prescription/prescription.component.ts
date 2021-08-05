@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-prescription',
@@ -26,7 +27,8 @@ export class PrescriptionComponent implements OnInit {
   private CBADataList: any = [];
   private RCARecords : any = [];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private cdr : ChangeDetectorRef) {
     this.SelectionEnable = true
     this.MachineEquipmentSelect();
     this.getPrescriptiveRecords();
@@ -51,7 +53,6 @@ export class PrescriptionComponent implements OnInit {
 
     this.loading = true;
   }
-
 
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
@@ -150,7 +151,7 @@ export class PrescriptionComponent implements OnInit {
     }, 1000);
   }
 
-  onNodeExpand(event) {
+async onNodeExpand(event) {
     this.loading = true;
 
     setTimeout(() => {
@@ -158,6 +159,11 @@ export class PrescriptionComponent implements OnInit {
       const node = event.node;
       if (node.data.name === 'CBA' || node.data.name === 'MSS'|| node.data.name === 'FCA'|| node.data.name === 'FMEA') {
         let children = []
+        if(node.data.name === 'MSS'){
+          children.push(
+            { data: { name: 'Good Engineering Practice : Task List' , type:'GEP', discription: 'Maintenance Interval' }, leaf: false  },
+          );
+        }
         for (let index = 0; index < this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.length; index++) {
           let d = this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes[index]
           children.push(
@@ -278,6 +284,33 @@ export class PrescriptionComponent implements OnInit {
             }
           });
           node.children = children;
+        }else if (node.data.type === 'GEP') {
+          let children = []
+          this.http.get('dist/DPM/assets/GoodEngineeringPratice.xlsx',{responseType:'blob'}).subscribe(
+            (res : any) => {
+              let fileReader = new FileReader();
+                      fileReader.readAsArrayBuffer(res);
+                      fileReader.onload = async (e) => {
+                          var arrayBuffer: any = fileReader.result;
+                          var data = new Uint8Array(arrayBuffer);
+                          var arr = new Array();
+                          for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                          var bstr = arr.join("");
+                          var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+                          var first_sheet_name = workbook.SheetNames[0];
+                          var worksheet = workbook.Sheets[first_sheet_name];
+                          var list : any = await XLSX.utils.sheet_to_json(worksheet, { raw: true });
+                          list.forEach(element => {
+                            children.push(
+                              { data: { name: `${element.SrNo}. ${element.MaintenanceTask}`  , discription: `${element.MaintenanceInterval}`} },
+                            )
+                          });
+                          node.children = children;
+                          this.cdr.detectChanges();
+                      }
+            }
+          )
+          
         }
       }
 
