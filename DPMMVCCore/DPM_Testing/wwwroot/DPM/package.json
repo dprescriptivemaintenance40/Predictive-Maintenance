@@ -24,6 +24,7 @@
         "bootstrap": "^4.5.3",
         "chart.js": "^2.9.4",
         "dom-to-image": "^2.6.0",
+        "dygraphs": "^2.1.0",
         "html2canvas": "^1.0.0-rc.7",
         "jspdf": "^1.4.1",
         "moment": "^2.29.1",

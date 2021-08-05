@@ -7,6 +7,9 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import * as Chart from 'chart.js';
 import * as moment from "moment";
 import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.directive";
+import Dygraph from 'dygraphs'
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -14,6 +17,8 @@ import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.di
   providers: [MessageService]
 })
 export class DashboardComponent {
+  @ViewChild('graph')
+  graphdiv: ElementRef;
   chart: any;
   public FromDate: string = "";
   public FailuerModeType: string = ""
@@ -107,6 +112,12 @@ export class DashboardComponent {
 
     public PredictionShow:boolean = true;
     public FuterPredictionShow:boolean = false;
+
+    public td2: any = [];
+    public td1: any = [];
+    public ts1: any = [];
+    public ts2: any = [];
+    public TD2Data: any = [];
     
   constructor(private title: Title,
     private http: HttpClient,
@@ -126,6 +137,7 @@ export class DashboardComponent {
     this.getAllRecordsbyTag();
     this.GerAllPredictionRecords();
     // this.GerAllFutuerPredictionRecords();
+    this.ComboChart1()
   }
   isDateInArray(needle, haystack) {
     for (var i = 0; i < haystack.length; i++) {
@@ -311,6 +323,8 @@ export class DashboardComponent {
             this.ClassificationData = r.Classification;
             r.FailureModeType
             this.FailuerModetypeFilteredData
+             this.td2 = r.TD2
+              this.TD2Data.push(this.td2 )
 
             this.FailuerModetypeFilteredData1 = { FMId: 0, FMname: '' };
             this.FailuerModetypeFilteredData1.FMname = r.FailureModeType
@@ -379,6 +393,8 @@ export class DashboardComponent {
           this.AllRecordBarcharts();
           this.ClassificationOfAllRecordDonught();
           this.ClassificationOfAllpolarchart()
+          // this.ScatterChart()
+          this.dygraph()
         }, error => {
           console.log(error.error)
         }
@@ -457,7 +473,7 @@ export class DashboardComponent {
     this.AllRecordBarcharts();
     this.ClassificationOfAllpolarchart()
     this.ClassificationOfAllRecordDonught()
-    this.ComboChart();
+     this.ComboChart();
   }
 
 
@@ -1229,6 +1245,309 @@ export class DashboardComponent {
     this.fmtype =""
   }
 
+  ComboChart1(){
+    this.chart = new Chart("comboChart1", {
+      type: 'line',
+      data: {
+        labels: ['01-01-2021',
+         ' 02-01-2021',
+          '03-01-2021',
+          '04-01-2021',
+          '05-01-2021',
+         ' 06-01-2021',
+          '07-01-2021',
+          '08-01-2021',
+         ' 09-01-2021',
+          '10-01-2021',
+          '11-01-2021',
+          '11-01-2021',
+          '12-01-2021' ,
+          '13-01-2021',
+         ' 14-01-2021',
+          '15-01-2021',
+          '16-01-2021',
+          '17-01-2021',
+          '18-01-2021',
+         ' 19-01-2021',
+          '20-01-2021',
+          '21-01-2021',
+          '22-01-2021',
+          '23-01-2021',
+          '24-01-2021',
+          '25-01-2021',
+          '26-01-2021',
+          '27-01-2021',
+          '28-01-2021',
+          '29-01-2021',
+          '30-01-2021',
+         ' 01-02-2021',
+          '02-02-2021',
+          '27-02-2021',
+          '28-02-2021',
+          '01-03-2021',
+          '02-03-2021',
+          '03-03-2021',
+          '04-03-2021',
+          '05-03-2021',
+          '06-03-2021',
+          '07-03-2021',
+          '08-03-2021',
+          '09-03-2021',
+          '10-03-2021',
+          '11-03-2021',
+          '12-03-2021',
+          '13-03-2021',
+          '14-03-2021',
+          '15-03-2021',
+          '16-03-2021',
+          '17-03-2021',
+          '18-03-2021',
+          '18-04-2021',
+          '19-04-2021',
+          '20-04-2021',
+          '21-04-2021',
+          '22-04-2021',
+          '23-04-2021',
+          '24-04-2021',
+          '25-04-2021',
+          '26-04-2021',
+          '27-04-2021',
+          '28-04-2021',
+          '29-04-2021',
+          '30-04-2021',
+          '01-05-2021',
+          '02-05-2021',
+          '03-05-2021',
+          '04-05-2021',
+          '05-05-2021',
+          '06-05-2021',
+          '07-05-2021',
+         ' 27-06-2021',
+          '28-06-2021',
+          '29-06-2021',
+          '30-06-2021',
+         ' 01-07-2021',
+          '02-07-2021',
+          '30-07-2021',
+         ' 31-07-2021',
+          '01-08-2021',
+          '02-08-2021',
+          '03-08-2021',
+          '04-08-2021',
+          ],
+        datasets: [{
+          label: "Forcast_Normal",
+          data: [203.7,
+            207.7,
+            181.35,
+            208.85,
+            218.01,
+            208.01,
+            223.06,
+            193.17,
+            206.18,
+            187.75,
+            202.69,
+            190.71,
+            202.25,
+            191.53,
+            205.76,
+            193.76,
+            202.15,
+            194.69,
+            194,
+            192.19,
+            193.87,
+            192.63,
+            181.34,
+            183.46,
+            183.62,
+            183.05,
+            189.67,
+            160.23,
+            181.49,
+            184.05,
+            196,
+            194,
+            178,
+            177,
+            192,
+            183,
+            174,
+            181,
+            189,
+            179,
+            188,
+            180,
+            198,
+            189,
+            196,
+            198,
+            190,
+            191,
+            191,
+            192,
+            194,
+            198,
+            192,
+            194,
+            193,
+            194,
+            191,
+            187,
+            183,
+            188,
+            186,
+            190,
+            193,
+            182,
+            196,
+            179,
+            193.87,
+            192.63,
+            181.34,
+            203.7,
+            207.7,
+            181.35,
+            208.85,
+            218.01,
+            208.01,
+            223.06,
+            193.17,
+            206.18,
+            187.75,
+            202.69,
+            190.71,
+            202.25,
+            191.53,
+            185.0018,
+            184.9803,
+            184.9588,
+            184.9373,],
+          borderColor: '#008000',
+          borderDash: [10, 10],
+          pointBackgroundColor: "transparent",
+          lineTension: 0
+        }, {
+          label: "Normal",
+          data: [203.7,
+            207.7,
+            181.35,
+            208.85,
+            218.01,
+            208.01,
+            223.06,
+            193.17,
+            206.18,
+            187.75,
+            202.69,
+            190.71,
+            202.25,
+            191.53,
+            205.76,
+            193.76,
+            202.15,
+            194.69,
+            194,
+            192.19,
+            193.87,
+            192.63,
+            181.34,
+            183.46,
+            183.62,
+            183.05,
+            189.67,
+            160.23,
+            181.49,
+            184.05,
+            196,
+            194,
+            178,
+            177,
+            192,
+            183,
+            174,
+            181,
+            189,
+            179,
+            188,
+            180,
+            198,
+            189,
+            196,
+            198,
+            190,
+            191,
+            191,
+            192,
+            194,
+            198,
+            192,
+            194,
+            193,
+            194,
+            191,
+            187,
+            183,
+            188,
+            186,
+            190,
+            193,
+            182,
+            196,
+            179,
+            193.87,
+            192.63,
+            181.34,
+            203.7,
+            207.7,
+            181.35,
+            208.85,
+            218.01,
+            208.01,
+            223.06,
+            193.17,
+            206.18,
+            187.75,
+            202.69,
+            190.71,
+            202.25,, ,
+           , , , , ,
+            ],
+          borderColor: '#008000',
+          pointBackgroundColor: "transparent",
+          lineTension: 0
+        },]
+      },
+      options: {
+        responsive: true,
+        events: [],
+        elements: {
+          line: {
+            fill: false
+          }
+        },
+        scales: {
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true
+              }
+            }
+          ],
+          yAxes: [{
+            ticks: {
+              // beginAtZero: true,
+              //  stepSize: 1,
+               max: 300,
+            }
+          }]
+        },
+      }
+      
+    });
+  }
+
   ComboChart(){
     this.changeDetectorRef.detectChanges();
     let dateForFilter = [];
@@ -1344,20 +1663,22 @@ export class DashboardComponent {
       Glitches_PredictonDataDegradeCount.push()
      
     }
-    // let FutuerdateForFilter = [];
-    // this.FutuerPredictionDataNormalCount = []
-    // this.FutuerPredictionDataIncipientCount = []
-    // this.FutuerPredictonDataDegradeCount = []
+    let FutuerdateForFilter = [];
+    this.FutuerPredictionDataNormalCount = []
+    this.FutuerPredictionDataIncipientCount = []
+    this.FutuerPredictonDataDegradeCount = []
+
     // for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
     //   if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
     //     FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
     //   }
     // }
-    // let FutuerdateForFilter1 = [];
-    // FutuerdateForFilter.forEach((value) => {
-    //   var Date = moment(value).format('YYYY-MM-DD');
-    //   FutuerdateForFilter1.push(Date);
-    // });
+
+    let FutuerdateForFilter1 = [];
+    FutuerdateForFilter.forEach((value) => {
+      var Date = moment(value).format('YYYY-MM-DD');
+      FutuerdateForFilter1.push(Date);
+    });
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("ComboChart", {
       type: 'line',
@@ -1367,7 +1688,7 @@ export class DashboardComponent {
           label: "Forcast_Normal",
           data: this.PredictionDataNormalCount,
           borderColor: '#008000',
-          borderDash: [1, 1],
+          borderDash: [10, 10],
           pointBackgroundColor: "transparent"
         }, {
           label: "Normal",
@@ -1378,7 +1699,7 @@ export class DashboardComponent {
           label: "Forcast_Incipient",
           data: this.PredictionDataIncipientCount,
           borderColor: '#FFA500',
-          borderDash: [1, 1],
+          borderDash: [10, 10],
           pointBackgroundColor: "transparent"
         }, {
           label: "Incipient",
@@ -1389,7 +1710,7 @@ export class DashboardComponent {
           label: "Forcast_Degrade",
           data: this.PredictonDataDegradeCount,
           borderColor: '#FF0000',
-          borderDash: [1, 1],
+          borderDash: [10, 10],
           pointBackgroundColor: "transparent"
         }, {
           label: "Degrade",
@@ -1423,7 +1744,106 @@ export class DashboardComponent {
           }]
         },
       }
-      
     });
+
   }
+
+public dataset =[]
+public dataset1 =[]
+public dataset2 =[]
+public dataset3 =[]
+public date: any =[]
+public CSVData: any =[]
+
+   dygraph(){
+
+    this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.GetAllRecords)
+    .subscribe(
+      res => {
+        let data = res
+        this.ScrewCompressorAllData = res
+        let dateForFilter = [];
+        for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+          if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
+            dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
+          }
+        }
+        let dateForFilter1 = [];
+        dateForFilter.forEach((value) => {
+          var Date = moment(value).format('YYYY-MM-DD');
+          dateForFilter1.push(Date);
+        });
+        this.ScrewCompressorAllData.forEach(r => {
+          this.td2 = r.TD2
+          this.td1 = r.TD1
+          this.ts1 = r.TS1
+          this.ts2 = r.TS2
+          this.dataset.push(this.td2)
+          this.dataset1.push( this.td1)
+          this.dataset2.push( this.ts1 )
+          this.dataset3.push(this.ts2 )
+        })
+ 
+   
+      this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'blob'}).subscribe((res: any) => {
+        let fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(res);
+        fileReader.onload = (e) => {
+            var arrayBuffer: any = fileReader.result;
+            var data = new Uint8Array(arrayBuffer);
+            var arr = new Array();
+            for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+            var bstr = arr.join("");
+            var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+            var first_sheet_name = workbook.SheetNames[0];
+            var worksheet = workbook.Sheets[first_sheet_name];
+            var CSVData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+
+           this.chart = new Dygraph(
+            document.getElementById("graph"),CSVData,
+            {
+              // labels: [ "Date", "Td1-Ts1" , "Td2-Ts1", "TD1", "PD1"],
+              showRangeSelector: true,
+              //   data:{
+              //     x:{
+              //       valueFormatter:function(d){
+              //         return new Date(d.dateForFilter1).toLocaleDateString();
+              //       }
+              //     },
+              //   }, 
+              //   strokeWidth: 2,
+              //   'sine wave': {
+              //     strokePattern: [7, 2, 2, 2],
+              //  },   
+              //   labelsSeprateline:true,
+              //    fillGraph : true,
+  
+            //   series: {
+            //     "Td1-Ts1" : {
+            //         drawPoints: false,
+            //         color: "#585858",
+            //                 showInRangeSelector : true, 
+            //     },
+            //     "Td2-Ts1" : {
+            //         drawPoints: true,
+            //         pointSize: 3,
+            //         strokeWidth: 0,
+            //                 showInRangeSelector : true, 
+            //     },
+            //     "TD1" : {
+            //         showInRangeSelector : true, 
+            //     }, 
+            //     "PD1" : {
+            //       drawPoints: false,
+            //       pointSize: 3,
+            //       strokeWidth: 0,
+            //               showInRangeSelector : true, 
+            //   },
+            // },
+            }
+        );
+        }
+       })
+      }, error => { console.log(error.error)})
+   }
 }
