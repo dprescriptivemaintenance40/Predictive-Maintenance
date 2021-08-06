@@ -54,6 +54,8 @@ namespace DPM.Controllers.Pumps.CentrifugalPump
 
         }
 
+
+
         [HttpGet]
         [Route("GetCentrifugalPumpPredictionByDate")]
         public async Task<IActionResult> GetPredictionByDate(string FromDate, string ToDate)

@@ -7,7 +7,7 @@
 <p-toast position="top-right"></p-toast>
 <div class="card shadow div-in-middle" style="width: 70rem;">
     <div style="text-align: center">
-        <h5><b> Classification data</b> </h5>
+        <h5><b> Trained Classification data</b> </h5>
     </div><br>
     <div class="row">
         <div class="col-md-2">
@@ -269,7 +269,7 @@
     </div>
 </div>
 <br><br>
-<div class="card shadow div-in-middle" style="width: 100%;overflow: scroll;">
+<!-- <div class="card shadow div-in-middle" style="width: 100%;overflow: scroll;">
     <div class="card">
         <div style="text-align: center">
             <h5><b> Combination Of Prediction & Futuer Prediction</b> </h5>
@@ -280,7 +280,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <br>
 <div class="card shadow div-in-middle" style="width: 100%;overflow: scroll;">
     <div class="card">
@@ -295,18 +295,6 @@
 <br><br>
 
 
-<div class="card shadow div-in-middle" style="width: 100%;overflow: scroll;">
-    <div class="card">
-        <div style="text-align: center">
-            <h5><b> try data</b> </h5>
-        </div><br>
-        <div class="chartWrapper">
-            <div class="chartAreaWrapper">
-                <canvas id="comboChart1" height="400" width="2000"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="card shadow div-in-middle" style="width: 70rem;">
     <div class="row">
         <div class="col-sm" style="padding:30px;">
@@ -353,14 +341,35 @@
         *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
         <div style="text-align: center">
             <h5><b>Cost Benefit Risk Analysis</b> </h5>
-        </div><br>
+        </div>
         <div class="container" style="margin: 10px;">
             <div class="sidebar-brand-icon col-sm-2" style="float: right">
                 <div class="image-container">
                     <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                 </div>
             </div>
-            <div class="row">
+            </div>
+            <div class="row"  style="margin: 5px;">
+                <div class="col-sm">
+                    <div class="card"><br>
+                        <strong style="text-align: center;color:mediumvioletred">Machine Type : {{MachineType}}
+                        </strong><br>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card"><br>
+                        <strong style="text-align: center;color:mediumvioletred">Equipment Type : {{EquipmentType}}
+                        </strong><br>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card"><br>
+                        <strong style="text-align: center;color:mediumvioletred">Tag Number : {{SelectedTagNumber}}
+                        </strong><br>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row" style="margin: 10px;">
                 <p-card>
                     <div class="col-sm">
                         <b>Total PONC: {{row.TotalPONC}} K</b>
@@ -374,14 +383,14 @@
                 </p-card>
                 <div class="col-sm"> </div>
             </div>
-        </div>
         <br><br>
         <div class="container">
             <div class="row">
                 <div class="card" style="border: none;">
                     <div class="col-sm">
                         <p-card>
-                            <b>Criticality Maintenance Factor : M</b>
+                            <!-- <b>Criticality Maintenance Factor : M</b> -->
+                            <b>Economic Risk : M</b>
                         </p-card>
                     </div>
                 </div>
@@ -389,7 +398,7 @@
                 <div class="card" style="border: none;">
                     <div class="col-sm">
                         <p-card>
-                            <b>Cost Without DPM (Total Cost): {{row.EconomicRiskWithoutMaintenance}} K</b>
+                            <b>Cost Without D.P.M (Total Cost): {{row.EconomicRiskWithoutMaintenance}} K</b>
                         </p-card>
                     </div>
                 </div>
@@ -397,7 +406,7 @@
                 <div class="card" style="border: none;">
                     <div class="col-sm">
                         <p-card>
-                            <b>Cost With DPM (Total Cost): {{row.ResidualRiskWithMaintenance}} K</b>
+                            <b>Cost With D.P.M (Total Cost): {{row.ResidualRiskWithMaintenance}} K</b>
                         </p-card>
                     </div>
                 </div>
@@ -406,14 +415,14 @@
         <div class="row">
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
-                    <b>With D.P.M. MEI </b>
+                    <b>With D.P.M MEI </b>
                     <canvas id="gaugechart"></canvas>
                     <h1 style="text-align: center;color: blue;">{{DPMMEI}}</h1>
                 </div>
             </div>
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
-                    <b>Without D.P.M. MEI</b>
+                    <b>Without D.P.M MEI</b>
                     <canvas id="canvasDPM"></canvas>
                     <h1 style="text-align: center;color: red;">{{DPMWithoutMEI}}</h1>
                 </div>

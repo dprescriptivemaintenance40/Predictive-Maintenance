@@ -45,6 +45,10 @@
 <div *ngIf="showCostBenefitAnalysis">
     <div>
         <button style="margin: 20px;" class="btn btn-dark" (click)="showCostBenefitAnalysis = false" pTooltip="Back" tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
+        <button *ngIf="showDashboard" style="float: right;" class="btn btn-dark" (click)="RouteTodashboard()">Dashboard</button>
+    </div>
+    <div>
+        
     </div>
     <div class="card shadow div-in-middle" style="width: 70rem;">
         <div class="row">
@@ -84,6 +88,7 @@
         </div>
     </div>
     <div class="container" *ngIf="showPrescriptive" style="margin-top: 13px;">
+ 
         <div class="card" *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
             <div style="padding: 1.25rem 1.25rem 0rem;">
                 <div class="custom-card-header">
@@ -93,6 +98,7 @@
                     <span> Currency: $</span>
                 </div>
             </div>
+
             <div class="card-body">
                 <div>
                     <div class="row mb-4">

@@ -54,12 +54,6 @@ namespace DPM.Controllers.Prescriptive
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                //var prescriptiveModelData = await _context.PrescriptiveModelData.FirstOrDefaultAsync(a => a.UserId == userId
-                //                                                                 && a.MachineType == machine
-                //                                                                 && a.EquipmentType == Equi
-                //                                                                 && a.TagNumber == TagNumber);
-                //prescriptiveModelData.centrifugalPumpPrescriptiveFailureModes = await _context.centrifugalPumpPrescriptiveFailureModes.Where(a => a.CFPPrescriptiveId == prescriptiveModelData.CFPPrescriptiveId).ToListAsync();
-                //return Ok(prescriptiveModelData);
 
                 var prescriptiveModelData  = await _context.PrescriptiveModelData.Where(a => a.UserId == userId
                                                             && a.MachineType == machine
@@ -77,6 +71,29 @@ namespace DPM.Controllers.Prescriptive
 
                 return BadRequest(exe.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("GetCFPPrescriptiveId")]
+              public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetCFPPrescriptiveId(int cfprescriptiveId)
+        {
+            try
+            {
+ 
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+
+                var prescriptiveModelIDData = await _context.PrescriptiveModelData.Where(a => a.UserId == userId
+                                                           && a.CFPPrescriptiveId == cfprescriptiveId)
+                                                           .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                           .ThenInclude(a => a.CentrifugalPumpMssModel)
+                                                           .FirstOrDefaultAsync();
+                return Ok(prescriptiveModelIDData);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
         }
 
         [HttpGet]

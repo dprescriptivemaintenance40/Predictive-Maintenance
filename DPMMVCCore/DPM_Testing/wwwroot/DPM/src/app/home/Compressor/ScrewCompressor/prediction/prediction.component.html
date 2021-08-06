@@ -5,6 +5,9 @@
         <button *ngIf="enableImage" class="btn btn-outline-dark" (click)="compressorImage()">Click Here</button>
         <button *ngIf="CancelImage" class="btn btn-outline-dark" (click)="compressorImageCancel()">Cancel</button>
     </div>
+    <div class="col-sm">
+        <button style="float: right" class="btn btn-dark" (click)="RouteTodashboard()">Dashboard</button>
+    </div>
 </div>
 <div *ngIf="Image" class="col-md-6">
     <div class="card shadow mb-4">

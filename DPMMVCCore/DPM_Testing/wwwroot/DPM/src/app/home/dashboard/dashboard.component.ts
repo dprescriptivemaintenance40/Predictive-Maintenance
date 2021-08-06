@@ -93,7 +93,7 @@ export class DashboardComponent {
   public PredictionDataIncipientCount: any = [];
   public PredictonDataDegradeCount: any = [];
   public PredictionDataBadCount: any = [];
-
+  public state: any;
     //For FutuerPrediction
     public FutuerselectedYear: string = "";
     public FutuerPredictedDate = [];
@@ -118,7 +118,8 @@ export class DashboardComponent {
     public ts1: any = [];
     public ts2: any = [];
     public TD2Data: any = [];
-    
+    public CFPPrescriptiveId : number = 0 ;
+
   constructor(private title: Title,
     private http: HttpClient,
     private messageService: MessageService,
@@ -128,6 +129,12 @@ export class DashboardComponent {
     private changeDetectorRef: ChangeDetectorRef,
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
+    this.state = window.history.state; 
+    if (!!this.state.CFPPrescriptiveId) { 
+      this.CFPPrescriptiveId= this.state.CFPPrescriptiveId;
+      this.ETBF=this.state.ETBF 
+      this.CBAWithId(this.CFPPrescriptiveId)
+    }
   }
   ngOnInit() {
     this.getRecordsByEqui()
@@ -136,8 +143,7 @@ export class DashboardComponent {
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
     this.GerAllPredictionRecords();
-    // this.GerAllFutuerPredictionRecords();
-    this.ComboChart1()
+
   }
   isDateInArray(needle, haystack) {
     for (var i = 0; i < haystack.length; i++) {
@@ -240,7 +246,7 @@ export class DashboardComponent {
           this.PredictionAllRecordDonught();
           this.PredictionAllRecordBarcharts()
           this.PredictionAllRecordPie()
-          this.ComboChart()
+          // this.ComboChart()
         }, error => {
           console.log(error.error)
         })
@@ -473,7 +479,7 @@ export class DashboardComponent {
     this.AllRecordBarcharts();
     this.ClassificationOfAllpolarchart()
     this.ClassificationOfAllRecordDonught()
-     this.ComboChart();
+    //  this.ComboChart();
   }
 
 
@@ -496,57 +502,74 @@ export class DashboardComponent {
       });
   }
 
+  CBAWithId(CFPPrescriptiveId){
+    const params = new HttpParams()
+    .set("cfprescriptiveId", CFPPrescriptiveId)
+    var url: string = this.dashboardContantAPI.CBARecorsWithId
+   this.dashboardContantMethod.getWithParameters(url, params)
+    .subscribe((res: any) => {
+      this.prescriptiveRecords=[]
+      this.prescriptiveRecords = res;
+      this.DynamicCBA(res)
+    }, err => {
+      console.log(err.err);
+    });
+  }
+
+  DynamicCBA(res){
+    this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
+    this.CFrequencyMaintainenance = res.CFrequencyMaintainenance
+    this.CConditionMonitoring = res.CConditionMonitoring
+    this.ComponentRating = res.ComponentRating
+    this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
+      row.TotalAnnualPOC = 0;
+      row.CentrifugalPumpMssModel.forEach(mss => {
+        if (!mss.MSSMaintenanceInterval || mss.MSSMaintenanceInterval === 'NA' || mss.MSSMaintenanceInterval === 'Not Applicable') {
+          mss.POC = 0;
+          mss.AnnualPOC = 0;
+          mss.Status = '';
+        } else {
+          let annu = mss.MSSMaintenanceInterval.split(' ');
+          if (mss.MSSMaintenanceInterval.toLowerCase().includes('week')) {
+            mss.POC = 0.00025;
+            mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * 0.00025).toFixed(3));
+          } else if (mss.MSSMaintenanceInterval.toLowerCase().includes('month')) {
+            mss.POC = 0.02;
+            mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * 0.02).toFixed(3));
+          }
+          mss.MSSMaintenanceInterval = `${parseFloat(annu[0]).toFixed(1)} ${annu[1]}`;
+          mss.Status = 'Retained';
+          row.TotalAnnualPOC += mss.AnnualPOC;
+        }
+      });
+      row.ETBC = 10;
+      row.TotalPONC = 194.4872;
+      row.ETBF = this.ETBF ? this.ETBF : 2;
+      row.TotalAnnualCostWithMaintenance = 1.777;
+      row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
+      row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
+      let WithETBCAndPONC = row.TotalPONC / row.ETBC;
+      let WithoutETBCAndPONC = row.TotalPONC / 5;
+      row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
+      this.DPMMEI = row.WithMEI
+      row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
+      this.DPMWithoutMEI = row.WithOutMEI
+      row.ConsequenceCategory = row.Consequence.split(' ')[0];
+    });
+    this.CostRisk = true;
+    this.PrescriptiveMaintenance = true
+    this.gaugechartwithDPM()
+    this.gaugechartwithoutDPM() 
+  }
+
   getRecordsByEqui() {
     if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
       this.prescriptiveRecords = [];
       this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
         .subscribe((res: any) => {
+          this.prescriptiveRecords=[]
           this.prescriptiveRecords = res;
-
-          this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
-          this.CFrequencyMaintainenance = res.CFrequencyMaintainenance
-          this.CConditionMonitoring = res.CConditionMonitoring
-          this.ComponentRating = res.ComponentRating
-
-          this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
-            row.TotalAnnualPOC = 0;
-            row.CentrifugalPumpMssModel.forEach(mss => {
-              if (!mss.MSSMaintenanceInterval || mss.MSSMaintenanceInterval === 'NA' || mss.MSSMaintenanceInterval === 'Not Applicable') {
-                mss.POC = 0;
-                mss.AnnualPOC = 0;
-                mss.Status = '';
-              } else {
-                let annu = mss.MSSMaintenanceInterval.split(' ');
-                if (mss.MSSMaintenanceInterval.toLowerCase().includes('week')) {
-                  mss.POC = 0.00025;
-                  mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * 0.00025).toFixed(3));
-                } else if (mss.MSSMaintenanceInterval.toLowerCase().includes('month')) {
-                  mss.POC = 0.02;
-                  mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * 0.02).toFixed(3));
-                }
-                mss.MSSMaintenanceInterval = `${parseFloat(annu[0]).toFixed(1)} ${annu[1]}`;
-                mss.Status = 'Retained';
-                row.TotalAnnualPOC += mss.AnnualPOC;
-              }
-            });
-            row.ETBC = 10;
-            row.TotalPONC = 194.4872;
-            row.ETBF = this.ETBF ? this.ETBF : 2;
-            row.TotalAnnualCostWithMaintenance = 1.777;
-            row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
-            row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
-            let WithETBCAndPONC = row.TotalPONC / row.ETBC;
-            let WithoutETBCAndPONC = row.TotalPONC / 5;
-            row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
-            this.DPMMEI = row.WithMEI
-            row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
-            this.DPMWithoutMEI = row.WithOutMEI
-            row.ConsequenceCategory = row.Consequence.split(' ')[0];
-          });
-          this.CostRisk = true;
-          this.PrescriptiveMaintenance = true
-          this.gaugechartwithDPM()
-          this.gaugechartwithoutDPM()
+          this.DynamicCBA(res)
         }, err => {
           console.log(err.err);
         });
@@ -1245,508 +1268,206 @@ export class DashboardComponent {
     this.fmtype =""
   }
 
-  ComboChart1(){
-    this.chart = new Chart("comboChart1", {
-      type: 'line',
-      data: {
-        labels: ['01-01-2021',
-         ' 02-01-2021',
-          '03-01-2021',
-          '04-01-2021',
-          '05-01-2021',
-         ' 06-01-2021',
-          '07-01-2021',
-          '08-01-2021',
-         ' 09-01-2021',
-          '10-01-2021',
-          '11-01-2021',
-          '11-01-2021',
-          '12-01-2021' ,
-          '13-01-2021',
-         ' 14-01-2021',
-          '15-01-2021',
-          '16-01-2021',
-          '17-01-2021',
-          '18-01-2021',
-         ' 19-01-2021',
-          '20-01-2021',
-          '21-01-2021',
-          '22-01-2021',
-          '23-01-2021',
-          '24-01-2021',
-          '25-01-2021',
-          '26-01-2021',
-          '27-01-2021',
-          '28-01-2021',
-          '29-01-2021',
-          '30-01-2021',
-         ' 01-02-2021',
-          '02-02-2021',
-          '27-02-2021',
-          '28-02-2021',
-          '01-03-2021',
-          '02-03-2021',
-          '03-03-2021',
-          '04-03-2021',
-          '05-03-2021',
-          '06-03-2021',
-          '07-03-2021',
-          '08-03-2021',
-          '09-03-2021',
-          '10-03-2021',
-          '11-03-2021',
-          '12-03-2021',
-          '13-03-2021',
-          '14-03-2021',
-          '15-03-2021',
-          '16-03-2021',
-          '17-03-2021',
-          '18-03-2021',
-          '18-04-2021',
-          '19-04-2021',
-          '20-04-2021',
-          '21-04-2021',
-          '22-04-2021',
-          '23-04-2021',
-          '24-04-2021',
-          '25-04-2021',
-          '26-04-2021',
-          '27-04-2021',
-          '28-04-2021',
-          '29-04-2021',
-          '30-04-2021',
-          '01-05-2021',
-          '02-05-2021',
-          '03-05-2021',
-          '04-05-2021',
-          '05-05-2021',
-          '06-05-2021',
-          '07-05-2021',
-         ' 27-06-2021',
-          '28-06-2021',
-          '29-06-2021',
-          '30-06-2021',
-         ' 01-07-2021',
-          '02-07-2021',
-          '30-07-2021',
-         ' 31-07-2021',
-          '01-08-2021',
-          '02-08-2021',
-          '03-08-2021',
-          '04-08-2021',
-          ],
-        datasets: [{
-          label: "Forcast_Normal",
-          data: [203.7,
-            207.7,
-            181.35,
-            208.85,
-            218.01,
-            208.01,
-            223.06,
-            193.17,
-            206.18,
-            187.75,
-            202.69,
-            190.71,
-            202.25,
-            191.53,
-            205.76,
-            193.76,
-            202.15,
-            194.69,
-            194,
-            192.19,
-            193.87,
-            192.63,
-            181.34,
-            183.46,
-            183.62,
-            183.05,
-            189.67,
-            160.23,
-            181.49,
-            184.05,
-            196,
-            194,
-            178,
-            177,
-            192,
-            183,
-            174,
-            181,
-            189,
-            179,
-            188,
-            180,
-            198,
-            189,
-            196,
-            198,
-            190,
-            191,
-            191,
-            192,
-            194,
-            198,
-            192,
-            194,
-            193,
-            194,
-            191,
-            187,
-            183,
-            188,
-            186,
-            190,
-            193,
-            182,
-            196,
-            179,
-            193.87,
-            192.63,
-            181.34,
-            203.7,
-            207.7,
-            181.35,
-            208.85,
-            218.01,
-            208.01,
-            223.06,
-            193.17,
-            206.18,
-            187.75,
-            202.69,
-            190.71,
-            202.25,
-            191.53,
-            185.0018,
-            184.9803,
-            184.9588,
-            184.9373,],
-          borderColor: '#008000',
-          borderDash: [10, 10],
-          pointBackgroundColor: "transparent",
-          lineTension: 0
-        }, {
-          label: "Normal",
-          data: [203.7,
-            207.7,
-            181.35,
-            208.85,
-            218.01,
-            208.01,
-            223.06,
-            193.17,
-            206.18,
-            187.75,
-            202.69,
-            190.71,
-            202.25,
-            191.53,
-            205.76,
-            193.76,
-            202.15,
-            194.69,
-            194,
-            192.19,
-            193.87,
-            192.63,
-            181.34,
-            183.46,
-            183.62,
-            183.05,
-            189.67,
-            160.23,
-            181.49,
-            184.05,
-            196,
-            194,
-            178,
-            177,
-            192,
-            183,
-            174,
-            181,
-            189,
-            179,
-            188,
-            180,
-            198,
-            189,
-            196,
-            198,
-            190,
-            191,
-            191,
-            192,
-            194,
-            198,
-            192,
-            194,
-            193,
-            194,
-            191,
-            187,
-            183,
-            188,
-            186,
-            190,
-            193,
-            182,
-            196,
-            179,
-            193.87,
-            192.63,
-            181.34,
-            203.7,
-            207.7,
-            181.35,
-            208.85,
-            218.01,
-            208.01,
-            223.06,
-            193.17,
-            206.18,
-            187.75,
-            202.69,
-            190.71,
-            202.25,, ,
-           , , , , ,
-            ],
-          borderColor: '#008000',
-          pointBackgroundColor: "transparent",
-          lineTension: 0
-        },]
-      },
-      options: {
-        responsive: true,
-        events: [],
-        elements: {
-          line: {
-            fill: false
-          }
-        },
-        scales: {
-          xAxes: [
-            {
-              scaleLabel: {
-                display: true
-              }
-            }
-          ],
-          yAxes: [{
-            ticks: {
-              // beginAtZero: true,
-              //  stepSize: 1,
-               max: 300,
-            }
-          }]
-        },
-      }
-      
-    });
-  }
+ 
+  // ComboChart(){
+  //   this.changeDetectorRef.detectChanges();
+  //   let dateForFilter = [];
+  //   this.PredictionDataNormalCount = []
+  //   this.PredictionDataIncipientCount = []
+  //   this.PredictonDataDegradeCount = []
 
-  ComboChart(){
-    this.changeDetectorRef.detectChanges();
-    let dateForFilter = [];
-    this.PredictionDataNormalCount = []
-    this.PredictionDataIncipientCount = []
-    this.PredictonDataDegradeCount = []
+  //   var Glitches_PredictionDataNormalCount = []
+  //   var Glitches_PredictionDataIncipientCount = []
+  //   var Glitches_PredictonDataDegradeCount = []
 
-    var Glitches_PredictionDataNormalCount = []
-    var Glitches_PredictionDataIncipientCount = []
-    var Glitches_PredictonDataDegradeCount = []
+  //   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+  //     if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
+  //       dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
+  //     }
+  //   }
+  //   let dateForFilter1 = [];
+  //   dateForFilter.forEach((value) => {
+  //     var Date = moment(value).format('YYYY-MM-DD');
+  //     dateForFilter1.push(Date);
+  //   });
+  //   for (var i = 0; i < dateForFilter1.length; i++) {
+  //     var a = [];
+  //     this.ScrewPredictionAllData.forEach(element => {
+  //       if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
+  //         if (this.fmtype != "") {
+  //           if (this.fmtype == "SSRB") {
+  //             a.push(element.SSRB)
+  //           } else if (this.fmtype == "CF") {
+  //             a.push(element.CF)
+  //           } if (this.fmtype == "RD") {
+  //             a.push(element.RD)
+  //           }
+  //         } else {
+  //           a.push(element.Prediction)
+  //         }
+  //       }
+  //     });
 
-    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
-        dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
-      }
-    }
-    let dateForFilter1 = [];
-    dateForFilter.forEach((value) => {
-      var Date = moment(value).format('YYYY-MM-DD');
-      dateForFilter1.push(Date);
-    });
-    for (var i = 0; i < dateForFilter1.length; i++) {
-      var a = [];
-      this.ScrewPredictionAllData.forEach(element => {
-        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
-          if (this.fmtype != "") {
-            if (this.fmtype == "SSRB") {
-              a.push(element.SSRB)
-            } else if (this.fmtype == "CF") {
-              a.push(element.CF)
-            } if (this.fmtype == "RD") {
-              a.push(element.RD)
-            }
-          } else {
-            a.push(element.Prediction)
-          }
-        }
-      });
+  //     // console.log(a);
+  //     var normal = 0
+  //     var incipient = 0
+  //     var degrade = 0
+  //     var bad = 0
 
-      // console.log(a);
-      var normal = 0
-      var incipient = 0
-      var degrade = 0
-      var bad = 0
+  //     a.forEach((value) => {
+  //       if (value == 'normal') {
+  //         normal = normal + 1
+  //       } else if (value == 'incipient') {
+  //         incipient = incipient + 1
+  //       } else if (value == 'degarde' || value == 'degrade') {
+  //         degrade = degrade + 1
+  //       } else {
+  //         bad = bad + 1
+  //       }
+  //     });
+  //     this.PredictionDataNormalCount.push(normal)
+  //     this.PredictionDataIncipientCount.push(incipient)
+  //     this.PredictonDataDegradeCount.push(degrade)
+  //     this.PredictionDataBadCount.push(bad)
 
-      a.forEach((value) => {
-        if (value == 'normal') {
-          normal = normal + 1
-        } else if (value == 'incipient') {
-          incipient = incipient + 1
-        } else if (value == 'degarde' || value == 'degrade') {
-          degrade = degrade + 1
-        } else {
-          bad = bad + 1
-        }
-      });
-      this.PredictionDataNormalCount.push(normal)
-      this.PredictionDataIncipientCount.push(incipient)
-      this.PredictonDataDegradeCount.push(degrade)
-      this.PredictionDataBadCount.push(bad)
-
-       Glitches_PredictionDataNormalCount.push(normal) 
-       Glitches_PredictionDataIncipientCount.push(incipient) 
-       Glitches_PredictonDataDegradeCount.push(degrade)
+  //      Glitches_PredictionDataNormalCount.push(normal) 
+  //      Glitches_PredictionDataIncipientCount.push(incipient) 
+  //      Glitches_PredictonDataDegradeCount.push(degrade)
      
-    }
-    let SCdateForFilter = [];
-    this.TrainDataIncipientCount = []
-    this.TrainDataNormalCount = []
-    this.TrainDataDegradeCount = []
+  //   }
+  //   let SCdateForFilter = [];
+  //   this.TrainDataIncipientCount = []
+  //   this.TrainDataNormalCount = []
+  //   this.TrainDataDegradeCount = []
 
-    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-      if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), SCdateForFilter)) {
-        SCdateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
-      }
-    }
-    let dateForFilter2 = [];
-    SCdateForFilter.forEach((value) => {
-      var Date = moment(value).format('YYYY-MM-DD');
-      dateForFilter2.push(Date);
-      dateForFilter1.push(Date);
-    });
-    for (var i = 0; i < dateForFilter2.length; i++) {
-      var sc = [];
-      this.ScrewCompressorAllData.forEach(element => {
-        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter2[i]) {
-          sc.push(element.Classification)
-        }
-      });
-      // console.log(sc);
-      var normal = 0
-      var incipient = 0
-      var degrade = 0
-      var bad = 0
-      sc.forEach((value) => {
-        if (value == 'normal') {
-          normal = normal + 1
-        } else if (value == 'incipient') {
-          incipient = incipient + 1
-        } else if (value == 'degarde' || value == 'degrade') {
-          degrade = degrade + 1
-        } else {
-          bad = bad + 1
-        }
-      });
-      this.PredictionDataNormalCount.push(normal)
-      this.PredictionDataIncipientCount.push(incipient)
-      this.PredictonDataDegradeCount.push(degrade)
-      this.PredictionDataBadCount.push(bad)
+  //   for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+  //     if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), SCdateForFilter)) {
+  //       SCdateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
+  //     }
+  //   }
+  //   let dateForFilter2 = [];
+  //   SCdateForFilter.forEach((value) => {
+  //     var Date = moment(value).format('YYYY-MM-DD');
+  //     dateForFilter2.push(Date);
+  //     dateForFilter1.push(Date);
+  //   });
+  //   for (var i = 0; i < dateForFilter2.length; i++) {
+  //     var sc = [];
+  //     this.ScrewCompressorAllData.forEach(element => {
+  //       if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter2[i]) {
+  //         sc.push(element.Classification)
+  //       }
+  //     });
+  //     // console.log(sc);
+  //     var normal = 0
+  //     var incipient = 0
+  //     var degrade = 0
+  //     var bad = 0
+  //     sc.forEach((value) => {
+  //       if (value == 'normal') {
+  //         normal = normal + 1
+  //       } else if (value == 'incipient') {
+  //         incipient = incipient + 1
+  //       } else if (value == 'degarde' || value == 'degrade') {
+  //         degrade = degrade + 1
+  //       } else {
+  //         bad = bad + 1
+  //       }
+  //     });
+  //     this.PredictionDataNormalCount.push(normal)
+  //     this.PredictionDataIncipientCount.push(incipient)
+  //     this.PredictonDataDegradeCount.push(degrade)
+  //     this.PredictionDataBadCount.push(bad)
 
-      Glitches_PredictionDataNormalCount.push()
-      Glitches_PredictionDataIncipientCount.push()
-      Glitches_PredictonDataDegradeCount.push()
+  //     Glitches_PredictionDataNormalCount.push()
+  //     Glitches_PredictionDataIncipientCount.push()
+  //     Glitches_PredictonDataDegradeCount.push()
      
-    }
-    let FutuerdateForFilter = [];
-    this.FutuerPredictionDataNormalCount = []
-    this.FutuerPredictionDataIncipientCount = []
-    this.FutuerPredictonDataDegradeCount = []
+  //   }
+  //   let FutuerdateForFilter = [];
+  //   this.FutuerPredictionDataNormalCount = []
+  //   this.FutuerPredictionDataIncipientCount = []
+  //   this.FutuerPredictonDataDegradeCount = []
 
-    // for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
-    //   if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
-    //     FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
-    //   }
-    // }
+  //   // for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
+  //   //   if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
+  //   //     FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
+  //   //   }
+  //   // }
 
-    let FutuerdateForFilter1 = [];
-    FutuerdateForFilter.forEach((value) => {
-      var Date = moment(value).format('YYYY-MM-DD');
-      FutuerdateForFilter1.push(Date);
-    });
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("ComboChart", {
-      type: 'line',
-      data: {
-        labels: dateForFilter1,
-        datasets: [{
-          label: "Forcast_Normal",
-          data: this.PredictionDataNormalCount,
-          borderColor: '#008000',
-          borderDash: [10, 10],
-          pointBackgroundColor: "transparent"
-        }, {
-          label: "Normal",
-          data: Glitches_PredictionDataNormalCount,
-          borderColor: '#008000',
-          pointBackgroundColor: "transparent"
-        }, {
-          label: "Forcast_Incipient",
-          data: this.PredictionDataIncipientCount,
-          borderColor: '#FFA500',
-          borderDash: [10, 10],
-          pointBackgroundColor: "transparent"
-        }, {
-          label: "Incipient",
-          data: Glitches_PredictionDataIncipientCount,
-          borderColor: '#FFA500',
-          pointBackgroundColor: "transparent"
-        }, {
-          label: "Forcast_Degrade",
-          data: this.PredictonDataDegradeCount,
-          borderColor: '#FF0000',
-          borderDash: [10, 10],
-          pointBackgroundColor: "transparent"
-        }, {
-          label: "Degrade",
-          data: Glitches_PredictonDataDegradeCount,
-          borderColor: '#FF0000',
-          pointBackgroundColor: "transparent"
-        }]
-      },
-      options: {
-        responsive: true,
-        events: [],
-        elements: {
-          line: {
-            fill: false
-          }
-        },
-        scales: {
-          xAxes: [
-            {
-              scaleLabel: {
-                display: true
-              }
-            }
-          ],
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-              // stepSize: 1
-               max: 10,
-            }
-          }]
-        },
-      }
-    });
+  //   let FutuerdateForFilter1 = [];
+  //   FutuerdateForFilter.forEach((value) => {
+  //     var Date = moment(value).format('YYYY-MM-DD');
+  //     FutuerdateForFilter1.push(Date);
+  //   });
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("ComboChart", {
+  //     type: 'line',
+  //     data: {
+  //       labels: dateForFilter1,
+  //       datasets: [{
+  //         label: "Forcast_Normal",
+  //         data: this.PredictionDataNormalCount,
+  //         borderColor: '#008000',
+  //         borderDash: [10, 10],
+  //         pointBackgroundColor: "transparent"
+  //       }, {
+  //         label: "Normal",
+  //         data: Glitches_PredictionDataNormalCount,
+  //         borderColor: '#008000',
+  //         pointBackgroundColor: "transparent"
+  //       }, {
+  //         label: "Forcast_Incipient",
+  //         data: this.PredictionDataIncipientCount,
+  //         borderColor: '#FFA500',
+  //         borderDash: [10, 10],
+  //         pointBackgroundColor: "transparent"
+  //       }, {
+  //         label: "Incipient",
+  //         data: Glitches_PredictionDataIncipientCount,
+  //         borderColor: '#FFA500',
+  //         pointBackgroundColor: "transparent"
+  //       }, {
+  //         label: "Forcast_Degrade",
+  //         data: this.PredictonDataDegradeCount,
+  //         borderColor: '#FF0000',
+  //         borderDash: [10, 10],
+  //         pointBackgroundColor: "transparent"
+  //       }, {
+  //         label: "Degrade",
+  //         data: Glitches_PredictonDataDegradeCount,
+  //         borderColor: '#FF0000',
+  //         pointBackgroundColor: "transparent"
+  //       }]
+  //     },
+  //     options: {
+  //       responsive: true,
+  //       events: [],
+  //       elements: {
+  //         line: {
+  //           fill: false
+  //         }
+  //       },
+  //       scales: {
+  //         xAxes: [
+  //           {
+  //             scaleLabel: {
+  //               display: true
+  //             }
+  //           }
+  //         ],
+  //         yAxes: [{
+  //           ticks: {
+  //             beginAtZero: true,
+  //             // stepSize: 1
+  //              max: 10,
+  //           }
+  //         }]
+  //       },
+  //     }
+  //   });
 
-  }
+  // }
 
 public dataset =[]
 public dataset1 =[]
@@ -1785,95 +1506,96 @@ public date: any =[]
         // this.chart = new Dygraph(
         //   document.getElementById("graph"),"dist/DPM/assets/realdatafordygraph.csv",
         //   {})
-        // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
-        //   console.log(res)
-        //   this.chart = new Dygraph(
-        //       document.getElementById("graph"),res,
-            
-        //       {})
-        // } 
-        // )
+        this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
+          console.log(res)
+          this.chart = new Dygraph(
+              document.getElementById("graph"),res,
+              {
+                showRangeSelector: true,
+              })
+        } 
+        )
           
-      this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'blob'}).subscribe((res: any) => {
-        let fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(res);
-        fileReader.onload = (e) => {
-            var arrayBuffer: any = fileReader.result;
-            var data = new Uint8Array(arrayBuffer);
-            var arr = new Array();
-            for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-            var bstr = arr.join("");
-            var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
-            var first_sheet_name = workbook.SheetNames[0];
-            var worksheet = workbook.Sheets[first_sheet_name];
-            var CSVData: any
-            CSVData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-            let CSVArray = []
-            let XX: any=['Date', 'TD1-TS1' ,'TD2-TS1'];
-            CSVArray.push(XX)
-            var d :string = `Date,Td1Ts1,Td2Ts1`;
-            for ( var i = 0; i < CSVData.length; i++) {
-            // let d: any=[CSVData[i].Date,CSVData[i].Td1Ts1,CSVData[i].Td2Ts1];
-            // CSVArray.push(d)
-             d = `${d},${CSVData[i].Date},${CSVData[i].Td1Ts1},${CSVData[i].Td2Ts1}`
-           }
-           var x:any = [];
-           x.push(d)
-            this.chart = new Dygraph(
-            document.getElementById("graph"),x,
-            {
-              // labels: ['Date', 'TD1-TS1' ,'TD2-TS1'],
-              showRangeSelector: true,
-              axes: {
-                x: {
-                    // valueFormatter: Dygraph.dateString_,
-                    // axisLabelFormatter: Dygraph.dateAxisFormatter,
-                    // ticker: Dygraph.dateTicker
-                    // valueFormatter:function(d){
-                    //     return d;
-                    // }
-                }
-            }
-              //   data:{
-              //     x:{
-              //       valueFormatter:function(d){
-              //         return new Date(d.dateForFilter1).toLocaleDateString();
-              //       }
-              //     },
-              //   }, 
-              //   strokeWidth: 2,
-              //   'sine wave': {
-              //     strokePattern: [7, 2, 2, 2],
-              //  },   
-              //   labelsSeprateline:true,
-              //    fillGraph : true,
+      // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'blob'}).subscribe((res: any) => {
+      //   let fileReader = new FileReader();
+      //   fileReader.readAsArrayBuffer(res);
+      //   fileReader.onload = (e) => {
+      //       var arrayBuffer: any = fileReader.result;
+      //       var data = new Uint8Array(arrayBuffer);
+      //       var arr = new Array();
+      //       for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+      //       var bstr = arr.join("");
+      //       var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+      //       var first_sheet_name = workbook.SheetNames[0];
+      //       var worksheet = workbook.Sheets[first_sheet_name];
+      //       var CSVData: any
+      //       CSVData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+      //       let CSVArray = []
+      //       let XX: any=['Date', 'TD1-TS1' ,'TD2-TS1'];
+      //       CSVArray.push(XX)
+      //       var d :string = `Date,Td1Ts1,Td2Ts1`;
+      //       for ( var i = 0; i < CSVData.length; i++) {
+      //       // let d: any=[CSVData[i].Date,CSVData[i].Td1Ts1,CSVData[i].Td2Ts1];
+      //       // CSVArray.push(d)
+      //        d = `${d},${CSVData[i].Date},${CSVData[i].Td1Ts1},${CSVData[i].Td2Ts1}`
+      //      }
+      //      var x:any = [];
+      //      x.push(d)
+      //       this.chart = new Dygraph(
+      //       document.getElementById("graph"),x,
+      //       {
+      //         // labels: ['Date', 'TD1-TS1' ,'TD2-TS1'],
+      //         showRangeSelector: true,
+      //         axes: {
+      //           x: {
+      //               // valueFormatter: Dygraph.dateString_,
+      //               // axisLabelFormatter: Dygraph.dateAxisFormatter,
+      //               // ticker: Dygraph.dateTicker
+      //               // valueFormatter:function(d){
+      //               //     return d;
+      //               // }
+      //           }
+      //       }
+      //         //   data:{
+      //         //     x:{
+      //         //       valueFormatter:function(d){
+      //         //         return new Date(d.dateForFilter1).toLocaleDateString();
+      //         //       }
+      //         //     },
+      //         //   }, 
+      //         //   strokeWidth: 2,
+      //         //   'sine wave': {
+      //         //     strokePattern: [7, 2, 2, 2],
+      //         //  },   
+      //         //   labelsSeprateline:true,
+      //         //    fillGraph : true,
   
-            //   series: {
-            //     "Td1-Ts1" : {
-            //         drawPoints: false,
-            //         color: "#585858",
-            //                 showInRangeSelector : true, 
-            //     },
-            //     "Td2-Ts1" : {
-            //         drawPoints: true,
-            //         pointSize: 3,
-            //         strokeWidth: 0,
-            //                 showInRangeSelector : true, 
-            //     },
-            //     "TD1" : {
-            //         showInRangeSelector : true, 
-            //     }, 
-            //     "PD1" : {
-            //       drawPoints: false,
-            //       pointSize: 3,
-            //       strokeWidth: 0,
-            //               showInRangeSelector : true, 
-            //   },
-            // },
-            }
-        );
-        }
-       })
+      //       //   series: {
+      //       //     "Td1-Ts1" : {
+      //       //         drawPoints: false,
+      //       //         color: "#585858",
+      //       //                 showInRangeSelector : true, 
+      //       //     },
+      //       //     "Td2-Ts1" : {
+      //       //         drawPoints: true,
+      //       //         pointSize: 3,
+      //       //         strokeWidth: 0,
+      //       //                 showInRangeSelector : true, 
+      //       //     },
+      //       //     "TD1" : {
+      //       //         showInRangeSelector : true, 
+      //       //     }, 
+      //       //     "PD1" : {
+      //       //       drawPoints: false,
+      //       //       pointSize: 3,
+      //       //       strokeWidth: 0,
+      //       //               showInRangeSelector : true, 
+      //       //   },
+      //       // },
+      //       }
+      //   );
+      //   }
+      //  })
       }, error => { console.log(error.error)})
    }
 

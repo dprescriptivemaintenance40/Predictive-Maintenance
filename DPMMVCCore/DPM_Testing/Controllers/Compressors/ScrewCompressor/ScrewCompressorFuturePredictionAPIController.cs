@@ -305,7 +305,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                                                                                                                  .Where(a => a.UserId == userId)
                                                                                                                  .OrderBy(a => a.PredictedDate.Year)
                                                                                                                  .ThenBy(d => d.PredictedDate.Month)
-                                                                                                                 .ThenBy(d => d.PredictedDate.Day)
+                                                                                                         .ThenBy(d => d.PredictedDate.Day)
                                                                                                                  .ToListAsync();
                 var Data = screwCompressorFuturePredictionModels.ToList();
 

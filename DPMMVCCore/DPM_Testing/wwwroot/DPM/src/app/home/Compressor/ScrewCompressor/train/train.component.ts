@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { ConfigService } from 'src/app/shared/config.service';
 import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-train',
   templateUrl: './train.component.html',
@@ -41,6 +42,7 @@ export class TrainComponent implements OnInit {
 
   constructor(public http: HttpClient,
     public title: Title,
+    public router: Router,
     public messageService: MessageService,
     public commonLoadingDirective: CommonLoadingDirective,
     private configService: ConfigService,
@@ -201,7 +203,10 @@ export class TrainComponent implements OnInit {
     }
 
   }
-
+  RouteTodashboard(){
+     this.router.navigateByUrl('/Home/Dashboard'); 
+    // this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId} })
+  }
 
   Downloadfile() {
     let link = document.createElement("a");

@@ -17,4 +17,5 @@ export class DashboardConstantAPI{
     public GetAllRecords: string = '/ScrewCompressorTrainChartAPI/GetAllRecords'
     public GetFilterRecords: string = '/ScrewCompressorTrainChartAPI/ScrewTrainFilter'
     public GetAllFutuerRecords: string = '/ScrewCompressorFuturePredictionAPI/GetFuturePredictionRecords'
+    public CBARecorsWithId : string = '/PrescriptiveAPI/GetCFPPrescriptiveId';
 }
