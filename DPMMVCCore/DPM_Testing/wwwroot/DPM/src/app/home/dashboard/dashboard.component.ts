@@ -1506,14 +1506,45 @@ public date: any =[]
         // this.chart = new Dygraph(
         //   document.getElementById("graph"),"dist/DPM/assets/realdatafordygraph.csv",
         //   {})
-        this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
-          console.log(res)
-          this.chart = new Dygraph(
-              document.getElementById("graph"),res,
+        // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
+        //   console.log(res)
+        //   this.chart = new Dygraph(
+        //       document.getElementById("graph"),res,
+        //       {
+        //         showRangeSelector: true,
+        //       })
+        // } 
+        this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+          res.forEach(element => {
+           var dt :number = this.json_deserialize_helper(element.InsertedDate)
+           element.InsertedDate = dt;
+          });
+          const dataArray = res
+          if (dataArray != 0) {
+            const dataArrayList = dataArray.map(obj => {
+              const { PD1,PD2,PS1,PS2,PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction, ...rest } = obj;
+              return rest;
+            })
+      
+            var csvData = this.ConvertToCSV(dataArrayList);
+            this.chart = new Dygraph(
+              document.getElementById("graph"),csvData,
+            
               {
                 showRangeSelector: true,
+                strokeWidth: 2,
+                'sine wave': {
+                  strokePattern: [7, 2, 2, 2],
+               },   
+                labelsSeprateline:true,
+                 fillGraph : true,
               })
-        } 
+            
+          }
+
+         
+       
+        }
         )
           
       // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'blob'}).subscribe((res: any) => {
@@ -1601,8 +1632,34 @@ public date: any =[]
 
     json_deserialize_helper(value) {
     if ( typeof value === 'string' ) {
-        return new Date(parseInt(value));
+       return parseInt(moment(value).format("yyyyMMdd"));
     }
         return value;
+    }
+
+
+    ConvertToCSV(objArray) {
+      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+      var str = '';
+      var row = "";
+  
+      for (var index in objArray[0]) {
+        //Now convert each value to string and comma-separated
+        row += index + ',';
+      }
+      row = row.slice(0, -1);
+      //append Label row with line break
+      str += row + '\r\n';
+  
+      for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+          if (line != '') line += ','
+  
+          line += array[i][index];
+        }
+        str += line + '\r\n';
+      }
+      return str;
     }
 }
