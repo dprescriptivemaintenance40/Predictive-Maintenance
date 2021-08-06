@@ -299,12 +299,12 @@ export class HomeComponent implements OnInit {
         {
           label: 'Prescriptive Recommendation',
           url: '#/Home/Prescriptive/List'
-        }
+        },
+        {
+          label: 'Summary Report',
+          url: '#/Home/Prescription'
+        },
       ]
-    },
-    {
-      label: 'Summary Report',
-      url: '#/Home/Prescription'
     },
     {
       label: 'Recycle Bin',
