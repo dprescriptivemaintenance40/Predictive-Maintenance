@@ -50,6 +50,24 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
         }
 
         [HttpGet]
+        [Route("GetFutuerPredictionRecordsInCSVFormat")]
+        public async Task<IActionResult> GetFutuerPredictionRecordsInCSVFormat()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            try
+            {
+                List<ScrewCompressorFuturePredictionModel> screwCompressorFuturePrediction = await _context.ScrewCompressureFuturePrediction.Where(a => a.UserId == userId).OrderBy(a => a.PredictedDate).ToListAsync();
+
+                return Ok(screwCompressorFuturePrediction);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
+        }
+
+        [HttpGet]
         [Route("FuturePredictionMovingAverage")]
         public async Task<IActionResult> GetMovngAverage()
         {

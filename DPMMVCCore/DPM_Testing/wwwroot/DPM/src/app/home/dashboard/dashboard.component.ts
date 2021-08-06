@@ -1474,6 +1474,7 @@ public dataset1 =[]
 public dataset2 =[]
 public dataset3 =[]
 public date: any =[]
+public csvData :any
    dygraph(){
 
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.GetAllRecords)
@@ -1502,7 +1503,6 @@ public date: any =[]
           this.dataset2.push( this.ts1 )
           this.dataset3.push(this.ts2 )
         })
- 
         // this.chart = new Dygraph(
         //   document.getElementById("graph"),"dist/DPM/assets/realdatafordygraph.csv",
         //   {})
@@ -1514,6 +1514,22 @@ public date: any =[]
         //         showRangeSelector: true,
         //       })
         // } 
+        this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat").subscribe((res: any) => {
+          res.forEach(element => {
+            var dt :number = this.json_deserialize_helper(element.PredictedDate)
+            element.PredictedDate = dt;
+           });
+           const dataArray = res
+           if (dataArray != 0) {
+             const FutuerdataArrayList = dataArray.map(obj => {
+               const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction,SCFPId, ...rest } = obj;
+               return rest;
+             })
+               this.csvData = this.ConvertToCSV(FutuerdataArrayList);
+            }
+        })
+
+
         this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
           res.forEach(element => {
            var dt :number = this.json_deserialize_helper(element.InsertedDate)
@@ -1522,28 +1538,28 @@ public date: any =[]
           const dataArray = res
           if (dataArray != 0) {
             const dataArrayList = dataArray.map(obj => {
-              const { PD1,PD2,PS1,PS2,PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction, ...rest } = obj;
+              const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction, ...rest } = obj;
               return rest;
             })
-      
-            var csvData = this.ConvertToCSV(dataArrayList);
+       
+            var csvData1 = this.ConvertToCSV(dataArrayList);
+            csvData1 = csvData1.concat(this.csvData);
             this.chart = new Dygraph(
-              document.getElementById("graph"),csvData,
-            
+              document.getElementById("graph"),csvData1,
               {
                 showRangeSelector: true,
+                drawPoints: true,
                 strokeWidth: 2,
                 'sine wave': {
                   strokePattern: [7, 2, 2, 2],
                },   
-                labelsSeprateline:true,
-                 fillGraph : true,
-              })
+                 labelsSeprateline:true,
+                 animatedZooms: true,
+                //  fillGraph : true,
+              }
+              )
             
           }
-
-         
-       
         }
         )
           
@@ -1632,7 +1648,7 @@ public date: any =[]
 
     json_deserialize_helper(value) {
     if ( typeof value === 'string' ) {
-       return parseInt(moment(value).format("yyyyMMdd"));
+       return parseInt(moment(value).format("yyyyMMDD"));
     }
         return value;
     }
@@ -1644,11 +1660,9 @@ public date: any =[]
       var row = "";
   
       for (var index in objArray[0]) {
-        //Now convert each value to string and comma-separated
         row += index + ',';
       }
       row = row.slice(0, -1);
-      //append Label row with line break
       str += row + '\r\n';
   
       for (var i = 0; i < array.length; i++) {
