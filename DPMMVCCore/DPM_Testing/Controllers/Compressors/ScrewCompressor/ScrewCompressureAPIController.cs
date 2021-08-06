@@ -253,15 +253,15 @@ namespace DPM_Testing.Controllers
                 //                                                                           })
                 //                                                                           .OrderBy(a => a.InsertedDate)
                 //                                                                           .ToListAsync();
-                //for (int i = 0; i < screwCompressorPredictions.Count; i++)
-                //{
-                //    long dt = DateToValues(screwCompressorPredictions[i].InsertedDate);
-                //    screwCompressorPredictions[i].InsertedDate = dt;
-                //}
+                for (int i = 0; i < screwCompressorPredictions.Count; i++)
+                {
+                    long dt = DateToValues(screwCompressorPredictions[i].InsertedDate);
+                    screwCompressorPredictions[i].Date = dt;
+                }
                 //string data = JsonConvert.SerializeObject(screwCompressorPredictions);
                 //var PredictionData = jsonStringToCSV(data);
-
-                return Ok(screwCompressorPredictions);
+                var newList = screwCompressorPredictions.Select(d => new { d.Date, d.TS1, d.TD1, d.TS2, d.TD2, d.FTS1, d.FTD1, d.FTS2, d.FTD2 }).ToList();
+                return Ok(newList);
             }
             catch (Exception exe)
             {

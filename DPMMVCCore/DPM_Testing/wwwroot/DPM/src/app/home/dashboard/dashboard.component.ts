@@ -135,6 +135,7 @@ export class DashboardComponent {
       this.ETBF=this.state.ETBF 
       this.CBAWithId(this.CFPPrescriptiveId)
     }
+    //var date =  moment().add(7, 'days').format('YYYY-MM-DD');
   }
   ngOnInit() {
     this.getRecordsByEqui()
@@ -1514,49 +1515,70 @@ public csvData :any
         //         showRangeSelector: true,
         //       })
         // } 
-        this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat").subscribe((res: any) => {
-          res.forEach(element => {
-            var dt :number = this.json_deserialize_helper(element.PredictedDate)
-            element.PredictedDate = dt;
-           });
-           const dataArray = res
-           if (dataArray != 0) {
-             const FutuerdataArrayList = dataArray.map(obj => {
-               const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction,SCFPId, ...rest } = obj;
-               return rest;
-             })
-               this.csvData = this.ConvertToCSV(FutuerdataArrayList);
-            }
-        })
+        // this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat").subscribe((res: any) => {
+        //   res.forEach(element => {
+        //     var dt :number = this.json_deserialize_helper(element.PredictedDate)
+        //     element.PredictedDate = dt;
+        //    });
+        //    const dataArray = res
+        //    if (dataArray != 0) {
+        //      const FutuerdataArrayList = dataArray.map(obj => {
+        //        const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction,SCFPId, ...rest } = obj;
+        //        return rest;
+        //      })
+        //        this.csvData = this.ConvertToCSV(FutuerdataArrayList);
+        //     }
+        // })
 
 
         this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-          res.forEach(element => {
-           var dt :number = this.json_deserialize_helper(element.InsertedDate)
-           element.InsertedDate = dt;
-          });
-          const dataArray = res
-          if (dataArray != 0) {
-            const dataArrayList = dataArray.map(obj => {
-              const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction, ...rest } = obj;
-              return rest;
-            })
+          // res.forEach(element => {
+          //  var dt :number = this.json_deserialize_helper(element.InsertedDate)
+          //  element.InsertedDate = dt;
+          // });
+          // const dataArray = res
+          // if (dataArray != 0) {
+          //   const dataArrayList = dataArray.map(obj => {
+          //     const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction, ...rest } = obj;
+          //     return rest;
+          //   })
        
-            var csvData1 = this.ConvertToCSV(dataArrayList);
-            csvData1 = csvData1.concat(this.csvData);
-            this.chart = new Dygraph(
-              document.getElementById("graph"),csvData1,
-              {
-                showRangeSelector: true,
-                drawPoints: true,
-                strokeWidth: 2,
-                'sine wave': {
-                  strokePattern: [7, 2, 2, 2],
-               },   
-                 labelsSeprateline:true,
-                 animatedZooms: true,
-                //  fillGraph : true,
-              }
+          //   var csvData1 = this.ConvertToCSV(dataArrayList);
+          //   csvData1 = csvData1.concat(this.csvData);
+          //   this.chart = new Dygraph(
+          //     document.getElementById("graph"),csvData1,
+          //     {
+          //       showRangeSelector: true,
+          //       drawPoints: true,
+          //       strokeWidth: 2,
+          //       'sine wave': {
+          //         strokePattern: [7, 2, 2, 2],
+          //      },   
+          //        labelsSeprateline:true,
+          //        animatedZooms: true,
+          //       //  fillGraph : true,
+          //     }
+             var prediction = res;
+             this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat").subscribe((res: any) => {
+              // res.forEach(element => {
+              //   var dt :number = this.json_deserialize_helper(element.PredictedDate)
+              //   element.PredictedDate = dt;
+              //  });
+              var futureData = res //
+              
+              //concat prediction AND FutureData 
+              // send concated into csv, generate csv and pass to graph
+
+              //  const dataArray = res
+              //  if (dataArray != 0) {
+              //    const FutuerdataArrayList = dataArray.map(obj => {
+              //      const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction,SCFPId, ...rest } = obj;
+              //      return rest;
+              //    })
+              //      this.csvData = this.ConvertToCSV(FutuerdataArrayList);
+              //   }
+            })
+
               )
             
           }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DPM.Models.CompressorModel.ScrewCompressorModel
 {
@@ -23,7 +24,18 @@ namespace DPM.Models.CompressorModel.ScrewCompressorModel
         public string RD { get; set; }
         public string SSRB { get; set; }
         public string CF { get; set; }
-   
+        [NotMapped]
+        public decimal FTS1 { get; set; }
+        [NotMapped]
+        public decimal FTD1 { get; set; }
+        [NotMapped]
+        public decimal FTS2 { get; set; }
+        [NotMapped]
+        public decimal FTD2 { get; set; }
+        [NotMapped]
+        public long Date { get; set; }
+
+
     }
 
 }
