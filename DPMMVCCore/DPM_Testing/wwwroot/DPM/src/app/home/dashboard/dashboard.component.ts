@@ -663,7 +663,7 @@ export class DashboardComponent {
           a.push(element.Classification)
         }
       });
-      console.log(a);
+      // console.log(a);
       var normal = 0
       var incipient = 0
       var degrade = 0
@@ -862,7 +862,7 @@ export class DashboardComponent {
         }
       });
 
-      console.log(a);
+      // console.log(a);
       var normal = 0
       var incipient = 0
       var degrade = 0
@@ -1093,7 +1093,7 @@ export class DashboardComponent {
         }
       });
 
-      console.log(a);
+      // console.log(a);
       var normal = 0
       var incipient = 0
       var degrade = 0
@@ -1587,7 +1587,7 @@ export class DashboardComponent {
         }
       });
 
-      console.log(a);
+      // console.log(a);
       var normal = 0
       var incipient = 0
       var degrade = 0
@@ -1637,7 +1637,7 @@ export class DashboardComponent {
           sc.push(element.Classification)
         }
       });
-      console.log(sc);
+      // console.log(sc);
       var normal = 0
       var incipient = 0
       var degrade = 0
@@ -1753,8 +1753,6 @@ public dataset1 =[]
 public dataset2 =[]
 public dataset3 =[]
 public date: any =[]
-public CSVData: any =[]
-
    dygraph(){
 
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.GetAllRecords)
@@ -1784,7 +1782,18 @@ public CSVData: any =[]
           this.dataset3.push(this.ts2 )
         })
  
-   
+        // this.chart = new Dygraph(
+        //   document.getElementById("graph"),"dist/DPM/assets/realdatafordygraph.csv",
+        //   {})
+        // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
+        //   console.log(res)
+        //   this.chart = new Dygraph(
+        //       document.getElementById("graph"),res,
+            
+        //       {})
+        // } 
+        // )
+          
       this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'blob'}).subscribe((res: any) => {
         let fileReader = new FileReader();
         fileReader.readAsArrayBuffer(res);
@@ -1797,13 +1806,34 @@ public CSVData: any =[]
             var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
             var first_sheet_name = workbook.SheetNames[0];
             var worksheet = workbook.Sheets[first_sheet_name];
-            var CSVData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-
-           this.chart = new Dygraph(
-            document.getElementById("graph"),CSVData,
+            var CSVData: any
+            CSVData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+            let CSVArray = []
+            let XX: any=['Date', 'TD1-TS1' ,'TD2-TS1'];
+            CSVArray.push(XX)
+            var d :string = `Date,Td1Ts1,Td2Ts1`;
+            for ( var i = 0; i < CSVData.length; i++) {
+            // let d: any=[CSVData[i].Date,CSVData[i].Td1Ts1,CSVData[i].Td2Ts1];
+            // CSVArray.push(d)
+             d = `${d},${CSVData[i].Date},${CSVData[i].Td1Ts1},${CSVData[i].Td2Ts1}`
+           }
+           var x:any = [];
+           x.push(d)
+            this.chart = new Dygraph(
+            document.getElementById("graph"),x,
             {
-              // labels: [ "Date", "Td1-Ts1" , "Td2-Ts1", "TD1", "PD1"],
+              // labels: ['Date', 'TD1-TS1' ,'TD2-TS1'],
               showRangeSelector: true,
+              axes: {
+                x: {
+                    // valueFormatter: Dygraph.dateString_,
+                    // axisLabelFormatter: Dygraph.dateAxisFormatter,
+                    // ticker: Dygraph.dateTicker
+                    // valueFormatter:function(d){
+                    //     return d;
+                    // }
+                }
+            }
               //   data:{
               //     x:{
               //       valueFormatter:function(d){
@@ -1846,4 +1876,11 @@ public CSVData: any =[]
        })
       }, error => { console.log(error.error)})
    }
+
+    json_deserialize_helper(value) {
+    if ( typeof value === 'string' ) {
+        return new Date(parseInt(value));
+    }
+        return value;
+    }
 }
