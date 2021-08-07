@@ -109,7 +109,6 @@ export class DashboardComponent {
     public FutuerPredictionIncipientcount: number = 0;
     public FutuerPredictionbadcount: number = 0;
     public FutuerPrediction: any = [];
-
     public PredictionShow:boolean = true;
     public FuterPredictionShow:boolean = false;
 
@@ -119,7 +118,8 @@ export class DashboardComponent {
     public ts2: any = [];
     public TD2Data: any = [];
     public CFPPrescriptiveId : number = 0 ;
-
+    public DatesforCSV : number = 0 ;
+    public date: string = "";
   constructor(private title: Title,
     private http: HttpClient,
     private messageService: MessageService,
@@ -135,7 +135,7 @@ export class DashboardComponent {
       this.ETBF=this.state.ETBF 
       this.CBAWithId(this.CFPPrescriptiveId)
     }
-    //var date =  moment().add(7, 'days').format('YYYY-MM-DD');
+      this.date =  moment().add(7, 'days').format('YYYY-MM-DD');
   }
   ngOnInit() {
     this.getRecordsByEqui()
@@ -145,6 +145,19 @@ export class DashboardComponent {
     this.getAllRecordsbyTag();
     this.GerAllPredictionRecords();
 
+  }
+  ComboDates(){
+    if(this.date ="1Week"){
+      this.date =  moment().add(7, 'days').format('YYYY-MM-DD');
+      this.dygraph()
+    }else if(this.date ="15days"){
+      this.date =  moment().add(15, 'days').format('YYYY-MM-DD');
+      this.dygraph()
+    }else if(this.date ="1Month"){
+      this.date =  moment().add(30, 'days').format('YYYY-MM-DD');
+      this.dygraph()
+    }
+    
   }
   isDateInArray(needle, haystack) {
     for (var i = 0; i < haystack.length; i++) {
@@ -1474,41 +1487,17 @@ public dataset =[]
 public dataset1 =[]
 public dataset2 =[]
 public dataset3 =[]
-public date: any =[]
-public csvData :any
-   dygraph(){
 
-    this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.GetAllRecords)
-    .subscribe(
-      res => {
-        let data = res
-        this.ScrewCompressorAllData = res
-        let dateForFilter = [];
-        for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-          if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
-            dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
-          }
-        }
-        let dateForFilter1 = [];
-        dateForFilter.forEach((value) => {
-          var Date = moment(value).format('YYYY-MM-DD');
-          dateForFilter1.push(Date);
-        });
-        this.ScrewCompressorAllData.forEach(r => {
-          this.td2 = r.TD2
-          this.td1 = r.TD1
-          this.ts1 = r.TS1
-          this.ts2 = r.TS2
-          this.dataset.push(this.td2)
-          this.dataset1.push( this.td1)
-          this.dataset2.push( this.ts1 )
-          this.dataset3.push(this.ts2 )
-        })
+public csvData :any
+
+public mergedarray:any;
+   dygraph(){ 
         // this.chart = new Dygraph(
         //   document.getElementById("graph"),"dist/DPM/assets/realdatafordygraph.csv",
-        //   {})
+        //   {}) 
         // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
         //   console.log(res)
+         
         //   this.chart = new Dygraph(
         //       document.getElementById("graph"),res,
         //       {
@@ -1532,140 +1521,24 @@ public csvData :any
 
 
         this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-          // res.forEach(element => {
-          //  var dt :number = this.json_deserialize_helper(element.InsertedDate)
-          //  element.InsertedDate = dt;
-          // });
-          // const dataArray = res
-          // if (dataArray != 0) {
-          //   const dataArrayList = dataArray.map(obj => {
-          //     const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction, ...rest } = obj;
-          //     return rest;
-          //   })
-       
-          //   var csvData1 = this.ConvertToCSV(dataArrayList);
-          //   csvData1 = csvData1.concat(this.csvData);
-          //   this.chart = new Dygraph(
-          //     document.getElementById("graph"),csvData1,
-          //     {
-          //       showRangeSelector: true,
-          //       drawPoints: true,
-          //       strokeWidth: 2,
-          //       'sine wave': {
-          //         strokePattern: [7, 2, 2, 2],
-          //      },   
-          //        labelsSeprateline:true,
-          //        animatedZooms: true,
-          //       //  fillGraph : true,
-          //     }
              var prediction = res;
-             this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat").subscribe((res: any) => {
-              // res.forEach(element => {
-              //   var dt :number = this.json_deserialize_helper(element.PredictedDate)
-              //   element.PredictedDate = dt;
-              //  });
+
+             this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
               var futureData = res //
-              
-              //concat prediction AND FutureData 
-              // send concated into csv, generate csv and pass to graph
+              this.mergedarray = prediction.concat(futureData); 
+              this.csvData = this.ConvertToCSV( this.mergedarray);
 
-              //  const dataArray = res
-              //  if (dataArray != 0) {
-              //    const FutuerdataArrayList = dataArray.map(obj => {
-              //      const {PredictionId, BatchId, TenantId, UserId,Prediction,RD, SSRB, CF, FuturePrediction,SCFPId, ...rest } = obj;
-              //      return rest;
-              //    })
-              //      this.csvData = this.ConvertToCSV(FutuerdataArrayList);
-              //   }
-            })
+              this.mergedarray.forEach((itm)=>{
+           
+              });
 
-              )
-            
-          }
-        }
+              this.chart = new Dygraph(
+                document.getElementById("graph"),this.csvData,
+                {
+                  showRangeSelector: true,
+                }) 
+            })}
         )
-          
-      // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'blob'}).subscribe((res: any) => {
-      //   let fileReader = new FileReader();
-      //   fileReader.readAsArrayBuffer(res);
-      //   fileReader.onload = (e) => {
-      //       var arrayBuffer: any = fileReader.result;
-      //       var data = new Uint8Array(arrayBuffer);
-      //       var arr = new Array();
-      //       for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-      //       var bstr = arr.join("");
-      //       var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
-      //       var first_sheet_name = workbook.SheetNames[0];
-      //       var worksheet = workbook.Sheets[first_sheet_name];
-      //       var CSVData: any
-      //       CSVData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-      //       let CSVArray = []
-      //       let XX: any=['Date', 'TD1-TS1' ,'TD2-TS1'];
-      //       CSVArray.push(XX)
-      //       var d :string = `Date,Td1Ts1,Td2Ts1`;
-      //       for ( var i = 0; i < CSVData.length; i++) {
-      //       // let d: any=[CSVData[i].Date,CSVData[i].Td1Ts1,CSVData[i].Td2Ts1];
-      //       // CSVArray.push(d)
-      //        d = `${d},${CSVData[i].Date},${CSVData[i].Td1Ts1},${CSVData[i].Td2Ts1}`
-      //      }
-      //      var x:any = [];
-      //      x.push(d)
-      //       this.chart = new Dygraph(
-      //       document.getElementById("graph"),x,
-      //       {
-      //         // labels: ['Date', 'TD1-TS1' ,'TD2-TS1'],
-      //         showRangeSelector: true,
-      //         axes: {
-      //           x: {
-      //               // valueFormatter: Dygraph.dateString_,
-      //               // axisLabelFormatter: Dygraph.dateAxisFormatter,
-      //               // ticker: Dygraph.dateTicker
-      //               // valueFormatter:function(d){
-      //               //     return d;
-      //               // }
-      //           }
-      //       }
-      //         //   data:{
-      //         //     x:{
-      //         //       valueFormatter:function(d){
-      //         //         return new Date(d.dateForFilter1).toLocaleDateString();
-      //         //       }
-      //         //     },
-      //         //   }, 
-      //         //   strokeWidth: 2,
-      //         //   'sine wave': {
-      //         //     strokePattern: [7, 2, 2, 2],
-      //         //  },   
-      //         //   labelsSeprateline:true,
-      //         //    fillGraph : true,
-  
-      //       //   series: {
-      //       //     "Td1-Ts1" : {
-      //       //         drawPoints: false,
-      //       //         color: "#585858",
-      //       //                 showInRangeSelector : true, 
-      //       //     },
-      //       //     "Td2-Ts1" : {
-      //       //         drawPoints: true,
-      //       //         pointSize: 3,
-      //       //         strokeWidth: 0,
-      //       //                 showInRangeSelector : true, 
-      //       //     },
-      //       //     "TD1" : {
-      //       //         showInRangeSelector : true, 
-      //       //     }, 
-      //       //     "PD1" : {
-      //       //       drawPoints: false,
-      //       //       pointSize: 3,
-      //       //       strokeWidth: 0,
-      //       //               showInRangeSelector : true, 
-      //       //   },
-      //       // },
-      //       }
-      //   );
-      //   }
-      //  })
-      }, error => { console.log(error.error)})
    }
 
     json_deserialize_helper(value) {

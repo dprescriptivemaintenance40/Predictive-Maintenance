@@ -287,6 +287,16 @@
         <div style="text-align: center">
             <h5><b>Combination Of Prediction & Futuer Prediction</b></h5>
         </div><br>
+        <div class="col-md-2">
+            <div class="card">
+                <select [(ngModel)]="date" class="form-select" (change)="ComboDates()" class="form-control">
+                    <option value="">Choose..</option>
+                    <option value="1Week" selected>After 1 Week</option>
+                    <option value="15days" selected>After 15 Days</option>
+                    <option value="1Month" selected>After 1 Month</option>
+                </select>
+            </div>
+        </div><br>
         <div>
             <div style="width:67rem;" id="graph" #graph ></div>
         </div><br>
@@ -485,6 +495,4 @@
         </div>
     </div>
 
-    <div>
-        <canvas id="Combochart"></canvas>
-    </div>
+  
