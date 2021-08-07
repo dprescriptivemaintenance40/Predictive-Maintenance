@@ -460,7 +460,7 @@ table {
   tbody {
     tr {
       td {
-        border: none !important;
+        // border: none !important;
         background-color: #fff;
       }
       &:nth-of-type(even) {
@@ -1161,3 +1161,19 @@ small .pi {
 //     }
 //   }
 // }
+.ng-trigger-submenu.p-panelmenu-root-submenu {
+  max-height: 200px;
+  overflow: auto;
+}
+p-sorticon i {
+  color: rgb(255 255 255 / 45%) !important;
+  font-size: 11px !important;
+}
+.p-organizationchart .p-organizationchart-line-top {
+  border-top: 1px solid $primary-color !important;
+  border-color: $primary-color !important;
+}
+.p-organizationchart .p-organizationchart-line-left {
+  border-right: 1px solid $primary-color !important;
+  border-color: $primary-color !important;
+}

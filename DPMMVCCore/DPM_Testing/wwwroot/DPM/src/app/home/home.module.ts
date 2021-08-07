@@ -19,7 +19,7 @@ import { CostBenefitAnalysisComponent } from "./CostBenefitAnalysis/cost-benefit
 import { CentrifugalPumpPredictionComponent } from './Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component';
 import { CentrifugalPumpTraindataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-traindata-upload/centrifugal-pump-traindata-upload.component';
 import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component';
-
+import {DialogModule} from 'primeng/dialog';
 @NgModule({
     declarations: [
         HomeComponent,
@@ -38,7 +38,8 @@ import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal
     ],
     imports: [        
         HomeRoutingModule,       
-        SharedModule
+        SharedModule,
+        DialogModule
     ],
     providers: [UserService,ProfileService,EventEmitterService,ExcelFormatService],
     bootstrap: [HomeComponent]

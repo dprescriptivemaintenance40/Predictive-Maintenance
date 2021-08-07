@@ -18,7 +18,11 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
   providers: [MessageService, DatePipe]
 })
 export class PredictionComponent implements OnInit {
+ display: boolean = false;
 
+    showDialog() {
+        this.display = true;
+  };
   public showBulkPrediction: boolean = false;
   public file: any;
   public configurationObj: ScrewCompressorPredictionModel = new ScrewCompressorPredictionModel();

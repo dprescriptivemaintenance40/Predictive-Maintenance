@@ -1,56 +1,54 @@
 <p-toast position="top-right"></p-toast>
-<div style="padding-left: 10px;" class="row col-md-12">
-    <div class="alert alert-dark" role="alert">
-        To know about Taxonomy of Compressor
-        <button *ngIf="enableImage" class="btn btn-outline-dark" (click)="compressorImage()">Click Here</button>
-        <button *ngIf="CancelImage" class="btn btn-outline-dark" (click)="compressorImageCancel()">Cancel</button>
+<div class="row">
+    <div class=" col-md-12">
+    <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
+        <p class="mb-0"><i class="pi pi-info-circle" class="mr-1"></i>To know about Taxonomy of Compressor</p>
+        <button *ngIf="enableImage" class="btn btn-primary btn-sm" (click)="compressorImage()">Click Here</button>
+        <button *ngIf="CancelImage" class="btn btn-outline-danger btn-sm" (click)="compressorImageCancel()">Cancel</button>
+    </div>
     </div>
 </div>
-<div *ngIf="Image" class="col-md-6">
-    <div class="card shadow mb-4">
+<div *ngIf="Image" class="row">
+    <div class="col-md-12">
+    <div class="card dpm-card mb-4">
         <div class="card-body">
-            <span><img (click)="imgDowd()" class="img-fluid px-3 px-sm-4 mt-3 mb-2" style="width: 50rem;"
+            <span><img (click)="imgDowd()" class="img-fluid px-3 px-sm-4 mt-3 mb-2"
                     src="/dist/DPM/assets/img/compressor.PNG "alt=""></span>
+        </div>
         </div>
     </div>
 </div>
-<div style="padding: 5px;" class="row">
+<div class="bg-white p-3 mb-3">
+<div class="row d-flex justify-content-between align-items-end">
     <div class="col-sm">
         <div class="row">
             <div class="col">
-                <label>
-                    <h6>Failure Mode</h6>
-                </label>
-            </div>
-            <div class="col">
-                <select style="width: 10em;" [(ngModel)]="failureModeType" (change)="SelectFailureModeType()" class="form-select" class="form-control">
+                <!-- <h6>Failure Mode</h6> -->
+                <select  [(ngModel)]="failureModeType" (change)="SelectFailureModeType()" class="form-select w-100" class="form-control">
                     <option value="RD">Rotar Damage</option>
                     <option value="SSRB" selected>Second stage rotar breakdown</option>
                     <option value="CF" selected>Cooler Failure</option>
                 </select>
             </div>
+            <div class="col">
+                <p-fileUpload name="myfile[]" url="./upload.php"></p-fileUpload>
+                <input type="file" class="form-control-file form-control" (change)="addfile($event)" placeholder="Upload file"
+                    accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+
+            </div>
         </div>
     </div>
-    <div class="col-sm" style="width: 17em;">
-        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+    <div class="col-sm d-flex flex-row justify-content-end">
+    <button type="button" (click)="ChangeInConfiguration()" class="btn btn-primary btn-sm mr-2" data-bs-toggle="tooltip"
+        data-bs-placement="top" title="Revaluate Classification">Revaluate</button>
 
-    </div>
-
-    <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
-    </div>
-
-
-    <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="ChangeInConfiguration()" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Revaluate Classification">Revaluate</button>
-
-    </div>
-
-    <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
+        <button type="button" (click)="Downloadfile()" class="btn btn-outline-primary btn-sm mr-2"><i class="pi pi-file-excel"></i></button>
+    
+        
+        <button type="button" (click)="exportToExcel()" class="btn btn-outline-primary btn-sm"><i class="pi pi-download"></i></button>
     </div>
 </div>
-<br>
+</div>
 <div style="padding: 5px;">
     <div class="card">
         <p-table id="exportexcel" [value]="compListWithClassification" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"

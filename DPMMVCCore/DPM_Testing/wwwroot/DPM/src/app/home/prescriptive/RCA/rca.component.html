@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            <div [hidden]="!Treeshow" class="row" style="margin: 1em;">
+            <div [hidden]="!Treeshow" class="row" class="alert alert-info">
                 <div class="col-md-2 form-check">
                     <input [(ngModel)]="RCATypeQualititive" (change)="RCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Qualitative" checked>
                     <label class="form-check-label" for="Qualitative">
@@ -341,32 +341,34 @@
           </button>
             </div>
             <div class="modal-body" style="overflow: scroll; height: 80em;padding-left: 50;">
-                    <ul *ngIf="!RCAQualitativeReport || !RCAQuantitativeReport" class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div style="padding-bottom: 20px;">
-                            <label style="margin-right: 12px;">Select</label>
-                            <select (change)="RCATypeReport()" [(ngModel)]="RCAReportType" class="form-select" class="form-control">
+                <div class="row">
+                    <div class="col-md-12">
+                    <div *ngIf="!RCAQualitativeReport || !RCAQuantitativeReport" class=" alert alert-dpmprimary d-flex align-items-center justify-content-between">
+                       
+                            <label style="margin-right: 12px;">Select report type</label>
+                            <select (change)="RCATypeReport()" [(ngModel)]="RCAReportType" class="form-select" class="form-control w-25">
                                 <option value="">Choose..</option>
                                 <option *ngFor="let EL of RCAReportTypeList" [ngValue]="EL">{{EL}}</option>
                             </select>
-                            </div>
-                        </li>
-                    </ul> 
+                        </div>
+                    </div>
+                    </div> 
                     <div *ngIf="RCAQualitativeReport">
                     <div id="pdfTable" #pdfTable>
+                        <div class="text-center" *ngIf="imagedivRCA">
+                            <div class="image-container text-center">
+                                <img width="150" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center" *ngIf="!imagedivRCA" id="pdfTable" #pdfTable>
+                            <div class="image-container">
+                                <img width="150" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                            </div>
+                        </div>
                         <div class="text-center" style="text-align:center">
-                            <label><u><b>Root Cause Analysis (RCA) based on Quantitative Approach</b></u></label>
+                           <h5>Root Cause Analysis (RCA) based on Quantitative Approach</h5>
                         </div>
-                        <div class="sidebar-brand-icon col-sm-2" *ngIf="imagedivRCA" >
-                            <div class="image-container" >
-                                <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png"  alt="">
-                            </div>
-                        </div>
-                        <div class="sidebar-brand-icon col-sm-2" *ngIf="!imagedivRCA" id="pdfTable" #pdfTable>
-                            <div class="image-container" >
-                                <img style="width:30px;height:25px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
-                            </div>
-                        </div>
+                        
                         <div>
                             <label><u><b>Summary</b></u></label>
                         </div>
@@ -400,7 +402,7 @@
                         <div>
                             <label><u><b>Introduction</b></u></label>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <p>RCA analysis completed on
                                 <span *ngIf="!RCAReportfileds">
                         <input type="date" class="form-control" style="width: 10em;" [(ngModel)]="RCAReportDate" name="reportDate" />
@@ -410,7 +412,7 @@
                     </span> for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. RCA finalized by using the current data and considering the failure history of the asset.</p>
                             <p>An understanding of the system to be analyzed was essential prior to the development of the RCA. The initial step was to collect the data and identify whether adequate information was </p>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <label><u><b>RCA inputs</b></u></label>
                             <span *ngIf="!RCAReportfileds">
                 <textarea [(ngModel)]="RCAReportinputs" class="form-control custom-textarea" name="RCAInput"></textarea>
@@ -421,7 +423,7 @@
                     </span>
                             </div>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <label><u><b>Actions and recommendations </b></u></label>
 
                             <span *ngIf="!RCAReportfileds">
@@ -434,7 +436,7 @@
                             </div>
                         </div>
 
-                        <div style="page-break-before: always;">
+                        <div style="page-break-before: always;" class="mb-3">
                             <label><u><b>Conclussion</b></u></label>
                             <p>
                                 The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} {{RCAReportData.TagNumber}} and propose technical solutions to prevent similar failures in future
@@ -447,7 +449,7 @@
                             </p>
                         </div>
                     </div>
-                    <div style="overflow: scroll;">
+                    <div style="overflow: scroll;" class="mb-3">
                         <label><u><b>Annexures</b></u></label>
                         <div id="image" #image>
                             <!-- <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree> -->

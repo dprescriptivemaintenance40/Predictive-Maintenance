@@ -21,7 +21,7 @@
                         <hr>
                         <div class="row d-flex" *ngIf="node.years || node.hours">
                             <div class="col-md-12" class="d-flex flex-row justify-content-between">
-                                 <div class="d-flex flex-row badge badge-danger mr-1">
+                                 <div class="d-flex flex-row justify-content-center badge badge-danger mr-1">
                                     <small><i class="pi pi-calendar small"></i></small>&nbsp;{{node.years}} Yrs
                                 </div>
                                  <div class="d-flex flex-row badge badge-danger">
@@ -32,7 +32,7 @@
                     </div>
                     <div *ngIf="!chart.getTemplateForNode(node) && node.BasicEvent">
                         <div *ngIf="node.Failure">
-                            <h5>{{node.label}}</h5>
+                            <label>{{node.label}}</label>
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">
@@ -83,14 +83,14 @@
                             </div>
                         </div>
                         <div *ngIf="node.ScheduledDowntime">
-                            <h5>{{node.label}}</h5>
+                            <label>{{node.label}}</label>
                             <hr>
-                            <div class="row">
+                            <div class="row d-flex flex-row">
                                 <div class="col-md-6">
-                                    <input [disabled]="node.disable" (keypress)=AllowNumber($event) [(ngModel)]="node.years" class="form-control" placeholder="Set Years" name="years" id="years">
+                                    <input [disabled]="node.disable" (keypress)=AllowNumber($event) [(ngModel)]="node.years" class="form-control w-100" placeholder="Set Years" name="years" id="years" style="width: 150px;">
                                 </div>
                                 <div class="col-md-6">
-                                    <input [disabled]="node.disable" (keypress)=AllowNumber($event) [(ngModel)]="node.hours" class="form-control" placeholder="Set hours" name="hours" id="hours">
+                                    <input [disabled]="node.disable" (keypress)=AllowNumber($event) [(ngModel)]="node.hours" class="form-control w-100" placeholder="Set hours" name="hours" id="hours" style="width: 150px;">
                                 </div>
                             </div>
                             <div>
