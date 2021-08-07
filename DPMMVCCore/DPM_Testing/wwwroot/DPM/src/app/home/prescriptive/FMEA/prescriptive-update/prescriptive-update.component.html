@@ -7,7 +7,7 @@
     <button *ngIf="AddFailureMode" type="button" class="btn btn-dark" style="float: right" (click)="AddFailureModeToTree()" pTooltip="If you want to update the tree click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button><br><br>
 </div><br>
 <div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="prescriptive">
-    <button *ngIf="showFullScreen" pButton pRipple type="button" (click)="FullScreen()"  class="p-button-rounded p-button-secondary p-button-text fixed-max-btn" aria-placeholder="Click to view tree"><i class="pi pi-window-maximize"></i></button>
+    <button *ngIf="showFullScreen" pButton pRipple type="button" (click)="FullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn" aria-placeholder="Click to view tree"><i class="pi pi-window-maximize"></i></button>
     <button *ngIf="!showFullScreen" pButton pRipple type="button" (click)="ExitFullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn"><i class="pi pi-window-minimize"></i></button>
     <p-organizationChart [value]="data1" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">
@@ -107,7 +107,10 @@
                             <table>
                                 <tr *ngFor="let func of failuerMode; let i=index;">
                                     <td>
-                                        <label>
+                                        <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
+                                        </p-checkbox>
+                                        <label>{{func.Description}}</label>
+                                        <!-- <label>
                                             <input type="checkbox"
                                                    name = "{{i}}"
                                                    (change)="FailureModeSelected(func, $event)"
@@ -115,7 +118,7 @@
                                                     [(ngModel)]="func.checked"
                                                     />
                                                    {{func.Description}}
-                                        </label>
+                                        </label> -->
                                     </td>
                                 </tr>
                             </table>
@@ -178,6 +181,29 @@
 
                                     <br>
                                     <div class="container">
+                                        <div>
+
+                                            <p-overlayPanel #panel>
+                                                <div style=" margin-right: 2px;width: 40rem;">
+                                                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to the equipment. More the down time more is the factor, less the down time less is the factor.
+                                                    </li>
+
+                                                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of failure are high then the scrap factor value is taken more and in the case of less chance to scrape the
+                                                        equipment or component factor value is taken less. </li>
+
+                                                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of injury (both man and machine) are high in the case of equipment failure, more is the value given to the safety
+                                                        factor and less the chances of injury, less is the value given to the safety factor.</li>
+
+                                                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment from failure. Minimum no. is given when protection against the failure is easy. Maximum no. is given when
+                                                        protection against the failure is very difficult.
+                                                    </li>
+
+                                                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the no. of failure more is the value given to the factor.
+                                                    </li>
+                                                </div>
+                                            </p-overlayPanel>
+                                            <a (click)="panel.show($event)" style="width: 20rem;" title="Explaination of each factors." style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <h6> Down Time Factor (Range 1 - 10): {{ADDDownTimeFactor}}</h6>
@@ -495,8 +521,7 @@
 
 
 
-<p-dialog [(visible)]="StartConsequences" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false"
-    [resizable]="false" class="dpm-modal">
+<p-dialog [(visible)]="StartConsequences" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false" class="dpm-modal">
 
     <div id="ScrollUpdateTree2">
         <ng-template pTemplate="title">
@@ -508,13 +533,10 @@
         <p-card>
             <div *ngIf="Consequences1" class="p-fluid p-formgrid p-grid">
                 <div class="p-field-checkbox">
-                    <p>Will the Occurrence of the failure mode ( on its own) be evident to operational staff during
-                        normal
-                        operation of the
-                        plant?</p>
+                    <p>Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal operation of the plant?
+                    </p>
                     <div class="dpm-radio d-inline-block" *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
-                        <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}}
-                            (onClick)="ConsequenceSelected(con1)"></p-radioButton>
+                        <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)"></p-radioButton>
 
                     </div>
                 </div>
@@ -526,46 +548,36 @@
             </div>
             <div *ngIf="Consequences2" class="p-fluid p-formgrid p-grid">
                 <div class="p-field-checkbox">
-                    <p>Does the effect of the failure mode(or the secondary effect resulting from the failure have
-                        direct
-                        adverse effect on operational safety or the environment?</p>
+                    <p>Does the effect of the failure mode(or the secondary effect resulting from the failure have direct adverse effect on operational safety or the environment?</p>
                     <div class="dpm-radio d-inline-block" *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
-                        <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}}
-                            (onClick)="ConsequenceSelected(con1)"></p-radioButton>
+                        <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)"></p-radioButton>
                     </div>
                 </div>
 
             </div>
             <div *ngIf="Consequences2">
-                <button label="Back" type="button" class="btn btn-secondary-outline btn-sm"
-                    (click)="Consequence2Back()"><i class="pi pi-arrow-left mr-1"></i>Previous</button>
-                <button label="Next" type="button" class="btn btn-primary btn-sm" style="float: right;"
-                    (click)="Consequence2Next()">Next<i class="pi pi-arrow-right ml-1"></i></button>
+                <button label="Back" type="button" class="btn btn-secondary-outline btn-sm" (click)="Consequence2Back()"><i class="pi pi-arrow-left mr-1"></i>Previous</button>
+                <button label="Next" type="button" class="btn btn-primary btn-sm" style="float: right;" (click)="Consequence2Next()">Next<i class="pi pi-arrow-right ml-1"></i></button>
 
             </div>
             <div *ngIf="Consequences3" class="p-fluid p-formgrid p-grid">
                 <div class="p-field-checkbox">
-                    <p>Does the combination of the failure mode and one additonal failure or event result in an adverse
-                        effect safety of the environment?</p>
+                    <p>Does the combination of the failure mode and one additonal failure or event result in an adverse effect safety of the environment?</p>
                     <div class="dpm-radio d-inline-block" *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
-                        <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}}
-                            (onClick)="ConsequenceSelected(con1)"></p-radioButton>
+                        <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)"></p-radioButton>
                     </div>
                 </div>
             </div>
             <div *ngIf="Consequences3">
-                <button label="Back" type="button" class="btn btn-secondary-outline btn-sm"
-                    (click)="Consequence3Back()"><i class="pi pi-arrow-left mr-1"></i>Previous</button>
-                <button label="Next" type="button" class="btn btn-primary btn-sm" style="float: right; "
-                    (click)="Consequence3Next()">Next<i class="pi pi-arrow-right ml-1"></i></button>
+                <button label="Back" type="button" class="btn btn-secondary-outline btn-sm" (click)="Consequence3Back()"><i class="pi pi-arrow-left mr-1"></i>Previous</button>
+                <button label="Next" type="button" class="btn btn-primary btn-sm" style="float: right; " (click)="Consequence3Next()">Next<i class="pi pi-arrow-right ml-1"></i></button>
 
             </div>
             <div *ngIf="Consequences4" class="p-fluid p-formgrid p-grid">
                 <div class="p-field-checkbox">
                     <p>Does the Failure mode adversily affect operational capabilities of the plant?</p>
                     <div class="dpm-radio d-inline-block" *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
-                        <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}}
-                            (onClick)="ConsequenceSelected(con1)"></p-radioButton>
+                        <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)"></p-radioButton>
                     </div>
                 </div>
 
@@ -573,27 +585,25 @@
             </div>
             <div *ngIf="Consequences4">
                 <a class="btn btn-white" style="border:none"> </a>
-                <button label="Next" type="button" class="btn btn-primary btn-sm" style="float: right;"
-                    (click)="Consequence4Next()">Next<i class="pi pi-arrow-right ml-1"></i></button>
+                <button label="Next" type="button" class="btn btn-primary btn-sm" style="float: right;" (click)="Consequence4Next()">Next<i class="pi pi-arrow-right ml-1"></i></button>
             </div>
         </p-card>
     </div>
 </p-dialog>
 
-<p-dialog [(visible)]="ConsequencesTree" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
-    [draggable]="false" [resizable]="false" class="dpm-modal">
+<p-dialog [(visible)]="ConsequencesTree" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false" class="dpm-modal">
     <div class="p-fluid p-formgrid p-grid">
         <span *ngIf="ConsequenceTreeADDConsequenceEnable">
             <small class="form-text text-muted"><h4>Your {{LSFailureMode}} Tree</h4></small>
         </span>
-    <span *ngIf="ConsequenceTreeEditConsequenceEnable">
+        <span *ngIf="ConsequenceTreeEditConsequenceEnable">
             <small class="form-text text-muted"><h4> Your {{LSFailureMode}} Tree </h4></small>
         </span><br><br>
-    <!-- <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()">Back</button>&nbsp;&nbsp; -->
-    <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button><br><br>
-    <button *ngIf="ConsequenceTreeEditConsequenceEnable" title="Edit Consequences" label="Back" type="button" class="btn btn-dark" (click)="EditConsequenceToTree()"><i class="pi pi-pencil"></i> Consequences</button><br>
-    
-    <p-organizationChart [value]="ConsequenceNode" styleClass="company">
+        <!-- <button label="Back" type="button" class="btn btn-dark" (click)="ConsequenceTreeBack()">Back</button>&nbsp;&nbsp; -->
+        <button *ngIf="ConsequenceTreeADDConsequenceEnable" title="Add Consequences" label="Back" type="button" class="btn btn-dark" style="margin-left: 70px" (click)="ADDConsequenceToTree()"><i class="pi pi-plus"></i> Consequences</button><br><br>
+        <button *ngIf="ConsequenceTreeEditConsequenceEnable" title="Edit Consequences" label="Back" type="button" class="btn btn-dark" (click)="EditConsequenceToTree()"><i class="pi pi-pencil"></i> Consequences</button><br>
+
+        <p-organizationChart [value]="ConsequenceNode" styleClass="company">
             <ng-template let-node pTemplate="person">
                 <div class="node-header p-corner-top">{{node.label}}</div>
                 <div class="node-content">
@@ -623,10 +633,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                             <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> 
                         </td>
                     </tr>
                 </table>
@@ -645,10 +657,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                          <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> 
                         </td>
                     </tr>
                 </table>
@@ -669,10 +683,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                          <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> 
                         </td>
                     </tr>
                 </table>
@@ -693,7 +709,9 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                           <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
                             </label>
@@ -710,7 +728,7 @@
     </p-card>
 </div> -->
 
-<br><br>
+<!-- <br><br> -->
 
 <!-- <div *ngIf="ConsequencesTree" class="col-md-12 stepsdemo-content shadow" style="overflow: scroll;">
     <span *ngIf="ConsequenceTreeADDConsequenceEnable">
@@ -772,7 +790,10 @@
                                 <table>
                                     <tr *ngFor="let func of failuerMode; let i=index;">
                                         <td>
-                                            <label>
+                                            <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
+                                            </p-checkbox>
+                                            <label>{{func.Description}}</label>
+                                            <!-- <label>
                                                 <input type="checkbox"
                                                        name = "{{i}}"
                                                        (change)="FailureModeSelected(func, $event)"
@@ -780,7 +801,7 @@
                                                         [(ngModel)]="func.checked"
                                                         />
                                                        {{func.Description}}
-                                            </label>
+                                            </label> -->
                                         </td>
                                     </tr>
                                 </table>
@@ -1430,7 +1451,7 @@
                                             </div>
                                             <div class="row" style="padding: 15px;">
                                                 <div class="col-md-3">
-                                                    <label>Do you want webal analysis for alpha and beta</label>
+                                                    <label>Do you want weibull analysis for alpha and beta</label>
 
                                                 </div>
                                                 <div class="col-sm">
@@ -2313,8 +2334,10 @@
             </div>
             <div class="row" style="padding: 15px;">
                 <div class="col-md-3">
-                    <label>Do you want new alpha and beta values using webal or you can directly change alpha and beta values from the above</label>
+                    <<<<<<< HEAD <label>Do you want new alpha and beta values using webal or you can directly change alpha and beta values from the above</label>
 
+                        =======
+                        <label>Do you want new alpha and beta values using weibull or you can directly change alpha and beta values from the above</label> >>>>>>> master
                 </div>
                 <div class="col-sm">
                     Yes

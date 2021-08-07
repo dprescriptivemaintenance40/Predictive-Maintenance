@@ -283,16 +283,23 @@
                             <label style=" margin-right: 12px;">Assets</label>
                             <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
                                 <option value="">Choose..</option>
-                                <option value="HeatExchanger" selected>Heat Exchanger</option>
+                                <option value="Screw Compressor" selected>Screw Compressor</option>
+                                <!-- <option value="Screw Compressor" selected>Heat Exchanger</option> -->
                             </select>
                         </div>
                     </li>
                     <li *ngIf="finalRCATypeQualititive" class="list-group-item">
                         <div class="input-group mb-3">
                             <label style="margin-right: 12px;">Failure Mode</label>
-                            <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
+                            <!-- <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
                                 <option value="">Choose..</option>
                                 <option *ngFor="let EL of HeatExchangerFailureModeList" [ngValue]="EL">{{EL}}</option>
+                            </select> -->
+                            <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
+                                <option value="">Choose..</option>
+                                <option value="Rotar Damage">Rotar Damage</option>
+                                <option value="Second stage Rotor breakdown">Second stage Rotor breakdown</option>
+                                <option value="Cooler Failure">Cooler Failure</option>
                             </select>
                         </div>
                     </li>
