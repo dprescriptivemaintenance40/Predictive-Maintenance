@@ -145,15 +145,16 @@ export class DashboardComponent {
     this.getAllRecordsbyTag();
     this.GerAllPredictionRecords();
     this.dygraph()
+    this.ComboDates()
   }
   ComboDates(){
-    if(this.date ="1Week"){
+    if(this.date =="1Week"){
       this.date =  moment().add(7, 'days').format('YYYY-MM-DD');
       this.dygraph()
-    }else if(this.date ="15days"){
-      this.date =  moment().add(15, 'days').format('YYYY-MM-DD');
+    }else if(this.date =="9days"){
+      this.date =  moment().add(9, 'days').format('YYYY-MM-DD');
       this.dygraph()
-    }else if(this.date ="1Month"){
+    }else if(this.date =="1Month"){
       this.date =  moment().add(30, 'days').format('YYYY-MM-DD');
       this.dygraph()
     }
@@ -1512,63 +1513,21 @@ public mergedarray:any;
              this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
               var futureData = res 
         
-              // var a: any = [];
-              // futureData.forEach((itm)=>{ 
-              // if(itm.TS1 == 0 && itm.TS2 == 0 && itm.TD1 == 0 || itm.TD2 == 0){
-              //   itm.TS1 = null 
-              //   a.push( itm.TS1)
-              //   itm.TS2 = null
-              //   a.push( itm.TS2)
-              //   itm.TD1 = null
-              //   a.push( itm.TD1)
-              //   itm.TD2 = null 
-              //   a.push( itm.TD2)
-              // }
-              // });
-
               this.mergedarray = prediction.concat(futureData); 
               this.csvData = this.ConvertToCSV( this.mergedarray);
 
                this.chart = new Dygraph(
                 document.getElementById("graph"),this.csvData,
                 {
-                  showRangeSelector: true,
-                  connectSeparatedPoints: true,
-                   fillGraph:true,
-                   rollPeriod: 1,
-                  //  errorBars: true,
-                  // series: {
-                  //   "FTS1": {
-                  //     color: "#FFD700",
-                  //     strokeWidth: 10,
-                  //     drawPoints: true,
-                  //     pointSize: 4,
-                  //     highlightCircleSize: 6,
-                  //   },
-                  //   "FTD1": {
-                  //     drawPoints: true,
-                  //     color: "#00BFFF",
-                  //     pointSize: 3,
-                  //     strokeWidth: 0,
-                  //     showInRangeSelector: true,
-                  //   },
-                  //   "FTS2": {
-                  //     drawPoints: true,
-                  //     color: "#00FFFF",
-                  //     pointSize: 3,
-                  //     strokeWidth: 0,
-                  //     strokePattern: [7, 2, 2, 2],
-                  //     showInRangeSelector: true,
-                  //   },
-                  //   "FTD2": {
-                  //     drawPoints: true,
-                  //     color: "#7FFF00",
-                  //     pointSize: 3,
-                  //     strokeWidth: 0,
-                  //     strokePattern: [7, 2, 2, 2],
-                  //     showInRangeSelector: true,
-                  //   },
-                  // }
+                   showRangeSelector: true,
+                   connectSeparatedPoints: true,
+                    fillGraph:true,
+                    //  rollPeriod: 1,
+                     animatedZooms: true,
+                     drawPoints: true,
+                     highlightSeriesOpts: {
+                       strokeWidth: 2
+                     }
                 }) 
             })}
         )
