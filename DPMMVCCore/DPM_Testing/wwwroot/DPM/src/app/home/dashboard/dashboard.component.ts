@@ -1519,15 +1519,19 @@ public mergedarray:any;
                this.chart = new Dygraph(
                 document.getElementById("graph"),this.csvData,
                 {
-                   showRangeSelector: true,
-                   connectSeparatedPoints: true,
-                    fillGraph:true,
-                    //  rollPeriod: 1,
-                     animatedZooms: true,
-                     drawPoints: true,
-                     highlightSeriesOpts: {
-                       strokeWidth: 2
-                     }
+                  showRangeSelector: true,
+                  connectSeparatedPoints: true,
+                  fillGraph: true,
+                  rollPeriod: 1,
+                  animatedZooms: true,
+                  drawPoints: true,
+                  highlightSeriesOpts: {
+                    strokeWidth: 2
+                  },
+                  //showRoller: true,
+                  strokeWidth: 2.0,
+                  stepPlot: true,
+                  drawXGrid: false,
                 }) 
             })}
         )
