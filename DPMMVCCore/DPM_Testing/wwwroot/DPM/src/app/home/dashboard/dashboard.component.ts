@@ -144,7 +144,7 @@ export class DashboardComponent {
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
     this.GerAllPredictionRecords();
-
+    this.dygraph()
   }
   ComboDates(){
     if(this.date ="1Week"){
@@ -414,7 +414,7 @@ export class DashboardComponent {
           this.ClassificationOfAllRecordDonught();
           this.ClassificationOfAllpolarchart()
           // this.ScatterChart()
-          this.dygraph()
+        
         }, error => {
           console.log(error.error)
         }
@@ -1489,6 +1489,7 @@ public dataset2 =[]
 public dataset3 =[]
 
 public csvData :any
+public csvData1 :any
 
 public mergedarray:any;
    dygraph(){ 
@@ -1508,39 +1509,34 @@ public mergedarray:any;
 
         this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
              var prediction = res;
-
              this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
               var futureData = res 
-              var a: any = [];
-              futureData.forEach((itm)=>{ 
+        
+              // var a: any = [];
+              // futureData.forEach((itm)=>{ 
+              // if(itm.TS1 == 0 && itm.TS2 == 0 && itm.TD1 == 0 || itm.TD2 == 0){
+              //   itm.TS1 = null 
+              //   a.push( itm.TS1)
+              //   itm.TS2 = null
+              //   a.push( itm.TS2)
+              //   itm.TD1 = null
+              //   a.push( itm.TD1)
+              //   itm.TD2 = null 
+              //   a.push( itm.TD2)
+              // }
+              // });
 
-              if(itm.TS1 == 0 && itm.TS2 == 0 && itm.TD1 == 0 || itm.TD2 == 0){
-                // itm.TS1 = null 
-                // a.push( itm.TS1)
-                // itm.TS2 = null
-                // a.push( itm.TS2)
-                // itm.TD1 = null
-                // a.push( itm.TD1)
-                // itm.TD2 = null 
-                // a.push( itm.TD2)
-
-              }
-              });
               this.mergedarray = prediction.concat(futureData); 
               this.csvData = this.ConvertToCSV( this.mergedarray);
-
-              // this.mergedarray.forEach((itm)=>{
-              //   let arr = Object.entries(itm);
-              // });
 
                this.chart = new Dygraph(
                 document.getElementById("graph"),this.csvData,
                 {
-                  // showRoller: true,
-                  fillGraph: true,
-                  includeZero: true,
-                  showInRangeSelector: true,
+                  showRangeSelector: true,
                   connectSeparatedPoints: true,
+                   fillGraph:true,
+                   rollPeriod: 1,
+                  //  errorBars: true,
                   // series: {
                   //   "FTS1": {
                   //     color: "#FFD700",
@@ -1578,12 +1574,6 @@ public mergedarray:any;
         )
    }
 
-    // json_deserialize_helper(value) {
-    // if ( typeof value == 'string' ) {
-    //    return parseInt(moment(value).format("yyyyMMDD"));
-    // }
-    //     return value;
-    // }
 
 
     ConvertToCSV(objArray) {
