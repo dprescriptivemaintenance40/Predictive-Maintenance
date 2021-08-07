@@ -485,6 +485,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.functionModeData = [];
         console.log(res)
         this.dropDownData = res;
+        this.dropedMode=[];
 
         this.dropDownData.forEach(element => {
           if (element.Function == "Function Failure") {
