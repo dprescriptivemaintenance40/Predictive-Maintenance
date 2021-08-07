@@ -106,17 +106,17 @@
    { 
      "id": 20,
      "name": "Rotary Damage",
-     "mtbf" : 0  
+     "mtbf" : 5
    },
    { 
      "id": 21,
      "name": "Cooler failure",
-     "mtbf" : 0 
+     "mtbf" : 3 
    },
    { 
      "id": 21,
      "name": "Second stage rotor breakdown",
-     "mtbf" : 0 
+     "mtbf" : 4 
    }
 
 ]
