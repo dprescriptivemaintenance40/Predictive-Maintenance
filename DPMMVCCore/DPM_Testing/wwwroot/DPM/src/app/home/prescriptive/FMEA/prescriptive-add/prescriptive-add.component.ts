@@ -438,7 +438,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   FailureModeSelected(value, event){
-    if(event.target.checked === false){
+    if(event.target.ariaChecked === null){
       var findIndexOF = value.PrescriptiveLookupMasterId
       var index = -1;
       var filteredObj = this.dropedMode.find((item, i) => {
@@ -449,7 +449,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       });
       this.failuerMode[index].checked = false;
       this.dropedMode.splice(index, 1)
-    }else{
+    }
+    
+    if(event.target.ariaChecked === 'true'){
       let obj = {}
       obj['Date']= value.Date;
       obj['Description']= value.Description;
@@ -470,42 +472,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.failuerMode[index1].checked = true;
     }
   }
-
-
-  FailureModeSelectedForPrimeNg(value, event){
-    if(event.checked === false){
-      var findIndexOF = value.PrescriptiveLookupMasterId
-      var index = -1;
-      var filteredObj = this.dropedMode.find((item, i) => {
-        if (item.PrescriptiveLookupMasterId === findIndexOF) {
-          index = i;
-          return i;
-        }
-      });
-      this.failuerMode[index].checked = false;
-      this.dropedMode.splice(index, 1)
-    }else{
-      let obj = {}
-      obj['Date']= value.Date;
-      obj['Description']= value.Description;
-      obj['EquipmentType']= value.EquipmentType;
-      obj['Function']= value.Function;
-      obj['MachineType']= value.MachineType;
-      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
-      this.dropedMode.push(obj);
-
-      var fIO = value.PrescriptiveLookupMasterId
-      var index1 = -1;
-      var filtObj = this.failuerMode.find((item, i) => {
-        if (item.PrescriptiveLookupMasterId === fIO) {
-          index1 = i;
-          return i;
-        }
-      });
-      this.failuerMode[index1].checked = true;
-    }
-  }
-
 
   getDropDownLookMasterData() {
     const params = new HttpParams()
@@ -514,6 +480,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     var url : string = this.prescriptiveContantAPI.FMEADropdownData;
     this.prescriptiveBLService.getWithParameters( url ,params).subscribe(
       res => {
+        this.dropDownData = [];
+        this.functionFailureData = [];
+        this.functionModeData = [];
         console.log(res)
         this.dropDownData = res;
 
@@ -525,9 +494,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
           }
 
         });
-        console.log(this.functionFailureData)
-        console.log(this.functionModeData)
-
         this.functionfailure = this.functionFailureData;
         this.failuerMode = this.functionModeData;
       })

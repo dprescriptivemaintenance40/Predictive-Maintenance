@@ -31,7 +31,8 @@ export class HomeComponent implements OnInit {
   public MenuItems: any[] = [
     {
       label: 'Dashboard',
-      url: '#/Home/Dashboard'
+      url: '#/Home/Dashboard',
+      icon: 'pi pi-home',
     },
     {
       label: 'DPM-Education',
