@@ -588,7 +588,7 @@ label {
 .p-organizationchart {
   .p-person {
     background-color: #effaff;
-    border: 1px solid #09a1a6 !important;
+    border: 1px solid #fff !important;
     width: auto;
     min-width: 200px;
     text-align: center;
@@ -1176,4 +1176,33 @@ p-sorticon i {
 .p-organizationchart .p-organizationchart-line-left {
   border-right: 1px solid $primary-color !important;
   border-color: $primary-color !important;
+}
+table.p-organizationchart-table {
+  background: #f0f4fe;
+  padding: 40px 10px;
+  .row {
+    justify-content: center;
+  }
+}
+.alert-info {
+  display: flex;
+}
+.p-checkbox + label {
+  margin-left: 5px;
+  margin-top: 3px;
+}
+.modal-dialog {
+  max-width: 1000px;
+  border-radius: 20px;
+  border: none;
+  &:before {
+    background-color: #000;
+    opacity: 0.7;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    content: '';
+  }
 }

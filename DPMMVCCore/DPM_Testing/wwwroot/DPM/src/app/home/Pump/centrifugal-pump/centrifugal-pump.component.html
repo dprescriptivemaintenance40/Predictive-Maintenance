@@ -1,8 +1,8 @@
 <p-toast position="top-right"></p-toast>
-<div style="padding: 10px;" *ngIf="user.UserType == 1">
-    <div class="card shadow" style="padding: 20px;margin: 10px;">
+<div class="bg-white p-3 mb-3" *ngIf="user.UserType == 1">
+    <div class="card dpm-card">
         <form>
-            <div class="form-group row">
+            <div class="row">
                 <label for="vendorList" class="col-sm-2 col-form-label">Vendors List</label>
                 <div class="col-sm-10">
                     <select #EL (change)="slectedVendor(EL.value)" style="width: 35%;" id="vendorList" class="form-control">
@@ -12,21 +12,21 @@
                 </div>
             </div>
         </form>
-        <div *ngIf="vendorsLastname !== '' " style="margin-top: 20px;" class="form-group row">
+        <div *ngIf="vendorsLastname !== '' " style="margin-top: 20px;" class=" row">
             <div class="col-sm-2">
-                <label>Vendor Firstname : </label>
+                <label><i class="fa fa-user-alt"></i>&nbsp;&nbsp;&nbsp;Vendor Firstname : </label>
             </div>
             <div class="col-sm-2">
                 {{VendorsFirstName}}
             </div>
             <div class="col-sm-2">
-                <label>Vendor Lastname : </label>
+                <label><i class="fa fa-user-alt"></i>&nbsp;&nbsp;&nbsp;Vendor Lastname : </label>
             </div>
             <div class="col-sm-2">
                 {{vendorsLastname}}
             </div>
             <div class="col-sm-2">
-                <label>Vendor Username : </label>
+                <label><i class="fa fa-user-alt"></i>&nbsp;&nbsp;&nbsp;Vendor Username : </label>
             </div>
             <div class="col-sm-2">
                 {{vendorsUsername}}
@@ -38,7 +38,7 @@
 
 
 
-<div style="padding: 5px;" class="row" *ngIf="!(user.UserType == 1 || user.UserType == 2)">
+<div class="bg-white p-3 mb-3" class="row" *ngIf="!(user.UserType == 1 || user.UserType == 2)">
     <div class="col-sm col-md-4 form-group">
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
@@ -51,8 +51,8 @@
         <button type="button" style="background-color:#585570 ; border-color:#585570;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
     </div>
 </div>
-<div style="margin: 10px;" class="row">
-    <div class="form-check col-sm-2">
+<div class="row bg-white p-3 d-flex justify-content-center align-items-center">
+    <div class="form-check col-sm-2 pl-5">
         <input [(ngModel)]="DailyWeekMode" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="daily" (change)="ChooseData($event)" checked>
         <label class="form-check-label" for="flexRadioDefault1">
     <b> Daily Data</b>
@@ -74,7 +74,7 @@
         <input type="date" [(ngModel)]="ToDate" class="form-control" id="ToDate">
     </div>
     <div class="col-sm-2">
-        <button type="button" style="background-color:#585570 ; border-color:#585570;" (click)="GetCentrifugapPumpUniqueDate()" class="btn btn-primary">Show</button>
+        <button type="button"  (click)="GetCentrifugapPumpUniqueDate()" class="btn btn-primary">Show</button>
     </div>
     <div class="col-sm"></div>
     <div class="col-sm"></div>
