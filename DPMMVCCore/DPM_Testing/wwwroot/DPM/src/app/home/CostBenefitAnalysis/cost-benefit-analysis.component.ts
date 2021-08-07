@@ -1,6 +1,9 @@
 import { HttpClient } from "@angular/common/http";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { MessageService } from "primeng/api";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.directive";
 
 @Component({
     templateUrl: './cost-benefit-analysis.component.html',
@@ -22,8 +25,11 @@ export class CostBenefitAnalysisComponent {
     public Plant: string = '';
     public Unit: string = '';
     public ETBF: string = '';
+    public CBAReportDetails: any;
     constructor(private messageService: MessageService,
-        private http: HttpClient) {
+        private http: HttpClient,
+        private CD: ChangeDetectorRef,
+        private commonLoadingDirective: CommonLoadingDirective) {
         this.MachineEquipmentSelect();
         this.getPrescriptiveRecords();
         this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
@@ -47,9 +53,10 @@ export class CostBenefitAnalysisComponent {
                 });
             });
     }
-    getPrescriptiveRecordsByEqui() {
+    public getPrescriptiveRecordsByEqui() {
         if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
             this.prescriptiveRecords = [];
+            this.CBAReportDetails = undefined;
             this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
                 .subscribe((res: any) => {
                     this.prescriptiveRecords = res;
@@ -102,5 +109,74 @@ export class CostBenefitAnalysisComponent {
         } else {
             this.messageService.add({ severity: 'info', summary: 'note', detail: "Please fill all three fields Site, Plant, Unit. " })
         }
+    }
+
+    public OpenCBAReport(row) {
+        this.CBAReportDetails = row;
+    }
+
+    public PDFCBAReport() {
+        this.CD.detectChanges();
+        const doc = new jsPDF();
+        const specialElementHandlers = {
+            '#editor': function (element, renderer) {
+                return true;
+            }
+        };
+        // const pdfTable2 = this.pdfTable2.nativeElement;
+        // doc.fromHTML(pdfTable2.innerHTML, 15, 15, {
+        //   width: 190,
+        //   'elementHandlers': specialElementHandlers
+        // });
+
+        let imageData = document.getElementById('CBAReport');
+        var pdfdata = html2canvas(imageData).then(canvas => {
+            const imgProps = doc.getImageProperties(canvas);
+            var imgWidth = 187;
+            var pageHeight = 299;
+            var imgHeight = imgProps.height * imgWidth / imgProps.width;
+            var heightLeft = imgHeight;
+            var position = 0;
+            doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight / 1);
+            heightLeft -= pageHeight;
+            while (heightLeft >= 2) {
+                position = heightLeft - imgHeight;
+                doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight / 1);
+                heightLeft -= pageHeight;
+            }
+            const arrbf = doc.output("arraybuffer");
+            doc.save("Cost Benefit Analysis Report");
+            this.commonLoadingDirective.showLoading(false, 'Downloading....');
+        });
+    }
+
+    saveByteArray(reportName, byte) {
+        var blob = new Blob([byte], { type: "application/pdf" });
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        var fileName = reportName;
+        link.download = fileName;
+        link.click();
+      };
+
+    public PrintCBAReport() {
+        this.CD.detectChanges();
+        let popupWinindow;
+        let printContents = document.getElementById('CBAReport').innerHTML;
+        popupWinindow = window.open('', '_blank', 'width=1600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+        popupWinindow.document.open();
+        let documentContent = "<html><head>";
+        documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/bootstrap.css">';
+        documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/vendor/fontawesome-free/css/all.min.css">';
+        documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/primeicons/primeicons.css">';
+        documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
+        documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
+        documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
+        documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/Chart.min.css">';
+        documentContent += '</head>';
+        documentContent += '<body onload="window.print()">' +
+          '<script  src="/dist/DPM/assets/css/Chart.min.js"></script>' + printContents + '</body></html>'
+        popupWinindow.document.write(documentContent);
+        popupWinindow.document.close();
     }
 }
