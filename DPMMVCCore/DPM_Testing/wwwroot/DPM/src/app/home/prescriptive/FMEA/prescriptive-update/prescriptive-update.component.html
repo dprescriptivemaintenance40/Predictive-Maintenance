@@ -83,10 +83,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="margin-left: 5px;">Add Failure Mode Tree </h5><br>
-                
+
                 <button type="button" class="close" data-dismiss="FailureModeUpdate" aria-label="Close" (click)="closeFMmodal()">
                    <span aria-hidden="true">&times;</span> </button>
-                
+
             </div>
             <div class="FailureModeUpdate modal-body">
                 <div class="container-fluid">
@@ -594,6 +594,7 @@
 </p-dialog>
 
 <p-dialog [(visible)]="ConsequencesTree" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false" class="dpm-modal">
+
     <div class="p-fluid p-formgrid p-grid">
         <span *ngIf="ConsequenceTreeADDConsequenceEnable">
             <small class="form-text text-muted"><h4>Your {{LSFailureMode}} Tree</h4></small>
