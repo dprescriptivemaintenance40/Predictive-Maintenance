@@ -12,6 +12,7 @@ import { PrescriptiveListComponent } from './FMEA/prescriptive-list/prescriptive
 import { FCAADDComponent } from './FCA/fca-add/fca-add.component';
 import { MSSAddComponent } from './MSS/mss-add/mss-add.component';
 import { RCAComponent } from "./RCA/rca.component";
+import { ClientContractorLibraryComponent } from './PSR/client-contractor-library/client-contractor-library.component';
 
 @NgModule({
     declarations: [PrescriptiveComponent,
@@ -24,7 +25,8 @@ import { RCAComponent } from "./RCA/rca.component";
         PrescriptiveListComponent,
         FCAADDComponent,
         MSSAddComponent,
-        RCAComponent
+        RCAComponent,
+        ClientContractorLibraryComponent
     ],
     imports: [
         SharedModule,

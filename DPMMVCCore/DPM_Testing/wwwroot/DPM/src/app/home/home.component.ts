@@ -301,7 +301,7 @@ export class HomeComponent implements OnInit {
           url: '#/Home/Prescriptive/List'
         },
         {
-          label: 'Summary Report',
+          label: 'Summary',
           url: '#/Home/Prescription'
         },
       ]

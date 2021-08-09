@@ -46,7 +46,8 @@ export class PrescriptionComponent implements OnInit {
       { name: 'FCA' },
       { name: 'MSS' },
       { name: 'RCA' },
-      { name: 'CBA' }
+      { name: 'CBA' },
+      { name: 'PSR' }
     ]
 
     this.totalRecords = 10;
@@ -159,11 +160,13 @@ async onNodeExpand(event) {
       const node = event.node;
       if (node.data.name === 'CBA' || node.data.name === 'MSS'|| node.data.name === 'FCA'|| node.data.name === 'FMEA') {
         let children = []
-        if(node.data.name === 'MSS'){
-          children.push(
-            { data: { name: 'Good Engineering Practice : Task List' , type:'GEP', discription: 'Maintenance Interval' }, leaf: false  },
-          );
-        }
+        if(this.EquipmentType !== 'Screw Compressor'){
+          if(node.data.name === 'MSS'){
+            children.push(
+              { data: { name: 'Good Engineering Practice : Task List' , type:'GEP', discription: 'Maintenance Interval' }, leaf: false  },
+            );
+          }
+        }        
         for (let index = 0; index < this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.length; index++) {
           let d = this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes[index]
           children.push(
