@@ -63,6 +63,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   public ConsequencesAnswer: any = [];
   public ConsequenceTreeADDConsequenceEnable: boolean = false;
   public ConsequenceTreeEditConsequenceEnable: boolean = false;
+  public RadioValue : string = '';
   private consequenceTreeColorNodeA = 'p-person1'
   private consequenceTreeColorNodeB = 'p-person'
   private consequenceTreeColorNodeC = 'p-person'
@@ -693,6 +694,13 @@ public UpdateBeta : number = 0
 
   SaveFailureModeUpdate() {
     this.FailureModediv.style.display = 'none'
+    // As failure mode changes, it reflects to mss calculation also, if Failure mode consist A consequence
+    // only A-FFT of MSS Strategy get reflected by change of Failure Mode to  MSSMaintenanceInterval
+      var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === this.UpdateFailureMode);
+      var MTBF = dataFromLibrary.mtbf;
+      this.centrifugalPumpPrescriptiveOBJ.TagNumber = MTBF; // we are sending MTBF value from Tag number
+      // At server side MSSMaintenanceInterval using availability and MTBF
+      
     var i = this.IndexCount - 1
     var local = this.data1[0].children[0].children[0].children[i].children[0].children[0].data.name
     var system = this.data1[0].children[0].children[0].children[i].children[0].children[1].data.name
@@ -749,6 +757,19 @@ public UpdateBeta : number = 0
     obj['AttachmentDBPath'] = this.UpdatedAttachmentInFMDBPath
     obj['AttachmentFullPath'] = this.UpdatedAttachmentInFMFullPath
     obj['Remark'] = this.Remark
+    obj['Pattern'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].Pattern
+    obj['FCACondition'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCACondition
+    obj['FCAInterval'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCAInterval
+    obj['FCAFFI'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCAFFI
+    obj['FCAAlpha'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCAAlpha
+    obj['FCABeta'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCABeta
+    obj['FCASafeLife'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCASafeLife
+    obj['FCAUsefulLife'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCAUsefulLife
+    obj['FCAComment'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCAComment
+    obj['MSSStartergyList'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].MSSStartergyList
+    //obj['CentrifugalPumpMssModel']
+    obj['FCAUpdateIntervals'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCAUpdateIntervals
+    obj['FCAUpdateConditions'] = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes[index].FCAUpdateConditions
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     this.Remark = ""
     var url : string =  this.prescriptiveContantAPI.SaveFailureModeUpdate
@@ -1558,6 +1579,7 @@ async AddPatternToNewFM() {
         this.Consequences1 = false;
         this.Consequences3 = false;
         this.Consequences4 = false;
+        this.RadioValue = "";
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceFailureMode[0])
         console.log(this.ConsequencesAnswer)
@@ -1565,6 +1587,7 @@ async AddPatternToNewFM() {
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = false;
+        this.RadioValue = "";
       }
     } else {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
@@ -1574,6 +1597,7 @@ async AddPatternToNewFM() {
   Consequence2Back() {
     this.Consequences1 = true;
     this.Consequences2 = false;
+    this.RadioValue = "";
 
   }
   Consequence2Next() {
@@ -1594,6 +1618,7 @@ async AddPatternToNewFM() {
         this.Consequences4 = false;
         this.StartConsequences = false;
         this.ConsequencesTree = true;
+        this.RadioValue = "";
         if (this.UpdateFailureModeConsequence == "") {
           this.ConsequenceTreeADDConsequenceEnable = true
         }
@@ -1609,6 +1634,7 @@ async AddPatternToNewFM() {
         this.Consequences2 = false;
         this.Consequences1 = false;
         this.Consequences4 = true;
+        this.RadioValue = "";
       }
     } else {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
@@ -1619,6 +1645,7 @@ async AddPatternToNewFM() {
     this.StartConsequences = true;
     this.Consequences1 = true
     this.Consequences3 = false;
+    this.RadioValue = "";
   }
   Consequence3Next() {
     if (this.dropedConsequenceCombinationFailureMode.length == 1) {
@@ -1646,6 +1673,7 @@ async AddPatternToNewFM() {
           this.ConsequenceTreeEditConsequenceEnable = true
         }
         this.colorConsequenceTree()
+        this.RadioValue = "";
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceCombinationFailureMode[0])
         this.finalConsequence = ""
@@ -1670,6 +1698,7 @@ async AddPatternToNewFM() {
           this.ConsequenceTreeEditConsequenceEnable = true
         }
         this.colorConsequenceTree()
+        this.RadioValue = "";
       }
     } else {
       this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Field is Empty, Drag and drop inside field' });
@@ -1679,6 +1708,7 @@ async AddPatternToNewFM() {
   Consequence4Back() {
     this.Consequences2 = true
     this.Consequences4 = false;
+    this.RadioValue = "";
   }
   Consequence4Next() {
     if (this.dropedConsequenceAffectFailureMode.length == 1) {
@@ -1706,6 +1736,7 @@ async AddPatternToNewFM() {
           this.ConsequenceTreeEditConsequenceEnable = true
         }
         this.colorConsequenceTree()
+        this.RadioValue = "";
       } else {
         this.ConsequencesAnswer.push(this.dropedConsequenceAffectFailureMode[0])
         this.finalConsequence = ""
@@ -1730,6 +1761,7 @@ async AddPatternToNewFM() {
           this.ConsequenceTreeEditConsequenceEnable = true
         }
         this.colorConsequenceTree()
+        this.RadioValue = "";
       }
     } else {
 
@@ -1739,6 +1771,7 @@ async AddPatternToNewFM() {
   }
 
   ConsequenceTreeBack() {
+    this.RadioValue = "";
     this.dropedConsequenceAffectFailureMode = [];
     this.dropedConsequenceCombinationFailureMode = [];
     this.dropedConsequenceFailureMode = [];
@@ -4148,7 +4181,8 @@ this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Interval v
  }
 
  async ADDalphaBetaSave(){
-   this.ADDpatternaddshow = true
+  // this.ADDpatternaddshow = true
+  this.AddFMPatternAddEnable = true;
    this.changeDetectorRef.detectChanges();
    const element = document.querySelector("#ScrollToFCATree")
    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -4546,9 +4580,46 @@ async ADDMSSToTree() {
       this.dropedConsequenceAffectFailureMode.push(a)
     }
   }
-
   FailureModeSelected(value, event){
-    if(event.target.checked === false){
+    if(event.target.ariaChecked === null){
+      var findIndexOF = value.PrescriptiveLookupMasterId
+      var index = -1;
+      var filteredObj = this.dropedMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === findIndexOF) {
+          index = i;
+          return i;
+        }
+      });
+      this.failuerMode[index].checked = false;
+      this.dropedMode.splice(index, 1)
+    }
+    
+    if(event.target.ariaChecked === 'true'){
+      let obj = {}
+      obj['Date']= value.Date;
+      obj['Description']= value.Description;
+      obj['EquipmentType']= value.EquipmentType;
+      obj['Function']= value.Function;
+      obj['MachineType']= value.MachineType;
+      obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
+      this.dropedMode.push(obj);
+  
+      var fIO = value.PrescriptiveLookupMasterId
+      var index1 = -1;
+      var filtObj = this.failuerMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === fIO) {
+          index1 = i;
+          return i;
+        }
+      });
+      this.failuerMode[index1].checked = true;
+    }
+  }
+
+
+  
+  FailureModeSelectedForPrimeNg(value, event){
+    if(event.checked === false){
       var findIndexOF = value.PrescriptiveLookupMasterId
       var index = -1;
       var filteredObj = this.dropedMode.find((item, i) => {
@@ -4560,7 +4631,6 @@ async ADDMSSToTree() {
       this.failuerMode[index].checked = false;
       this.dropedMode.splice(index, 1)
     }else{
-      this.dropedMode = []
       let obj = {}
       obj['Date']= value.Date;
       obj['Description']= value.Description;
@@ -4579,13 +4649,6 @@ async ADDMSSToTree() {
         }
       });
       this.failuerMode[index1].checked = true;
-      for (let index = 0; index < this.failuerMode.length; index++) {
-        if(index != index1){
-         if(this.failuerMode[index].checked !== undefined){
-            this.failuerMode[index].checked = false
-         }
-        }
-      }
     }
   }
 

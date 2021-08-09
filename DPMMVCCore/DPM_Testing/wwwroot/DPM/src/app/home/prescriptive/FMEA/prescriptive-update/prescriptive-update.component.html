@@ -109,7 +109,13 @@
                             <table>
                                 <tr *ngFor="let func of failuerMode; let i=index;">
                                     <td>
-                                        <label>
+                                        <p-checkbox name="{{i}}" 
+                                                (click)="FailureModeSelected(func, $event)"
+                                                [binary]="true"
+                                                [(ngModel)]="func.checked">
+                                        </p-checkbox>
+                                                <label >{{func.Description}}</label>
+                                        <!-- <label>
                                             <input type="checkbox"
                                                    name = "{{i}}"
                                                    (change)="FailureModeSelected(func, $event)"
@@ -117,7 +123,7 @@
                                                     [(ngModel)]="func.checked"
                                                     />
                                                    {{func.Description}}
-                                        </label>
+                                        </label> -->
                                     </td>
                                 </tr>
                             </table>
@@ -180,6 +186,38 @@
 
                                     <br>
                                     <div class="container">
+                                        <div>
+            
+                                            <p-overlayPanel #panel>
+                                                <div style=" margin-right: 2px;width: 40rem;">
+                                                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to
+                                                        the equipment. More the down time more is the factor, less the down time less is the factor.
+                                                    </li>
+                                
+                                                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of
+                                                        failure are high then the scrap factor value is taken more and in the case of less chance to
+                                                        scrape the equipment or component factor
+                                                        value is taken less. </li>
+                                
+                                                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of
+                                                        injury (both man and machine) are high in the case of equipment failure, more is the value given
+                                                        to the safety factor and less the chances
+                                                        of injury, less is the value given to the safety factor.</li>
+                                
+                                                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment
+                                                        from failure. Minimum no. is given when protection against the failure is easy. Maximum no. is
+                                                        given when protection against the failure
+                                                        is very difficult.
+                                                    </li>
+                                
+                                                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the
+                                                        no. of failure more is the value given to the factor.
+                                                    </li>
+                                                </div>
+                                            </p-overlayPanel>
+                                            <a (click)="panel.show($event)" style="width: 20rem;" title="Explaination of each factors."
+                                                style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <h6> Down Time Factor (Range 1 - 10): {{ADDDownTimeFactor}}</h6>
@@ -505,17 +543,19 @@
         </ng-template>
         <div *ngIf="Consequences1" class="p-fluid p-formgrid p-grid">
             <div style="margin-left: 20px;" class="p-fluid">
-                <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal
+                <p> Will the occurrence of the failure mode ( on its own) be evident to operational staff during normal
                     operation of the plant?</p>
             </div>
             <div class="container">
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                            <!-- <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> -->
                         </td>
                     </tr>
                 </table>
@@ -535,10 +575,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                            <!-- <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> -->
                         </td>
                     </tr>
                 </table>
@@ -561,10 +603,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                            <!-- <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> -->
                         </td>
                     </tr>
                 </table>
@@ -586,10 +630,12 @@
                 <table>
                     <tr *ngFor="let con1 of draggedConsequencesYesNO; let i=index;">
                         <td>
-                            <label>
+                            <p-radioButton name="con" [(ngModel)]="RadioValue" value="{{con1}}" label={{con1}} (onClick)="ConsequenceSelected(con1)" ></p-radioButton>
+                           
+                            <!-- <label>
                                 <input type="radio" name="con" (change)="ConsequenceSelected(con1)" />
                                 {{con1}}
-                            </label>
+                            </label> -->
                         </td>
                     </tr>
                 </table>
@@ -668,7 +714,13 @@
                                 <table>
                                     <tr *ngFor="let func of failuerMode; let i=index;">
                                         <td>
-                                            <label>
+                                            <p-checkbox name="{{i}}" 
+                                            (click)="FailureModeSelected(func, $event)"
+                                            [binary]="true"
+                                            [(ngModel)]="func.checked">
+                                            </p-checkbox>
+                                            <label >{{func.Description}}</label>
+                                            <!-- <label>
                                                 <input type="checkbox"
                                                        name = "{{i}}"
                                                        (change)="FailureModeSelected(func, $event)"
@@ -676,7 +728,7 @@
                                                         [(ngModel)]="func.checked"
                                                         />
                                                        {{func.Description}}
-                                            </label>
+                                            </label> -->
                                         </td>
                                     </tr>
                                 </table> 
@@ -1363,7 +1415,7 @@
                                             </div>
                                             <div class="row" style="padding: 15px;">
                                                 <div class="col-md-3">
-                                                    <label>Do you want webal analysis for alpha and beta</label>
+                                                    <label>Do you want weibull analysis for alpha and beta</label>
 
                                                 </div>
                                                 <div class="col-sm">
@@ -2255,7 +2307,7 @@
             </div>
             <div class="row" style="padding: 15px;">
                 <div class="col-md-3">
-                    <label>Do you want new alpha and beta values using webal or you can directly change alpha and beta values from the above</label>
+                    <label>Do you want new alpha and beta values using weibull or you can directly change alpha and beta values from the above</label>
                     
                 </div>
                 <div class="col-sm">
