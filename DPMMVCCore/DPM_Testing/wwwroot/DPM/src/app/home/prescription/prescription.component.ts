@@ -1,7 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
+import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import * as XLSX from 'xlsx';
+import { PrescriptiveContantAPI } from '../prescriptive/Shared/prescriptive.constant';
 
 @Component({
   selector: 'app-prescription',
@@ -26,8 +29,18 @@ export class PrescriptionComponent implements OnInit {
   public prescriptiveRecords: any = []
   private CBADataList: any = [];
   private RCARecords : any = [];
-
+  public displayModal : boolean = false;
+  public CraftList :any = [];
+  public CalculatedPOC : number = 0;
+  public TaskDuration : number = 0;
+  public SelectedCraft : number = 0;
+  public MaintenanceTaskList : any= [];
+  private PrescriptiveRecordsList : any = [];
+  public clientContratorForms: FormArray = this.fb.array([]);
   constructor(private http: HttpClient,
+    public fb: FormBuilder,
+    private commonBLervice : CommonBLService,
+    private prescriptiveAPIS : PrescriptiveContantAPI,
     private cdr : ChangeDetectorRef) {
     this.SelectionEnable = true
     this.MachineEquipmentSelect();
@@ -35,6 +48,7 @@ export class PrescriptionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.GetCraftRecords();
     this.cols = [
       { field: 'name', header: 'Name' },
       { field: 'discription', header: 'Description' }
@@ -54,7 +68,32 @@ export class PrescriptionComponent implements OnInit {
 
     this.loading = true;
   }
+  clientContratorForm() {
+    this.clientContratorForms.push(this.fb.group({
+      MT: [0],
+      MI: [''],
+      Craft: [''],
+      TD: [],
+      HR: [],
+      MatC: [],
+      POC: []
+    }));
+  }
+  GetCraftRecords(){
+    this.commonBLervice.getWithoutParameters(this.prescriptiveAPIS.GetAllConfigurationRecords)
+    .subscribe(
+      (res : any)=>{
+        this.CraftList = [];
+        this.CraftList = res;
+      }, err => {console.log(err.error)}
+    )
+  }
 
+  gernrateTaskDuration(){
+    this.TaskDuration = this.TaskDuration/60;
+    var CHR = this.CraftList.filter(f=>f.PSRClientContractorId == this.SelectedCraft)
+    this.CalculatedPOC = this.TaskDuration*CHR[0].ClientHourlyRate/1000
+  }
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
       this.EquipmentList = []
@@ -64,13 +103,16 @@ export class PrescriptionComponent implements OnInit {
       this.EquipmentList = []
       this.EquipmentList = ["Screw Compressor"]
     }
+    this.TagList = []
+    var rec : any = this.PrescriptiveRecordsList.filter(res=>res.MachineType === this.MachineType && res.MSSAdded === "1")
+      rec.forEach(element => {
+        this.TagList.push(element.TagNumber)
+      });
   }
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
       .subscribe((res: any) => {
-        res.forEach(element => {
-          this.TagList.push(element.TagNumber)
-        });
+        this.PrescriptiveRecordsList =res;
       });
   }
 
@@ -86,6 +128,10 @@ export class PrescriptionComponent implements OnInit {
       }
     )
   }
+  goBack(){
+    this.InputsEnable = false;
+    this.SelectionEnable =true;
+  }
   getPrescriptiveRecordsByEqui() {
     if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
       this.prescriptiveRecords = [];
@@ -93,9 +139,11 @@ export class PrescriptionComponent implements OnInit {
         .subscribe((res: any) => {
           this.getRCARecordsByTagNumber();
           this.prescriptiveRecords = res;
+          this.MaintenanceTaskList = [];
           this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
             row.TotalAnnualPOC = 0;
             row.CentrifugalPumpMssModel.forEach(mss => {
+              this.MaintenanceTaskList.push(mss);
               if (!mss.MSSMaintenanceInterval || mss.MSSMaintenanceInterval === 'NA' || mss.MSSMaintenanceInterval === 'Not Applicable') {
                 mss.POC = 0;
                 mss.AnnualPOC = 0;
@@ -125,6 +173,17 @@ export class PrescriptionComponent implements OnInit {
             row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
             row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
             row.ConsequenceCategory = row.Consequence.split(' ')[0];
+          });
+          this.MaintenanceTaskList.forEach((clientContratorModel: any) => { 
+            this.clientContratorForms.push(this.fb.group({
+              MT: [clientContratorModel.MSSMaintenanceTask],
+              MI: [clientContratorModel.MSSMaintenanceInterval],
+              Craft: [''],
+              TD: [0],
+              HR: [0],
+              MatC: [0],
+              POC: [0]
+            }));
           });
           this.SelectionEnable = false;
           this.InputsEnable = true;
@@ -158,6 +217,9 @@ async onNodeExpand(event) {
     setTimeout(() => {
       this.loading = false;
       const node = event.node;
+      if(node.data.name == "PSR"){
+        this.displayModal = true
+      }
       if (node.data.name === 'CBA' || node.data.name === 'MSS'|| node.data.name === 'FCA'|| node.data.name === 'FMEA') {
         let children = []
         if(this.EquipmentType !== 'Screw Compressor'){

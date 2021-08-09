@@ -26,7 +26,8 @@ namespace DPM_Testing.Controllers
         [Route("GetAllConfigurationRecords")]
         public async Task<ActionResult<IEnumerable<PSRClientContractorModel>>> GetPSRClientContractorModels()
         {
-              return await _context.PSRClientContractorModels.OrderBy(a=> a.PSRClientContractorId).ToListAsync();
+              string userId = User.Claims.First(c => c.Type == "UserID").Value;
+              return await _context.PSRClientContractorModels.Where(a=>a.UserId == userId).OrderBy(a=> a.PSRClientContractorId).ToListAsync();
         }
 
         [HttpGet("{id}")]
