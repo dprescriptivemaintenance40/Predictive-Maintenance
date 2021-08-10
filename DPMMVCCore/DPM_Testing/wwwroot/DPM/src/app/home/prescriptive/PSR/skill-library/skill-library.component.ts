@@ -115,5 +115,79 @@ export class SkillLibraryComponent implements OnInit {
     )
 
   }
+  
+  getSkillData(row : any, event, col : any){
+
+    var data : any =[];
+
+    if(row !== undefined && col !== undefined && col.MSSStrategyModelId !== undefined && row.PSRClientContractorId !== undefined ){
+
+      data= this.SkillData.filter(r=>r.MSSStrategyModelId == col.MSSStrategyModelId || r.PSRClientContractorId == row.PSRClientContractorId )
+
+    }
+
+    if( col !== undefined && col.MSSStrategyModelId !== undefined){
+
+      data= this.SkillData.filter(r=>r.MSSStrategyModelId == col.MSSStrategyModelId) 
+
+    }
+
+    if( row !== undefined && row.PSRClientContractorId !== undefined ){
+
+    data= this.SkillData.filter(r=>r.PSRClientContractorId == row.PSRClientContractorId )
+
+    }
+
+    if(data.length !== 0){
+
+      var index = -1;
+
+      index = this.SkillData.findIndex(r=>r.CFPPrescriptiveId === data[0].CFPPrescriptiveId)
+
+      this.SkillData[index].MapId= 0
+
+      row !== undefined ? this.SkillData[index].PSRClientContractorId= row.PSRClientContractorId : ''
+
+      row !== undefined ? this.SkillData[index].Employee = row.EmployeeCode : ''
+
+      col !== undefined ? this.SkillData[index].MSSStrategyModelId = col.MSSStrategyModelId : ''
+
+      col !== undefined ? this.SkillData[index].CentrifugalPumpMssId = col.CentrifugalPumpMssId : ''
+
+      col !== undefined ? this.SkillData[index].CFPPrescriptiveId = col.CFPPrescriptiveId : ''
+
+      col !== undefined ? this.SkillData[index].CPPFMId = col.CPPFMId : ''
+
+    }
+
+    else{
+
+      let obj = {}
+
+      obj['MapId'] = 0
+
+      row !== undefined ? obj['PSRClientContractorId'] = row.PSRClientContractorId :''
+
+      row !== undefined ? obj['Employee'] = row.EmployeeCode : ''
+
+      col !== undefined ? obj['CentrifugalPumpMssId'] = col.CentrifugalPumpMssId : ''
+
+      col !== undefined ? obj['CFPPrescriptiveId'] = col.CFPPrescriptiveId : ''
+
+      col !== undefined ? obj['MSSStrategyModelId'] = col.MSSStrategyModelId : ''
+
+      col !== undefined ? obj['CPPFMId'] = col.CPPFMId : ''
+
+      this.SkillData.push(obj)
+
+    }
+
+    row = undefined
+
+    col = undefined
+
+    
+
+  }
 
 }
