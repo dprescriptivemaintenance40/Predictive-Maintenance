@@ -40,7 +40,16 @@
     </div>
 </div>
 
-<p-dialog header="PSR" [(visible)]="displayModal" [style]="{width: '80em'}">
+
+
+
+
+
+
+<p-card *ngIf="PSR">
+    <ng-template pTemplate="header">
+        <p-button (click)="BackSkillData()" label="Back" styleClass="p-button-text"></p-button>
+    </ng-template>
     <table>
         <tbody>
             <tr class="row">
@@ -94,95 +103,6 @@
                     <input [(ngModel)]="CalculatedPOC" type="number"  class="form-control" disabled>
                 </td>
             </tr>
-            <tr></tr>
-            <tr class="row">
-                <td class="col-sm">
-                    <input type="text" value="Remove, replace, and recommission" class="form-control">
-                </td>
-                <td class="col-sm">
-                    <input type="text" value="4 Weeks" class="form-control">
-                </td>
-                <td class="col-sm">
-                    <select class="form-control">
-                        <option value=0>Choose ...</option>
-                        <option *ngFor="let EL of CraftList" [ngValue]="EL.PSRClientContractorId">{{EL.CraftSF}}</option>
-                    </select>
-                </td>
-                <td class="col-sm">
-                    <input type="number" value="0" class="form-control">
-                </td>
-                <td class="col-sm">
-                    <input type="number" value="0"  class="form-control">
-                </td>
-                <td class="col-sm">
-                    <input type="number" value="0" class="form-control">
-                </td>
-                <td class="col-sm">
-                    <input  type="number" value="0"  class="form-control" disabled>
-                </td>
-            </tr>
         </tbody>
     </table>
- </p-dialog>   
-
-
-
-
- <!-- <p-dialog header="Skill Library" [(visible)]="SkillLibrary" [style]="{width: '80em'}">
-    <table>
-        <tbody>
-            <tr class="row">
-                <td class="col-sm">
-                    <label>Craft</label>
-                </td>
-                <td class="col-sm">
-                    <label>Employee Code</label>
-                </td>
-                <td class="col-sm" *ngFor="let t of SkillLibraryHeaders">
-                    <label>{{t.MaintenanceTask}}</label>
-                </td>
-            </tr>
-        </tbody>
-        <tbody>
-            <tr class="row" *ngFor="let a of SkillLibraryRows; let i = index;">
-                <td>
-                    <input type="text" [(ngModel)]="a.CraftSF" (click)="getSkillData(a, $event)" class="form-control" disabled>
-                </td>
-                <td>
-                    <input type="text" [(ngModel)]="a.EmployeeCode" (change)="getSkillData(a, $event)" class="form-control">
-                </td>
-                <td *ngFor="let t of SkillLibraryHeaders" style="margin-left: 4em;">
-                    <input type="checkbox" (change)="getSkillData(a, $event, t)">
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="SaveSkillData()" label="Save" styleClass="p-button-text"></p-button>
-    </ng-template>
- </p-dialog>    -->
-
-
-<div *ngIf="InputsEnable">
-    <p-treeTable [value]="files" [columns]="cols" [paginator]="true" [rows]="10" [lazy]="true"
-        (onLazyLoad)="loadNodes($event)" [totalRecords]="10" [loading]="loading" (onNodeExpand)="onNodeExpand($event)">
-        <ng-template pTemplate="header" let-columns>
-            <a class="btn btn-dark" (click)="goBack()">Back</a>
-            <h4 style="margin-left:15em;">Based On Inputs</h4>
-            <tr>
-                <th *ngFor="let col of columns">
-                    {{col.header}}
-                </th>
-                <!-- <h4 style="padding-left: 20px;">Inputs</h4> -->
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-            <tr>
-                <td *ngFor="let col of columns; let i = index">
-                    <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                    {{rowData[col.field]}}
-                </td>
-            </tr>
-        </ng-template>
-    </p-treeTable>
-</div>
+ </p-card>   

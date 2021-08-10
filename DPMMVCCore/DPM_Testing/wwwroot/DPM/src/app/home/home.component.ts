@@ -234,6 +234,14 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Prescriptive/MSSAdd'
                 },
                 {
+                  label: 'Skill Library',
+                  url: '#/Home/Prescriptive/SkillLibrary'
+                },
+                {
+                  label: 'PSR',
+                  url: '#/Home/Prescriptive/PSR'
+                },
+                {
                   label: 'Display',
                   url: '#/Home/Prescriptive/Display'
                 }

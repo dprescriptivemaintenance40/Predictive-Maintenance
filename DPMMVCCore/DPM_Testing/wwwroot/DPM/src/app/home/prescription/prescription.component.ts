@@ -36,6 +36,10 @@ export class PrescriptionComponent implements OnInit {
   public SelectedCraft : number = 0;
   public MaintenanceTaskList : any= [];
   private PrescriptiveRecordsList : any = [];
+  public SkillLibrary: boolean = false;
+  public SkillLibraryHeaders : any = [];
+  public SkillLibraryRows : any = [];
+  public SkillData : any = [];
   public clientContratorForms: FormArray = this.fb.array([]);
   constructor(private http: HttpClient,
     public fb: FormBuilder,
@@ -61,24 +65,26 @@ export class PrescriptionComponent implements OnInit {
       { name: 'MSS' },
       { name: 'RCA' },
       { name: 'CBA' },
-      { name: 'PSR' }
+      // { name: 'PSR' },
+      // { name: 'Skill Library' }
+
     ]
 
     this.totalRecords = 10;
 
     this.loading = true;
   }
-  clientContratorForm() {
-    this.clientContratorForms.push(this.fb.group({
-      MT: [0],
-      MI: [''],
-      Craft: [''],
-      TD: [],
-      HR: [],
-      MatC: [],
-      POC: []
-    }));
-  }
+  // clientContratorForm() {
+  //   this.clientContratorForms.push(this.fb.group({
+  //     MT: [0],
+  //     MI: [''],
+  //     Craft: [''],
+  //     TD: [],
+  //     HR: [],
+  //     MatC: [],
+  //     POC: []
+  //   }));
+  // }
   GetCraftRecords(){
     this.commonBLervice.getWithoutParameters(this.prescriptiveAPIS.GetAllConfigurationRecords)
     .subscribe(
@@ -174,21 +180,92 @@ export class PrescriptionComponent implements OnInit {
             row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
             row.ConsequenceCategory = row.Consequence.split(' ')[0];
           });
-          this.MaintenanceTaskList.forEach((clientContratorModel: any) => { 
-            this.clientContratorForms.push(this.fb.group({
-              MT: [clientContratorModel.MSSMaintenanceTask],
-              MI: [clientContratorModel.MSSMaintenanceInterval],
-              Craft: [''],
-              TD: [0],
-              HR: [0],
-              MatC: [0],
-              POC: [0]
-            }));
-          });
-          this.SelectionEnable = false;
-          this.InputsEnable = true;
+          // this.MaintenanceTaskList.forEach((clientContratorModel: any) => { 
+          //   this.clientContratorForms.push(this.fb.group({
+          //     MT: [clientContratorModel.MSSMaintenanceTask],
+          //     MI: [clientContratorModel.MSSMaintenanceInterval],
+          //     Craft: [''],
+          //     TD: [0],
+          //     HR: [0],
+          //     MatC: [0],
+          //     POC: [0]
+          //   }));
+          // });
+          this.http.get('/api/MSSStartegyAPI/GetAllConfigurationRecords').subscribe(
+            (res : any) => {
+              this.SkillLibraryHeaders = [];
+              var col : number = 3 // 3 because we have 2 fix columns 1- craft and 2- Employee
+              this.MaintenanceTaskList.forEach(element => {
+                var strategy = element.MSSStartergy.split(' ')[0]
+                var abc : any = res.filter(r=>r.Strategy == strategy)
+                if(abc.length !== 0){
+                  abc[0].CentrifugalPumpMssId = element.CentrifugalPumpMssId;
+                  abc[0].CFPPrescriptiveId = element.CFPPrescriptiveId;
+                  abc[0].CPPFMId = element.CPPFMId;
+                  abc[0].col = col;
+                  col = col +1;
+                }
+                this.SkillLibraryHeaders.push(abc[0]);
+              });
+            })
+            this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords').subscribe(
+              (res:any)=>{
+                this.SkillLibraryRows = [];
+                this.SkillLibraryRows = res;
+                this.SelectionEnable = false;
+                this.InputsEnable = true;
+              }
+            )
         }, err => { })
     }
+  }
+
+  
+  SaveSkillData(){
+    this.commonBLervice.postWithHeaders('/PSRClientContractorAPI/PostSkillData', this.SkillData).subscribe(
+      res=>{
+
+      }, err=>{}
+    )
+
+  }
+  getSkillData(row : any, event, col : any){
+
+    var data : any =[];
+    if(row !== undefined && col !== undefined && col.MSSStrategyModelId !== undefined && row.PSRClientContractorId !== undefined ){
+      data= this.SkillData.filter(r=>r.MSSStrategyModelId == col.MSSStrategyModelId || r.PSRClientContractorId == row.PSRClientContractorId )
+    }
+    if( col !== undefined && col.MSSStrategyModelId !== undefined){
+      data= this.SkillData.filter(r=>r.MSSStrategyModelId == col.MSSStrategyModelId) 
+    }
+    if( row !== undefined && row.PSRClientContractorId !== undefined ){
+    data= this.SkillData.filter(r=>r.PSRClientContractorId == row.PSRClientContractorId )
+    }
+    if(data.length !== 0){
+      var index = -1;
+      index = this.SkillData.findIndex(r=>r.CFPPrescriptiveId === data[0].CFPPrescriptiveId)
+      this.SkillData[index].MapId= 0
+      row !== undefined ? this.SkillData[index].PSRClientContractorId= row.PSRClientContractorId : ''
+      row !== undefined ? this.SkillData[index].Employee = row.EmployeeCode : ''
+      col !== undefined ? this.SkillData[index].MSSStrategyModelId = col.MSSStrategyModelId : ''
+      col !== undefined ? this.SkillData[index].CentrifugalPumpMssId = col.CentrifugalPumpMssId : ''
+      col !== undefined ? this.SkillData[index].CFPPrescriptiveId = col.CFPPrescriptiveId : ''
+      col !== undefined ? this.SkillData[index].CPPFMId = col.CPPFMId : ''
+    }
+    else{
+      let obj = {}
+      obj['MapId'] = 0
+      row !== undefined ? obj['PSRClientContractorId'] = row.PSRClientContractorId :''
+      row !== undefined ? obj['Employee'] = row.EmployeeCode : ''
+      col !== undefined ? obj['CentrifugalPumpMssId'] = col.CentrifugalPumpMssId : ''
+      col !== undefined ? obj['CFPPrescriptiveId'] = col.CFPPrescriptiveId : ''
+      col !== undefined ? obj['MSSStrategyModelId'] = col.MSSStrategyModelId : ''
+      col !== undefined ? obj['CPPFMId'] = col.CPPFMId : ''
+      this.SkillData.push(obj)
+    }
+    row = undefined
+    col = undefined
+    
   }
 
   loadNodes(event) {
@@ -219,6 +296,9 @@ async onNodeExpand(event) {
       const node = event.node;
       if(node.data.name == "PSR"){
         this.displayModal = true
+      }
+      if(node.data.name === "Skill Library"){
+        this.SkillLibrary = true
       }
       if (node.data.name === 'CBA' || node.data.name === 'MSS'|| node.data.name === 'FCA'|| node.data.name === 'FMEA') {
         let children = []

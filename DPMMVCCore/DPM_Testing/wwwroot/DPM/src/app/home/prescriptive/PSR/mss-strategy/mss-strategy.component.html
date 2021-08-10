@@ -1,0 +1,53 @@
+<p-toast position="top-right"></p-toast>
+<div class="container">
+    <div class="shadow-sm p-3 mb-5 bg-white rounded" style=" margin-right: 80px;">
+        <div class="table-responsive">
+            <div style="padding:10px;">
+                <div class="container">
+                    <div class="row">
+                        <div style="text-align: center;" class="col-sm-2">MSS Strategy</div>
+                        <div style="text-align: right;" class="col-sm-2">Maintenance Task</div>
+                        <div style="text-align: center;" class="col-sm">
+                            <button class="btn btn-outline-primary btn-sm" (click)="mssStrategyForm()">
+                                <i class="fa fa-plus"></i> New Record
+                            </button>
+                        </div>
+                        <div style="text-align: center;" class="col-sm-2"></div>
+                        <div class="td col-sm">
+                            <span *ngIf="notification" class="elementToFadeInAndOut">
+                                <i class="fas fa-check-circle {{notification.class}}"></i>
+                                {{notification.message}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="tbody">
+                        <form class="tr" [formGroup]="fg" *ngFor="let fg of mssStrategyForms.controls ; let i=index;"
+                            (submit)="recordSubmit(fg)">
+                            <div class="td">
+                                <input class="form-control" data-toggle="tooltip" data-placement="right" formControlName="Strategy">
+                            </div>
+                            <div class="td">
+                                <input class="form-control" formControlName="MaintenanceTask">
+                            </div>
+                        
+                            <div class="td">
+                                <button type="submit" class="btn btn-sm" [disabled]="fg.invalid"
+                                    [ngClass]="(fg.get('MSSStrategyModelId').value==0)?'btn btn-sm':'btn-outline-dark'"><i
+                                        class="far fa-save"></i>
+                                    {{fg.get('MSSStrategyModelId').value==0?'Submit':'Update'}}
+                                </button>
+
+                            </div>
+                            <div class="td">
+                                <button class="btn btn-light ml-1" (click)="onDelete(fg.get('MSSStrategyModelId').value,i)">
+                                    <i class="far fa-trash-alt fa-lg text-danger"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

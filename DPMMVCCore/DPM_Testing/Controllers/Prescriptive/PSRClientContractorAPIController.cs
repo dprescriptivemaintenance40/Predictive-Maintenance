@@ -7,6 +7,7 @@ using DPM_Testing.Models;
 using Microsoft.AspNetCore.Authorization;
 using DPM_ServerSide.DAL;
 using DPM.Models.Prescriptive.PSR;
+using DPM.Models.Prescriptive;
 
 namespace DPM_Testing.Controllers
 {
@@ -110,6 +111,26 @@ namespace DPM_Testing.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPost]
+        [Route("PostSkillData")]
+        public async Task<IActionResult> postSkillDate(List<MappingMSSStrategySkillModel> mappingMSSStrategySkillModels)
+        {
+            try
+            {
+                foreach (var item in mappingMSSStrategySkillModels)
+                {
+                    _context.MappingMSSStrategySkillModels.Add(item);
+                    await _context.SaveChangesAsync();
+                }
+                return Ok();
+            }
+            catch (System.Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
         }
     }
 }

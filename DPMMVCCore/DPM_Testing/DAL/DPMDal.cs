@@ -37,6 +37,8 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpTrainModel> CentrifugalPumpTrainData { get; set; }
         public DbSet<CentrifugalPumpFuturePredictionModel> CentrifugalPumpFuturePredictionModels { get; set; }
         public DbSet<PSRClientContractorModel> PSRClientContractorModels { get; set; }
+        public DbSet<MSSStrategyModel> MSSStrategyModels { get; set; }
+        public DbSet<MappingMSSStrategySkillModel> MappingMSSStrategySkillModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -73,6 +75,8 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<CentrifugalPumpPredictionModel>().ToTable("centrifugalpumppredictiontable");
             modelBuilder.Entity<CentrifugalPumpFuturePredictionModel>().ToTable("centrifugalpumpfuturepredictiontable");
             modelBuilder.Entity<PSRClientContractorModel>().ToTable("PSRClientContractor");
+            modelBuilder.Entity<MSSStrategyModel>().ToTable("MSSStrategyMaintenanceTask");
+            modelBuilder.Entity<MappingMSSStrategySkillModel>().ToTable("MappingMSSStrategySkillModelTable");
         }
 
     }
