@@ -6,7 +6,7 @@
         <button *ngIf="CancelImage" class="btn btn-outline-dark" (click)="compressorImageCancel()">Cancel</button>
     </div>
     <div class="col-sm">
-        <button style="float: right" class="btn btn-dark" (click)="RouteTodashboard()">Dashboard</button>
+        <button style="float: right" class="btn btn-dark" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line"></i></button>
     </div>
 </div>
 <div *ngIf="Image" class="col-md-6">

@@ -33,7 +33,7 @@ export class CostBenefitAnalysisComponent {
     }
 
     RouteTodashboard(){
-        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, etbf : this.ETBF}})
+        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, ETBF : this.ETBF}})
       }
     MachineEquipmentSelect() {
         if (this.MachineType == "Pump") {

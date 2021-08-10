@@ -260,7 +260,8 @@ namespace DPM_Testing.Controllers
                 }
                 //string data = JsonConvert.SerializeObject(screwCompressorPredictions);
                 //var PredictionData = jsonStringToCSV(data);
-                var newList = screwCompressorPredictions.Select(d => new { d.Date, d.TS1, d.TD1, d.TS2, d.TD2, d.FTS1, d.FTD1, d.FTS2, d.FTD2 }).ToList();
+                //var newList = screwCompressorPredictions.Select(d => new { d.Date, d.TS1, d.TD1, d.TS2, d.TD2, d.FTS1, d.FTD1, d.FTS2, d.FTD2 }).ToList();
+                var newList = screwCompressorPredictions.Select(d => new { d.Date,d.TD1,  d.FTD1, }).ToList();
                 return Ok(newList);
             }
             catch (Exception exe)

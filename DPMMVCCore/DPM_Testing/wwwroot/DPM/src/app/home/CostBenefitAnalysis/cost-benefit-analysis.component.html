@@ -45,7 +45,7 @@
 <div *ngIf="showCostBenefitAnalysis">
     <div>
         <button style="margin: 20px;" class="btn btn-dark" (click)="showCostBenefitAnalysis = false" pTooltip="Back" tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
-        <button *ngIf="showDashboard" style="float: right;" class="btn btn-dark" (click)="RouteTodashboard()">Dashboard</button>
+        <button *ngIf="showDashboard" style="float: right" class="btn btn-dark" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard">Dashboard</button>
     </div>
     <div>
         

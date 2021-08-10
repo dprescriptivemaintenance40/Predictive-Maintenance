@@ -9,6 +9,8 @@ import * as moment from "moment";
 import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.directive";
 import Dygraph from 'dygraphs'
 import * as XLSX from 'xlsx';
+import { element } from "protractor";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -122,6 +124,7 @@ export class DashboardComponent {
     public date: string = "";
   constructor(private title: Title,
     private http: HttpClient,
+    public router: Router,
     private messageService: MessageService,
     private dashboardBLService: CommonBLService,
     private dashboardContantAPI: DashboardConstantAPI,
@@ -135,7 +138,7 @@ export class DashboardComponent {
       this.ETBF=this.state.ETBF 
       this.CBAWithId(this.CFPPrescriptiveId)
     }
-      this.date =  moment().add(7, 'days').format('YYYY-MM-DD');
+    this.date =  moment().add(365, 'days').format('YYYY-MM-DD');
   }
   ngOnInit() {
     this.getRecordsByEqui()
@@ -147,12 +150,18 @@ export class DashboardComponent {
     this.dygraph()
     this.ComboDates()
   }
+  RouteToTrain(){
+    this.router.navigateByUrl('/Home/Compressor/ScrewTrain'); 
+  }
+  RouteToPredict(){
+    this.router.navigateByUrl('/Home/Compressor/ScrewPrediction'); 
+  }
   ComboDates(){
     if(this.date =="1Week"){
       this.date =  moment().add(7, 'days').format('YYYY-MM-DD');
       this.dygraph()
-    }else if(this.date =="9days"){
-      this.date =  moment().add(9, 'days').format('YYYY-MM-DD');
+    }else if(this.date =="15days"){
+      this.date =  moment().add(15, 'days').format('YYYY-MM-DD');
       this.dygraph()
     }else if(this.date =="1Month"){
       this.date =  moment().add(30, 'days').format('YYYY-MM-DD');
@@ -561,7 +570,7 @@ export class DashboardComponent {
       row.TotalPONC = 194.4872;
       row.ETBF = this.ETBF ? this.ETBF : 2;
       row.TotalAnnualCostWithMaintenance = 1.777;
-      row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
+      row.EconomicRiskWithoutMaintenance = (row.TotalPONC / row.ETBF).toFixed(3);
       row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
       let WithETBCAndPONC = row.TotalPONC / row.ETBC;
       let WithoutETBCAndPONC = row.TotalPONC / 5;
@@ -1484,15 +1493,12 @@ export class DashboardComponent {
 
   // }
 
-public dataset =[]
-public dataset1 =[]
-public dataset2 =[]
-public dataset3 =[]
 
 public csvData :any
-public csvData1 :any
-
 public mergedarray:any;
+public highlight_start:any
+public highlight_end:any
+
    dygraph(){ 
         // this.chart = new Dygraph(
         //   document.getElementById("graph"),"dist/DPM/assets/realdatafordygraph.csv",
@@ -1512,32 +1518,86 @@ public mergedarray:any;
              var prediction = res;
              this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
               var futureData = res 
-        
-              this.mergedarray = prediction.concat(futureData); 
-              this.csvData = this.ConvertToCSV( this.mergedarray);
+
+              this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
+              this.highlight_end = moment(this.date).format('YYYY/MM/DD')
+
+
+              const result1 = futureData.filter(f =>
+                prediction.some(d => d.Date == f.Date)
+              );
+
+               prediction.forEach(element => {
+                 for (var i = 0; i < result1.length; i++) {
+                   if (result1[i].Date == element.Date) {
+                   element.FTD1 = result1[i].FTD1
+                   element.Residual = element.FTD1- element.TD1
+                   }else{
+                    element.Residual = 0
+                   }
+                 }
+              
+               });
+
+               const result = futureData.filter(f =>
+                !prediction.some(d => d.Date == f.Date)
+               );
+               result.forEach(element => {
+                   prediction.push(element);
+               });
+
+               this.mergedarray = prediction.concat(futureData);
+               this.mergedarray.forEach(element => {
+                if (element.TD1 > 180) {
+                  element.alarm = element.TD1
+                } else if (element.TD1 > 210) {
+                  element.trigger = element.TD1
+                }
+                else if (element.FTD1 > 190) {
+                  element.alarm = element.FTD1
+                }
+                else if (element.FTD1 > 210) {
+                  element.trigger = element.FTD1
+                }
+               }); 
+               this.csvData = this.ConvertToCSV( this.mergedarray);
+
+               var highlight_start = new Date(this.highlight_start);
+               var highlight_end = new Date(this.highlight_end);
 
                this.chart = new Dygraph(
                 document.getElementById("graph"),this.csvData,
                 {
+                  colors: ['green', '#58508d', 'gray', 'red'],
                   showRangeSelector: true,
                   connectSeparatedPoints: true,
-                  fillGraph: true,
+                  // fillGraph: true,
+                  // yRangePad:20,
+                  // fillAlpha: .1,
                   rollPeriod: 1,
-                  animatedZooms: true,
                   drawPoints: true,
-                  highlightSeriesOpts: {
-                    strokeWidth: 2
-                  },
-                  //showRoller: true,
-                  strokeWidth: 2.0,
+                  strokeWidth: 3,
                   stepPlot: true,
                   drawXGrid: false,
-                }) 
+                  valueRange: [1],
+                  includeZero: false,
+                  drawAxesAtZero: true,
+                  legend: 'always',
+                  underlayCallback: function(canvas, area, g) {
+                      var bottom_left = g.toDomCoords(highlight_start);
+                      var top_right = g.toDomCoords(highlight_end); 
+                 
+                      var left = bottom_left[0];
+                      var right = top_right[0];
+      
+                      canvas.fillStyle = "rgba(184, 226, 242)";
+                      canvas.fillRect(left, area.y, right - left, area.h);
+                  }
+                },
+                ) 
             })}
         )
    }
-
-
 
     ConvertToCSV(objArray) {
       var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;

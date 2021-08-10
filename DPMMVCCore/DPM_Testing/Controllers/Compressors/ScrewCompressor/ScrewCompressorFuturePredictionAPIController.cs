@@ -73,19 +73,20 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 }
                 for (int i = 0; i < screwCompressorFuturePrediction.Count; i++)
                 {
-                    screwCompressorFuturePrediction[i].FTS1 = screwCompressorFuturePrediction[i].TS1;
+                    //screwCompressorFuturePrediction[i].FTS1 = screwCompressorFuturePrediction[i].TS1;
                     screwCompressorFuturePrediction[i].FTD1 = screwCompressorFuturePrediction[i].TD1;
-                    screwCompressorFuturePrediction[i].FTS2 = screwCompressorFuturePrediction[i].TS2;
-                    screwCompressorFuturePrediction[i].FTD2 = screwCompressorFuturePrediction[i].TD2;
-                    screwCompressorFuturePrediction[i].TS1 = 0;
+                    //screwCompressorFuturePrediction[i].FTS2 = screwCompressorFuturePrediction[i].TS2;
+                    //screwCompressorFuturePrediction[i].FTD2 = screwCompressorFuturePrediction[i].TD2;
+                    //screwCompressorFuturePrediction[i].TS1 = 0;
                     screwCompressorFuturePrediction[i].TD1 = 0;
-                    screwCompressorFuturePrediction[i].TS2 = 0;
-                    screwCompressorFuturePrediction[i].TD2 = 0;
+                    //screwCompressorFuturePrediction[i].TS2 = 0;
+                    //screwCompressorFuturePrediction[i].TD2 = 0;
                     long date = DateToValues(screwCompressorFuturePrediction[i].PredictedDate);
                     screwCompressorFuturePrediction[i].Date = date;
 
                 }
-                var newList = screwCompressorFuturePrediction.Select(d => new { d.Date, d.TS1, d.TD1, d.TS2, d.TD2, d.FTS1, d.FTD1, d.FTS2, d.FTD2 }).ToList();
+                //var newList = screwCompressorFuturePrediction.Select(d => new { d.Date, d.TS1, d.TD1, d.TS2, d.TD2, d.FTS1, d.FTD1, d.FTS2, d.FTD2 }).ToList();
+                var newList = screwCompressorFuturePrediction.Select(d => new { d.Date,  d.TD1, d.FTD1,}).ToList();
 
                 return Ok(newList);
             }
