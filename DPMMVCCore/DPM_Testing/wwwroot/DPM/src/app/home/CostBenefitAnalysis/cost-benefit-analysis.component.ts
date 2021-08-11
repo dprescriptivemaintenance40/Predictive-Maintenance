@@ -56,6 +56,7 @@ export class CostBenefitAnalysisComponent {
         )
     }
 
+  // function for getting criticality rating
    async getTotalEconomicConsequenceClass(Etbf , value){
         var ClassData : any =[], ETBFCase : any = [];
         this.RiskMatrixLibraryRecords.forEach(element => {
