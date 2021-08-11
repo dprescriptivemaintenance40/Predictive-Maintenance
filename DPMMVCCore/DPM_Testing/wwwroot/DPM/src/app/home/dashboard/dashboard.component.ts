@@ -138,7 +138,7 @@ export class DashboardComponent {
       this.ETBF=this.state.ETBF 
       this.CBAWithId(this.CFPPrescriptiveId)
     }
-    this.date =  moment().add(365, 'days').format('YYYY-MM-DD');
+    this.date =  moment().add(1, 'days').format('YYYY-MM-DD');
     this.MachineType="Pump"
     this.EquipmentType="Centrifugal Pump"
     this.SelectedTagNumber="S-98"
@@ -778,7 +778,7 @@ export class DashboardComponent {
           yAxes: [{
             stacked: true,
             ticks: {
-              max: 30,
+              max: 200,
             }
           }]
         }
@@ -1537,13 +1537,18 @@ public highlight_end:any
 
 
               var result1 : any= futureData.filter(f =>
-                prediction.some(d => d.Date == f.Date)
+                prediction.some(d => d.Date == f.Date) 
               );
 
                result1.forEach(element => {
                  var d = prediction.filter(r=>r.Date === element.Date)
                  element.TD1 = d[0].TD1;
                  element.Residual = element.FTD1 - d[0].TD1            
+               });
+               futureData.forEach(element => {
+                 if(element.TD1 == 0){
+                  element.Residual = ''
+                 }
                });
                prediction.forEach(element => {
                 element.Residual = 0
@@ -1605,18 +1610,56 @@ public highlight_end:any
                this.chart = new Dygraph(
                 document.getElementById("graph"),this.csvData,
                 {
-                  colors: ['green','#58508d', 'gray', '#FFA500','#FFA500','red','red'],
+                  colors: ['green','green', 'gray', '#FFA500','red','#FFA500','red'],
                   visibility: [true, true, false, true,true,true,true,],
                   showRangeSelector: true,
-                  connectSeparatedPoints: true,
+                  fillGraph:true,
+                  fillAlpha: 0.1,
+                  connectSeparatedPoints: false,
                   drawPoints: true,
-                  strokeWidth: 2.5,
-                  stepPlot: true,
-                  drawXGrid: false,
-                  valueRange: [150,230],
+                  strokeWidth: 1.5,
+                  stepPlot: false,
+                  errorbar: true,
+                  drawXGrid: true,
+                  valueRange: [150,250],
                   includeZero: false,
                   drawAxesAtZero: false,
-                  // legend: 'always',
+                  series: {
+                    'TD1': {
+                      strokePattern: null,
+                      drawPoints: true,
+                      pointSize: 2,
+                    },
+                    'FTD1': {
+                      strokePattern: Dygraph.DASHED_LINE,
+                      strokeWidth: 2.6,
+                      drawPoints: true,
+                      pointSize: 3.5
+                    },
+                    'Residual': {
+                    },
+                    'alarm': {
+                      strokeWidth: 2,
+                    },
+                    'trigger': {
+                      strokePattern: Dygraph.DOT_DASH_LINE,
+                      strokeWidth: 2,
+                      highlightCircleSize: 3
+                    },
+                    'falarm': {
+                      color: ['#FFA500'],
+                      strokePattern: Dygraph.DASHED_LINE1,
+                      strokeWidth: 1.6,
+                      drawPoints: true,
+                      pointSize: 2.5
+                    },
+                    'ftrigger': {
+                      strokePattern: Dygraph.DASHED_LINE,
+                      strokeWidth: 1.0,
+                      drawPoints: true,
+                      pointSize: 1.5
+                    },
+                  },
                   underlayCallback: function(canvas, area, g) {
                       var bottom_left = g.toDomCoords(highlight_start);
                       var top_right = g.toDomCoords(highlight_end); 
@@ -1632,7 +1675,6 @@ public highlight_end:any
                 this.chart = new Dygraph(
                   document.getElementById("graph1"),this.csvData,
                   {
-                    // colors: ['green', '#58508d', 'gray', '#FFA500','red'],
                     colors: ['green', '#58508d', 'gray', '#FFA500','red','#FFA500','red',],
                     showRangeSelector: true,
                     connectSeparatedPoints: true,
