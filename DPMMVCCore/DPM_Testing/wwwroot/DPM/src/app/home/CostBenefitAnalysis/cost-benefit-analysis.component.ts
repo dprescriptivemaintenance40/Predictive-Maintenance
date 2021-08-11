@@ -172,10 +172,8 @@ export class CostBenefitAnalysisComponent {
         documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/themes/saga-blue/theme.css">';
         documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/primeng/resources/primeng.min.css">';
         documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/print.css">';
-        documentContent += '<link rel="stylesheet" href="/dist/DPM/assets/css/Chart.min.css">';
         documentContent += '</head>';
-        documentContent += '<body onload="window.print()">' +
-          '<script  src="/dist/DPM/assets/css/Chart.min.js"></script>' + printContents + '</body></html>'
+        documentContent += '<body onload="window.print()">' + printContents + '</body></html>'
         popupWinindow.document.write(documentContent);
         popupWinindow.document.close();
     }

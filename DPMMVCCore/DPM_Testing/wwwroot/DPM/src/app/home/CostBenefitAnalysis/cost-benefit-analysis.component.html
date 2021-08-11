@@ -124,8 +124,7 @@
                                             <div class="col-md-3" *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
                                                 <a (click)="OpenCBAReport(row)" style="cursor: pointer;" class="d-flex justify-content-between">
                                                     <label>{{row.FunctionMode}}</label>
-                                                    <label class="d-flex">                                            
-                                            </label>
+                                                    <label class="d-flex"></label>
                                                 </a>
                                             </div>
                                         </div>
@@ -141,7 +140,7 @@
             <div class="card dpm-card p-4" id="CBAReport">
                 <h4>D.P.M. Cost Benefit Analysis<a (click)="PrintCBAReport()" style="cursor: pointer; float: right;"><i class="fa fa-print text-dark"></i></a></h4>
                 <!-- <a (click)="PDFCBAReport()" style="cursor: pointer;"><i class="fa fa-file-pdf text-danger mr-2"></i></a> -->
-                
+
                 <div class="row">
                     <div class="col-md-12">
                         <div>
