@@ -139,6 +139,9 @@ export class DashboardComponent {
       this.CBAWithId(this.CFPPrescriptiveId)
     }
     this.date =  moment().add(365, 'days').format('YYYY-MM-DD');
+    this.MachineType="Pump"
+    this.EquipmentType="Centrifugal Pump"
+    this.SelectedTagNumber="S-98"
   }
   ngOnInit() {
     this.getRecordsByEqui()
@@ -155,6 +158,9 @@ export class DashboardComponent {
   }
   RouteToPredict(){
     this.router.navigateByUrl('/Home/Compressor/ScrewPrediction'); 
+  }
+  RouteToCostBenifit(){
+    this.router.navigateByUrl('/Home/CostBenefitAnalysis'); 
   }
   ComboDates(){
     if(this.date =="1Week"){
@@ -587,7 +593,7 @@ export class DashboardComponent {
   }
 
   getRecordsByEqui() {
-    if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
+    if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) { 
       this.prescriptiveRecords = [];
       this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
         .subscribe((res: any) => {
@@ -1500,9 +1506,16 @@ public highlight_start:any
 public highlight_end:any
 
    dygraph(){ 
+
         // this.chart = new Dygraph(
-        //   document.getElementById("graph"),"dist/DPM/assets/realdatafordygraph.csv",
-        //   {}) 
+        //   document.getElementById("graph"),"dist/DPM/assets/actualdata.csv",
+        //   {
+        //     visibility: [true, false, false, true,false,false],
+        //     showRangeSelector: true,
+        //     connectSeparatedPoints: true,
+        //   }) 
+
+
         // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
         //   console.log(res)
          
@@ -1523,21 +1536,25 @@ public highlight_end:any
               this.highlight_end = moment(this.date).format('YYYY/MM/DD')
 
 
-              const result1 = futureData.filter(f =>
+              var result1 : any= futureData.filter(f =>
                 prediction.some(d => d.Date == f.Date)
               );
 
-               prediction.forEach(element => {
-                 for (var i = 0; i < result1.length; i++) {
-                   if (result1[i].Date == element.Date) {
-                   element.FTD1 = result1[i].FTD1
-                   element.Residual = element.FTD1- element.TD1
-                   }else{
-                    element.Residual = 0
-                   }
-                 }
-              
+               result1.forEach(element => {
+                 var d = prediction.filter(r=>r.Date === element.Date)
+                 element.TD1 = d[0].TD1;
+                 element.Residual = element.FTD1 - d[0].TD1            
                });
+               prediction.forEach(element => {
+                element.Residual = 0
+                for (var i = 0; i < result1.length; i++) {
+                  if (result1[i].Date == element.Date) {
+                  element.FTD1 = result1[i].FTD1
+                  element.TD1 = result1[i].TD1
+                  element.Residual = result1[i].Residual
+                  }
+                }
+              });
 
                const result = futureData.filter(f =>
                 !prediction.some(d => d.Date == f.Date)
@@ -1545,56 +1562,88 @@ public highlight_end:any
                result.forEach(element => {
                    prediction.push(element);
                });
-
-               this.mergedarray = prediction.concat(futureData);
-               this.mergedarray.forEach(element => {
-                if (element.TD1 > 180) {
+              //this.mergedarray = prediction.concat(result);
+              prediction.forEach(element => {
+                if(element.Residual === 0){
+                  element.Residual = ''
+                }
+                if(element.TD1 === 0){
+                  element.TD1 = ''
+                }
+                if(element.FTD1 === 0){
+                  element.FTD1 = ''
+                }
+                if (element.TD1 > 180 && element.TD1 < 210) {
                   element.alarm = element.TD1
-                } else if (element.TD1 > 210) {
+
+                } else{
+                  element.alarm = ''
+                }
+                 if (element.TD1 > 210) {
                   element.trigger = element.TD1
+                }else{
+                  element.trigger = ''
                 }
-                else if (element.FTD1 > 190) {
-                  element.alarm = element.FTD1
+                if(element.FTD1 > 181 && element.FTD1 < 210) {
+                  element.falarm = element.FTD1
                 }
-                else if (element.FTD1 > 210) {
-                  element.trigger = element.FTD1
+                else {
+                  element.falarm = ''
+                }
+                if(element.FTD1 > 210) {
+                  element.ftrigger = element.FTD1
+                }
+                else {
+                  element.ftrigger = ''
                 }
                }); 
-               this.csvData = this.ConvertToCSV( this.mergedarray);
-
+               this.csvData = this.ConvertToCSV(prediction);
+              //  this.csvData = this.ConvertToCSV( this.mergedarray);
                var highlight_start = new Date(this.highlight_start);
                var highlight_end = new Date(this.highlight_end);
 
                this.chart = new Dygraph(
                 document.getElementById("graph"),this.csvData,
                 {
-                  colors: ['green', '#58508d', 'gray', 'red'],
+                  colors: ['green','#58508d', 'gray', '#FFA500','#FFA500','red','red'],
+                  visibility: [true, true, false, true,true,true,true,],
                   showRangeSelector: true,
                   connectSeparatedPoints: true,
-                  // fillGraph: true,
-                  // yRangePad:20,
-                  // fillAlpha: .1,
-                  rollPeriod: 1,
                   drawPoints: true,
-                  strokeWidth: 3,
+                  strokeWidth: 2.5,
                   stepPlot: true,
                   drawXGrid: false,
-                  valueRange: [1],
+                  valueRange: [150,230],
                   includeZero: false,
-                  drawAxesAtZero: true,
-                  legend: 'always',
+                  drawAxesAtZero: false,
+                  // legend: 'always',
                   underlayCallback: function(canvas, area, g) {
                       var bottom_left = g.toDomCoords(highlight_start);
                       var top_right = g.toDomCoords(highlight_end); 
                  
                       var left = bottom_left[0];
                       var right = top_right[0];
-      
-                      canvas.fillStyle = "rgba(184, 226, 242)";
+
+                       canvas.fillStyle = "rgba(245, 252, 255)";
                       canvas.fillRect(left, area.y, right - left, area.h);
                   }
                 },
                 ) 
+                this.chart = new Dygraph(
+                  document.getElementById("graph1"),this.csvData,
+                  {
+                    // colors: ['green', '#58508d', 'gray', '#FFA500','red'],
+                    colors: ['green', '#58508d', 'gray', '#FFA500','red','#FFA500','red',],
+                    showRangeSelector: true,
+                    connectSeparatedPoints: true,
+                    fillGraph: true,
+                    drawPoints: true,
+                    strokeWidth: 5,
+                    drawXGrid: false,
+                    visibility: [false, false, true, false,false,false,false,],
+                  },
+                  ) 
+
             })}
         )
    }

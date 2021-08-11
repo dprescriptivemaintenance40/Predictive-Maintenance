@@ -89,7 +89,7 @@
 <div class="card shadow div-in-middle" style="width: 70rem;" *ngIf="PredictionShow">
     <div style="text-align: center">
         <h5><b> Prediction data</b> </h5>
-        <button style="float: right" class="btn btn-dark" (click)="RouteToPredict()" data-toggle="tooltip" data-placement="top" title="Go to Prediction"><i class="fas fa-table"></i></button>
+        <button style="float: right" class="btn btn-dark" (click)="RouteToPredict()" data-toggle="tooltip" data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
     </div><br>
     <div style="margin: 20px;">
         <div class="row">
@@ -302,22 +302,32 @@
         <div class="row">
             <div class="col-sm"></div>
             <div class="col-sm">
-                <strong  style="color: green;font-size: 14px">* Green line show prediction data  </strong><br>
+                <strong  style="color: green;font-size: 12px">* Green line show prediction data  </strong><br>
             </div>
             <div class="col-sm">
-                <strong  style="color: blue;font-size: 14px">* Blue line show Forcast data  </strong><br>
+                <strong  style="color: blue;font-size: 12px">* Blue line show Forcast data  </strong><br>
             </div>
+            <!-- <div class="col-sm">
+               <strong  style="color:gray;font-size: 12px">* Gray line show Residual </strong><br> 
+            </div> -->
             <div class="col-sm">
-               <strong  style="color:lightseagreen;font-size: 14px">* Lightseagreen line show Residual </strong><br> 
-            </div>
-            <div class="col-sm">
-                <strong  style="color:red;font-size: 14px">* Red line show alarm </strong><br> 
+                <strong  style="color:#FFA500;font-size: 12px">* Yellow line show alarm </strong><br> 
              </div>
             
         </div>
         <br>
         <div>
-            <div class="graph" style="width:67rem;" id="graph" #graph ></div>
+            <div class="graph" style="width:70rem;" id="graph" #graph ></div>
+        </div><br>
+
+        <div>
+            <div style="text-align: center">
+                <h5><b>Residual Graph</b></h5>
+            </div><br>
+            <div class="col-sm">
+                <strong  style="color:gray;font-size: 12px">* Gray line show Residual </strong><br> 
+             </div><br>
+            <div class="graph1" style="width:67rem;height:12rem;" id="graph1" #graph1 ></div>
         </div><br>
     </div>
 </div>
@@ -325,7 +335,7 @@
 
 
 <div class="card shadow div-in-middle" style="width: 70rem;">
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-sm" style="padding:30px;">
             <label style=" margin-right: 12px;">
                 <h5>Machine type</h5>
@@ -370,13 +380,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 <div *ngIf="CostRisk">
     <div class="card" style="margin: 20px;"
         *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
         <div style="text-align: center">
             <h5><b>Cost Benefit Risk Analysis</b> </h5>
+            <button style="float: right" class="btn btn-dark" (click)="RouteToCostBenifit()" data-toggle="tooltip" data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
         </div>
         <div class="container" style="margin: 10px;">
             <div class="sidebar-brand-icon col-sm-2" style="float: right">
@@ -385,26 +396,6 @@
                 </div>
             </div>
             </div>
-            <!-- <div class="row"  style="margin: 5px;">
-                <div class="col-sm">
-                    <div class="card"><br>
-                        <strong style="text-align: center;color:mediumvioletred">Machine Type : {{MachineType}}
-                        </strong><br>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <div class="card"><br>
-                        <strong style="text-align: center;color:mediumvioletred">Equipment Type : {{EquipmentType}}
-                        </strong><br>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <div class="card"><br>
-                        <strong style="text-align: center;color:mediumvioletred">Tag Number : {{SelectedTagNumber}}
-                        </strong><br>
-                    </div>
-                </div>
-            </div><br> -->
             <div class="row" style="margin: 10px;">
                 <p-card>
                     <div class="col-sm">
