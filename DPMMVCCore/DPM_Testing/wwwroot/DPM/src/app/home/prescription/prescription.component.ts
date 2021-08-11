@@ -40,6 +40,7 @@ export class PrescriptionComponent implements OnInit {
   public SkillLibraryHeaders : any = [];
   public SkillLibraryRows : any = [];
   public SkillData : any = [];
+  public GoodEnginerringRecordsList : any = [];
   public clientContratorForms: FormArray = this.fb.array([]);
   constructor(private http: HttpClient,
     public fb: FormBuilder,
@@ -53,6 +54,7 @@ export class PrescriptionComponent implements OnInit {
 
   ngOnInit() {
     this.GetCraftRecords();
+    this.getGoodEngineeringRecords();
     this.cols = [
       { field: 'name', header: 'Name' },
       { field: 'discription', header: 'Description' }
@@ -92,6 +94,26 @@ export class PrescriptionComponent implements OnInit {
         this.CraftList = [];
         this.CraftList = res;
       }, err => {console.log(err.error)}
+    )
+  }
+
+  getGoodEngineeringRecords(){
+    this.http.get('dist/DPM/assets/GoodEngineeringPratice.xlsx',{responseType:'blob'}).subscribe(
+      (res : any) => {
+        let fileReader = new FileReader();
+                fileReader.readAsArrayBuffer(res);
+                fileReader.onload = async (e) => {
+                    var arrayBuffer: any = fileReader.result;
+                    var data = new Uint8Array(arrayBuffer);
+                    var arr = new Array();
+                    for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                    var bstr = arr.join("");
+                    var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+                    var first_sheet_name = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[first_sheet_name];
+                    this.GoodEnginerringRecordsList = await XLSX.utils.sheet_to_json(worksheet, { raw: true });
+                }
+      }
     )
   }
 
@@ -302,7 +324,7 @@ async onNodeExpand(event) {
       }
       if (node.data.name === 'CBA' || node.data.name === 'MSS'|| node.data.name === 'FCA'|| node.data.name === 'FMEA') {
         let children = []
-        if(this.EquipmentType !== 'Screw Compressor'){
+        if(this.EquipmentType == 'Screw Compressor'){
           if(node.data.name === 'MSS'){
             children.push(
               { data: { name: 'Good Engineering Practice : Task List' , type:'GEP', discription: 'Maintenance Interval' }, leaf: false  },
@@ -431,30 +453,28 @@ async onNodeExpand(event) {
           node.children = children;
         }else if (node.data.type === 'GEP') {
           let children = []
-          this.http.get('dist/DPM/assets/GoodEngineeringPratice.xlsx',{responseType:'blob'}).subscribe(
-            (res : any) => {
-              let fileReader = new FileReader();
-                      fileReader.readAsArrayBuffer(res);
-                      fileReader.onload = async (e) => {
-                          var arrayBuffer: any = fileReader.result;
-                          var data = new Uint8Array(arrayBuffer);
-                          var arr = new Array();
-                          for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-                          var bstr = arr.join("");
-                          var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
-                          var first_sheet_name = workbook.SheetNames[0];
-                          var worksheet = workbook.Sheets[first_sheet_name];
-                          var list : any = await XLSX.utils.sheet_to_json(worksheet, { raw: true });
-                          list.forEach(element => {
-                            children.push(
-                              { data: { name: `${element.SrNo}. ${element.MaintenanceTask}`  , discription: `${element.MaintenanceInterval}`} },
-                            )
-                          });
-                          node.children = children;
-                          this.cdr.detectChanges();
-                      }
-            }
+          children.push(
+            { data: { name: 'Daily' , type:'daily' }, leaf: false  },
+            { data: { name: 'Yearly' , type:'yearly' }, leaf: false  },
+            { data: { name: 'Half Yearly' , type:'half-yearly' }, leaf: false  },
+            { data: { name: '5 Yearly' , type:'5-yearly' }, leaf: false  },
+           
           )
+          node.children = children;
+          this.cdr.detectChanges();          
+        }else if (node.data.type === 'daily' || node.data.type === 'yearly' || node.data.type === 'half-yearly' || node.data.type === '5-yearly' ) {
+          let children = [] 
+          var i =1;
+          this.GoodEnginerringRecordsList.forEach(element => {
+            if(element.MaintenanceInterval === node.data.type){
+              children.push(
+                { data: { name: `${i}. ${element.MaintenanceTask}`  , discription: `${element.MaintenanceInterval}`} },
+              )
+              i = i+1
+            }
+          });
+          node.children = children;
+          this.cdr.detectChanges();
           
         }
       }

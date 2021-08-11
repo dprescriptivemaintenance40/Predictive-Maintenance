@@ -191,7 +191,7 @@
                                             ECO&nbsp;&nbsp;HS&nbsp;&nbsp;ENV
                                         </div>
                                         <div>
-                                            L&nbsp;&nbsp;-&nbsp;&nbsp;N
+                                            {{CriticalityRating}} - &nbsp;L&nbsp; - &nbsp;&nbsp;L
                                         </div>
                                     </div>
                                 </div>
@@ -202,8 +202,12 @@
                                     <span class="float-right">{{row.ConsequenceCategory}}</span>
                                 </div>
                                 <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Criticality Rating</strong>
-                                    <span class="float-right">M</span>
+                                    <strong>Criticality Rating with DPM</strong>
+                                    <span class="float-right">{{row.ResidualRiskWithMaintenanceCR}}</span>
+                                </div>
+                                <div class="m-1 p-1" style="border: 1px solid;">
+                                    <strong>Criticality Rating without DPM</strong>
+                                    <span class="float-right">{{row.EconomicRiskWithoutMaintenanceCR}}</span>
                                 </div>
                             </div>
                         </div>
