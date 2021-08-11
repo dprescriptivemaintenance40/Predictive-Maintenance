@@ -283,7 +283,7 @@
 
 </div>
 
-<div style="padding: 5px;" *ngIf="showBulkPrediction" style="overflow: scroll;">
+<div style="padding: 5px;" *ngIf="showBulkPrediction" style="overflow: auto;">
     <div class="card">
         <p-table id="exportexcel" [value]="screwWithPrediction" [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
             [loading]="loading">

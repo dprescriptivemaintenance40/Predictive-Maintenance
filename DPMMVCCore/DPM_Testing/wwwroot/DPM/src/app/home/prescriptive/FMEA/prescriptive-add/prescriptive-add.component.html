@@ -118,9 +118,10 @@
                     <div>
                         <div class="row">
                             <div class="col-md-3 mt-1 mb-1" *ngFor="let func of failuerMode; let i=index;">
-                                <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
+                                <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked" label={{func.Description}}>
+                                   
                                 </p-checkbox>
-                                <label>{{func.Description}}</label>
+                               
                                 <!-- (click)="FailureModeSelected(func, $event)" -->
                                 <!-- <label> <input type="checkbox"
                                                name = "{{i}}"
@@ -147,7 +148,7 @@
         </ng-template>
     </p-card>
 </div>
-<div *ngIf="prescriptiveEffect1" class="col-md-12 bg-white p-3 my-2" style="overflow: scroll;">
+<div *ngIf="prescriptiveEffect1" class="col-md-12 bg-white p-3 my-2" style="overflow: auto;">
     <p-organizationChart [value]="InsertLSEffect" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person" class="d-flex flex-row failure-tree">
             <div class="node-header p-corner-top">{{node.label}}</div>
@@ -416,7 +417,7 @@
     </div>
 </div>
 
-<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: scroll;">
+<div *ngIf="prescriptiveTree" id="prescriptive" class="col-md-12" style="overflow: auto;">
     <p-card>
         <button *ngIf="prescriptiveTreeBackEnable" class="btn btn-dark" (click)="treeBack()" pTooltip=" Back to the Failure Modes" tooltipPosition="top"> <i class="fas fa-arrow-left"></i></button>
         <button *ngIf="prescriptiveTreeSubmitEnable" class="btn btn-dark" style="float: right;" data-toggle="modal" data-target="#treeModal" pTooltip=" Click to Save Tree" tooltipPosition="top" data-toggle="modal"> Save & Next</button>

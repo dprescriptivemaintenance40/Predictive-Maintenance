@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div style="padding: 5px;" style="overflow: scroll;">
+<div style="padding: 5px;" style="overflow: auto;">
     <div class="card">
         <p-table id="exportexcel" [style]="{width:'100%'}" [value]="UploadcentrifugalPumpWithPrediction" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [rowsPerPageOptions]="[10,25,50]" [loading]="loading">

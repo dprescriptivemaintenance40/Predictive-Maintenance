@@ -6,7 +6,7 @@
     <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark" (click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
     <button *ngIf="AddFailureMode" type="button" class="btn btn-dark" style="float: right" (click)="AddFailureModeToTree()" pTooltip="If you want to update the tree click this Button" tooltipPosition="top"><i class="pi pi-plus"></i> Failure Mode</button><br><br>
 </div><br>
-<div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: scroll;" id="prescriptive">
+<div *ngIf="prescriptiveTree" class="col-md-12" style="overflow: auto;" id="prescriptive">
     <button *ngIf="showFullScreen" pButton pRipple type="button" (click)="FullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn" aria-placeholder="Click to view tree"><i class="pi pi-window-maximize"></i></button>
     <button *ngIf="!showFullScreen" pButton pRipple type="button" (click)="ExitFullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn"><i class="pi pi-window-minimize"></i></button>
     <p-organizationChart [value]="data1" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
@@ -78,7 +78,7 @@
 
 
 
-<div style="overflow: scroll;" class="FailureModeUpdate modal" id="FailureModeUpdate" tabindex="-1" role="dialog">
+<div style="overflow: auto;" class="FailureModeUpdate modal" id="FailureModeUpdate" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -91,7 +91,7 @@
             <div class="FailureModeUpdate modal-body">
                 <div class="container-fluid">
                     <div class="container">
-                        <div style="overflow: scroll; height:20rem; ">
+                        <div style="overflow: auto; height:20rem; ">
                             <!-- <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                                 {{func.Description}}
                             </div>
@@ -109,9 +109,9 @@
                             <div class="row">
                                 <div class="col-md-3" *ngFor="let func of failuerMode; let i=index;">
                                     <div class="d-flex justify-content-start align-items-center">
-                                        <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
+                                        <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked" label={{func.Description}} class="mt-2 mb-2">
                                         </p-checkbox>
-                                        <label class="ml-2 mt-1" style="font-size: 13px;">{{func.Description}}</label>
+                                        
                                         <!-- <label>
                                             <input type="checkbox"
                                                    name = "{{i}}"
@@ -139,7 +139,7 @@
 </div>
 
 
-<div class="LSEffectUpdate modal" id="LSEffectUpdate" tabindex="-1" role="dialog" style="overflow: scroll;">
+<div class="LSEffectUpdate modal" id="LSEffectUpdate" tabindex="-1" role="dialog" style="overflow: auto;">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -732,7 +732,7 @@
 
 <!-- <br><br> -->
 
-<!-- <div *ngIf="ConsequencesTree" class="col-md-12 stepsdemo-content shadow" style="overflow: scroll;">
+<!-- <div *ngIf="ConsequencesTree" class="col-md-12 stepsdemo-content shadow" style="overflow: auto;">
     <span *ngIf="ConsequenceTreeADDConsequenceEnable">
             <small class="form-text text-muted"><h4>Your {{LSFailureMode}} Tree</h4></small>
         </span>
@@ -788,7 +788,7 @@
                                 </div>
                             </div> -->
                             <!-- <small class="form-text text-muted">Drag and Drop here, from above List </small> -->
-                            <div style="overflow: scroll; height:20rem;">
+                            <div style="overflow: auto; height:20rem;">
                                 <table>
                                     <tr *ngFor="let func of failuerMode; let i=index;">
                                         <td>
@@ -1014,7 +1014,7 @@
             </p-organizationChart> <br><br>
         </div>
 
-        <div *ngIf="FCAViewTreeEnabled" class="col-md-12" style="overflow: scroll;" id="FCAViewTreeEnable">
+        <div *ngIf="FCAViewTreeEnabled" class="col-md-12" style="overflow: auto;" id="FCAViewTreeEnable">
             <h5>You have selected this path</h5>
             <button *ngIf="EnabledPatternUpdate" title="Save Pattern" label="save" type="button" class="btn btn-dark" (click)="SaveUpdatedPattern()">Save & Update</button><br>
             <p-organizationChart [value]="FCAdata1" styleClass="company">
@@ -1091,7 +1091,7 @@
 
 <br><br>
 
-<div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: scroll;" id="ViewtoAddPattern">
+<div *ngIf="FailureModePatternTree" class="col-md-12" style="overflow: auto;" id="ViewtoAddPattern">
     <h5 style="margin-bottom: 1em;"><b>Add FCA for {{LSFailureMode}} </b></h5>
     <p-organizationChart [value]="FCAChangeData" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" styleClass="company">
         <ng-template let-node pTemplate="person">

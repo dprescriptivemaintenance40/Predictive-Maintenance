@@ -114,7 +114,7 @@
                 </div>
             </div>
 
-            <div *ngIf="RCATypeQualititive === true" style="overflow: scroll;">
+            <div *ngIf="RCATypeQualititive === true" style="overflow: auto;">
                 <div class="classname" id="scene" #scene>
                     <p-card>
                         <button (click)="ClearRCAQualitiveTree()" class="btn btn-dark" pTooltip="Clear Qualititive tree data" tooltipPosition="top">clear</button>
@@ -163,7 +163,7 @@
                     </div>
                 </div>                
             </div>
-            <div [hidden]="!UpdateTreeshow" style="overflow: scroll;">
+            <div [hidden]="!UpdateTreeshow" style="overflow: auto;">
                 <div class="alert alert-dpmprimary">
                     <div class="row">
                         <div class="col-md-3" *ngIf="UpdateRCATypeQualititive">
@@ -251,7 +251,7 @@
 
 
 
-<div class="modal" id="ADDRCAModal" tabindex="-1" role="dialog" style="overflow: scroll;">
+<div class="modal" id="ADDRCAModal" tabindex="-1" role="dialog" style="overflow: auto;">
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -321,7 +321,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 30em;" class="classname">
+            <div class="modal-body" style="overflow: auto; height: 30em;" class="classname">
                 <div *ngIf="UpdateRCATypeQualititive" id="scene3" #scene3>
                     <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
                 </div><br><br>
@@ -347,7 +347,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 80em;padding-left: 50;">
+            <div class="modal-body" style="overflow: auto; height: 80em;padding-left: 50;">
                 <div class="row">
                     <div class="col-md-12">
                     <div *ngIf="!RCAQualitativeReport || !RCAQuantitativeReport" class=" alert alert-dpmprimary d-flex align-items-center justify-content-between">
@@ -456,7 +456,7 @@
                             </p>
                         </div>
                     </div>
-                    <div style="overflow: scroll;" class="mb-3">
+                    <div style="overflow: auto;" class="mb-3">
                         <label><u><b>Annexures</b></u></label>
                         <div id="image" #image>
                             <!-- <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree> -->
@@ -465,7 +465,7 @@
                         </div>
                     </div>
                     </div>
-                <div style="overflow: scroll;" *ngIf="RCAQuantitativeReport">
+                <div style="overflow: auto;" *ngIf="RCAQuantitativeReport">
                     <div id="pdfTable1" #pdfTable1 style="margin: 20px;height: 100%;width: 100%;">
                         <div class="text-center" style="text-align:center">
                             <h4><b>Root Cause Analysis (RCA)  Qualitative approach</b></h4>
