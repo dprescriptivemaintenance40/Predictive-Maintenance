@@ -121,10 +121,12 @@
                             <tr *ngFor="let func of failuerMode; let i=index;">
                                 <td>
                                         <p-checkbox name="{{i}}" 
-                                                (onChange)="FailureModeSelectedForPrimeNg(func, $event)"
-                                                [checked]="func.values"
-                                                label="{{func.Description}}"
-                                                [(ngModel)]="func.checked"></p-checkbox>
+                                                (click)="FailureModeSelected(func, $event)"
+                                                [binary]="true"
+                                                [(ngModel)]="func.checked">
+                                        </p-checkbox>
+                                                <label >{{func.Description}}</label>
+                                                <!-- (click)="FailureModeSelected(func, $event)" -->
                                     <!-- <label> <input type="checkbox"
                                                name = "{{i}}"
                                                (change)="FailureModeSelected(func, $event)"
@@ -313,7 +315,7 @@
                         the equipment. More the down time more is the factor, less the down time less is the factor.
                     </li>
 
-                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of
+                    <li><b>Scrape Factor</b> : - if the chances to scrape the whole equipment or component in the case of
                         failure are high then the scrap factor value is taken more and in the case of less chance to
                         scrape the equipment or component factor
                         value is taken less. </li>
@@ -637,7 +639,7 @@
         </ng-template>
         <div *ngIf="Consequences1" class="p-fluid p-formgrid p-grid">
             <div style="margin-left: 20px;" class="p-fluid">
-                <p> Will the Occurrence of the failure mode ( on its own) be evident to operational staff during normal
+                <p> Will the occurrence of the failure mode ( on its own) be evident to operational staff during normal
                     operation of the plant?</p>
             </div>
             <div class="container">

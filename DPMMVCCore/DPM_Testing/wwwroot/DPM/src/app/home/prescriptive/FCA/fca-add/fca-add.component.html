@@ -181,7 +181,7 @@
     <div class="card" style="margin: 20px;" *ngIf="FailuerRate">
         <p-card [ngClass]=" {disableddiv: failuerrate  ? true : false}">
             <ng-template pTemplate="subtitle">
-                <p><b>2. To help determine the failure rate, we need to know how reliable the equipment is. If the equipment were left alone
+                <p><b>2. To help determine the failure rate, we need to know how reliable the equipment is. If the equipment was left alone
                 for a period of time, would you expect this failure to have happened.
             </b></p>
             </ng-template>
@@ -498,7 +498,7 @@
             <ng-template pTemplate="subtitle">
                 <p><b> 10: Provide List of Days for Failure Mode, {{PatternFMName}} in excel format to calculate alpha, beta.
             </b></p>
-                <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-dark" (click)="ExcelDownload()" title="Click here to get webal excel format" ><a class="pi pi-download"></a></button></small></p>
+                <p><small>Note : Put just one column in Excel with column name 'Days' or <button class="btn btn-dark" (click)="ExcelDownload()" title="Click here to get weibull excel format" ><a class="pi pi-download"></a></button></small></p>
             </ng-template>
             <ng-template pTemplate="content">
                 <div class="row" style="padding: 15px;">
