@@ -182,6 +182,7 @@
 <div class="card shadow div-in-middle" style="width: 70rem;" *ngIf="FuterPredictionShow">
     <div style="text-align: center">
         <h5><b> Futuer Prediction data</b> </h5>
+        <button style="float: right" class="btn btn-dark" (click)="RouteToPredict()" data-toggle="tooltip" data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
     </div><br>
     <div class="row">
         <div class="col-md-2">
@@ -333,7 +334,7 @@
 <br><br>
 
 
-<div class="card shadow div-in-middle" style="width: 70rem;">
+<!-- <div class="card shadow div-in-middle" style="width: 70rem;">
     <!-- <div class="row">
         <div class="col-sm" style="padding:30px;">
             <label style=" margin-right: 12px;">
@@ -380,7 +381,7 @@
             </div>
         </div>
     </div> -->
-</div>
+<!-- </div> -->
 <div *ngIf="CostRisk">
     <div class="card" style="margin: 20px;"
         *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
