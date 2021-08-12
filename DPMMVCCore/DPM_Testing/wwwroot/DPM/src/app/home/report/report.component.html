@@ -21,9 +21,13 @@
                         </div>
                     </li>
                     <li class="list-group-item">
-                        <div class="input-group mb-3">
+                        <!-- <div class="input-group mb-3">
                             <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
-                        </div>
+                        </div> -->
+                        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control">
+                            <option value="">Choose Tag Number</option>
+                            <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                        </select>
                     </li>
                     <li class="list-group-item">
                         <button (click)="GenerateReport()" class="btn btn-dark">Done</button>

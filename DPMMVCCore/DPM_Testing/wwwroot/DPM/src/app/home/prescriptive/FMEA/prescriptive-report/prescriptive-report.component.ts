@@ -8,6 +8,7 @@ import { PDFDocument } from 'pdf-lib';
 import * as Chart from 'chart.js';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import domtoimage from 'dom-to-image';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-prescriptive-report',
   templateUrl: './prescriptive-report.component.html',
@@ -76,6 +77,7 @@ export class PrescriptiveReportComponent implements OnInit {
     private messageService: MessageService,
     private changeDetectorRef: ChangeDetectorRef,
     private commonLoadingDirective: CommonLoadingDirective,
+    private router : Router,
     private title: Title) {
     this.title.setTitle('Prescriptive Report | Dynamic Prescriptive Maintenence')
   }
@@ -86,6 +88,10 @@ export class PrescriptiveReportComponent implements OnInit {
   }
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
+  }
+
+  goBackToPrescriptiveRecomendationList(){
+    this.router.navigateByUrl('/Home/Prescriptive/List')
   }
 
 

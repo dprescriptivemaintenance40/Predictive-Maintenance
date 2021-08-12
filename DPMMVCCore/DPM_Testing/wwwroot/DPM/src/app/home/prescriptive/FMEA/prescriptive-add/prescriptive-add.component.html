@@ -10,6 +10,11 @@
     .failure-tree td {
         background-color: transparent !important;
     }
+
+    .disableLable{
+        pointer-events: none;
+        opacity: 0.5;
+    }
 </style>
 <p-toast position="top-right"></p-toast>
 <div *ngIf="prescriptiveSelect">
@@ -118,18 +123,19 @@
                     <div>
                         <div class="row">
                             <div class="col-md-3 mt-1 mb-1" *ngFor="let func of failuerMode; let i=index;">
-                                <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked" label={{func.Description}}>
+                                <!-- <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
                                    
                                 </p-checkbox>
+                                <label class="disableLable">{{func.Description}}</label> -->
                                
                                 <!-- (click)="FailureModeSelected(func, $event)" -->
-                                <!-- <label> <input type="checkbox"
+                                <label> <input type="checkbox"
                                                name = "{{i}}"
                                                (change)="FailureModeSelected(func, $event)"
                                                 [checked]="func.values"
                                                 [(ngModel)]="func.checked"
                                                 /> 
-                                                {{func.Description}} </label> -->
+                                                {{func.Description}} </label>
 
                             </div>
                         </div>

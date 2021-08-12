@@ -438,7 +438,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   FailureModeSelected(value, event){
-    if(event.target.ariaChecked === null){
+    if(event.target.checked === false){
       var findIndexOF = value.PrescriptiveLookupMasterId
       var index = -1;
       var filteredObj = this.dropedMode.find((item, i) => {
@@ -451,7 +451,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.dropedMode.splice(index, 1)
     }
     
-    if(event.target.ariaChecked === 'true'){
+    if(event.target.checked === true){
       let obj = {}
       obj['Date']= value.Date;
       obj['Description']= value.Description;

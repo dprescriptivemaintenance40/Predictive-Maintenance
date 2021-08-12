@@ -1,4 +1,5 @@
 <p-toast position="top-right"></p-toast>
+<button class="btn btn-dark" *ngIf="prescriptveReportSelect" p-tooltip="Back to prescriptive recommendation list" (click)="goBackToPrescriptiveRecomendationList()">Back</button>
 <div *ngIf="prescriptveReportSelect">
     <div class="card shadow div-in-middle">
         <ul class="list-group list-group-flush">

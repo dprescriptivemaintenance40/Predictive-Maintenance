@@ -812,6 +812,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     this.LSEdiv.style.display = 'none'
   }
   async AddFailureModeToTree() {
+    this.CloseFCAUpdateView();
+    this.CloseMSSUpdateView();
     this.abc = false
     this.getDropDownLookMasterData();
     this.FMdiv = document.getElementById("FailureModeUpdate")

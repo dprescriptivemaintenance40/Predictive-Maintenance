@@ -65,7 +65,8 @@ export class ReportComponent {
   public finalPerformanceNumber: number = 0
   public finalACCCalculation: number = 0;
   public FinalAFCCalcuation: number = 0;
-  public screwWithPredictionDetails: any = []
+  public screwWithPredictionDetails: any = [];
+  public TagList : any = [];
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -83,8 +84,18 @@ export class ReportComponent {
     private profileAPIName: ProfileConstantAPI) {
     this.title.setTitle('Report | Dynamic Prescriptive Maintenence');
     this.GetRecords();
-
+    this.getPrescriptiveRecords();
   }
+  
+    getPrescriptiveRecords() {
+        this.http.get('api/PrescriptiveAPI/GetTagNumber')
+            .subscribe((res: any) => {
+              this.TagList = []
+              res.forEach(element => {
+                  this.TagList.push(element.TagNumber)
+              });
+            });
+    }
 
   GetRecords() {
     this.commonLoadingDirective.showLoading(true, 'Report is getting generated.');
@@ -187,9 +198,9 @@ export class ReportComponent {
 
       for (var i = 0; i < this.classificationDetails.length; i++) {
 
-        if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
+        if (uniqueNames.indexOf(this.classificationDetails[i].RD) === -1) {
           uniqueObj.push(this.classificationDetails[i])
-          uniqueNames.push(this.classificationDetails[i].Classification);
+          uniqueNames.push(this.classificationDetails[i].RD);
         }
 
       }
@@ -207,15 +218,15 @@ export class ReportComponent {
             result[k][o[k]] = (result[k][o[k]] || 0) + 1;
           });
         });
-        this.incipient = result.Classification.incipient;
+        this.incipient = result.RD.incipient;
         if (this.incipient == undefined) {
           this.incipient = 0;
         }
-        this.degrade = result.Classification.degrade;
+        this.degrade = result.RD.degrade;
         if (this.degrade == undefined) {
           this.degrade = 0;
         }
-        this.normal = result.Classification.normal;
+        this.normal = result.RD.normal;
         if (this.normal == undefined) {
           this.normal = 0;
         }
@@ -272,9 +283,9 @@ export class ReportComponent {
 
       for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
 
-        if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
+        if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].RD) === -1) {
           AFPuniqueObj.push(this.screwWithPredictionDetails[i])
-          AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
+          AFPuniqueNames.push(this.screwWithPredictionDetails[i].RD);
         }
 
       }

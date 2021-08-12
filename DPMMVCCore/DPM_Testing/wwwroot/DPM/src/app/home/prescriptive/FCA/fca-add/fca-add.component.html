@@ -323,12 +323,12 @@
                                                 <div class="col-sm-1">
                                                     
                                                     <input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is not Evident"
-                                                            name="name1" />Yes
+                                                            name="CommentFIEYN1" />Yes
                                                 </div>
                                                 <div class="col-sm-1">
                                                    
                                                     <input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is Evident"
-                                                            name="name1" />No
+                                                            name="CommentFIEYN2" />No
                                                 </div>
                                             </div>
                                             <a class="btn btn-white" style="border:none"> </a>
@@ -353,13 +353,13 @@
                                                     Yes
                                                     <input type="radio" [(ngModel)]="CommentFIEYN2"
                                                             value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - Yes"
-                                                            name="name2" />
+                                                            name="CommentFIEYN21" />
                                                 </div>
                                                 <div class="col-sm-1">
                                                   
                                                     <input type="radio" [(ngModel)]="CommentFIEYN2"
                                                             value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - No"
-                                                            name="name2" />No
+                                                            name="CommentFIEYN22" />No
                                                 </div>
                                             </div>
                                             <a class="btn btn-white" style="border:none"> </a>
@@ -437,11 +437,11 @@
                                                 </div>
                                                 <div class="col-sm">
                                                     Yes
-                                                    <td><input type="radio" [(ngModel)]="WebalYN" value="YES" name="ABYN" />
+                                                    <td><input type="radio" [(ngModel)]="WebalYN" value="YES" name="ABYN1" />
                                                 </div>
                                                 <div class="col-sm">
                                                     No
-                                                    <td><input type="radio" [(ngModel)]="WebalYN" value="No" name="ABYN" />
+                                                    <td><input type="radio" [(ngModel)]="WebalYN" value="No" name="ABYN2" />
                                                 </div>
                                             </div>
                                             <div class="row" *ngIf="WebalYN == 'No'">
@@ -502,7 +502,7 @@
                                         </ng-template>
                                         <ng-template pTemplate="footer" style="padding: 0 !important">
                                             <a class="btn btn-white" style="border:none"> </a>
-                                            <button class="btn btn-primary btn-sm" (click)="alphaBetaSave()"><i class="fa fa-check"
+                                            <button class="btn btn-primary btn-sm" data-dismiss="modal" (click)="alphaBetaSave()"><i class="fa fa-check"
                                                     aria-hidden="true"></i>Save</button>
                                         </ng-template>
                                     </p-card>
@@ -511,7 +511,7 @@
                             </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Done</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
                     </div>
