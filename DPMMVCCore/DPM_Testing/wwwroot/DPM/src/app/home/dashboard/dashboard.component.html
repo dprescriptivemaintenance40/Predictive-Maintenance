@@ -14,7 +14,7 @@
         <div class="col-md-2">
             <div class="card">
                 <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FModeType()">
-                    <option value="">Select Failuer Mode</option> Type
+                    <option value="">Select Failure Mode</option> Type
                     <ng-container *ngFor="let mode of FMList">
                         <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
                     </ng-container>
@@ -31,7 +31,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm">
+        <!-- <div class="col-sm">
             <div class="card" style="width:12rem;border:none">
                 <p-card>
                     <strong style="text-align: left;color:#008000">Normal </strong><br>
@@ -55,7 +55,7 @@
                 </p-card>
             </div>
 
-        </div>
+        </div> -->
     </div>
     <br>
     <div class="container">
@@ -69,12 +69,6 @@
                         </div>
                     </div>
                 </div><br>
-                <div class="col-sm">
-                    <div class="card">
-                        <strong> Screw Compressor Classification chart</strong>
-                        <canvas id="polarArea"></canvas>
-                    </div>
-                </div>
             </div>
             <div class="col-8">
                 <div class="card">
@@ -82,6 +76,10 @@
                     <canvas id="canvas1">{{ chart }}</canvas>
                 </div>
             </div>
+        </div><br>
+        <div class="card" style="width:66rem;">
+            <strong>  Screw Compressor Classification All chart Data</strong>
+            <canvas id="polarArea"></canvas>
         </div>
     </div>
 </div><br><br>
@@ -95,7 +93,7 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="card">
-                <button class="btn btn-dark"  (click)="FutuerPredictionClick()">Futuer Prediction</button>
+                <button class="btn btn-dark"  (click)="FutuerPredictionClick()">Future Forcast</button>
                 </div>
             </div>
         </div>
@@ -123,15 +121,15 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm">
+            <!-- <div class="col-sm">
                 <div class="card" style="width:12rem;border:none">
                     <p-card>
                         <strong style="text-align: left;color:#008000">Normal </strong><br>
                         <h1 style="text-align: center;color:#008000">{{PredictionNormalcount}}</h1>
                     </p-card>
                 </div>
-            </div>
-            <div class="col-sm">
+            </div> -->
+            <!-- <div class="col-sm">
                 <div class="card" style="width:12rem;border:none">
                     <p-card>
                         <strong style="text-align: left;color:#FFA500">Incipient</strong><br>
@@ -148,40 +146,75 @@
                     </p-card>
                 </div>
 
-            </div>
+            </div> -->
         </div>
     </div>
+   
     <div class="container">
         <div class="row">
             <div>
                 <div class="row">
                     <div class="col-sm">
                         <div class="card">
-                            <strong> Prediction Pie chart</strong>
+                            <strong> Prediction For All Data</strong>
                             <canvas id="PredictionPie"></canvas>
                         </div>
                     </div>
                 </div><br>
-                <div class="col-sm">
-                    <div class="card">
-                        <strong> Prediction Donut chart</strong>
-                        <canvas id="PredictioncanvasClass"></canvas>
-                    </div>
-                </div>
-            </div>
+            </div><br>
             <div class="col-8">
                 <div class="card">
                     <strong> Prediction chart</strong>
                     <canvas id="Predictionbarline"></canvas>
                 </div>
             </div>
+        </div><br><br>
+         
+        <div class="card" style="width:66rem;">
+            <strong> Prediction All Data</strong>
+            <canvas id="PredictioncanvasClass"></canvas>
         </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <!-- <div class="col-sm">
+            <div class="card" style="width:12rem;border:none">
+                <p-card>
+                    <strong style="text-align: left;color:black;font-size: 12px">Asset Current Condition </strong><br>
+                    <h1 style="text-align: center;color:black;font-size: 14px">Normal={{FinalNormal}}%, Incipient={{FinalIncipient}}%, Degrade={{FinaldDegrade}}%</h1>
+                </p-card>
+            </div>
+        </div> -->
+    <div class="col-sm">
+        <div class="card" style="width:12rem;border:none">
+            <p-card>
+                <strong style="text-align: left;color:black;font-size: 12px">Risk ranking </strong><br>
+                <h1 style="text-align: center;color:black;font-size: 14px">{{RK}}</h1>
+            </p-card>
+        </div>
+    </div>
+    <div class="col-sm">
+        <div class="card" style="width:12rem;border:none">
+            <p-card>
+                <strong style="text-align: left;color:black;font-size: 12px">DPM Analysis Beneficial </strong><br><br>
+                <h1 style="text-align: center;color:black;font-size: 14px">{{DAB}}</h1>
+            </p-card>
+        </div>
+    </div>
+    <div class="col-sm">
+        <div class="card" style="width:12rem;border:none">
+            <p-card>
+                <strong style="text-align: left;color:black;font-size: 12px">Performance Number </strong><br><br>
+                <h1 style="text-align: center;color:black;font-size: 14px">{{finalPerformanceNumber | number:'1.0-2'}}</h1>
+            </p-card>
+        </div>
+    </div>
     </div>
 </div>
 <br><br>
 <div class="card shadow div-in-middle" style="width: 70rem;" *ngIf="FuterPredictionShow">
     <div style="text-align: center">
-        <h5><b> Futuer Prediction data</b> </h5>
+        <h5><b> Future Prediction data</b> </h5>
         <button style="float: right" class="btn btn-dark" (click)="RouteToPredict()" data-toggle="tooltip" data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
     </div><br>
     <div class="row">
@@ -196,7 +229,7 @@
             <div class="col-md-2">
                 <div class="card">
                     <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FutuerDates()">
-                        <option value="">Select Failuer Mode</option> Type
+                        <option value="">Select Failure Mode</option> Type
                         <ng-container *ngFor="let mode of FMList">
                             <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
                         </ng-container>
@@ -215,7 +248,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm">
+            <!-- <div class="col-sm">
                 <div class="card" style="width:12rem;border:none">
                     <p-card>
                         <strong style="text-align: left;color:#008000">Normal </strong><br>
@@ -240,7 +273,7 @@
                     </p-card>
                 </div>
 
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -250,45 +283,31 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="card">
-                            <strong> Futuer Prediction Pie chart</strong>
+                            <strong> Future Prediction Pie chart</strong>
                             <canvas id="FutuerPredictionPie"></canvas>
                         </div>
                     </div>
                 </div><br>
-                <div class="col-sm">
-                    <div class="card">
-                        <strong>Futuer Prediction Donut chart</strong>
-                        <canvas id="donughtChart"></canvas>
-                    </div>
-                </div>
             </div>
             <div class="col-8">
                 <div class="card">
-                    <strong>Futuer Prediction chart</strong>
+                    <strong>Future Prediction chart</strong>
                     <canvas id="BarChart"></canvas>
                 </div>
             </div>
+        </div><br><br>
+        <div class="card" style="width:66rem;">
+            <strong> Forcast All Data</strong>
+            <canvas id="donughtChart"></canvas>
         </div>
     </div>
 </div>
 <br><br>
-<!-- <div class="card shadow div-in-middle" style="width: 100%;overflow: scroll;">
-    <div class="card">
-        <div style="text-align: center">
-            <h5><b> Combination Of Prediction & Futuer Prediction</b> </h5>
-        </div><br>
-        <div class="chartWrapper">
-            <div class="chartAreaWrapper">
-                <canvas id="ComboChart" height="400" width="2000"></canvas>
-            </div>
-        </div>
-    </div>
-</div> -->
 <br>
 <div class="card shadow div-in-middle" style="width: 100%;overflow: scroll;">
     <div class="card">
         <div style="text-align: center">
-            <h5><b>Combination Of Prediction & Futuer Prediction</b></h5>
+            <h5><b>Combination Of Prediction & Future Prediction</b></h5>
         </div><br>
         <div class="col-md-2">
             <div class="card">
@@ -320,7 +339,7 @@
             <div class="graph" style="width:70rem;" id="graph" #graph ></div>
         </div><br>
 
-        <div>
+        <!-- <div>
             <div style="text-align: center">
                 <h5><b>Residual Graph</b></h5>
             </div><br>
@@ -328,14 +347,14 @@
                 <strong  style="color:gray;font-size: 12px">* Gray line show Residual </strong><br> 
              </div><br>
             <div class="graph1" style="width:67rem;height:12rem;" id="graph1" #graph1 ></div>
-        </div><br>
+        </div><br> -->
     </div>
 </div>
 <br><br>
 
 
 <!-- <div class="card shadow div-in-middle" style="width: 70rem;">
-    <!-- <div class="row">
+  <div class="row">
         <div class="col-sm" style="padding:30px;">
             <label style=" margin-right: 12px;">
                 <h5>Machine type</h5>
@@ -389,13 +408,6 @@
             <h5><b>Cost Benefit Risk Analysis</b> </h5>
             <button style="float: right" class="btn btn-dark" (click)="RouteToCostBenifit()" data-toggle="tooltip" data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
         </div>
-        <div class="container" style="margin: 10px;">
-            <div class="sidebar-brand-icon col-sm-2" style="float: right">
-                <div class="image-container">
-                    <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
-                </div>
-            </div>
-            </div>
             <div class="row" style="margin: 10px;">
                 <p-card>
                     <div class="col-sm">
@@ -416,7 +428,6 @@
                 <div class="card" style="border: none;">
                     <div class="col-sm">
                         <p-card>
-                            <!-- <b>Criticality Maintenance Factor : M</b> -->
                             <b>Economic Risk : M</b>
                         </p-card>
                     </div>
@@ -442,16 +453,16 @@
         <div class="row">
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
-                    <b>With D.P.M MEI </b>
+                    <b>With D.P.M  </b>
                     <canvas id="gaugechart"></canvas>
-                    <h1 style="text-align: center;color: blue;">{{DPMMEI}}</h1>
+                    <!-- <h1 style="text-align: center;color: rgb(17, 17, 248);">{{DPMMEI}}</h1> -->
                 </div>
             </div>
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
-                    <b>Without D.P.M MEI</b>
+                    <b>Without D.P.M </b>
                     <canvas id="canvasDPM"></canvas>
-                    <h1 style="text-align: center;color: red;">{{DPMWithoutMEI}}</h1>
+                    <!-- <h1 style="text-align: center;color: red;">{{DPMWithoutMEI}}</h1> -->
                 </div>
             </div>
         </div>

@@ -3,15 +3,13 @@ import { Title } from "@angular/platform-browser";
 import { MessageService } from 'primeng/api';
 import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import { DashboardConstantAPI } from "./dashboard.service";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import * as Chart from 'chart.js';
 import * as moment from "moment";
 import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.directive";
 import Dygraph from 'dygraphs'
-import * as XLSX from 'xlsx';
-import { element } from "protractor";
 import { Router } from "@angular/router";
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -57,6 +55,8 @@ export class DashboardComponent {
   public CostRisk: boolean = false;
   public filterdata: boolean = false;
   public DPMMEI: number
+  public DPMCost: number
+  public DPMWithoutCost: number
   public DPMWithoutMEI: number;
   public Degradecount: number = 0;
   public Normalcount: number = 0;
@@ -122,6 +122,64 @@ export class DashboardComponent {
     public CFPPrescriptiveId : number = 0 ;
     public DatesforCSV : number = 0 ;
     public date: string = "";
+
+
+    public DOA = new Date();
+    public ACC: string;
+    public AFP: string;
+    public RK: any = "L/M/H= M | HSECES= Y | CRIT= II";
+    public DAB: any;
+  
+    public incipient: number = 0;
+    public degrade: number = 0;
+    public normal: number = 0;
+  
+    public AFPincipient: number = 0;
+    public AFPdegrade: number = 0;
+    public AFPnormal: number = 0;
+  
+    public FinalAFPincipient: number = 0;
+    public FinalAFPdegrade: number = 0;
+    public FinalAFPnormal: number = 0;
+  
+    public totalCount: number = 0;
+    public AFPtotalCount: number = 0;
+    public FinalAFPTotalCount: number = 0;
+  
+    public incipientPerentage: number = 0
+    public degradePercentage: number = 0
+    public normalpercentage: number = 0
+    public PerformanceNumber: any = 0
+  
+    public AFPincipientPerentage: number = 0
+    public AFPdegradePercentage: number = 0
+    public AFPnormalpercentage: number = 0
+  
+    public finalPerformanceNumber: number = 0
+    public finalACCCalculation: number = 0;
+    public FinalAFCCalcuation: number = 0;
+    public screwWithPredictionDetails: any = []
+    public classificationDetails: any = []
+
+    public FinalNormal:any=[]
+    public FinalIncipient:any=[]
+    public FinaldDegrade:any=[]
+    public FinalBad:any=[]
+
+    public ClassDegradepercentage=0
+    public ClassIncipientpercentage=0
+    public ClassNormalpercentage=0
+
+    public FPFinalNormal:any=[]
+    public FPFinalIncipient:any=[]
+    public FPFinaldDegrade:any=[]
+    public FPFinalBad:any=[]
+
+    public SCFinalNormal:any=[]
+    public SCFinalIncipient:any=[]
+    public SCFinaldDegrade:any=[]
+    public SCFinalBad:any=[]
+
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -130,6 +188,7 @@ export class DashboardComponent {
     private dashboardContantAPI: DashboardConstantAPI,
     private dashboardContantMethod: CommonBLService,
     private changeDetectorRef: ChangeDetectorRef,
+    private location: Location,
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
     this.state = window.history.state; 
@@ -160,7 +219,7 @@ export class DashboardComponent {
     this.router.navigateByUrl('/Home/Compressor/ScrewPrediction'); 
   }
   RouteToCostBenifit(){
-    this.router.navigateByUrl('/Home/CostBenefitAnalysis'); 
+     this.router.navigateByUrl('/Home/CostBenefitAnalysis');
   }
   ComboDates(){
     if(this.date =="1Week"){
@@ -262,6 +321,9 @@ export class DashboardComponent {
             return m;
           }, []);
 
+          var Degradepercentage 
+          var Incipientpercentage
+          var Normalpercentage 
           for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
             if (this.Prediction[i] == "degarde" || this.Prediction[i] == "degrade") {
               this.PredictionDegradecount = this.PredictionDegradecount + 1
@@ -272,11 +334,14 @@ export class DashboardComponent {
             } else
               this.Predictionbadcount = this.Predictionbadcount + 1
           }
+          Degradepercentage= (this.Degradecount/this.ScrewPredictionAllData.length )*100
+          Incipientpercentage= (this.Incipientcount/this.ScrewPredictionAllData.length )*100
+          Normalpercentage= (this.Normalcount/this.ScrewPredictionAllData.length )*100
 
           this.PredictionAllRecordDonught();
-          this.PredictionAllRecordBarcharts()
-          this.PredictionAllRecordPie()
-          // this.ComboChart()
+          this.PredictionAllRecordBarcharts();
+           this.PredictionAllRecordPie();
+           this.GenerateReport()
         }, error => {
           console.log(error.error)
         })
@@ -312,7 +377,7 @@ export class DashboardComponent {
     }
     this.PredictionAllRecordBarcharts()
     this.PredictionAllRecordDonught()
-    this.PredictionAllRecordPie()
+    // this.PredictionAllRecordPie()
 }
   PredictFModeType() {
     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
@@ -333,9 +398,8 @@ export class DashboardComponent {
     }
     this.PredictionAllRecordBarcharts()
     this.PredictionAllRecordDonught()
-    this.PredictionAllRecordPie()
+    // this.PredictionAllRecordPie()
   }
-
 
   GetAllRecords() {
     this.TrainDataNormalCount = null;
@@ -416,6 +480,9 @@ export class DashboardComponent {
             this.TrainDataDegradeCount = degradeCount;
 
           });
+          var ClassDegradepercentage
+          var ClassIncipientpercentage
+          var ClassNormalpercentage
           for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
             if (this.classi[i] == "degarde" || this.classi[i] == "degrade") {
               this.Degradecount = this.Degradecount + 1
@@ -426,9 +493,14 @@ export class DashboardComponent {
             } else
               this.badcount = this.badcount + 1
           }
+          ClassDegradepercentage= ((this.Degradecount/this.ScrewCompressorAllData.length )*100).toFixed(2);
+          ClassIncipientpercentage= ((this.Incipientcount/this.ScrewCompressorAllData.length )*100).toFixed(2);
+          ClassNormalpercentage= ((this.Normalcount/this.ScrewCompressorAllData.length )*100).toFixed(2);
+
           this.AllRecordBarcharts();
           this.ClassificationOfAllRecordDonught();
-          this.ClassificationOfAllpolarchart()
+          this.GenerateReport()
+           this.ClassificationOfAllpolarchart()
           // this.ScatterChart()
         
         }, error => {
@@ -481,7 +553,7 @@ export class DashboardComponent {
         this.badcount = this.badcount + 1
     }
     this.AllRecordBarcharts();
-    this.ClassificationOfAllpolarchart()
+    // this.ClassificationOfAllpolarchart()
     this.ClassificationOfAllRecordDonught()
   }
 
@@ -491,7 +563,6 @@ export class DashboardComponent {
     } else if (this.fmtype != "" && this.selectedYear != "") {
       this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
     }
-
     this.Degradecount = 0
     this.Incipientcount = 0
     this.Normalcount = 0
@@ -507,11 +578,10 @@ export class DashboardComponent {
         this.badcount = this.badcount + 1
     }
     this.AllRecordBarcharts();
-    this.ClassificationOfAllpolarchart()
+    // this.ClassificationOfAllpolarchart()
     this.ClassificationOfAllRecordDonught()
     //  this.ComboChart();
   }
-
 
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
@@ -577,7 +647,9 @@ export class DashboardComponent {
       row.ETBF = this.ETBF ? this.ETBF : 2;
       row.TotalAnnualCostWithMaintenance = 1.777;
       row.EconomicRiskWithoutMaintenance = (row.TotalPONC / row.ETBF).toFixed(3);
+      this.DPMWithoutCost = row.EconomicRiskWithoutMaintenance
       row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
+      this.DPMCost = row.ResidualRiskWithMaintenance
       let WithETBCAndPONC = row.TotalPONC / row.ETBC;
       let WithoutETBCAndPONC = row.TotalPONC / 5;
       row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
@@ -612,49 +684,151 @@ export class DashboardComponent {
   gaugechartwithDPM() {
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart('gaugechart', {
-      type: 'doughnut',
+      type: 'bar',
       data: {
-        labels: ['DPM_With_MEI'],
         datasets: [
           {
-            data: [this.DPMMEI, 1],
-            backgroundColor: ['blue', 'lightgray'],
-            fill: true
+            label: "DPM_With_MEI (Benefit)",
+            data: [this.DPMMEI],
+            backgroundColor: ['purple '],
+            fill: true,
+            barPercentage: 2,
+            barThickness: 20,
+            maxBarThickness: 28,
+          }, 
+          {
+            label: "Total Cost",
+            data: [this.DPMCost],
+            backgroundColor: ['blueviolet'],
+            fill: true,
+            barPercentage: 2,
+            barThickness: 20,
+            maxBarThickness: 28,
+          }, 
+          {
+            label: "Economic Risk",
+            data: [30],
+            backgroundColor: ['red'],
+            fill: true,
+            barPercentage: 2,
+            barThickness: 20,
+            maxBarThickness: 28,
           }
-        ]
+        ],
+        options: {
+         scales: {
+           yAxes: [{
+             ticks: {
+                max: 100,
+             }
+           }]
+         }
+       }
       },
-      options: {
-        circumference: 1 * Math.PI,
-        rotation: 1 * Math.PI,
-        cutoutPercentage: 70
-      }
     });
 
 
   }
   gaugechartwithoutDPM() {
     this.changeDetectorRef.detectChanges();
+    // this.chart = new Chart('canvasDPM', {
+    //   type: 'doughnut',
+    //   data: {
+    //     labels: ['DPM_Without_MEI'],
+    //     datasets: [
+    //       {
+    //         data: [this.DPMWithoutMEI, 1],
+    //         backgroundColor: ['rgba(255, 0, 0, 1)'],
+    //         fill: false
+    //       }
+    //     ]
+    //   },
+    //   options: {
+    //     circumference: 1 * Math.PI,
+    //     rotation: 1 * Math.PI,
+    //     cutoutPercentage: 70
+    //   }
+    // });
     this.chart = new Chart('canvasDPM', {
-      type: 'doughnut',
+      type: 'bar',
       data: {
-        labels: ['DPM_Without_MEI'],
         datasets: [
           {
-            data: [this.DPMWithoutMEI, 1],
-            backgroundColor: ['rgba(255, 0, 0, 1)'],
-            fill: false
+            label: "DPM_Without_MEI (Benefit)",
+            data: [this.DPMWithoutMEI],
+            backgroundColor: ['purple '],
+            fill: true,
+            barPercentage: 2,
+            barThickness: 20,
+            maxBarThickness: 28,
+          }, 
+          {
+            label: "Total Cost",
+            data: [this.DPMWithoutCost],
+            backgroundColor: ['blueviolet'],
+            fill: true,
+            barPercentage: 2,
+            barThickness: 20,
+            maxBarThickness: 28,
+          },
+          {
+            label: "Economic Risk",
+            data: [100],
+            backgroundColor: ['red'],
+            fill: true,
+            barPercentage: 2,
+            barThickness: 20,
+            maxBarThickness: 28,
           }
-        ]
+        ],
+        options: {
+         scales: {
+           yAxes: [{
+             ticks: {
+                min :1,
+                max: 30,
+             }
+           }]
+         }
+       }
       },
-      options: {
-        circumference: 1 * Math.PI,
-        rotation: 1 * Math.PI,
-        cutoutPercentage: 70
-      }
     });
   }
 
   ClassificationOfAllRecordDonught() {
+    var a: any = [];
+    this.Normalcount = 0,
+      this.Incipientcount = 0,
+      this.Degradecount = 0;
+    this.ScrewCompressorAllData.forEach(element => {
+      if (this.fmtype != "") {
+        if (this.fmtype == "SSRB") {
+          a.push(element.SSRB)
+        } else if (this.fmtype == "CF") {
+          a.push(element.CF)
+        } if (this.fmtype == "RD") {
+          a.push(element.RD)
+        }
+      } else {
+        a.push(element.Prediction)
+      }
+
+    });
+
+    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+      if (this.classi[i] == "degarde" || this.classi[i] == "degrade") {
+        this.Degradecount = this.Degradecount + 1
+      } else if (this.classi[i] == "incipient") {
+        this.Incipientcount = this.Incipientcount + 1
+      } else if (this.classi[i] == "normal") {
+        this.Normalcount = this.Normalcount + 1
+      } else
+        this.badcount = this.badcount + 1
+    }
+    this.ClassDegradepercentage= (this.Degradecount/this.ScrewCompressorAllData.length )*100
+    this.ClassIncipientpercentage= (this.Incipientcount/this.ScrewCompressorAllData.length )*100
+    this.ClassNormalpercentage= (this.Normalcount/this.ScrewCompressorAllData.length )*100
+
     this.chart = new Chart('canvasClass', {
       type: 'doughnut',
       data: {
@@ -662,12 +836,12 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [this.Normalcount, this.Incipientcount, this.Degradecount]
+            data: [this.ClassNormalpercentage, this.ClassIncipientpercentage, this.ClassDegradepercentage]
           }
         ]
       },
       options: {
-        events: [],
+        // events: [],
       }
     });
 
@@ -676,21 +850,90 @@ export class DashboardComponent {
 
   ClassificationOfAllpolarchart() {
     this.changeDetectorRef.detectChanges();
-    this.chart = new Chart('polarArea', {
-      type: 'polarArea',
-      data: {
-        labels: ["Normal", "incipient", "Degrade"],
-        datasets: [
-          {
-            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [this.Normalcount, this.Incipientcount, this.Degradecount]
-          }
-        ]
-      },
-      options: {
-        events: [],
-      }
+    this.ScrewCompressorAllData.sort()
+    var LabelDates : any = [];
+    this.yearlist.forEach(element => {
+     LabelDates.push(element.yearname)
     });
+
+    for(var i=0; i < this.yearlist.length; ++i) {
+     var SCFPnormal =0
+     var SCFPincipient =0
+     var SCFPdegrade =0
+     var SCFPbad =0
+     var SCcounter = 0
+     this.ScrewCompressorAllData.forEach(value => {
+       var a = moment(value.InsertedDate).format('YYYY')
+       if(a == this.yearlist[i].yearname){
+         if (value.Classification == 'normal') {
+           SCFPnormal = SCFPnormal + 1
+         } else if (value.Classification == 'incipient') {
+           SCFPincipient = SCFPincipient + 1
+         } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
+           SCFPdegrade = SCFPdegrade + 1
+         } else {
+           SCFPbad = SCFPbad + 1
+         }
+         SCcounter=SCcounter+1
+       }
+
+      });
+      SCFPnormal= ((SCFPnormal/SCcounter)*100)
+      SCFPincipient=((SCFPincipient/SCcounter)*100)
+      SCFPdegrade=((SCFPdegrade/SCcounter)*100)
+      SCFPbad=((SCFPbad/SCcounter)*100)
+
+     this.FinalNormal.push(SCFPnormal)
+     this.SCFinalIncipient.push(SCFPincipient)
+     this.SCFinaldDegrade.push(SCFPdegrade)
+     this.SCFinalBad.push(SCFPbad)
+    
+    }
+
+   this.changeDetectorRef.detectChanges();
+   this.chart = new Chart("polarArea", {
+     type:"bar",
+     data: {
+      labels: LabelDates,
+       fill: true,
+       datasets: [
+         {
+           label: "Normal",
+           data: this.SCFinalNormal,
+           borderWidth: 1,
+           borderColor: "#008000",
+           backgroundColor: '#008000',
+           fill: true,
+         }, 
+         {
+           label: "Incipient",
+           data: this.SCFinalIncipient,
+           borderWidth: 1,
+           borderColor: "#FFA500",
+           backgroundColor: '#FFA500',
+           fill: true,
+         }, 
+         {
+           label: "Degrade",
+           data: this.SCFinaldDegrade,
+           borderWidth: 1,
+           borderColor: "#FF0000",
+           backgroundColor: '#FF0000',
+           fill: true,
+         },
+         {
+           label: "Bad",
+           data: this.SCFinalBad,
+           borderWidth: 1,
+           borderColor: "blue",
+           backgroundColor: 'blue',
+           fill: true,
+         },  
+
+       ],
+     },
+
+   });
   }
 
   AllRecordBarcharts() {
@@ -716,7 +959,6 @@ export class DashboardComponent {
           a.push(element.Classification)
         }
       });
-      // console.log(a);
       var normal = 0
       var incipient = 0
       var degrade = 0
@@ -772,13 +1014,10 @@ export class DashboardComponent {
       options: {
         events: [],
         scales: {
-          xAxes: [{
-            stacked: true,
-          }],
           yAxes: [{
-            stacked: true,
             ticks: {
-              max: 200,
+              min:1,
+              max: 100,
             }
           }]
         }
@@ -787,49 +1026,134 @@ export class DashboardComponent {
   }
 
   PredictionAllRecordDonught() {
-    var a: any = [];
-    this.PredictionNormalcount = 0,
-      this.PredictionIncipientcount = 0,
-      this.PredictionDegradecount = 0;
-    this.ScrewPredictionAllData.forEach(element => {
-      if (this.fmtype != "") {
-        if (this.fmtype == "SSRB") {
-          a.push(element.SSRB)
-        } else if (this.fmtype == "CF") {
-          a.push(element.CF)
-        } if (this.fmtype == "RD") {
-          a.push(element.RD)
-        }
-      } else {
-        a.push(element.Prediction)
-      }
+    // var a: any = [];
+    // this.PredictionNormalcount = 0,
+    //   this.PredictionIncipientcount = 0,
+    //   this.PredictionDegradecount = 0;
+    // this.ScrewPredictionAllData.forEach(element => {
+    //   if (this.fmtype != "") {
+    //     if (this.fmtype == "SSRB") {
+    //       a.push(element.SSRB)
+    //     } else if (this.fmtype == "CF") {
+    //       a.push(element.CF)
+    //     } if (this.fmtype == "RD") {
+    //       a.push(element.RD)
+    //     }
+    //   } else {
+    //     a.push(element.Prediction)
+    //   }
 
-    });
-    a.forEach(element => {
-      if (element == 'normal') {
-        this.PredictionNormalcount = this.PredictionNormalcount + 1;
-      } else if (element == 'incipient') {
-        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-      } else if (element == 'degrade' || element == 'degarde') {
-        this.PredictionDegradecount = this.PredictionDegradecount + 1;
-      }
-    });
+    // });
+    // a.forEach(element => {
+    //   if (element == 'normal') {
+    //     this.PredictionNormalcount = this.PredictionNormalcount + 1;
+    //   } else if (element == 'incipient') {
+    //     this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+    //   } else if (element == 'degrade' || element == 'degarde') {
+    //     this.PredictionDegradecount = this.PredictionDegradecount + 1;
+    //   }
+    // });
+    // this.changeDetectorRef.detectChanges();
+    // this.chart = new Chart("PredictioncanvasClass", {
+    //   type: 'doughnut',
+    //   data: {
+    //     labels: ["Normal", "incipient", "Degrade"],
+    //     fill: true,
+    //     datasets: [
+    //       {
+    //         backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+    //         data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
+    //       }
+    //     ]
+    //   },
+    //   options: {
+    //     events: [],
+    //   }
+    // });
+    this.changeDetectorRef.detectChanges();
+     this.ScrewPredictionAllData.sort()
+     var LabelDates : any = [];
+     this.Predictyearlist.forEach(element => {
+      LabelDates.push(element.Predictyearname)
+     });
+ 
+     for(var i=0; i < this.Predictyearlist.length; ++i) {
+      var FPnormal =0
+      var FPincipient =0
+      var FPdegrade =0
+      var FPbad =0
+      var counter = 0
+      this.ScrewPredictionAllData.forEach(value => {
+        var a = moment(value.InsertedDate).format('YYYY')
+        if(a == this.Predictyearlist[i].Predictyearname){
+          if (value.Prediction == 'normal') {
+            FPnormal = FPnormal + 1
+          } else if (value.Prediction == 'incipient') {
+            FPincipient = FPincipient + 1
+          } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+            FPdegrade = FPdegrade + 1
+          } else {
+            FPbad = FPbad + 1
+          }
+          counter=counter+1
+        }
+
+       });
+       FPnormal= ((FPnormal/counter)*100)
+       FPincipient=((FPincipient/counter)*100)
+       FPdegrade=((FPdegrade/counter)*100)
+       FPbad=((FPbad/counter)*100)
+
+      this.FinalNormal.push(FPnormal)
+      this.FinalIncipient.push(FPincipient)
+      this.FinaldDegrade.push(FPdegrade)
+      this.FinalBad.push(FPbad)
+     
+     }
+
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictioncanvasClass", {
-      type: 'doughnut',
+      type:"bar",
       data: {
-        labels: ["Normal", "incipient", "Degrade"],
+       labels: LabelDates,
         fill: true,
         datasets: [
           {
-            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
-          }
-        ]
+            label: "Normal",
+            data: this.FinalNormal,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
+          }, 
+          {
+            label: "Incipient",
+            data: this.FinalIncipient,
+            borderWidth: 1,
+            borderColor: "#FFA500",
+            backgroundColor: '#FFA500',
+            fill: true,
+          }, 
+          {
+            label: "Degrade",
+            data: this.FinaldDegrade,
+            borderWidth: 1,
+            borderColor: "#FF0000",
+            backgroundColor: '#FF0000',
+            fill: true,
+          },
+          {
+            label: "Bad",
+            data: this.FinalBad,
+            borderWidth: 1,
+            borderColor: "blue",
+            backgroundColor: 'blue',
+            fill: true,
+          },  
+
+        ],
       },
-      options: {
-        events: [],
-      }
+
     });
   }
 
@@ -852,6 +1176,10 @@ export class DashboardComponent {
       }
 
     });
+    var Degradepercentage 
+    var Incipientpercentage
+    var Normalpercentage 
+ 
     a.forEach(element => {
       if (element == 'normal') {
         this.PredictionNormalcount = this.PredictionNormalcount + 1;
@@ -861,6 +1189,10 @@ export class DashboardComponent {
         this.PredictionDegradecount = this.PredictionDegradecount + 1;
       }
     });
+    Degradepercentage= ((this.PredictionDegradecount/a.length )*100).toFixed(2);
+    Incipientpercentage= ((this.PredictionIncipientcount/a.length )*100).toFixed(2);
+    Normalpercentage= ((this.PredictionNormalcount/a.length )*100).toFixed(2);
+
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionPie", {
       type: 'pie',
@@ -870,13 +1202,10 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
+            data: [Normalpercentage,Incipientpercentage,Degradepercentage]
           }
         ]
       },
-      options: {
-        events: [],
-      }
     });
 
   }
@@ -915,7 +1244,6 @@ export class DashboardComponent {
         }
       });
 
-      // console.log(a);
       var normal = 0
       var incipient = 0
       var degrade = 0
@@ -970,23 +1298,22 @@ export class DashboardComponent {
         ]
       },
       options: {
-        events: [],
+         events: [],
         scales: {
           xAxes: [{
-            stacked: true,
+            // stacked: true,
           }],
           yAxes: [{
-            stacked: true,
+            // stacked: true,
             ticks: {
-              max: 30,
+               //min:1,
+                max: 14,
             }
           }]
         }
       }
     });
   }
-
-
 
   GerAllFutuerPredictionRecords() {
     this.FutuerPredictionDataNormalCount = null;
@@ -1059,7 +1386,7 @@ export class DashboardComponent {
               this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
           }
           this.FutuerlineChart()
-          this.FutuerdDonughtchart()
+           this.FutuerdDonughtchart()
           this.Futuerpiechart()
         }, error => {
           console.log(error.error)
@@ -1085,16 +1412,6 @@ export class DashboardComponent {
     this.FutuerPredictionNormalcount = 0
     this.FutuerPredictionbadcount = 0
 
-    //  for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
-    //   if (this.FutuerPrediction[i] == "degarde" || this.FutuerPrediction[i] == "degrade") {
-    //     this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1
-    //   } else if (this.FutuerPrediction[i] == "incipient") {
-    //     this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1
-    //   } else if (this.FutuerPrediction[i] == "normal") {
-    //     this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1
-    //   } else
-    //     this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
-    // }
     for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
       if (`${this.FutuerPredictionAllData[i]}.${this.fmtype}` == "degarde") {
         this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1
@@ -1107,7 +1424,7 @@ export class DashboardComponent {
     }
 
     this.FutuerlineChart()
-    this.FutuerdDonughtchart()
+    // this.FutuerdDonughtchart()
     this.Futuerpiechart()
     }
 
@@ -1145,8 +1462,6 @@ export class DashboardComponent {
           }
         }
       });
-
-      // console.log(a);
       var normal = 0
       var incipient = 0
       var degrade = 0
@@ -1201,10 +1516,10 @@ export class DashboardComponent {
         events: [],
         scales: {
           xAxes: [{
-            stacked: true,
+            // stacked: true,
           }],
           yAxes: [{
-            stacked: true,
+            // stacked: true,
             ticks: {
               max: 30,
             }
@@ -1216,6 +1531,138 @@ export class DashboardComponent {
   }
 
   FutuerdDonughtchart() {
+    // var a: any = [];
+    // this.FutuerPredictionNormalcount = 0,
+    //   this.FutuerPredictionIncipientcount = 0,
+    //   this.FutuerPredictionDegradecount = 0;
+    // this.FutuerPredictionAllData.forEach(element => {
+    //   if (this.fmtype != "") {
+    //     if (this.fmtype == "SSRB") {
+    //       a.push(element.SSRB)
+    //     } else if (this.fmtype == "CF") {
+    //       a.push(element.CF)
+    //     } if (this.fmtype == "RD") {
+    //       a.push(element.RD)
+    //     }
+    //   } else {
+    //     a.push(element.Prediction)
+    //   }
+
+    // });
+    // a.forEach(element => {
+    //   if (element == 'normal') {
+    //     this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1;
+    //   } else if (element == 'incipient') {
+    //     this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1;
+    //   } else if (element == 'degrade' || element == 'degarde') {
+    //     this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1;
+    //   }
+    // });
+    // this.chart = new Chart('donughtChart', {
+    //   type: 'doughnut',
+    //   data: {
+    //     labels: ["Normal", "incipient", "Degrade"],
+    //     datasets: [
+    //       {
+    //         backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+    //         data: [this.FutuerPredictionNormalcount, this.FutuerPredictionIncipientcount, this.FutuerPredictionDegradecount]
+    //       }
+    //     ]
+    //   },
+    //   options: {
+    //     events: [],
+    //   }
+    // });
+    this.changeDetectorRef.detectChanges();
+    this.FutuerPredictionAllData.sort()
+    var LabelDates : any = [];
+    this.FuterPredictyearlist.forEach(element => {
+     LabelDates.push(element.FutuerPredictyearname)
+    });
+
+    for(var i=0; i < this.FuterPredictyearlist.length; ++i) {
+     var forcastPnormal =0
+     var forcastFPincipient =0
+     var forcastFPdegrade =0
+     var forcastFPbad =0
+     var forcastcounter = 0
+     this.FutuerPredictionAllData.forEach(value => {
+       var a = moment(value.PredictedDate).format('YYYY')
+       if(a == this.FuterPredictyearlist[i].FutuerPredictyearname){
+         if (value.Prediction == 'normal') {
+          forcastPnormal = forcastPnormal + 1
+         } else if (value.Prediction == 'incipient') {
+          forcastFPincipient = forcastFPincipient + 1
+         } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+          forcastFPdegrade = forcastFPdegrade + 1
+         } else {
+          forcastFPbad = forcastFPbad + 1
+         }
+         forcastcounter=forcastcounter+1
+       }
+
+      });
+      forcastPnormal= ((forcastPnormal/forcastcounter)*100)
+      forcastFPincipient=((forcastFPincipient/forcastcounter)*100)
+      forcastFPdegrade=((forcastFPdegrade/forcastcounter)*100)
+      forcastFPbad=((forcastFPbad/forcastcounter)*100)
+
+     this.FPFinalNormal.push(forcastPnormal)
+     this.FPFinalIncipient.push(forcastFPincipient)
+     this.FPFinaldDegrade.push(forcastFPdegrade)
+     this.FPFinalBad.push(forcastFPbad)
+    
+    }
+
+   this.changeDetectorRef.detectChanges();
+   this.chart = new Chart("donughtChart", {
+     type:"bar",
+     data: {
+      labels: LabelDates,
+       fill: true,
+       datasets: [
+         {
+           label: "Normal",
+           data: this.FPFinalNormal,
+           borderWidth: 1,
+           borderColor: "#008000",
+           backgroundColor: '#008000',
+           fill: true,
+         }, 
+         {
+           label: "Incipient",
+           data: this.FPFinalIncipient,
+           borderWidth: 1,
+           borderColor: "#FFA500",
+           backgroundColor: '#FFA500',
+           fill: true,
+         }, 
+         {
+           label: "Degrade",
+           data: this.FPFinaldDegrade,
+           borderWidth: 1,
+           borderColor: "#FF0000",
+           backgroundColor: '#FF0000',
+           fill: true,
+         },
+         {
+           label: "Bad",
+           data: this.FPFinalBad,
+           borderWidth: 1,
+           borderColor: "blue",
+           backgroundColor: 'blue',
+           fill: true,
+         },  
+
+       ],
+     },
+
+   });
+
+  }
+
+
+  Futuerpiechart() {
     var a: any = [];
     this.FutuerPredictionNormalcount = 0,
       this.FutuerPredictionIncipientcount = 0,
@@ -1234,6 +1681,9 @@ export class DashboardComponent {
       }
 
     });
+    var FPClassDegradepercentage
+    var FPClassIncipientpercentage
+    var FPClassNormalpercentage
     a.forEach(element => {
       if (element == 'normal') {
         this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1;
@@ -1243,40 +1693,24 @@ export class DashboardComponent {
         this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1;
       }
     });
-    this.chart = new Chart('donughtChart', {
-      type: 'doughnut',
-      data: {
-        labels: ["Normal", "incipient", "Degrade"],
-        datasets: [
-          {
-            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [this.FutuerPredictionNormalcount, this.FutuerPredictionIncipientcount, this.FutuerPredictionDegradecount]
-          }
-        ]
-      },
-      options: {
-        events: [],
-      }
-    });
+    FPClassDegradepercentage= ((this.FutuerPredictionDegradecount/a.length )*100).toFixed(2);
+    FPClassIncipientpercentage= ((this.FutuerPredictionIncipientcount/a.length )*100).toFixed(2);
+    FPClassNormalpercentage= ((this.FutuerPredictionNormalcount/a.length )*100).toFixed(2);
 
-  }
-
-
-  Futuerpiechart() {
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart('FutuerPredictionPie', {
-      type: 'polarArea',
+      type: 'pie',
       data: {
         labels: ["Normal", "incipient", "Degrade"],
         datasets: [
           {
             backgroundColor: ["#008000", "#FFA500", "#FF0000"],
-            data: [this.FutuerPredictionNormalcount, this.FutuerPredictionIncipientcount, this.FutuerPredictionDegradecount]
+            data: [FPClassNormalpercentage, FPClassIncipientpercentage, FPClassDegradepercentage]
           }
         ]
       },
       options: {
-        events: [],
+        // events: [],
       }
     });
   }
@@ -1298,208 +1732,6 @@ export class DashboardComponent {
     this.fmtype =""
   }
 
- 
-  // ComboChart(){
-  //   this.changeDetectorRef.detectChanges();
-  //   let dateForFilter = [];
-  //   this.PredictionDataNormalCount = []
-  //   this.PredictionDataIncipientCount = []
-  //   this.PredictonDataDegradeCount = []
-
-  //   var Glitches_PredictionDataNormalCount = []
-  //   var Glitches_PredictionDataIncipientCount = []
-  //   var Glitches_PredictonDataDegradeCount = []
-
-  //   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-  //     if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
-  //       dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
-  //     }
-  //   }
-  //   let dateForFilter1 = [];
-  //   dateForFilter.forEach((value) => {
-  //     var Date = moment(value).format('YYYY-MM-DD');
-  //     dateForFilter1.push(Date);
-  //   });
-  //   for (var i = 0; i < dateForFilter1.length; i++) {
-  //     var a = [];
-  //     this.ScrewPredictionAllData.forEach(element => {
-  //       if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
-  //         if (this.fmtype != "") {
-  //           if (this.fmtype == "SSRB") {
-  //             a.push(element.SSRB)
-  //           } else if (this.fmtype == "CF") {
-  //             a.push(element.CF)
-  //           } if (this.fmtype == "RD") {
-  //             a.push(element.RD)
-  //           }
-  //         } else {
-  //           a.push(element.Prediction)
-  //         }
-  //       }
-  //     });
-
-  //     // console.log(a);
-  //     var normal = 0
-  //     var incipient = 0
-  //     var degrade = 0
-  //     var bad = 0
-
-  //     a.forEach((value) => {
-  //       if (value == 'normal') {
-  //         normal = normal + 1
-  //       } else if (value == 'incipient') {
-  //         incipient = incipient + 1
-  //       } else if (value == 'degarde' || value == 'degrade') {
-  //         degrade = degrade + 1
-  //       } else {
-  //         bad = bad + 1
-  //       }
-  //     });
-  //     this.PredictionDataNormalCount.push(normal)
-  //     this.PredictionDataIncipientCount.push(incipient)
-  //     this.PredictonDataDegradeCount.push(degrade)
-  //     this.PredictionDataBadCount.push(bad)
-
-  //      Glitches_PredictionDataNormalCount.push(normal) 
-  //      Glitches_PredictionDataIncipientCount.push(incipient) 
-  //      Glitches_PredictonDataDegradeCount.push(degrade)
-     
-  //   }
-  //   let SCdateForFilter = [];
-  //   this.TrainDataIncipientCount = []
-  //   this.TrainDataNormalCount = []
-  //   this.TrainDataDegradeCount = []
-
-  //   for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-  //     if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), SCdateForFilter)) {
-  //       SCdateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
-  //     }
-  //   }
-  //   let dateForFilter2 = [];
-  //   SCdateForFilter.forEach((value) => {
-  //     var Date = moment(value).format('YYYY-MM-DD');
-  //     dateForFilter2.push(Date);
-  //     dateForFilter1.push(Date);
-  //   });
-  //   for (var i = 0; i < dateForFilter2.length; i++) {
-  //     var sc = [];
-  //     this.ScrewCompressorAllData.forEach(element => {
-  //       if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter2[i]) {
-  //         sc.push(element.Classification)
-  //       }
-  //     });
-  //     // console.log(sc);
-  //     var normal = 0
-  //     var incipient = 0
-  //     var degrade = 0
-  //     var bad = 0
-  //     sc.forEach((value) => {
-  //       if (value == 'normal') {
-  //         normal = normal + 1
-  //       } else if (value == 'incipient') {
-  //         incipient = incipient + 1
-  //       } else if (value == 'degarde' || value == 'degrade') {
-  //         degrade = degrade + 1
-  //       } else {
-  //         bad = bad + 1
-  //       }
-  //     });
-  //     this.PredictionDataNormalCount.push(normal)
-  //     this.PredictionDataIncipientCount.push(incipient)
-  //     this.PredictonDataDegradeCount.push(degrade)
-  //     this.PredictionDataBadCount.push(bad)
-
-  //     Glitches_PredictionDataNormalCount.push()
-  //     Glitches_PredictionDataIncipientCount.push()
-  //     Glitches_PredictonDataDegradeCount.push()
-     
-  //   }
-  //   let FutuerdateForFilter = [];
-  //   this.FutuerPredictionDataNormalCount = []
-  //   this.FutuerPredictionDataIncipientCount = []
-  //   this.FutuerPredictonDataDegradeCount = []
-
-  //   // for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
-  //   //   if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
-  //   //     FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
-  //   //   }
-  //   // }
-
-  //   let FutuerdateForFilter1 = [];
-  //   FutuerdateForFilter.forEach((value) => {
-  //     var Date = moment(value).format('YYYY-MM-DD');
-  //     FutuerdateForFilter1.push(Date);
-  //   });
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("ComboChart", {
-  //     type: 'line',
-  //     data: {
-  //       labels: dateForFilter1,
-  //       datasets: [{
-  //         label: "Forcast_Normal",
-  //         data: this.PredictionDataNormalCount,
-  //         borderColor: '#008000',
-  //         borderDash: [10, 10],
-  //         pointBackgroundColor: "transparent"
-  //       }, {
-  //         label: "Normal",
-  //         data: Glitches_PredictionDataNormalCount,
-  //         borderColor: '#008000',
-  //         pointBackgroundColor: "transparent"
-  //       }, {
-  //         label: "Forcast_Incipient",
-  //         data: this.PredictionDataIncipientCount,
-  //         borderColor: '#FFA500',
-  //         borderDash: [10, 10],
-  //         pointBackgroundColor: "transparent"
-  //       }, {
-  //         label: "Incipient",
-  //         data: Glitches_PredictionDataIncipientCount,
-  //         borderColor: '#FFA500',
-  //         pointBackgroundColor: "transparent"
-  //       }, {
-  //         label: "Forcast_Degrade",
-  //         data: this.PredictonDataDegradeCount,
-  //         borderColor: '#FF0000',
-  //         borderDash: [10, 10],
-  //         pointBackgroundColor: "transparent"
-  //       }, {
-  //         label: "Degrade",
-  //         data: Glitches_PredictonDataDegradeCount,
-  //         borderColor: '#FF0000',
-  //         pointBackgroundColor: "transparent"
-  //       }]
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       events: [],
-  //       elements: {
-  //         line: {
-  //           fill: false
-  //         }
-  //       },
-  //       scales: {
-  //         xAxes: [
-  //           {
-  //             scaleLabel: {
-  //               display: true
-  //             }
-  //           }
-  //         ],
-  //         yAxes: [{
-  //           ticks: {
-  //             beginAtZero: true,
-  //             // stepSize: 1
-  //              max: 10,
-  //           }
-  //         }]
-  //       },
-  //     }
-  //   });
-
-  // }
-
-
 public csvData :any
 public mergedarray:any;
 public highlight_start:any
@@ -1507,13 +1739,22 @@ public highlight_end:any
 
    dygraph(){ 
 
-        // this.chart = new Dygraph(
-        //   document.getElementById("graph"),"dist/DPM/assets/actualdata.csv",
-        //   {
-        //     visibility: [true, false, false, true,false,false],
-        //     showRangeSelector: true,
-        //     connectSeparatedPoints: true,
-        //   }) 
+        this.chart = new Dygraph(
+          document.getElementById("graph"),"dist/DPM/assets/actualdata.csv",
+          {
+            visibility: [true, false, false, true,false,false],
+            showRangeSelector: true,
+            connectSeparatedPoints: true,
+          }) 
+
+          // this.chart = new Dygraph(
+          //   document.getElementById("graph1"),"dist/DPM/assets/actualdata.csv",
+          //   {
+          //     visibility: [false, false, false, false,false,true],
+          //     showRangeSelector: true,
+          //     connectSeparatedPoints: true,
+          //   })
+
 
 
         // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
@@ -1672,19 +1913,19 @@ public highlight_end:any
                   }
                 },
                 ) 
-                this.chart = new Dygraph(
-                  document.getElementById("graph1"),this.csvData,
-                  {
-                    colors: ['green', '#58508d', 'gray', '#FFA500','red','#FFA500','red',],
-                    showRangeSelector: true,
-                    connectSeparatedPoints: true,
-                    fillGraph: true,
-                    drawPoints: true,
-                    strokeWidth: 5,
-                    drawXGrid: false,
-                    visibility: [false, false, true, false,false,false,false,],
-                  },
-                  ) 
+                // this.chart = new Dygraph(
+                //   document.getElementById("graph1"),this.csvData,
+                //   {
+                //     colors: ['green', '#58508d', 'gray', '#FFA500','red','#FFA500','red',],
+                //     showRangeSelector: true,
+                //     connectSeparatedPoints: true,
+                //     fillGraph: true,
+                //     drawPoints: true,
+                //     strokeWidth: 5,
+                //     drawXGrid: false,
+                //     visibility: [false, false, true, false,false,false,false,],
+                //   },
+                //   ) 
 
             })}
         )
@@ -1712,4 +1953,129 @@ public highlight_end:any
       }
       return str;
     }
+
+
+    
+  public GenerateReport() {
+      var countKey = Object.keys(this.classificationDetails).length;
+      this.totalCount = countKey
+      var uniqueNames = [];
+      var uniqueObj = [];
+
+      for (var i = 0; i < this.classificationDetails.length; i++) {
+
+        if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
+          uniqueObj.push(this.classificationDetails[i])
+          uniqueNames.push(this.classificationDetails[i].Classification);
+        }
+
+      }
+
+      var result: any = [];
+
+      if (this.classificationDetails != 0) {
+
+        this.classificationDetails.forEach(function (o) {
+          Object.keys(o).forEach(function (k) {
+            result[k] = result[k] || {};
+            result[k][o[k]] = (result[k][o[k]] || 0) + 1;
+          });
+        });
+        this.incipient = result.Classification.incipient;
+        if (this.incipient == undefined) {
+          this.incipient = 0;
+        }
+        this.degrade = result.Classification.degrade;
+        if (this.degrade == undefined) {
+          this.degrade = 0;
+        }
+        this.normal = result.Classification.normal;
+        if (this.normal == undefined) {
+          this.normal = 0;
+        }
+        this.normalpercentage = this.normal / this.totalCount * 100
+        this.incipientPerentage = this.incipient / this.totalCount * 100
+        this.degradePercentage = this.degrade / this.totalCount * 100
+
+        var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
+
+        if (ACCCalculation == NaN) {
+          ACCCalculation = 0;
+        }
+
+        this.finalACCCalculation = parseFloat(ACCCalculation);
+      }
+      var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
+      this.AFPtotalCount = AFPcountKey
+
+
+      var AFPuniqueNames = [];
+      var AFPuniqueObj = [];
+
+      for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
+
+        if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
+          AFPuniqueObj.push(this.screwWithPredictionDetails[i])
+          AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
+        }
+
+      }
+      var result: any = [];
+
+      if (this.screwWithPredictionDetails.length != 0) {
+        this.screwWithPredictionDetails.forEach(function (o) {
+          Object.keys(o).forEach(function (k) {
+            result[k] = result[k] || {};
+            result[k][o[k]] = (result[k][o[k]] || 0) + 1;
+          });
+        });
+
+        this.AFPincipient = result.Prediction.incipient;
+        if (this.AFPincipient == undefined) {
+          this.AFPincipient = 0;
+        }
+        this.AFPdegrade = result.Prediction.degrade;
+        if (this.AFPdegrade == undefined) {
+          this.AFPdegrade = 0;
+        }
+        this.AFPnormal = result.Prediction.normal;
+        if (this.AFPnormal == undefined) {
+          this.AFPnormal = 0;
+        }
+        this.FinalAFPnormal = (this.AFPnormal + this.normal);
+        this.FinalAFPincipient = (this.AFPincipient + this.incipient);
+        this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
+
+        this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
+
+        this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
+
+        this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
+
+        this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
+
+        var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
+
+        this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
+      }
+      var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
+
+      var HSECES: any = [(0 * 1) + (1 * 10)]
+
+      var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
+
+
+      this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
+        parseFloat(LMH) + parseFloat(HSECES)
+        + parseFloat(CRIT)];
+
+      this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
+
+      if (this.PerformanceNumber > 10) {
+        this.DAB = "Y"
+      } else {
+        this.DAB = "N"
+      }
+  }
 }
+
