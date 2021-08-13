@@ -772,9 +772,6 @@ GetPredictionRecords() {
 }
 
 GetAllRecords() {
-  this.TrainDataNormalCount = null;
-  this.TrainDataIncipientCount = null;
-  this.TrainDataDegradeCount = null;
   var normalCount: any = [];
   var normalValuation: number = 0;
   var incipientCount: any = [];
@@ -871,7 +868,6 @@ GetRecords() {
       if (this.screwWithPredictionDetails.length == 0) {
         this.AFPNotVisible = true;
         this.AFPVisible = false;
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Still You have not done Prediction. Do Prediction & Generate Report', sticky: true });
         this.commonLoadingDirective.showLoading(false, '');
       } else {
         this.AFPNotVisible = false;

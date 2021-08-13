@@ -133,9 +133,8 @@ export class TrainComponent implements OnInit {
     this.getUserDetails();
     this.GenerateReport()
     this.GetRecords()
-    // this.GetAllRecords()
      this.GerAllPredictionRecords()
-     this.Classification()
+     this.GetAllRecords()
   }
 
   showModalDialog() {
@@ -159,6 +158,7 @@ export class TrainComponent implements OnInit {
 
   SelectFailureModeType() {
     this.getScrewCompressureList();
+
   }
 
   getScrewCompressureList() {
@@ -567,71 +567,6 @@ export class TrainComponent implements OnInit {
   }
 
 
-  // GetAllRecords() {
-  //   this.TrainDataNormalCount = null;
-  //   this.TrainDataIncipientCount = null;
-  //   this.TrainDataDegradeCount = null;
-  //   var normalCount: any = [];
-  //   var normalValuation: number = 0;
-  //   var incipientCount: any = [];
-  //   var incipientValuation: number = 0;
-  //   var degradeCount: any = [];
-  //   var degradeValuation: number = 0;
-
-  //   this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.GetAllRecords)
-  //     .subscribe(
-  //       res => {
-
-  //         this.ScrewCompressorAllData = res;
-  //         this.ScrewCompressorAllData.forEach(element => {
-  //           this.classi.push(element.Classification);
-  //         });
-
-  //         this.classi.forEach((value) => {
-  //           if (value == 'normal') {
-  //             normalValuation = normalValuation + 1;
-  //             normalCount.push(normalValuation);
-  //             incipientCount.push(incipientValuation);
-  //             degradeCount.push(degradeValuation)
-
-  //           } else if (value == 'incipient') {
-  //             incipientValuation = incipientValuation + 1;
-  //             incipientCount.push(incipientValuation);
-  //             normalCount.push(normalValuation);
-  //             degradeCount.push(degradeValuation)
-
-  //           } else {
-  //             degradeValuation = degradeValuation + 1;
-  //             degradeCount.push(degradeValuation)
-  //             normalCount.push(normalValuation);
-  //             incipientCount.push(incipientValuation);
-
-  //           }
-  //           this.TrainDataNormalCount = normalCount;
-  //           this.TrainDataIncipientCount = incipientCount;
-  //           this.TrainDataDegradeCount = degradeCount;
-
-  //         });
-  //         for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-  //           if (this.classi[i] == "degarde" || this.classi[i] == "degrade") {
-  //             this.Degradecount = this.Degradecount + 1
-  //           } else if (this.classi[i] == "incipient") {
-  //             this.Incipientcount = this.Incipientcount + 1
-  //           } else if (this.classi[i] == "normal") {
-  //             this.Normalcount = this.Normalcount + 1
-  //           } else
-  //             this.badcount = this.badcount + 1
-  //         }
-
-  //         this.normalpercentage = ((this.Degradecount / this.ScrewCompressorAllData.length) * 100)
-  //                 this.incipientPerentage = ((this.Incipientcount / this.ScrewCompressorAllData.length) * 100)
-  //                 this.degradePercentage = ((this.Normalcount / this.ScrewCompressorAllData.length) * 100)
-        
-  //       }, error => {
-  //         console.log(error.error)
-  //       }
-  //     )
-  // }
 
   GerAllPredictionRecords() {
     this.PredictionDataNormalCount = null;
@@ -704,16 +639,69 @@ export class TrainComponent implements OnInit {
         })
   }
 
+  GetAllRecords() {
+    var normalCount: any = [];
+    var normalValuation: number = 0;
+    var incipientCount: any = [];
+    var incipientValuation: number = 0;
+    var degradeCount: any = [];
+    var degradeValuation: number = 0;
 
-  Classification(){
-    this.http.get<any>("api/ScrewCompressureAPI/GetClassification").subscribe(res => {
-     this.classificationDetails = res;
-   },
-     error => {
-       console.log(error);
-     }
-   );
- }
+    this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.GetAllRecords)
+    .subscribe((res: any) => {
+          this.ScrewCompressorAllData = res;
+          this.ScrewCompressorAllData.forEach(element => {
+            this.classi.push(element.Classification);
+          });
+
+          this.classi.forEach((value) => {
+            if (value == 'normal') {
+              normalValuation = normalValuation + 1;
+              normalCount.push(normalValuation);
+              incipientCount.push(incipientValuation);
+              degradeCount.push(degradeValuation)
+
+            } else if (value == 'incipient') {
+              incipientValuation = incipientValuation + 1;
+              incipientCount.push(incipientValuation);
+              normalCount.push(normalValuation);
+              degradeCount.push(degradeValuation)
+
+            } else {
+              degradeValuation = degradeValuation + 1;
+              degradeCount.push(degradeValuation)
+              normalCount.push(normalValuation);
+              incipientCount.push(incipientValuation);
+
+            }
+            this.TrainDataNormalCount = normalCount;
+            this.TrainDataIncipientCount = incipientCount;
+            this.TrainDataDegradeCount = degradeCount;
+
+          });
+          var ClassDegradepercentage
+          var ClassIncipientpercentage
+          var ClassNormalpercentage
+          for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+            if (this.classi[i] == "degarde" || this.classi[i] == "degrade") {
+              this.Degradecount = this.Degradecount + 1
+            } else if (this.classi[i] == "incipient") {
+              this.Incipientcount = this.Incipientcount + 1
+            } else if (this.classi[i] == "normal") {
+              this.Normalcount = this.Normalcount + 1
+            } else
+              this.badcount = this.badcount + 1
+          }
+          ClassDegradepercentage= ((this.Degradecount/this.ScrewCompressorAllData.length )*100).toFixed(2);
+          ClassIncipientpercentage= ((this.Incipientcount/this.ScrewCompressorAllData.length )*100).toFixed(2);
+          ClassNormalpercentage= ((this.Normalcount/this.ScrewCompressorAllData.length )*100).toFixed(2);
+
+        
+        }, error => {
+          console.log(error.error)
+        }
+      )
+  }
 
 
 }
