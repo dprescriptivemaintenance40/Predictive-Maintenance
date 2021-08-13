@@ -376,7 +376,7 @@ export class DashboardComponent {
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
     this.PredictionAllRecordBarcharts()
-    this.PredictionAllRecordDonught()
+   // this.PredictionAllRecordDonught()
     // this.PredictionAllRecordPie()
 }
   PredictFModeType() {
@@ -397,7 +397,7 @@ export class DashboardComponent {
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
     this.PredictionAllRecordBarcharts()
-    this.PredictionAllRecordDonught()
+    // this.PredictionAllRecordDonught()
     // this.PredictionAllRecordPie()
   }
 
