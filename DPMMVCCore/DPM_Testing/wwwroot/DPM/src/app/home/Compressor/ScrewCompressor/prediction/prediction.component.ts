@@ -161,6 +161,7 @@ public Predictionbadcount: number = 0;
     this.GenerateReport()
     this.GetAllRecords()
     this.GetPredictionRecords()
+    this.GerAllPredictionRecords()
   }
 
  
@@ -883,6 +884,82 @@ GetRecords() {
     });
 
 
+}
+
+public Predictions:any=[]
+GerAllPredictionRecords() {
+  this.PredictionDataNormalCount = null;
+  this.PredictionDataIncipientCount = null;
+  this.PredictonDataDegradeCount = null;
+  var PredictionnormalCount: any = [];
+  var PredictionnormalValuation: number = 0;
+  var PredictionincipientCount: any = [];
+  var PredictionincipientValuation: number = 0;
+  var PredictiondegradeCount: any = [];
+  var PredictiondegradeValuation: number = 0;
+  this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.PredictionDataList)
+    .subscribe(
+      res => {
+        this.ScrewPredictionAllData = res;
+        this.ScrewPredictionAllData.forEach(element => {
+          this.Predictions.push(element.Prediction);
+        });
+        this.Predictions.forEach((value) => {
+          if (value == 'normal') {
+            PredictionnormalValuation = PredictionnormalValuation + 1;
+            PredictionnormalCount.push(PredictionnormalValuation);
+            PredictionincipientCount.push(PredictionincipientValuation);
+            PredictiondegradeCount.push(PredictiondegradeValuation)
+
+          } else if (value == 'incipient') {
+
+            PredictionincipientValuation = PredictionincipientValuation + 1;
+            PredictionincipientCount.push(PredictionincipientValuation);
+            PredictionnormalCount.push(PredictionnormalValuation);
+            PredictiondegradeCount.push(PredictiondegradeValuation)
+
+          } else {
+
+            PredictiondegradeValuation = PredictiondegradeValuation + 1;
+            PredictiondegradeCount.push(PredictiondegradeValuation)
+            PredictionnormalCount.push(PredictionnormalValuation);
+            PredictionincipientCount.push(PredictionincipientValuation);
+
+          }
+          this.PredictionDataNormalCount = PredictionnormalCount;
+          this.PredictionDataIncipientCount = PredictionincipientCount;
+          this.PredictonDataDegradeCount = PredictiondegradeCount;
+
+        });
+
+
+        var Degradepercentage 
+        var Incipientpercentage
+        var Normalpercentage 
+        for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+          if (this.Prediction[i] == "degarde" || this.Prediction[i] == "degrade") {
+            this.PredictionDegradecount = this.PredictionDegradecount + 1
+          } else if (this.Prediction[i] == "incipient") {
+            this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+          } else if (this.Prediction[i] == "normal") {
+            this.PredictionNormalcount = this.PredictionNormalcount + 1
+          } else
+            this.Predictionbadcount = this.Predictionbadcount + 1
+        }
+        Degradepercentage= (this.Degradecount/this.ScrewPredictionAllData.length )*100
+        Incipientpercentage= (this.Incipientcount/this.ScrewPredictionAllData.length )*100
+        Normalpercentage= (this.Normalcount/this.ScrewPredictionAllData.length )*100
+
+        this.AFPnormalpercentage = (this.Normalcount/this.ScrewPredictionAllData.length )*100
+
+        this.AFPincipientPerentage = (this.Incipientcount/this.ScrewPredictionAllData.length )*100
+  
+        this.AFPdegradePercentage = (this.Degradecount/this.ScrewPredictionAllData.length )*100
+
+         this.GenerateReport()
+      }, error => {
+        console.log(error.error)
+      })
 }
 
 

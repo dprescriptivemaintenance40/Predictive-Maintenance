@@ -93,11 +93,21 @@ export class TrainComponent implements OnInit {
   public TrainDataBadCount: any = [];
   public ScrewCompressorAllData: any;
   public classi: any = [];
+  public Prediction: any = []; 
   public Degradecount: number = 0;
   public Normalcount: number = 0;
   public Incipientcount: number = 0;
   public badcount: number = 0;
   public buttonvisible: boolean = false;
+  public PredictionDataNormalCount: any = [];
+  public PredictionDataIncipientCount: any = [];
+  public PredictonDataDegradeCount: any = [];
+  public PredictionDataBadCount: any = [];
+  public ScrewPredictionAllData: any;
+  public PredictionDegradecount: number = 0;
+  public PredictionNormalcount: number = 0;
+  public PredictionIncipientcount: number = 0;
+  public Predictionbadcount: number = 0;
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -122,8 +132,10 @@ export class TrainComponent implements OnInit {
     this.getScrewCompressureList();
     this.getUserDetails();
     this.GenerateReport()
-    this.GetAllRecords()
-    this.GetPredictionRecords()
+    this.GetRecords()
+    // this.GetAllRecords()
+     this.GerAllPredictionRecords()
+     this.Classification()
   }
 
   showModalDialog() {
@@ -429,11 +441,7 @@ export class TrainComponent implements OnInit {
       if (ACCCalculation == NaN) {
         ACCCalculation = 0;
       }
-
       this.finalACCCalculation = parseFloat(ACCCalculation);
-
-
-
     }
 
     // AssestForecastPerformance = AFP
@@ -511,16 +519,41 @@ export class TrainComponent implements OnInit {
     }
   }
 
-  GetPredictionRecords() {
+  GetRecords() {
+    this.commonLoadingDirective.showLoading(true, 'Report is getting generated.');
+    const url: string = this.screwCompressorAPIName.getTrainList
+    this.screwCompressorMethod.getWithoutParameters(url)
+      // this.http.get<any>("api/ScrewCompressureAPI")
+      .subscribe(res => {
+        this.classificationDetails = res;
+        this.commonLoadingDirective.showLoading(false, '');
+      },
+        error => {
+          console.log(error);
+        }
+      );
+    this.commonLoadingDirective.showLoading(false, '');
+    const url11 = this.profileAPIName.ProfileAPI
+    this.screwCompressorMethod.getWithoutParameters(url11)
+      .subscribe(
+        res => {
+          this.user = res;
+          this.commonLoadingDirective.showLoading(false, '');
+        },
+        err => {
+          this.commonLoadingDirective.showLoading(false, '');
+          console.log(err);
+        },
+      );
+
     const url2: string = this.screwCompressorAPIName.getPredictedList;
     this.screwCompressorMethod.getWithoutParameters(url2)
       .subscribe(res => {
         this.screwWithPredictionDetails = res;
         if (this.screwWithPredictionDetails.length == 0) {
-          this.buttonvisible = true;
           this.AFPNotVisible = true;
           this.AFPVisible = false;
-          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Still You have not done Prediction. Do Prediction & Generate Report', sticky: true });
+         
           this.commonLoadingDirective.showLoading(false, '');
         } else {
           this.AFPNotVisible = false;
@@ -531,73 +564,156 @@ export class TrainComponent implements OnInit {
         this.commonLoadingDirective.showLoading(false, '');
         console.log(err.error);
       });
-
-
   }
 
-  GetAllRecords() {
-    this.TrainDataNormalCount = null;
-    this.TrainDataIncipientCount = null;
-    this.TrainDataDegradeCount = null;
-    var normalCount: any = [];
-    var normalValuation: number = 0;
-    var incipientCount: any = [];
-    var incipientValuation: number = 0;
-    var degradeCount: any = [];
-    var degradeValuation: number = 0;
 
-    this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.GetAllRecords)
+  // GetAllRecords() {
+  //   this.TrainDataNormalCount = null;
+  //   this.TrainDataIncipientCount = null;
+  //   this.TrainDataDegradeCount = null;
+  //   var normalCount: any = [];
+  //   var normalValuation: number = 0;
+  //   var incipientCount: any = [];
+  //   var incipientValuation: number = 0;
+  //   var degradeCount: any = [];
+  //   var degradeValuation: number = 0;
+
+  //   this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.GetAllRecords)
+  //     .subscribe(
+  //       res => {
+
+  //         this.ScrewCompressorAllData = res;
+  //         this.ScrewCompressorAllData.forEach(element => {
+  //           this.classi.push(element.Classification);
+  //         });
+
+  //         this.classi.forEach((value) => {
+  //           if (value == 'normal') {
+  //             normalValuation = normalValuation + 1;
+  //             normalCount.push(normalValuation);
+  //             incipientCount.push(incipientValuation);
+  //             degradeCount.push(degradeValuation)
+
+  //           } else if (value == 'incipient') {
+  //             incipientValuation = incipientValuation + 1;
+  //             incipientCount.push(incipientValuation);
+  //             normalCount.push(normalValuation);
+  //             degradeCount.push(degradeValuation)
+
+  //           } else {
+  //             degradeValuation = degradeValuation + 1;
+  //             degradeCount.push(degradeValuation)
+  //             normalCount.push(normalValuation);
+  //             incipientCount.push(incipientValuation);
+
+  //           }
+  //           this.TrainDataNormalCount = normalCount;
+  //           this.TrainDataIncipientCount = incipientCount;
+  //           this.TrainDataDegradeCount = degradeCount;
+
+  //         });
+  //         for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+  //           if (this.classi[i] == "degarde" || this.classi[i] == "degrade") {
+  //             this.Degradecount = this.Degradecount + 1
+  //           } else if (this.classi[i] == "incipient") {
+  //             this.Incipientcount = this.Incipientcount + 1
+  //           } else if (this.classi[i] == "normal") {
+  //             this.Normalcount = this.Normalcount + 1
+  //           } else
+  //             this.badcount = this.badcount + 1
+  //         }
+
+  //         this.normalpercentage = ((this.Degradecount / this.ScrewCompressorAllData.length) * 100)
+  //                 this.incipientPerentage = ((this.Incipientcount / this.ScrewCompressorAllData.length) * 100)
+  //                 this.degradePercentage = ((this.Normalcount / this.ScrewCompressorAllData.length) * 100)
+        
+  //       }, error => {
+  //         console.log(error.error)
+  //       }
+  //     )
+  // }
+
+  GerAllPredictionRecords() {
+    this.PredictionDataNormalCount = null;
+    this.PredictionDataIncipientCount = null;
+    this.PredictonDataDegradeCount = null;
+    var PredictionnormalCount: any = [];
+    var PredictionnormalValuation: number = 0;
+    var PredictionincipientCount: any = [];
+    var PredictionincipientValuation: number = 0;
+    var PredictiondegradeCount: any = [];
+    var PredictiondegradeValuation: number = 0;
+    this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.PredictionDataList)
       .subscribe(
         res => {
-          this.ScrewCompressorAllData = res;
-          this.ScrewCompressorAllData.forEach(element => {
-            this.classi.push(element.Classification);
+          this.ScrewPredictionAllData = res;
+          this.ScrewPredictionAllData.forEach(element => {
+            this.Prediction.push(element.Prediction);
           });
-
-          this.classi.forEach((value) => {
+          this.Prediction.forEach((value) => {
             if (value == 'normal') {
-              normalValuation = normalValuation + 1;
-              normalCount.push(normalValuation);
-              incipientCount.push(incipientValuation);
-              degradeCount.push(degradeValuation)
+              PredictionnormalValuation = PredictionnormalValuation + 1;
+              PredictionnormalCount.push(PredictionnormalValuation);
+              PredictionincipientCount.push(PredictionincipientValuation);
+              PredictiondegradeCount.push(PredictiondegradeValuation)
 
             } else if (value == 'incipient') {
-              incipientValuation = incipientValuation + 1;
-              incipientCount.push(incipientValuation);
-              normalCount.push(normalValuation);
-              degradeCount.push(degradeValuation)
+
+              PredictionincipientValuation = PredictionincipientValuation + 1;
+              PredictionincipientCount.push(PredictionincipientValuation);
+              PredictionnormalCount.push(PredictionnormalValuation);
+              PredictiondegradeCount.push(PredictiondegradeValuation)
 
             } else {
-              degradeValuation = degradeValuation + 1;
-              degradeCount.push(degradeValuation)
-              normalCount.push(normalValuation);
-              incipientCount.push(incipientValuation);
+
+              PredictiondegradeValuation = PredictiondegradeValuation + 1;
+              PredictiondegradeCount.push(PredictiondegradeValuation)
+              PredictionnormalCount.push(PredictionnormalValuation);
+              PredictionincipientCount.push(PredictionincipientValuation);
 
             }
-            this.TrainDataNormalCount = normalCount;
-            this.TrainDataIncipientCount = incipientCount;
-            this.TrainDataDegradeCount = degradeCount;
+            this.PredictionDataNormalCount = PredictionnormalCount;
+            this.PredictionDataIncipientCount = PredictionincipientCount;
+            this.PredictonDataDegradeCount = PredictiondegradeCount;
 
           });
-          for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-            if (this.classi[i] == "degarde" || this.classi[i] == "degrade") {
-              this.Degradecount = this.Degradecount + 1
-            } else if (this.classi[i] == "incipient") {
-              this.Incipientcount = this.Incipientcount + 1
-            } else if (this.classi[i] == "normal") {
-              this.Normalcount = this.Normalcount + 1
-            } else
-              this.badcount = this.badcount + 1
+  
 
+          var Degradepercentage 
+          var Incipientpercentage
+          var Normalpercentage 
+          for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+            if (this.Prediction[i] == "degarde" || this.Prediction[i] == "degrade") {
+              this.PredictionDegradecount = this.PredictionDegradecount + 1
+            } else if (this.Prediction[i] == "incipient") {
+              this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+            } else if (this.Prediction[i] == "normal") {
+              this.PredictionNormalcount = this.PredictionNormalcount + 1
+            } else
+              this.Predictionbadcount = this.Predictionbadcount + 1
           }
-          this.normalpercentage = ((this.Degradecount / this.ScrewCompressorAllData.length) * 100)
-          this.incipientPerentage = ((this.Incipientcount / this.ScrewCompressorAllData.length) * 100)
-          this.degradePercentage = ((this.Normalcount / this.ScrewCompressorAllData.length) * 100)
+          Degradepercentage= (this.Degradecount/this.ScrewPredictionAllData.length )*100
+          Incipientpercentage= (this.Incipientcount/this.ScrewPredictionAllData.length )*100
+          Normalpercentage= (this.Normalcount/this.ScrewPredictionAllData.length )*100
+          this.AFPnormalpercentage = (this.Normalcount/this.ScrewPredictionAllData.length )*100
+          this.AFPincipientPerentage = (this.Incipientcount/this.ScrewPredictionAllData.length )*100
+          this.AFPdegradePercentage = (this.Degradecount/this.ScrewPredictionAllData.length )*100
 
         }, error => {
           console.log(error.error)
-        }
-      )
+        })
   }
+
+
+  Classification(){
+    this.http.get<any>("api/ScrewCompressureAPI/GetClassification").subscribe(res => {
+     this.classificationDetails = res;
+   },
+     error => {
+       console.log(error);
+     }
+   );
+ }
+
 
 }
