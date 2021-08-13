@@ -1,11 +1,10 @@
-<div *ngIf="SelectionEnable" class="card shadow div-in-middle" style="width: 70rem;">
+<!-- <div *ngIf="SelectionEnable" class="card shadow div-in-middle" style="width: 70rem;">
     <div class="row">
         <div class="col-sm" style="padding:30px;">
             <label style=" margin-right: 12px;">
                 <h5>Machine type</h5>
             </label>
-            <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
-                class="form-control">
+            <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
                 <option value="">Choose..</option>
                 <option value="Compressor" selected>Compressor</option>
                 <option value="Pump" selected>Pump</option>
@@ -15,8 +14,7 @@
             <label style=" margin-right: 12px;">
                 <h5>Equipment Type</h5>
             </label>
-            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()"
-                class="form-control">
+            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
                 <option value="">Choose..</option>
                 <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
             </select>
@@ -38,16 +36,68 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
-
-
-<p-card *ngIf="SkillLibrary">
+<p-card>
     <ng-template pTemplate="header">
-        <p-button (click)="BackSkillData()" label="Back" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-arrow-left" (click)="BackSkillData()" label="Back" styleClass="p-button-text"></p-button>&nbsp;&nbsp;
+        <p-button icon="pi pi-check" (click)="SaveSkillData()" label="Save" styleClass="p-button-text"></p-button>
     </ng-template>
     <ng-template pTemplate="content">
-        <table>
+
+        <p-table [value]="SkillLibraryRows" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10,15]" [loading]="loading">
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:5em;">
+                    <col style="width:10em;">
+                    <col style="width:10em;">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Craft</th>
+                    <th>Employee Code</th>
+                    <th class="text-overflow" *ngFor="let t of MaintenanceTasks" pTooltip="{{t.Name}}" tooltipPosition="top">{{t.Name}}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+                <tr>
+                    <td>{{row.Craft}} </td>
+                    <td>
+                        <!-- (change)="getSkillData(row, $event)" -->
+                        <input type="text" [(ngModel)]="row.EmployeeCode" class="form-control">
+                    </td>
+                    <td>
+                        <input maxlength="3" [(ngModel)]="row.SkillPercent1" placeholder="Skill Percent" class="form-control">
+                    </td>
+                    <td>
+                        <input maxlength="3" [(ngModel)]="row.SkillPercent2" placeholder="Skill Percent" class="form-control">
+                    </td>
+                    <td>
+                        <input maxlength="3" [(ngModel)]="row.SkillPercent3" placeholder="Skill Percent" class="form-control">
+                    </td>
+                    <td>
+                        <input maxlength="3" [(ngModel)]="row.SkillPercent4" placeholder="Skill Percent" class="form-control">
+                    </td>
+                    <td>
+                        <input maxlength="3" [(ngModel)]="row.SkillPercent5" placeholder="Skill Percent" class="form-control">
+                    </td>
+                    <td>
+                        <input maxlength="3" [(ngModel)]="row.SkillPercent6" placeholder="Skill Percent" class="form-control">
+                    </td>
+                    <td>
+                        <input maxlength="3" [(ngModel)]="row.SkillPercent7" placeholder="Skill Percent" class="form-control">
+                    </td>
+
+                    <!-- <td *ngFor="let t of MaintenanceTasks; let i= index; trackBy: trackByIndex;" style="margin-left: 4em;"> -->
+                    <!-- <p-inputNumber [style]="{width: 98%}" [(ngModel)]="row.SkillPercent" placeholder="Skill Percent" inputId="percent" suffix="%"></p-inputNumber> -->
+                    <!-- <input maxlength="3" [(ngModel)]="row.SkillPercent" name=a{{i}} placeholder="Skill Percent" class="form-control"> -->
+                    <!-- <input type="checkbox" (change)="getSkillData(row, $event, t)"> -->
+                    <!-- </td> -->
+                </tr>
+            </ng-template>
+        </p-table>
+        <!-- <table>
             <tbody>
                 <tr class="row">
                     <td class="col-sm">
@@ -64,7 +114,7 @@
             <tbody>
                 <tr class="row" *ngFor="let a of SkillLibraryRows; let i = index;">
                     <td>
-                        <input type="text" [(ngModel)]="a.CraftSF" (click)="getSkillData(a, $event)" class="form-control" disabled>
+                        {{a.CraftSF}}
                     </td>
                     <td>
                         <input type="text" [(ngModel)]="a.EmployeeCode" (change)="getSkillData(a, $event)" class="form-control">
@@ -74,10 +124,68 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
     </ng-template>
-    
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="SaveSkillData()" label="Save" styleClass="p-button-text"></p-button>
-    </ng-template>
+
+</p-card>
+
+<p-card *ngIf="showPSR">
+    <!-- <ng-template pTemplate="header">
+        <p-button (click)="BackSkillData()" label="Back" styleClass="p-button-text"></p-button>
+    </ng-template> -->
+    <table>
+        <tbody>
+            <tr class="row">
+                <td class="col-sm">
+                    <label>Maintenance Task</label>
+                </td>
+                <td class="col-sm">
+                    <label>Maintenance Interval</label>
+                </td>
+                <td class="col-sm">
+                    <label>Craft</label>
+                </td>
+                <td class="col-sm">
+                    <label>Task duration</label>
+                </td>
+                <td class="col-sm">
+                    <label>Hourly rate</label>
+                </td>
+                <td class="col-sm">
+                    <label>Material Cost</label>
+                </td>
+                <td class="col-sm">
+                    <label>POC</label>
+                </td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr class="row">
+                <td class="col-sm">
+                    <input type="text" value="Remove, overhaul, and rectify" class="form-control">
+                </td>
+                <td class="col-sm">
+                    <input type="text" value="3 Weeks" class="form-control">
+                </td>
+                <td class="col-sm">
+                    <select [(ngModel)]="SelectedCraft" class="form-control">
+                        <option value=0>Choose ...</option>
+                        <option *ngFor="let EL of CraftList" [ngValue]="EL.PSRClientContractorId">{{EL.CraftSF}}</option>
+                    </select>
+                </td>
+                <td class="col-sm">
+                    <input type="number" [(ngModel)]="TaskDuration" (change)="gernrateTaskDuration()" class="form-control">
+                </td>
+                <td class="col-sm">
+                    <input type="number" value="0" class="form-control">
+                </td>
+                <td class="col-sm">
+                    <input type="number" value="0" class="form-control">
+                </td>
+                <td class="col-sm">
+                    <input [(ngModel)]="CalculatedPOC" type="number" class="form-control" disabled>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </p-card>

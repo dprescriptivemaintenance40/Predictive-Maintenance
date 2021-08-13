@@ -27,6 +27,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import {CalendarModule} from 'primeng/calendar';
 import {TreeTableModule} from 'primeng/treetable';
 import {CheckboxModule} from 'primeng/checkbox';
+import {InputNumberModule} from 'primeng/inputnumber';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [CommonModule,
@@ -54,7 +55,8 @@ import {CheckboxModule} from 'primeng/checkbox';
         PanelMenuModule,
         TreeTableModule,
         CheckboxModule,
-        CalendarModule],
+        CalendarModule,
+        InputNumberModule],
     exports: [CommonModule,
         CommonLoadingComponent,
         TableModule,
@@ -83,7 +85,8 @@ import {CheckboxModule} from 'primeng/checkbox';
         PanelMenuModule,
         TreeTableModule,
         CheckboxModule,
-        CalendarModule]
+        CalendarModule,
+        InputNumberModule]
 })
 export class SharedModule {
 

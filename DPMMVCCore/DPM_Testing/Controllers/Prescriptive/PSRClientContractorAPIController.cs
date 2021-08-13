@@ -11,7 +11,7 @@ using DPM.Models.Prescriptive;
 
 namespace DPM_Testing.Controllers
 {
-    [Authorize]   
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PSRClientContractorAPIController : ControllerBase
@@ -27,8 +27,8 @@ namespace DPM_Testing.Controllers
         [Route("GetAllConfigurationRecords")]
         public async Task<ActionResult<IEnumerable<PSRClientContractorModel>>> GetPSRClientContractorModels()
         {
-              string userId = User.Claims.First(c => c.Type == "UserID").Value;
-              return await _context.PSRClientContractorModels.Where(a=>a.UserId == userId).OrderBy(a=> a.PSRClientContractorId).ToListAsync();
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            return await _context.PSRClientContractorModels.Where(a => a.UserId == userId).OrderBy(a => a.PSRClientContractorId).ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -115,15 +115,12 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("PostSkillData")]
-        public async Task<IActionResult> postSkillDate(List<MappingMSSStrategySkillModel> mappingMSSStrategySkillModels)
+        public async Task<IActionResult> postSkillDate(List<MapStrategySkillModel> mapStrategySkillModels)
         {
             try
             {
-                foreach (var item in mappingMSSStrategySkillModels)
-                {
-                    _context.MappingMSSStrategySkillModels.Add(item);
-                    await _context.SaveChangesAsync();
-                }
+                _context.MapStrategySkillModels.AddRange(mapStrategySkillModels);
+                await _context.SaveChangesAsync();
                 return Ok();
             }
             catch (System.Exception exe)
