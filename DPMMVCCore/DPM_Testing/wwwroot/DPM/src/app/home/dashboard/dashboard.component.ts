@@ -682,117 +682,151 @@ export class DashboardComponent {
 
   }
   gaugechartwithDPM() {
+    var x= this.DPMMEI *100
+    var y : number = + this.DPMMEI
+    var z:number= +this.DPMWithoutMEI
+    var w:number= y+z
+    var WithDPM_MEI = (x /w).toFixed(0)
+
+    var xcost= this.DPMCost *100
+    var ycost : number = + this.DPMCost
+    var zcost:number= +this.DPMWithoutCost
+    var wcost:number= ycost+zcost
+    var WithDPM_Cost= (xcost /wcost).toFixed(0)
+    this.changeDetectorRef.detectChanges();
+
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart('gaugechart', {
-      type: 'bar',
+      type: 'doughnut',
       data: {
+         labels: ['DPM_With_MEI','DPM_Cost'],
         datasets: [
           {
-            label: "DPM_With_MEI (Benefit)",
-            data: [this.DPMMEI],
-            backgroundColor: ['purple '],
-            fill: true,
-            barPercentage: 2,
-            barThickness: 20,
-            maxBarThickness: 28,
-          }, 
-          {
-            label: "Total Cost",
-            data: [this.DPMCost],
-            backgroundColor: ['blueviolet'],
-            fill: true,
-            barPercentage: 2,
-            barThickness: 20,
-            maxBarThickness: 28,
-          }, 
-          {
-            label: "Economic Risk",
-            data: [30],
-            backgroundColor: ['red'],
-            fill: true,
-            barPercentage: 2,
-            barThickness: 20,
-            maxBarThickness: 28,
-          }
-        ],
-        options: {
-         scales: {
-           yAxes: [{
-             ticks: {
-                max: 100,
-             }
-           }]
-         }
-       }
+            data: [WithDPM_MEI,WithDPM_Cost],
+            backgroundColor: ['purple','blueviolet'],
+            fill: false
+          },
+        ]
       },
+      options: {
+        circumference: 1 * Math.PI,
+        rotation: 1 * Math.PI,
+        cutoutPercentage: 70
+      }
     });
+    // this.chart = new Chart('gaugechart', {
+    //   type: 'bar',
+    //   data: {
+    //     datasets: [
+    //       {
+    //         label: "DPM_With_MEI (Benefit)",
+    //         data: [this.DPMMEI],
+    //         backgroundColor: ['purple '],
+    //         fill: true,
+    //         barPercentage: 2,
+    //         barThickness: 20,
+    //         maxBarThickness: 28,
+    //       }, 
+    //       {
+    //         label: "Total Cost",
+    //         data: [this.DPMCost],
+    //         backgroundColor: ['blueviolet'],
+    //         fill: true,
+    //         barPercentage: 2,
+    //         barThickness: 20,
+    //         maxBarThickness: 28,
+    //       }, 
+
+    //     ],
+    //     options: {
+    //      scales: {
+    //        yAxes: [{
+    //          ticks: {
+    //           steps: 10,
+    //           stepValue: 5,
+    //             max: 100,
+    //             beginAtZero: true
+    //          }
+    //        }]
+    //      }
+    //    }
+    //   },
+    // });
 
 
   }
   gaugechartwithoutDPM() {
+
+
+    var a= this.DPMWithoutMEI *100
+    var b : number = + this.DPMWithoutMEI
+    var c:number= +this.DPMMEI
+    var d:number= b+c
+    var WithoutDPM_MEI = (a /d).toFixed(0)
+
+    var acost= this.DPMWithoutCost *100
+    var bcost : number = + this.DPMWithoutCost
+    var ccost:number= +this.DPMCost
+    var dcost:number= bcost+ccost
+    var WithoutDPM_Cost= (acost /dcost).toFixed(0)
+
     this.changeDetectorRef.detectChanges();
-    // this.chart = new Chart('canvasDPM', {
-    //   type: 'doughnut',
-    //   data: {
-    //     labels: ['DPM_Without_MEI'],
-    //     datasets: [
-    //       {
-    //         data: [this.DPMWithoutMEI, 1],
-    //         backgroundColor: ['rgba(255, 0, 0, 1)'],
-    //         fill: false
-    //       }
-    //     ]
-    //   },
-    //   options: {
-    //     circumference: 1 * Math.PI,
-    //     rotation: 1 * Math.PI,
-    //     cutoutPercentage: 70
-    //   }
-    // });
     this.chart = new Chart('canvasDPM', {
-      type: 'bar',
+      type: 'doughnut',
       data: {
+         labels: ['DPM_Without_MEI','WithoutDPM_Cost'],
         datasets: [
           {
-            label: "DPM_Without_MEI (Benefit)",
-            data: [this.DPMWithoutMEI],
-            backgroundColor: ['purple '],
-            fill: true,
-            barPercentage: 2,
-            barThickness: 20,
-            maxBarThickness: 28,
-          }, 
-          {
-            label: "Total Cost",
-            data: [this.DPMWithoutCost],
-            backgroundColor: ['blueviolet'],
-            fill: true,
-            barPercentage: 2,
-            barThickness: 20,
-            maxBarThickness: 28,
+            data: [WithoutDPM_MEI,WithoutDPM_Cost],
+            backgroundColor: ['purple','blueviolet'],
+            fill: false
           },
-          {
-            label: "Economic Risk",
-            data: [100],
-            backgroundColor: ['red'],
-            fill: true,
-            barPercentage: 2,
-            barThickness: 20,
-            maxBarThickness: 28,
-          }
-        ],
-        options: {
-         scales: {
-           yAxes: [{
-             ticks: {
-                min :1,
-                max: 30,
-             }
-           }]
-         }
-       }
+        ]
       },
+      options: {
+        circumference: 1 * Math.PI,
+        rotation: 1 * Math.PI,
+        cutoutPercentage: 70
+      }
     });
+
+    // this.chart = new Chart('canvasDPM', {
+    //   type: 'bar',
+    //   data: {
+    //     datasets: [
+    //       {
+    //         label: "DPM_Without_MEI (Benefit)",
+    //         data: [this.DPMWithoutMEI],
+    //         backgroundColor: ['purple '],
+    //         fill: true,
+    //         barPercentage: 2,
+    //         barThickness: 20,
+    //         maxBarThickness: 28,
+    //       }, 
+    //       {
+    //         label: "Total Cost",
+    //         data: [this.DPMWithoutCost],
+    //         backgroundColor: ['blueviolet'],
+    //         fill: true,
+    //         barPercentage: 2,
+    //         barThickness: 20,
+    //         maxBarThickness: 28,
+    //       },
+    //     ],
+    //     // options: {
+    //     //   scales: {
+    //     //     yAxes: [{
+    //     //       ticks: {
+    //     //        steps: 10,
+    //     //        stepValue: 5,
+    //     //          max: 100,
+    //     //          beginAtZero: true
+    //     //       }
+    //     //     }]
+    //     //   }
+    //     // }
+    //   },
+    // });
   }
 
   ClassificationOfAllRecordDonught() {
@@ -846,7 +880,6 @@ export class DashboardComponent {
     });
 
   }
-
 
   ClassificationOfAllpolarchart() {
     this.changeDetectorRef.detectChanges();
@@ -1153,6 +1186,9 @@ export class DashboardComponent {
 
         ],
       },
+      options: {
+
+          }
 
     });
   }
@@ -1739,13 +1775,13 @@ public highlight_end:any
 
    dygraph(){ 
 
-        this.chart = new Dygraph(
-          document.getElementById("graph"),"dist/DPM/assets/actualdata.csv",
-          {
-            visibility: [true, false, false, true,false,false],
-            showRangeSelector: true,
-            connectSeparatedPoints: true,
-          }) 
+        // this.chart = new Dygraph(
+        //   document.getElementById("graph"),"dist/DPM/assets/actualdata.csv",
+        //   {
+        //     visibility: [true, false, false, true,false,false],
+        //     showRangeSelector: true,
+        //     connectSeparatedPoints: true,
+        //   }) 
 
           // this.chart = new Dygraph(
           //   document.getElementById("graph1"),"dist/DPM/assets/actualdata.csv",
@@ -1830,7 +1866,7 @@ public highlight_end:any
                 }else{
                   element.trigger = ''
                 }
-                if(element.FTD1 > 181 && element.FTD1 < 210) {
+                if(element.FTD1 > 190 && element.FTD1 < 210) {
                   element.falarm = element.FTD1
                 }
                 else {
