@@ -696,6 +696,9 @@ export class TrainComponent implements OnInit {
           ClassIncipientpercentage= ((this.Incipientcount/this.ScrewCompressorAllData.length )*100).toFixed(2);
           ClassNormalpercentage= ((this.Normalcount/this.ScrewCompressorAllData.length )*100).toFixed(2);
 
+          this.normalpercentage = ((this.Degradecount/this.ScrewCompressorAllData.length )*100)
+          this.incipientPerentage = ((this.Incipientcount/this.ScrewCompressorAllData.length )*100)
+          this.degradePercentage = ((this.Normalcount/this.ScrewCompressorAllData.length )*100)
         
         }, error => {
           console.log(error.error)
