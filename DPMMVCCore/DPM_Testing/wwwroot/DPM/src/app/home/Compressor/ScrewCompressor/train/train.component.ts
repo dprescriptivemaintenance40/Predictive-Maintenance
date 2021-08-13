@@ -105,6 +105,7 @@ export class TrainComponent implements OnInit {
     this.title.setTitle('Screw Train | Dynamic Prescriptive Maintenence');
     this.getScrewCompressureList();
      this.getUserDetails();
+     this.GenerateReport()
   }
 
   showModalDialog() {
@@ -368,7 +369,7 @@ public PhoneNumber:string =""
   }
 
   
-  public GenerateReport() {
+   GenerateReport() {
       var countKey = Object.keys(this.classificationDetails).length;
       this.totalCount = countKey
       var uniqueNames = [];
@@ -496,5 +497,6 @@ public PhoneNumber:string =""
       } 
   }
 
+  
 
 }
