@@ -1148,6 +1148,7 @@ namespace DPM.Controllers.Prescriptive
 
                 var prescriptiveModel = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == id)
                                                          .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                         .ThenInclude(a=>a.CentrifugalPumpMssModel)
                                                          .First();
                 if (prescriptiveModel == null)
                 {

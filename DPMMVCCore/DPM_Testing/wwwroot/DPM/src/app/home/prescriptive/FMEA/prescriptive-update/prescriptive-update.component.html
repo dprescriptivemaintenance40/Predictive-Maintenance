@@ -109,10 +109,10 @@
                             <div class="row">
                                 <div class="col-md-3" *ngFor="let func of failuerMode; let i=index;">
                                     <div class="d-flex justify-content-start align-items-center">
-                                        <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked" label={{func.Description}} class="mt-2 mb-2">
-                                        </p-checkbox>
+                                        <!-- <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked" label={{func.Description}} class="mt-2 mb-2">
+                                        </p-checkbox> -->
                                         
-                                        <!-- <label>
+                                        <label>
                                             <input type="checkbox"
                                                    name = "{{i}}"
                                                    (change)="FailureModeSelected(func, $event)"
@@ -120,7 +120,7 @@
                                                     [(ngModel)]="func.checked"
                                                     />
                                                    {{func.Description}}
-                                        </label> -->
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -793,10 +793,10 @@
                                 <table>
                                     <tr *ngFor="let func of failuerMode; let i=index;">
                                         <td>
-                                            <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
+                                            <!-- <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
                                             </p-checkbox>
-                                            <label>{{func.Description}}</label>
-                                            <!-- <label>
+                                            <label>{{func.Description}}</label> -->
+                                            <label>
                                                 <input type="checkbox"
                                                        name = "{{i}}"
                                                        (change)="FailureModeSelected(func, $event)"
@@ -804,7 +804,7 @@
                                                         [(ngModel)]="func.checked"
                                                         />
                                                        {{func.Description}}
-                                            </label> -->
+                                            </label>
                                         </td>
                                     </tr>
                                 </table>

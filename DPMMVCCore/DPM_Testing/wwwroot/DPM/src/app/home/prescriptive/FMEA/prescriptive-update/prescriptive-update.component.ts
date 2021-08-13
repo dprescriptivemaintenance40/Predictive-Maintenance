@@ -4573,7 +4573,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   }
 
   FailureModeSelected(value, event) {
-    if (event.target.ariaChecked === null) {
+    if (event.target.checked === false) {
       var findIndexOF = value.PrescriptiveLookupMasterId
       var index = -1;
       var filteredObj = this.dropedMode.find((item, i) => {
@@ -4587,7 +4587,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     }
 
 
-    if (event.target.ariaChecked === 'true') {
+    if (event.target.checked === true) {
+      this.dropedMode = [];
       let obj = {}
       obj['Date'] = value.Date;
       obj['Description'] = value.Description;
@@ -4605,6 +4606,9 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
           return i;
         }
       });
+      for (let i = 0; i < this.failuerMode.length; i++) {
+      this.failuerMode[i].checked = false;
+      }
       this.failuerMode[index1].checked = true;
     }
   }

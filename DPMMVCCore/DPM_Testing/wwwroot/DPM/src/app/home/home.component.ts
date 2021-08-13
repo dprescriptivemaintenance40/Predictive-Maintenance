@@ -147,7 +147,11 @@ export class HomeComponent implements OnInit {
                   label: 'Digital data',
                   items: [
                     {
-                      label: 'Data Upload',
+                      label:'Compressor Data Upload',
+                      url: '#/Home/Compressor/SCModerateDataCollection'
+                    },
+                    {
+                      label: 'Pump Data Upload',
                       url: '#/Home/CentrifugalPump'
                     }
                   ]
