@@ -554,7 +554,7 @@ export class DashboardComponent {
     }
     this.AllRecordBarcharts();
     // this.ClassificationOfAllpolarchart()
-    this.ClassificationOfAllRecordDonught()
+    // this.ClassificationOfAllRecordDonught()
   }
 
   FModeType() {
@@ -579,7 +579,7 @@ export class DashboardComponent {
     }
     this.AllRecordBarcharts();
     // this.ClassificationOfAllpolarchart()
-    this.ClassificationOfAllRecordDonught()
+    // this.ClassificationOfAllRecordDonught()
     //  this.ComboChart();
   }
 
@@ -756,8 +756,6 @@ export class DashboardComponent {
 
   }
   gaugechartwithoutDPM() {
-
-
     var a= this.DPMWithoutMEI *100
     var b : number = + this.DPMWithoutMEI
     var c:number= +this.DPMMEI
@@ -1044,17 +1042,31 @@ export class DashboardComponent {
           }
         ]
       },
+      // options: {
+      //   events: [],
+      //   scales: {
+      //     yAxes: [{
+      //       ticks: {
+      //         min:1,
+      //         max: 100,
+      //       }
+      //     }]
+      //   }
+      // }
       options: {
         events: [],
-        scales: {
-          yAxes: [{
-            ticks: {
-              min:1,
-              max: 100,
-            }
-          }]
-        }
-      }
+       scales: {
+         xAxes: [{
+            stacked: true,
+         }],
+         yAxes: [{
+            stacked: true,
+           ticks: {
+             
+           }
+         }]
+       }
+     }
     });
   }
 
@@ -1337,13 +1349,12 @@ export class DashboardComponent {
          events: [],
         scales: {
           xAxes: [{
-            // stacked: true,
+             stacked: true,
           }],
           yAxes: [{
-            // stacked: true,
+             stacked: true,
             ticks: {
-               //min:1,
-                max: 14,
+            
             }
           }]
         }
@@ -1552,12 +1563,12 @@ export class DashboardComponent {
         events: [],
         scales: {
           xAxes: [{
-            // stacked: true,
+            stacked: true,
           }],
           yAxes: [{
-            // stacked: true,
+            stacked: true,
             ticks: {
-              max: 30,
+             
             }
           }]
         }
