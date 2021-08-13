@@ -66,6 +66,11 @@ export class ReportComponent {
   public finalACCCalculation: number = 0;
   public FinalAFCCalcuation: number = 0;
   public screwWithPredictionDetails: any = [];
+  public UserDetails:string =""
+  public Firstname:string =""
+  public Lastname:string =""
+  
+  
   public TagList : any = [];
   headers = {
     headers: new HttpHeaders({
@@ -85,6 +90,7 @@ export class ReportComponent {
     this.title.setTitle('Report | Dynamic Prescriptive Maintenence');
     this.GetRecords();
     this.getPrescriptiveRecords();
+    this.getUserDetails()
   }
   
     getPrescriptiveRecords() {
@@ -96,11 +102,16 @@ export class ReportComponent {
               });
             });
     }
-
+    getUserDetails() {
+      this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
+      this.Firstname = JSON.parse(localStorage.getItem('userObject')).FirstName
+      this.Lastname = JSON.parse(localStorage.getItem('userObject')).LastName
+    }
   GetRecords() {
     this.commonLoadingDirective.showLoading(true, 'Report is getting generated.');
     const url: string = this.screwCompressorAPIName.getTrainList
-    this.screwCompressorMethod.getWithoutParameters(url)
+    // this.screwCompressorMethod.getWithoutParameters(url)
+    this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
       // this.http.get<any>("api/ScrewCompressureAPI")
       .subscribe(res => {
         this.classificationDetails = res;

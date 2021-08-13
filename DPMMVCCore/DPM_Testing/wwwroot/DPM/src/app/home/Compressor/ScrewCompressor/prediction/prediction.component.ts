@@ -779,7 +779,7 @@ GetAllRecords() {
   var degradeCount: any = [];
   var degradeValuation: number = 0;
 
-  this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.GetAllRecords)
+  this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
     .subscribe(
       res => {
         this.ScrewCompressorAllData = res;
@@ -881,7 +881,6 @@ GetRecords() {
 
 
 }
-
 public Predictions:any=[]
 GerAllPredictionRecords() {
   this.PredictionDataNormalCount = null;
@@ -893,7 +892,7 @@ GerAllPredictionRecords() {
   var PredictionincipientValuation: number = 0;
   var PredictiondegradeCount: any = [];
   var PredictiondegradeValuation: number = 0;
-  this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.PredictionDataList)
+  this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.PredictionDataList)
     .subscribe(
       res => {
         this.ScrewPredictionAllData = res;

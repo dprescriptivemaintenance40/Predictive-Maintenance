@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm-3 d-flex flex-row justify-content-end">
             <button type="button" (click)="showBasicDialog()" class="btn btn-primary btn-sm mr-2"
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Assesment Report">Assesment Report</button>
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Assessment Report">Assessment</button>
 
             <button type="button" (click)="ChangeInConfiguration()" class="btn btn-primary btn-sm mr-2"
                 data-bs-toggle="tooltip" data-bs-placement="top" title="Revaluate Classification">Revaluate</button>
@@ -156,7 +156,7 @@
                     <td>{{PhoneNumber}}</td>
                 </tr>
                 <tr>
-                    <th>Date of receipt Customer data</th>
+                    <th>Date of receipt Customer data : </th>
                     <td>{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
                 </tr>
 
@@ -166,11 +166,11 @@
 
             <table>
                 <tr>
-                    <th>Date of Analysis:</th>
+                    <th>Date of Analysis: </th>
                     <td>{{DOA | date: 'EEEE, MMM d, y, h:mm:ss a'}}</td>
                 </tr>
                 <tr>
-                    <th>Asset Current Condition:</th>
+                    <th>Asset Current Condition: </th>
                     <td>Normal={{normalpercentage | number:'1.0-2' }}%, Incipient={{incipientPerentage |
                         number:'1.0-2'}}%,
                         Degrade={{degradePercentage| number:'1.0-2' }}%</td>
@@ -180,22 +180,23 @@
                     <td>{{RK}}</td>
                 </tr>
                 <tr>
-                    <th>DPM Analysis Beneficial Y/N</th>
+                    <th>DPM Analysis Beneficial Y/N : </th>
                     <td>{{DAB}} | Performance Number : {{finalPerformanceNumber | number:'1.0-2'}}</td>
                 </tr>
                 <tr *ngIf="AFPVisible">
-                    <th>Asset Forecast Performance</th>
+                    <th>Asset Forecast Performance : </th>
 
                     <td>Normal={{AFPnormalpercentage | number:'1.0-2'}}%, Incipient={{AFPincipientPerentage | number:'1.0-2' }}%, Degrade={{AFPdegradePercentage | number:'1.0-2'}}%</td>
 
                 </tr>
-                <!-- <tr *ngIf="AFPNotVisible">
+                <tr *ngIf="AFPNotVisible">
                     <th>Asset Forecast Performance</th>
                     <td>No Data to show. Please do Prediction</td>
                     <td>
-                        <button  class="btn btn-dark" [routerLink]="[ '/ScrewPrediction']" (click)="open(mymodal)">Do Prediction</button>
+                        <button type="button" (click)="GotoPrediction()" class="btn btn-primary btn-sm mr-2" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Go to Prediction">Do Prediction</button>
                     </td>
-                </tr> -->
+                </tr>
             </table>
         </div>
         <span>
@@ -203,7 +204,6 @@
         </span>
     </div>
     <ng-template pTemplate="footer">
-        <button type="button" (click)="GotoPrediction()" class="btn btn-primary btn-sm mr-2" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Go to Prediction">Do Prediction</button>
+       
     </ng-template>
 </p-dialog>

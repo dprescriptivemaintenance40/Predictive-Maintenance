@@ -578,7 +578,7 @@ export class TrainComponent implements OnInit {
     var PredictionincipientValuation: number = 0;
     var PredictiondegradeCount: any = [];
     var PredictiondegradeValuation: number = 0;
-    this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.PredictionDataList)
+    this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.PredictionDataList)
       .subscribe(
         res => {
           this.ScrewPredictionAllData = res;
@@ -647,7 +647,7 @@ export class TrainComponent implements OnInit {
     var degradeCount: any = [];
     var degradeValuation: number = 0;
 
-    this.screwCompressorMethod.getWithoutParameters(this.profileAPIName.GetAllRecords)
+    this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
     .subscribe((res: any) => {
           this.ScrewCompressorAllData = res;
           this.ScrewCompressorAllData.forEach(element => {
