@@ -2,58 +2,68 @@
 
 <div class="row">
     <div class=" col-md-12">
-    <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
-        <p class="mb-0"><i class="pi pi-info-circle" class="mr-1"></i>To know about Taxonomy of Compressor</p>
-        <button *ngIf="enableImage" class="btn btn-primary btn-sm" (click)="compressorImage()">Click Here</button>
-        <button *ngIf="CancelImage" class="btn btn-outline-danger btn-sm" (click)="compressorImageCancel()">Cancel</button>
-    </div>
+        <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
+            <p class="mb-0"><i class="pi pi-info-circle" class="mr-1"></i>To know about Taxonomy of Compressor</p>
+            <button *ngIf="enableImage" class="btn btn-primary btn-sm" (click)="compressorImage()">Click Here</button>
+            <button *ngIf="CancelImage" class="btn btn-outline-danger btn-sm"
+                (click)="compressorImageCancel()">Cancel</button>
+        </div>
     </div>
 </div>
 <div *ngIf="Image" class="row">
     <div class="col-md-12">
-    <div class="card dpm-card mb-4">
-        <div class="card-body">
-            <span><img (click)="imgDowd()" class="img-fluid px-3 px-sm-4 mt-3 mb-2"
-                    src="/dist/DPM/assets/img/compressor.PNG "alt=""></span>
-        </div>
+        <div class="card dpm-card mb-4">
+            <div class="card-body">
+                <span><img (click)="imgDowd()" class="img-fluid px-3 px-sm-4 mt-3 mb-2"
+                        src="/dist/DPM/assets/img/compressor.PNG " alt=""></span>
+            </div>
         </div>
     </div>
 </div>
 <div class="bg-white p-3 mb-3">
-<div class="row d-flex justify-content-between align-items-end">
-    <div class="col-sm-9">
-        <div class="row">
-            <div class="col">
-                <!-- <h6>Failure Mode</h6> -->
-                <select  [(ngModel)]="failureModeType" (change)="SelectFailureModeType()" class="form-select w-100" class="form-control">
-                    <option value="RD">Rotar Damage</option>
-                    <option value="SSRB" selected>Second stage rotar breakdown</option>
-                    <option value="CF" selected>Cooler Failure</option>
-                </select>
-            </div>
-            <div class="col d-flex">
-                <!-- <p-fileUpload name="myfile[]" url="./upload.php" class="train-upload"></p-fileUpload> -->
-                <input type="file" class="form-control-file form-control" (change)="addfile($event)" placeholder="Upload file"
-                    accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+    <div class="row d-flex justify-content-between align-items-end">
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col">
+                    <!-- <h6>Failure Mode</h6> -->
+                    <select [(ngModel)]="failureModeType" (change)="SelectFailureModeType()" class="form-select w-100"
+                        class="form-control">
+                        <option value="RD">Rotar Damage</option>
+                        <option value="SSRB" selected>Second stage rotar breakdown</option>
+                        <option value="CF" selected>Cooler Failure</option>
+                    </select>
+                </div>
+                <div class="col d-flex">
+                    <!-- <p-fileUpload name="myfile[]" url="./upload.php" class="train-upload"></p-fileUpload> -->
+                    <input type="file" class="form-control-file form-control" (change)="addfile($event)"
+                        placeholder="Upload file"
+                        accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-sm-3 d-flex flex-row justify-content-end">
-    <button type="button" (click)="ChangeInConfiguration()" class="btn btn-primary btn-sm mr-2" data-bs-toggle="tooltip"
-        data-bs-placement="top" title="Revaluate Classification">Revaluate</button>
+        <div class="col-sm-3 d-flex flex-row justify-content-end">
+            <button type="button" (click)="showBasicDialog()" class="btn btn-primary btn-sm mr-2"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Assesment Report">Assesment Report</button>
 
-        <button type="button" (click)="Downloadfile()" class="btn btn-outline-primary btn-sm mr-2"><i class="pi pi-file-excel"></i></button>
-    
-        
-        <button type="button" (click)="exportToExcel()" class="btn btn-outline-primary btn-sm"><i class="pi pi-download"></i></button>
+            <button type="button" (click)="ChangeInConfiguration()" class="btn btn-primary btn-sm mr-2"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Revaluate Classification">Revaluate</button>
+
+            <button type="button" (click)="Downloadfile()" class="btn btn-outline-primary btn-sm mr-2"><i
+                    class="pi pi-file-excel"></i></button>
+
+
+            <button type="button" (click)="exportToExcel()" class="btn btn-outline-primary btn-sm"><i
+                    class="pi pi-download"></i></button>
+        </div>
     </div>
-</div>
 </div>
 <div style="padding: 5px;">
     <div class="card">
-        <p-table id="exportexcel" [value]="compListWithClassification" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
-            [loading]="loading">
+        <p-table id="exportexcel" [value]="compListWithClassification" [paginator]="true" [rowHover]="true" [rows]="10"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
                     <col *ngIf="failureModeType !='CF'" style="width:8em;">
@@ -84,7 +94,7 @@
                     <th pSortableColumn="TS1">{{failureModeType =='CF'? 'T1':'TS1' }}
                         <p-sortIcon field="TS1"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="TD1">{{failureModeType =='CF'? 'T2':'TD1' }} 
+                    <th pSortableColumn="TD1">{{failureModeType =='CF'? 'T2':'TD1' }}
                         <p-sortIcon field="TD1"></p-sortIcon>
                     </th>
                     <th *ngIf="failureModeType !='CF'" pSortableColumn="TS2">TS2
@@ -104,7 +114,7 @@
                     <td *ngIf="failureModeType !='CF'">{{compListWithClassification.PS2}}</td>
                     <td *ngIf="failureModeType !='CF'">{{compListWithClassification.PD2}}</td>
                     <td>{{compListWithClassification.TS1}}</td>
-                    <td >{{compListWithClassification.TD1}}</td>
+                    <td>{{compListWithClassification.TD1}}</td>
                     <td *ngIf="failureModeType !='CF'">{{compListWithClassification.TS2}}</td>
                     <td *ngIf="failureModeType !='CF'">{{compListWithClassification.TD2}}</td>
                     <td>{{compListWithClassification.Classification}}</td>
@@ -114,3 +124,70 @@
         </p-table>
     </div>
 </div>
+<p-dialog header="Report" [(visible)]="displayBasic" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <div class="card-body" id="contentToConvert">
+        <div class="row" style="padding:30px; color: black;">
+            <div class="col-sm-10">
+                <span>
+                    <h5>Based on data Inputs and Model analysis, please find below Initial<br>
+                        Assessment report and recommendation for further study of the Asset</h5>
+                </span>
+            </div>
+        </div>
+        <div style="padding:30px; color: black;">
+            <span> <br><br>
+                <h5>Customer Data:</h5>
+            </span>
+
+            <table>
+                <tr>
+                    <th>Company Name</th>
+                    <td>{{Company}}</td>
+                </tr>
+                <tr>
+                    <th>Focal Person Name</th>
+                    <td>{{Firstname}} {{Lastname}}</td>
+                </tr>
+                <tr>
+                    <th>Email Address</th>
+                    <td>{{Email}}</td>
+                </tr>
+                <tr>
+                    <th>Contact Details</th>
+                    <td>{{PhoneNumber}}</td>
+                </tr>
+                <tr>
+                    <th>Date of receipt Customer data</th>
+                    <td>{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                </tr>
+
+            </table>
+            <br><br>
+            <h5>D.P.M. Output:</h5>
+
+            <table>
+                <tr>
+                    <th>Date of Analysis</th>
+                    <td>{{DOA | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                </tr>
+                <tr>
+                    <th>Asset Current Condition</th>
+                    <td>Normal={{normalpercentage | number:'1.0-2' }}%, Incipient={{incipientPerentage |
+                        number:'1.0-2'}}%,
+                        Degrade={{degradePercentage| number:'1.0-2' }}%</td>
+                </tr>
+                <tr>
+                    <th>Risk ranking</th>
+                    <td>{{RK}}</td>
+                </tr>
+            </table>
+        </div>
+        <span>
+            Note: Any Further technical assistance please email dprescripti@gmail.com
+        </span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button type="button" (click)="GotoPrediction()" class="btn btn-primary btn-sm mr-2" data-bs-toggle="tooltip"
+            data-bs-placement="top" title="Go to Prediction">Do Prediction</button>
+    </ng-template>
+</p-dialog>

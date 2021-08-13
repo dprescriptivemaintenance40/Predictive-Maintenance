@@ -7,6 +7,8 @@ import { MessageService } from 'primeng/api';
 import { ConfigService } from 'src/app/shared/config.service';
 import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { ProfileConstantAPI } from 'src/app/home/profile/profileAPI.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-train',
   templateUrl: './train.component.html',
@@ -32,6 +34,54 @@ export class TrainComponent implements OnInit {
   public enableImage = true;
   public CancelImage = false;
   public failureModeType : string ="RD";
+  displayModal: boolean;
+  displayBasic: boolean;
+  
+  public classificationDetails: any = []
+  public user: any = [];
+  public companyDetail: any = []
+  public TagNumber: string = "";
+  public EquipmentType: string = "";
+  public Date = new Date();
+  public DOA = new Date();
+  public ACC: string;
+  public AFP: string;
+  public RK: any = "L/M/H= M | HSECES= Y | CRIT= II";
+  public DAB: any;
+
+  public incipient: number = 0;
+  public degrade: number = 0;
+  public normal: number = 0;
+
+  public AFPincipient: number = 0;
+  public AFPdegrade: number = 0;
+  public AFPnormal: number = 0;
+
+  public FinalAFPincipient: number = 0;
+  public FinalAFPdegrade: number = 0;
+  public FinalAFPnormal: number = 0;
+
+  public totalCount: number = 0;
+  public AFPtotalCount: number = 0;
+  public FinalAFPTotalCount: number = 0;
+
+  public incipientPerentage: number = 0
+  public degradePercentage: number = 0
+  public normalpercentage: number = 0
+  public PerformanceNumber: any = 0
+
+  public AFPincipientPerentage: number = 0
+  public AFPdegradePercentage: number = 0
+  public AFPnormalpercentage: number = 0
+
+  public finalPerformanceNumber: number = 0
+  public finalACCCalculation: number = 0;
+  public FinalAFCCalcuation: number = 0;
+  public screwWithPredictionDetails: any = [];
+  public AFPVisible: boolean = false;
+  public AFPNotVisible: boolean = false;
+  public Focalname:string =""
+  public TagList : any = [];
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -45,17 +95,39 @@ export class TrainComponent implements OnInit {
     public commonLoadingDirective: CommonLoadingDirective,
     private configService: ConfigService,
     private screwCompressorAPIName : SCConstantsAPI,
-    private screwCompressorMethod : CommonBLService) { }
+    private profileAPIName: ProfileConstantAPI,
+    private router: Router,
+    private screwCompressorMethod : CommonBLService) { 
+    }
 
 
   ngOnInit() {
     this.title.setTitle('Screw Train | Dynamic Prescriptive Maintenence');
     this.getScrewCompressureList();
-    this.getUserDetails();
+     this.getUserDetails();
   }
 
+  showModalDialog() {
+    this.displayModal = true;
+}
+GotoPrediction(){
+  this.router.navigateByUrl('/Home/Compressor/ScrewPrediction');
+}
+showBasicDialog() {
+  this.displayBasic = true;
+}
+public Firstname:string =""
+public Lastname:string =""
+public Company:string =""
+public Email:string =""
+public PhoneNumber:string =""
   getUserDetails(){
-    this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
+   this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
+   this.Firstname = JSON.parse(localStorage.getItem('userObject')).FirstName
+   this.Lastname = JSON.parse(localStorage.getItem('userObject')).LastName
+   this.Company =JSON.parse(localStorage.getItem('userObject')).Company
+   this.Email = JSON.parse(localStorage.getItem('userObject')).Email
+   this.PhoneNumber= JSON.parse(localStorage.getItem('userObject')).PhoneNumber
   }
 
   SelectFailureModeType(){
@@ -211,19 +283,6 @@ export class TrainComponent implements OnInit {
   }
 
 
-  // exportToExcel() {
-
-
-  //   let element = document.getElementById('exportexcel');
-  //   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-  //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-  //   /* save to file */
-  //   XLSX.writeFile(wb, this.fileName);
-  // }
-
-
 
   exportToExcel() {
     var dataArray : any= [];
@@ -265,8 +324,6 @@ export class TrainComponent implements OnInit {
     }
   }
 
-
-  // convert Json to CSV data in Angular2
   ConvertToCSV(objArray) {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     var str = '';
@@ -309,5 +366,135 @@ export class TrainComponent implements OnInit {
     this.CancelImage = false;
 
   }
+
+  
+  public GenerateReport() {
+      var countKey = Object.keys(this.classificationDetails).length;
+      this.totalCount = countKey
+      var uniqueNames = [];
+      var uniqueObj = [];
+
+      for (var i = 0; i < this.classificationDetails.length; i++) {
+        if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
+          uniqueObj.push(this.classificationDetails[i])
+          uniqueNames.push(this.classificationDetails[i].Classification);
+        }
+      }
+      var result: any = [];
+
+      if (this.classificationDetails != 0) {
+
+        this.classificationDetails.forEach(function (o) {
+          Object.keys(o).forEach(function (k) {
+            result[k] = result[k] || {};
+            result[k][o[k]] = (result[k][o[k]] || 0) + 1;
+          });
+        });
+        this.incipient = result.Classification.incipient;
+        if (this.incipient == undefined) {
+          this.incipient = 0;
+        }
+        this.degrade = result.Classification.degrade;
+        if (this.degrade == undefined) {
+          this.degrade = 0;
+        }
+        this.normal = result.Classification.normal;
+        if (this.normal == undefined) {
+          this.normal = 0;
+        }
+
+        this.normalpercentage = this.normal / this.totalCount * 100
+        this.incipientPerentage = this.incipient / this.totalCount * 100
+        this.degradePercentage = this.degrade / this.totalCount * 100
+
+
+        var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
+        console.log(ACCCalculation);
+
+        if (ACCCalculation == NaN) {
+          ACCCalculation = 0;
+        }
+
+        this.finalACCCalculation = parseFloat(ACCCalculation);
+
+
+
+      }
+
+      // AssestForecastPerformance = AFP
+      var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
+      console.log(AFPcountKey);// find number of length of json object
+      this.AFPtotalCount = AFPcountKey
+      var AFPuniqueNames = [];
+      var AFPuniqueObj = [];
+
+      for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
+        if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
+          AFPuniqueObj.push(this.screwWithPredictionDetails[i])
+          AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
+        }
+      }
+      var result: any = [];
+      if (this.screwWithPredictionDetails.length != 0) {
+        this.screwWithPredictionDetails.forEach(function (o) {
+          Object.keys(o).forEach(function (k) {
+            result[k] = result[k] || {};
+            result[k][o[k]] = (result[k][o[k]] || 0) + 1;
+          });
+        });
+
+        this.AFPincipient = result.Prediction.incipient;
+        if (this.AFPincipient == undefined) {
+          this.AFPincipient = 0;
+        }
+        this.AFPdegrade = result.Prediction.degrade;
+        if (this.AFPdegrade == undefined) {
+          this.AFPdegrade = 0;
+        }
+        this.AFPnormal = result.Prediction.normal;
+        if (this.AFPnormal == undefined) {
+          this.AFPnormal = 0;
+        }
+        this.FinalAFPnormal = (this.AFPnormal + this.normal);
+        this.FinalAFPincipient = (this.AFPincipient + this.incipient);
+        this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
+
+        this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
+        this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
+
+        this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
+
+        this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
+
+        var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
+
+        this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
+        console.log(this.FinalAFCCalcuation);
+        if (AFCCalcuation == NaN) {
+          this.FinalAFCCalcuation = 0;
+        }
+        this.messageService.add({ severity: 'success', summary: 'success', detail: ' To Download Report, Click Download Report Button ' });
+      } else {
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Prediction have not done yet, Asset Forecast will not Generate ' });
+      }
+      var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
+      console.log(LMH)
+      var HSECES: any = [(0 * 1) + (1 * 10)]
+      console.log(HSECES)
+      var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
+      console.log(CRIT)
+
+      this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
+        parseFloat(LMH) + parseFloat(HSECES)
+        + parseFloat(CRIT)];
+
+      this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
+      if (this.PerformanceNumber > 10) {
+        this.DAB = "Y"
+      } else {
+        this.DAB = "N"
+      } 
+  }
+
 
 }

@@ -114,10 +114,6 @@
                             <th>Asset Current Condition</th>
                             <td>Normal={{normalpercentage | number:'1.0-2' }}%, Incipient={{incipientPerentage | number:'1.0-2'}}%, Degrade={{degradePercentage| number:'1.0-2' }}%</td>
                         </tr>
-                        <!-- <tr>
-                            <th>Asset Forecast Performance</th>
-                            <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
-                        </tr> -->
                         <tr>
                             <th>Risk ranking</th>
                             <td>{{RK}}</td>
@@ -134,9 +130,6 @@
                         </tr>
                         <tr *ngIf="AFPNotVisible">
                             <th>Asset Forecast Performance</th>
-                            <!--          
-                            <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
-                            -->
                             <td>No Data to show. Please do Prediction</td>
                             <td>
                                 <button class="btn btn-dark" [routerLink]="[ '/ScrewPrediction']" (click)="open(mymodal)">Do Prediction</button>
@@ -152,19 +145,3 @@
     </div>
 </div>
 
-<!-- <ng-template #mymodal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Title</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">�</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    
-  message
-
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
-  </div>
-</ng-template> -->
