@@ -25,10 +25,14 @@ import { OrganizationChartModule } from "./organization-chart/organization-chart
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import {CalendarModule} from 'primeng/calendar';
-import {CheckboxModule} from 'primeng/checkbox';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FileUploadModule } from 'primeng/fileupload';
+
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
-    imports: [CommonModule,
+    imports: [
+        FileUploadModule,
+        CommonModule,
         TableModule,
         FormsModule,
         ReactiveFormsModule,
@@ -53,7 +57,8 @@ import {CheckboxModule} from 'primeng/checkbox';
         PanelMenuModule,
         CheckboxModule,
         CalendarModule],
-    exports: [CommonModule,
+    exports: [FileUploadModule,
+        CommonModule,
         CommonLoadingComponent,
         TableModule,
         FormsModule,

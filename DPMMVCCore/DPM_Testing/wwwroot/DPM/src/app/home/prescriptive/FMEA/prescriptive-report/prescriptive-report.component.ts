@@ -8,6 +8,7 @@ import { PDFDocument } from 'pdf-lib';
 import * as Chart from 'chart.js';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import domtoimage from 'dom-to-image';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-prescriptive-report',
   templateUrl: './prescriptive-report.component.html',
@@ -16,16 +17,16 @@ import domtoimage from 'dom-to-image';
 
 })
 export class PrescriptiveReportComponent implements OnInit {
-  @ViewChild('pdfTable',{ static: false }) pdfTable: ElementRef;
+  @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
   @ViewChild('image') image
   @ViewChild('pdfTable1') pdfTable1: ElementRef;
   @ViewChild('image1') image1
-  @ViewChild('input') input:ElementRef; 
+  @ViewChild('input') input: ElementRef;
   @ViewChild('pdfTable2', { static: false }) pdfTable2: ElementRef;
   @ViewChild('image2') image2
   @ViewChild('pdfTable3', { static: false }) pdfTable3: ElementRef;
   @ViewChild('image3') image3
-  public isShowimage: boolean = false ;
+  public isShowimage: boolean = false;
   public imagedivFMEA: boolean = true
   public imagedivFCA: boolean = true
   public imagedivMSS: boolean = true
@@ -76,6 +77,7 @@ export class PrescriptiveReportComponent implements OnInit {
     private messageService: MessageService,
     private changeDetectorRef: ChangeDetectorRef,
     private commonLoadingDirective: CommonLoadingDirective,
+    private router : Router,
     private title: Title) {
     this.title.setTitle('Prescriptive Report | Dynamic Prescriptive Maintenence')
   }
@@ -86,6 +88,10 @@ export class PrescriptiveReportComponent implements OnInit {
   }
   async ngOnDestroy() {
     await localStorage.removeItem('ReportObj')
+  }
+
+  goBackToPrescriptiveRecomendationList(){
+    this.router.navigateByUrl('/Home/Prescriptive/List')
   }
 
 
@@ -155,54 +161,54 @@ export class PrescriptiveReportComponent implements OnInit {
   //   }
   // }
   public DownloadPDF() {
-    this.imagedivFMEA= false
+    this.imagedivFMEA = false
     this.changeDetectorRef.detectChanges();
     if (this.Time && this.TypeMethodology && this.TypeCurrentandfuture) {
-      this.hide= true
-    const doc = new jsPDF();
-    const specialElementHandlers = {
-      '#editor': function (element, renderer) {
-        return true;
-      }
-    };
-    const pdfTable2 = this.pdfTable2.nativeElement;
-    doc.fromHTML(pdfTable2.innerHTML, 15, 15, {
-      width: 190,
-      'elementHandlers': specialElementHandlers
-    });
+      this.hide = true
+      const doc = new jsPDF();
+      const specialElementHandlers = {
+        '#editor': function (element, renderer) {
+          return true;
+        }
+      };
+      const pdfTable2 = this.pdfTable2.nativeElement;
+      doc.fromHTML(pdfTable2.innerHTML, 15, 15, {
+        width: 190,
+        'elementHandlers': specialElementHandlers
+      });
 
-    var imageLink: any
-    let imageData = document.getElementById('image2');
-    // domtoimage.toPng(this.image2.nativeElement).then(res => {
-    //     imageLink = res;
-        var pdfdata = html2canvas(imageData).then(canvas => {
+      var imageLink: any
+      let imageData = document.getElementById('image2');
+      // domtoimage.toPng(this.image2.nativeElement).then(res => {
+      //     imageLink = res;
+      var pdfdata = html2canvas(imageData).then(canvas => {
         const imgProps = doc.getImageProperties(canvas);
-        doc.addPage('a4','mm','p');
+        doc.addPage('a4', 'mm', 'p');
         var imgWidth = 187;
-          var pageHeight = 299;
-          var imgHeight = imgProps.height * imgWidth / imgProps.width;
-          var heightLeft = imgHeight;
-          var position = 0;
-          doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight /1);
+        var pageHeight = 299;
+        var imgHeight = imgProps.height * imgWidth / imgProps.width;
+        var heightLeft = imgHeight;
+        var position = 0;
+        doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight / 1);
+        heightLeft -= pageHeight;
+        while (heightLeft >= 2) {
+          position = heightLeft - imgHeight;
+          doc.addPage();
+          doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight / 1);
           heightLeft -= pageHeight;
-          while (heightLeft >= 2) {
-            position = heightLeft - imgHeight;
-            doc.addPage();
-            doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight /1);
-            heightLeft -= pageHeight;
-          }
+        }
         const arrbf = doc.output("arraybuffer");
         doc.addPage();
         this.mergePdfs(arrbf);
         this.commonLoadingDirective.showLoading(false, 'Downloading....');
-    })
-  } else if (this.Time.length == 0) {
-        this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Time is missing' });
-      } else if (this.TypeMethodology.length == 0) {
-        this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Methodology is missing' });
-      } else if (this.TypeCurrentandfuture.length == 0) {
-        this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Current and future actions are  missing' });
-      }
+      });
+    } else if (this.Time.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Time is missing' });
+    } else if (this.TypeMethodology.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Methodology is missing' });
+    } else if (this.TypeCurrentandfuture.length == 0) {
+      this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Type Current and future actions are  missing' });
+    }
   }
   async mergePdfs(pdfsToMerges: ArrayBuffer) {
     const mergedPdf = await PDFDocument.create();
@@ -665,9 +671,9 @@ export class PrescriptiveReportComponent implements OnInit {
 
   public DownloadMSSPDF() {
     // if (this.MSSInput.length > 0 && this.ActionRecommendation.length > 0) {
-      this.imagedivMSS= false
+    this.imagedivMSS = false
     this.changeDetectorRef.detectChanges();
-    this.hide= true
+    this.hide = true
     const doc = new jsPDF();
     const specialElementHandlers = {
       '#editor': function (element, renderer) {
@@ -682,34 +688,34 @@ export class PrescriptiveReportComponent implements OnInit {
     var imageLink: any
     let imageData = document.getElementById('image1');
     // domtoimage.toPng(imageData).then(res => {
-        // imageLink = res;
-        var pdfdata = html2canvas(imageData).then(canvas => {
-        doc.addPage('a4','mm','p');
-        const imgProps = doc.getImageProperties(canvas);
-        var imgWidth = 192;
-          var pageHeight = 298;
-          var imgHeight = imgProps.height * imgWidth / imgProps.width;
-          var heightLeft = imgHeight;
-          var position = 0;
-          doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight/1 );
-          heightLeft -= pageHeight;
-          while (heightLeft >= 2) {
-            position = heightLeft - imgHeight;
-            doc.addPage();
-            doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight/1 );
-            heightLeft -= pageHeight;
-          }
-        const arrbf = doc.output("arraybuffer");
+    // imageLink = res;
+    var pdfdata = html2canvas(imageData).then(canvas => {
+      doc.addPage('a4', 'mm', 'p');
+      const imgProps = doc.getImageProperties(canvas);
+      var imgWidth = 192;
+      var pageHeight = 298;
+      var imgHeight = imgProps.height * imgWidth / imgProps.width;
+      var heightLeft = imgHeight;
+      var position = 0;
+      doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight / 1);
+      heightLeft -= pageHeight;
+      while (heightLeft >= 2) {
+        position = heightLeft - imgHeight;
         doc.addPage();
-        this.mergeMSSPdfs(arrbf);
-        this.commonLoadingDirective.showLoading(false, 'Downloading....');
+        doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight / 1);
+        heightLeft -= pageHeight;
+      }
+      const arrbf = doc.output("arraybuffer");
+      doc.addPage();
+      this.mergeMSSPdfs(arrbf);
+      this.commonLoadingDirective.showLoading(false, 'Downloading....');
     })
-   
-  // }else if (this.MSSInput.length == 0) {
-  //       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'MSS input is missing' });
-  //     } else {
-  //       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Action & Recommendations are missing' });
-  //     }
+
+    // }else if (this.MSSInput.length == 0) {
+    //       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'MSS input is missing' });
+    //     } else {
+    //       this.messageService.add({ severity: 'info', summary: 'Note', detail: 'Action & Recommendations are missing' });
+    //     }
   }
   async mergeMSSPdfs(pdfsToMerges: ArrayBuffer) {
     const mergedPdf = await PDFDocument.create();
@@ -866,7 +872,7 @@ export class PrescriptiveReportComponent implements OnInit {
   // };
 
   public DownloadRCMPDF() {
-    this.imagedivRCM= false
+    this.imagedivRCM = false
     this.changeDetectorRef.detectChanges();
     const doc = new jsPDF();
     const specialElementHandlers = {
@@ -885,25 +891,25 @@ export class PrescriptiveReportComponent implements OnInit {
     // domtoimage.toPng(this.image.nativeElement).then(res => {
     //     imageLink = res;
     var pdfdata = html2canvas(imageData).then(canvas => {
-        doc.addPage('a4','mm','p');
-        const imgProps = doc.getImageProperties(canvas);
-        var imgWidth = 190;
-          var pageHeight = 300;
-          var imgHeight = imgProps.height * imgWidth / imgProps.width;
-          var heightLeft = imgHeight;
-          var position = 0;
-          doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
-          heightLeft -= pageHeight;
-          while (heightLeft >= 2) {
-            position = heightLeft - imgHeight;
-            doc.addPage();
-            doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
-            heightLeft -= pageHeight;
-          }
-        const arrbf = doc.output("arraybuffer");
+      doc.addPage('a4', 'mm', 'p');
+      const imgProps = doc.getImageProperties(canvas);
+      var imgWidth = 190;
+      var pageHeight = 300;
+      var imgHeight = imgProps.height * imgWidth / imgProps.width;
+      var heightLeft = imgHeight;
+      var position = 0;
+      doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      while (heightLeft >= 2) {
+        position = heightLeft - imgHeight;
         doc.addPage();
-        this.mergeRCMPdfs(arrbf);
-        this.commonLoadingDirective.showLoading(false, 'Downloading....');
+        doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      const arrbf = doc.output("arraybuffer");
+      doc.addPage();
+      this.mergeRCMPdfs(arrbf);
+      this.commonLoadingDirective.showLoading(false, 'Downloading....');
     })
   }
   async mergeRCMPdfs(pdfsToMerges: ArrayBuffer) {
@@ -945,7 +951,7 @@ export class PrescriptiveReportComponent implements OnInit {
 
 
   public DownloadFCAPDF() {
-    this.imagedivFCA= false
+    this.imagedivFCA = false
     this.changeDetectorRef.detectChanges();
     const doc = new jsPDF();
     const specialElementHandlers = {
@@ -962,25 +968,25 @@ export class PrescriptiveReportComponent implements OnInit {
     var imageLink: any
     let imageData = document.getElementById('image3');
     var pdfdata = html2canvas(imageData).then(canvas => {
-        doc.addPage('a4','mm','p');
-        const imgProps = doc.getImageProperties(canvas);
-        var imgWidth = 190;
-          var pageHeight = 298;
-          var imgHeight = imgProps.height * imgWidth / imgProps.width;
-          var heightLeft = imgHeight;
-          var position = 0;
-          doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
-          heightLeft -= pageHeight;
-          while (heightLeft >= 2) {
-            position = heightLeft - imgHeight;
-            doc.addPage();
-            doc.addImage(canvas, 'PNG',10, position, imgWidth, imgHeight );
-            heightLeft -= pageHeight;
-          }
-        const arrbf = doc.output("arraybuffer");
+      doc.addPage('a4', 'mm', 'p');
+      const imgProps = doc.getImageProperties(canvas);
+      var imgWidth = 190;
+      var pageHeight = 298;
+      var imgHeight = imgProps.height * imgWidth / imgProps.width;
+      var heightLeft = imgHeight;
+      var position = 0;
+      doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      while (heightLeft >= 2) {
+        position = heightLeft - imgHeight;
         doc.addPage();
-        this.mergeFCAPdfs(arrbf);
-        this.commonLoadingDirective.showLoading(false, 'Downloading....');
+        doc.addImage(canvas, 'PNG', 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      const arrbf = doc.output("arraybuffer");
+      doc.addPage();
+      this.mergeFCAPdfs(arrbf);
+      this.commonLoadingDirective.showLoading(false, 'Downloading....');
     })
   }
   async mergeFCAPdfs(pdfsToMerges: ArrayBuffer) {

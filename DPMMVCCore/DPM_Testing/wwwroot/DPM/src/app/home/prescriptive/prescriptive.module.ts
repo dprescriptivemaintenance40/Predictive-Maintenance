@@ -12,6 +12,8 @@ import { PrescriptiveListComponent } from './FMEA/prescriptive-list/prescriptive
 import { FCAADDComponent } from './FCA/fca-add/fca-add.component';
 import { MSSAddComponent } from './MSS/mss-add/mss-add.component';
 import { RCAComponent } from "./RCA/rca.component";
+import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
     declarations: [PrescriptiveComponent,
@@ -28,7 +30,7 @@ import { RCAComponent } from "./RCA/rca.component";
     ],
     imports: [
         SharedModule,
-        PrescriptiveRoutingModule
+        PrescriptiveRoutingModule, CheckboxModule, DialogModule
     ],
     providers: [],
     bootstrap: [PrescriptiveComponent]

@@ -19,13 +19,13 @@
         touch-action: auto;
     }
 </style>
-<div class="card shadow" style="margin: 20px;">
+<div class="card dpm-card p-3">
     <p-tabView (onChange)="RCAHandleChange($event)">
-        <p-tabPanel header="RCA List">
+        <p-tabPanel header="RCA List" leftIcon="pi pi-align-left">
             <div class="row">
-                <div class="col-xl-12 col-lg-11">
-                    <div class="card rca shadow mb-4 con">
-                        <div class="card-body">
+                <div class="col-xl-12 col-lg-11 p-0">
+                    <div class="mb-4 con">
+                        <div class="card-body p-0">
                             <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RCAListRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                                 <ng-template pTemplate="colgroup">
                                     <colgroup>
@@ -62,7 +62,7 @@
                                                     aria-hidden="true"></i></a>&nbsp;&nbsp;
                                             <a title="View {{p.RCALabel}}" data-toggle="modal" data-target="#DisplayRCATree" (click)="RCATreeDisplay(p)"><i
                                                     class="pi pi-eye"></i> </a>&nbsp;&nbsp;
-                                            <a title="Delete {{p.RCALabel}}" style="color: red;" (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
+                                            <a title="Delete {{p.RCALabel}}" class="badge badge-danger" (click)="DeleteRCARecord(p)"><i class="pi pi-trash"></i></a>
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -77,29 +77,29 @@
                 </div>
             </div>
         </p-tabPanel>
-        <p-tabPanel header="Add"><br>
-            <div class="card shadow div-in-middle" *ngIf="SelectBoxEnabled">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Add Label and Tag Number to RCA</b></li>
-                    <li class="list-group-item">
-                        <div class="input-group mb-3">
-                            <label style=" margin-right: 12px;">Label</label>
+        <p-tabPanel header="Add" leftIcon="pi pi-plus">
+            <div class="card dpm-card div-in-middle w-100 p-0" *ngIf="SelectBoxEnabled">
+                <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Add Label and Tag Number to RCA</div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <div class="d-flex flex-column">
+                            <label class="d-block">Label</label>
                             <input type="text" [(ngModel)]="RCALabel" placeholder="Enter label" class="form-control">
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="input-group mb-3">
-                            <label style=" margin-right: 12px;">Tag Number</label>
-                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number" class="form-control">
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <button class="btn btn-dark" (click)="TagNumberSelect()">Done</button>
-                    </li>
-                </ul>
+                    </div>
+                    <div class="col-md-3">
+                    <div class="d-flex flex-column">
+                        <label class="d-block">Tag Number</label>
+                        <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number" class="form-control">
+                    </div>
+                    </div>
+                    <div class="col-md-3">
+                    <button class="btn btn-primary mt-4" (click)="TagNumberSelect()">Done</button>
+                    </div>
+                </div>
             </div>
 
-            <div [hidden]="!Treeshow" class="row" style="margin: 1em;">
+            <div [hidden]="!Treeshow" class="row" class="alert alert-info">
                 <div class="col-md-2 form-check">
                     <input [(ngModel)]="RCATypeQualititive" (change)="RCATypeSelect()" class="form-check-input" type="checkbox" name="RCA" id="Qualitative" checked>
                     <label class="form-check-label" for="Qualitative">
@@ -114,7 +114,7 @@
                 </div>
             </div>
 
-            <div *ngIf="RCATypeQualititive === true" style="overflow: scroll;">
+            <div *ngIf="RCATypeQualititive === true" style="overflow: auto;">
                 <div class="classname" id="scene" #scene>
                     <p-card>
                         <button (click)="ClearRCAQualitiveTree()" class="btn btn-dark" pTooltip="Clear Qualititive tree data" tooltipPosition="top">clear</button>
@@ -123,7 +123,7 @@
                     </p-card>
                 </div>
             </div>
-            <div *ngIf="RCATypeQuantitive === true" id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%; padding-bottom: 20em;">
+            <div *ngIf="RCATypeQuantitive === true" id="anorlogic" class="alert alert-dpmprimary">
                 <p-card>
                     <button (click)="ClearRCAQuantiveTree()" class="btn btn-dark" pTooltip="Clear Quantitive tree data" tooltipPosition="top">clear</button>
                     <p-organizationChart [value]="ANDORLOGICTREE" (FailureMode)="AndOrLogicTreeFailureMode($event)" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
@@ -136,37 +136,58 @@
                 <a *ngIf="RCATypeQualititive === true || RCATypeQuantitive === true " class="btn btn-dark" style="float:right;" (click)="RCAADDSave()" pTooltip="Save data" tooltipPosition="top">save</a>
             </div>
         </p-tabPanel>
-        <p-tabPanel header="Update"><br>
-            <div class="card shadow div-in-middle" *ngIf="SelectUpdateBoxEnabled">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Select Label to Update RCA</b></li>
-                    <li class="list-group-item">
-                        <div class="input-group mb-3">
-                            <label style=" margin-right: 12px;">Label</label>
-                            <select class="form-select" (change)="UpdateLabeselect()" [(ngModel)]="UpdateSelectedLabel" class="form-control">
-                                <option value="">Choose..</option>
-                                <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL.RCALabel}}</option>
-                            </select>
+        <p-tabPanel header="Update" leftIcon="pi pi-refresh">
+            <div class="card dpm-card w-100 p-0" *ngIf="SelectUpdateBoxEnabled">
+                <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Select Label to Update RCA</div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <div class="d-flex flex-column">
+                        <label style=" margin-right: 12px;">Label</label>
+                        <select class="form-select" (change)="UpdateLabeselect()" [(ngModel)]="UpdateSelectedLabel" class="form-control">
+                            <option value="">Choose..</option>
+                            <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL.RCALabel}}</option>
+                        </select>
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="input-group mb-3">
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex flex-column">
                             <label style=" margin-right: 12px;">Type</label>
                             <select class="form-select" [(ngModel)]="UpdateRCATypeSelected" class="form-control">
                                 <option value="">Choose..</option>
                                 <option *ngFor="let EL of UpdateRCATypeList" [ngValue]="EL">{{EL}}</option>
                             </select>
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <button class="btn btn-dark" (click)="UpdateTagNumberSelect()">Done</button>
-                    </li>
-                </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary mt-4" (click)="UpdateTagNumberSelect()">Done</button>
+                    </div>
+                </div>                
             </div>
-            <div [hidden]="!UpdateTreeshow" style="overflow: scroll;">
-                <div style="margin: 20px; border: 1px solid;">
+            <div [hidden]="!UpdateTreeshow" style="overflow: auto;">
+                <div class="alert alert-dpmprimary">
+                    <div class="row">
+                        <div class="col-md-3" *ngIf="UpdateRCATypeQualititive">
+                            <div class="d-flex flex-column">
+                            <label>Asset</label>
+                            <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
+                                <option value="" disabled>Choose..</option>
+                                <option value="HeatExchanger" selected>Heat Exchanger</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3" *ngIf="UpdateRCATypeQualititive">
+                            <div class="d-flex flex-column">
+                                <label>Failure Mode</label>
+                                <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
+                                    <option value="" disabled>Choose..</option>
+                                    <option *ngFor="let EL of HeatExchangerFailureModeList" [ngValue]="EL">{{EL}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <ul class="list-group list-group-flush">
-                        <li *ngIf="UpdateRCATypeQualititive" class="list-group-item" style="width: 31em;">
+                        <!-- <li *ngIf="UpdateRCATypeQualititive" class="list-group-item" style="width: 31em;">
                             <div class="input-group mb-3">
                                 <label style=" margin-right: 12px;">Asset</label>
                                 <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
@@ -184,10 +205,10 @@
                                     </option>
                                 </select>
                             </div>
-                        </li>
-                        <li *ngIf="UpdateRCATypeQuantitive" class="list-group-item" style="width: 31em;">
-                            Quantitative Failure Mode : {{andOrLogicTreeFailureMode}}
-                        </li>
+                        </li> -->
+                        <h6 *ngIf="UpdateRCATypeQuantitive">
+                            Quantitative Failure Mode : <span class="text-primary">{{andOrLogicTreeFailureMode}}</span>
+                        </h6>
                         <!-- <li class="list-group-item">
                             <div class="input-group mb-3" style="width: 29em;">
                                 <div class="form-check">
@@ -212,16 +233,16 @@
                         (deleteTreeRow)="UpdatedeleteTreeRow($event)" (RCAUpdateAttachmentFromList)="RCAUpdateAttachmentFromList($event)"></p-tree>
                     <br><br>
                 </div>
-                <div *ngIf="UpdateRCATypeQuantitive" id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%; padding-bottom: 20em;">
+                <div *ngIf="UpdateRCATypeQuantitive" id="anorlogic" class="alert alert-dpmprimary">
                     <p-card>
                         <p-organizationChart [value]="RCAUpdateQuantitivefiles" (AddNode)="onAddNode($event)" (FailureMode)="AndOrLogicTreeFailureMode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
                         </p-organizationChart>
                     </p-card>
                 </div>
                 <div style="margin: 10px;">
-                    <a class="btn btn-dark" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
+                    <a class="btn btn-secondary-outline btn-sm" (click)="cancelRCAUpdate()" pTooltip="Cancel data" tooltipPosition="top"><i
                             class="fa fa-times" aria-hidden="true"></i></a>
-                    <a class="btn btn-dark" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data" tooltipPosition="top">Update</a>
+                    <a class="btn btn-primary btn-sm" style="float:right;" (click)="UpdateRCA()" pTooltip="Update data" tooltipPosition="top">Update</a>
                 </div>
             </div>
         </p-tabPanel>
@@ -230,7 +251,7 @@
 
 
 
-<div class="modal" id="ADDRCAModal" tabindex="-1" role="dialog" style="overflow: scroll;">
+<div class="modal" id="ADDRCAModal" tabindex="-1" role="dialog" style="overflow: auto;">
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -276,9 +297,10 @@
                             </select> -->
                             <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
                                 <option value="">Choose..</option>
-                                <option value="Rotar Damage">Rotar Damage</option>
+                                <option *ngFor="let fm of RCAQualitativeFailureModelist" [ngValue]="fm">{{fm}}</option>
+                                <!-- <option value="Rotar Damage">Rotar Damage</option>
                                 <option value="Second stage Rotor breakdown">Second stage Rotor breakdown</option>
-                                <option value="Cooler Failure">Cooler Failure</option>
+                                <option value="Cooler Failure">Cooler Failure</option> -->
                             </select>
                         </div>
                     </li>
@@ -300,7 +322,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 30em;" class="classname">
+            <div class="modal-body" style="overflow: auto; height: 30em;" class="classname">
                 <div *ngIf="UpdateRCATypeQualititive" id="scene3" #scene3>
                     <p-tree [value]="RCADisplayFile" layout="horizontal"></p-tree>
                 </div><br><br>
@@ -326,33 +348,35 @@
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
-            <div class="modal-body" style="overflow: scroll; height: 80em;padding-left: 50;">
-                    <ul *ngIf="!RCAQualitativeReport || !RCAQuantitativeReport" class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div style="padding-bottom: 20px;">
-                            <label style="margin-right: 12px;">Select</label>
-                            <select (change)="RCATypeReport()" [(ngModel)]="RCAReportType" class="form-select" class="form-control">
+            <div class="modal-body" style="overflow: auto; height: 80em;padding-left: 50;">
+                <div class="row">
+                    <div class="col-md-12">
+                    <div *ngIf="!RCAQualitativeReport || !RCAQuantitativeReport" class=" alert alert-dpmprimary d-flex align-items-center justify-content-between">
+                       
+                            <label style="margin-right: 12px;">Select report type</label>
+                            <select (change)="RCATypeReport()" [(ngModel)]="RCAReportType" class="form-select" class="form-control w-25">
                                 <option value="">Choose..</option>
                                 <option *ngFor="let EL of RCAReportTypeList" [ngValue]="EL">{{EL}}</option>
                             </select>
-                            </div>
-                        </li>
-                    </ul> 
+                        </div>
+                    </div>
+                    </div> 
                     <div *ngIf="RCAQualitativeReport">
                     <div id="pdfTable" #pdfTable>
+                        <div class="text-center" *ngIf="imagedivRCA">
+                            <div class="image-container text-center">
+                                <img width="150" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                            </div>
+                        </div>
+                        <div class="text-center" *ngIf="!imagedivRCA" id="pdfTable" #pdfTable>
+                            <div class="image-container">
+                                <img width="150" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                            </div>
+                        </div>
                         <div class="text-center" style="text-align:center">
-                            <label><u><b>Root Cause Analysis (RCA) based on Quantitative Approach</b></u></label>
+                           <h5>Root Cause Analysis (RCA) based on Quantitative Approach</h5>
                         </div>
-                        <div class="sidebar-brand-icon col-sm-2" *ngIf="imagedivRCA" >
-                            <div class="image-container" >
-                                <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png"  alt="">
-                            </div>
-                        </div>
-                        <div class="sidebar-brand-icon col-sm-2" *ngIf="!imagedivRCA" id="pdfTable" #pdfTable>
-                            <div class="image-container" >
-                                <img style="width:30px;height:25px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
-                            </div>
-                        </div>
+                        
                         <div>
                             <label><u><b>Summary</b></u></label>
                         </div>
@@ -386,7 +410,7 @@
                         <div>
                             <label><u><b>Introduction</b></u></label>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <p>RCA analysis completed on
                                 <span *ngIf="!RCAReportfileds">
                         <input type="date" class="form-control" style="width: 10em;" [(ngModel)]="RCAReportDate" name="reportDate" />
@@ -396,7 +420,7 @@
                     </span> for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. RCA finalized by using the current data and considering the failure history of the asset.</p>
                             <p>An understanding of the system to be analyzed was essential prior to the development of the RCA. The initial step was to collect the data and identify whether adequate information was </p>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <label><u><b>RCA inputs</b></u></label>
                             <span *ngIf="!RCAReportfileds">
                 <textarea [(ngModel)]="RCAReportinputs" class="form-control custom-textarea" name="RCAInput"></textarea>
@@ -407,7 +431,7 @@
                     </span>
                             </div>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <label><u><b>Actions and recommendations </b></u></label>
 
                             <span *ngIf="!RCAReportfileds">
@@ -420,7 +444,7 @@
                             </div>
                         </div>
 
-                        <div style="page-break-before: always;">
+                        <div style="page-break-before: always;" class="mb-3">
                             <label><u><b>Conclussion</b></u></label>
                             <p>
                                 The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} {{RCAReportData.TagNumber}} and propose technical solutions to prevent similar failures in future
@@ -433,7 +457,7 @@
                             </p>
                         </div>
                     </div>
-                    <div style="overflow: scroll;">
+                    <div style="overflow: auto;" class="mb-3">
                         <label><u><b>Annexures</b></u></label>
                         <div id="image" #image>
                             <!-- <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree> -->
@@ -442,7 +466,7 @@
                         </div>
                     </div>
                     </div>
-                <div style="overflow: scroll;" *ngIf="RCAQuantitativeReport">
+                <div style="overflow: auto;" *ngIf="RCAQuantitativeReport">
                     <div id="pdfTable1" #pdfTable1 style="margin: 20px;height: 100%;width: 100%;">
                         <div class="text-center" style="text-align:center">
                             <h4><b>Root Cause Analysis (RCA)  Qualitative approach</b></h4>

@@ -1,4 +1,5 @@
 <p-toast position="top-right"></p-toast>
+<button class="btn btn-dark" *ngIf="prescriptveReportSelect" p-tooltip="Back to prescriptive recommendation list" (click)="goBackToPrescriptiveRecomendationList()">Back</button>
 <div *ngIf="prescriptveReportSelect">
     <div class="card shadow div-in-middle">
         <ul class="list-group list-group-flush">
@@ -161,7 +162,7 @@
             </div>
             <div  style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
-                    <div style="overflow: scroll;overflow: hidden;">
+                    <div style="overflow: auto;overflow: hidden;">
                         <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                         <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode"
                             styleClass="company">
@@ -337,7 +338,7 @@
             </div>
             <div  style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
-                    <div style="overflow: scroll;overflow: hidden;">
+                    <div style="overflow: auto;overflow: hidden;">
                         <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                         <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode"
                             styleClass="company">

@@ -89,3 +89,30 @@
     color: #495057;
     padding: 0;
 }
+
+.task-body {
+    border: 1px solid #f0f4fe;
+    background: #f0f4fe;
+    margin-top: 15px;
+    padding: 15px !important;
+}
+
+.dpm-card {
+    background-color: #fff;
+    border: none;
+}
+
+.badge {
+    font-size: 11px;
+}
+
+.text-danger {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+table thead th {
+    border: none !important;
+    background-color: #09a1a6 !important;
+    color: #fff !important;
+}

@@ -1,23 +1,18 @@
 <p-toast position="top-right"></p-toast>
 
-<div style="padding: 5px;" class="row">
-    <div class="col-sm col-md-4 form-group">
-        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+<div class="row d-flex justify-content-between bg-white p-3">
+    <div class="col">
+        <input type="file" class="form-control-file form-control w-50" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
     </div>
 
-    <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
-    </div>
-
-
-    <div class="col-sm">
+    <div class="col d-flex justify-content-end align-items-center text-right pull-right">
+        <button type="button"  (click)="Downloadfile()" class="btn btn-outline-primary btn-sm"><i class="fa fa-file-excel"></i></button>
+    
         <!-- <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="ChangeInConfiguration()" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Revaluate Classification">Revaluate</button> -->
 
-    </div>
-
-    <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
+    
+        <button type="button"  (click)="exportToExcel()" class="btn btn-outline-primary  ml-2 btn-sm"><i class="fa fa-download"></i></button>
     </div>
 </div>
 <br>

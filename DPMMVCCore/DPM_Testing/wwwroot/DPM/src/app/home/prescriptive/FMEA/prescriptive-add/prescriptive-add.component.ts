@@ -14,6 +14,7 @@ import { SafeUrl } from '@angular/platform-browser';
 import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 
+
 @Component({
   selector: 'app-prescriptive-add',
   templateUrl: './prescriptive-add.component.html',
@@ -21,7 +22,18 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
   providers: [MessageService],
 })
 export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate {
+  displayModal: boolean;
+  showModalDialog() {
+        this.displayModal = true;
+  };
+  selectedCities: string[] = [];
 
+    selectedCategories: any[] = ['Technology', 'Sports'];
+
+    categories: any[] = [{name: 'Accounting', key: 'A'}, {name: 'Marketing', key: 'M'}, {name: 'Production', key: 'P'}, {name: 'Research', key: 'R'}];
+
+  checked: boolean = false;
+  
   public MachineType: string = "";
   private FMCount: number = 0;
   private FMCount1: number = 0;
@@ -256,6 +268,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   };
 
   ngOnInit() {
+    this.selectedCategories = this.categories.slice(1,3);
     this.title.setTitle('Prescriptive ADD |Dynamic Prescriptive Maintenence');
     this.data1 = JSON.parse(localStorage.getItem('TestingOBj'))
     setInterval(() => {
@@ -425,7 +438,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   FailureModeSelected(value, event){
-    if(event.target.ariaChecked === null){
+    if(event.target.checked === false){
       var findIndexOF = value.PrescriptiveLookupMasterId
       var index = -1;
       var filteredObj = this.dropedMode.find((item, i) => {
@@ -438,7 +451,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.dropedMode.splice(index, 1)
     }
     
-    if(event.target.ariaChecked === 'true'){
+    if(event.target.checked === true){
       let obj = {}
       obj['Date']= value.Date;
       obj['Description']= value.Description;
@@ -472,6 +485,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.functionModeData = [];
         console.log(res)
         this.dropDownData = res;
+        this.dropedMode=[];
 
         this.dropDownData.forEach(element => {
           if (element.Function == "Function Failure") {

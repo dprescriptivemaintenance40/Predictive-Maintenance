@@ -65,7 +65,13 @@ export class ReportComponent {
   public finalPerformanceNumber: number = 0
   public finalACCCalculation: number = 0;
   public FinalAFCCalcuation: number = 0;
-  public screwWithPredictionDetails: any = []
+  public screwWithPredictionDetails: any = [];
+  public UserDetails:string =""
+  public Firstname:string =""
+  public Lastname:string =""
+  
+  
+  public TagList : any = [];
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -83,13 +89,29 @@ export class ReportComponent {
     private profileAPIName: ProfileConstantAPI) {
     this.title.setTitle('Report | Dynamic Prescriptive Maintenence');
     this.GetRecords();
-
+    this.getPrescriptiveRecords();
+    this.getUserDetails()
   }
-
+  
+    getPrescriptiveRecords() {
+        this.http.get('api/PrescriptiveAPI/GetTagNumber')
+            .subscribe((res: any) => {
+              this.TagList = []
+              res.forEach(element => {
+                  this.TagList.push(element.TagNumber)
+              });
+            });
+    }
+    getUserDetails() {
+      this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
+      this.Firstname = JSON.parse(localStorage.getItem('userObject')).FirstName
+      this.Lastname = JSON.parse(localStorage.getItem('userObject')).LastName
+    }
   GetRecords() {
     this.commonLoadingDirective.showLoading(true, 'Report is getting generated.');
     const url: string = this.screwCompressorAPIName.getTrainList
-    this.screwCompressorMethod.getWithoutParameters(url)
+    // this.screwCompressorMethod.getWithoutParameters(url)
+    this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
       // this.http.get<any>("api/ScrewCompressureAPI")
       .subscribe(res => {
         this.classificationDetails = res;
@@ -136,33 +158,6 @@ export class ReportComponent {
 
   }
 
-
-  //----------------Modal ------------------------
-
-  // open(content) {
-  //   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-  //     this.closeResult = `Closed with: ${result}`;
-  //   }, (reason) => {
-  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //   });
-  // }
-
-  // public getDismissReason(reason: any): string {
-  //   if (reason === ModalDismissReasons.ESC) {
-  //     return 'by pressing ESC';
-  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-  //     return 'by clicking on a backdrop';
-  //   } else {
-  //     return  `with: ${reason}`;
-  //   }
-  // }
-
-
-  //-----------------Modal End----------------------
-
-
-
-
   public GenerateReport() {
     if (this.TagNumber.length == 0 || this.EquipmentType.length == 0) {
       alert("Fill Data in all Fields")
@@ -170,12 +165,6 @@ export class ReportComponent {
       this.reportVisible = true;
       this.reportHide = false;
       console.log(this.TagNumber)
-      console.log(this.EquipmentType)
-
-      /// ************************************OUTPUT OF REPORT************************************************
-
-      /// ------------------Assets Current Condition Calculation--------------------------------------
-
 
       var countKey = Object.keys(this.classificationDetails).length;
       console.log(countKey);// find number of length of json object
@@ -191,9 +180,7 @@ export class ReportComponent {
           uniqueObj.push(this.classificationDetails[i])
           uniqueNames.push(this.classificationDetails[i].Classification);
         }
-
       }
-
       console.log("unique count :", uniqueObj)
       console.log("unique name :", uniqueNames)
 
@@ -224,8 +211,6 @@ export class ReportComponent {
         console.log('Degrade Count :', this.degrade)
 
 
-        /// percentage calculation
-
         this.normalpercentage = this.normal / this.totalCount * 100
         console.log('Normal Percentage : ', this.normalpercentage);
 
@@ -250,16 +235,6 @@ export class ReportComponent {
 
 
       }
-
-      //---------------------END of Assets Current Condition Calculation -------------------------
-
-
-
-
-      //---------------------Start Of Assets Forecast Condition Calculations------------------------------------------
-
-
-
 
       // AssestForecastPerformance = AFP
       var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
@@ -309,13 +284,6 @@ export class ReportComponent {
         console.log('AFP Normal Count :', this.AFPnormal)
         console.log('AFP Incipient Count', this.AFPincipient)
         console.log('AFP Degrade Count :', this.AFPdegrade)
-
-
-        // Assets Forecast Condition is combination of Assets Current Condition plus total count of
-        // of normal incipient and degrade in prediction
-        // AFPnormal, AFPincipient, AFPdegrade is of Prediction
-        // normal, incipient, degrade is of Train or Assets Current Condition
-
 
         this.FinalAFPnormal = (this.AFPnormal + this.normal);
         this.FinalAFPincipient = (this.AFPincipient + this.incipient);

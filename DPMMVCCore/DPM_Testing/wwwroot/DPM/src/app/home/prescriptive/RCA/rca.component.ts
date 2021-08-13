@@ -57,7 +57,6 @@ export class RCAComponent {
     public AddRCAmodal: any;
     public ADDRCAMachineType: string = ""
     public ADDRCAFailureMode: string = ""
-    public HeatExchangerFailureModeList: any = [];
     public RCADisplayLabel: string = ""
     public RCADisplayFile: any = []
     public tabView: boolean = true
@@ -118,6 +117,7 @@ export class RCAComponent {
     public RCAQuantitativeReport : boolean = false;
     public RCAReportType : string = "";
     public RCAReportTypeList : any = [];
+    public RCAQualitativeFailureModelist : any =[];
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
@@ -130,7 +130,7 @@ export class RCAComponent {
     ngOnInit() {
         this.addStartup();
         this.getRecordsList();
-        this.getHeatExchangerData();
+        this.getScrewCompressorData();
         this.getUserDetails();
     }
 
@@ -165,15 +165,15 @@ export class RCAComponent {
             }
         )
     }
-    getHeatExchangerData() {
+    getScrewCompressorData() {
         const params = new HttpParams()
-            .set("data", 'Heat Exchanger')
+            .set("data", 'Screw Compressor')
         this.commonBL.getWithParameters(this.RCAAPIName.RCAGetHeatExchangerFMAPI, params)
             .subscribe(
                 (res: any) => {
-                    this.HeatExchangerFailureModeList = []
+                    this.RCAQualitativeFailureModelist = [];
                     res.forEach(element => {
-                        this.HeatExchangerFailureModeList.push(element.Description)
+                        this.RCAQualitativeFailureModelist.push(element.Description)
                     });
                 }, err => { console.log(err.error) }
             )

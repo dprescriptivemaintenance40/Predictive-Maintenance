@@ -26,16 +26,10 @@
                         background-color: #fff;
                         box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
                         padding: 10px;">
-                <a (click)="close(node)" style="position: absolute;
-                                            right: 2px;
-                                            top: 0;
-                                            color: red;">
+                <a (click)="close(node)" class="btn-white btn-sm">
                     <i class="pi pi-times-circle"></i>
                 </a>&nbsp;&nbsp;
-                <a (click)="downloadURI()" style="position: absolute;
-                                            right: 28px;
-                                            top: 0;
-                                            color: blue;">
+                <a (click)="downloadURI()" class="btn-white btn-sm">
                     <i class="pi pi-download"></i>
                 </a>
                 <div class="text-center">
@@ -99,38 +93,22 @@
                             </span>
                         </span>
                         <ng-container *ngIf="node.deleteTree">
-                            <span class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" style="
-                            position: absolute;
-                            color: red; 
-                            left: -12px;
-                            top: -15px;" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="deleteTreeRow($event,node)"></span>
+                            <span class="btn-white btn-sm" style="" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="deleteTreeRow($event,node)"><i class=" pi pi-fw pi-times-circle"></i></span>
                         </ng-container>
                         <ng-container *ngIf="node.addTree">
-                            <span class="p-tree-toggler pi pi-fw pi-plus" data-toggle="tooltip" data-placement="right" title="Add Node" (click)="addTreeRow($event,node)" style="margin-right: 0;"></span>
+                            <span class="btn-white btn-sm" data-toggle="tooltip" data-placement="right" title="Add Node" (click)="addTreeRow($event,node)" ><i class=" pi pi-fw pi-plus"></i></span>
                         </ng-container>
                         <ng-container *ngIf="(node.disable == true || node.addTree ) && node.isParent == undefined">
-                            <span class="p-tree-toggler pi pi-pencil" data-toggle="tooltip" data-placement="right" (click)="addNoteTonode(node)" title="Write Something" style="margin-right: 0; color:blue"></span>
+                            <span class="btn-white btn-sm" data-toggle="tooltip" data-placement="right" (click)="addNoteTonode(node)" title="Write Something"><i class=" pi pi-pencil"></i></span>
                         </ng-container>
                         <ng-container *ngIf="node.RCAFILE == '' || node.RCAFILE !='' && node.isParent == undefined && node.disable == false">
-                            <span class="p-tree-toggler pi pi-angle-double-right" style="
-                            position: absolute;
-                            color: black; 
-                            right: -18px;
-                            top: -9px;" data-toggle="tooltip" data-placement="right" title="Add attachment to node" (click)="AttachmentNodeSelected()" (click)="rCAAttachment($event,node)"></span>
+                            <span class="btn-white btn-sm" data-toggle="tooltip" data-placement="right" title="Add attachment to node" (click)="AttachmentNodeSelected()" (click)="rCAAttachment($event,node)"><i class=" pi pi-angle-double-right"></i></span>
                         </ng-container>
                         <ng-container *ngIf="node.RCAFILE != '' && node.isParent == undefined">
-                            <span class="p-tree-toggler fa fa-eye" style="
-                            position: absolute;
-                            color: rgb(150, 150, 247); 
-                            right: 5px;
-                            top: -9px;" data-toggle="tooltip" data-placement="right" title="View Attachment" (click)="showRCAAttachment($event,node)"></span>
+                            <span class="btn-white btn-sm" data-toggle="tooltip" data-placement="right" title="View Attachment" (click)="showRCAAttachment($event,node)"><i class="fa fa-eye"></i></span>
                         </ng-container>
                         <ng-container *ngIf="node.isParent == 'Yes' ">
-                            <span class="p-tree-toggler pi pi-angle-double-right" style="
-                            position: absolute;
-                            color: black; 
-                            right: 10px;
-                            top: -9px;" data-toggle="tooltip" data-placement="right" title="Add Operational and Design Details to Problem Statement" (click)="parentNodeADDData($event,node)" style="margin-right: 0;"></span>
+                            <span class="btn-white btn-sm" data-toggle="tooltip" data-placement="right" title="Add Operational and Design Details to Problem Statement" (click)="parentNodeADDData($event,node)" style="margin-right: 0;"><i class=" pi pi-angle-double-right"></i></span>
                         </ng-container>
 
                     </div>

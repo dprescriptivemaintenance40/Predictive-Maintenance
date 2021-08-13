@@ -9,9 +9,9 @@
 </style>
 <div class="row">
     <div class="col-xl-12 col-lg-11">
-        <div class="card prescriptive shadow mb-4 con">
+        <div class="dpm-card prescriptive  mb-4 con">
             <div class="card-header">
-                <h6 style="color: #585570;" class="m-0 font-weight-bold " class="card-header-title font-size-lg text-capitalize font-weight-normal"><i class="fa fa-tasks"></i>&nbsp;Prescriptive Recommendation</h6>
+                <h5 class="card-title mb-0 mt-2"><i class="fa fa-tasks"></i>&nbsp;Prescriptive Recommendation</h5>
                 <div class="col" *ngIf="Table2 || Table3">
                     <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable1()">Back</button>
 
@@ -24,13 +24,13 @@
             <div class="card-body">
                 <p-table *ngIf="Table1" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="prescriptiveRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
-                    <ng-template pTemplate="colgroup">
+                    <!-- <ng-template pTemplate="colgroup">
                         <colgroup>
                             <col style="width:5em;">
-                            <col style="width:5em;">
+                            <col style="width:7em;">
                             <col style="width:10em;">
                             <col style="width:7em;">
-                            <col style="width:4em;">
+                            <col style="width:6em;">
                             <col style="width:9em;">
                             <col style="width:10em;">
                             <col style="width:6em;">
@@ -40,10 +40,10 @@
                             <col style="width:8em;">
                             <col style="width:8em;">
                             <col style="width:6em;">
-                            <col style="width:5em;">
+                            <col style="width:7em;">
                         </colgroup>
-                    </ng-template>
-                    <ng-template pTemplate="header">
+                    </ng-template> -->
+                    <!-- <ng-template pTemplate="header">
                         <tr>
                             <th>Sr. No</th>
                             <th>Assets</th>
@@ -61,54 +61,83 @@
                             <th>Report</th>
                             <th>Delete</th>
                         </tr>
-                    </ng-template>
+                    </ng-template> -->
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
-                        <tr>
-                            <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td>
-                            <td (click)="FailureModeTable(p)">{{p.MachineType}}</td>
-                            <td (click)="FailureModeTable(p)">{{p.EquipmentType}}</td>
-                            <td (click)="FailureModeTable(p)">{{p.TagNumber}}</td>
-                            <td>
-                                <a style="color: green;" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded != 1}"><i class="pi pi-pencil"></i></a>
-                            </td>
-                            <td>
-                                <a style="color: green;" title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}"><i class="pi pi-plus"></i></a>
-                            </td>
-                            <td (click)="FailureModeTable(p)">{{p.ComponentCriticalityFactor}}</td>
-                            <td (click)="FailureModeTable(p)">{{p.ComponentRating}}</td>
-                            <td>
-                                <a style="color: green;" [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}" (click)="getFCAData(p)" title="Add FCA"><i class="pi pi-plus"></i></a>
-                            </td>
-                            <td>
-                                <a style="color: green;" [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}" title="Update MSS Tree" (click)="getMSSData(p)"><i class="pi pi-plus"></i></a>
-                            </td>
-                            <td (click)="FailureModeTable(p)">{{p.CMaintainenancePractice}}</td>
-                            <td>
-                                <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"> <i class="fa fa-paperclip" aria-hidden="true"></i></a>&nbsp;
-                                <a title="View Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal"><i class="fa fa-eye" aria-hidden="true"></i></a>&nbsp;
-                                <a title="Edit Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal"><i class="pi pi-pencil"></i></a>&nbsp;
-                            </td>
-                            <td>
-                                <a style="color: black;" [ngClass]="{disabled:( p.MSSAdded == null || (p.FCAAdded != 1 && p.MSSAdded != ''))}" title="Check MSS" (click)="getMSSTable(p)"><i class="fa fa-eye"></i></a>
-                            </td>
-                            <td>
-                                <a title="Report" [routerLink]="['/Home/Prescriptive/Report']" (click)="FMEAReports(p)" [ngClass]="{disabled:p.FMWithConsequenceTree ==''}"><i class="fa fa-file" aria-hidden="true"></i></a>&nbsp;
-                            </td>
-                            <td>
-                                <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><i class="pi pi-trash"></i></a>
-                            </td>
+                        <div class="prescriptive-card p-3">
+                            <!-- <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td> -->
+                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.MachineType}}</small><span class="d-block font-weight-normal h5 mt-2">{{p.EquipmentType}}<span (click)="FailureModeTable(p)" class="badge badge-info ml-2"><small><i
+                                        class="pi pi-tag mr-1"></i></small>Tag No.{{p.TagNumber}}</span>
+                            <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-chart-line"></i></small> Critical Factor: {{p.ComponentCriticalityFactor}}</span>
+                            <span (click)="FailureModeTable(p)" class="badge badge-warning"><i
+                                    class="pi pi-star-o small mr-1"></i>Rating: {{p.ComponentRating}}</span>
+                        <span (click)="FailureModeTable(p)" class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1"></i>Maintainenance Practice:{{p.CMaintainenancePractice}}</span></span>
+                        </h1>
+                            <span class="">
+                                <a class="link-primary mr-1" *ngIf="p.MSSAdded == 1" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded != 1}"><small><i class="pi pi-pencil mr-2"></i></small>Update RCM</a>
+                            </span>
+                            <span class="">
+                                <a title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add Consequence</a>
+                            </span>
+                           
+                        <span class="">
+                                <a  [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}" (click)="getFCAData(p)" title="Add FCA" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add FCA</a>
+                            </span>
+                            <span class="">
+                                <a *ngIf="p.FCAAdded == 1" [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}" title="Add MSS to tree" (click)="getMSSData(p)" class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Add MSS</a>
+                            </span>
+                            
+                            <span class="">
+                                <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal" class="link-primary mr-1"> <i class="fa fa-paperclip mr-2" aria-hidden="true"></i>Upload</a>
+                                <a title="View Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal" class="link-primary mr-1"><i class="fa fa-eye mr-2" aria-hidden="true"></i>View Attachment</a>
+                                <a title="Edit Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal" class="link-primary mr-1"><i class="pi pi-pencil mr-2"></i>Edit Attachment</a>
+                            </span>
+                            <span class="">
+                                <a style="color: black;" [ngClass]="{disabled:( p.MSSAdded == null || (p.FCAAdded != 1 && p.MSSAdded != ''))}" title="Check MSS" (click)="getMSSTable(p)" class="link-primary mr-1"><i class="fa fa-eye mr-2"></i>View MSS</a>
+                            </span>
+                            <span class="">
+                                <a title="Report" [routerLink]="['/Home/Prescriptive/Report']" (click)="FMEAReports(p)" [ngClass]="{disabled:p.FMWithConsequenceTree ==''}" class="link-primary mr-1"><small><i class="pi-book pi mr-2" aria-hidden="true"></i></small>Report</a>
+                            </span>
+                            <span class="">
+                                <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><small><i class="pi pi-trash"></i></small></a>
+                            </span>
                             <!-- <td>
                                 <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" (click)="getMSSData(p)" title="Add MSS"><i class="pi pi-plus"></i></a>
                             </td> -->
-                        </tr>
-                        <tr *ngIf="prescriptiveRecords.length == 0">
+                        </div>
+                        <div *ngIf="prescriptiveRecords.length == 0">
                             <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>
-                        </tr>
+                        </div>
                     </ng-template>
                 </p-table>
                 <p-table *ngIf="Table2" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe2" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
-                    <ng-template pTemplate="colgroup">
+                    <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                        <div class="prescriptive-card mb-0 p-3">
+                            <!-- <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td> -->
+                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.FrequencyMaintainenance}}</small><span
+                                    class="d-block font-weight-normal h5 mt-2">{{p.MaintainenancePractice}}<span (click)="FailureModeTable(p)"
+                                        class="badge badge-info ml-2"><small><i class="pi pi-tag mr-1"></i></small>Critical Factor{{p.CriticalityFactor}}</span>
+                                    <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i
+                                                class="pi pi-chart-line"></i></small> Failure Mode:
+                                        {{p.FunctionMode}}</span>
+                                        <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Rating:
+                                            {{p.Rating}}</span>
+                                            <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Local Effect:
+                                            {{p.LocalEffect}}</span>
+                                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>System Effect:
+                                                    {{p.SystemEffect}}</span>
+                                   </span>
+                                   
+                            </h1>
+                            <p class="mb-1 alert bg-white"><i class="pi pi-info-circle small mr-1"></i>Condition Monitoring: {{p.ConditionMonitoring}}</p>
+                            <p class="mb-0 alert bg-white"><i class="pi pi-info-circle small mr-1"></i>Consequence: {{p.Consequence}}</p>
+                            
+                            <!-- <td>
+                                                    <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" (click)="getMSSData(p)" title="Add MSS"><i class="pi pi-plus"></i></a>
+                                                </td> -->
+                        </div>
+                    </ng-template>
+                    <!-- <ng-template pTemplate="colgroup">
                         <colgroup>
                             <col style="width:5em;">
                             <col style="width:10em;">
@@ -121,8 +150,8 @@
                             <col style="width:13em;">
                             <col style="width:10em;">
                         </colgroup>
-                    </ng-template>
-                    <ng-template pTemplate="header">
+                    </ng-template> -->
+                    <!-- <ng-template pTemplate="header">
                         <tr>
                             <th>Sr. No</th>
                             <th>Failure Mode</th>
@@ -135,8 +164,8 @@
                             <th>Condition Monitoring</th>
                             <th>Consequence</th>
                         </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                    </ng-template> -->
+                    <!-- <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                         <tr>
                             <td>{{rowIndex + 1}}</td>
                             <td class="text-truncate" pTooltip="{{p.FunctionMode}}" tooltipPosition="top">{{p.FunctionMode}}</td>
@@ -152,7 +181,7 @@
                         <tr *ngIf="FailureModeDataTabe2.length == 0">
                             <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>
                         </tr>
-                    </ng-template>
+                    </ng-template> -->
                 </p-table>
                 <p-table *ngIf="Table3" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe3" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
@@ -179,19 +208,19 @@
                             <td>{{p.MSSStartergy}}</td>
                             <td>
                                 <a style="color: black;" title="View more" (click)="getMSSStrategyTable(p)"><i class="fa fa-eye"></i></a>
-                            
+
                             </td>
-                            
+
                         </tr>
                         <!-- <tr *ngIf="FailureModeDataTabe2.length == 0">
                             <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>
                         </tr> -->
                     </ng-template>
                 </p-table>
-                
 
 
-                <p-table *ngIf="Table4"  [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe4" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
+                <p-table *ngIf="Table4" [scrollable]="true" [style]="{width:'100%'}" [value]="FailureModeDataTabe4" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
                     <ng-template pTemplate="colgroup">
                         <colgroup>
