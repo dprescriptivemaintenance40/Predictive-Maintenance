@@ -127,7 +127,7 @@ namespace DPM.Controllers.Prescriptive
         [Route("RCAHeatExchanger")]
         public async Task<ActionResult<PrescriptiveLookupMasterModel>> GetData(string data)
         {
-            var lookupMasterModel = await _context.PrescriptiveLookupMassterModelData.Where(a => a.Function == data)
+            var lookupMasterModel = await _context.PrescriptiveLookupMassterModelData.Where(a => a.EquipmentType == data)
                                                                                      .OrderBy(a => a.PrescriptiveLookupMasterId)
                                                                                      .ToListAsync();
 

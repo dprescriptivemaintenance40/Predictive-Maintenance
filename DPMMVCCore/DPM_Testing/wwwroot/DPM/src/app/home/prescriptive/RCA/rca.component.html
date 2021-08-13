@@ -297,9 +297,10 @@
                             </select> -->
                             <select [(ngModel)]="ADDRCAFailureMode" class="form-select" class="form-control">
                                 <option value="">Choose..</option>
-                                <option value="Rotar Damage">Rotar Damage</option>
+                                <option *ngFor="let fm of RCAQualitativeFailureModelist" [ngValue]="fm">{{fm}}</option>
+                                <!-- <option value="Rotar Damage">Rotar Damage</option>
                                 <option value="Second stage Rotor breakdown">Second stage Rotor breakdown</option>
-                                <option value="Cooler Failure">Cooler Failure</option>
+                                <option value="Cooler Failure">Cooler Failure</option> -->
                             </select>
                         </div>
                     </li>

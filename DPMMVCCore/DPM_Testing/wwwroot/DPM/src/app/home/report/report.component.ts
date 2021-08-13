@@ -198,9 +198,9 @@ export class ReportComponent {
 
       for (var i = 0; i < this.classificationDetails.length; i++) {
 
-        if (uniqueNames.indexOf(this.classificationDetails[i].RD) === -1) {
+        if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
           uniqueObj.push(this.classificationDetails[i])
-          uniqueNames.push(this.classificationDetails[i].RD);
+          uniqueNames.push(this.classificationDetails[i].Classification);
         }
 
       }
@@ -218,15 +218,15 @@ export class ReportComponent {
             result[k][o[k]] = (result[k][o[k]] || 0) + 1;
           });
         });
-        this.incipient = result.RD.incipient;
+        this.incipient = result.Classification.incipient;
         if (this.incipient == undefined) {
           this.incipient = 0;
         }
-        this.degrade = result.RD.degrade;
+        this.degrade = result.Classification.degrade;
         if (this.degrade == undefined) {
           this.degrade = 0;
         }
-        this.normal = result.RD.normal;
+        this.normal = result.Classification.normal;
         if (this.normal == undefined) {
           this.normal = 0;
         }
@@ -283,9 +283,9 @@ export class ReportComponent {
 
       for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
 
-        if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].RD) === -1) {
+        if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
           AFPuniqueObj.push(this.screwWithPredictionDetails[i])
-          AFPuniqueNames.push(this.screwWithPredictionDetails[i].RD);
+          AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
         }
 
       }
