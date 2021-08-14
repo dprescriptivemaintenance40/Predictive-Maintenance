@@ -198,7 +198,7 @@
                                                 </b></p>
                                         </ng-template>
                                         <ng-template pTemplate="content p-0">
-                                            <div class="container">
+                                            <div class="">
                                                 <div class="row">
                                                     <div class="col-md-3 mt-3 mb-3">
                                                         
@@ -305,7 +305,7 @@
                                             </div>
                                             </div>
                                             </div>
-                                            <a class="btn btn-white" style="border:none"> </a>
+                                            <!-- <a class="btn btn-white" style="border:none"> </a> -->
                                             <button class="btn btn-primary btn-sm mt-4" (click)="FFInterval()"> <i class="fa fa-check"
                                                     aria-hidden="true"></i>Save</button>
                                         </ng-template>
@@ -331,7 +331,7 @@
                                                             name="name1" />No
                                                 </div>
                                             </div>
-                                            <a class="btn btn-white" style="border:none"> </a>
+                                            <!-- <a class="btn btn-white" style="border:none"> </a> -->
                                             <button class="btn btn-primary btn-sm mt-4" (click)="CommentThird()"> <i class="fa fa-check"
                                                     aria-hidden="true"></i>Save</button>
                                         </ng-template>
@@ -350,10 +350,10 @@
                                         <ng-template pTemplate="content p-0">
                                             <div class="row">
                                                 <div class="col-sm-1">
-                                                    Yes
+                                                   
                                                     <input type="radio" [(ngModel)]="CommentFIEYN2"
-                                                            value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - Yes"
-                                                            name="name2" />
+                                                            value="planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - Yes"
+                                                            name="name2" />Yes
                                                 </div>
                                                 <div class="col-sm-1">
                                                   
@@ -362,7 +362,7 @@
                                                             name="name2" />No
                                                 </div>
                                             </div>
-                                            <a class="btn btn-white" style="border:none"> </a>
+                                            <!-- <a class="btn btn-white" style="border:none"> </a> -->
                                             <button class="btn btn-primary btn-sm mt-4" (click)="CommentFourth()"> <i class="fa fa-check"
                                                     aria-hidden="true"></i>Save</button>
                                         </ng-template>
@@ -385,7 +385,7 @@
                                         </ng-template>
                                         <ng-template pTemplate="footer" style="padding: 0 !important">
                                             <!-- <button class="btn btn-primary btn-sm" *ngIf="FCAFreeTextCancel1" (click)="FCAFreeTextCancel()"><i class="fa fa-times" aria-hidden="true"></i></button> -->
-                                            <a class="btn btn-white" style="border:none"> </a>
+                                            <!-- <a class="btn btn-white" style="border:none"> </a> -->
                                             <button class="btn btn-primary btn-sm" *ngIf="FCAFreeTextSave1"
                                                 (click)="FCAFreeTextSave()"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
                                         </ng-template>
@@ -423,46 +423,45 @@
                                             </div>
                                             <div class="row"
                                                 *ngIf="ConsequenceFM == 'D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)' || ConsequenceFM == 'E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)' || ConsequenceFM == 'C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)' ">
-                                                <div class="col-md-3">
+                                                <div class="col-md-12">
                                                     <label> Useful Life</label>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-12 mb-4">
                                                     <input type="number" [(ngModel)]="UsefulLife" name="usefullife" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-12">
                                                     <label>Do you want weibull analysis for alpha and beta</label>
                             
                                                 </div>
-                                                <div class="col-sm">
-                                                    Yes
-                                                    <td><input type="radio" [(ngModel)]="WebalYN" value="YES" name="ABYN" />
+                                                <div class="col-md-12 d-flex">
+                                                    <div class="mr-2">
+                                                   
+                                                    <input type="radio" [(ngModel)]="WebalYN" value="YES" name="ABYN" />Yes
+                                                
                                                 </div>
-                                                <div class="col-sm">
-                                                    No
-                                                    <td><input type="radio" [(ngModel)]="WebalYN" value="No" name="ABYN" />
+                                                <div class="div">                                                   
+                                                    <input type="radio" [(ngModel)]="WebalYN" value="No" name="ABYN" />No
+                                                </div>
                                                 </div>
                                             </div>
                                             <div class="row" *ngIf="WebalYN == 'No'">
-                                                <small>Please provide values for alpha and beta</small>
+                                                <div class="col">
+                                                <small class="alert alert-warning d-inline-block w-100">Please provide values for alpha and beta</small>
+                                                </div>
                                             </div>
                                             <div class="row" *ngIf="WebalYN == 'No'">
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <label>Alpha</label>
-                                                </div>
-                                                <div class="col-md-3">
                                                     <input type="number" [(ngModel)]="alpha" name="WebalYN" class="form-control">
                                                 </div>
+                                            <div class="col-md-6">
+                                                <label>Beta</label>
+                                                <input type="number" [(ngModel)]="beta" name="WebalYN" class="form-control">
                                             </div>
-                                            <div class="row" *ngIf="WebalYN == 'No'">
-                                                <div class="col-md-3">
-                                                    <label>Beta</label>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input type="number" [(ngModel)]="beta" name="WebalYN" class="form-control">
-                                                </div>
                                             </div>
+                                            
                                         </ng-template>
                                         <ng-template pTemplate="footer" style="padding: 0 !important">
                                             <a class="btn btn-white" style="border:none"> </a>
@@ -768,19 +767,18 @@
                     </b></p>
             </ng-template>
             <ng-template pTemplate="content p-0">
+                
                 <div class="row">
-                    <div class="col-sm"></div>
                     <div class="col-sm">
-                        Yes
-                        <td><input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is not Evident"
-                                name="name1" />&nbsp;</td>
+                       
+                        <input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is not Evident"
+                                name="name1" />Yes
                     </div>
                     <div class="col-sm">
-                        No
-                        <td><input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is Evident"
-                                name="name1" />&nbsp;</td>
+                      
+                        <input type="radio" [(ngModel)]="CommentFIEYN" value="Failure is Evident"
+                                name="name1" />No
                     </div>
-                    <div class="col-sm"></div>
                 </div>
             </ng-template>
             <ng-template pTemplate="footer" style="padding: 0 !important">
@@ -801,20 +799,18 @@
             </ng-template>
             <ng-template pTemplate="content p-0">
                 <div class="row">
-                    <div class="col-sm"></div>
                     <div class="col-sm">
-                        Yes
-                        <td><input type="radio" [(ngModel)]="CommentFIEYN2"
+                       
+                        <input type="radio" [(ngModel)]="CommentFIEYN2"
                                 value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - Yes"
-                                name="name2" />&nbsp;</td>
+                                name="name2" />Yes
                     </div>
                     <div class="col-sm">
-                        No
-                        <td><input type="radio" [(ngModel)]="CommentFIEYN2"
+                       
+                        <input type="radio" [(ngModel)]="CommentFIEYN2"
                                 value=" planned replacement or refurbishment maintenance prevent or mitigate this failure Mode - No"
-                                name="name2" />&nbsp;</td>
+                                name="name2" />No
                     </div>
-                    <div class="col-sm"></div>
                 </div>
             </ng-template>
             <ng-template pTemplate="footer" style="padding: 0 !important">

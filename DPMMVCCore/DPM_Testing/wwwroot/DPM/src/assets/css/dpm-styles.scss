@@ -1372,3 +1372,80 @@ table.p-organizationchart-table {
     font-size: 12px;
   }
 }
+.fixed-modal-footer {
+  position: fixed;
+  bottom: 0;
+  background: #fff;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  left: 0;
+  text-align: center;
+}
+
+.dpm-radio {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+  }
+}
+.dpm-radio:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+/* Hide the browser's default radio button */
+.container 
+
+/* Create a custom radio button */
+
+
+/* On mouse-over, add a grey background color */
+.dpm-radio:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.dpm-radio input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.dpm-radio .checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.dpm-radio input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.dpm-radio .checkmark:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
