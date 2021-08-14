@@ -149,7 +149,45 @@
             </div> -->
         </div>
     </div>
-   
+    <div class="row">
+
+        <div class="col-sm">
+            <div class="card" style="width:12rem;border:none">
+                <p-card>
+                    <ul>
+                        <li>
+                            <h1 style="text-align: center;color:black;font-size: 14px">Risk ranking : M </h1>
+                        </li>
+                        <li>
+                            <h1 style="text-align: center;color:black;font-size: 14px">HSECES : Yes </h1>
+                        </li>
+                        <li>
+                            <h1 style="text-align: center;color:black;font-size: 14px">CRIT : II</h1> 
+                        </li>
+                    </ul>
+                    <!-- <strong style="text-align: left;color:black;font-size: 12px">Risk ranking : M </strong><br>
+                    <h1 style="text-align: center;color:black;font-size: 14px">HSECES : Yes </h1>
+                    <h1 style="text-align: center;color:black;font-size: 14px">CRIT : II</h1> -->
+                </p-card>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card" style="width:12rem;border:none">
+                <p-card>
+                    <strong style="text-align: left;color:black;font-size: 12px">Performance Number </strong><br><br>
+                    <h1 style="text-align: center;color:black;font-size: 14px">{{finalPerformanceNumber | number:'1.0-2'}}</h1>
+                </p-card>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card" style="width:12rem;border:none">
+                <p-card>
+                    <strong style="text-align: left;color:black;font-size: 12px">DPM Analysis Beneficial </strong><br><br>
+                    <h1 style="text-align: center;color:black;font-size: 14px">{{DAB}}</h1>
+                </p-card>
+            </div>
+        </div>
+        </div><br><br>
     <div class="container">
         <div class="row">
             <div>
@@ -176,33 +214,7 @@
         </div>
     </div>
     <br><br>
-    <div class="row">
 
-    <div class="col-sm">
-        <div class="card" style="width:12rem;border:none">
-            <p-card>
-                <strong style="text-align: left;color:black;font-size: 12px">Risk ranking </strong><br>
-                <h1 style="text-align: center;color:black;font-size: 14px">{{RK}}</h1>
-            </p-card>
-        </div>
-    </div>
-    <div class="col-sm">
-        <div class="card" style="width:12rem;border:none">
-            <p-card>
-                <strong style="text-align: left;color:black;font-size: 12px">DPM Analysis Beneficial </strong><br><br>
-                <h1 style="text-align: center;color:black;font-size: 14px">{{DAB}}</h1>
-            </p-card>
-        </div>
-    </div>
-    <div class="col-sm">
-        <div class="card" style="width:12rem;border:none">
-            <p-card>
-                <strong style="text-align: left;color:black;font-size: 12px">Performance Number </strong><br><br>
-                <h1 style="text-align: center;color:black;font-size: 14px">{{finalPerformanceNumber | number:'1.0-2'}}</h1>
-            </p-card>
-        </div>
-    </div>
-    </div>
 </div>
 <br><br>
 <div class="card shadow div-in-middle" style="width: 70rem;" *ngIf="FuterPredictionShow">
@@ -448,72 +460,16 @@
                 <div class="card">
                     <b>With D.P.M  </b>
                     <canvas id="gaugechart"></canvas>
-                    <!-- <h1 style="text-align: center;color: rgb(17, 17, 248);">{{DPMMEI}}</h1> -->
                 </div>
             </div>
             <div class="col-sm" style="margin: 20px;">
                 <div class="card">
                     <b>Without D.P.M </b>
                     <canvas id="canvasDPM"></canvas>
-                    <!-- <h1 style="text-align: center;color: red;">{{DPMWithoutMEI}}</h1> -->
                 </div>
             </div>
         </div>
     </div> <br><br>
-    <!-- <div *ngIf="PrescriptiveMaintenance">
-        <div class="card shadow div-in-middle" style="width: 70rem;">
-            <div style="text-align: center">
-                <h5><b> Prescriptive & Maintenance</b> </h5>
-            </div><br>
-            <div class="row">
-                <div class="col-sm">
-                    <div class="card"><br>
-                        <strong style="text-align: center;color:mediumvioletred">Machine Type : {{MachineType}}
-                        </strong><br>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <div class="card"><br>
-                        <strong style="text-align: center;color:mediumvioletred">Equipment Type : {{EquipmentType}}
-                        </strong><br>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <div class="card"><br>
-                        <strong style="text-align: center;color:mediumvioletred">Tag Number : {{SelectedTagNumber}}
-                        </strong><br>
-                    </div>
-                </div>
-            </div><br>
-            <div class="row">
-                <div class="col-sm" style="margin: 10px;">
-                    <div class="card"><br>
-                        <strong style="text-align: center;">Component Criticality Factor</strong>
-                        <h1 style="text-align: center;color: darkblue;">{{ComponentCriticalityFactor}}</h1>
-                    </div>
-                </div>
-                <div class="col-sm" style="margin: 10px;">
-                    <div class="card"><br>
-                        <strong style="text-align: center;">Component Rating </strong><br>
-                        <h1 style="text-align: center;color: darkblue">{{ComponentRating}}</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm" style="margin: 20px;">
-                    <div class="card"><br>
-                        <strong style="text-align: center;">Frequency Maintenance </strong><br>
-                        <h5 style="text-align: center;color: darkblue;">{{CFrequencyMaintainenance}}</h5>
-                    </div>
-                </div>
-                <div class="col-sm" style="margin: 20px;">
-                    <div class="card"><br>
-                        <strong style="text-align: center;">Condition Monitoring </strong><br>
-                        <h5 style="text-align: center;color: brown;">{{CConditionMonitoring}}</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
+
 
   

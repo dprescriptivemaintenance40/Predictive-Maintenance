@@ -198,9 +198,9 @@ export class DashboardComponent {
       this.CBAWithId(this.CFPPrescriptiveId)
     }
     this.date =  moment().add(1, 'days').format('YYYY-MM-DD');
-    this.MachineType="Pump"
-    this.EquipmentType="Centrifugal Pump"
-    this.SelectedTagNumber="S-98"
+    this.MachineType="Compressor"
+    this.EquipmentType="Screw Compressor"
+    this.SelectedTagNumber="K003"
   }
   ngOnInit() {
     this.getRecordsByEqui()
@@ -270,6 +270,7 @@ export class DashboardComponent {
     var PredictionincipientValuation: number = 0;
     var PredictiondegradeCount: any = [];
     var PredictiondegradeValuation: number = 0;
+
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.PredictionDataList)
       .subscribe(
         res => {
@@ -330,14 +331,13 @@ export class DashboardComponent {
 
           });
           this.ScrewPredictionAllData.forEach(predict => {
-            this.PredictionData = predict.Prediction;
+             this.PredictionData = predict.Prediction;
             let Predictyeardata = { PredictyearId: 0, Predictyearname: '' };
-
             Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
             this.InsertedDate.push(Predictyeardata);
           })
           this.Predictyearlist = this.InsertedDate.reduce((m, o) => {
-            var found = m.find(p => p.Predictyearname === o.Predictyearname);
+            var found = m.find(s => s.Predictyearname === o.Predictyearname);
             if (found) {
             } else {
               m.push(o);
@@ -370,10 +370,10 @@ export class DashboardComponent {
           console.log(error.error)
         })
   }
-  groupByPredict(list, keyGetter) {
+  groupByPredict(list,) {
     list.reduce((m, o) => {
-      var found = m.find(p => p.Predictyearname === o.Predictyearname);
-      if (found) { }
+      var found1 = m.find(s => s.Predictyearname === o.Predictyearname);
+      if (found1) { }
       else {
         m.push(o);
       }
@@ -533,8 +533,8 @@ export class DashboardComponent {
       )
   }
 
-  groupBy(list, keyGetter) {
-    list.reduce((m, o) => {
+  groupBy(list1, keyGetter) {
+    list1.reduce((m, o) => {
       var found = m.find(p => p.yearname === o.yearname);
       if (found) { }
       else {
@@ -544,8 +544,8 @@ export class DashboardComponent {
     },
       []);
   }
-  groupBy1(list, keyGetter) {
-    list.reduce((s, n) => {
+  groupBy1(list2, keyGetter) {
+    list2.reduce((s, n) => {
       var found = s.find(p => p.FMname === n.FMname);
       if (found) { }
       else {
@@ -720,66 +720,90 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
 
     this.changeDetectorRef.detectChanges();
-    this.chart = new Chart('gaugechart', {
-      type: 'doughnut',
-      data: {
-         labels: ['DPM_With_MEI','DPM_Cost'],
-        datasets: [
-          {
-            data: [WithDPM_MEI,WithDPM_Cost],
-            backgroundColor: ['purple','blueviolet'],
-            fill: false
-          },
-        ]
-      },
-      options: {
-        circumference: 1 * Math.PI,
-        rotation: 1 * Math.PI,
-        cutoutPercentage: 70
-      }
-    });
     // this.chart = new Chart('gaugechart', {
-    //   type: 'bar',
+    //   type: 'doughnut',
     //   data: {
+    //      labels: ['DPM_With_MEI','DPM_Cost'],
     //     datasets: [
     //       {
-    //         label: "DPM_With_MEI (Benefit)",
-    //         data: [this.DPMMEI],
-    //         backgroundColor: ['purple '],
-    //         fill: true,
-    //         barPercentage: 2,
-    //         barThickness: 20,
-    //         maxBarThickness: 28,
-    //       }, 
-    //       {
-    //         label: "Total Cost",
-    //         data: [this.DPMCost],
-    //         backgroundColor: ['blueviolet'],
-    //         fill: true,
-    //         barPercentage: 2,
-    //         barThickness: 20,
-    //         maxBarThickness: 28,
-    //       }, 
-
-    //     ],
-    //     options: {
-    //      scales: {
-    //        yAxes: [{
-    //          ticks: {
-    //           steps: 10,
-    //           stepValue: 5,
-    //             max: 100,
-    //             beginAtZero: true
-    //          }
-    //        }]
-    //      }
-    //    }
+    //         data: [WithDPM_MEI,WithDPM_Cost],
+    //         backgroundColor: ['purple','blueviolet'],
+    //         fill: false
+    //       },
+    //     ]
     //   },
+    //   options: {
+    //     circumference: 1 * Math.PI,
+    //     rotation: 1 * Math.PI,
+    //     cutoutPercentage: 70
+    //   }
     // });
+
+    this.chart = new Chart('gaugechart', {
+      type: 'bar',
+      data: {
+        datasets: [
+          {
+            label: "DPM_With_MEI (Benefit)",
+            data: [WithDPM_MEI],
+            backgroundColor: ['purple '],
+            fill: true,
+            barPercentage: 12,
+            barThickness: 30,
+            maxBarThickness: 38,
+          }, 
+          {
+            label: "Total Cost",
+            data: [WithDPM_Cost],
+            backgroundColor: ['blueviolet'],
+            fill: true,
+            barPercentage: 12,
+            barThickness: 30,
+            maxBarThickness: 28,
+          }, 
+          {
+            label: " Economic Risk",
+            data: [5,],
+            backgroundColor: ['red'],
+            fill: true,
+            barPercentage: 12,
+            barThickness: 30,
+            maxBarThickness: 38,
+          },
+
+        ],
+        options: {
+         scales: {
+           yAxes: [{
+             ticks: {
+              steps: 10,
+              stepValue: 5,
+                max: 100,
+                beginAtZero: true
+             }
+           }]
+         }
+       }
+      },
+    });
 
 
   }
   gaugechartwithoutDPM() {
+
+    var x= this.DPMMEI *100
+    var y : number = + this.DPMMEI
+    var z:number= +this.DPMWithoutMEI
+    var w:number= y+z
+    var WithDPM_MEI = (x /w).toFixed(0)
+
+    var xcost= this.DPMCost *100
+    var ycost : number = + this.DPMCost
+    var zcost:number= +this.DPMWithoutCost
+    var wcost:number= ycost+zcost
+    var WithDPM_Cost= (xcost /wcost).toFixed(0)
+    this.changeDetectorRef.detectChanges();
+
     var a= this.DPMWithoutMEI *100
     var b : number = + this.DPMWithoutMEI
     var c:number= +this.DPMMEI
@@ -793,62 +817,73 @@ export class DashboardComponent {
     var WithoutDPM_Cost= (acost /dcost).toFixed(0)
 
     this.changeDetectorRef.detectChanges();
-    this.chart = new Chart('canvasDPM', {
-      type: 'doughnut',
-      data: {
-         labels: ['DPM_Without_MEI','WithoutDPM_Cost'],
-        datasets: [
-          {
-            data: [WithoutDPM_MEI,WithoutDPM_Cost],
-            backgroundColor: ['purple','blueviolet'],
-            fill: false
-          },
-        ]
-      },
-      options: {
-        circumference: 1 * Math.PI,
-        rotation: 1 * Math.PI,
-        cutoutPercentage: 70
-      }
-    });
-
     // this.chart = new Chart('canvasDPM', {
-    //   type: 'bar',
+    //   type: 'doughnut',
     //   data: {
+    //        labels: ['DPM_Without_MEI','WithoutDPM_Cost'],
     //     datasets: [
     //       {
-    //         label: "DPM_Without_MEI (Benefit)",
-    //         data: [this.DPMWithoutMEI],
-    //         backgroundColor: ['purple '],
-    //         fill: true,
-    //         barPercentage: 2,
-    //         barThickness: 20,
-    //         maxBarThickness: 28,
-    //       }, 
-    //       {
-    //         label: "Total Cost",
-    //         data: [this.DPMWithoutCost],
-    //         backgroundColor: ['blueviolet'],
-    //         fill: true,
-    //         barPercentage: 2,
-    //         barThickness: 20,
-    //         maxBarThickness: 28,
+    //         label: "DPM_With_MEI",
+    //         data: [WithoutDPM_MEI,WithoutDPM_Cost],
+    //         backgroundColor: ['purple','blueviolet'],
+    //         fill: false
     //       },
-    //     ],
-    //     // options: {
-    //     //   scales: {
-    //     //     yAxes: [{
-    //     //       ticks: {
-    //     //        steps: 10,
-    //     //        stepValue: 5,
-    //     //          max: 100,
-    //     //          beginAtZero: true
-    //     //       }
-    //     //     }]
-    //     //   }
-    //     // }
+    //     ]
     //   },
+    //   options: {
+    //     circumference: 1 * Math.PI,
+    //     rotation: 1 * Math.PI,
+    //     cutoutPercentage: 70
+    //   }
     // });
+
+    this.chart = new Chart('canvasDPM', {
+      type: 'bar',
+      data: {
+        datasets: [
+          {
+            label: "WithoutDPM_MEI (Benefit)",
+            data: [WithoutDPM_MEI],
+            backgroundColor: ['purple '],
+            fill: true,
+            barPercentage: 12,
+            barThickness: 30,
+            maxBarThickness: 38,
+          }, 
+          {
+            label: "Total Cost",
+            data: [WithoutDPM_Cost],
+            backgroundColor: ['blueviolet'],
+            fill: true,
+            barPercentage: 12,
+            barThickness: 30,
+            maxBarThickness: 38,
+          },
+          {
+            label: "Economic Risk",
+            data: [9],
+            backgroundColor: ['red'],
+            fill: true,
+            barPercentage: 12,
+            barThickness: 30,
+            maxBarThickness: 38,
+          },  
+
+        ],
+        options: {
+         scales: {
+           yAxes: [{
+             ticks: {
+              steps: 10,
+              stepValue: 1,
+                max: 100,
+                beginAtZero: true
+             }
+           }]
+         }
+       }
+      },
+    });
   }
 
   ClassificationOfAllRecordDonught() {
@@ -1086,7 +1121,7 @@ export class DashboardComponent {
          yAxes: [{
             stacked: true,
            ticks: {
-             
+           
            }
          }]
        }
@@ -1141,9 +1176,10 @@ export class DashboardComponent {
     // });
     this.changeDetectorRef.detectChanges();
      this.ScrewPredictionAllData.sort()
-     var LabelDates : any = [];
+
+     var LabelDatess : any = [];
      this.Predictyearlist.forEach(element => {
-      LabelDates.push(element.Predictyearname)
+      LabelDatess.push(element.Predictyearname)
      });
  
      for(var i=0; i < this.Predictyearlist.length; ++i) {
@@ -1184,7 +1220,7 @@ export class DashboardComponent {
     this.chart = new Chart("PredictioncanvasClass", {
       type:"bar",
       data: {
-       labels: LabelDates,
+       labels: LabelDatess,
         fill: true,
         datasets: [
           {
@@ -1464,8 +1500,8 @@ export class DashboardComponent {
         })
   }
 
-  FutuergroupBy(list, keyGetter) {
-    list.reduce((m, o) => {
+  FutuergroupBy(list3, keyGetter) {
+    list3.reduce((m, o) => {
       var found = m.find(p => p.FutuerPredictyearname === o.FutuerPredictyearname);
       if (found) { }
       else {
@@ -2143,9 +2179,9 @@ public highlight_end:any
       this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
 
       if (this.PerformanceNumber > 10) {
-        this.DAB = "Y"
+        this.DAB = "Yes"
       } else {
-        this.DAB = "N"
+        this.DAB = "No"
       }
   }
 }
