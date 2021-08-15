@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 
 @Component({
@@ -7,7 +8,7 @@ import { MessageService } from "primeng/api";
     providers: [MessageService]
 })
 export class CostBenefitAnalysisComponent {
-
+    public CFPPrescriptiveId : number =0
     public MachineType: string = "";
     public EquipmentType: string = "";
     public TagNumber: string = "";
@@ -22,13 +23,18 @@ export class CostBenefitAnalysisComponent {
     public Plant: string = '';
     public Unit: string = '';
     public ETBF: string = '';
+    public showDashboard: boolean = false;
     constructor(private messageService: MessageService,
-        private http: HttpClient) {
+        private http: HttpClient,
+        public router: Router,) {
         this.MachineEquipmentSelect();
         this.getPrescriptiveRecords();
         this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
     }
 
+    RouteTodashboard(){
+        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, ETBF : this.ETBF}})
+      }
     MachineEquipmentSelect() {
         if (this.MachineType == "Pump") {
             this.EquipmentList = []
@@ -48,11 +54,13 @@ export class CostBenefitAnalysisComponent {
             });
     }
     getPrescriptiveRecordsByEqui() {
+        this.showDashboard = true
         if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
             this.prescriptiveRecords = [];
             this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
                 .subscribe((res: any) => {
                     this.prescriptiveRecords = res;
+                    this.CFPPrescriptiveId = res.CFPPrescriptiveId
                     this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
                         row.TotalAnnualPOC = 0;
                         row.CentrifugalPumpMssModel.forEach(mss => {

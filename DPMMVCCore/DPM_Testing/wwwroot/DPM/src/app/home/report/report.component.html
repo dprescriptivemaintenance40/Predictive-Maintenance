@@ -11,18 +11,19 @@
                     <li class="list-group-item">
                         <div class="input-group mb-3">
                             <label style="margin-right: 12px;">Equipment Type</label>
-                            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="EquipmentType" class="form-select" class="form-control">
-                              <option value="">Select Type</option>
+                            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="EquipmentType"
+                                class="form-select" class="form-control">
+                                <option value="">Select Type</option>
                                 <option value="Compressor">Compressor</option>
-                                    <!-- <option value="Pump" disabled>Pump</option> -->
-                                
                             </select>
 
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="input-group mb-3">
-                            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control" placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
+                            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber"
+                                class="form-control" placeholder="Tag Number" aria-label="Tag Number"
+                                aria-describedby="basic-addon1">
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -57,96 +58,98 @@
                     </div>
                     <div class="col-sm-10">
                         <span>
-            <h5>Based on data Inputs and Model analysis, please find below Initial<br>
-                 Assessment report and recommendation for further study of the Asset</h5>
-        </span>
+                            <h5>Based on data Inputs and Model analysis, please find below Initial<br>
+                                Assessment report and recommendation for further study of the Asset</h5>
+                        </span>
                     </div>
                 </div>
-                <div style="padding:30px; color: black;">
-                    <span> <br><br>
-            <h5>Customer Data:</h5>
-        </span>
-
-                    <table>
-                        <tr>
-                            <th>Company Name</th>
-                            <td>{{user.Company}}</td>
-                        </tr>
-                        <tr>
-                            <th>Focal Person Name</th>
-                            <td>{{user.Firstname}} {{user.Lastname}}</td>
-                        </tr>
-                        <tr>
-                            <th>Email Address</th>
-                            <td>{{user.Email}}</td>
-                        </tr>
-                        <tr>
-                            <th>Contact Details</th>
-                            <td>{{user.PhoneNumber}}</td>
-                        </tr>
-                        <tr>
-                            <th>Tag Number</th>
-                            <td>{{TagNumber}}</td>
-                        </tr>
-                        <tr>
-                            <th>Equipment Type</th>
-                            <td>{{EquipmentType}}</td>
-                        </tr>
-                        <tr>
-                            <th>Date of receipt Customer data</th>
-                            <td>{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
-                        </tr>
-
-                    </table>
-                    <br><br>
-                    <h5>D.P.M. Output:</h5>
-
-                    <table>
-                        <tr>
-                            <th>Date of Analysis</th>
-                            <td>{{DOA | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
-                        </tr>
-                        <tr>
-                            <th>Asset Current Condition</th>
-                            <td>Normal={{normalpercentage | number:'1.0-2' }}%, Incipient={{incipientPerentage | number:'1.0-2'}}%, Degrade={{degradePercentage| number:'1.0-2' }}%</td>
-                        </tr>
-                        <!-- <tr>
-                            <th>Asset Forecast Performance</th>
-                            <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
-                        </tr> -->
-                        <tr>
-                            <th>Risk ranking</th>
-                            <td>{{RK}}</td>
-                        </tr>
-                        <tr>
-                            <th>DPM Analysis Beneficial Y/N</th>
-                            <td>{{DAB}} | Performance Number : {{finalPerformanceNumber | number:'1.0-2'}}</td>
-                        </tr>
-                        <tr *ngIf="AFPVisible">
-                            <th>Asset Forecast Performance</th>
-
-                            <td>Normal={{AFPnormalpercentage | number:'1.0-2'}}%, Incipient={{AFPincipientPerentage | number:'1.0-2' }}%, Degrade={{AFPdegradePercentage | number:'1.0-2'}}%</td>
-
-                        </tr>
-                        <tr *ngIf="AFPNotVisible">
-                            <th>Asset Forecast Performance</th>
-                            <!--          
-                            <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
-                            -->
-                            <td>No Data to show. Please do Prediction</td>
-                            <td>
-                                <button class="btn btn-dark" [routerLink]="[ '/ScrewPrediction']" (click)="open(mymodal)">Do Prediction</button>
-                            </td>
-                        </tr>
-                    </table>
+                <div class="row" style="margin: 10px;">
+                    <div class="col" style="padding:30px; color: black;">
+                        <span>
+                            <h5>Customer Data:</h5>
+                        </span>
+                        <table>
+                            <tr>
+                                <th>Company Name</th>
+                                <td>{{user.Company}}</td>
+                            </tr>
+                            <tr>
+                                <th>Focal Person Name</th>
+                                <td>{{user.Firstname}} {{user.Lastname}}</td>
+                            </tr>
+                            <tr>
+                                <th>Email Address</th>
+                                <td>{{user.Email}}</td>
+                            </tr>
+                            <tr>
+                                <th>Contact Details</th>
+                                <td>{{user.PhoneNumber}}</td>
+                            </tr>
+                            <tr>
+                                <th>Tag Number</th>
+                                <td>{{TagNumber}}</td>
+                            </tr>
+                            <tr>
+                                <th>Equipment Type</th>
+                                <td>{{EquipmentType}}</td>
+                            </tr>
+                            <tr>
+                                <th>Date of receipt Customer data</th>
+                                <td>{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                            </tr>
+    
+                        </table>
+                    </div>
+                    <div class="col" style="padding:30px; color: black;">
+                        <h5>D.P.M. Output:</h5>
+                        <table>
+                            <tr>
+                                <th>Date of Analysis</th>
+                                <td>{{DOA | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                            </tr>
+                            <tr>
+                                <th>Asset Current Condition</th>
+                                <td>Normal={{normalpercentage | number:'1.0-2' }}%, Incipient={{incipientPerentage |
+                                    number:'1.0-2'}}%, Degrade={{degradePercentage| number:'1.0-2' }}%</td>
+                            </tr>
+                            <!-- <tr>
+                                <th>Asset Forecast Performance</th>
+                                <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
+                            </tr> -->
+                            <tr>
+                                <th>Risk ranking</th>
+                                <td>{{RK}}</td>
+                            </tr>
+                            <tr>
+                                <th>DPM Analysis Beneficial Y/N</th>
+                                <td>{{DAB}} | Performance Number : {{finalPerformanceNumber | number:'1.0-2'}}</td>
+                            </tr>
+                            <tr *ngIf="AFPVisible">
+                                <th>Performance Number</th>
+                                <!-- <th>Asset Forecast Performance</th> -->
+                                <!-- <td>Normal={{AFPnormalpercentage | number:'1.0-2'}}%, Incipient={{AFPincipientPerentage | number:'1.0-2' }}%, Degrade={{AFPdegradePercentage | number:'1.0-2'}}%</td> -->
+    
+                            </tr>
+                            <!-- <tr *ngIf="AFPNotVisible">
+                                <th>Asset Forecast Performance</th>
+                                <td>No Data to show. Please do Prediction</td>
+                                <td>
+                                    <button class="btn btn-dark" [routerLink]="[ '/ScrewPrediction']" (click)="open(mymodal)">Do Prediction</button>
+                                </td>
+                            </tr> -->
+                        </table>
+                    </div>
                 </div>
+                <app-dashboard></app-dashboard>
+                <br>
                 <span>
-          Note: Any Further technical assistance please email dprescripti@gmail.com
-        </span>
+                    Note: Any Further technical assistance please email dprescripti@gmail.com
+                </span>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- <ng-template #mymodal let-modal>
   <div class="modal-header">
