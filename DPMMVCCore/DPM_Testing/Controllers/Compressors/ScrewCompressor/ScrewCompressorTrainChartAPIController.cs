@@ -104,5 +104,24 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 return BadRequest(exe.Message);
             }
         }
+
+
+        [HttpGet]
+        [Route("GetAllRecords")]
+        public async Task<IActionResult> GetAllRecords()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            try
+            {
+                List<ScrewCompressorTrainClassificationModel> screwCompressorClassification = await _context.ScrewCompressureTrainClassifications.Where(a => a.UserId == userId).ToListAsync();
+                var ClassificationData = screwCompressorClassification.ToList();
+                return Ok(ClassificationData);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
+        }
     }
 }
