@@ -758,7 +758,7 @@ GetPredictionRecords() {
         this.buttonvisible= true;
         this.AFPNotVisible = true;
         this.AFPVisible = false;
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Still You have not done Prediction. Do Prediction & Generate Report', sticky: true });
+         this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Still You have not done Prediction. Do Prediction & Generate Report',});
         this.commonLoadingDirective.showLoading(false, '');
       } else { 
         this.AFPNotVisible = false;
