@@ -7,6 +7,7 @@ import { PredictionComponent } from "./prediction/prediction.component";
 import { TrainComponent } from "./train/train.component";
 import { ScrewCompressorPredictiondataUploadComponent } from './screw-compressor-predictiondata-upload/screw-compressor-predictiondata-upload.component';
 import { ScrewCompressorTraindataUploadComponent } from './screw-compressor-traindata-upload/screw-compressor-traindata-upload.component';
+import { ModerateDataCollectionComponent } from './moderate-data-collection/moderate-data-collection.component';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,8 @@ import { ScrewCompressorTraindataUploadComponent } from './screw-compressor-trai
         TrainComponent,
         PredictionComponent,
         ScrewCompressorPredictiondataUploadComponent,
-        ScrewCompressorTraindataUploadComponent
+        ScrewCompressorTraindataUploadComponent,
+        ModerateDataCollectionComponent,
     ],
     imports: [
         CompressorRoutingModule,

@@ -18,8 +18,10 @@
                     </div>
                     <div class="col-md-3">
                         <label>Tag Number</label>
-                        <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control"
-                            placeholder="Tag Number" aria-label="Tag Number" aria-describedby="basic-addon1">
+                        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control">
+                            <option value="">Choose Tag Number</option>
+                            <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <button (click)="GenerateReport()" class="btn btn-dark mt-4">Done</button>

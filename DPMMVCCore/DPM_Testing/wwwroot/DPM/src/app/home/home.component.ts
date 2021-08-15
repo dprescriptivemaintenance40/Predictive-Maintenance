@@ -98,54 +98,58 @@ export class HomeComponent implements OnInit {
         {
           label: 'Data collection',
           items: [
-            {
-              label: 'Big data',
-              items: [
-                {
-                  label: 'Digital data',
-                  items: [
-                    {
-                      label: 'Screw Compressor',
-                      items: [
-                        {
-                          label: 'Train Data Upload',
-                          url: '#/Home/CompTrainUploadData'
-                        },
-                        {
-                          label: 'Prediction Data Upload',
-                          url: '#/Home/CompPredictionUploadData'
-                        }
-                      ]
-                    },
-                    {
-                      label: 'Centrifugal Pump',
-                      items: [
-                        {
-                          label: 'Train Data Upload',
-                          url: '#/Home/TrainUploadData'
-                        },
-                        {
-                          label: 'Prediction Data Upload',
-                          url: '#/Home/PredictionUploadData'
-                        }
-                      ]
-                    }
-                  ],
-                  // items: [
-                  //   {
-                  //     label: 'Analog data',
+            // {
+            //   label: 'Big data',
+            //   items: [
+            //     {
+            //       label: 'Digital data',
+            //       items: [
+            //         {
+            //           label: 'Screw Compressor',
+            //           items: [
+            //             {
+            //               label: 'Train Data Upload',
+            //               url: '#/Home/CompTrainUploadData'
+            //             },
+            //             {
+            //               label: 'Prediction Data Upload',
+            //               url: '#/Home/CompPredictionUploadData'
+            //             }
+            //           ]
+            //         },
+            //         {
+            //           label: 'Centrifugal Pump',
+            //           items: [
+            //             {
+            //               label: 'Train Data Upload',
+            //               url: '#/Home/TrainUploadData'
+            //             },
+            //             {
+            //               label: 'Prediction Data Upload',
+            //               url: '#/Home/PredictionUploadData'
+            //             }
+            //           ]
+            //         }
+            //       ],
+            //       // items: [
+            //       //   {
+            //       //     label: 'Analog data',
 
-                  //   }
-                  // ]
-                }
-              ]
-            },
+            //       //   }
+            //       // ]
+            //     }
+            //   ]
+            // },
             {
               label: 'Moderate data',
               items: [
                 {
                   label: 'Digital data',
                   items: [
+                    {
+                      label:'Compressor Data Upload',
+                      url: '#/Home/Compressor/SCModerateDataCollection'
+                    },
                     {
                       label: 'Pump Data Upload',
                       url: '#/Home/CentrifugalPump'
@@ -270,7 +274,7 @@ export class HomeComponent implements OnInit {
               url: '#/Home/CostBenefitAnalysis'
             },
             {
-              label: 'Residual Risk Analysis',
+              label: 'Assesment Report',
               url: '#/Home/Report'
             },
             // {

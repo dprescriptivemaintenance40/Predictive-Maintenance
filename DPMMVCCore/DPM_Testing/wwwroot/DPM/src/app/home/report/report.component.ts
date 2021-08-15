@@ -65,7 +65,8 @@ export class ReportComponent {
   public finalPerformanceNumber: number = 0
   public finalACCCalculation: number = 0;
   public FinalAFCCalcuation: number = 0;
-  public screwWithPredictionDetails: any = []
+  public screwWithPredictionDetails: any = [];
+  public TagList : any = [];
   headers = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -83,8 +84,18 @@ export class ReportComponent {
     private profileAPIName: ProfileConstantAPI) {
     this.title.setTitle('Report | Dynamic Prescriptive Maintenence');
     this.GetRecords();
-
+    this.getPrescriptiveRecords();
   }
+  
+    getPrescriptiveRecords() {
+        this.http.get('api/PrescriptiveAPI/GetTagNumber')
+            .subscribe((res: any) => {
+              this.TagList = []
+              res.forEach(element => {
+                  this.TagList.push(element.TagNumber)
+              });
+            });
+    }
 
   GetRecords() {
     this.commonLoadingDirective.showLoading(true, 'Report is getting generated.');

@@ -36,7 +36,7 @@ namespace DPM.Controllers.Prescriptive
                 return await _context.PrescriptiveModelData.Where(a => a.UserId == userId)
                                                            .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                            .ThenInclude(a => a.CentrifugalPumpMssModel)
-                                                           .OrderBy(a => a.CFPPrescriptiveId)
+                                                           .OrderByDescending(a => a.CFPPrescriptiveId)
                                                            .ToListAsync();
 
             }
@@ -1148,6 +1148,7 @@ namespace DPM.Controllers.Prescriptive
 
                 var prescriptiveModel = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == id)
                                                          .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                         .ThenInclude(a=>a.CentrifugalPumpMssModel)
                                                          .First();
                 if (prescriptiveModel == null)
                 {

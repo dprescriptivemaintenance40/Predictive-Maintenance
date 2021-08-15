@@ -109,10 +109,10 @@
                             <div class="row">
                                 <div class="col-md-3" *ngFor="let func of failuerMode; let i=index;">
                                     <div class="d-flex justify-content-start align-items-center">
-                                        <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked" label={{func.Description}} class="mt-2 mb-2">
-                                        </p-checkbox>
+                                        <!-- <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked" label={{func.Description}} class="mt-2 mb-2">
+                                        </p-checkbox> -->
                                         
-                                        <!-- <label>
+                                        <label>
                                             <input type="checkbox"
                                                    name = "{{i}}"
                                                    (change)="FailureModeSelected(func, $event)"
@@ -120,7 +120,7 @@
                                                     [(ngModel)]="func.checked"
                                                     />
                                                    {{func.Description}}
-                                        </label> -->
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -798,19 +798,18 @@
                                 <table>
                                     <tr *ngFor="let func of failuerMode; let i=index;">
                                         <td>
-                                            <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true"
-                                                [(ngModel)]="func.checked">
+                                            <!-- <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
                                             </p-checkbox>
-                                            <label>{{func.Description}}</label>
-                                            <!-- <label>
-                                                                        <input type="checkbox"
-                                                                               name = "{{i}}"
-                                                                               (change)="FailureModeSelected(func, $event)"
-                                                                                [checked]="func.values"
-                                                                                [(ngModel)]="func.checked"
-                                                                                />
-                                                                               {{func.Description}}
-                                                                    </label> -->
+                                            <label>{{func.Description}}</label> -->
+                                            <label>
+                                                <input type="checkbox"
+                                                       name = "{{i}}"
+                                                       (change)="FailureModeSelected(func, $event)"
+                                                        [checked]="func.values"
+                                                        [(ngModel)]="func.checked"
+                                                        />
+                                                       {{func.Description}}
+                                            </label>
                                         </td>
                                     </tr>
                                 </table>
@@ -2371,10 +2370,7 @@
             </div>
             <div class="row" style="padding: 15px;">
                 <div class="col-md-3">
-                    <<<<<<< HEAD <label>Do you want new alpha and beta values using webal or you can directly change alpha and beta values from the above</label>
-
-                        =======
-                        <label>Do you want new alpha and beta values using weibull or you can directly change alpha and beta values from the above</label> >>>>>>> master
+                        <label>Do you want new alpha and beta values using weibull or you can directly change alpha and beta values from the above</label> 
                 </div>
                 <div class="col-sm">
                     Yes

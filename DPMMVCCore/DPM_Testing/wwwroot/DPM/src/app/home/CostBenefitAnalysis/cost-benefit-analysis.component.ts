@@ -24,8 +24,9 @@ export class CostBenefitAnalysisComponent {
     public Site: string = '';
     public Plant: string = '';
     public Unit: string = '';
-    public ETBF: string = '';
+    public ETBF: number = 0;
     public CBAReportDetails: any;
+    public PrescriptiveRecordsList : any=[];
     constructor(private messageService: MessageService,
         private http: HttpClient,
         private CD: ChangeDetectorRef,
@@ -44,13 +45,18 @@ export class CostBenefitAnalysisComponent {
             this.EquipmentList = []
             this.EquipmentList = ["Screw Compressor"]
         }
+
+        var list = this.PrescriptiveRecordsList.filter(r=>r.EquipmentType === this.EquipmentType)
+        this.TagList = []
+        list.forEach(element => {
+            this.TagList.push(element.TagNumber)
+        });
     }
     getPrescriptiveRecords() {
         this.http.get('api/PrescriptiveAPI/GetTagNumber')
             .subscribe((res: any) => {
-                res.forEach(element => {
-                    this.TagList.push(element.TagNumber)
-                });
+                this.PrescriptiveRecordsList =[]
+                this.PrescriptiveRecordsList = res;
             });
     }
     public getPrescriptiveRecordsByEqui() {
