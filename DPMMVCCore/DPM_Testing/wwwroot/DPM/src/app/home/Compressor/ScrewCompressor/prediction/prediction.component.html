@@ -140,6 +140,10 @@
                     <button type="button"
                         (click)="getPredictedListRecordsByDate()" class="btn btn-primary mt-4">Show</button>
                 </div>
+                <div class="col">
+                    <button type="button" (click)="showBasicDialog()"  class="btn btn-primary mt-4"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Assessment Report">Assessment</button>
+                </div>
         </div>
     </div>
     <div class="col-sm-3 mt-1 text-right">
@@ -157,35 +161,6 @@
         
     </div>
 </div>
-<!-- 
-<div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
-    <div class="col-sm col-md-4 form-group">
-        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-    </div>
-    <b>From Date :</b>
-    <div class="col-sm">
-        <input type="date" style="width: 10em;" [(ngModel)]="FromDate" class="form-control" id="FromDate">
-    </div>
-    <b>To Date :</b>
-    <div class="col-sm">
-        <input type="date" style="width: 10em;" [(ngModel)]="ToDate" class="form-control" id="ToDate">
-    </div>
-    <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ; width: 10em;" (click)="getPredictedListRecordsByDate()" class="btn btn-primary">Show</button>
-    </div>
-</div> -->
-<!-- <div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
-    <button type="button" (click)="Downloadfile()" class="btn btn-outline-primary btn-sm mr-2"><i
-            class="pi pi-file-excel"></i></button>
-    
-    
-    <button type="button" (click)="exportToExcel()" class="btn btn-outline-primary btn-sm"><i
-            class="pi pi-download"></i></button>
-
-  
-    <button type="button" [disabled]="enableFuturePredictionButton"  class="btn btn-primary btn-sm mr-2" data-target="#Future" data-toggle="modal" (click)="FuturePrediction()">Future Prediction</button>
- 
-</div> -->
 
 <div style="text-align: center;" class="tbody" *ngIf="!showBulkPrediction">
     <table class="table table-responsive">
@@ -346,3 +321,77 @@
         </p-table>
     </div>
 </div>
+
+<p-dialog header="Report" [(visible)]="displayBasic" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <div class="card-body" id="contentToConvert">
+        <div class="row" style="padding:30px; color: black;">
+            <div class="col-sm-10">
+                <span>
+                    <h5>Based on data Inputs and Model analysis, please find below Initial<br>
+                        Assessment report and recommendation for further study of the Asset</h5>
+                </span>
+            </div>
+        </div>
+        <div style="padding:30px; color: black;">
+            <span> <br><br>
+                <h5>Customer Data:</h5>
+            </span>
+            <table>
+                <tr>
+                    <th>Company Name: </th>
+                    <td>{{Company}}</td>
+                </tr>
+                <tr>
+                    <th>Focal Person Name: </th>
+                    <td>{{Firstname}} {{Lastname}}</td>
+                </tr>
+                <tr>
+                    <th>Email Address: </th>
+                    <td>{{Email}}</td>
+                </tr>
+                <tr>
+                    <th>Contact Details: </th>
+                    <td>{{PhoneNumber}}</td>
+                </tr>
+                <tr>
+                    <th>Date of receipt Customer data : </th>
+                    <td>{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                </tr>
+
+            </table>
+            <br><br>
+            <h5>D.P.M. Output:</h5>
+
+            <table>
+                <tr>
+                    <th>Date of Analysis: </th>
+                    <td>{{DOA | date: 'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                </tr>
+                <tr>
+                    <th>Asset Current Condition: </th>
+                    <td>Normal={{normalpercentage | number:'1.0-2' }}%, Incipient={{incipientPerentage |
+                        number:'1.0-2'}}%,
+                        Degrade={{degradePercentage| number:'1.0-2' }}%</td>
+                </tr>
+                <tr>
+                    <th>Risk ranking:</th>
+                    <td>{{RK}}</td>
+                </tr>
+                <tr>
+                    <th>DPM Analysis Beneficial Y/N : </th>
+                    <td>{{DAB}} | Performance Number : {{finalPerformanceNumber | number:'1.0-2'}}</td>
+                </tr>
+                <tr *ngIf="AFPVisible">
+                    <th>Asset Forecast Performance</th>
+
+                    <td>Normal={{AFPnormalpercentage | number:'1.0-2'}}%, Incipient={{AFPincipientPerentage | number:'1.0-2' }}%, Degrade={{AFPdegradePercentage | number:'1.0-2'}}%</td>
+                </tr>
+            </table>
+        </div>
+        <span>
+            Note: Any Further technical assistance please email dprescripti@gmail.com
+        </span>
+    </div>
+    <ng-template pTemplate="footer">
+    </ng-template>
+</p-dialog>
