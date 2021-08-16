@@ -152,5 +152,44 @@ namespace DPM_Testing.Controllers
                 return BadRequest(exe.Message);
             }
         }
+
+        [HttpPost]
+        [Route("PostSkillPSRMapping")]
+        public async Task<IActionResult> PostSkillPSRMapping(List<SkillPSRMappingModel> skillPSRMappingModel)
+        {
+            try
+            {
+                var add = skillPSRMappingModel.Where(a => a.PSRId == 0).ToList();
+                var update = skillPSRMappingModel.Where(a => a.PSRId != 0).ToList();
+                if (update.Count > 0)
+                {
+                    this._context.SkillPSRMappingModels.UpdateRange(update);
+                }
+                if (add.Count > 0)
+                {
+                    this._context.SkillPSRMappingModels.AddRange(add);
+                }
+                await this._context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetSkillPSRMapping")]
+        public async Task<IActionResult> GetSkillPSRMapping(string UserId)
+        {
+            try
+            {
+                return Ok(await this._context.SkillPSRMappingModels.Where(a => a.UserId == UserId).ToListAsync());
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
     }
 }

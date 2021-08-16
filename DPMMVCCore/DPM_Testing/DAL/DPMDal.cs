@@ -39,6 +39,8 @@ namespace DPM_ServerSide.DAL
         public DbSet<PSRClientContractorModel> PSRClientContractorModels { get; set; }
         public DbSet<MSSStrategyModel> MSSStrategyModels { get; set; }
         public DbSet<MapStrategySkillModel> MapStrategySkillModels { get; set; }
+        public DbSet<SkillPSRMappingModel> SkillPSRMappingModels { get; set; }
+        public DbSet<UserSkillLibraryModel> UserSkillLibraryModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -77,6 +79,8 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<PSRClientContractorModel>().ToTable("PSRClientContractor");
             modelBuilder.Entity<MSSStrategyModel>().ToTable("MSSStrategyMaintenanceTask");
             modelBuilder.Entity<MapStrategySkillModel>().ToTable("MapStrategySkillModel");
+            modelBuilder.Entity<SkillPSRMappingModel>().ToTable("SkillPSRMappingtable");
+            modelBuilder.Entity<UserSkillLibraryModel>().ToTable("UserSkillLibraryModelTable");
         }
 
     }
