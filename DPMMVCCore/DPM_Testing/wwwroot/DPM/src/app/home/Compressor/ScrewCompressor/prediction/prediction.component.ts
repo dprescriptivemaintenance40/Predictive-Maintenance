@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { ConfigService } from 'src/app/shared/config.service';
 import { SCConstantsAPI } from '../shared/ScrewCompressorAPI.service';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-prediction',
@@ -63,6 +64,7 @@ export class PredictionComponent implements OnInit {
 
   constructor(public title: Title,
     public http: HttpClient,
+    public router: Router,
     public messageService: MessageService,
     public commonLoadingDirective: CommonLoadingDirective,
     public datepipe: DatePipe,
@@ -85,7 +87,10 @@ export class PredictionComponent implements OnInit {
   getUserDetails() {
     this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
   }
-
+  RouteTodashboard(){
+    this.router.navigateByUrl('/Home/Dashboard'); 
+     // this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId} })
+  }
   Downloadfile() {
     let link = document.createElement("a");
     link.download = "Excel_Format";

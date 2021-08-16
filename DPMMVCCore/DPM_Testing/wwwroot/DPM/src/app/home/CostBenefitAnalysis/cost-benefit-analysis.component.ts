@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { ChangeDetectorRef, Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -10,7 +11,7 @@ import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.di
     providers: [MessageService]
 })
 export class CostBenefitAnalysisComponent {
-
+    public CFPPrescriptiveId : number =0
     public MachineType: string = "";
     public EquipmentType: string = "";
     public TagNumber: string = "";
@@ -26,16 +27,22 @@ export class CostBenefitAnalysisComponent {
     public Unit: string = '';
     public ETBF: number = 0;
     public CBAReportDetails: any;
-    public PrescriptiveRecordsList : any=[];
+    public PrescriptiveRecordsList : any=[]; 
+    
+    public showDashboard: boolean = false;
     constructor(private messageService: MessageService,
-        private http: HttpClient,
+         private commonLoadingDirective: CommonLoadingDirective,
         private CD: ChangeDetectorRef,
-        private commonLoadingDirective: CommonLoadingDirective) {
+        private http: HttpClient,
+        public router: Router,) {
         this.MachineEquipmentSelect();
         this.getPrescriptiveRecords();
         this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
     }
 
+    RouteTodashboard(){
+        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, ETBF : this.ETBF}})
+      }
     MachineEquipmentSelect() {
         if (this.MachineType == "Pump") {
             this.EquipmentList = []
@@ -59,13 +66,15 @@ export class CostBenefitAnalysisComponent {
                 this.PrescriptiveRecordsList = res;
             });
     }
-    public getPrescriptiveRecordsByEqui() {
+    getPrescriptiveRecordsByEqui() {
+        this.showDashboard = true
         if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
             this.prescriptiveRecords = [];
             this.CBAReportDetails = undefined;
             this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
                 .subscribe((res: any) => {
                     this.prescriptiveRecords = res;
+                    this.CFPPrescriptiveId = res.CFPPrescriptiveId
                     this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
                         row.TotalAnnualPOC = 0;
                         row.CentrifugalPumpMssModel.forEach(mss => {

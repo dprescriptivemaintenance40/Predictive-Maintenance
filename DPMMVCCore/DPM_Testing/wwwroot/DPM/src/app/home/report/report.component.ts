@@ -257,22 +257,8 @@ export class ReportComponent {
         }
 
         this.finalACCCalculation = parseFloat(ACCCalculation);
-
-
-
       }
 
-      //---------------------END of Assets Current Condition Calculation -------------------------
-
-
-
-
-      //---------------------Start Of Assets Forecast Condition Calculations------------------------------------------
-
-
-
-
-      // AssestForecastPerformance = AFP
       var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
       console.log(AFPcountKey);// find number of length of json object
       this.AFPtotalCount = AFPcountKey
@@ -322,18 +308,11 @@ export class ReportComponent {
         console.log('AFP Degrade Count :', this.AFPdegrade)
 
 
-        // Assets Forecast Condition is combination of Assets Current Condition plus total count of
-        // of normal incipient and degrade in prediction
-        // AFPnormal, AFPincipient, AFPdegrade is of Prediction
-        // normal, incipient, degrade is of Train or Assets Current Condition
-
-
         this.FinalAFPnormal = (this.AFPnormal + this.normal);
         this.FinalAFPincipient = (this.AFPincipient + this.incipient);
         this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
 
         this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
-
 
 
         this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
@@ -345,7 +324,6 @@ export class ReportComponent {
         this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
         console.log('AFP Degrade Percentage : ', this.AFPdegradePercentage)
 
-        /// 
 
         var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
 
@@ -357,21 +335,9 @@ export class ReportComponent {
         this.messageService.add({ severity: 'success', summary: 'success', detail: ' To Download Report, Click Download Report Button ' });
 
       } else {
-        // this.messageService.add({severity:'warning',  detail: 'Prediction have not done yet, Asset Forecast will not Generate ', sticky: true});
         this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Prediction have not done yet, Asset Forecast will not Generate ' });
       }
-      //----------------------End of Of Assets Forecast Condition Calculations-----------------------------------------
 
-
-
-
-
-      //Initially Forecast and ACC same
-      //======================
-      // var b: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
-      // console.log(b);
-
-      ///=======END=======
       var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
       console.log(LMH)
       var HSECES: any = [(0 * 1) + (1 * 10)]
@@ -391,9 +357,6 @@ export class ReportComponent {
       } else {
         this.DAB = "N"
       }
-
-
-      // ******************************End of OUTPUT REPORT*******************************
 
     }
   }
@@ -416,7 +379,4 @@ export class ReportComponent {
 
     });
   }
-
-
-
 }

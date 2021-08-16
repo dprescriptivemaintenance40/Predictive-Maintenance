@@ -149,113 +149,134 @@
         </button>
             </div>
             <div class="LSEffectUpdate modal-body">
-                <div class="container-fluid">
-                    <div class="container">
+                <div class="container">
+                    <div class="">
                         <div class="p-fluid">
-                            <div>
-                                <label>Local Effect</label>
-                                <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects" placeholder="Type Local Effect" required>
-                            </div>
-                            <div>
-                                <label>System Effect</label>
-                                <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect" required>
-                            </div>
-                            <div style="margin-top: 20px;">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="input-group mb-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row form-group">
+                                        <label>Local Effect</label>
+                                        <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects" placeholder="Type Local Effect"
+                                            required>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label>System Effect</label>
+                                        <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect"
+                                            required>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="uploadAttachments">Upload</span>
+                                                <span class="input-group-text" id="uploadAttachments"><small>Upload</small></span>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                                <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)"
+                                                    class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
                                                 <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
                                                 <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="input-group mb-3">
-                                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                                    <div class="row form-group">
+                                        <div class="input-group">
+                                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3"
+                                                placeholder="Add Remark Here"></textarea>
                                         </div>
-
+                                    
                                     </div>
-
-                                    <br>
-                                    <div class="container">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="">
                                         <div>
-
+                                            <a (click)="panel.show($event)" style="width: 20rem;" title="Explaination of each factors." style="color: black;"><i
+                                                    class="fas fa-info-circle fa-1px"></i> </a>
                                             <p-overlayPanel #panel>
                                                 <div style=" margin-right: 2px;width: 40rem;">
-                                                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to the equipment. More the down time more is the factor, less the down time less is the factor.
+                                                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to the
+                                                        equipment. More the down time more is the factor, less the down time less is the factor.
                                                     </li>
-
-                                                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of failure are high then the scrap factor value is taken more and in the case of less chance to scrape the
+                                    
+                                                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of
+                                                        failure are high then the scrap factor value is taken more and in the case of less chance to scrape
+                                                        the
                                                         equipment or component factor value is taken less. </li>
-
-                                                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of injury (both man and machine) are high in the case of equipment failure, more is the value given to the safety
+                                    
+                                                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of injury
+                                                        (both man and machine) are high in the case of equipment failure, more is the value given to the
+                                                        safety
                                                         factor and less the chances of injury, less is the value given to the safety factor.</li>
-
-                                                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment from failure. Minimum no. is given when protection against the failure is easy. Maximum no. is given when
+                                    
+                                                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment from
+                                                        failure. Minimum no. is given when protection against the failure is easy. Maximum no. is given when
                                                         protection against the failure is very difficult.
                                                     </li>
-
-                                                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the no. of failure more is the value given to the factor.
+                                    
+                                                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the no.
+                                                        of failure more is the value given to the factor.
                                                     </li>
                                                 </div>
                                             </p-overlayPanel>
-                                            <a (click)="panel.show($event)" style="width: 20rem;" title="Explaination of each factors." style="color: black;"><i class="fas fa-info-circle fa-1px"></i> </a>
+                                            
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <h6> Down Time Factor (Range 1 - 10): {{ADDDownTimeFactor}}</h6>
+                                        <div class="row mt-4">
+                                            <div class="col-md-6">
+                                                <label> Down Time Factor (Range 1 - 10): </label>
                                             </div>
-                                            <div Style="margin-top:8px;" class="col-md-3">
-                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDDownTimeFactor" [min]="1" [max]="10"></p-slider>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <h6> Scrape Factor (Range 1 - 5): {{ADDScrapeFactor}}</h6>
-                                            </div>
-                                            <div Style="margin-top:8px;" class="col-md-3">
-                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDScrapeFactor" [min]="1" [max]="5"></p-slider>
-                                            </div>
-                                        </div>
-
-                                        <br>
-
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <h6> Safety Factor (Range 1 - 20): {{ADDSafetyFactor}}</h6>
-                                            </div>
-                                            <div Style="margin-top:8px;" class="col-md-3">
-                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDSafetyFactor" [min]="1" [max]="20"></p-slider>
-                                            </div>
-                                        </div>
-
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <h6>Protection Factor (Range 1 - 10): {{ADDProtectionFactor}}</h6>
-                                            </div>
-                                            <div Style="margin-top:8px;" class="col-md-3">
-                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDProtectionFactor" [min]="1" [max]="10"></p-slider>
-                                            </div>
-                                        </div>
-
-                                        <br>
-
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <h6>Frequency Factor (Range 1 - 15): {{ADDFrequencyFactor}}</h6>
-                                            </div>
-                                            <div Style="margin-top:8px;" class="col-md-3">
-                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDFrequencyFactor" [min]="1" [max]="15"></p-slider>
+                                            <div Style="margin-top:8px;" class="col-md-6 d-flex w-100 justify-content-between">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDDownTimeFactor" [min]="1" [max]="10" class="w-75">
+                                                </p-slider>
+                                                <span class="badge badge-primary">{{ADDDownTimeFactor}}</span>
                                             </div>
                                         </div>
                                         <br>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label> Scrape Factor (Range 1 - 5):</label>
+                                            </div>
+                                            <div Style="margin-top:8px;" class="col-md-6 d-flex w-100 justify-content-between">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDScrapeFactor" [min]="1" [max]="5" class="w-75">
+                                                </p-slider>
+                                                <span class="badge badge-primary">{{ADDScrapeFactor}}</span>
+                                            </div>
+                                        </div>
+                                    
+                                        <br>
+                                    
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label> Safety Factor (Range 1 - 20): </label>
+                                            </div>
+                                            <div Style="margin-top:8px;" class="col-md-6 d-flex w-100 justify-content-between">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDSafetyFactor" [min]="1" [max]="20" class="w-75">
+                                                </p-slider>
+                                                <span class="badge badge-primary">{{ADDSafetyFactor}}</span>
+                                            </div>
+                                        </div>
+                                    
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Protection Factor (Range 1 - 10): </label>
+                                            </div>
+                                            <div Style="margin-top:8px;" class="col-md-6 d-flex w-100 justify-content-between">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDProtectionFactor" [min]="1" [max]="10" class="w-75">
+                                                </p-slider>
+                                                <span class="badge badge-primary">{{ADDProtectionFactor}}</span>
+                                            </div>
+                                        </div>
+                                    
+                                        <br>
+                                    
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Frequency Factor (Range 1 - 15): {{ADDFrequencyFactor}}</label>
+                                            </div>
+                                            <div Style="margin-top:8px;" class="col-md-6 d-flex w-100 justify-content-between">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="ADDFrequencyFactor" [min]="1" [max]="15" class="w-75">
+                                                </p-slider>
+                                                <span class="badge badge-primary">{{ADDFrequencyFactor}}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

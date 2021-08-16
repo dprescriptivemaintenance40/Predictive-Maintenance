@@ -117,15 +117,15 @@
             <div *ngIf="RCATypeQualititive === true" style="overflow: auto;">
                 <div class="classname" id="scene" #scene>
                     <p-card>
-                        <button (click)="ClearRCAQualitiveTree()" class="btn btn-dark" pTooltip="Clear Qualititive tree data" tooltipPosition="top">clear</button>
+                        <button (click)="ClearRCAQualitiveTree()" class="badge badge-dark" pTooltip="Clear Qualititive tree data" tooltipPosition="top"><i class="pi pi-times mr-1"></i>clear</button>
                         <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
                         </p-tree><br><br>
                     </p-card>
                 </div>
             </div>
-            <div *ngIf="RCATypeQuantitive === true" id="anorlogic" class="alert alert-dpmprimary">
+            <div *ngIf="RCATypeQuantitive === true" id="anorlogic" class="alert alert-dpmprimary w-100">
                 <p-card>
-                    <button (click)="ClearRCAQuantiveTree()" class="btn btn-dark" pTooltip="Clear Quantitive tree data" tooltipPosition="top">clear</button>
+                    <button (click)="ClearRCAQuantiveTree()" class="badge badge-dark" pTooltip="Clear Quantitive tree data" tooltipPosition="top"><i class="pi pi-times mr-1"></i>clear</button>
                     <p-organizationChart [value]="ANDORLOGICTREE" (FailureMode)="AndOrLogicTreeFailureMode($event)" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
                     </p-organizationChart>
                 </p-card>
