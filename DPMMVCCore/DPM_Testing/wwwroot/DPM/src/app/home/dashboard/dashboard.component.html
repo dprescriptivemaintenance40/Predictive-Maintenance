@@ -90,18 +90,12 @@
 <div class="card bg-transparent border-0 mt-4" *ngIf="PredictionShow">
     <div class="d-flex justify-content-between align-items-center">
         <h5><b> Prediction data</b> </h5>
-        <button style="float: right" class="btn btn-outline-primary" (click)="RouteToPredict()" data-toggle="tooltip" data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
-    </div><br>
-    <div >
-        <div class="bg-white rounded p-3 br-3">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="">
-                <button class="btn btn-primary btn-sm"  (click)="FutuerPredictionClick()">Future Forcast</button>
-                </div>
-            </div>
+        <div>
+        <button class="btn btn-outline-dark btn-sm" (click)="RouteToPredict()" data-toggle="tooltip" data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
+        <button class="btn btn-primary btn-sm ml-2" (click)="FutuerPredictionClick()">Future Forcast</button>
         </div>
-        </div>
+    </div>
+    <div class="d-block mt-4">
         <div class="bg-white rounded p-3 br-3 mb-4">
         <div class="row">
             <div class="col-md-2">
@@ -221,23 +215,20 @@
     </div>
 </div>
 
-<div class="d-block" *ngIf="FuterPredictionShow">
+<div class="d-block mt-4" *ngIf="FuterPredictionShow">
     <div class="d-flex justify-content-between align-items-center">
         <h5><b> Future Prediction data</b> </h5>
-        <button style="float: right" class="btn btn-outline-primary" (click)="RouteToPredict()" data-toggle="tooltip" data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-            <div class="card">
-            <button class="btn btn-outline-primary"  (click)="PredictionOnClick()"> Prediction</button>
-            </div>
+        <div>
+        <button  class="btn btn-outline-dark btn-sm mr-2" (click)="RouteToPredict()" data-toggle="tooltip" data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
+        <button class="btn btn-primary btn-sm" (click)="PredictionOnClick()"> Prediction</button>
         </div>
     </div>
-    <div style="margin: 20px;">
+    <div class="bg-white p-3 mt-4">
+    <div class="d-block">
         <div class="row">
             <div class="col-md-2">
-                <div class="card">
-                    <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FutuerDates()">
+                <div class="">
+                    <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FutuerDates()" class="form-control">
                         <option value="">Select Failure Mode</option> Type
                         <ng-container *ngFor="let mode of FMList">
                             <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
@@ -246,9 +237,9 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="card">
+                <div class="">
                     <select name="FutuerselectedYear" [(ngModel)]="FutuerselectedYear"
-                        (ngModelChange)="FutuerDates()">
+                        (ngModelChange)="FutuerDates()" class="form-control">
                         <option value="">Select Year</option>
                         <ng-container *ngFor="let year of FuterPredictyearlist">
                             <option [value]="year.FutuerPredictyearname" name="FutuerselectedYear">
@@ -285,29 +276,27 @@
             </div> -->
         </div>
     </div>
-
-    <div class="container">
+</div>
+    <div class="d-block mt-4">
         <div class="row">
-            <div>
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="card">
+            
+                    <div class="col-md-5">
+                        <div class="h-100 bg-white p-3">
                             <strong> Future Prediction Pie chart</strong>
                             <canvas id="FutuerPredictionPie"></canvas>
                         </div>
                     </div>
-                </div><br>
-            </div>
-            <div class="col-8">
-                <div class="card">
+            <div class="col-md-7">
+                <div class="h-100 bg-white p-3">
                     <strong>Future Prediction chart</strong>
                     <canvas id="BarChart"></canvas>
                 </div>
             </div>
-        </div><br><br>
-        <div class="card" style="width:66rem;">
+        <div class="col-md-12 mt-4">
+        <div class="bg-white p-3">
             <strong> Forcast All Data</strong>
             <canvas id="donughtChart"></canvas>
+        </div>
         </div>
     </div>
 </div>
@@ -420,19 +409,19 @@
         </div>
             <div class="row mt-4">
                 <div class="col">
-                    <div class="card h-100 p-3 border-0"><b>Total PONC: {{row.TotalPONC}} K</b></div>                   
+                    <div class="card h-100 p-3 border-0">Total PONC: <b>{{row.TotalPONC}} K</b></div>                   
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0"><b>ETBF: {{row.ETBF}} Y</b></div>               
+                    <div class="card h-100 p-3 border-0">ETBF: <b>{{row.ETBF}} Y</b></div>               
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0"><b>Economic Risk : M</b></div>               
+                    <div class="card h-100 p-3 border-0">Economic Risk : <b>M</b></div>               
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0"><b>Cost Without D.P.M (Total Cost): {{row.EconomicRiskWithoutMaintenance}} K</b></div>                
+                    <div class="card h-100 p-3 border-0">Cost Without D.P.M (Total Cost): <b>{{row.EconomicRiskWithoutMaintenance}} K</b></div>                
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0"><b>Cost With D.P.M (Total Cost): {{row.ResidualRiskWithMaintenance}} K</b></div>               
+                    <div class="card h-100 p-3 border-0">Cost With D.P.M (Total Cost): <b>{{row.ResidualRiskWithMaintenance}} K</b></div>               
                 </div>
             </div>
         <div class="row mt-4">
