@@ -64,7 +64,7 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-sm">
-                        <div class="card bg-white p-3 ">
+                        <div class="card bg-white p-3 border-0 ">
                             <strong> Screw Compressor Classification chart</strong>
                             <canvas id="canvasClass"></canvas>
                         </div>
@@ -72,13 +72,13 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card bg-white p-3 ">
+                <div class="card bg-white p-3 border-0 ">
                 <strong> Screw Compressor Classification All chart Data</strong>
                 <canvas id="polarArea"></canvas>
                 </div>
             </div>
             <div class="col-md-12 mt-4">
-                <div class="card bg-white p-3 ">
+                <div class="card bg-white p-3 border-0 ">
                     <strong> Screw Compressor Classification chart</strong>
                     <canvas id="canvas1" style="height: 350px">{{ chart }}</canvas>
                 </div>               
@@ -394,7 +394,7 @@
         <div class="col-sm" style="padding:30px;">
             <div class="row">
                 <div class="col-sm" style="padding:30px;">
-                    <a class="btn btn-outline-primary" (click)="getRecordsByEqui()">Done</a>
+                    <a class="btn btn-outline-dark btn-sm" (click)="getRecordsByEqui()">Done</a>
                 </div>
             </div>
         </div>
@@ -405,7 +405,7 @@
         *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
         <div class="d-flex justify-content-between align-items-center">
             <h5><b>Cost Benefit Risk Analysis</b> </h5>
-            <button class="btn btn-outline-primary" (click)="RouteToCostBenifit()" data-toggle="tooltip" data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
+            <button class="btn btn-outline-dark btn-sm" (click)="RouteToCostBenifit()" data-toggle="tooltip" data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
         </div>
             <div class="row mt-4">
                 <div class="col">

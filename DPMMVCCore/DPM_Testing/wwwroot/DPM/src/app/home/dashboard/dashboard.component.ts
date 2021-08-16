@@ -926,7 +926,7 @@ export class DashboardComponent {
         labels: ["Normal", "incipient", "Degrade"],
         datasets: [
           {
-            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+            backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
             data: [this.ClassNormalpercentage, this.ClassIncipientpercentage, this.ClassDegradepercentage]
           }
         ]
@@ -991,24 +991,24 @@ export class DashboardComponent {
            label: "Normal",
            data: this.SCFinalNormal,
            borderWidth: 1,
-           borderColor: "#008000",
-           backgroundColor: '#008000',
+           borderColor: "#6f51ed",
+           backgroundColor: '#6f51ed',
            fill: true,
          }, 
          {
            label: "Incipient",
            data: this.SCFinalIncipient,
            borderWidth: 1,
-           borderColor: "#FFA500",
-           backgroundColor: '#FFA500',
+           borderColor: "#ffb801",
+           backgroundColor: '#ffb801',
            fill: true,
          }, 
          {
            label: "Degrade",
            data: this.SCFinaldDegrade,
            borderWidth: 1,
-           borderColor: "#FF0000",
-           backgroundColor: '#FF0000',
+           borderColor: "#fe4c61",
+           backgroundColor: '#fe4c61',
            fill: true,
          },
          {
@@ -1080,18 +1080,18 @@ export class DashboardComponent {
             label: "Incipent",
             data: this.TrainDataIncipientCount,
             borderWidth: 1,
-            backgroundColor: "#FFA500",
+            backgroundColor: "#ffb801",
           }, {
             label: "Normal",
             data: this.TrainDataNormalCount,
             borderWidth: 1,
-            backgroundColor: "#008000",
+            backgroundColor: "#6f51ed",
           },
           {
             label: "Degrade",
             data: this.TrainDataDegradeCount,
             borderWidth: 2,
-            backgroundColor: "#FF0000",
+            backgroundColor: "#fe4c61",
           },
           {
             label: "Bad",
@@ -1165,7 +1165,7 @@ export class DashboardComponent {
     //     fill: true,
     //     datasets: [
     //       {
-    //         backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+    //         backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
     //         data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
     //       }
     //     ]
@@ -1227,24 +1227,24 @@ export class DashboardComponent {
             label: "Normal",
             data: this.FinalNormal,
             borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
+            borderColor: "#6f51ed",
+            backgroundColor: '#6f51ed',
             fill: true,
           }, 
           {
             label: "Incipient",
             data: this.FinalIncipient,
             borderWidth: 1,
-            borderColor: "#FFA500",
-            backgroundColor: '#FFA500',
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
             fill: true,
           }, 
           {
             label: "Degrade",
             data: this.FinaldDegrade,
             borderWidth: 1,
-            borderColor: "#FF0000",
-            backgroundColor: '#FF0000',
+            borderColor: "#fe4c61",
+            backgroundColor: '#fe4c61',
             fill: true,
           },
           {
@@ -1309,7 +1309,7 @@ export class DashboardComponent {
         fill: true,
         datasets: [
           {
-            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+            backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
             data: [Normalpercentage,Incipientpercentage,Degradepercentage]
           }
         ]
@@ -1384,23 +1384,23 @@ export class DashboardComponent {
             label: "Normal",
             data: this.PredictionDataNormalCount,
             borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
+            borderColor: "#6f51ed",
+            backgroundColor: '#6f51ed',
             fill: true,
           }, {
             label: "Incipent",
             data: this.PredictionDataIncipientCount,
             borderWidth: 1,
-            borderColor: "#FFA500",
-            backgroundColor: '#FFA500',
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
             fill: true,
           },
           {
             label: "Degrade",
             data: this.PredictonDataDegradeCount,
             borderWidth: 1,
-            borderColor: " #FF0000",
-            backgroundColor: '#FF0000',
+            borderColor: " #fe4c61",
+            backgroundColor: '#fe4c61',
             fill: true,
           }
         ]
@@ -1601,21 +1601,21 @@ export class DashboardComponent {
             label: "Normal",
             data: this.FutuerPredictionDataNormalCount,
             borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
+            borderColor: "#6f51ed",
+            backgroundColor: '#6f51ed',
           }, {
             label: "Incipent",
             data: this.FutuerPredictionDataIncipientCount,
             borderWidth: 1,
-            borderColor: "#FFA500",
-            backgroundColor: '#FFA500',
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
           },
           {
             label: "Degrade",
             data: this.FutuerPredictonDataDegradeCount,
             borderWidth: 1,
-            borderColor: " #FF0000",
-            backgroundColor: '#FF0000',
+            borderColor: " #fe4c61",
+            backgroundColor: '#fe4c61',
           }
         ]
       },
@@ -1671,7 +1671,7 @@ export class DashboardComponent {
     //     labels: ["Normal", "incipient", "Degrade"],
     //     datasets: [
     //       {
-    //         backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+    //         backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
     //         data: [this.FutuerPredictionNormalcount, this.FutuerPredictionIncipientcount, this.FutuerPredictionDegradecount]
     //       }
     //     ]
@@ -1732,24 +1732,24 @@ export class DashboardComponent {
            label: "Normal",
            data: this.FPFinalNormal,
            borderWidth: 1,
-           borderColor: "#008000",
-           backgroundColor: '#008000',
+           borderColor: "#6f51ed",
+           backgroundColor: '#6f51ed',
            fill: true,
          }, 
          {
            label: "Incipient",
            data: this.FPFinalIncipient,
            borderWidth: 1,
-           borderColor: "#FFA500",
-           backgroundColor: '#FFA500',
+           borderColor: "#ffb801",
+           backgroundColor: '#ffb801',
            fill: true,
          }, 
          {
            label: "Degrade",
            data: this.FPFinaldDegrade,
            borderWidth: 1,
-           borderColor: "#FF0000",
-           backgroundColor: '#FF0000',
+           borderColor: "#fe4c61",
+           backgroundColor: '#fe4c61',
            fill: true,
          },
          {
@@ -1811,7 +1811,7 @@ export class DashboardComponent {
         labels: ["Normal", "incipient", "Degrade"],
         datasets: [
           {
-            backgroundColor: ["#008000", "#FFA500", "#FF0000"],
+            backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
             data: [FPClassNormalpercentage, FPClassIncipientpercentage, FPClassDegradepercentage]
           }
         ]
@@ -1958,7 +1958,7 @@ public highlight_end:any
                this.chart = new Dygraph(
                 document.getElementById("graph"),this.csvData,
                 {
-                  colors: ['green','green', 'gray', '#FFA500','red','#FFA500','red'],
+                  colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
                   visibility: [true, true, false, true,true,true,true,],
                   showRangeSelector: true,
                   fillGraph:true,
@@ -1995,7 +1995,7 @@ public highlight_end:any
                       highlightCircleSize: 3
                     },
                     'falarm': {
-                      color: ['#FFA500'],
+                      color: ['#ffb801'],
                       strokePattern: Dygraph.DASHED_LINE1,
                       strokeWidth: 1.6,
                       drawPoints: true,
@@ -2023,7 +2023,7 @@ public highlight_end:any
                 // this.chart = new Dygraph(
                 //   document.getElementById("graph1"),this.csvData,
                 //   {
-                //     colors: ['green', '#58508d', 'gray', '#FFA500','red','#FFA500','red',],
+                //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
                 //     showRangeSelector: true,
                 //     connectSeparatedPoints: true,
                 //     fillGraph: true,
