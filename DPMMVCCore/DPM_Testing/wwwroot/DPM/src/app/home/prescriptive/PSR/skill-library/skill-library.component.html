@@ -45,55 +45,34 @@
     </ng-template>
     <ng-template pTemplate="content">
 
-        <p-table [value]="SkillLibraryRows" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10,15]" [loading]="loading">
-            <ng-template pTemplate="colgroup">
+        <p-table [value]="SkillLibraryRows" [columns]="SkillLibraryColumns" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10,15]"
+            [loading]="loading" [scrollable]="true" [style]="{width:'100%'}">
+            <ng-template pTemplate="colgroup" let-columns>
                 <colgroup>
-                    <col style="width:5em;">
-                    <col style="width:10em;">
-                    <col style="width:10em;">
+                    <col *ngFor="let col of columns" [style]="{width: col.width}">
                 </colgroup>
             </ng-template>
-            <ng-template pTemplate="header">
+            <ng-template pTemplate="header" let-columns>
                 <tr>
-                    <th>Craft</th>
-                    <th>Employee Code</th>
-                    <th class="text-overflow" *ngFor="let t of MaintenanceTasks" pTooltip="{{t.Name}}" tooltipPosition="top">{{t.Name}}</th>
+                    <th *ngFor="let col of columns" pTooltip="{{col.header}}" tooltipPosition="top" class="text-overflow">
+                        {{col.header}}
+                    </th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-row>
+            <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
                 <tr>
-                    <td>{{row.Craft}} </td>
-                    <td>
-                        <!-- (change)="getSkillData(row, $event)" -->
-                        <input type="text" [(ngModel)]="row.EmployeeCode" class="form-control">
+                    <td *ngFor="let col of columns;">
+                        <span *ngIf="col.inputtype && col.type == 'text'">
+                            <input type="text" [(ngModel)]="rowData[col.field]" placeholder="{{col.placeholder}}" class="form-control">
+                        </span>
+                        <!-- (blur)="CheckDuplicate(rowData, $event.target.value)" -->
+                        <span *ngIf="col.inputtype && col.type == 'number'">
+                            <input maxlength="3" (keypress)=onlyNumbers($event) (input)="RemovePreviousVal(rowData, col.field, i)"  [(ngModel)]="rowData[col.field]" placeholder="{{col.placeholder}}" class="form-control">
+                        </span>
+                        <span *ngIf="!col.inputtype">
+                           {{rowData[col.field]}}    
+                        </span>
                     </td>
-                    <td>
-                        <input maxlength="3" [(ngModel)]="row.SkillPercent1" placeholder="Skill Percent" class="form-control">
-                    </td>
-                    <td>
-                        <input maxlength="3" [(ngModel)]="row.SkillPercent2" placeholder="Skill Percent" class="form-control">
-                    </td>
-                    <td>
-                        <input maxlength="3" [(ngModel)]="row.SkillPercent3" placeholder="Skill Percent" class="form-control">
-                    </td>
-                    <td>
-                        <input maxlength="3" [(ngModel)]="row.SkillPercent4" placeholder="Skill Percent" class="form-control">
-                    </td>
-                    <td>
-                        <input maxlength="3" [(ngModel)]="row.SkillPercent5" placeholder="Skill Percent" class="form-control">
-                    </td>
-                    <td>
-                        <input maxlength="3" [(ngModel)]="row.SkillPercent6" placeholder="Skill Percent" class="form-control">
-                    </td>
-                    <td>
-                        <input maxlength="3" [(ngModel)]="row.SkillPercent7" placeholder="Skill Percent" class="form-control">
-                    </td>
-
-                    <!-- <td *ngFor="let t of MaintenanceTasks; let i= index; trackBy: trackByIndex;" style="margin-left: 4em;"> -->
-                    <!-- <p-inputNumber [style]="{width: 98%}" [(ngModel)]="row.SkillPercent" placeholder="Skill Percent" inputId="percent" suffix="%"></p-inputNumber> -->
-                    <!-- <input maxlength="3" [(ngModel)]="row.SkillPercent" name=a{{i}} placeholder="Skill Percent" class="form-control"> -->
-                    <!-- <input type="checkbox" (change)="getSkillData(row, $event, t)"> -->
-                    <!-- </td> -->
                 </tr>
             </ng-template>
         </p-table>
@@ -140,9 +119,6 @@
                     <label>Maintenance Task</label>
                 </td>
                 <td class="col-sm">
-                    <label>Maintenance Interval</label>
-                </td>
-                <td class="col-sm">
                     <label>Craft</label>
                 </td>
                 <td class="col-sm">
@@ -163,9 +139,6 @@
             <tr class="row">
                 <td class="col-sm">
                     <input type="text" value="Remove, overhaul, and rectify" class="form-control">
-                </td>
-                <td class="col-sm">
-                    <input type="text" value="3 Weeks" class="form-control">
                 </td>
                 <td class="col-sm">
                     <select [(ngModel)]="SelectedCraft" class="form-control">

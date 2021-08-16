@@ -7,7 +7,7 @@ namespace DPM.Models.Prescriptive
     {
         [Key]
         public int MapId { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public string EmployeeCode { get; set; }
         public string Craft { get; set; }
         public string Strategy { get; set; }

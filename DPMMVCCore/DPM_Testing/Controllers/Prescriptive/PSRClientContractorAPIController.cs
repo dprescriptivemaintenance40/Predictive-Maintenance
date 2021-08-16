@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using DPM_ServerSide.DAL;
 using DPM.Models.Prescriptive.PSR;
 using DPM.Models.Prescriptive;
+using System;
 
 namespace DPM_Testing.Controllers
 {
@@ -86,7 +87,7 @@ namespace DPM_Testing.Controllers
 
                 return CreatedAtAction("GetPSRClientContractorModel", new { id = psrClientContractorModel.PSRClientContractorId }, psrClientContractorModel);
             }
-            catch (System.Exception exe)
+            catch (Exception exe)
             {
 
                 return BadRequest(exe.Message);
@@ -119,13 +120,35 @@ namespace DPM_Testing.Controllers
         {
             try
             {
-                _context.MapStrategySkillModels.AddRange(mapStrategySkillModels);
-                await _context.SaveChangesAsync();
+                var addResults = mapStrategySkillModels.Where(a => a.MapId == 0).ToList();
+                var updateResults = mapStrategySkillModels.Where(a => a.MapId != 0).ToList();               
+                if (updateResults.Count > 0)
+                {
+                    this._context.MapStrategySkillModels.UpdateRange(updateResults);
+                }
+                if (addResults.Count > 0)
+                {
+                    this._context.MapStrategySkillModels.AddRange(addResults);
+                }
+                    await this._context.SaveChangesAsync();
                 return Ok();
             }
-            catch (System.Exception exe)
+            catch (Exception exe)
             {
+                return BadRequest(exe.Message);
+            }
+        }
 
+        [HttpGet]
+        [Route("GetSkillMappedData")]
+        public async Task<IActionResult> GetSkillMappedData(string UserId)
+        {
+            try
+            {              
+                return Ok(await this._context.MapStrategySkillModels.Where(a => a.UserId == UserId).ToListAsync());
+            }
+            catch (Exception exe)
+            {
                 return BadRequest(exe.Message);
             }
         }
