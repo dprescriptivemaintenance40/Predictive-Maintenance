@@ -49,6 +49,54 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
             }
         }
 
+        public long DateToValues(DateTime dt)
+        {
+            return long.Parse(dt.Date.ToString("yyyyMMdd"));
+        }
+
+        [HttpGet]
+        [Route("GetFutuerPredictionRecordsInCSVFormat")]
+        public async Task<IActionResult> GetFutuerPredictionRecordsInCSVFormat(string Date)
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            try
+            {
+                List<ScrewCompressorFuturePredictionModel> screwCompressorFuturePrediction = new List<ScrewCompressorFuturePredictionModel>();
+                if (Date != "")
+                {
+                    DateTime dt = Convert.ToDateTime(Date);
+                    screwCompressorFuturePrediction = await _context.ScrewCompressureFuturePrediction.Where(a => a.UserId == userId && a.PredictedDate <= dt).OrderBy(a => a.PredictedDate).ToListAsync();
+                }
+                else
+                {
+                    screwCompressorFuturePrediction = await _context.ScrewCompressureFuturePrediction.Where(a => a.UserId == userId).OrderBy(a => a.PredictedDate).ToListAsync();
+                }
+                for (int i = 0; i < screwCompressorFuturePrediction.Count; i++)
+                {
+                    //screwCompressorFuturePrediction[i].FTS1 = screwCompressorFuturePrediction[i].TS1;
+                    screwCompressorFuturePrediction[i].FTD1 = screwCompressorFuturePrediction[i].TD1;
+                    //screwCompressorFuturePrediction[i].FTS2 = screwCompressorFuturePrediction[i].TS2;
+                    //screwCompressorFuturePrediction[i].FTD2 = screwCompressorFuturePrediction[i].TD2;
+                    //screwCompressorFuturePrediction[i].TS1 = 0;
+                    screwCompressorFuturePrediction[i].TD1 = 0;
+                    //screwCompressorFuturePrediction[i].TS2 = 0;
+                    //screwCompressorFuturePrediction[i].TD2 = 0;
+                    long date = DateToValues(screwCompressorFuturePrediction[i].PredictedDate);
+                    screwCompressorFuturePrediction[i].Date = date;
+
+                }
+                //var newList = screwCompressorFuturePrediction.Select(d => new { d.Date, d.TS1, d.TD1, d.TS2, d.TD2, d.FTS1, d.FTD1, d.FTS2, d.FTD2 }).ToList();
+                var newList = screwCompressorFuturePrediction.Select(d => new { d.Date,  d.TD1, d.FTD1,}).ToList();
+
+                return Ok(newList);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
+        }
+
         [HttpGet]
         [Route("FuturePredictionMovingAverage")]
         public async Task<IActionResult> GetMovngAverage()
@@ -305,7 +353,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                                                                                                                  .Where(a => a.UserId == userId)
                                                                                                                  .OrderBy(a => a.PredictedDate.Year)
                                                                                                                  .ThenBy(d => d.PredictedDate.Month)
-                                                                                                                 .ThenBy(d => d.PredictedDate.Day)
+                                                                                                         .ThenBy(d => d.PredictedDate.Day)
                                                                                                                  .ToListAsync();
                 var Data = screwCompressorFuturePredictionModels.ToList();
 

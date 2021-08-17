@@ -4,6 +4,7 @@ using DPM_Testing.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -230,6 +231,68 @@ namespace DPM_Testing.Controllers
                 return BadRequest(exe.Message);
             }
 
+        }
+        [HttpGet]
+        [Route("GetPredictionRecordsInCSVFormat")]
+        public async Task<IActionResult> GetPredictionRecordsInCSVFormat()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            try
+            {
+                List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData.Where(a => a.UserId == userId).OrderBy(a => a.InsertedDate).ToListAsync();
+
+                //List<ScrewCompressorPredictionModel> screwCompressorPredictions = await (from pred in _context.ScrewCompressurePredictionData
+                //                                                                         where pred.UserId == userId
+                //                                                                         select new ScrewCompressorPredictionModel
+                //                                                                           {
+                //                                                                               InsertedDate = pred.InsertedDate,
+                //                                                                               TD1 = pred.TD1,
+                //                                                                               TS1 = pred.TS1,
+                //                                                                               TD2 = pred.TD2,
+                //                                                                               TS2 = pred.TS2
+                //                                                                           })
+                //                                                                           .OrderBy(a => a.InsertedDate)
+                //                                                                           .ToListAsync();
+                for (int i = 0; i < screwCompressorPredictions.Count; i++)
+                {
+                    long dt = DateToValues(screwCompressorPredictions[i].InsertedDate);
+                    screwCompressorPredictions[i].Date = dt;
+                }
+                //string data = JsonConvert.SerializeObject(screwCompressorPredictions);
+                //var PredictionData = jsonStringToCSV(data);
+                //var newList = screwCompressorPredictions.Select(d => new { d.Date, d.TS1, d.TD1, d.TS2, d.TD2, d.FTS1, d.FTD1, d.FTS2, d.FTD2 }).ToList();
+                var newList = screwCompressorPredictions.Select(d => new { d.Date,d.TD1,  d.FTD1, }).ToList();
+                return Ok(newList);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
+        }
+
+  
+
+        public List<string>  jsonStringToCSV(string jsonContent)
+        {
+            var dataTable = (DataTable)JsonConvert.DeserializeObject(jsonContent, (typeof(DataTable)));
+
+            //Datatable to CSV
+            var lines = new List<string>();
+            string[] columnNames = dataTable.Columns.Cast<DataColumn>().
+                                              Select(column => column.ColumnName).
+                                              ToArray();
+            var header = string.Join(",", columnNames);
+            lines.Add(header);
+            var valueLines = dataTable.AsEnumerable()
+                               .Select(row => string.Join(",", row.ItemArray));
+            lines.AddRange(valueLines);
+            return lines;
+        }
+
+        public long DateToValues(DateTime dt)
+        {
+            return long.Parse(dt.Date.ToString("yyyyMMdd"));
         }
 
         [HttpGet]

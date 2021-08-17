@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import * as XLSX from 'xlsx';
@@ -10,7 +11,7 @@ import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.cons
     providers: [MessageService]
 })
 export class CostBenefitAnalysisComponent {
-
+    public CFPPrescriptiveId : number =0
     public MachineType: string = "";
     public EquipmentType: string = "";
     public TagNumber: string = "";
@@ -36,6 +37,7 @@ export class CostBenefitAnalysisComponent {
     constructor(private messageService: MessageService,
         private commonBLervice : CommonBLService,
         private PSRAPIs : PrescriptiveContantAPI,
+        public router: Router,
         private http: HttpClient) {
         this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
         this.GetSavedPSRRecords();
@@ -137,6 +139,9 @@ export class CostBenefitAnalysisComponent {
         )
       }
 
+    RouteTodashboard(){
+        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, ETBF : this.ETBF}})
+      }
     MachineEquipmentSelect() {
         if (this.MachineType == "Pump") {
             this.EquipmentList = []
