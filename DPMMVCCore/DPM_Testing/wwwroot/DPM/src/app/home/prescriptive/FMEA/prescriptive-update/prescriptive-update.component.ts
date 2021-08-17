@@ -351,7 +351,9 @@ public UpdateBeta : number = 0
   public UpdateMSSAvailabilityCheck : number = 0
   public UpdateMSSDirectAvailability : boolean = false
   public UpdateMSSIndirectAvailability : boolean = false
-  public ADDMSSFinalAvailability : any = []
+  public ADDMSSFinalAvailability : any = [];
+  public UpdateFunAndFunFailureName : string = "";
+  public UpdateFunFailure : string = "";
   public presObj : CentrifugalPumpPrescriptiveModels = new CentrifugalPumpPrescriptiveModels();
 
   constructor(private messageService: MessageService,
@@ -400,6 +402,7 @@ public UpdateBeta : number = 0
     var FailureModeWithLSETree = JSON.parse(this.CPPrescriptiveUpdateData.FailureModeWithLSETree)
     this.data2 = FailureModeWithLSETree
     this.data1[0].edit = true;
+    this.data1[0].children[0].edit = true;
     this.data1[0].children[0].children[0].children.forEach(mode => {
       mode.edit = true;
       mode.delete = true;
@@ -420,13 +423,19 @@ public UpdateBeta : number = 0
     console.log(p.label)
     this.UpdateModal = true;
     if (p.label == 'Function') {
-      this.FluidType = this.CPPrescriptiveUpdateData.FunctionFluidType
+      this.UpdateFunAndFunFailureName="Function";
+      this.FluidType = this.CPPrescriptiveUpdateData.FunctionFluidType;
+      this.UpdateFunFailure = this.CPPrescriptiveUpdateData.FunctionFailure;
       this.RatedHead = this.CPPrescriptiveUpdateData.FunctionRatedHead
       this.PeriodType = this.CPPrescriptiveUpdateData.FunctionPeriodType
       this.Functiondiv = document.getElementById("FunctionUpdate")
       this.Functiondiv.style.display = 'block'
     } else if (p.label == 'Function Failure') {
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'No Update For Function Failure' });
+      this.UpdateFunFailure = this.CPPrescriptiveUpdateData.FunctionFailure;
+      this.FluidType = this.CPPrescriptiveUpdateData.FunctionFluidType;
+      this.UpdateFunAndFunFailureName = "Function Failure";
+      this.Functiondiv = document.getElementById("FunctionUpdate")
+      this.Functiondiv.style.display = 'block'
     } else if (p.label == "Local Effect" || p.label == "System Effect" || p.label == "Consequence") {
     } else { this.EditFailureMode(p) }
     const element = document.querySelector("#PatternForFailureMode")
@@ -781,9 +790,12 @@ public UpdateBeta : number = 0
 
   SaveFunction() {
     this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FluidType
-    var FunctionTree: string = "Function Type : " + this.FluidType 
+    this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.UpdateFunFailure;
+    var FunctionTree: string = this.FluidType ;
     this.data1[0].data.name = FunctionTree
     this.data2[0].data.name = FunctionTree
+    this.data1[0].children[0].data.name = this.UpdateFunFailure
+    this.data2[0].children[0].data.name = this.UpdateFunFailure
 
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data2)
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);

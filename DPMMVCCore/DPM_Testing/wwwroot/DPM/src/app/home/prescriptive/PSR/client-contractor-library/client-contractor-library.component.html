@@ -1,0 +1,63 @@
+<p-toast position="top-right"></p-toast>
+<div class="container">
+    <div class="shadow-sm p-3 mb-5 bg-white rounded" style=" margin-right: 80px;">
+        <div class="table-responsive">
+            <div style="padding:10px;">
+                <div class="container">
+                    <div class="row">
+                        <div style="text-align: center;" class="col-sm-2">Craft Short Form</div>
+                        <div style="text-align: right;" class="col-sm-2">Craft Long Form</div>
+                        <div  class="col-sm-2"></div>  
+                        <div style="text-align: right;" class="col-sm">Client Hourly Rate</div>
+                        <div  class="col-xl"></div> 
+                        <div style="text-align: center;" class="col-sm">Contractor Hourly Rate</div>
+                        <div style="text-align: center;" class="col-sm">
+                            <button class="btn btn-outline-primary btn-sm" (click)="clientContratorForm()">
+                                <i class="fa fa-plus"></i> New Record
+                            </button>
+                        </div>
+                        <div style="text-align: center;" class="col-sm-2"></div>
+                        <div class="td col-sm">
+                            <span *ngIf="notification" class="elementToFadeInAndOut">
+                                <i class="fas fa-check-circle {{notification.class}}"></i>
+                                {{notification.message}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="tbody">
+                        <form class="tr" [formGroup]="fg" *ngFor="let fg of clientContratorForms.controls ; let i=index;"
+                            (submit)="recordSubmit(fg)">
+                            <div class="td">
+                                <input class="form-control" data-toggle="tooltip" data-placement="right" formControlName="craftSF">
+                            </div>
+                            <div class="td">
+                                <input class="form-control" formControlName="craftLF">
+                            </div>
+                            <div class="td">
+                                <input type="number" class="form-control" formControlName="clientHourlyRate">
+                            </div>
+                            <div class="td">
+                                <input type="number" class="form-control" formControlName="contractorHourlyRate">
+                            </div>
+                        
+                            <div class="td">
+                                <button type="submit" class="btn btn-sm" [disabled]="fg.invalid"
+                                    [ngClass]="(fg.get('psrClientContractorId').value==0)?'btn btn-sm':'btn-outline-dark'"><i
+                                        class="far fa-save"></i>
+                                    {{fg.get('psrClientContractorId').value==0?'Submit':'Update'}}
+                                </button>
+
+                            </div>
+                            <div class="td">
+                                <button class="btn btn-light ml-1" (click)="onDelete(fg.get('psrClientContractorId').value,i)">
+                                    <i class="far fa-trash-alt fa-lg text-danger"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

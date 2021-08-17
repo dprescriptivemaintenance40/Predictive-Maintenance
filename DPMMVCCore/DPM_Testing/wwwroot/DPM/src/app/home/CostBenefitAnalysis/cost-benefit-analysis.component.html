@@ -32,7 +32,7 @@
             <li class="list-group-item">
                 <div class="input-group mb-3">
                     <label style=" margin-right: 12px;">ETBF</label>
-                    <input type="text" [(ngModel)]="ETBF" placeholder="Enter ETBF" class="form-control">
+                    <input type="number" [(ngModel)]="ETBF" class="form-control">
                 </div>
             </li>
             <li class="list-group-item">
@@ -168,6 +168,8 @@
                                     <tr>
                                         <th>Maintenance Task</th>
                                         <th>Maintenance Interval</th>
+                                        <th>RWC</th>
+                                        <th>Level</th>
                                         <th>POC</th>
                                         <th>Annual POC</th>
                                         <th>Status</th>
@@ -177,6 +179,8 @@
                                     <tr *ngFor="let mss of row.CentrifugalPumpMssModel">
                                         <td class="left strong">{{mss.MSSMaintenanceTask}}</td>
                                         <td class="left">{{mss.MSSMaintenanceInterval}}</td>
+                                        <td class="left">{{mss.Craft}}</td>
+                                        <td class="left">{{mss.Level}}</td>
                                         <td class="left">{{mss.POC}}</td>
                                         <td class="left">{{mss.AnnualPOC}}</td>
                                         <td class="left">{{mss.Status}}</td>
@@ -197,7 +201,7 @@
                                             ECO&nbsp;&nbsp;HS&nbsp;&nbsp;ENV
                                         </div>
                                         <div>
-                                            L&nbsp;&nbsp;-&nbsp;&nbsp;N
+                                            {{CriticalityRating}} - &nbsp;L&nbsp; - &nbsp;&nbsp;L
                                         </div>
                                     </div>
                                 </div>
@@ -208,8 +212,12 @@
                                     <span class="float-right">{{row.ConsequenceCategory}}</span>
                                 </div>
                                 <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Criticality Rating</strong>
-                                    <span class="float-right">M</span>
+                                    <strong>Criticality Rating with DPM</strong>
+                                    <span class="float-right">{{row.ResidualRiskWithMaintenanceCR}}</span>
+                                </div>
+                                <div class="m-1 p-1" style="border: 1px solid;">
+                                    <strong>Criticality Rating without DPM</strong>
+                                    <span class="float-right">{{row.EconomicRiskWithoutMaintenanceCR}}</span>
                                 </div>
                             </div>
                         </div>

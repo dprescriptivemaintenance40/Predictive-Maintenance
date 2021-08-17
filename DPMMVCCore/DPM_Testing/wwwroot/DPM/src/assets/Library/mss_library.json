@@ -105,18 +105,28 @@
    },
    { 
      "id": 20,
-     "name": "Rotary Damage",
-     "mtbf" : 5
+     "name": "First stage rotor breakdown",
+     "mtbf" : 5  
    },
    { 
      "id": 21,
      "name": "Cooler failure",
+     "mtbf" : 4
+   },
+   { 
+     "id": 22,
+     "name": "Second stage rotor breakdown",
      "mtbf" : 3 
    },
    { 
-     "id": 21,
-     "name": "Second stage rotor breakdown",
-     "mtbf" : 4 
-   }
+    "id": 23,
+    "name": "Relief valve failed to open",
+    "mtbf" : 5 
+  },
+  { 
+    "id": 24,
+    "name": "Relief valve failed to close",
+    "mtbf" : 3 
+  }
 
 ]

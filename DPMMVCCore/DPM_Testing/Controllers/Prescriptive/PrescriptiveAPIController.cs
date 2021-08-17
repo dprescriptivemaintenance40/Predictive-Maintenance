@@ -664,6 +664,7 @@ namespace DPM.Controllers.Prescriptive
             CentrifugalPumpPrescriptiveModel centrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
             centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.FindAsync(prescriptiveModel.CFPPrescriptiveId);
             centrifugalPumpPrescriptiveModel.FunctionFluidType = prescriptiveModel.FunctionFluidType;
+            centrifugalPumpPrescriptiveModel.FunctionFailure = prescriptiveModel.FunctionFailure;
             //centrifugalPumpPrescriptiveModel.FunctionRatedHead = prescriptiveModel.FunctionRatedHead;
             //centrifugalPumpPrescriptiveModel.FunctionPeriodType = prescriptiveModel.FunctionPeriodType;
             centrifugalPumpPrescriptiveModel.FailureModeWithLSETree = prescriptiveModel.FailureModeWithLSETree;

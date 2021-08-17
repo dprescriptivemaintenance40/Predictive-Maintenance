@@ -10652,3 +10652,9 @@ a.text-dark:hover {
     left: 0px;
     top: -9px;
 }
+
+.text-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
