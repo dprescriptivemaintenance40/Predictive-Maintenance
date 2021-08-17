@@ -56,6 +56,10 @@ export class PrescriptiveContantAPI {
     public MSSStrategyGetAllRecords : string = "/MSSStartegyAPI/GetAllConfigurationRecords";
     public MSSStartegyAPI : string = "/MSSStartegyAPI";
 
+
+    public UserProductionDetailAPI = '/UserProductionAPI';
+    public GetUserProductionDetail = '/UserProductionAPI/GetAllConfigurationRecords';
+
     //#endregion
 
 }

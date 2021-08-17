@@ -1,7 +1,9 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { MessageService } from "primeng/api";
+import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
 import * as XLSX from 'xlsx';
+import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
 
 @Component({
     templateUrl: './cost-benefit-analysis.component.html',
@@ -22,16 +24,27 @@ export class CostBenefitAnalysisComponent {
     public Site: string = '';
     public Plant: string = '';
     public Unit: string = '';
-    public ETBF: string = '';
+    public ETBF: number = 0;
     public RiskMatrixLibraryRecords : any = [];
     public EconmicConsequenceClass : string ="";
     public CriticalityRating : string = "";
+    public MaintenanceStrategyList : any =[];
+    public SavedPCRRecordsList : any =[];
+    public SkillLibraryAllrecords : any =[];
+    public PSRClientContractorData : any = [];
+    public UserProductionCost : number = 0;
     constructor(private messageService: MessageService,
+        private commonBLervice : CommonBLService,
+        private PSRAPIs : PrescriptiveContantAPI,
         private http: HttpClient) {
+        this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
+        this.GetSavedPSRRecords();
+        this.GetMssStartegyList();
+        this.GetPSRClientContractorData();
+        this.getUserSkillRecords();
         this.MachineEquipmentSelect();
         this.getPrescriptiveRecords();
         this.GetRiskMatrixLibraryRecords();
-        this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
     }
 
     GetRiskMatrixLibraryRecords(){
@@ -50,7 +63,7 @@ export class CostBenefitAnalysisComponent {
                     var first_sheet_name = workbook.SheetNames[0];
                     var worksheet = workbook.Sheets[first_sheet_name];
                     this.RiskMatrixLibraryRecords =  XLSX.utils.sheet_to_json(worksheet, { raw: true });
-                    this.getTotalEconomicConsequenceClass(2 , 199);
+                   // this.getTotalEconomicConsequenceClass(2 , 199);
                 }
             }, err=>{ console.log(err.error)}
         )
@@ -107,6 +120,23 @@ export class CostBenefitAnalysisComponent {
       return  await { 'EconmicConsequenceClass':this.EconmicConsequenceClass, 'CriticalityRating':this.CriticalityRating}
     }
 
+    private GetSavedPSRRecords(){
+        const params = new HttpParams()
+              .set('userId', this.UserDetails.UserId)
+        this.commonBLervice.getWithParameters('/PSRClientContractorAPI/GetSkillPSRMapping', params)
+        .subscribe(
+          (res : any) =>{
+            this.SavedPCRRecordsList = res;
+          })
+    }
+    private GetMssStartegyList(){
+        this.commonBLervice.getWithoutParameters(this.PSRAPIs.MSSStrategyGetAllRecords).subscribe( 
+          res => {
+            this.MaintenanceStrategyList = res;
+          }
+        )
+      }
+
     MachineEquipmentSelect() {
         if (this.MachineType == "Pump") {
             this.EquipmentList = []
@@ -125,6 +155,17 @@ export class CostBenefitAnalysisComponent {
                 });
             });
     }
+
+    GetUserProductionDetailRecords(){
+        this.commonBLervice.getWithoutParameters(this.PSRAPIs.GetUserProductionDetail).subscribe(
+         (res : any) => { 
+            this.UserProductionCost = 0;
+             res.forEach(element => {
+                this.UserProductionCost = this.UserProductionCost + element.TotalCost;
+             });
+            
+          }, err=> {console.log(err.error)})
+    }
   async  getPrescriptiveRecordsByEqui() {
         if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
             this.prescriptiveRecords = [];
@@ -133,7 +174,12 @@ export class CostBenefitAnalysisComponent {
                     this.prescriptiveRecords = res;
                     this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach( async row => {
                         row.TotalAnnualPOC = 0;
+                        var levelCount : number =0;
                         row.CentrifugalPumpMssModel.forEach(mss => {
+                          //  var MSSTaskList = this.MaintenanceStrategyList.find(r=>r.MaintenanceTask == mss.MSSMaintenanceTask);
+                            let PSRData = this.SavedPCRRecordsList.find(r=>r.MaintenanceTask == mss.MSSMaintenanceTask);
+                            let CRAFT = this.getCraftValue(PSRData);
+                            let LEVEL = this.getEmployeeLevelValue(PSRData);
                             if (!mss.MSSMaintenanceInterval || mss.MSSMaintenanceInterval === 'NA' || mss.MSSMaintenanceInterval === 'Not Applicable') {
                                 mss.POC = 0;
                                 mss.AnnualPOC = 0;
@@ -141,20 +187,31 @@ export class CostBenefitAnalysisComponent {
                             } else {
                                 let annu = mss.MSSMaintenanceInterval.split(' ');
                                 if (mss.MSSMaintenanceInterval.toLowerCase().includes('week')) {
-                                    mss.POC = 0.00025;
-                                    mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * 0.00025).toFixed(3));
+                                   // mss.POC = 0.00025;
+                                    mss.POC = PSRData.POC;
+                                    mss.Craft = CRAFT;
+                                    mss.Level = LEVEL;
+                                    mss.EmployeeName = PSRData.EmployeeName
+                                    mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * mss.POC).toFixed(3));
                                 } else if (mss.MSSMaintenanceInterval.toLowerCase().includes('month')) {
-                                    mss.POC = 0.02;
-                                    mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * 0.02).toFixed(3));
+                                    mss.POC = PSRData.POC;
+                                    mss.Craft = CRAFT;
+                                    mss.Level = LEVEL;
+                                    mss.EmployeeName = PSRData.EmployeeName
+                                    mss.AnnualPOC = parseFloat((parseFloat(annu[0]) * mss.POC * 4.345).toFixed(3));
                                 }
                                 mss.MSSMaintenanceInterval = `${parseFloat(annu[0]).toFixed(1)} ${annu[1]}`;
                                 mss.Status = 'Retained';
                                 row.TotalAnnualPOC += mss.AnnualPOC;
                             }
+                            levelCount = levelCount+LEVEL;
                         });
-                        row.ETBC = 10;
-                        row.TotalPONC = 20796;
+                        row.LevelPercentage = (levelCount / (row.CentrifugalPumpMssModel.length * 100)).toFixed(2)
+                        //row.ETBC = 10;
+                       // row.TotalPONC = 20796;
+                        row.TotalPONC = this.UserProductionCost;
                         row.ETBF = this.ETBF ? this.ETBF : 2;
+                        row.ETBC = (this.ETBF *  row.LevelPercentage).toFixed(2)
                         row.TotalAnnualCostWithMaintenance = 1.777;
                         row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
                         row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
@@ -185,4 +242,28 @@ export class CostBenefitAnalysisComponent {
             this.messageService.add({ severity: 'info', summary: 'note', detail: "Please fill all three fields Site, Plant, Unit. " })
         }
     }
+
+    private getUserSkillRecords(){
+        this.commonBLervice.getWithoutParameters('/SkillLibraryAPI/GetAllConfigurationRecords').subscribe(
+          (res : any) => {
+            this.SkillLibraryAllrecords =res;
+          })
+    }
+    private GetPSRClientContractorData() {
+        this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords')
+          .subscribe((res: any) => {
+            this.PSRClientContractorData = res;
+          });
+      }
+
+    getCraftValue(d){
+        var skillData = this.SkillLibraryAllrecords.find(r=>r.SKillLibraryId === d.Craft);
+        var craft = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === skillData.Craft);
+        return craft.CraftSF;
+    }
+
+    getEmployeeLevelValue(d){
+        var skillData = this.SkillLibraryAllrecords.find(r=>r.SKillLibraryId === d.Craft);
+        return skillData.Level;
+      }
 }

@@ -91,7 +91,7 @@ namespace DPM_Testing.Controllers
 
         private bool UserSkillLibraryModelExists(int id)
         {
-            return _context.AddRuleModels.Any(e => e.AddRuleId == id);
+            return _context.UserSkillLibraryModels.Any(e => e.SKillLibraryId == id);
         }
 
         [HttpDelete("{id}")]

@@ -214,6 +214,9 @@
                     <label>Craft</label>
                 </td>
                 <td class="col-sm">
+                    <label>Employee Name</label>
+                </td>
+                <td class="col-sm">
                     <label>Action</label>
                 </td>
                 <td class="col-sm">
@@ -238,6 +241,9 @@
                 </td>
                 <td class="col-sm">
                     <label>{{r.Craft !== 0 ? getCraftValue(r) : 'Not added'}}</label>
+                </td>
+                <td class="col-sm">
+                    <label>{{r.EmployeeName !== '' ? r.EmployeeName : 'Not added'}}</label>
                 </td>
                 <td class="col-sm">
                     <p-button *ngIf="r.Craft == 0"  icon="pi pi-plus" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
@@ -268,6 +274,7 @@
                 <th scope="col">Sr. No</th>
                 <th scope="col">Craft</th>
                 <th scope="col">Employee</th>
+                <th scope="col">Level</th>
                 <th scope="col">Hourly Rate</th>
                 <th scope="col">Select</th>
             </tr>
@@ -282,6 +289,9 @@
                 </td>
                 <td>
                     <label>{{r.Employee}}</label>
+                </td>
+                <td>
+                    <label>{{r.Level}}</label>
                 </td>
                 <td>
                     <label>{{r.HR}}</label>

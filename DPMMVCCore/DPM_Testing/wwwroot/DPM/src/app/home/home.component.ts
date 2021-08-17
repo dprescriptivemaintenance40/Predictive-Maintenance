@@ -238,8 +238,8 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Prescriptive/SkillLibrary'
                 },
                 {
-                  label: 'PSR',
-                  url: '#/Home/Prescriptive/PSR'
+                  label: 'User Production Details',
+                  url: '#/Home/Prescriptive/UPD'
                 },
                 {
                   label: 'Display',

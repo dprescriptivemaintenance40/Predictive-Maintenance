@@ -56,6 +56,7 @@ export class SkillLibraryComponent implements OnInit {
   private SkillLibraryAllrecords : any = [];
   public craftModalData : any = [];
   public SavedPCRRecordsList : any = [];
+  public SelectedCraftToEdit : any;
   constructor(private http: HttpClient,
     public fb: FormBuilder,
     private commonBLervice: CommonBLService,
@@ -277,15 +278,16 @@ export class SkillLibraryComponent implements OnInit {
     .subscribe(
       (res : any) =>{
         this.SavedPCRRecordsList = res;
+        const MaintenanceTask = [...new Set(this.SkillLibraryAllrecords.map(item => item.Task))];
         this.PSRModel =[]
         if(res.length === 0){
-          const MaintenanceTask = [...new Set(this.SkillLibraryAllrecords.map(item => item.Task))];
           MaintenanceTask.forEach(element => {
             var MSSData = this.MaintenanceStrategyList.find(r=>r.MSSStrategyModelId == element)
             let obj ={}
             obj['PSRId']=0;
             obj['UserId']= this.userModel.UserId;
             obj['MaintenanceTaskId']=element;
+            obj['EmployeeName']='';
             obj['MaintenanceTask']= MSSData.MaintenanceTask;
             obj['Strategy']= MSSData.Strategy;
             obj['Craft']= 0;
@@ -296,10 +298,35 @@ export class SkillLibraryComponent implements OnInit {
             this.PSRModel.push(obj);
           });
         }else{
-          res.forEach(element => {
-            this.PSRModel.push(element);
-          });
+          if(MaintenanceTask.length > res.length){
+            res.forEach(element => {
+              this.PSRModel.push(element);
+            }); 
+            const addedMTinDB = [...new Set(res.map(item => item.MaintenanceTaskId))];
+            const NotSavedMT = MaintenanceTask.filter(f => !addedMTinDB.includes(f));
+           // const maxId = Math.max(...this.SkillLibraryAllrecords.map(o => o.SKillLibraryId), 0);
+           NotSavedMT.forEach(element => {
+            var MSSData = this.MaintenanceStrategyList.find(r=>r.MSSStrategyModelId == element)
+            let obj ={}
+            obj['PSRId']=0;
+            obj['UserId']= this.userModel.UserId;
+            obj['MaintenanceTaskId']=element;
+            obj['EmployeeName']='';
+            obj['MaintenanceTask']= MSSData.MaintenanceTask;
+            obj['Strategy']= MSSData.Strategy;
+            obj['Craft']= 0;
+            obj['HourlyRate']= 0;
+            obj['TaskDuration']= 0 ;
+            obj['MaterialCost']= 0 ;
+            obj['POC']= 0 ;
+            this.PSRModel.push(obj);
+           });
 
+          }else if(MaintenanceTask.length === res.length){
+            res.forEach(element => {
+              this.PSRModel.push(element);
+            });
+          }
         }
         this.showPSR = true;
       }, err =>{ console.log(err.error)}
@@ -337,10 +364,25 @@ export class SkillLibraryComponent implements OnInit {
     if (SKillLibraryId == 0)
       this.skillLibraryForms.removeAt(i);
     else if (confirm('Are you sure to delete this record ?')){
-      this.commonBLervice.DeleteWithID('', SKillLibraryId).subscribe(
+      var Data = this.SkillLibraryAllrecords.find(r=>r.SKillLibraryId === SKillLibraryId);
+      var PSRData : any = this.PSRModel.find(r=>r.MaintenanceTaskId === Data.Task);
+      var EmployeeData = this.EmployeeList.find(r=>r.id === Data.EmpId);
+      var craftData = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === Data.Craft)
+      var craft = this.getCraftValue(PSRData);
+      if((Data.Task === PSRData.MaintenanceTaskId) 
+          && (PSRData.EmployeeName === EmployeeData.name)
+          && (craftData.CraftSF === craft) ){
+            PSRData.Craft = 0;
+            PSRData.EmployeeName = ''
+            PSRData.HourlyRate = 0;
+            PSRData.POC = 0;
+            this.SavePSR();
+          }
+      this.commonBLervice.DeleteWithID('/SkillLibraryAPI', SKillLibraryId).subscribe(
         res => {
           this.skillLibraryForms.removeAt(i);
           this.showNotification('delete');
+          this.getUserSkillRecords();
         });
     }    
   }
@@ -381,7 +423,7 @@ export class SkillLibraryComponent implements OnInit {
               EmpId: [SKillLibraryModel.EmpId, Validators.required],
               Task: [SKillLibraryModel.Task, Validators.required],
               Level: [SKillLibraryModel.Level, Validators.required],
-              HourlyRate: [SKillLibraryModel.Level, Validators.required],
+              HourlyRate: [SKillLibraryModel.HourlyRate, Validators.required],
             }));
           });
 
@@ -391,7 +433,6 @@ export class SkillLibraryComponent implements OnInit {
     );
   }
 
-  public SelectedCraftToEdit : any;
   AddCraft(v){
     this.SelectedCraftToEdit = v;
     if(v.TaskDuration !== 0){
@@ -408,6 +449,7 @@ export class SkillLibraryComponent implements OnInit {
         obj['SKillLibraryId']=element.SKillLibraryId
         obj['Craft'] = cf.CraftSF
         obj['Employee'] = em.name
+        obj['Level'] = element.Level
         obj['Selected'] = false;
         obj['HR'] = element.HourlyRate;
         this.craftModalData.push(obj);
@@ -428,7 +470,7 @@ export class SkillLibraryComponent implements OnInit {
           obj['Selected'] = false;
         }        
         obj['Employee'] = em.name
-        
+        obj['Level'] = element.Level
         obj['HR'] = element.HourlyRate;
         this.craftModalData.push(obj);
       });
@@ -445,11 +487,13 @@ export class SkillLibraryComponent implements OnInit {
      a.Selected = true;
      this.SelectedCraftToEdit.Craft = a.SKillLibraryId;
      this.SelectedCraftToEdit.HourlyRate = a.HR;
+     this.SelectedCraftToEdit.EmployeeName = a.Employee
    }
    if(e.target.checked === false){
-    e.Selected = false
-    this.SelectedCraftToEdit.Craft = 0;
+     e.Selected = false
+     this.SelectedCraftToEdit.Craft = 0;
      this.SelectedCraftToEdit.HourlyRate = 0;
+     this.SelectedCraftToEdit.EmployeeName  = '';
   }
   if(this.SelectedCraftToEdit.TaskDuration !== 0){
     this.SelectedCraftToEdit.TaskDuration =  this.SelectedCraftToEdit.TaskDuration*60;
