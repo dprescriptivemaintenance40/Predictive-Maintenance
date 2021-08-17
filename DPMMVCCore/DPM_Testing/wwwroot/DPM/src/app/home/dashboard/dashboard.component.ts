@@ -926,7 +926,7 @@ export class DashboardComponent {
         labels: ["Normal", "incipient", "Degrade"],
         datasets: [
           {
-            backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
+            backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
             data: [this.ClassNormalpercentage, this.ClassIncipientpercentage, this.ClassDegradepercentage]
           }
         ]
@@ -991,8 +991,8 @@ export class DashboardComponent {
            label: "Normal",
            data: this.SCFinalNormal,
            borderWidth: 1,
-           borderColor: "#6f51ed",
-           backgroundColor: '#6f51ed',
+           borderColor: "#3cd3d8",
+           backgroundColor: '#3cd3d8',
            fill: true,
          }, 
          {
@@ -1085,7 +1085,7 @@ export class DashboardComponent {
             label: "Normal",
             data: this.TrainDataNormalCount,
             borderWidth: 1,
-            backgroundColor: "#6f51ed",
+            backgroundColor: "#3cd3d8",
           },
           {
             label: "Degrade",
@@ -1165,7 +1165,7 @@ export class DashboardComponent {
     //     fill: true,
     //     datasets: [
     //       {
-    //         backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
+    //         backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
     //         data: [this.PredictionNormalcount, this.PredictionIncipientcount, this.PredictionDegradecount]
     //       }
     //     ]
@@ -1227,8 +1227,8 @@ export class DashboardComponent {
             label: "Normal",
             data: this.FinalNormal,
             borderWidth: 1,
-            borderColor: "#6f51ed",
-            backgroundColor: '#6f51ed',
+            borderColor: "#3cd3d8",
+            backgroundColor: '#3cd3d8',
             fill: true,
           }, 
           {
@@ -1309,7 +1309,7 @@ export class DashboardComponent {
         fill: true,
         datasets: [
           {
-            backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
+            backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
             data: [Normalpercentage,Incipientpercentage,Degradepercentage]
           }
         ]
@@ -1384,8 +1384,8 @@ export class DashboardComponent {
             label: "Normal",
             data: this.PredictionDataNormalCount,
             borderWidth: 1,
-            borderColor: "#6f51ed",
-            backgroundColor: '#6f51ed',
+            borderColor: "#3cd3d8",
+            backgroundColor: '#3cd3d8',
             fill: true,
           }, {
             label: "Incipent",
@@ -1601,8 +1601,8 @@ export class DashboardComponent {
             label: "Normal",
             data: this.FutuerPredictionDataNormalCount,
             borderWidth: 1,
-            borderColor: "#6f51ed",
-            backgroundColor: '#6f51ed',
+            borderColor: "#3cd3d8",
+            backgroundColor: '#3cd3d8',
           }, {
             label: "Incipent",
             data: this.FutuerPredictionDataIncipientCount,
@@ -1671,7 +1671,7 @@ export class DashboardComponent {
     //     labels: ["Normal", "incipient", "Degrade"],
     //     datasets: [
     //       {
-    //         backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
+    //         backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
     //         data: [this.FutuerPredictionNormalcount, this.FutuerPredictionIncipientcount, this.FutuerPredictionDegradecount]
     //       }
     //     ]
@@ -1732,8 +1732,8 @@ export class DashboardComponent {
            label: "Normal",
            data: this.FPFinalNormal,
            borderWidth: 1,
-           borderColor: "#6f51ed",
-           backgroundColor: '#6f51ed',
+           borderColor: "#3cd3d8",
+           backgroundColor: '#3cd3d8',
            fill: true,
          }, 
          {
@@ -1811,7 +1811,7 @@ export class DashboardComponent {
         labels: ["Normal", "incipient", "Degrade"],
         datasets: [
           {
-            backgroundColor: ["#6f51ed", "#ffb801", "#fe4c61"],
+            backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
             data: [FPClassNormalpercentage, FPClassIncipientpercentage, FPClassDegradepercentage]
           }
         ]
