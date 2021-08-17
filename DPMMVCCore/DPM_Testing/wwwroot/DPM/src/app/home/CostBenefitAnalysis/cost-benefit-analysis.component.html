@@ -204,6 +204,8 @@
                                     <tr>
                                         <th>Maintenance Task</th>
                                         <th>Maintenance Interval</th>
+                                        <th>RWC</th>
+                                        <th>Level</th>
                                         <th>POC</th>
                                         <th>Annual POC</th>
                                         <th>Status</th>
@@ -213,6 +215,8 @@
                                     <tr *ngFor="let mss of CBAReportDetails.CentrifugalPumpMssModel">
                                         <td class="left strong">{{mss.MSSMaintenanceTask}}</td>
                                         <td class="left">{{mss.MSSMaintenanceInterval}}</td>
+                                        <td class="left">{{mss.Craft}}</td>
+                                        <td class="left">{{mss.Level}}</td>
                                         <td class="left">{{mss.POC}}</td>
                                         <td class="left">{{mss.AnnualPOC}}</td>
                                         <td class="left">{{mss.Status}}</td>
@@ -288,7 +292,21 @@
                                 </div>
                             </div>
 
-                        </div>
+                            <div class="col-sm-6" style="padding-right: 0px !important; padding-left: 3px !important;">
+                                <div class="m-1 p-1">
+                                    <strong>Consequence category:</strong>
+                                    <span class="float-right">{{row.ConsequenceCategory}}</span>
+                                </div>
+                                <div class="m-1 p-1">
+                                    <strong>Criticality Rating with DPM:</strong>
+                                    <span class="float-right">{{row.ResidualRiskWithMaintenanceCR}}</span>
+                                </div>
+                                <div class="m-1 p-1">
+                                    <strong>Criticality Rating without DPM:</strong>
+                                    <span class="float-right">{{row.EconomicRiskWithoutMaintenanceCR}}</span>
+                                </div>
+                            </div>
+                        </div>                       
                         <div class="row mb-4">
                             <div class="col-sm-6">
                                 <h6><i class="pi pi-eye"></i>Scenario</h6>

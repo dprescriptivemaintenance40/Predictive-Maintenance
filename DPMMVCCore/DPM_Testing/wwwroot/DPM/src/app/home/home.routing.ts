@@ -15,6 +15,7 @@ import { CentrifugalPumpTraindataUploadComponent } from "./Pump/centrifugal-pump
 import { CentrifugalPumpPredictiondataUploadComponent } from "./Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component";
 import { ScrewCompressorTraindataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-traindata-upload/screw-compressor-traindata-upload.component";
 import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-predictiondata-upload/screw-compressor-predictiondata-upload.component";
+import { PrescriptionComponent } from "./prescription/prescription.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -33,6 +34,7 @@ import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/Screw
                 { path: 'CentrifugalPumpTrain', component: CentrifugalPumpTrainComponent },
                 { path: 'RecycleBin', component: RecycleBinComponent },
                 { path: 'CentrifugalPumpPrediction', component: CentrifugalPumpPredictionComponent },
+                { path: 'Prescription', component: PrescriptionComponent },
                 { path: 'CostBenefitAnalysis', component: CostBenefitAnalysisComponent },
                 { path: 'FailureModesLibrary', loadChildren: () => import('./FailureModeLibrary/failure-modes-library.module').then(a => a.FailureModesLibraryModule)}, 
                 { path: 'TrainUploadData', component: CentrifugalPumpTraindataUploadComponent },

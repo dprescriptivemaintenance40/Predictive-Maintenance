@@ -20,6 +20,8 @@ import { CentrifugalPumpPredictionComponent } from './Pump/centrifugal-pump/cent
 import { CentrifugalPumpTraindataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-traindata-upload/centrifugal-pump-traindata-upload.component';
 import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component';
 import {DialogModule} from 'primeng/dialog';
+import { PrescriptionComponent } from './prescription/prescription.component';
+
 @NgModule({
     declarations: [
         HomeComponent,
@@ -35,6 +37,7 @@ import {DialogModule} from 'primeng/dialog';
         CentrifugalPumpPredictionComponent,
         CentrifugalPumpTraindataUploadComponent,
         CentrifugalPumpPredictiondataUploadComponent,
+        PrescriptionComponent,
     ],
     imports: [        
         HomeRoutingModule,       

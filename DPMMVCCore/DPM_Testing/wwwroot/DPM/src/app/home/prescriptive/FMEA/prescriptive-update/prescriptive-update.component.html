@@ -53,17 +53,21 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Update Function</h5>
+                <h5 class="modal-title">Update {{UpdateFunAndFunFailureName}}</h5>
                 <button type="button" class="close" data-dismiss="update" aria-label="Close" (click)="closeFunctionmodal()">
             <span aria-hidden="true">&times;</span>
           </button>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Function :</label>>
-                            <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FluidType" [ngModelOptions]="{standalone: true}" placeholder="Type Function "></textarea>
+                    <form>                        
+                        <div *ngIf="UpdateFunAndFunFailureName === 'Function'" class="form-group">
+                            <label for="recipient-name" class="col-form-label">Function :</label>
+                            <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FluidType"  [ngModelOptions]="{standalone: true}" placeholder="Type Function "></textarea>
+                        </div>
+                        <div *ngIf="UpdateFunAndFunFailureName ==='Function Failure'" class="form-group">
+                            <label for="recipient-name" class="col-form-label">Function failure :</label>
+                            <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="UpdateFunFailure"  [ngModelOptions]="{standalone: true}" placeholder="Type Function "></textarea>
                         </div>
                     </form>
                 </div>

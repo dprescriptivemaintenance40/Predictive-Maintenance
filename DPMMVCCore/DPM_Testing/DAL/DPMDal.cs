@@ -6,6 +6,7 @@ using DPM.Models.Prescriptive;
 using DPM.Models.PumpModel;
 using DPM.Models.RecycleBinModel;
 using DPM.Models.Prescriptive.RCA;
+using DPM.Models.Prescriptive.PSR;
 
 namespace DPM_ServerSide.DAL
 {
@@ -35,6 +36,12 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpPredictionModel> CentrifugalPumpPredictions { get; set; }
         public DbSet<CentrifugalPumpTrainModel> CentrifugalPumpTrainData { get; set; }
         public DbSet<CentrifugalPumpFuturePredictionModel> CentrifugalPumpFuturePredictionModels { get; set; }
+        public DbSet<PSRClientContractorModel> PSRClientContractorModels { get; set; }
+        public DbSet<MSSStrategyModel> MSSStrategyModels { get; set; }
+        public DbSet<MapStrategySkillModel> MapStrategySkillModels { get; set; }
+        public DbSet<SkillPSRMappingModel> SkillPSRMappingModels { get; set; }
+        public DbSet<UserSkillLibraryModel> UserSkillLibraryModels { get; set; }
+        public DbSet<UserProductionModel> UserProductionModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -70,6 +77,12 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<CentrifugalPumpTrainModel>().ToTable("centrifugalpumpTraindetails");
             modelBuilder.Entity<CentrifugalPumpPredictionModel>().ToTable("centrifugalpumppredictiontable");
             modelBuilder.Entity<CentrifugalPumpFuturePredictionModel>().ToTable("centrifugalpumpfuturepredictiontable");
+            modelBuilder.Entity<PSRClientContractorModel>().ToTable("PSRClientContractor");
+            modelBuilder.Entity<MSSStrategyModel>().ToTable("MSSStrategyMaintenanceTask");
+            modelBuilder.Entity<MapStrategySkillModel>().ToTable("MapStrategySkillModel");
+            modelBuilder.Entity<SkillPSRMappingModel>().ToTable("SkillPSRMappingtable");
+            modelBuilder.Entity<UserSkillLibraryModel>().ToTable("UserSkillLibraryModelTable");
+            modelBuilder.Entity<UserProductionModel>().ToTable("UserProductionModelTable");
         }
 
     }

@@ -244,6 +244,14 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Prescriptive/MSSAdd'
                 },
                 {
+                  label: 'Skill Library',
+                  url: '#/Home/Prescriptive/SkillLibrary'
+                },
+                {
+                  label: 'User Production Details',
+                  url: '#/Home/Prescriptive/UPD'
+                },
+                {
                   label: 'Display',
                   url: '#/Home/Prescriptive/Display'
                 }
@@ -311,7 +319,11 @@ export class HomeComponent implements OnInit {
         {
           label: 'Prescriptive Recommendation',
           url: '#/Home/Prescriptive/List'
-        }
+        },
+        {
+          label: 'Summary',
+          url: '#/Home/Prescription'
+        },
       ]
     },
     {

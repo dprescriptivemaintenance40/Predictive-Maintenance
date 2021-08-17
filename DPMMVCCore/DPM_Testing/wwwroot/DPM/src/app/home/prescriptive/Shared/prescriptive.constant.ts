@@ -47,4 +47,19 @@ export class PrescriptiveContantAPI {
 
     //#endregion
 
+    //#region PCR 
+    
+    public GetAllConfigurationRecords : string = '/PSRClientContractorAPI/GetAllConfigurationRecords';
+    public GetRecordById : string = '/PSRClientContractorAPI/GetRecordById';
+    public PSRClientContractorAPI : string = '/PSRClientContractorAPI';
+
+    public MSSStrategyGetAllRecords : string = "/MSSStartegyAPI/GetAllConfigurationRecords";
+    public MSSStartegyAPI : string = "/MSSStartegyAPI";
+
+
+    public UserProductionDetailAPI = '/UserProductionAPI';
+    public GetUserProductionDetail = '/UserProductionAPI/GetAllConfigurationRecords';
+
+    //#endregion
+
 }

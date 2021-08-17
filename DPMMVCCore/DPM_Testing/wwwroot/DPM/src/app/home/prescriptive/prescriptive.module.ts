@@ -14,6 +14,11 @@ import { MSSAddComponent } from './MSS/mss-add/mss-add.component';
 import { RCAComponent } from "./RCA/rca.component";
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
+import { ClientContractorLibraryComponent } from './PSR/client-contractor-library/client-contractor-library.component';
+import { MssStrategyComponent } from './PSR/mss-strategy/mss-strategy.component';
+import { SkillLibraryComponent } from './PSR/skill-library/skill-library.component';
+import { MSRComponent } from './PSR/msr/msr.component';
+import { UserProductionDetailsComponent } from './PSR/user-production-details/user-production-details.component';
 
 @NgModule({
     declarations: [PrescriptiveComponent,
@@ -26,7 +31,12 @@ import { DialogModule } from 'primeng/dialog';
         PrescriptiveListComponent,
         FCAADDComponent,
         MSSAddComponent,
-        RCAComponent
+        RCAComponent,
+        ClientContractorLibraryComponent,
+        MssStrategyComponent,
+        SkillLibraryComponent,
+        MSRComponent,
+        UserProductionDetailsComponent
     ],
     imports: [
         SharedModule,

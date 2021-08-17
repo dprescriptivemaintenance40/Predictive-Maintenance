@@ -25,9 +25,11 @@ import { OrganizationChartModule } from "./organization-chart/organization-chart
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import {CalendarModule} from 'primeng/calendar';
-import { CheckboxModule } from 'primeng/checkbox';
 import { FileUploadModule } from 'primeng/fileupload';
 
+import {TreeTableModule} from 'primeng/treetable';
+import {CheckboxModule} from 'primeng/checkbox';
+import {InputNumberModule} from 'primeng/inputnumber';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [
@@ -55,10 +57,10 @@ import { FileUploadModule } from 'primeng/fileupload';
         ConfirmDialogModule,
         TooltipModule,
         PanelMenuModule,
+        TreeTableModule,
         CheckboxModule,
         CalendarModule],
-    exports: [FileUploadModule,
-        CommonModule,
+    exports: [CommonModule,
         CommonLoadingComponent,
         TableModule,
         FormsModule,
@@ -84,8 +86,10 @@ import { FileUploadModule } from 'primeng/fileupload';
         ConfirmDialogModule,
         TooltipModule,
         PanelMenuModule,
+        TreeTableModule,
         CheckboxModule,
-        CalendarModule]
+        CalendarModule,
+        InputNumberModule]
 })
 export class SharedModule {
 

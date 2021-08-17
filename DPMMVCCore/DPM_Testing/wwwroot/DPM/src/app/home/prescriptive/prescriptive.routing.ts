@@ -11,6 +11,11 @@ import { PrescriptiveReportComponent } from "./FMEA/prescriptive-report/prescrip
 import { PrescriptiveUpdateComponent } from "./FMEA/prescriptive-update/prescriptive-update.component";
 import { MSSAddComponent } from "./MSS/mss-add/mss-add.component";
 import { PrescriptiveComponent } from "./prescriptive.component";
+import { ClientContractorLibraryComponent } from "./PSR/client-contractor-library/client-contractor-library.component";
+import { MSRComponent } from "./PSR/msr/msr.component";
+import { MssStrategyComponent } from "./PSR/mss-strategy/mss-strategy.component";
+import { SkillLibraryComponent } from "./PSR/skill-library/skill-library.component";
+import { UserProductionDetailsComponent } from "./PSR/user-production-details/user-production-details.component";
 import { RCAComponent } from "./RCA/rca.component";
 
 @NgModule({
@@ -28,7 +33,12 @@ import { RCAComponent } from "./RCA/rca.component";
                 { path: 'List', component: PrescriptiveListComponent},
                 { path: 'FCAAdd', component: FCAADDComponent},
                 { path: 'MSSAdd', component: MSSAddComponent},
-                { path: 'RCA', component: RCAComponent}
+                { path: 'RCA', component: RCAComponent},
+                { path: 'CCL', component: ClientContractorLibraryComponent},
+                { path: 'AddMSSStrategy', component: MssStrategyComponent},
+                { path: 'SkillLibrary', component: SkillLibraryComponent},
+                { path: 'PSR', component: MSRComponent},
+                { path: 'UPD', component: UserProductionDetailsComponent}
             ]
         }
     ])],
