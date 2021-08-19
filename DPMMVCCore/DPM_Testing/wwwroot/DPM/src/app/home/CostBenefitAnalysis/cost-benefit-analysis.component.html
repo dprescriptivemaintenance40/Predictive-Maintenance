@@ -46,7 +46,7 @@
             <div class="col-md-2 pr-0">
                 <div class="d-flex flex-column">
                     <!-- <label style="">ETBF</label> -->
-                    <input type="number" [(ngModel)]="ETBF" pTooltip="Enter ETBF in years" class="form-control">
+                    <input type="text" (keypress)=onlyNumbers($event) placeholder="Enter ETBF"  [(ngModel)]="ETBF" pTooltip="Enter ETBF in years" class="form-control">
                 </div>
             </div>
             <div class="col-md-2 pr-0">
@@ -313,7 +313,7 @@
                                 </div> -->
 
                                 <div class="row"></div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-md-4">
                                         <div class="mb-2">
                                             <strong class="d-block">Total PONC: <span class="badge badge-primary">{{CBAReportDetails.TotalPONC}} K</span></strong>
@@ -372,6 +372,33 @@
                                         </div>
                                         <div class="mb-2">
                                             <strong class="d-block">Criticality rating with constraint: <span class="badge badge-primary">{{CBAReportDetails.ETBFWithConstraintCR}} Y</span></strong>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Total PONC: <span class="badge badge-success">{{UserProductionCost}}</span></strong>
+                                        </div>
+                                    </div> 
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Cost Without DPM: <span class="badge badge-success">{{CBAReportDetails.VendorPONC}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Cost With DPM: <span class="badge badge-success">{{CBAReportDetails.TotalAnnualPOC}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>MEI Without DPM: <span class="badge badge-success">{{CBAReportDetails.MEIWithoutDPM}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>MEI With DPM without Constraint: <span class="badge badge-success">{{CBAReportDetails.MEIWithDPMWithConstraint}}</span></strong>
                                         </div>
                                     </div>
                                 </div>
