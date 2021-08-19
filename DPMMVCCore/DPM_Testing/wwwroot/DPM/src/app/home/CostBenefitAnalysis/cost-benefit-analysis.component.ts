@@ -28,7 +28,9 @@ export class CostBenefitAnalysisComponent {
     public Site: string = '';
     public Plant: string = '';
     public Unit: string = '';
-    public ETBF: number = 0;
+    public ETBF: number;
+    public VendorETBF: number;
+    public MSSETBF: number;
     public CBAReportDetails: any;
     public PrescriptiveRecordsList : any=[]; 
     
@@ -42,6 +44,8 @@ export class CostBenefitAnalysisComponent {
     public SkillLibraryAllrecords : any =[];
     public PSRClientContractorData : any = [];
     public UserProductionCost : number = 0;
+    public GoodEngineeringTaskList : any = [];
+    public CBAOBJ : any ={};
     constructor(private messageService: MessageService,
         private commonLoadingDirective: CommonLoadingDirective,
         private CD: ChangeDetectorRef,
@@ -51,6 +55,7 @@ export class CostBenefitAnalysisComponent {
         private http: HttpClient) {
         this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
         this.GetSavedPSRRecords();
+        this.GetUserProductionDetailRecords();
         this.GetMssStartegyList();
         this.GetPSRClientContractorData();
         this.getUserSkillRecords();
@@ -145,6 +150,13 @@ export class CostBenefitAnalysisComponent {
         this.commonBLervice.getWithoutParameters(this.PSRAPIs.MSSStrategyGetAllRecords).subscribe( 
           res => {
             this.MaintenanceStrategyList = res;
+            this.GoodEngineeringTaskList = [];
+            this.SavedPCRRecordsList.forEach(element => {
+               var Data = this.MaintenanceStrategyList.find(r=>r.MaintenanceTask === element.MaintenanceTask)
+               if(Data !== undefined && Data.Strategy === "GEP"){
+                  this.GoodEngineeringTaskList.push(element)
+               }
+            });
           }
         )
       }
@@ -176,14 +188,104 @@ export class CostBenefitAnalysisComponent {
             });
     }
 
+    public async getUncheckedTask(p , e){
+        if(e.target.checked === true){
+            p.Checked = true
+        }else if(e.target.checked === false){
+            p.Checked = false
+        }
+
+        var TotalAnuualPOC : number= 0;
+        var count : number = 0;
+        var VendorPONC : number = 0;
+        var levelCount : number = 0;
+        var counter : number = 0;
+        this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => {
+            if(element.Checked === true){
+                counter = counter + 1;
+                if(element.CentrifugalPumpMssId === 'GDE'){
+                    if(element.MSSMaintenanceTask == "Turn around task as per list "){
+                        let poc = parseFloat(element.POC)/4
+                        VendorPONC = VendorPONC  + poc;
+                        levelCount = levelCount + parseFloat(element.Level);
+                        TotalAnuualPOC = TotalAnuualPOC + parseFloat(element.AnnualPOC);
+                    }else{
+                        VendorPONC = VendorPONC + parseFloat(element.AnnualPOC) 
+                        levelCount = levelCount + parseFloat(element.Level);
+                        TotalAnuualPOC = TotalAnuualPOC + parseFloat(element.AnnualPOC);
+                    }
+                    
+                }else{
+                    TotalAnuualPOC = TotalAnuualPOC + parseFloat(element.AnnualPOC);
+                    levelCount = levelCount + parseFloat(element.Level);
+                }
+            }
+            
+        });
+       levelCount = levelCount / (counter * 100); 
+       this.CBAOBJ.TotalAnnualCostWithMaintenance = VendorPONC;      
+       this.CBAReportDetails.VendorPONC = (VendorPONC).toFixed(3);
+      // TotalAnuualPOC = VendorPONC + TotalAnuualPOC;
+       this.CBAReportDetails.TotalAnnualPOC = (TotalAnuualPOC).toFixed(3);
+       var v  =  await this.getTotalEconomicConsequenceClass(this.VendorETBF, VendorPONC);
+       this.CBAReportDetails.VendorCR = v.CriticalityRating;
+       var m =  await this.getTotalEconomicConsequenceClass(this.MSSETBF, TotalAnuualPOC);
+       this.CBAReportDetails.MSSCR = m.CriticalityRating;
+       let WithETBCAndPONC = this.UserProductionCost / this.VendorETBF;
+       let WithoutETBCAndPONC = this.UserProductionCost / this.MSSETBF;
+       this.CBAReportDetails.WithMEI = (((this.UserProductionCost / this.ETBF) - (this.UserProductionCost / this.VendorETBF)) / WithETBCAndPONC).toFixed(2);
+       this.CBAReportDetails.WithOutMEI = (((this.UserProductionCost / this.ETBF) - (this.UserProductionCost / this.MSSETBF)) / WithoutETBCAndPONC).toFixed(2);
+    //    this.CBAReportDetails.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
+       this.CBAReportDetails.ResidualRiskWithMaintenance = parseFloat(( VendorPONC - TotalAnuualPOC).toFixed(3));
+       if(this.CBAReportDetails.ResidualRiskWithMaintenance < 0){
+        this.CBAReportDetails.ResidualRiskWithMaintenance = 0;
+       }
+       this.CBAReportDetails.ETBFWithConstraint = this.MSSETBF * levelCount
+       var c =  await this.getTotalEconomicConsequenceClass(this.CBAReportDetails.ETBFWithConstraint, TotalAnuualPOC);
+       this.CBAReportDetails.ETBFWithConstraintCR = c.CriticalityRating;
+       this.CD.detectChanges();
+       this.CBAReportDetails.MEIWithoutDPM = (((this.UserProductionCost /this.ETBF) -   (this.UserProductionCost / this.MSSETBF))    /  TotalAnuualPOC ).toFixed(3);
+       // 4 yrs calculation
+       this.CBAReportDetails.MEIWithDPMWithoutConstraint = (((this.UserProductionCost /this.ETBF) -   (this.UserProductionCost / this.VendorETBF))    /  TotalAnuualPOC ).toFixed(3);
+      
+       // with constarint
+       this.CBAReportDetails.MEIWithDPMWithConstraint = (((this.UserProductionCost /this.ETBF) -   (this.UserProductionCost / parseFloat(this.CBAReportDetails.ETBFWithConstraint)))    /  TotalAnuualPOC ).toFixed(3);
+       
+       this.CBAOBJ.TotalAnnualPOC = TotalAnuualPOC;
+       this.CBAOBJ.TotalPONC = this.UserProductionCost;
+       this.CBAOBJ.ETBF = this.ETBF;
+       this.CBAOBJ.VendorETBC = this.VendorETBF;
+       this.CBAOBJ.OverallETBC = this.MSSETBF;
+       this.CBAOBJ.ETBFWithConstraint = this.CBAReportDetails.ETBFWithConstraint;
+       this.CBAOBJ.MEIWithDPMWithoutConstraint = this.CBAReportDetails.MEIWithDPMWithoutConstraint;
+       this.CBAOBJ.MEIWithoutDPM = this.CBAReportDetails.MEIWithoutDPM;
+       this.CBAOBJ.MEIWithDPMWithConstraint = this.CBAReportDetails.MEIWithDPMWithConstraint;
+       localStorage.removeItem('CBAOBJ');
+       localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
+    }
+
+    onlyNumbers(event) {
+        const pattern = /[0-9]/;
+        let inputChar = String.fromCharCode(event.charCode);
+        if (!pattern.test(inputChar)) {
+          event.preventDefault();
+    
+        }
+      }
     GetUserProductionDetailRecords(){
         this.commonBLervice.getWithoutParameters(this.PSRAPIs.GetUserProductionDetail).subscribe(
          (res : any) => { 
             this.UserProductionCost = 0;
+            var labor = 0;
              res.forEach(element => {
-                this.UserProductionCost = this.UserProductionCost + element.TotalCost;
+                 if(element.Item === 'Craftsmen' || element.Item === 'Operator' || element.Item === 'Staff' || element.Item === 'Contractor'){
+                    labor = labor + element.TotalCost;
+                 }else  if(element.Item !== 'Craftsmen' || element.Item !== 'Operator' || element.Item !== 'Staff' || element.Item !== 'Contractor'){
+                    this.UserProductionCost = this.UserProductionCost + element.TotalCost;
+                 }
+                
              });
-            
+             this.UserProductionCost = this.UserProductionCost + (labor/1000);
           }, err=> {console.log(err.error)})
     }
   async  getPrescriptiveRecordsByEqui() {
@@ -194,13 +296,14 @@ export class CostBenefitAnalysisComponent {
                 .subscribe( async (res: any) => {
                     this.prescriptiveRecords = res;
                     this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach( async row => {
-                        row.TotalAnnualPOC = 0;
+                        row.TotalAnnualPOC = this.UserProductionCost;
                         var levelCount : number =0;
                         row.CentrifugalPumpMssModel.forEach(mss => {
                           //  var MSSTaskList = this.MaintenanceStrategyList.find(r=>r.MaintenanceTask == mss.MSSMaintenanceTask);
                             let PSRData = this.SavedPCRRecordsList.find(r=>r.MaintenanceTask == mss.MSSMaintenanceTask);
                             let CRAFT = this.getCraftValue(PSRData);
                             let LEVEL = this.getEmployeeLevelValue(PSRData);
+                            mss.Checked= true;
                             if (!mss.MSSMaintenanceInterval || mss.MSSMaintenanceInterval === 'NA' || mss.MSSMaintenanceInterval === 'Not Applicable') {
                                 mss.POC = 0;
                                 mss.AnnualPOC = 0;
@@ -233,17 +336,19 @@ export class CostBenefitAnalysisComponent {
                         row.TotalPONC = this.UserProductionCost;
                         row.ETBF = this.ETBF ? this.ETBF : 2;
                         row.ETBC = (this.ETBF *  row.LevelPercentage).toFixed(2)
+                        var d = await this.getTotalEconomicConsequenceClass(this.ETBF,this.UserProductionCost);
+                        row.IntialCR = d.CriticalityRating;
                         row.TotalAnnualCostWithMaintenance = 1.777;
                         row.EconomicRiskWithoutMaintenance = row.TotalPONC / row.ETBF;
-                        row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
-                        var Data = await this.getTotalEconomicConsequenceClass(row.ETBF,row.ResidualRiskWithMaintenance);
-                        row.ResidualRiskWithMaintenanceCR = Data.CriticalityRating
-                        var Data1 = await this.getTotalEconomicConsequenceClass(row.ETBF,row.EconomicRiskWithoutMaintenance);
-                        row.EconomicRiskWithoutMaintenanceCR = Data1.CriticalityRating
+                        // row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
+                        var Data = await this.getTotalEconomicConsequenceClass(this.ETBF, this.UserProductionCost);
+                        row.InitialCR = Data.CriticalityRating
+                        // var Data1 = await this.getTotalEconomicConsequenceClass(row.ETBF,row.EconomicRiskWithoutMaintenance);
+                        // row.EconomicRiskWithoutMaintenanceCR = Data1.CriticalityRating
                         let WithETBCAndPONC = row.TotalPONC / row.ETBC;
                         let WithoutETBCAndPONC = row.TotalPONC / 5;
-                        row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
-                        row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
+                        // row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
+                        // row.WithOutMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / 5)) / WithoutETBCAndPONC).toFixed(0);
                         row.ConsequenceCategory = row.Consequence.split(' ')[0];
                     });
                     this.showPrescriptive = true;
@@ -264,8 +369,97 @@ export class CostBenefitAnalysisComponent {
         }
     }
 
-    public OpenCBAReport(row) {
+    public async OpenCBAReport(row) {
+        this.CBAReportDetails = []
         this.CBAReportDetails = row;
+        var TotalAnuualPOC : number = 0;
+        var count : number= 0;
+        var VendorPONC : number = 0;
+        var levelCount : number = 0;
+        this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => {
+            if(element.CentrifugalPumpMssId == "GDE"){
+                count = count + 1;
+            }else{
+                TotalAnuualPOC = TotalAnuualPOC + element.AnnualPOC;
+                levelCount = levelCount + element.Level
+            }
+        });
+            this.GoodEngineeringTaskList.forEach(element => {
+                let CRAFT = this.getCraftValue(element);
+                let LEVEL = this.getEmployeeLevelValue(element);
+                let obj ={}
+                obj['CentrifugalPumpMssId']="GDE";
+                obj['Checked']= true;
+                obj['MSSMaintenanceTask']=element.MaintenanceTask;
+                if(element.MaintenanceTask == "Daily site observation as per log sheet"){
+                    obj['MSSMaintenanceInterval']= '0.14 weeks';
+                    obj['AnnualPOC']= (element.POC * 0.14).toFixed(3);
+                    VendorPONC = VendorPONC  + (element.POC * 0.14);
+                    TotalAnuualPOC = TotalAnuualPOC + (element.POC * 0.14);
+                }else if(element.MaintenanceTask == "Oil Sampling, Oil/Air Filter Replace, Align (Laser), &  clean intake vents" || element.MaintenanceTask == "esd system function check"){
+                    obj['MSSMaintenanceInterval']= '52 weeks';
+                    obj['AnnualPOC']= (element.POC * 52).toFixed(3); 
+                    VendorPONC = VendorPONC  + (element.POC * 52);
+                    TotalAnuualPOC = TotalAnuualPOC + (element.POC * 52);
+                }else{
+                    obj['MSSMaintenanceInterval']= '260 weeks';
+                    obj['AnnualPOC']= (element.POC * 260).toFixed(3);
+                    let poc = parseFloat(element.POC)/4
+                    VendorPONC = VendorPONC  + poc;
+                    TotalAnuualPOC = TotalAnuualPOC + (element.POC * 260);
+                }
+                obj['Craft']= CRAFT;
+                obj['Level']= LEVEL;
+                levelCount = levelCount + LEVEL;
+                obj['POC']= element.POC;
+                obj['Status']= 'New';
+                obj['MSSIntervalSelectionCriteria']='None';
+                if(count === 0){
+                this.CBAReportDetails.CentrifugalPumpMssModel.push(obj);
+                }
+                
+            });
+            
+       this.CBAOBJ.TotalAnnualCostWithMaintenance = VendorPONC;
+
+       levelCount = levelCount / (this.CBAReportDetails.CentrifugalPumpMssModel.length * 100);       
+       this.CBAReportDetails.VendorPONC = (VendorPONC).toFixed(3);
+       this.CBAReportDetails.TotalAnnualPOC = (TotalAnuualPOC).toFixed(3);
+       var v  =  await this.getTotalEconomicConsequenceClass(this.VendorETBF, VendorPONC);
+       this.CBAReportDetails.VendorCR = v.CriticalityRating;
+       var m =  await this.getTotalEconomicConsequenceClass(this.MSSETBF, TotalAnuualPOC);
+       this.CBAReportDetails.MSSCR = m.CriticalityRating;
+       let WithETBCAndPONC = this.UserProductionCost / this.VendorETBF;
+       let WithoutETBCAndPONC = this.UserProductionCost / this.MSSETBF;
+       this.CBAReportDetails.WithMEI = (((this.UserProductionCost / this.ETBF) - (this.UserProductionCost / this.VendorETBF)) / WithETBCAndPONC).toFixed(2);
+       this.CBAReportDetails.WithOutMEI = (((this.UserProductionCost / this.ETBF) - (this.UserProductionCost / this.MSSETBF)) / WithoutETBCAndPONC).toFixed(2);
+    //    this.CBAReportDetails.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
+       this.CBAReportDetails.ResidualRiskWithMaintenance = parseFloat(( VendorPONC - TotalAnuualPOC).toFixed(3));
+       if(this.CBAReportDetails.ResidualRiskWithMaintenance < 0){
+        this.CBAReportDetails.ResidualRiskWithMaintenance = 0;
+       }
+       this.CBAReportDetails.ETBFWithConstraint = this.MSSETBF * levelCount
+       var c =  await this.getTotalEconomicConsequenceClass(this.CBAReportDetails.ETBFWithConstraint, TotalAnuualPOC);
+       this.CBAReportDetails.ETBFWithConstraintCR = c.CriticalityRating;
+       // 8 yrs calculation
+       this.CBAReportDetails.MEIWithoutDPM = (((this.UserProductionCost /this.ETBF) -   (this.UserProductionCost / this.MSSETBF))    /  TotalAnuualPOC ).toFixed(3);
+       // 4 yrs calculation
+       this.CBAReportDetails.MEIWithDPMWithoutConstraint = (((this.UserProductionCost /this.ETBF) -   (this.UserProductionCost / this.VendorETBF))    /  TotalAnuualPOC ).toFixed(3);
+      
+       // with constarint
+       this.CBAReportDetails.MEIWithDPMWithConstraint = (((this.UserProductionCost /this.ETBF) -   (this.UserProductionCost / parseFloat(this.CBAReportDetails.ETBFWithConstraint)))    /  TotalAnuualPOC ).toFixed(3);
+       
+       this.CBAOBJ.TotalAnnualPOC = TotalAnuualPOC;
+       this.CBAOBJ.TotalPONC = this.UserProductionCost;
+       this.CBAOBJ.ETBF = this.ETBF;
+       this.CBAOBJ.VendorETBC = this.VendorETBF;
+       this.CBAOBJ.OverallETBC = this.MSSETBF;
+       this.CBAOBJ.ETBFWithConstraint = this.CBAReportDetails.ETBFWithConstraint;
+       this.CBAOBJ.MEIWithDPMWithoutConstraint = this.CBAReportDetails.MEIWithDPMWithoutConstraint;
+       this.CBAOBJ.MEIWithoutDPM = this.CBAReportDetails.MEIWithoutDPM;
+       this.CBAOBJ.MEIWithDPMWithConstraint = this.CBAReportDetails.MEIWithDPMWithConstraint;
+       localStorage.removeItem('CBAOBJ');
+       localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
     }
 
     public PDFCBAReport() {

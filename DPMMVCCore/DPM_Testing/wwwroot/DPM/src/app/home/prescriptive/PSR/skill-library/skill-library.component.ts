@@ -200,6 +200,16 @@ export class SkillLibraryComponent implements OnInit {
       });
   }
 
+  public getHourlyRate(r : any){
+    var Data = this.MaintenanceStrategyList.find(a=>a.MSSStrategyModelId == r.value.Task);
+    var craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === r.value.Craft);
+    if(Data !== undefined && craft !== undefined){
+      if(Data.Strategy === 'GEP'){
+         r.value.HourlyRate = craft.ClientHourlyRate;
+      }
+    }
+  }
+
   BackSkillData() {
     this.SelectionEnable = true;
     this.SkillLibrary = false;

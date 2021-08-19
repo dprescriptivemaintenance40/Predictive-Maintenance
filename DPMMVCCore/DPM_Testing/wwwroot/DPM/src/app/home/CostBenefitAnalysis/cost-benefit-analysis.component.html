@@ -46,7 +46,19 @@
             <div class="col-md-2 pr-0">
                 <div class="d-flex flex-column">
                     <!-- <label style="">ETBF</label> -->
-                    <input type="number" [(ngModel)]="ETBF" pTooltip="Enter ETBF in years" class="form-control">
+                    <input type="text" (keypress)=onlyNumbers($event) placeholder="Enter ETBF"  [(ngModel)]="ETBF" pTooltip="Enter ETBF in years" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-2 pr-0">
+                <div class="d-flex flex-column">
+                    <!-- <label style="">ETBF</label> -->
+                    <input type="text" (keypress)=onlyNumbers($event) placeholder="Enter ETBC"  [(ngModel)]="VendorETBF"  pTooltip="Enter ETBC for vendor" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-2 pr-0">
+                <div class="d-flex flex-column">
+                    <!-- <label style="">ETBF</label> -->
+                    <input type="number" (keypress)=onlyNumbers($event) placeholder="Enter ETBC" [(ngModel)]="MSSETBF" pTooltip="Enter ETBC for overall" class="form-control">
                 </div>
             </div>
             <div class="col-md-1">
@@ -202,6 +214,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th>Task Details</th>
                                         <th>Maintenance Task</th>
                                         <th>Maintenance Interval</th>
                                         <th>RWC</th>
@@ -209,17 +222,22 @@
                                         <th>POC</th>
                                         <th>Annual POC</th>
                                         <th>Status</th>
+                                        <th>Select</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let mss of CBAReportDetails.CentrifugalPumpMssModel">
-                                        <td class="left strong">{{mss.MSSMaintenanceTask}}</td>
+                                        <td class="left strong">{{mss.MSSIntervalSelectionCriteria}}</td>
+                                        <td class="left">{{mss.MSSMaintenanceTask}}</td>
                                         <td class="left">{{mss.MSSMaintenanceInterval}}</td>
                                         <td class="left">{{mss.Craft}}</td>
                                         <td class="left">{{mss.Level}}</td>
                                         <td class="left">{{mss.POC}}</td>
                                         <td class="left">{{mss.AnnualPOC}}</td>
                                         <td class="left">{{mss.Status}}</td>
+                                        <td>
+                                            <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [(ngModel)]="mss.Checked"/>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -232,7 +250,7 @@
                         </div>
                         <div class="row mb-4">
                             <div class="col-sm-12">
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col-sm-4">
                                         <div class="mb-2">
                                             <strong class="d-block">Total PONC: <span class="badge badge-primary">{{CBAReportDetails.TotalPONC}} K</span></strong>
@@ -292,10 +310,101 @@
                                             <strong>Tasks approved: <span class="badge badge-success">Yes</span></strong>
                                         </div>
                                     </div>
+                                </div> -->
+
+                                <div class="row"></div>
+                                <!-- <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong class="d-block">Total PONC: <span class="badge badge-primary">{{CBAReportDetails.TotalPONC}} K</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBF: <span class="badge badge-primary">{{ETBF}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Consequence category: <span class="badge badge-primary">{{CBAReportDetails.ConsequenceCategory}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Risk Ranking: <span class="badge badge-primary">{{CBAReportDetails.IntialCR}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBC: <span class="badge badge-primary">{{VendorETBF}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Economic Risk Without DPM : <span class="badge badge-primary">{{CBAReportDetails.EconomicRiskWithoutMaintenance}} K</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Consequence class: <span class="badge badge-primary mr-1">ECO</span> <span class="badge badge-primary mr-1">HS</span> <span
+                                        class="badge badge-primary mr-1">ENV : </span>
+                                         <span class="badge badge-primary mr-1">{{CBAReportDetails.VendorCR}}</span><span class="badge badge-primary mr-1">L</span><span class="badge badge-primary mr-1">L</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Criticality Rating : <span class="badge badge-primary">{{CBAReportDetails.VendorCR}} </span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Residual risk without DPM  : <span class="badge badge-primary"></span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">MEI without DPM  : <span class="badge badge-primary">{{CBAReportDetails.WithOutMEI}} K</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBC: <span class="badge badge-primary">{{MSSETBF}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Consequence class: <span class="badge badge-primary mr-1">ECO</span> <span class="badge badge-primary mr-1">HS</span> <span
+                                        class="badge badge-primary mr-1">ENV : </span>
+                                         <span class="badge badge-primary mr-1">{{CBAReportDetails.MSSCR}}</span><span class="badge badge-primary mr-1">L</span><span class="badge badge-primary mr-1">L</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Criticality Rating : <span class="badge badge-primary">{{CBAReportDetails.MSSCR}} </span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">MEI with DPM  : <span class="badge badge-primary">{{CBAReportDetails.WithMEI}} K</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"> 
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBC with constraint: <span class="badge badge-primary">{{CBAReportDetails.ETBFWithConstraint}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Criticality rating with constraint: <span class="badge badge-primary">{{CBAReportDetails.ETBFWithConstraintCR}} Y</span></strong>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Total PONC: <span class="badge badge-success">{{UserProductionCost}}</span></strong>
+                                        </div>
+                                    </div> 
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Cost Without DPM: <span class="badge badge-success">{{CBAReportDetails.VendorPONC}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Cost With DPM: <span class="badge badge-success">{{CBAReportDetails.TotalAnnualPOC}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>MEI Without DPM: <span class="badge badge-success">{{CBAReportDetails.MEIWithoutDPM}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>MEI With DPM without Constraint: <span class="badge badge-success">{{CBAReportDetails.MEIWithDPMWithConstraint}}</span></strong>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6" style="padding-right: 0px !important; padding-left: 3px !important;">
+                            <!-- <div class="col-sm-6" style="padding-right: 0px !important; padding-left: 3px !important;">
                                 <div class="m-1 p-1">
                                     <strong>Consequence category:</strong>
                                     <span class="float-right">{{row.ConsequenceCategory}}</span>
@@ -308,7 +417,7 @@
                                     <strong>Criticality Rating without DPM:</strong>
                                     <span class="float-right">{{row.EconomicRiskWithoutMaintenanceCR}}</span>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>                       
                         <div class="row mb-4">
                             <div class="col-sm-6">
