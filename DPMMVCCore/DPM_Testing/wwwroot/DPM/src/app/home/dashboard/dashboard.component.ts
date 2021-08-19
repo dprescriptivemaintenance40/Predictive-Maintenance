@@ -10,6 +10,9 @@ import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.di
 import Dygraph from 'dygraphs'
 import { Router } from "@angular/router";
 import { Location } from '@angular/common';
+import { SCConstantsAPI } from "../Compressor/ScrewCompressor/shared/ScrewCompressorAPI.service";
+import { ProfileConstantAPI } from "../profile/profileAPI.service";
+import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -27,6 +30,8 @@ export class DashboardComponent {
   public ClassificationData: string = "";
   public FailuerModes: string = ""
   public InsertedDate = [];
+  public PInsertedDate = [];
+  public FInsertedDate = [];
   public XYZ = [];
   public PredictFMMode = [];
   public InsertedDateForMonth = [];
@@ -50,7 +55,8 @@ export class DashboardComponent {
   public EquipmentList: any = []
   public prescriptiveRecords: any = [];
   public TagList: any = [];
-  public ETBF: string = '';
+  // public ETBF: string = '';
+  public ETBF: number = 0;
   public SelectedTagNumber: string = "";
   public CostRisk: boolean = false;
   public filterdata: boolean = false;
@@ -166,19 +172,38 @@ export class DashboardComponent {
     public FinaldDegrade:any=[]
     public FinalBad:any=[]
 
-    public ClassDegradepercentage=0
-    public ClassIncipientpercentage=0
-    public ClassNormalpercentage=0
 
     public FPFinalNormal:any=[]
     public FPFinalIncipient:any=[]
     public FPFinaldDegrade:any=[]
     public FPFinalBad:any=[]
 
+    public forcastFinalNormal:any=[]
+    public forcastFinalIncipient:any=[]
+    public forcastFinaldDegrade:any=[]
+    public forcastFinalBad:any=[]
+
+    public ClassDegradepercentage=0
+    public ClassIncipientpercentage=0
+    public ClassNormalpercentage=0
+
+    public csvData: any
+    public mergedarray: any;
+    public highlight_start: any
+    public highlight_end: any
+
     public SCFinalNormal:any=[]
     public SCFinalIncipient:any=[]
     public SCFinaldDegrade:any=[]
     public SCFinalBad:any=[]
+    public RiskMatrixLibraryRecords : any = [];
+    public EconmicConsequenceClass : string ="";
+    public CriticalityRating : string = "";
+    public MaintenanceStrategyList : any =[];
+    public SavedPCRRecordsList : any =[];
+    public SkillLibraryAllrecords : any =[];
+    public PSRClientContractorData : any = [];
+    public UserProductionCost : number = 0;
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -188,6 +213,11 @@ export class DashboardComponent {
     private dashboardContantAPI: DashboardConstantAPI,
     private dashboardContantMethod: CommonBLService,
     private changeDetectorRef: ChangeDetectorRef,
+    private screwCompressorAPIName : SCConstantsAPI,
+    private screwCompressorMethod : CommonBLService,
+    private profileAPIName: ProfileConstantAPI,
+    private commonBLervice : CommonBLService,
+    private PSRAPIs : PrescriptiveContantAPI,
     private location: Location,
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
@@ -200,7 +230,8 @@ export class DashboardComponent {
     this.date =  moment().add(1, 'days').format('YYYY-MM-DD');
     this.MachineType="Compressor"
     this.EquipmentType="Screw Compressor"
-    this.SelectedTagNumber="K003"
+    this.SelectedTagNumber="K001"
+    this.GetReportRecords()
   }
   ngOnInit() {
     this.getRecordsByEqui()
@@ -334,9 +365,9 @@ export class DashboardComponent {
              this.PredictionData = predict.Prediction;
             let Predictyeardata = { PredictyearId: 0, Predictyearname: '' };
             Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
-            this.InsertedDate.push(Predictyeardata);
+            this.PInsertedDate.push(Predictyeardata);
           })
-          this.Predictyearlist = this.InsertedDate.reduce((m, o) => {
+          this.Predictyearlist = this.PInsertedDate.reduce((m, o) => {
             var found = m.find(s => s.Predictyearname === o.Predictyearname);
             if (found) {
             } else {
@@ -458,11 +489,11 @@ export class DashboardComponent {
             newyeardata.yearname = moment(r.InsertedDate).format('YYYY')
             this.InsertedDate.push(newyeardata);
           })
-          this.yearlist = this.InsertedDate.reduce((m, o) => {
-            var found = m.find(p => p.yearname === o.yearname);
+          this.yearlist = this.InsertedDate.reduce((m, k) => {
+            var found = m.find(p => p.yearname === k.yearname);
             if (found) {
             } else {
-              m.push(o);
+              m.push(k);
             }
             return m;
           }, []);
@@ -534,11 +565,11 @@ export class DashboardComponent {
   }
 
   groupBy(list1, keyGetter) {
-    list1.reduce((m, o) => {
-      var found = m.find(p => p.yearname === o.yearname);
+    list1.reduce((m, k) => {
+      var found = m.find(p => p.yearname === k.yearname);
       if (found) { }
       else {
-        m.push(o);
+        m.push(k);
       }
       return m;
     },
@@ -606,7 +637,7 @@ export class DashboardComponent {
     // this.ClassificationOfAllRecordDonught()
     //  this.ComboChart();
   }
-
+  public PrescriptiveRecordsList : any=[];
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
       this.EquipmentList = []
@@ -616,6 +647,12 @@ export class DashboardComponent {
       this.EquipmentList = []
       this.EquipmentList = ["Screw Compressor"]
     }
+    
+    var list = this.PrescriptiveRecordsList.filter(r=>r.EquipmentType === this.EquipmentType)
+    this.TagList = []
+    list.forEach(element => {
+        this.TagList.push(element.TagNumber)
+    });
   }
   getAllRecordsbyTag() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -625,6 +662,8 @@ export class DashboardComponent {
         });
       });
   }
+
+
 
   CBAWithId(CFPPrescriptiveId){
     const params = new HttpParams()
@@ -682,10 +721,11 @@ export class DashboardComponent {
       this.DPMWithoutMEI = row.WithOutMEI
       row.ConsequenceCategory = row.Consequence.split(' ')[0];
     });
-    this.CostRisk = true;
-    this.PrescriptiveMaintenance = true
-    this.gaugechartwithDPM()
-    this.gaugechartwithoutDPM() 
+    
+    // this.CostRisk = true; 
+     this.gaugechartwithDPM()
+     this.gaugechartwithoutDPM()
+
   }
 
   getRecordsByEqui() {
@@ -717,8 +757,6 @@ export class DashboardComponent {
     var zcost:number= +this.DPMWithoutCost
     var wcost:number= ycost+zcost
     var WithDPM_Cost= (xcost /wcost).toFixed(0)
-    this.changeDetectorRef.detectChanges();
-
     this.changeDetectorRef.detectChanges();
     // this.chart = new Chart('gaugechart', {
     //   type: 'doughnut',
@@ -763,7 +801,7 @@ export class DashboardComponent {
           }, 
           {
             label: " Economic Risk",
-            data: [5,],
+            data: [3,],
             backgroundColor: ['red'],
             fill: true,
             barPercentage: 12,
@@ -1178,7 +1216,10 @@ export class DashboardComponent {
      this.ScrewPredictionAllData.sort()
 
      var LabelDatess : any = [];
-     this.Predictyearlist.forEach(element => {
+     this.Predictyearlist.forEach(element  => {
+      LabelDatess = LabelDatess.filter(function( element ) {
+        return element !== undefined;
+     });
       LabelDatess.push(element.Predictyearname)
      });
  
@@ -1209,10 +1250,10 @@ export class DashboardComponent {
        FPdegrade=((FPdegrade/counter)*100)
        FPbad=((FPbad/counter)*100)
 
-      this.FinalNormal.push(FPnormal)
-      this.FinalIncipient.push(FPincipient)
-      this.FinaldDegrade.push(FPdegrade)
-      this.FinalBad.push(FPbad)
+      this.FPFinalNormal.push(FPnormal)
+      this.FPFinalIncipient.push(FPincipient)
+      this.FPFinaldDegrade.push(FPdegrade)
+      this.FPFinalBad.push(FPbad)
      
      }
 
@@ -1225,7 +1266,7 @@ export class DashboardComponent {
         datasets: [
           {
             label: "Normal",
-            data: this.FinalNormal,
+            data: this.FPFinalNormal,
             borderWidth: 1,
             borderColor: "#3cd3d8",
             backgroundColor: '#3cd3d8',
@@ -1233,7 +1274,7 @@ export class DashboardComponent {
           }, 
           {
             label: "Incipient",
-            data: this.FinalIncipient,
+            data: this.FPFinalIncipient,
             borderWidth: 1,
             borderColor: "#ffb801",
             backgroundColor: '#ffb801',
@@ -1241,7 +1282,7 @@ export class DashboardComponent {
           }, 
           {
             label: "Degrade",
-            data: this.FinaldDegrade,
+            data: this.FPFinaldDegrade,
             borderWidth: 1,
             borderColor: "#fe4c61",
             backgroundColor: '#fe4c61',
@@ -1249,7 +1290,7 @@ export class DashboardComponent {
           },
           {
             label: "Bad",
-            data: this.FinalBad,
+            data: this.FPFinalBad,
             borderWidth: 1,
             borderColor: "blue",
             backgroundColor: 'blue',
@@ -1493,8 +1534,8 @@ export class DashboardComponent {
               this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
           }
           this.FutuerlineChart()
-           this.FutuerdDonughtchart()
-          this.Futuerpiechart()
+            this.FutuerdDonughtchart()
+           this.Futuerpiechart()
         }, error => {
           console.log(error.error)
         })
@@ -1532,7 +1573,7 @@ export class DashboardComponent {
 
     this.FutuerlineChart()
     // this.FutuerdDonughtchart()
-    this.Futuerpiechart()
+    // this.Futuerpiechart()
     }
 
   FutuerlineChart() {
@@ -1714,10 +1755,10 @@ export class DashboardComponent {
       forcastFPdegrade=((forcastFPdegrade/forcastcounter)*100)
       forcastFPbad=((forcastFPbad/forcastcounter)*100)
 
-     this.FPFinalNormal.push(forcastPnormal)
-     this.FPFinalIncipient.push(forcastFPincipient)
-     this.FPFinaldDegrade.push(forcastFPdegrade)
-     this.FPFinalBad.push(forcastFPbad)
+     this.forcastFinalNormal.push(forcastPnormal)
+     this.forcastFinalIncipient.push(forcastFPincipient)
+     this.forcastFinaldDegrade.push(forcastFPdegrade)
+     this.forcastFinalBad.push(forcastFPbad)
     
     }
 
@@ -1730,7 +1771,7 @@ export class DashboardComponent {
        datasets: [
          {
            label: "Normal",
-           data: this.FPFinalNormal,
+           data: this.forcastFinalNormal,
            borderWidth: 1,
            borderColor: "#3cd3d8",
            backgroundColor: '#3cd3d8',
@@ -1738,7 +1779,7 @@ export class DashboardComponent {
          }, 
          {
            label: "Incipient",
-           data: this.FPFinalIncipient,
+           data: this.forcastFinalIncipient,
            borderWidth: 1,
            borderColor: "#ffb801",
            backgroundColor: '#ffb801',
@@ -1746,7 +1787,7 @@ export class DashboardComponent {
          }, 
          {
            label: "Degrade",
-           data: this.FPFinaldDegrade,
+           data: this.forcastFinaldDegrade,
            borderWidth: 1,
            borderColor: "#fe4c61",
            backgroundColor: '#fe4c61',
@@ -1754,7 +1795,7 @@ export class DashboardComponent {
          },
          {
            label: "Bad",
-           data: this.FPFinalBad,
+           data: this.forcastFinalBad,
            borderWidth: 1,
            borderColor: "blue",
            backgroundColor: 'blue',
@@ -1774,6 +1815,9 @@ export class DashboardComponent {
     this.FutuerPredictionNormalcount = 0,
       this.FutuerPredictionIncipientcount = 0,
       this.FutuerPredictionDegradecount = 0;
+      var FPClassDegradepercentage
+      var FPClassIncipientpercentage
+      var FPClassNormalpercentage
     this.FutuerPredictionAllData.forEach(element => {
       if (this.fmtype != "") {
         if (this.fmtype == "SSRB") {
@@ -1788,9 +1832,6 @@ export class DashboardComponent {
       }
 
     });
-    var FPClassDegradepercentage
-    var FPClassIncipientpercentage
-    var FPClassNormalpercentage
     a.forEach(element => {
       if (element == 'normal') {
         this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1;
@@ -1839,10 +1880,7 @@ export class DashboardComponent {
     this.fmtype =""
   }
 
-public csvData :any
-public mergedarray:any;
-public highlight_start:any
-public highlight_end:any
+
 
    dygraph(){ 
 
@@ -2184,5 +2222,55 @@ public highlight_end:any
         this.DAB = "No"
       }
   }
+  public CBAReportDetails: any;
+  
+  public user: any = [];
+  GetReportRecords() {
+    const url: string = this.screwCompressorAPIName.getTrainList
+    // this.screwCompressorMethod.getWithoutParameters(url)
+    this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
+      // this.http.get<any>("api/ScrewCompressureAPI")
+      .subscribe(res => {
+        this.classificationDetails = res;
+        this.commonLoadingDirective.showLoading(false, '');
+      },
+        error => {
+          console.log(error);
+        }
+      );
+    this.commonLoadingDirective.showLoading(false, '');
+    const url11 = this.profileAPIName.ProfileAPI
+    this.screwCompressorMethod.getWithoutParameters(url11)
+      .subscribe(
+        res => {
+          this.user = res;
+          this.commonLoadingDirective.showLoading(false, '');
+        },
+        err => {
+          this.commonLoadingDirective.showLoading(false, '');
+          console.log(err);
+        },
+      );
+
+    const url2: string = this.screwCompressorAPIName.getPredictedList;
+    this.screwCompressorMethod.getWithoutParameters(url2)
+      //  this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
+      .subscribe(res => {
+        this.screwWithPredictionDetails = res;
+        if (this.screwWithPredictionDetails.length == 0) {
+          this.commonLoadingDirective.showLoading(false, '');
+        } else {
+          this.commonLoadingDirective.showLoading(false, '');
+        }
+      }, err => {
+        this.commonLoadingDirective.showLoading(false, '');
+        console.log(err.error);
+      });
+
+
+  }
+
+
+
 }
 

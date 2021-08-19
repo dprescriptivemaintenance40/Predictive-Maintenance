@@ -120,32 +120,6 @@
                     </select>
                 </div>
             </div>
-            <!-- <div class="col-sm">
-                <div class="card" style="width:12rem;border:none">
-                    <p-card>
-                        <strong style="text-align: left;color:#008000">Normal </strong><br>
-                        <h1 style="text-align: center;color:#008000">{{PredictionNormalcount}}</h1>
-                    </p-card>
-                </div>
-            </div> -->
-            <!-- <div class="col-sm">
-                <div class="card" style="width:12rem;border:none">
-                    <p-card>
-                        <strong style="text-align: left;color:#FFA500">Incipient</strong><br>
-                        <h1 style="text-align: center;color:#FFA500">{{PredictionIncipientcount}}</h1>
-                    </p-card>
-                </div>
-
-            </div>
-            <div class="col-sm">
-                <div class="card" style="width:12rem;border:none">
-                    <p-card>
-                        <strong style="text-align: left;color:#FF0000">Degrade</strong><br>
-                        <h1 style="text-align: center;color:#FF0000">{{PredictionDegradecount}}</h1>
-                    </p-card>
-                </div>
-
-            </div> -->
         </div>
         </div>
     </div>
@@ -199,15 +173,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="bg-white rounded  px-5 py-3  br-3">
-                            <strong> Prediction chart</strong>
-                            <canvas id="Predictionbarline"></canvas>
+                            <strong> Prediction All Data</strong>
+                            <canvas id="PredictioncanvasClass" height="150"></canvas>
                         </div>
                     </div>
                     <div class="col-md-12 mt-4">
                         <div class="bg-white rounded  px-5 py-3  br-3">
-                            <strong> Prediction All Data</strong>
-                            <canvas id="PredictioncanvasClass" height="150"></canvas>
+                            <strong> Prediction chart</strong>
+                            <canvas id="Predictionbarline"></canvas>
                         </div>
+                     
                     </div>
                 </div>
             </div>
@@ -248,32 +223,6 @@
                     </select>
                 </div>
             </div>
-            <!-- <div class="col-sm">
-                <div class="card" style="width:12rem;border:none">
-                    <p-card>
-                        <strong style="text-align: left;color:#008000">Normal </strong><br>
-                        <h1 style="text-align: center;color:#008000">{{FutuerPredictionNormalcount}}</h1>
-                    </p-card>
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class="card" style="width:12rem;border:none">
-                    <p-card>
-                        <strong style="text-align: left;color:#FFA500">Incipient</strong><br>
-                        <h1 style="text-align: center;color:#FFA500">{{FutuerPredictionIncipientcount}}</h1>
-                    </p-card>
-                </div>
-
-            </div>
-            <div class="col-sm">
-                <div class="card" style="width:12rem;border:none">
-                    <p-card>
-                        <strong style="text-align: left;color:#FF0000">Degrade</strong><br>
-                        <h1 style="text-align: center;color:#FF0000">{{FutuerPredictionDegradecount}}</h1>
-                    </p-card>
-                </div>
-
-            </div> -->
         </div>
     </div>
 </div>
@@ -287,21 +236,21 @@
                         </div>
                     </div>
             <div class="col-md-7">
-                <div class="h-100 bg-white p-3">
-                    <strong>Future Prediction chart</strong>
-                    <canvas id="BarChart"></canvas>
+                <div class="bg-white p-3">
+                    <strong> Forcast All Data</strong>
+                    <canvas id="donughtChart"></canvas>
                 </div>
             </div>
         <div class="col-md-12 mt-4">
-        <div class="bg-white p-3">
-            <strong> Forcast All Data</strong>
-            <canvas id="donughtChart"></canvas>
-        </div>
+            <div class="h-100 bg-white p-3">
+                <strong>Future Prediction chart</strong>
+                <canvas id="BarChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
-
-<div class="bg-white p-3 rounded mt-4">
+</div>
+ <div class="bg-white p-3 rounded mt-4">
     <div class="row d-flex flex-column justify-content-between align-items-center">
         <div class="col-md-12">
             <h5><b>Combination Of Prediction & Future Prediction</b></h5>
@@ -336,72 +285,11 @@
             <div class="col-md-12">
                 <div class="graph w-100"  id="graph" #graph ></div>
             </div>
-<!-- 
-         <div>
-            <div style="text-align: center">
-                <h5><b>Residual Graph</b></h5>
-            </div><br> 
-            <div class="col-sm">
-                <strong  style="color:gray;font-size: 12px">* Gray line show Residual </strong><br> 
-             </div><br>
-            <div class="graph1" style="width:67rem;height:12rem;" id="graph1" #graph1 ></div>
-        </div><br>  -->
         </div>
    
 </div>
 
-
-
-<!-- <div class="card shadow div-in-middle" style="width: 70rem;">
-  <div class="row">
-        <div class="col-sm" style="padding:30px;">
-            <label style=" margin-right: 12px;">
-                <h5>Machine type</h5>
-            </label>
-            <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()"
-                class="form-control">
-                <option value="">Choose..</option>
-                <option value="Compressor" selected>Compressor</option>
-                <option value="Pump" selected>Pump</option>
-            </select>
-        </div>
-        <div class="col-sm" style="padding:30px;">
-            <label style=" margin-right: 12px;">
-                <h5>Equipment Type</h5>
-            </label>
-            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()"
-                class="form-control">
-                <option value="">Choose..</option>
-                <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
-            </select>
-        </div>
-        <div class="col-sm" style="padding:30px;">
-                <label style=" margin-right: 12px;">
-                    <h5>ETBF</h5>
-                </label>
-                <input type="text" [(ngModel)]="ETBF" placeholder="Enter ETBF" class="form-control">
-    
-        </div>
-        <div class="col-sm" style="padding:30px;">
-            <label style=" margin-right: 12px;">
-                <h5>Tag Number</h5>
-            </label>
-            <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
-                <option value="">Choose..</option>
-                <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
-            </select>
-        </div>
-        <div class="col-sm" style="padding:30px;">
-            <div class="row">
-                <div class="col-sm" style="padding:30px;">
-                    <a class="btn btn-outline-dark btn-sm" (click)="getRecordsByEqui()">Done</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
-<!-- </div> -->
-<div *ngIf="CostRisk">
-    <div class="bg-transparent mt-4"
+   <div class="bg-transparent mt-4"
         *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
         <div class="d-flex justify-content-between align-items-center">
             <h5><b>Cost Benefit Risk Analysis</b> </h5>
@@ -409,19 +297,19 @@
         </div>
             <div class="row mt-4">
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">Total PONC: <b>{{row.TotalPONC}} K</b></div>                   
+                    <div class="card h-100 p-3 border-0">Total PONC: <b>{{row.TotalPONC}} K</b></div>  
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">ETBF: <b>{{row.ETBF}} Y</b></div>               
+                    <div class="card h-100 p-3 border-0">ETBF: <b>{{row.ETBF}} Y</b></div>
                 </div>
                 <div class="col">
                     <div class="card h-100 p-3 border-0">Economic Risk : <b>M</b></div>               
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">Cost Without D.P.M (Total Cost): <b>{{row.EconomicRiskWithoutMaintenance}} K</b></div>                
+                   <div class="card h-100 p-3 border-0">Cost Without D.P.M (Total Cost): <b>{{row.EconomicRiskWithoutMaintenance}} K</b></div>
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">Cost With D.P.M (Total Cost): <b>{{row.ResidualRiskWithMaintenance}} K</b></div>               
+                     <div class="card h-100 p-3 border-0">Cost With D.P.M (Total Cost): <b>{{row.ResidualRiskWithMaintenance}} K</b></div>                
                 </div>
             </div>
         <div class="row mt-4">
@@ -439,6 +327,9 @@
             </div>
         </div>
     </div> <br><br>
+
+ 
+
 
 
   
