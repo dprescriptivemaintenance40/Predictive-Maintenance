@@ -258,7 +258,7 @@ export class CostBenefitAnalysisComponent {
        this.CBAOBJ.MEIWithoutDPM = MEIWithoutDPM;
        this.CBAOBJ.MEIWithDPMWithConstraint = MEIWithDPMWithConstraint;
        localStorage.removeItem('CBAOBJ');
-       localStorage.setItem('CBAOBJ', this.CBAOBJ);
+       localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
     }
 
     onlyNumbers(event) {
@@ -452,7 +452,7 @@ export class CostBenefitAnalysisComponent {
        this.CBAOBJ.MEIWithoutDPM = MEIWithoutDPM;
        this.CBAOBJ.MEIWithDPMWithConstraint = MEIWithDPMWithConstraint;
        localStorage.removeItem('CBAOBJ');
-       localStorage.setItem('CBAOBJ', this.CBAOBJ);
+       localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
     }
 
     public PDFCBAReport() {
