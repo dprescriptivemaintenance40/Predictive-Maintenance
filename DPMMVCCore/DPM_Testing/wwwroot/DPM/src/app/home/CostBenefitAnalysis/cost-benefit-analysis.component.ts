@@ -45,7 +45,7 @@ export class CostBenefitAnalysisComponent {
     public PSRClientContractorData : any = [];
     public UserProductionCost : number = 0;
     public GoodEngineeringTaskList : any = [];
-    public CBAOBJ : any =[];
+    public CBAOBJ : any ={};
     constructor(private messageService: MessageService,
         private commonLoadingDirective: CommonLoadingDirective,
         private CD: ChangeDetectorRef,
