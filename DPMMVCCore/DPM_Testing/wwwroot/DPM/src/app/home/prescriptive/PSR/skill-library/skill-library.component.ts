@@ -263,8 +263,9 @@ export class SkillLibraryComponent implements OnInit {
 
   public generateTaskDuration(r){
     if(r.TaskDuration !== 0){
-       r.TaskDuration = (r.TaskDuration/60).toFixed(3);
-       r.POC = ((r.TaskDuration * r.HourlyRate)/1000).toFixed(3);
+      // r.TaskDuration = (r.TaskDuration/52).toFixed(3);
+      // r.POC = ((r.TaskDuration * r.HourlyRate)/1000).toFixed(3);
+      r.POC = ((r.TaskDuration * r.HourlyRate)).toFixed(3)
     }else{
       r.TaskDuration = 0;
       r.POC = 0;
@@ -446,7 +447,7 @@ export class SkillLibraryComponent implements OnInit {
   AddCraft(v){
     this.SelectedCraftToEdit = v;
     if(v.TaskDuration !== 0){
-      v.TaskDuration =  v.TaskDuration*60;
+     // v.TaskDuration =  v.TaskDuration*52;
       this.generateTaskDuration(v);
     }
     if(this.SelectedCraftToEdit.Craft === 0){
@@ -506,7 +507,7 @@ export class SkillLibraryComponent implements OnInit {
      this.SelectedCraftToEdit.EmployeeName  = '';
   }
   if(this.SelectedCraftToEdit.TaskDuration !== 0){
-    this.SelectedCraftToEdit.TaskDuration =  this.SelectedCraftToEdit.TaskDuration*60;
+   // this.SelectedCraftToEdit.TaskDuration =  this.SelectedCraftToEdit.TaskDuration*52;
     this.generateTaskDuration(this.SelectedCraftToEdit);
    }
   }
