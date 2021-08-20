@@ -228,7 +228,6 @@
 </div>
     <div class="d-block mt-4">
         <div class="row">
-            
                     <div class="col-md-5">
                         <div class="h-100 bg-white p-3">
                             <strong> Future Prediction Pie chart</strong>
@@ -256,7 +255,7 @@
             <h5><b>Combination Of Prediction & Future Prediction</b></h5>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-2">
             <select [(ngModel)]="date" class="form-select" (change)="ComboDates()" class="form-control">
                 <option value="">Choose..</option>
@@ -279,7 +278,7 @@
                  <strong style="font-size: 12px;"><span style="background-color:red;font-size: 12px; height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Red line show Trigger </strong><br>
             </div>
         </div>
-    </div>
+    </div> -->
        
     <div class="row mt-4">
             <div class="col-md-12">
@@ -297,7 +296,7 @@
         </div>
             <div class="row mt-4">
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">Total PONC: <b>{{row.TotalPONC}} K</b></div>  
+                    <div class="card h-100 p-3 border-0">Total PONC: <b>{{TotalPONC}} K</b></div>  
                 </div>
                 <div class="col">
                     <div class="card h-100 p-3 border-0">ETBF: <b>{{row.ETBF}} Y</b></div>
@@ -326,10 +325,48 @@
                 </div>
             </div>
         </div>
+   <br><br>
+        <div class="col-md-4">
+            <select [(ngModel)]="CBIGraphs" class="form-select" (change)="CBICharts()" class="form-control">
+                <option value="Choose">Choose..</option>
+                <option value="Ecomomic_Risk" selected>Ecomomic Risk Graph</option>
+                <option value="Residual_Risk" selected>Residual Risk Graph</option>
+                <option value="MEI" selected>MEI</option>
+                <option value="AllgraphCBI" selected>All Graph CBI</option>
+                <!-- <option value="Skill_Level" selected>Skill Level</option> -->
+            </select>
+        </div><br>
+        <div *ngIf="allCBI">
+            <div class="card" style="width:67rem;">
+                <canvas id="allGraphCBI"></canvas>
+            </div>
+        </div><br>
+        <div *ngIf="ecomomic_risk_Graph">
+            <div class="card" style="width:50rem;margin-left: 10rem;">
+                <strong>Ecomomic Risk Graph</strong>
+                <canvas id="ecomomic_risk"></canvas>
+            </div>
+        </div><br>
+        <div *ngIf="residual_risk_Graph">
+            <div class="card" style="width:50rem;margin-left: 10rem;">
+                <strong>Residual Risk Graph</strong>
+                <canvas id="residual_risk"></canvas>
+            </div>
+        </div><br>
+        <div *ngIf="MEI_risk_Graph">
+            <div class="card" style="width:50rem;margin-left: 10rem;">
+                <strong>MEI Graph</strong>
+                <canvas id="mei_risk"></canvas>
+            </div>
+        </div>
+
+        <!-- <div *ngIf="Skill_risk_Graph">
+            <div class="card" style="width:50rem;">
+                <strong>Skill Level Graph</strong>
+                <canvas id="skilllevel_risk"></canvas>
+            </div>
+        </div> -->
     </div> <br><br>
 
  
-
-
-
   
