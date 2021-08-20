@@ -230,7 +230,7 @@ export class DashboardComponent {
     this.date =  moment().add(1, 'days').format('YYYY-MM-DD');
     this.MachineType="Compressor"
     this.EquipmentType="Screw Compressor"
-    this.SelectedTagNumber="K001"
+    this.SelectedTagNumber="K100"
     this.GetReportRecords()
   }
   ngOnInit() {

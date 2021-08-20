@@ -254,30 +254,31 @@ public Predictionbadcount: number = 0;
       //  this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
       .subscribe(res => {
         this.screwWithPrediction = res;
-        var Data : any = []
-          Data = res;
-          Data.sort((a,b)=>( moment(a.InsertedDate) > moment(b.InsertedDate) ? 1 : -1 ));
-          Data.reverse();
-          var incipient =0, degrade=0, normal =0;
-          var counter : number =0;
-          for (let index = 0; index < Data.length; index++) {
-            if((Data[index].Prediction).toLowerCase() === 'normal'){
-              normal = normal + 1;
-            }else if((Data[index].Prediction).toLowerCase() === 'incipient'){
-              incipient = incipient + 1;
-            }else if((Data[index].Prediction).toLowerCase() === 'degrade' || (Data[index].Prediction).toLowerCase() === 'degarde'){
-              degrade = degrade + 1;
-            }
-            counter = counter + 1;
-            if(counter === 100){
-              if(incipient > 60){
-                this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'RCM is recomended' });
-              }else if(degrade > 60){
-                this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Machine starts for degradation, RCA is recomended' });
-              }
-              break;
-            }
-          }
+        // var Data : any = []
+        //   Data = res;
+        //   Data.sort((a,b)=>( moment(a.InsertedDate) > moment(b.InsertedDate) ? 1 : -1 ));
+        //   Data.reverse();
+        //   var incipient =0, degrade=0, normal =0;
+        //   var counter : number =0;
+        //   for (let index = 0; index < Data.length; index++) {
+        //     if((Data[index].Prediction).toLowerCase() === 'normal'){
+        //       normal = normal + 1;
+        //     }else if((Data[index].Prediction).toLowerCase() === 'incipient'){
+        //       incipient = incipient + 1;
+        //     }else if((Data[index].Prediction).toLowerCase() === 'degrade' || (Data[index].Prediction).toLowerCase() === 'degarde'){
+        //       degrade = degrade + 1;
+        //     }
+        //     counter = counter + 1;
+        //     if(counter === 100){
+        //       if(incipient > 60){
+        //         this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'RCM is recomended' });
+        //       }else if(degrade > 60){
+        //         this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Machine starts for degradation, RCA is recomended' });
+        //       }
+        //       break;
+        //     }
+        //   }
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Machine starts for degrading, RCA is recomended', sticky:true });
         this.commonLoadingDirective.showLoading(false, "");
       }, err => {
         this.commonLoadingDirective.showLoading(false, "");

@@ -217,9 +217,10 @@
                                         <th>Task Details</th>
                                         <th>Maintenance Task</th>
                                         <th>Maintenance Interval</th>
+                                        <th>Hours</th>
                                         <th>RWC</th>
                                         <th>Level</th>
-                                        <th>POC</th>
+                                        <!-- <th>POC</th> -->
                                         <th>Annual POC</th>
                                         <th>Status</th>
                                         <th>Select</th>
@@ -230,9 +231,10 @@
                                         <td class="left strong">{{mss.MSSIntervalSelectionCriteria}}</td>
                                         <td class="left">{{mss.MSSMaintenanceTask}}</td>
                                         <td class="left">{{mss.MSSMaintenanceInterval}}</td>
+                                        <td class="left">{{mss.Hours}}</td>
                                         <td class="left">{{mss.Craft}}</td>
                                         <td class="left">{{mss.Level}}</td>
-                                        <td class="left">{{mss.POC}}</td>
+                                        <!-- <td class="left">{{mss.POC}}</td> -->
                                         <td class="left">{{mss.AnnualPOC}}</td>
                                         <td class="left">{{mss.Status}}</td>
                                         <td>
@@ -383,15 +385,20 @@
                                     </div> 
                                     <div class="col-sm">
                                         <div class="mb-2">
-                                            <strong>Cost Without DPM: <span class="badge badge-success">{{CBAReportDetails.VendorPONC}}</span></strong>
+                                            <strong>Economic RISK without DPM: <span class="badge badge-success">{{CBAReportDetails.WithOutDPM}}</span></strong>
                                         </div>
                                     </div>
                                     <div class="col-sm">
                                         <div class="mb-2">
-                                            <strong>Cost With DPM: <span class="badge badge-success">{{CBAReportDetails.TotalAnnualPOC}}</span></strong>
+                                            <strong>Economic RISK with DPM: <span class="badge badge-success">{{CBAReportDetails.WithDPM}}</span></strong>
                                         </div>
                                     </div>
                                     <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Economic RISK with DPM Constraint: <span class="badge badge-success">{{CBAReportDetails.EconomicRiskWithConstraintDPMCR}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-sm">
                                         <div class="mb-2">
                                             <strong>MEI Without DPM: <span class="badge badge-success">{{CBAReportDetails.MEIWithoutDPM}}</span></strong>
                                         </div>
@@ -400,7 +407,7 @@
                                         <div class="mb-2">
                                             <strong>MEI With DPM without Constraint: <span class="badge badge-success">{{CBAReportDetails.MEIWithDPMWithConstraint}}</span></strong>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
