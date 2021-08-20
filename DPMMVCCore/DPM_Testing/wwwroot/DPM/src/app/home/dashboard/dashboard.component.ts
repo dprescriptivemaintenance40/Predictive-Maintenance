@@ -2644,7 +2644,7 @@ export class DashboardComponent {
           },
           {
             label: 'Residual Risk without DPM ',
-            data: [residualcostwithConstraint],
+            data: [residualcost],
             backgroundColor: ['#a2d5c6'],
             fill: true,
             barPercentage: 42,
@@ -2653,7 +2653,7 @@ export class DashboardComponent {
           },
           {
             label: 'Residual Risk with DPM without constraint',
-            data: [residualcostwithConstraint],
+            data: [residualcostWithoutConstraint],
             backgroundColor: ['#3cd3d8'],
             fill: true,
             barPercentage: 42,
