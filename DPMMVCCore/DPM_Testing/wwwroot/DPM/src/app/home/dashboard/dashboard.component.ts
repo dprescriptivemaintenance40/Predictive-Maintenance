@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 import { SCConstantsAPI } from "../Compressor/ScrewCompressor/shared/ScrewCompressorAPI.service";
 import { ProfileConstantAPI } from "../profile/profileAPI.service";
 import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
+import { element } from "protractor";
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -128,6 +129,7 @@ export class DashboardComponent {
     public CFPPrescriptiveId : number = 0 ;
     public DatesforCSV : number = 0 ;
     public date: string = "";
+    public CBIGraphs:string = "";
 
 
     public DOA = new Date();
@@ -205,6 +207,17 @@ export class DashboardComponent {
     public PSRClientContractorData : any = [];
     public UserProductionCost : number = 0;
 
+    public Skill_risk_Graph:boolean = false;
+    public MEI_risk_Graph:boolean = false;
+    public residual_risk_Graph:boolean = false;
+    public ecomomic_risk_Graph:boolean = false;
+    public UserDetails:string =""
+
+
+    private userModel: any;
+    private SkillLibraryData: any = [];
+    public PSRModel: any =[];
+
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -228,13 +241,18 @@ export class DashboardComponent {
       this.CBAWithId(this.CFPPrescriptiveId)
     }
     this.date =  moment().add(1, 'days').format('YYYY-MM-DD');
-    this.MachineType="Compressor"
-    this.EquipmentType="Screw Compressor"
-    this.SelectedTagNumber="K100"
+    // this.MachineType="Compressor"
+    // this.EquipmentType="Screw Compressor"
+    // this.SelectedTagNumber="K001"
     this.GetReportRecords()
+    // this.getUserDetails()
+    this.userModel = JSON.parse(localStorage.getItem('userObject'));
+    this.GetPSRClientContractorData();
+    this.getUserSkillRecords();
+    this.getPrescriptiveRecords()
   }
   ngOnInit() {
-    this.getRecordsByEqui()
+    // this.getRecordsByEqui()
     this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
@@ -242,6 +260,45 @@ export class DashboardComponent {
     this.GerAllPredictionRecords();
     this.dygraph()
     this.ComboDates()
+    this.CBICharts()
+  }
+
+  public CBI_etbf:number = 0;
+  public ETBFWithConstraint:number = 0;
+  public MEIWithDPMWithConstraint:number = 0;
+  public MEIWithDPMWithoutConstraint:number = 0;
+  public MEIWithoutDPM:number = 0;
+  public OverallETBC:number = 0;
+  public TotalAnnualCostWithMaintenance:number = 0;
+  public TotalAnnualPOC:number = 0;
+  public TotalPONC:number = 0;
+  public VendorETBC:number = 0;
+ 
+  getUserDetails() {
+    this.UserDetails = JSON.parse(localStorage.getItem('CBAOBJ'));
+    this.CBI_etbf= JSON.parse(localStorage.getItem('CBAOBJ')).ETBF;
+    this.ETBFWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).ETBFWithConstraint;
+    this.MEIWithDPMWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithConstraint;
+    this.MEIWithDPMWithoutConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithoutConstraint;
+    this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
+    this.OverallETBC= JSON.parse(localStorage.getItem('CBAOBJ')).OverallETBC;
+    this.TotalAnnualCostWithMaintenance= JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualCostWithMaintenance;
+    this.TotalAnnualPOC= JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
+    this.TotalPONC= JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
+    this.VendorETBC= JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
+
+    // this.DPMCost = (this.TotalAnnualCostWithMaintenance - this.TotalAnnualPOC)
+  }
+  getPrescriptiveRecords() {
+    this.http.get('api/PrescriptiveAPI/GetTagNumber')
+      .subscribe((res: any) => {
+        this.PrescriptiveRecordsList =res;
+        this.MachineType=  this.PrescriptiveRecordsList[0].MachineType 
+        this.EquipmentType= this.PrescriptiveRecordsList[0].EquipmentType
+        this.SelectedTagNumber= this.PrescriptiveRecordsList[0].TagNumber
+        // this.SelectedTagNumber= this.PrescriptiveRecordsList[11].TagNumber
+        this.getRecordsByEqui() 
+      });
   }
   RouteToTrain(){
     this.router.navigateByUrl('/Home/Compressor/ScrewTrain'); 
@@ -712,7 +769,7 @@ export class DashboardComponent {
       row.EconomicRiskWithoutMaintenance = (row.TotalPONC / row.ETBF).toFixed(3);
       this.DPMWithoutCost = row.EconomicRiskWithoutMaintenance
       row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
-      this.DPMCost = row.ResidualRiskWithMaintenance
+       this.DPMCost = row.ResidualRiskWithMaintenance
       let WithETBCAndPONC = row.TotalPONC / row.ETBC;
       let WithoutETBCAndPONC = row.TotalPONC / 5;
       row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
@@ -725,6 +782,7 @@ export class DashboardComponent {
     // this.CostRisk = true; 
      this.gaugechartwithDPM()
      this.gaugechartwithoutDPM()
+     this.CBICharts()
 
   }
 
@@ -1883,198 +1941,205 @@ export class DashboardComponent {
 
 
    dygraph(){ 
+        this.chart = new Dygraph(
+          document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
+          {
+            visibility: [true, false, false, true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+           colors: ['green','green',],
+           showLabelsOnHighlight: false,
+           showRangeSelector: true,
+           series: {
+                        'TD1': {
+                          strokePattern: null,
+                          drawPoints: true,
+                          pointSize: 1,
+                        },
+                        'FTD1': {
+                          strokePattern: Dygraph.DASHED_LINE,
+                          strokeWidth: 2.6,
+                          drawPoints: true,
+                          pointSize: 3.5,
+                        },
+                     }
+          }) 
 
-        // this.chart = new Dygraph(
-        //   document.getElementById("graph"),"dist/DPM/assets/actualdata.csv",
-        //   {
-        //     visibility: [true, false, false, true,false,false],
-        //     showRangeSelector: true,
-        //     connectSeparatedPoints: true,
-        //   }) 
-
-          // this.chart = new Dygraph(
-          //   document.getElementById("graph1"),"dist/DPM/assets/actualdata.csv",
-          //   {
-          //     visibility: [false, false, false, false,false,true],
-          //     showRangeSelector: true,
-          //     connectSeparatedPoints: true,
-          //   })
-
-
-
-        // this.http.get("dist/DPM/assets/realdatafordygraph.csv",{responseType:'text'}).subscribe((res: any) => {
+  
+        // this.http.get("dist/DPM/assets/temperatures.csv",{responseType:'text'}).subscribe((res: any) => {
         //   console.log(res)
-         
+        //   var prediction = res;
+
         //   this.chart = new Dygraph(
         //       document.getElementById("graph"),res,
         //       {
         //         showRangeSelector: true,
-        //       })
-        // } 
+        //       }
+        //       )
+        // })
     
+   
 
-        this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-             var prediction = res;
-             this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
-              var futureData = res 
+        // this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+        //      var prediction = res;
+        //      this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
+        //       var futureData = res 
 
-              this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
-              this.highlight_end = moment(this.date).format('YYYY/MM/DD')
+        //       this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
+        //       this.highlight_end = moment(this.date).format('YYYY/MM/DD')
 
+        //       var result1 : any= futureData.filter(f =>
+        //         prediction.some(d => d.Date == f.Date) 
+        //       );
 
-              var result1 : any= futureData.filter(f =>
-                prediction.some(d => d.Date == f.Date) 
-              );
+        //        result1.forEach(element => {
+        //          var d = prediction.filter(r=>r.Date === element.Date)
+        //          element.TD1 = d[0].TD1;
+        //          element.Residual = element.FTD1 - d[0].TD1            
+        //        });
+        //        futureData.forEach(element => {
+        //          if(element.TD1 == 0){
+        //           element.Residual = ''
+        //          }
+        //        });
+        //        prediction.forEach(element => {
+        //         element.Residual = 0
+        //         for (var i = 0; i < result1.length; i++) {
+        //           if (result1[i].Date == element.Date) {
+        //           element.FTD1 = result1[i].FTD1
+        //           element.TD1 = result1[i].TD1
+        //           element.Residual = result1[i].Residual
+        //           }
+        //         }
+        //       });
 
-               result1.forEach(element => {
-                 var d = prediction.filter(r=>r.Date === element.Date)
-                 element.TD1 = d[0].TD1;
-                 element.Residual = element.FTD1 - d[0].TD1            
-               });
-               futureData.forEach(element => {
-                 if(element.TD1 == 0){
-                  element.Residual = ''
-                 }
-               });
-               prediction.forEach(element => {
-                element.Residual = 0
-                for (var i = 0; i < result1.length; i++) {
-                  if (result1[i].Date == element.Date) {
-                  element.FTD1 = result1[i].FTD1
-                  element.TD1 = result1[i].TD1
-                  element.Residual = result1[i].Residual
-                  }
-                }
-              });
+        //        const result = futureData.filter(f =>
+        //         !prediction.some(d => d.Date == f.Date)
+        //        );
+        //        result.forEach(element => {
+        //            prediction.push(element);
+        //        });
+        //       //this.mergedarray = prediction.concat(result);
+        //       prediction.forEach(element => {
+        //         if(element.Residual === 0){
+        //           element.Residual = ''
+        //         }
+        //         if(element.TD1 === 0){
+        //           element.TD1 = ''
+        //         }
+        //         if(element.FTD1 === 0){
+        //           element.FTD1 = ''
+        //         }
+        //         if (element.TD1 > 180 && element.TD1 < 210) {
+        //           element.alarm = element.TD1
 
-               const result = futureData.filter(f =>
-                !prediction.some(d => d.Date == f.Date)
-               );
-               result.forEach(element => {
-                   prediction.push(element);
-               });
-              //this.mergedarray = prediction.concat(result);
-              prediction.forEach(element => {
-                if(element.Residual === 0){
-                  element.Residual = ''
-                }
-                if(element.TD1 === 0){
-                  element.TD1 = ''
-                }
-                if(element.FTD1 === 0){
-                  element.FTD1 = ''
-                }
-                if (element.TD1 > 180 && element.TD1 < 210) {
-                  element.alarm = element.TD1
+        //         } else{
+        //           element.alarm = ''
+        //         }
+        //          if (element.TD1 > 210) {
+        //           element.trigger = element.TD1
+        //         }else{
+        //           element.trigger = ''
+        //         }
+        //         if(element.FTD1 > 190 && element.FTD1 < 210) {
+        //           element.falarm = element.FTD1
+        //         }
+        //         else {
+        //           element.falarm = ''
+        //         }
+        //         if(element.FTD1 > 210) {
+        //           element.ftrigger = element.FTD1
+        //         }
+        //         else {
+        //           element.ftrigger = ''
+        //         }
+        //        }); 
+        //        this.csvData = this.ConvertToCSV(prediction);
+        //       //  this.csvData = this.ConvertToCSV( this.mergedarray);
+        //        var highlight_start = new Date(this.highlight_start);
+        //        var highlight_end = new Date(this.highlight_end);
 
-                } else{
-                  element.alarm = ''
-                }
-                 if (element.TD1 > 210) {
-                  element.trigger = element.TD1
-                }else{
-                  element.trigger = ''
-                }
-                if(element.FTD1 > 190 && element.FTD1 < 210) {
-                  element.falarm = element.FTD1
-                }
-                else {
-                  element.falarm = ''
-                }
-                if(element.FTD1 > 210) {
-                  element.ftrigger = element.FTD1
-                }
-                else {
-                  element.ftrigger = ''
-                }
-               }); 
-               this.csvData = this.ConvertToCSV(prediction);
-              //  this.csvData = this.ConvertToCSV( this.mergedarray);
-               var highlight_start = new Date(this.highlight_start);
-               var highlight_end = new Date(this.highlight_end);
-
-               this.chart = new Dygraph(
-                document.getElementById("graph"),this.csvData,
-                {
-                  colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
-                  visibility: [true, true, false, true,true,true,true,],
-                  showRangeSelector: true,
-                  fillGraph:true,
-                  fillAlpha: 0.1,
-                  connectSeparatedPoints: false,
-                  drawPoints: true,
-                  strokeWidth: 1.5,
-                  stepPlot: false,
-                  errorbar: true,
-                  drawXGrid: true,
-                  valueRange: [150,250],
-                  includeZero: false,
-                  drawAxesAtZero: false,
-                  series: {
-                    'TD1': {
-                      strokePattern: null,
-                      drawPoints: true,
-                      pointSize: 2,
-                    },
-                    'FTD1': {
-                      strokePattern: Dygraph.DASHED_LINE,
-                      strokeWidth: 2.6,
-                      drawPoints: true,
-                      pointSize: 3.5
-                    },
-                    'Residual': {
-                    },
-                    'alarm': {
-                      strokeWidth: 2,
-                    },
-                    'trigger': {
-                      strokePattern: Dygraph.DOT_DASH_LINE,
-                      strokeWidth: 2,
-                      highlightCircleSize: 3
-                    },
-                    'falarm': {
-                      color: ['#ffb801'],
-                      strokePattern: Dygraph.DASHED_LINE1,
-                      strokeWidth: 1.6,
-                      drawPoints: true,
-                      pointSize: 2.5
-                    },
-                    'ftrigger': {
-                      strokePattern: Dygraph.DASHED_LINE,
-                      strokeWidth: 1.0,
-                      drawPoints: true,
-                      pointSize: 1.5
-                    },
-                  },
-                  underlayCallback: function(canvas, area, g) {
-                      var bottom_left = g.toDomCoords(highlight_start);
-                      var top_right = g.toDomCoords(highlight_end); 
+        //        this.chart = new Dygraph(
+        //         document.getElementById("graph"),this.csvData,
+        //         {
+        //           colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
+        //           visibility: [true, true, false, true,true,true,true,],
+        //           showRangeSelector: true,
+        //           fillGraph:true,
+        //           fillAlpha: 0.1,
+        //           connectSeparatedPoints: false,
+        //           drawPoints: true,
+        //           strokeWidth: 1.5,
+        //           stepPlot: false,
+        //           errorbar: true,
+        //           drawXGrid: true,
+        //           valueRange: [150,250],
+        //           includeZero: false,
+        //           drawAxesAtZero: false,
+        //           series: {
+        //             'TD1': {
+        //               strokePattern: null,
+        //               drawPoints: true,
+        //               pointSize: 2,
+        //             },
+        //             'FTD1': {
+        //               strokePattern: Dygraph.DASHED_LINE,
+        //               strokeWidth: 2.6,
+        //               drawPoints: true,
+        //               pointSize: 3.5
+        //             },
+        //             'Residual': {
+        //             },
+        //             'alarm': {
+        //               strokeWidth: 2,
+        //             },
+        //             'trigger': {
+        //               strokePattern: Dygraph.DOT_DASH_LINE,
+        //               strokeWidth: 2,
+        //               highlightCircleSize: 3
+        //             },
+        //             'falarm': {
+        //               color: ['#ffb801'],
+        //               strokePattern: Dygraph.DASHED_LINE1,
+        //               strokeWidth: 1.6,
+        //               drawPoints: true,
+        //               pointSize: 2.5
+        //             },
+        //             'ftrigger': {
+        //               strokePattern: Dygraph.DASHED_LINE,
+        //               strokeWidth: 1.0,
+        //               drawPoints: true,
+        //               pointSize: 1.5
+        //             },
+        //           },
+        //           underlayCallback: function(canvas, area, g) {
+        //               var bottom_left = g.toDomCoords(highlight_start);
+        //               var top_right = g.toDomCoords(highlight_end); 
                  
-                      var left = bottom_left[0];
-                      var right = top_right[0];
+        //               var left = bottom_left[0];
+        //               var right = top_right[0];
 
-                       canvas.fillStyle = "rgba(245, 252, 255)";
-                      canvas.fillRect(left, area.y, right - left, area.h);
-                  }
-                },
-                ) 
-                // this.chart = new Dygraph(
-                //   document.getElementById("graph1"),this.csvData,
-                //   {
-                //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
-                //     showRangeSelector: true,
-                //     connectSeparatedPoints: true,
-                //     fillGraph: true,
-                //     drawPoints: true,
-                //     strokeWidth: 5,
-                //     drawXGrid: false,
-                //     visibility: [false, false, true, false,false,false,false,],
-                //   },
-                //   ) 
+        //                canvas.fillStyle = "rgba(245, 252, 255)";
+        //               canvas.fillRect(left, area.y, right - left, area.h);
+        //           }
+        //         },
+        //         ) 
+        //         // this.chart = new Dygraph(
+        //         //   document.getElementById("graph1"),this.csvData,
+        //         //   {
+        //         //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
+        //         //     showRangeSelector: true,
+        //         //     connectSeparatedPoints: true,
+        //         //     fillGraph: true,
+        //         //     drawPoints: true,
+        //         //     strokeWidth: 5,
+        //         //     drawXGrid: false,
+        //         //     visibility: [false, false, true, false,false,false,false,],
+        //         //   },
+        //         //   ) 
 
-            })}
-        )
+        //     })}
+        // )
    }
+  
 
     ConvertToCSV(objArray) {
       var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
@@ -2269,8 +2334,374 @@ export class DashboardComponent {
 
 
   }
+  public allCBI:boolean = false;
+  CBICharts(){
+    if(this.CBIGraphs =="Ecomomic_Risk"){
+      this.ecomomic_risk_Graph = true
+      this.residual_risk_Graph = false
+      this.MEI_risk_Graph = false
+      this.Skill_risk_Graph =false;
+      this.allCBI=false
+      this.EcomomicRiskGraph()
+    }else if(this.CBIGraphs =="Residual_Risk"){
+      this.residual_risk_Graph = true
+      this.MEI_risk_Graph = false
+      this.Skill_risk_Graph =false;
+      this.ecomomic_risk_Graph = false
+      this.allCBI=false
+      this.ResidualRiskGraph()
+    }else if(this.CBIGraphs =="MEI"){
+      this.MEI_risk_Graph = true
+      this.Skill_risk_Graph =false;
+      this.ecomomic_risk_Graph = false
+      this.residual_risk_Graph = false
+      this.allCBI=false
+      this.MEIGraph()
+    }
+    else if(this.CBIGraphs =="AllgraphCBI"){
+      this.allCBI=true
+      this.MEI_risk_Graph = false
+      this.Skill_risk_Graph =false;
+      this.ecomomic_risk_Graph = false
+      this.residual_risk_Graph = false
+      this.ALLGraphCBA()
+    }
+    else if(this.CBIGraphs =="Choose"){
+      this.MEI_risk_Graph = false
+      this.Skill_risk_Graph =false;
+      this.ecomomic_risk_Graph = false
+      this.residual_risk_Graph = false
+
+    }
+   
+    // else if(this.CBIGraphs =="Skill_Level"){
+    //   this.Skill_risk_Graph =true;
+    //   this.ecomomic_risk_Graph = false
+    //   this.residual_risk_Graph = false
+    //   this.MEI_risk_Graph = false
+    //   this.SkillLevelGraph()
+    // }
+  }
+
+  EcomomicRiskGraph (){
+    this.changeDetectorRef.detectChanges();
+    var costWithoutDPM =2.3
+    var CostDPMWithoutConstraint = 1.7
+    var CostWithDPMConstraint = 2.1
+    var total =(costWithoutDPM+CostDPMWithoutConstraint+CostWithDPMConstraint)
+     
+    var economiccost = ((costWithoutDPM/total)*100).toFixed(2)
+    var economiccostWithoutConstraint = ((CostDPMWithoutConstraint/total)*100).toFixed(2)
+    var economiccostwithConstraint = ((CostWithDPMConstraint/total)*100).toFixed(2)
+     this.chart = new Chart('ecomomic_risk', {
+      type: 'bar',
+      data: {
+        labels: ['Cost without DPM','Cost with DPM without constraint','cost with DPM with constraint'],
+        datasets: [
+          {
+            // data: [this.TotalAnnualCostWithMaintenance,this.TotalAnnualPOC,0],
+            data: [economiccost,economiccostWithoutConstraint,economiccostwithConstraint],
+            backgroundColor: ['#408ec6', '#7a2048', '#1e2761'],
+            fill: true,
+            barPercentage: 42,
+            barThickness: 60,
+            maxBarThickness: 70,     
+          }, 
+        ],
+      },
+      options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  min: 10,
+                   max: 50,
+                  stepSize: 1,
+                }
+              }]
+            }
+          }
+    }); 
+
+  }
+  ResidualRiskGraph (){
+    this.changeDetectorRef.detectChanges();
+    //   this.chart = new Chart('residual_risk', {
+    //   type: 'bar',
+    //    data: {
+    //     datasets: [
+    //       {
+    //         label: "Residual Risk without Maintenance",
+    //         data: [this.CBI_etbf],
+    //         backgroundColor: ['purple'],
+    //          fill: true,
+    //          barPercentage: 42,
+    //          barThickness: 50,
+    //          maxBarThickness: 58,
+    //       }, 
+    //       {
+    //         label: " Residual Risk Without DPM ",
+    //         data: [this.VendorETBC],
+    //         backgroundColor: ['blue',],
+    //         fill: true,
+    //         barPercentage: 42,
+    //          barThickness: 50,
+    //          maxBarThickness: 58,
+    //       }, 
+    //       {
+    //         label: "Residual Risk with DPM without constraint",
+    //         data: [this.OverallETBC],
+    //         backgroundColor: ['magenta'],
+    //         fill: true,
+    //         barPercentage: 42,
+    //          barThickness: 50,
+    //          maxBarThickness: 58,
+    //       },
+    //       {
+    //         label: "Residual Risk with DPM with constarint",
+    //         data: [this.ETBFWithConstraint],
+    //         backgroundColor: ['indigo'],
+    //         fill: true,
+    //         barPercentage: 42,
+    //          barThickness: 50,
+    //          maxBarThickness: 58,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     scales: {
+    //       yAxes: [{
+    //         ticks: {
+    //           min: 0,
+    //           // max: 30,
+    //           stepSize: 1,
+    //         }
+    //       }]
+    //     }
+    //   }
+    // });
+    var residualcostWithoutDPM = 4
+    var residualCostDPMWithoutConstraint = 6
+    var residualCostWithDPMConstraint = 7
+    var residualtotal =(residualcostWithoutDPM+residualCostDPMWithoutConstraint+residualCostWithDPMConstraint)
+     
+    var residualcost = ((residualcostWithoutDPM/residualtotal)*100).toFixed(2)
+    var residualcostWithoutConstraint = ((residualCostDPMWithoutConstraint/residualtotal)*100).toFixed(2)
+    var residualcostwithConstraint = ((residualCostWithDPMConstraint/residualtotal)*100).toFixed(2)
+    
+    this.chart = new Chart('residual_risk', {
+      type: 'bar',
+      data: {
+        labels: ['Residual Risk Without DPM','Residual Risk with DPM without constraint','Residual Risk with DPM with constarint'],
+        datasets: [
+          {
+            // data: [this.CBI_etbf,this.VendorETBC,this.OverallETBC,this.ETBFWithConstraint],
+            data: [residualcost,residualcostWithoutConstraint,residualcostwithConstraint],
+            backgroundColor: ['#a2d5c6','#3cd3d8','#5c3c92'],
+            fill: true,
+            barPercentage: 42,
+            barThickness: 60,
+            maxBarThickness: 70,
+          }, 
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 10,
+               max: 50,
+              stepSize: 1,
+            }
+          }]
+        }
+      }
+    }); 
+    
+  }
+  MEIGraph (){
+    this.changeDetectorRef.detectChanges();
+    //   this.chart = new Chart('mei_risk', {
+    //   type: 'doughnut',
+    //   data: {
+    //      labels: ['MEI_Without DPM','MEI_with DPM without constraint','MEI_with DPM with constarint'],
+    //     datasets: [
+    //       {
+    //         // data: [this.MEIWithoutDPM,this.MEIWithDPMWithoutConstraint,this.MEIWithDPMWithConstraint],
+    //         data: [20,25,55],
+    //         backgroundColor: ['purple','blueviolet','indigo',],
+    //         fill: false
+    //       },
+    //     ]
+    //   },
+    //   options: {
+    //     circumference: 1 * Math.PI,
+    //     rotation: 1 * Math.PI,
+    //     cutoutPercentage: 70
+    //   }
+    // });
 
 
+    var meicostWithoutDPM =20
+    var meiCostDPMWithoutConstraint = 25
+    var meiCostWithDPMConstraint = 55
+    var meitotal =(meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
+     
+    var meicost = ((meicostWithoutDPM/meitotal)*100).toFixed(2)
+    var meicostWithoutConstraint = ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
+    var meicostwithConstraint = ((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
+    
+    this.chart = new Chart('mei_risk', {
+      type: 'bar',
+      data: {
+        labels: ['MEI_Without DPM','MEI_with DPM without constraint','MEI_with DPM with constarint'],
+        datasets: [
+          {
+            data: [meicost,meicostWithoutConstraint,meicostwithConstraint],
+            backgroundColor: ['#26495c','#c4a35a','#c66b3d'],
+            fill: true,
+            barPercentage: 42,
+            barThickness: 60,
+            maxBarThickness: 70,
+          }, 
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 10,
+               max: 50,
+              stepSize: 1,
+            }
+          }]
+        }
+      }
+    }); 
+      
+  }
+
+  ALLGraphCBA (){
+    var costWithoutDPM =2.3
+    var CostDPMWithoutConstraint = 1.7
+    var CostWithDPMConstraint = 2.1
+    var total =(costWithoutDPM+CostDPMWithoutConstraint+CostWithDPMConstraint)
+     
+    var economiccost = ((costWithoutDPM/total)*100).toFixed(2)
+    var economiccostWithoutConstraint = ((CostDPMWithoutConstraint/total)*100).toFixed(2)
+    var economiccostwithConstraint = ((CostWithDPMConstraint/total)*100).toFixed(2)
+
+    var residualcostWithoutDPM = 4
+    var residualCostDPMWithoutConstraint = 6
+    var residualCostWithDPMConstraint = 7
+    var residualtotal =(residualcostWithoutDPM+residualCostDPMWithoutConstraint+residualCostWithDPMConstraint)
+     
+    var residualcost = ((residualcostWithoutDPM/residualtotal)*100).toFixed(2)
+    var residualcostWithoutConstraint = ((residualCostDPMWithoutConstraint/residualtotal)*100).toFixed(2)
+    var residualcostwithConstraint = ((residualCostWithDPMConstraint/residualtotal)*100).toFixed(2)
+    
+    var meicostWithoutDPM =20
+    var meiCostDPMWithoutConstraint = 25
+    var meiCostWithDPMConstraint = 55
+    var meitotal =(meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
+     
+    var meicost = ((meicostWithoutDPM/meitotal)*100).toFixed(2)
+    var meicostWithoutConstraint = ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
+    var meicostwithConstraint = ((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
+    this.changeDetectorRef.detectChanges();
+
+      this.chart = new Chart('allGraphCBI', {
+      type: 'bar',
+      data: {
+         labels: ['Economic_Risk without Maintenance','Economic_Risk With DPM','Economic Risk with DPM without constraint','Residual Risk Without DPM','Residual Risk with DPM without constraint','Residual Risk with DPM with constarint'
+         ,'MEI_Without DPM','MEI_with DPM without constraint','MEI_with DPM with constarint'],
+        datasets: [
+          {
+            data: [economiccost,economiccostWithoutConstraint,economiccostwithConstraint,residualcost,residualcostWithoutConstraint,residualcostwithConstraint,meicost,meicostWithoutConstraint,meicostwithConstraint],
+            backgroundColor: ['#408ec6','#7a2048','#1e2761','#a2d5c6','#3cd3d8','#5c3c92','#26495c','#c4a35a','#c66b3d'],
+            fill: true,
+            barPercentage: 42,
+            barThickness: 60,
+            maxBarThickness: 70,
+          }, 
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 10,
+               max: 50,
+              stepSize: 1,
+            }
+          }]
+        }
+      }
+    }); 
+  }
+  SkillLevelGraph (){
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart('skilllevel_risk', {
+  //   type: 'bar',
+  //   data: {
+  //      labels: ['OPS','OPS_GEP','REL','REL_GEP'],
+  //     datasets: [
+  //       {
+  //         // data: [this.MEIWithoutDPM,this.MEIWithDPMWithoutConstraint,this.MEIWithDPMWithConstraint],
+  //         data: [100,75,90,70],
+  //         backgroundColor: ['purple','blueviolet','indigo','green',],
+  //         fill: false
+  //       },
+  //     ]
+  //   },
+  //   options: {
+  //     scales: {
+  //       yAxes: [{
+  //         ticks: {
+  //           min: 0,
+  //           stepSize: 1,
+  //         }
+  //       }]
+  //     }
+  //   }
+  // });
+      
+  }
+public  level =[]
+public  craft =[]
+public craftarray : any =[];
+
+ getUserSkillRecords(){
+  this.commonBLervice.getWithoutParameters('/SkillLibraryAPI/GetAllConfigurationRecords').subscribe(
+    (res : any) => {
+      this.SkillLibraryAllrecords =res;
+      this.PSRClientContractorData
+       for (var i = 0; i <this.SkillLibraryAllrecords.length; i++) {
+        for (var j = 0; j <this.PSRClientContractorData.length; j++) { 
+            this.SkillLibraryAllrecords.forEach(element => {
+            if(this.PSRClientContractorData[j].PSRClientContractorId == this.SkillLibraryAllrecords[i].Craft){
+               element.CraftSF = this.PSRClientContractorData[j].CraftSF 
+            }
+          });
+        }
+       }
+
+    }, err=>{ console.log(err.error)}
+  );
+}
+ GetPSRClientContractorData() {
+  this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords')
+    .subscribe((res1: any) => {
+      this.PSRClientContractorData = res1;
+
+    }, err=>{ console.log(err.error)}
+    );
+}
+
+// getCraftValue(d){
+//   var skillData = this.SkillLibraryAllrecords.find(r=>r.SKillLibraryId === d.Craft);
+//   var craft = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === skillData.Craft);
+//   return craft.CraftSF;
+// }
 
 }
 

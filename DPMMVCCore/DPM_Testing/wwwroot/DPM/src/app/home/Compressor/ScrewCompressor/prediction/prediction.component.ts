@@ -753,9 +753,9 @@ public Predictionbadcount: number = 0;
       if (AFCCalcuation == NaN) {
         this.FinalAFCCalcuation = 0;
       }
-      this.messageService.add({ severity: 'success', summary: 'success', detail: ' To Download Report, Click Download Report Button ' });
+      // this.messageService.add({ severity: 'success', summary: 'success', detail: ' To Download Report, Click Download Report Button ' });
     } else {
-      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Prediction have not done yet, Asset Forecast will not Generate ' });
+      // this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Prediction have not done yet, Asset Forecast will not Generate ' });
     }
     var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
     console.log(LMH)
@@ -785,7 +785,7 @@ GetPredictionRecords() {
         this.buttonvisible= true;
         this.AFPNotVisible = true;
         this.AFPVisible = false;
-         this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Still You have not done Prediction. Do Prediction & Generate Report',});
+        //  this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Still You have not done Prediction. Do Prediction & Generate Report',});
         this.commonLoadingDirective.showLoading(false, '');
       } else { 
         this.AFPNotVisible = false;
