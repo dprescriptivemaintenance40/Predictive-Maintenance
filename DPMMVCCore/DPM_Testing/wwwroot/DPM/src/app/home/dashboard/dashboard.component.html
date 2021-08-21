@@ -279,7 +279,15 @@
             </div>
         </div>
     </div> -->
-       
+    <div class="flex-row d-flex justify-content-between align-items-center col-md-10">
+        <div class="col-sm"></div>
+        <div class="col-sm">
+            <strong style="font-size: 12px;"><span style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Green line show Prediction data </strong><br>
+        </div>
+        <div class="col-sm">
+            <strong style="font-size: 12px;"><span style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Dotted line show Forcast data </strong><br>
+        </div>
+        </div> 
     <div class="row mt-4">
             <div class="col-md-12">
                 <div class="graph w-100"  id="graph" #graph ></div>
@@ -288,30 +296,29 @@
    
 </div>
 
-   <div class="bg-transparent mt-4"
-        *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
+   <div class="bg-transparent mt-4">
         <div class="d-flex justify-content-between align-items-center">
             <h5><b>Cost Benefit Risk Analysis</b> </h5>
             <button class="btn btn-outline-dark btn-sm" (click)="RouteToCostBenifit()" data-toggle="tooltip" data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
         </div>
             <div class="row mt-4">
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">Total PONC: <b>{{row.TotalPONC}} K</b></div>  
+                    <div class="card h-100 p-3 border-0">Total PONC: <b>{{TotalPONC}} K</b></div>  
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">ETBF: <b>{{row.ETBF}} Y</b></div>
+                    <div class="card h-100 p-3 border-0">ETBF: <b>{{CBI_etbf}} Y</b></div>
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">Economic Risk : <b>M</b></div>               
+                    <div class="card h-100 p-3 border-0">Economic Risk : <b>{{EconomicRiskWithConstraintDPMCR}}</b></div>               
                 </div>
                 <div class="col">
-                   <div class="card h-100 p-3 border-0">Cost Without D.P.M (Total Cost): <b>{{row.EconomicRiskWithoutMaintenance}} K</b></div>
+                   <div class="card h-100 p-3 border-0">Cost Without D.P.M (Total Cost): <b>{{TotalPONC}} K</b></div>
                 </div>
                 <div class="col">
-                     <div class="card h-100 p-3 border-0">Cost With D.P.M (Total Cost): <b>{{row.ResidualRiskWithMaintenance}} K</b></div>                
+                     <!-- <div class="card h-100 p-3 border-0">Cost With D.P.M (Total Cost): <b>{{row.ResidualRiskWithMaintenance}} K</b></div>                 -->
                 </div>
             </div>
-        <div class="row mt-4">
+        <!-- <div class="row mt-4">
             <div class="col-6">
                 <div class="card p-3 border-0">
                     <b>With D.P.M </b>
@@ -324,7 +331,7 @@
                     <canvas id="canvasDPM"></canvas>
                 </div>
             </div>
-        </div>
+        </div> -->
    <br><br>
         <div class="col-md-4">
             <select [(ngModel)]="CBIGraphs" class="form-select" (change)="CBICharts()" class="form-control">
@@ -332,7 +339,7 @@
                 <option value="Ecomomic_Risk" selected>Ecomomic Risk Graph</option>
                 <option value="Residual_Risk" selected>Residual Risk Graph</option>
                 <option value="MEI" selected>MEI</option>
-                <option value="AllgraphCBI" selected>All Graph CBI</option>
+               
                 <!-- <option value="Skill_Level" selected>Skill Level</option> -->
             </select>
         </div><br>
