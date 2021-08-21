@@ -197,8 +197,22 @@ export class CostBenefitAnalysisComponent {
     public async getUncheckedTask(p , e){
         if(e.target.checked === true){
             p.Checked = true
+            if(p.CentrifugalPumpMssId === "MSS"){
+                this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => { 
+                    if(element.CentrifugalPumpMssId === "MSS"){
+                        element.Checked = true;
+                    }
+                })
+            }
         }else if(e.target.checked === false){
             p.Checked = false
+            if(p.CentrifugalPumpMssId === "MSS"){
+                this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => { 
+                    if(element.CentrifugalPumpMssId === "MSS"){
+                        element.Checked = false;
+                    }
+                })
+            }
         }
 
         var levelCount : number = 0;
