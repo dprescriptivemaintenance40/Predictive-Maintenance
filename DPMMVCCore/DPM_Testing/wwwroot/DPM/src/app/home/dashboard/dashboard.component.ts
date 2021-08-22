@@ -211,7 +211,7 @@ export class DashboardComponent {
     public MEI_risk_Graph:boolean = false;
     public residual_risk_Graph:boolean = false;
     public ecomomic_risk_Graph:boolean = false;
-    public UserDetails:string =""
+    public UserDetail:string =""
 
 
     private userModel: any;
@@ -245,7 +245,7 @@ export class DashboardComponent {
     // this.EquipmentType="Screw Compressor"
     // this.SelectedTagNumber="K001"
     this.GetReportRecords()
-    // this.getUserDetails()
+     this.getUserDetails()
     this.userModel = JSON.parse(localStorage.getItem('userObject'));
     this.GetPSRClientContractorData();
     this.getUserSkillRecords();
@@ -273,20 +273,29 @@ export class DashboardComponent {
   public TotalAnnualPOC:number = 0;
   public TotalPONC:number = 0;
   public VendorETBC:number = 0;
+  public EconomicRiskWithDPM:number = 0;
+  public EconomicRiskWithOutDPM:number = 0;
+  public EconomicRiskWithConstraintDPMCR:number = 0;
  
   getUserDetails() {
-    this.UserDetails = JSON.parse(localStorage.getItem('CBAOBJ'));
+    this.UserDetail = JSON.parse(localStorage.getItem('CBAOBJ'));
     this.CBI_etbf= JSON.parse(localStorage.getItem('CBAOBJ')).ETBF;
-    this.ETBFWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).ETBFWithConstraint;
-    this.MEIWithDPMWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithConstraint;
-    this.MEIWithDPMWithoutConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithoutConstraint;
-    this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
     this.OverallETBC= JSON.parse(localStorage.getItem('CBAOBJ')).OverallETBC;
-    this.TotalAnnualCostWithMaintenance= JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualCostWithMaintenance;
     this.TotalAnnualPOC= JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
     this.TotalPONC= JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
     this.VendorETBC= JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
 
+    this.EconomicRiskWithDPM= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
+    this.EconomicRiskWithOutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPM;
+    this.EconomicRiskWithConstraintDPMCR= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithConstraintDPMCR;
+
+
+    // this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
+    // this.ETBFWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).ETBFWithConstraint;
+    // this.MEIWithDPMWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithConstraint;
+    // this.MEIWithDPMWithoutConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithoutConstraint;
+    // this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
+      // this.TotalAnnualCostWithMaintenance= JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualCostWithMaintenance;
     // this.DPMCost = (this.TotalAnnualCostWithMaintenance - this.TotalAnnualPOC)
   }
   getPrescriptiveRecords() {
@@ -720,8 +729,6 @@ export class DashboardComponent {
       });
   }
 
-
-
   CBAWithId(CFPPrescriptiveId){
     const params = new HttpParams()
     .set("cfprescriptiveId", CFPPrescriptiveId)
@@ -780,9 +787,10 @@ export class DashboardComponent {
     });
     
     // this.CostRisk = true; 
-     this.gaugechartwithDPM()
-     this.gaugechartwithoutDPM()
+    //  this.gaugechartwithDPM()
+    //  this.gaugechartwithoutDPM()
      this.CBICharts()
+     this.ALLGraphCBA()
 
   }
 
@@ -2334,7 +2342,7 @@ export class DashboardComponent {
 
 
   }
-  public allCBI:boolean = false;
+  public allCBI:boolean = true;
   CBICharts(){
     if(this.CBIGraphs =="Ecomomic_Risk"){
       this.ecomomic_risk_Graph = true
@@ -2358,37 +2366,23 @@ export class DashboardComponent {
       this.allCBI=false
       this.MEIGraph()
     }
-    else if(this.CBIGraphs =="AllgraphCBI"){
-      this.allCBI=true
-      this.MEI_risk_Graph = false
-      this.Skill_risk_Graph =false;
-      this.ecomomic_risk_Graph = false
-      this.residual_risk_Graph = false
-      this.ALLGraphCBA()
-    }
     else if(this.CBIGraphs =="Choose"){
       this.MEI_risk_Graph = false
       this.Skill_risk_Graph =false;
       this.ecomomic_risk_Graph = false
       this.residual_risk_Graph = false
-
+      this.allCBI=true;
+      this.ALLGraphCBA()
     }
-   
-    // else if(this.CBIGraphs =="Skill_Level"){
-    //   this.Skill_risk_Graph =true;
-    //   this.ecomomic_risk_Graph = false
-    //   this.residual_risk_Graph = false
-    //   this.MEI_risk_Graph = false
-    //   this.SkillLevelGraph()
-    // }
   }
 
   EcomomicRiskGraph (){
     this.changeDetectorRef.detectChanges();
-    var costWithoutDPM =2.3
-    var CostDPMWithoutConstraint = 1.7
-    var CostWithDPMConstraint = 2.1
-    var total =(costWithoutDPM+CostDPMWithoutConstraint+CostWithDPMConstraint)
+    var costWithoutDPM:number = +(this.TotalPONC)
+    var CostDPMWithoutConstraint: number = +(this.TotalAnnualPOC)
+    // CostWithDPMConstraint = this.EconomicRiskWithConstraintDPMCR
+    var CostWithDPMConstraint = 470
+   var total: number= (costWithoutDPM+CostDPMWithoutConstraint+CostWithDPMConstraint)
      
     var economiccost = ((costWithoutDPM/total)*100).toFixed(2)
     var economiccostWithoutConstraint = ((CostDPMWithoutConstraint/total)*100).toFixed(2)
@@ -2399,7 +2393,6 @@ export class DashboardComponent {
         labels: ['Cost without DPM','Cost with DPM without constraint','cost with DPM with constraint'],
         datasets: [
           {
-            // data: [this.TotalAnnualCostWithMaintenance,this.TotalAnnualPOC,0],
             data: [economiccost,economiccostWithoutConstraint,economiccostwithConstraint],
             backgroundColor: ['#408ec6', '#7a2048', '#1e2761'],
             fill: true,
@@ -2410,12 +2403,20 @@ export class DashboardComponent {
         ],
       },
       options: {
+        legend: {
+          display: false
+      },
             scales: {
               yAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'In_Percentage'
+                },
                 ticks: {
-                  min: 10,
-                   max: 50,
+                  min: 1,
+                  //  max: 50,
                   stepSize: 1,
+                  label: "In_Percentage"
                 }
               }]
             }
@@ -2425,64 +2426,10 @@ export class DashboardComponent {
   }
   ResidualRiskGraph (){
     this.changeDetectorRef.detectChanges();
-    //   this.chart = new Chart('residual_risk', {
-    //   type: 'bar',
-    //    data: {
-    //     datasets: [
-    //       {
-    //         label: "Residual Risk without Maintenance",
-    //         data: [this.CBI_etbf],
-    //         backgroundColor: ['purple'],
-    //          fill: true,
-    //          barPercentage: 42,
-    //          barThickness: 50,
-    //          maxBarThickness: 58,
-    //       }, 
-    //       {
-    //         label: " Residual Risk Without DPM ",
-    //         data: [this.VendorETBC],
-    //         backgroundColor: ['blue',],
-    //         fill: true,
-    //         barPercentage: 42,
-    //          barThickness: 50,
-    //          maxBarThickness: 58,
-    //       }, 
-    //       {
-    //         label: "Residual Risk with DPM without constraint",
-    //         data: [this.OverallETBC],
-    //         backgroundColor: ['magenta'],
-    //         fill: true,
-    //         barPercentage: 42,
-    //          barThickness: 50,
-    //          maxBarThickness: 58,
-    //       },
-    //       {
-    //         label: "Residual Risk with DPM with constarint",
-    //         data: [this.ETBFWithConstraint],
-    //         backgroundColor: ['indigo'],
-    //         fill: true,
-    //         barPercentage: 42,
-    //          barThickness: 50,
-    //          maxBarThickness: 58,
-    //       },
-    //     ],
-    //   },
-    //   options: {
-    //     scales: {
-    //       yAxes: [{
-    //         ticks: {
-    //           min: 0,
-    //           // max: 30,
-    //           stepSize: 1,
-    //         }
-    //       }]
-    //     }
-    //   }
-    // });
-    var residualcostWithoutDPM = 4
-    var residualCostDPMWithoutConstraint = 6
-    var residualCostWithDPMConstraint = 7
-    var residualtotal =(residualcostWithoutDPM+residualCostDPMWithoutConstraint+residualCostWithDPMConstraint)
+     var residualcostWithoutDPM: number = + (this.CBI_etbf)
+     var residualCostDPMWithoutConstraint: number = + (this.OverallETBC)
+     var residualCostWithDPMConstraint: number = + (this.VendorETBC)
+     var residualtotal =(residualcostWithoutDPM+residualCostDPMWithoutConstraint+residualCostWithDPMConstraint)
      
     var residualcost = ((residualcostWithoutDPM/residualtotal)*100).toFixed(2)
     var residualcostWithoutConstraint = ((residualCostDPMWithoutConstraint/residualtotal)*100).toFixed(2)
@@ -2494,7 +2441,6 @@ export class DashboardComponent {
         labels: ['Residual Risk Without DPM','Residual Risk with DPM without constraint','Residual Risk with DPM with constarint'],
         datasets: [
           {
-            // data: [this.CBI_etbf,this.VendorETBC,this.OverallETBC,this.ETBFWithConstraint],
             data: [residualcost,residualcostWithoutConstraint,residualcostwithConstraint],
             backgroundColor: ['#a2d5c6','#3cd3d8','#5c3c92'],
             fill: true,
@@ -2505,11 +2451,18 @@ export class DashboardComponent {
         ],
       },
       options: {
+        legend: {
+          display: false
+      },
         scales: {
           yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'In_Percentage'
+            },
             ticks: {
-              min: 10,
-               max: 50,
+              min: 1,
+                max: 50,
               stepSize: 1,
             }
           }]
@@ -2520,27 +2473,6 @@ export class DashboardComponent {
   }
   MEIGraph (){
     this.changeDetectorRef.detectChanges();
-    //   this.chart = new Chart('mei_risk', {
-    //   type: 'doughnut',
-    //   data: {
-    //      labels: ['MEI_Without DPM','MEI_with DPM without constraint','MEI_with DPM with constarint'],
-    //     datasets: [
-    //       {
-    //         // data: [this.MEIWithoutDPM,this.MEIWithDPMWithoutConstraint,this.MEIWithDPMWithConstraint],
-    //         data: [20,25,55],
-    //         backgroundColor: ['purple','blueviolet','indigo',],
-    //         fill: false
-    //       },
-    //     ]
-    //   },
-    //   options: {
-    //     circumference: 1 * Math.PI,
-    //     rotation: 1 * Math.PI,
-    //     cutoutPercentage: 70
-    //   }
-    // });
-
-
     var meicostWithoutDPM =20
     var meiCostDPMWithoutConstraint = 25
     var meiCostWithDPMConstraint = 55
@@ -2566,11 +2498,18 @@ export class DashboardComponent {
         ],
       },
       options: {
+        legend: {
+          display: false
+      },
         scales: {
           yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'In_Percentage'
+            },
             ticks: {
               min: 10,
-               max: 50,
+              //  max: 50,
               stepSize: 1,
             }
           }]
@@ -2581,23 +2520,23 @@ export class DashboardComponent {
   }
 
   ALLGraphCBA (){
-    var costWithoutDPM =2.3
-    var CostDPMWithoutConstraint = 1.7
-    var CostWithDPMConstraint = 2.1
-    var total =(costWithoutDPM+CostDPMWithoutConstraint+CostWithDPMConstraint)
+    var costWithoutDPM:number = +(this.TotalPONC)
+    var CostDPMWithoutConstraint: number = +(this.TotalAnnualPOC)
+    var CostWithDPMConstraint = 40
+    var total: number= (costWithoutDPM+CostDPMWithoutConstraint+CostWithDPMConstraint)
      
     var economiccost = ((costWithoutDPM/total)*100).toFixed(2)
     var economiccostWithoutConstraint = ((CostDPMWithoutConstraint/total)*100).toFixed(2)
     var economiccostwithConstraint = ((CostWithDPMConstraint/total)*100).toFixed(2)
 
-    var residualcostWithoutDPM = 4
-    var residualCostDPMWithoutConstraint = 6
-    var residualCostWithDPMConstraint = 7
+    var residualcostWithoutDPM: number = + (this.CBI_etbf)
+    var residualCostDPMWithoutConstraint: number = + (this.OverallETBC)
+    var residualCostWithDPMConstraint: number = + (this.VendorETBC)
     var residualtotal =(residualcostWithoutDPM+residualCostDPMWithoutConstraint+residualCostWithDPMConstraint)
-     
-    var residualcost = ((residualcostWithoutDPM/residualtotal)*100).toFixed(2)
-    var residualcostWithoutConstraint = ((residualCostDPMWithoutConstraint/residualtotal)*100).toFixed(2)
-    var residualcostwithConstraint = ((residualCostWithDPMConstraint/residualtotal)*100).toFixed(2)
+    
+   var residualcost = ((residualcostWithoutDPM/residualtotal)*100).toFixed(2)
+   var residualcostWithoutConstraint = ((residualCostDPMWithoutConstraint/residualtotal)*100).toFixed(2)
+   var residualcostwithConstraint = ((residualCostWithDPMConstraint/residualtotal)*100).toFixed(2)
     
     var meicostWithoutDPM =20
     var meiCostDPMWithoutConstraint = 25
@@ -2611,12 +2550,13 @@ export class DashboardComponent {
 
       this.chart = new Chart('allGraphCBI', {
       type: 'bar',
+      labels:["All Data"],
       data: {
-         labels: ['Economic_Risk without Maintenance','Economic_Risk With DPM','Economic Risk with DPM without constraint','Residual Risk Without DPM','Residual Risk with DPM without constraint','Residual Risk with DPM with constarint'
-         ,'MEI_Without DPM','MEI_with DPM without constraint','MEI_with DPM with constarint'],
+        labels: ['Economic_Risk without DPM','Residual Risk Without DPM','MEI Risk Without DPM','Economic_Risk With DPM With constraint','Residual Risk with DPM with constarint','MEI_with DPM with constraint',
+                 'Economic Risk with DPM without constraint','Residual Risk with DPM with constarint','MEI_with DPM with constarint' ],
         datasets: [
           {
-            data: [economiccost,economiccostWithoutConstraint,economiccostwithConstraint,residualcost,residualcostWithoutConstraint,residualcostwithConstraint,meicost,meicostWithoutConstraint,meicostwithConstraint],
+            data: [economiccost,residualcost,meicost,economiccostwithConstraint,residualcostwithConstraint,meicostwithConstraint,economiccostWithoutConstraint,residualcostWithoutConstraint,meicostWithoutConstraint],
             backgroundColor: ['#408ec6','#7a2048','#1e2761','#a2d5c6','#3cd3d8','#5c3c92','#26495c','#c4a35a','#c66b3d'],
             fill: true,
             barPercentage: 42,
@@ -2625,17 +2565,24 @@ export class DashboardComponent {
           }, 
         ],
       },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              min: 10,
-               max: 50,
-              stepSize: 1,
-            }
-          }]
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                min: 1,
+                // max: 60,
+                stepSize: 1,
+              }
+            }]
+          }
         }
-      }
     }); 
   }
   SkillLevelGraph (){

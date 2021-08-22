@@ -264,9 +264,7 @@ export class CostBenefitAnalysisComponent {
             this.CBAOBJ.OverallETBC = this.MSSETBF;
             this.CBAOBJ.EconomicRiskWithDPM = WithDPM.toFixed(0);
             this.CBAOBJ.EconomicRiskWithOutDPM= WithOutDPM.toFixed(0);
-            this.CBAOBJ.EconomicRiskWithConstraintDPMCR = m.CriticalityRating;
-            
-         
+            this.CBAOBJ.EconomicRiskWithConstraintDPMCR = m.CriticalityRating;  
     //    this.CBAOBJ.TotalAnnualCostWithMaintenance = VendorPONC;      
     //    this.CBAReportDetails.VendorPONC = (VendorPONC).toFixed(3);
     //   // TotalAnuualPOC = VendorPONC + TotalAnuualPOC;
