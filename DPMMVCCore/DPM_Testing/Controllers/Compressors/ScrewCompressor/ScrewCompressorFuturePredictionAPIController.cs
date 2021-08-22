@@ -1,4 +1,5 @@
 ﻿using DPM.Models.CompressorModel.ScrewCompressorModel;
+using DPM.Models.PumpModel;
 using DPM_ServerSide.DAL;
 using DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel;
 using Microsoft.AspNetCore.Mvc;
@@ -381,6 +382,26 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                                                                                                                  .ToListAsync();
                 var Data = screwCompressorFuturePredictionModels.ToList();
 
+                return Ok(Data);
+            }
+            catch (Exception exe)
+            {
+
+                return Ok(exe.Message);
+            }
+        }
+
+
+
+        [HttpGet]
+        [Route("GetForecast")]
+        public async Task<IActionResult> GetForecast()
+        {
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels.Where(a => a.UserId == userId).ToListAsync();
+                var Data = screwCompressorForecastModels.ToList();
                 return Ok(Data);
             }
             catch (Exception exe)

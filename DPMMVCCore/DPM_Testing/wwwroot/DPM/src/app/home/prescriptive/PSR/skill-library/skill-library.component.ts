@@ -204,7 +204,7 @@ export class SkillLibraryComponent implements OnInit {
     var Data = this.MaintenanceStrategyList.find(a=>a.MSSStrategyModelId == r.value.Task);
     var craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === r.value.Craft);
     if(Data !== undefined && craft !== undefined){
-      if(Data.Strategy === 'GEP'){
+      if(Data.Strategy === 'GEP' || Data.Strategy === 'NEW' ){
          r.value.HourlyRate = craft.ClientHourlyRate;
       }
     }

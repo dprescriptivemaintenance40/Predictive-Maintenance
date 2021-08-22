@@ -212,6 +212,15 @@ export class CostBenefitAnalysisComponent {
                         element.Checked = false;
                     }
                 })
+                let obj = {}
+                // obj['Hours']= '4 hrs';
+                // obj['AnnualPOC']= (element.POC).toFixed(3);
+                // obj['Status']= 'Deleted'; 
+                // obj['MSSMaintenanceInterval']="260 Weeks";
+                // obj['Craft']= CRAFT;
+                // obj['Level']= LEVEL;
+                // levelCount = levelCount + LEVEL;
+                // obj['MSSIntervalSelectionCriteria']='None';
             }
         }
 
@@ -494,10 +503,9 @@ export class CostBenefitAnalysisComponent {
                     obj['MSSMaintenanceInterval']="52 Weeks";
                 }else if(element.MaintenanceTask == "Turn around task - MEC"){
                     obj['Hours']= '48 hrs';
-                    var MatCost : any = 10000;
-                    obj['AnnualPOC']= (parseFloat(MatCost) + parseFloat(element.POC)).toFixed(3);
+                    obj['AnnualPOC']= (parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
                     obj['Status']= 'Deleted'; 
-                    WithOutDPM = WithOutDPM + (parseFloat(MatCost) + parseFloat(element.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(element.MaterialCost) + parseFloat(element.POC));
                     obj['MSSMaintenanceInterval']="260 Weeks";
                 }else if(element.MaintenanceTask == "Turn around task - CTL"){
                     obj['Hours']= '24 hrs';
@@ -586,8 +594,8 @@ export class CostBenefitAnalysisComponent {
     //    this.CBAOBJ.MEIWithDPMWithoutConstraint = this.CBAReportDetails.MEIWithDPMWithoutConstraint;
     //    this.CBAOBJ.MEIWithoutDPM = this.CBAReportDetails.MEIWithoutDPM;
     //    this.CBAOBJ.MEIWithDPMWithConstraint = this.CBAReportDetails.MEIWithDPMWithConstraint;
-    //    localStorage.removeItem('CBAOBJ');
-    //    localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
+       localStorage.removeItem('CBAOBJ');
+       localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
     }
 
     public PDFCBAReport() {

@@ -36,6 +36,7 @@ export class SCConstantsAPI{
     public ScrewPredictionLastUploadList : string = '/ScrewCompressorPredictionChartAPI/ScrewPredictionLastUpload'
     public ScrewPredictionPreviousWeek : string = '/ScrewCompressorPredictionChartAPI/GetPredictionPreviousWeek'
 
+    public GetScrewCompressorForecastRecords : string = '/ScrewCompressorFuturePredictionAPI/GetForecast'
  //#endregion
 
 

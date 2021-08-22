@@ -486,29 +486,40 @@ public Predictionbadcount: number = 0;
   }
 
   FuturePrediction() {
-    this.futurePredictionDate = "";
-    this.futurePredictionDataTableList = [];
-    this.commonLoadingDirective.showLoading(true, "Please wait until future prediction to be done...");
-    var url: string = this.screwCompressorAPIName.FuturePrediction
-    this.screwCompressorMethod.getWithoutParameters(url)
-      //  this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage')
-      .subscribe(async (res: any) => {
-        if (res.length > 5) {
-          await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=futureprediction&type=compressor`, { responseType: 'text' })
-            .subscribe(res => {
-              this.getFuturePredictionRecords();
-              this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
-            }, err => {
-              console.log(err.error);
-              this.commonLoadingDirective.showLoading(false, "");
-            });
-          //logic to hit future prediction
-        } else if (res.length > 0) {
-          this.messageService.add({ severity: 'info', summary: 'info', detail: `Need more ${(res.length - 5)} more day's of data to do future prediction on prediction records.` });
-        } else {
-          this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please upload data in prediction to do future prediction' });
-        }
-      });
+    // this.futurePredictionDate = "";
+    // this.futurePredictionDataTableList = [];
+    // this.commonLoadingDirective.showLoading(true, "Please wait until future prediction to be done...");
+    // var url: string = this.screwCompressorAPIName.FuturePrediction
+    // this.screwCompressorMethod.getWithoutParameters(url)
+    //   //  this.http.get<any>('api/ScrewCompressorFuturePredictionAPI/FuturePredictionMovingAverage')
+    //   .subscribe(async (res: any) => {
+    //     if (res.length > 5) {
+    //       await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=futureprediction&type=compressor`, { responseType: 'text' })
+    //         .subscribe(res => {
+    //           this.getFuturePredictionRecords();
+    //           this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Process is completed' });
+    //         }, err => {
+    //           console.log(err.error);
+    //           this.commonLoadingDirective.showLoading(false, "");
+    //         });
+    //       //logic to hit future prediction
+    //     } else if (res.length > 0) {
+    //       this.messageService.add({ severity: 'info', summary: 'info', detail: `Need more ${(res.length - 5)} more day's of data to do future prediction on prediction records.` });
+    //     } else {
+    //       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Please upload data in prediction to do future prediction' });
+    //     }
+    //   });
+      var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
+      this.screwCompressorMethod.getWithoutParameters(url)
+      .subscribe(
+        async (res : any) => {
+            if(res.length === 0){
+              await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetails.UserId}&name=''&type=forecast`, { responseType: 'text' })
+            }else{
+              this.futurePredictionDataTableList = res;
+            }
+        }, err =>{console.log(err.error)}
+      )
   }
 
 
