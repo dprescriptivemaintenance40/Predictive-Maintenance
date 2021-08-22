@@ -84,7 +84,7 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<SkillPSRMappingModel>().ToTable("SkillPSRMappingtable");
             modelBuilder.Entity<UserSkillLibraryModel>().ToTable("UserSkillLibraryModelTable");
             modelBuilder.Entity<UserProductionModel>().ToTable("UserProductionModelTable");
-            modelBuilder.Entity<ScrewCompressorForecastModel>().ToTable("forecast");
+            modelBuilder.Entity<ScrewCompressorForecastModel>().ToTable("forecast").HasNoKey();
         }
 
     }
