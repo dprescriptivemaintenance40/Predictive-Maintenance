@@ -46,6 +46,7 @@ export class CostBenefitAnalysisComponent {
     public UserProductionCost : number = 0;
     public GoodEngineeringTaskList : any = [];
     public CBAOBJ : any ={};
+    private MSSStrategyReplacePSR : any =[];
     constructor(private messageService: MessageService,
         private commonLoadingDirective: CommonLoadingDirective,
         private CD: ChangeDetectorRef,
@@ -157,10 +158,14 @@ export class CostBenefitAnalysisComponent {
           res => {
             this.MaintenanceStrategyList = res;
             this.GoodEngineeringTaskList = [];
+            this.MSSStrategyReplacePSR = [];
             this.SavedPCRRecordsList.forEach(element => {
                var Data = this.MaintenanceStrategyList.find(r=>r.MaintenanceTask === element.MaintenanceTask)
                if(Data !== undefined && Data.Strategy === "GEP"){
                   this.GoodEngineeringTaskList.push(element)
+               }
+               if(Data !== undefined && Data.Strategy === "NEW"){
+                this.MSSStrategyReplacePSR.push(element);
                }
             });
           }
@@ -198,11 +203,23 @@ export class CostBenefitAnalysisComponent {
         if(e.target.checked === true){
             p.Checked = true
             if(p.CentrifugalPumpMssId === "MSS"){
-                this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => { 
+                this.CBAReportDetails.CentrifugalPumpMssModel.forEach((element, index) => { 
                     if(element.CentrifugalPumpMssId === "MSS"){
                         element.Checked = true;
                     }
                 })
+
+                for (let index = 0; index < this.CBAReportDetails.CentrifugalPumpMssModel.length; index++) {
+                    this.CBAReportDetails.CentrifugalPumpMssModel.forEach((element, index) => { 
+                        if(element.CentrifugalPumpMssId === "NEW"){
+                            this.CBAReportDetails.CentrifugalPumpMssModel.splice(index,1);
+                         }
+                     })
+                     var fil = this.CBAReportDetails.CentrifugalPumpMssModel.filter(r=>r.CentrifugalPumpMssId === "NEW")
+                     if(fil.length === 0){
+                         break;
+                     }
+                }
             }
         }else if(e.target.checked === false){
             p.Checked = false
@@ -212,15 +229,55 @@ export class CostBenefitAnalysisComponent {
                         element.Checked = false;
                     }
                 })
-                let obj = {}
-                // obj['Hours']= '4 hrs';
-                // obj['AnnualPOC']= (element.POC).toFixed(3);
-                // obj['Status']= 'Deleted'; 
-                // obj['MSSMaintenanceInterval']="260 Weeks";
-                // obj['Craft']= CRAFT;
-                // obj['Level']= LEVEL;
-                // levelCount = levelCount + LEVEL;
-                // obj['MSSIntervalSelectionCriteria']='None';
+                var d =  this.CBAReportDetails.CentrifugalPumpMssModel.filter(r=>r.CentrifugalPumpMssId === 'NEW');
+                if(d.length === 0){
+                    this.MSSStrategyReplacePSR.forEach(element => {
+                        let CRAFT = this.getCraftValue(element);
+                        let LEVEL = this.getEmployeeLevelValue(element);
+                        let obj ={}
+                        obj['CentrifugalPumpMssId']="NEW";
+                        obj['Checked']= true;
+                        obj['MSSMaintenanceTask']=element.MaintenanceTask;
+                        this.MaintenanceStrategyList
+                        if(element.MaintenanceTask == "Modify piping to Purge dry air to 1st stage outlet to prevent moisture ingress during standstill"){
+                            obj['Hours']= '2 hrs';
+                            obj['AnnualPOC']= (parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
+                            obj['Status']= 'New';
+                            obj['MSSMaintenanceInterval']="20 Years";
+                        }else if(element.MaintenanceTask == "Change-over @3-4 days between Operating and standby compressors"){
+                            obj['Hours']= '0.25 hrs';
+                            obj['AnnualPOC']=(parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
+                            obj['Status']= 'New'; 
+                            obj['MSSMaintenanceInterval']="3 Days";
+                        }else if( element.MaintenanceTask == "Defer rotor assembly replacement when predction clasification sharply moves from incipient to degraded state - MEC"){
+                            obj['Hours']= '48 hrs';
+                            obj['AnnualPOC']= (parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
+                            obj['Status']= 'New'; 
+                            obj['MSSMaintenanceInterval']="10 Years"; 
+                        }else if(element.MaintenanceTask == "Defer rotor assembly replacement when predction clasification sharply moves from incipient to degraded state - HEL"){
+                            obj['Hours']= '24 hrs';
+                            obj['AnnualPOC']= (parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
+                            obj['Status']= 'New'; 
+                            obj['MSSMaintenanceInterval']="10 Years";
+                        }else if(element.MaintenanceTask == "Defer rotor assembly replacement when predction clasification sharply moves from incipient to degraded state - CTL"){
+                            obj['Hours']= '12 hrs';
+                            obj['AnnualPOC']= (parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
+                            obj['Status']= 'New'; 
+                            obj['MSSMaintenanceInterval']="10 Years";
+                        }else if(element.MaintenanceTask == "Defer rotor assembly replacement when predction clasification sharply moves from incipient to degraded state - ELE"){
+                            obj['Hours']= '4 hrs';
+                            obj['AnnualPOC']= (parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
+                            obj['Status']= 'New'; 
+                            WithOutDPM = WithOutDPM + (parseFloat(element.MaterialCost) + parseFloat(element.POC));
+                            obj['MSSMaintenanceInterval']="10 Years";
+                        }
+                        obj['Craft']= CRAFT;
+                        obj['Level']= LEVEL;
+                        obj['MSSIntervalSelectionCriteria']='None';
+                        this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+                    });
+                }
+                
             }
         }
 
@@ -233,7 +290,7 @@ export class CostBenefitAnalysisComponent {
             if(element.Checked === true){
                 counter = counter +1;
                 levelCount = levelCount + parseFloat(element.Level)
-                if(element.CentrifugalPumpMssId === 'GDE'  || element.CentrifugalPumpMssId === 'MSS'){
+                if(element.CentrifugalPumpMssId === 'GDE'  || element.CentrifugalPumpMssId === 'MSS' || element.CentrifugalPumpMssId === 'NEW'){
                     levelCount = levelCount + parseFloat(element.Level);
                     if(element.Status == "Retained"){
                         WithDPM = WithDPM + parseFloat(element.AnnualPOC);
