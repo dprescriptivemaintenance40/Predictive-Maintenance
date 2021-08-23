@@ -527,7 +527,7 @@ export class CostBenefitAnalysisComponent {
                 obj['Checked']= true;
                 obj['MSSMaintenanceTask']=element.MaintenanceTask;
                 this.MaintenanceStrategyList
-                if(element.MaintenanceTask == "Daily site observation as per log sheet - OCM" || element.MaintenanceTask == "Daily site observation as per log sheet - REL"){
+                if(element.MaintenanceTask == "Weekly site observation as per log sheet - OCM" || element.MaintenanceTask == "Weekly site observation as per log sheet - REL"){
                     obj['Hours']= '0.25 hrs';
                     obj['AnnualPOC']= (element.POC).toFixed(3);
                     obj['Status']= 'Retained';

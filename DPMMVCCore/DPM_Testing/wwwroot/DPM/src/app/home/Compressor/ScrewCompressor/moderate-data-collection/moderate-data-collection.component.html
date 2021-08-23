@@ -8,7 +8,7 @@
        <button class="form-control" (click)="GetRawData()" >RawData</button>
     </div>
     <div class="col-sm col-md-4 form-group">
-        <button class="form-control" (click)="GetSensorData()" >MinedSensorData</button>
+        <button class="form-control" (click)="GetSensorData()" >Cleaned Data</button>
      </div>
 </div>
 <div style="padding: 5px;" class="row">
@@ -18,10 +18,10 @@
     <div class="col-sm col-md-4 form-group">
         <label>After Data Mining : {{MinedSensorData.length}}</label>
      </div>
+     <div class="col-sm col-md-4 form-group">
+        <label>Cleaned data percentage : {{((MinedSensorData.length/UploadCompDetailList.length) * 100).toFixed(2)}} %</label>
+     </div>
 </div>
-<!-- <div style="padding: 5px;" class="row">
- <label> Total Raw Data : {{UploadCompDetailList.length}}</label>
-</div> -->
 
 <div style="padding: 5px;" style="overflow: auto;">
     <div class="card">
