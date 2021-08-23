@@ -296,6 +296,7 @@
    
 </div>
 
+<div *ngIf="showcbi">
    <div class="bg-transparent mt-4">
         <div class="d-flex justify-content-between align-items-center">
             <h5><b>Cost Benefit Risk Analysis</b> </h5>
@@ -306,7 +307,8 @@
                     <div class="card h-100 p-3 border-0">Total PONC: <b>{{TotalPONC}} K</b></div>  
                 </div>
                 <div class="col">
-                    <div class="card h-100 p-3 border-0">ETBF: <b>{{CBI_etbf}} Y</b></div>
+                  <div class="card h-100 p-3 border-0">ETBF: <b>{{CBI_etbf}} Y</b></div> 
+                    <!-- <div class="card h-100 p-3 border-0">ETBF: <b> {{etbf_Values}} Y</b></div> -->
                 </div>
                 <div class="col">
                     <div class="card h-100 p-3 border-0">Economic Risk : <b>{{EconomicRiskWithConstraintDPMCR}}</b></div>               
@@ -335,7 +337,7 @@
    <br><br>
         <div class="col-md-4">
             <select [(ngModel)]="CBIGraphs" class="form-select" (change)="CBICharts()" class="form-control">
-                <option value="Choose">Choose..</option>
+                <option value="">All Graph.</option>
                 <option value="Ecomomic_Risk" selected>Ecomomic Risk Graph</option>
                 <option value="Residual_Risk" selected>Residual Risk Graph</option>
                 <option value="MEI" selected>MEI</option>
@@ -374,6 +376,5 @@
             </div>
         </div> -->
     </div> <br><br>
-
- 
+ </div>
   

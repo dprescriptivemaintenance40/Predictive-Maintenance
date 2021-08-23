@@ -14,6 +14,7 @@ import { SCConstantsAPI } from "../Compressor/ScrewCompressor/shared/ScrewCompre
 import { ProfileConstantAPI } from "../profile/profileAPI.service";
 import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
 import { element } from "protractor";
+import { ConfigService } from "src/app/shared/config.service";
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -211,12 +212,11 @@ export class DashboardComponent {
     public MEI_risk_Graph:boolean = false;
     public residual_risk_Graph:boolean = false;
     public ecomomic_risk_Graph:boolean = false;
-    public UserDetail:string =""
-
-
+    public UserData: any = []
     private userModel: any;
     private SkillLibraryData: any = [];
     public PSRModel: any =[];
+    public showcbi:boolean=false;
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -231,7 +231,9 @@ export class DashboardComponent {
     private profileAPIName: ProfileConstantAPI,
     private commonBLervice : CommonBLService,
     private PSRAPIs : PrescriptiveContantAPI,
+    private configService: ConfigService,
     private location: Location,
+
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
     this.state = window.history.state; 
@@ -241,15 +243,12 @@ export class DashboardComponent {
       this.CBAWithId(this.CFPPrescriptiveId)
     }
     this.date =  moment().add(1, 'days').format('YYYY-MM-DD');
-    // this.MachineType="Compressor"
-    // this.EquipmentType="Screw Compressor"
-    // this.SelectedTagNumber="K001"
     this.GetReportRecords()
-     this.getUserDetails()
     this.userModel = JSON.parse(localStorage.getItem('userObject'));
     this.GetPSRClientContractorData();
     this.getUserSkillRecords();
     this.getPrescriptiveRecords()
+    this.getUserDetails()
   }
   ngOnInit() {
     // this.getRecordsByEqui()
@@ -278,18 +277,19 @@ export class DashboardComponent {
   public EconomicRiskWithConstraintDPMCR:number = 0;
  
   getUserDetails() {
-    this.UserDetail = JSON.parse(localStorage.getItem('CBAOBJ'));
+    if(!!localStorage.getItem('CBAOBJ')){
+    this.UserData = JSON.parse(localStorage.getItem('CBAOBJ'));
     this.CBI_etbf= JSON.parse(localStorage.getItem('CBAOBJ')).ETBF;
     this.OverallETBC= JSON.parse(localStorage.getItem('CBAOBJ')).OverallETBC;
     this.TotalAnnualPOC= JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
     this.TotalPONC= JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
     this.VendorETBC= JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
-
     this.EconomicRiskWithDPM= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
     this.EconomicRiskWithOutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPM;
     this.EconomicRiskWithConstraintDPMCR= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithConstraintDPMCR;
-
-
+    this.showcbi=true;
+  }
+ 
     // this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
     // this.ETBFWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).ETBFWithConstraint;
     // this.MEIWithDPMWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithConstraint;
@@ -742,7 +742,7 @@ export class DashboardComponent {
       console.log(err.err);
     });
   }
-
+public etbf_Values:number=0
   DynamicCBA(res){
     this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
     this.CFrequencyMaintainenance = res.CFrequencyMaintainenance
@@ -772,6 +772,7 @@ export class DashboardComponent {
       row.ETBC = 10;
       row.TotalPONC = 194.4872;
       row.ETBF = this.ETBF ? this.ETBF : 2;
+      this.etbf_Values=row.ETBF
       row.TotalAnnualCostWithMaintenance = 1.777;
       row.EconomicRiskWithoutMaintenance = (row.TotalPONC / row.ETBF).toFixed(3);
       this.DPMWithoutCost = row.EconomicRiskWithoutMaintenance
@@ -791,7 +792,6 @@ export class DashboardComponent {
     //  this.gaugechartwithoutDPM()
      this.CBICharts()
      this.ALLGraphCBA()
-
   }
 
   getRecordsByEqui() {
@@ -1986,166 +1986,174 @@ export class DashboardComponent {
     
    
 
-        // this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-        //      var prediction = res;
-        //      this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
-        //       var futureData = res 
+      //   this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+      //        var prediction = res;
+      //       //  this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
+      //         var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
+      // this.screwCompressorMethod.getWithoutParameters(url)
+      // .subscribe(
+      //    (res : any) => {
+      //   // async (res : any) => {
+      //       // if(res.length === 0){
+      //       //   await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetail.UserId}&name=''&type=forecast`, { responseType: 'text' })
+      //       // }
+      //       var futureData = res 
 
-        //       this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
-        //       this.highlight_end = moment(this.date).format('YYYY/MM/DD')
+      //         // this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
+      //         // this.highlight_end = moment(this.date).format('YYYY/MM/DD')
 
-        //       var result1 : any= futureData.filter(f =>
-        //         prediction.some(d => d.Date == f.Date) 
-        //       );
+      //         var result1 : any= futureData.filter(f =>
+      //           prediction.some(d => d.Date == f.Date) 
+      //         );
+              
+      //          result1.forEach(element => {
+      //            var d = prediction.filter(r=>r.Date === element.Date)
+      //            element.TD1 = d[0].TD1;
+      //            element.Residual = element.FTD1 - d[0].TD1            
+      //          });
+      //          futureData.forEach(element => {
+      //            if(element.TD1 == 0){
+      //             element.Residual = ''
+      //            }
+      //          });
+      //          prediction.forEach(element => {
+      //           element.Residual = 0
+      //           for (var i = 0; i < result1.length; i++) {
+      //             if (result1[i].Date == element.Date) {
+      //             element.FTD1 = result1[i].FTD1
+      //             element.TD1 = result1[i].TD1
+      //             element.Residual = result1[i].Residual
+      //             }
+      //           }
+      //         });
 
-        //        result1.forEach(element => {
-        //          var d = prediction.filter(r=>r.Date === element.Date)
-        //          element.TD1 = d[0].TD1;
-        //          element.Residual = element.FTD1 - d[0].TD1            
-        //        });
-        //        futureData.forEach(element => {
-        //          if(element.TD1 == 0){
-        //           element.Residual = ''
-        //          }
-        //        });
-        //        prediction.forEach(element => {
-        //         element.Residual = 0
-        //         for (var i = 0; i < result1.length; i++) {
-        //           if (result1[i].Date == element.Date) {
-        //           element.FTD1 = result1[i].FTD1
-        //           element.TD1 = result1[i].TD1
-        //           element.Residual = result1[i].Residual
-        //           }
-        //         }
-        //       });
+      //          const result = futureData.filter(f =>
+      //           !prediction.some(d => d.Date == f.Date)
+      //          );
+      //          result.forEach(element => {
+      //              prediction.push(element);
+      //          });
+      //         //this.mergedarray = prediction.concat(result);
+      //         prediction.forEach(element => {
+      //           if(element.Residual === 0){
+      //             element.Residual = ''
+      //           }
+      //           if(element.TD1 === 0){
+      //             element.TD1 = ''
+      //           }
+      //           if(element.FTD1 === 0){
+      //             element.FTD1 = ''
+      //           }
+      //           if (element.TD1 > 180 && element.TD1 < 210) {
+      //             element.alarm = element.TD1
 
-        //        const result = futureData.filter(f =>
-        //         !prediction.some(d => d.Date == f.Date)
-        //        );
-        //        result.forEach(element => {
-        //            prediction.push(element);
-        //        });
-        //       //this.mergedarray = prediction.concat(result);
-        //       prediction.forEach(element => {
-        //         if(element.Residual === 0){
-        //           element.Residual = ''
-        //         }
-        //         if(element.TD1 === 0){
-        //           element.TD1 = ''
-        //         }
-        //         if(element.FTD1 === 0){
-        //           element.FTD1 = ''
-        //         }
-        //         if (element.TD1 > 180 && element.TD1 < 210) {
-        //           element.alarm = element.TD1
+      //           } else{
+      //             element.alarm = ''
+      //           }
+      //            if (element.TD1 > 210) {
+      //             element.trigger = element.TD1
+      //           }else{
+      //             element.trigger = ''
+      //           }
+      //           if(element.FTD1 > 190 && element.FTD1 < 210) {
+      //             element.falarm = element.FTD1
+      //           }
+      //           else {
+      //             element.falarm = ''
+      //           }
+      //           if(element.FTD1 > 210) {
+      //             element.ftrigger = element.FTD1
+      //           }
+      //           else {
+      //             element.ftrigger = ''
+      //           }
+      //          }); 
+      //          this.csvData = this.ConvertToCSV(prediction);
+      //         //  this.csvData = this.ConvertToCSV( this.mergedarray);
+      //         //  var highlight_start = new Date(this.highlight_start);
+      //         //  var highlight_end = new Date(this.highlight_end);
 
-        //         } else{
-        //           element.alarm = ''
-        //         }
-        //          if (element.TD1 > 210) {
-        //           element.trigger = element.TD1
-        //         }else{
-        //           element.trigger = ''
-        //         }
-        //         if(element.FTD1 > 190 && element.FTD1 < 210) {
-        //           element.falarm = element.FTD1
-        //         }
-        //         else {
-        //           element.falarm = ''
-        //         }
-        //         if(element.FTD1 > 210) {
-        //           element.ftrigger = element.FTD1
-        //         }
-        //         else {
-        //           element.ftrigger = ''
-        //         }
-        //        }); 
-        //        this.csvData = this.ConvertToCSV(prediction);
-        //       //  this.csvData = this.ConvertToCSV( this.mergedarray);
-        //        var highlight_start = new Date(this.highlight_start);
-        //        var highlight_end = new Date(this.highlight_end);
-
-        //        this.chart = new Dygraph(
-        //         document.getElementById("graph"),this.csvData,
-        //         {
-        //           colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
-        //           visibility: [true, true, false, true,true,true,true,],
-        //           showRangeSelector: true,
-        //           fillGraph:true,
-        //           fillAlpha: 0.1,
-        //           connectSeparatedPoints: false,
-        //           drawPoints: true,
-        //           strokeWidth: 1.5,
-        //           stepPlot: false,
-        //           errorbar: true,
-        //           drawXGrid: true,
-        //           valueRange: [150,250],
-        //           includeZero: false,
-        //           drawAxesAtZero: false,
-        //           series: {
-        //             'TD1': {
-        //               strokePattern: null,
-        //               drawPoints: true,
-        //               pointSize: 2,
-        //             },
-        //             'FTD1': {
-        //               strokePattern: Dygraph.DASHED_LINE,
-        //               strokeWidth: 2.6,
-        //               drawPoints: true,
-        //               pointSize: 3.5
-        //             },
-        //             'Residual': {
-        //             },
-        //             'alarm': {
-        //               strokeWidth: 2,
-        //             },
-        //             'trigger': {
-        //               strokePattern: Dygraph.DOT_DASH_LINE,
-        //               strokeWidth: 2,
-        //               highlightCircleSize: 3
-        //             },
-        //             'falarm': {
-        //               color: ['#ffb801'],
-        //               strokePattern: Dygraph.DASHED_LINE1,
-        //               strokeWidth: 1.6,
-        //               drawPoints: true,
-        //               pointSize: 2.5
-        //             },
-        //             'ftrigger': {
-        //               strokePattern: Dygraph.DASHED_LINE,
-        //               strokeWidth: 1.0,
-        //               drawPoints: true,
-        //               pointSize: 1.5
-        //             },
-        //           },
-        //           underlayCallback: function(canvas, area, g) {
-        //               var bottom_left = g.toDomCoords(highlight_start);
-        //               var top_right = g.toDomCoords(highlight_end); 
+      //          this.chart = new Dygraph(
+      //           document.getElementById("graph"),this.csvData,
+      //           {
+      //             colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
+      //             visibility: [true, true, false, true,true,true,true,],
+      //             showRangeSelector: true,
+      //             fillGraph:true,
+      //             fillAlpha: 0.1,
+      //             connectSeparatedPoints: false,
+      //             drawPoints: true,
+      //             strokeWidth: 1.5,
+      //             stepPlot: false,
+      //             errorbar: true,
+      //             drawXGrid: true,
+      //             valueRange: [150,250],
+      //             includeZero: false,
+      //             drawAxesAtZero: false,
+      //             series: {
+      //               'TD1': {
+      //                 strokePattern: null,
+      //                 drawPoints: true,
+      //                 pointSize: 2,
+      //               },
+      //               'FTD1': {
+      //                 strokePattern: Dygraph.DASHED_LINE,
+      //                 strokeWidth: 2.6,
+      //                 drawPoints: true,
+      //                 pointSize: 3.5
+      //               },
+      //               'Residual': {
+      //               },
+      //               'alarm': {
+      //                 strokeWidth: 2,
+      //               },
+      //               'trigger': {
+      //                 strokePattern: Dygraph.DOT_DASH_LINE,
+      //                 strokeWidth: 2,
+      //                 highlightCircleSize: 3
+      //               },
+      //               'falarm': {
+      //                 color: ['#ffb801'],
+      //                 strokePattern: Dygraph.DASHED_LINE1,
+      //                 strokeWidth: 1.6,
+      //                 drawPoints: true,
+      //                 pointSize: 2.5
+      //               },
+      //               'ftrigger': {
+      //                 strokePattern: Dygraph.DASHED_LINE,
+      //                 strokeWidth: 1.0,
+      //                 drawPoints: true,
+      //                 pointSize: 1.5
+      //               },
+      //             },
+      //             // underlayCallback: function(canvas, area, g) {
+      //             //     var bottom_left = g.toDomCoords(highlight_start);
+      //             //     var top_right = g.toDomCoords(highlight_end); 
                  
-        //               var left = bottom_left[0];
-        //               var right = top_right[0];
+      //             //     var left = bottom_left[0];
+      //             //     var right = top_right[0];
 
-        //                canvas.fillStyle = "rgba(245, 252, 255)";
-        //               canvas.fillRect(left, area.y, right - left, area.h);
-        //           }
-        //         },
-        //         ) 
-        //         // this.chart = new Dygraph(
-        //         //   document.getElementById("graph1"),this.csvData,
-        //         //   {
-        //         //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
-        //         //     showRangeSelector: true,
-        //         //     connectSeparatedPoints: true,
-        //         //     fillGraph: true,
-        //         //     drawPoints: true,
-        //         //     strokeWidth: 5,
-        //         //     drawXGrid: false,
-        //         //     visibility: [false, false, true, false,false,false,false,],
-        //         //   },
-        //         //   ) 
+      //             //      canvas.fillStyle = "rgba(245, 252, 255)";
+      //             //     canvas.fillRect(left, area.y, right - left, area.h);
+      //             // }
+      //           },
+      //           ) 
+      //           // this.chart = new Dygraph(
+      //           //   document.getElementById("graph1"),this.csvData,
+      //           //   {
+      //           //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
+      //           //     showRangeSelector: true,
+      //           //     connectSeparatedPoints: true,
+      //           //     fillGraph: true,
+      //           //     drawPoints: true,
+      //           //     strokeWidth: 5,
+      //           //     drawXGrid: false,
+      //           //     visibility: [false, false, true, false,false,false,false,],
+      //           //   },
+      //           //   ) 
 
-        //     })}
-        // )
+      //       })}
+      //   )
    }
   
 
@@ -2462,7 +2470,7 @@ export class DashboardComponent {
             },
             ticks: {
               min: 1,
-                max: 50,
+                // max: 50,
               stepSize: 1,
             }
           }]
@@ -2557,7 +2565,7 @@ export class DashboardComponent {
         datasets: [
           {
             data: [economiccost,residualcost,meicost,economiccostwithConstraint,residualcostwithConstraint,meicostwithConstraint,economiccostWithoutConstraint,residualcostWithoutConstraint,meicostWithoutConstraint],
-            backgroundColor: ['#408ec6','#7a2048','#1e2761','#a2d5c6','#3cd3d8','#5c3c92','#26495c','#c4a35a','#c66b3d'],
+            backgroundColor: ['#408ec6','#a2d5c6','#26495c','#1e2761','#5c3c92','#c66b3d','#7a2048','#3cd3d8','#c4a35a'],
             fill: true,
             barPercentage: 42,
             barThickness: 60,
@@ -2571,6 +2579,9 @@ export class DashboardComponent {
           },
           scales: {
             yAxes: [{
+              gridLines: {
+                display: false,
+              },
               scaleLabel: {
                 display: true,
                 labelString: 'In_Percentage'
