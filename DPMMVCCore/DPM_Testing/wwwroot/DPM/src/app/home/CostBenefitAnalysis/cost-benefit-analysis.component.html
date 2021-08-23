@@ -49,18 +49,6 @@
                     <input type="text" (keypress)=onlyNumbers($event) placeholder="Enter ETBF"  [(ngModel)]="ETBF" pTooltip="Enter ETBF in years" class="form-control">
                 </div>
             </div>
-            <div class="col-md-2 pr-0">
-                <div class="d-flex flex-column">
-                    <!-- <label style="">ETBF</label> -->
-                    <input type="text" (keypress)=onlyNumbers($event) placeholder="Enter ETBC"  [(ngModel)]="VendorETBF"  pTooltip="Enter ETBC for vendor" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-2 pr-0">
-                <div class="d-flex flex-column">
-                    <!-- <label style="">ETBF</label> -->
-                    <input type="number" (keypress)=onlyNumbers($event) placeholder="Enter ETBC" [(ngModel)]="MSSETBF" pTooltip="Enter ETBC for overall" class="form-control">
-                </div>
-            </div>
             <div class="col-md-1">
                 <!-- <label style="visibility: hidden;">action</label> -->
                 <button class="btn btn-primary" (click)="GenerateCostBenefitReport()">Next</button>
@@ -210,6 +198,7 @@
                 <div class="card-body task-body">
                     <div class="col-sm-12 p-0">
                         <h5>Tasks</h5>
+                        <small> <button (click)="OpenMEI()" class="form-control"> MEI Calculation</button></small>
                         <div class="table-responsive-sm bg-white p-2 mb-4">
                             <table class="table">
                                 <thead>
@@ -393,7 +382,7 @@
                                             <strong>Economic RISK with DPM: <span class="badge badge-success">{{CBAReportDetails.WithDPM}}</span></strong>
                                         </div>
                                     </div>
-                                    <div class="col-sm">
+                                    <div *ngIf="MSSETBF !== 0" class="col-sm">
                                         <div class="mb-2">
                                             <strong>Economic RISK with DPM Constraint: <span class="badge badge-success">{{CBAReportDetails.EconomicRiskWithConstraintDPMCR}}</span></strong>
                                         </div>
@@ -471,3 +460,20 @@
         </div>
     </div>
 </div>
+
+
+<p-dialog header="Enter ETBC to calculate MEI" [(visible)]="AddMEIPopup" [style]="{width: '50em'}">
+    <div class="col-md-2 pr-0">
+        <div class="d-flex flex-column">
+            <label style="">ETBC without DPM</label>
+            <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="{{ VendorETBF === 0 ? 'Enter ETBF' : VendorETBF }}"  [(ngModel)]="VendorETBF" pTooltip="Enter ETBF in years" class="form-control">
+
+        </div>
+    </div>
+    <div class="col-md-2 pr-0">
+        <div class="d-flex flex-column">
+            <label style="">ETBC with DPM</label>
+            <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="Enter ETBF"  [(ngModel)]="MSSETBF" pTooltip="Enter ETBF in years" class="form-control">
+        </div>
+    </div>
+</p-dialog>

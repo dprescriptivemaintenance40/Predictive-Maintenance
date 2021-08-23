@@ -1,12 +1,23 @@
-<div style="padding: 5px;" class="row">
+<!-- <div style="padding: 5px;" class="row">
     <div class="col-sm col-md-4 form-group">
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
     </div>
+</div> -->
+<div style="padding: 5px;" class="row">
+    <div class="col-sm col-md-4 form-group">
+       <input type="button" (click)="GetRawData()" name="RawData"/>
+    </div>
+    <div class="col-sm col-md-4 form-group">
+        <input type="button" (click)="GetSensorData()" name="RawData"/>
+     </div>
 </div>
+<!-- <div style="padding: 5px;" class="row">
+ <label> Total Raw Data : {{UploadCompDetailList.length}}</label>
+</div> -->
 
 <div style="padding: 5px;" style="overflow: auto;">
     <div class="card">
-        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="UploadCompDetailList" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="RawData === true ? UploadCompDetailList : MinedSensorData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <ng-template pTemplate="colgroup">
                 <colgroup>
                     <col style="width:8em;">
