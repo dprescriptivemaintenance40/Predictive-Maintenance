@@ -116,16 +116,16 @@
 
             <div *ngIf="RCATypeQualititive === true" style="overflow: auto;">
                 <div class="classname" id="scene" #scene>
-                    <p-card>
-                        <button (click)="ClearRCAQualitiveTree()" class="badge badge-dark" pTooltip="Clear Qualititive tree data" tooltipPosition="top"><i class="pi pi-times mr-1"></i>clear</button>
+                    <p-card >
+                        <button (click)="ClearRCAQualitiveTree()" class="badge badge-outline-secondary border-0" pTooltip="Clear Qualititive tree data" tooltipPosition="top"><small><i class="pi pi-times mr-1"></i></small>clear</button>
                         <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
                         </p-tree><br><br>
                     </p-card>
                 </div>
             </div>
             <div *ngIf="RCATypeQuantitive === true" id="anorlogic" class="alert alert-dpmprimary w-100">
-                <p-card>
-                    <button (click)="ClearRCAQuantiveTree()" class="badge badge-dark" pTooltip="Clear Quantitive tree data" tooltipPosition="top"><i class="pi pi-times mr-1"></i>clear</button>
+                <p-card class="p-overlay-relative">
+                    <button (click)="ClearRCAQuantiveTree()" class="badge  badge-outline-secondary border-0 mb-1" pTooltip="Clear Quantitive tree data" tooltipPosition="top"><small><i class="pi pi-times mr-1"></i></small>clear</button>
                     <p-organizationChart [value]="ANDORLOGICTREE" (FailureMode)="AndOrLogicTreeFailureMode($event)" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
                     </p-organizationChart>
                 </p-card>
@@ -164,7 +164,7 @@
                 </div>                
             </div>
             <div [hidden]="!UpdateTreeshow" style="overflow: auto;">
-                <div class="alert alert-dpmprimary">
+                <div class="alert alert-dpmprimary w-100">
                     <div class="row">
                         <div class="col-md-3" *ngIf="UpdateRCATypeQualititive">
                             <div class="d-flex flex-column">
@@ -471,12 +471,12 @@
                         <div class="text-center" style="text-align:center">
                             <h4><b>Root Cause Analysis (RCA)  Qualitative approach</b></h4>
                         </div>
-                        <div class="sidebar-brand-icon col-sm-2" *ngIf="imagedivRCA" >
+                        <div class="sidebar-brand-icon col-sm-2 m-auto" *ngIf="imagedivRCA" >
                             <div class="image-container" >
                                 <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png"  alt="">
                             </div>
                         </div>
-                        <div class="sidebar-brand-icon col-sm-2" *ngIf="!imagedivRCA" id="pdfTable1" #pdfTable1>
+                        <div class="sidebar-brand-icon col-sm-2 m-auto" *ngIf="!imagedivRCA" id="pdfTable1" #pdfTable1>
                             <div class="image-container" >
                                 <img style="width:30px;height:25px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                             </div>

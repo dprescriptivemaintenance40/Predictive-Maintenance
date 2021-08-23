@@ -1450,3 +1450,17 @@ table.p-organizationchart-table {
   background-color: $primary-color !important;
   color: #fff;
 }
+.p-overlay-relative .p-menu-overlay {
+  box-shadow: none !important;
+  top: 0 !important;
+  left: 100% !important;
+  height: 100%;
+  margin-left: 10px;
+  border-radius: 10px;
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}
