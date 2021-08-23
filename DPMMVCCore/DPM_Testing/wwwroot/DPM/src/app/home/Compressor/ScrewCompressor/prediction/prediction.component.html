@@ -85,7 +85,7 @@
         <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
             <p class="mb-0"><i class="pi pi-info-circle" class="mr-1"></i>To know about Taxonomy of Compressor</p>
             <div>
-                <a class="button" href="#/Home/Prescriptive/RCA" target="_blank">Machine starts for degrading, RCA is recomended!</a>&nbsp;&nbsp;
+                <a *ngIf="RecommendationAlertEnable" class="button" href="#/Home/Prescriptive/RCA" target="_blank">{{RecommendationAlertMessage}}</a>&nbsp;&nbsp;
                 <button *ngIf="enableImage" class="btn btn-primary btn-sm mr-1" (click)="compressorImage()">Click Here</button>
                 <button *ngIf="CancelImage" class="btn btn-outline-danger btn-sm mr-1" (click)="compressorImageCancel()">Cancel</button>
                 <button type="button" (click)="ChangeToBulkPrediction()" class="btn btn-dark btn-sm">{{SingleBulkPredictionName}}</button>
