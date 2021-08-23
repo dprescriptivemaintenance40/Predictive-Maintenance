@@ -277,8 +277,7 @@ public Predictionbadcount: number = 0;
         //       }
         //       break;
         //     }
-        //   }
-        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Machine starts for degrading, RCA is recomended', sticky:true });
+        //   }       
         this.commonLoadingDirective.showLoading(false, "");
       }, err => {
         this.commonLoadingDirective.showLoading(false, "");
