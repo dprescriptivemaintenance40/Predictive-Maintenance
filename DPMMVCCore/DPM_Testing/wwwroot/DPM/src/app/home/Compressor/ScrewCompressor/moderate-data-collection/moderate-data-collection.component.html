@@ -1,17 +1,36 @@
-<div style="padding: 5px;" class="row">
+<!-- <div style="padding: 5px;" class="row">
     <div class="col-sm col-md-4 form-group">
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
     </div>
+</div> -->
+<div style="padding: 5px;" class="row">
+    <div class="col-sm col-md-4 form-group">
+       <button class="form-control" (click)="GetRawData()" >RawData</button>
+    </div>
+    <div class="col-sm col-md-4 form-group">
+        <button class="form-control" (click)="GetSensorData()" >Cleaned Data</button>
+     </div>
+</div>
+<div style="padding: 5px;" class="row">
+    <div class="col-sm col-md-4 form-group">
+       <label>Raw Data Count : {{UploadCompDetailList.length}}</label>
+    </div>
+    <div class="col-sm col-md-4 form-group">
+        <label>After Data Mining : {{MinedSensorData.length}}</label>
+     </div>
+     <div class="col-sm col-md-4 form-group">
+        <label>Cleaned data percentage : {{((MinedSensorData.length/UploadCompDetailList.length) * 100).toFixed(2)}} %</label>
+     </div>
 </div>
 
 <div style="padding: 5px;" style="overflow: auto;">
     <div class="card">
-        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="UploadCompDetailList" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="RawData === true ? UploadCompDetailList : MinedSensorData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <ng-template pTemplate="colgroup">
                 <colgroup>
+                    <col *ngIf="RawData" style="width:8em;">
                     <col style="width:8em;">
-                    <col style="width:8em;">
-                    <col style="width:8em;">
+                    <col *ngIf="RawData" style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
@@ -23,9 +42,9 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th>PS1 </th>
+                    <th *ngIf="RawData">PS1 </th>
                     <th>PD1 </th>
-                    <th>PS2 </th>
+                    <th *ngIf="RawData">PS2 </th>
                     <th>PD2 </th>
                     <th>TS1 </th>
                     <th>TD1 </th>
@@ -36,9 +55,9 @@
             </ng-template>
             <ng-template pTemplate="body" let-UploadCompDetailList>
                 <tr>
-                    <td>{{UploadCompDetailList.PS1}}</td>
+                    <td *ngIf="RawData">{{UploadCompDetailList.PS1}}</td>
                     <td>{{UploadCompDetailList.PD1}}</td>
-                    <td>{{UploadCompDetailList.PS2}}</td>
+                    <td *ngIf="RawData">{{UploadCompDetailList.PS2}}</td>
                     <td>{{UploadCompDetailList.PD2}}</td>
                     <td>{{UploadCompDetailList.TS1}}</td>
                     <td>{{UploadCompDetailList.TD1}}</td>
