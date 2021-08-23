@@ -150,8 +150,9 @@ public Predictionbadcount: number = 0;
     private screwCompressorMethod: CommonBLService) { 
       this.GetRecords();
     }
-
-
+    public Predictionnav:any 
+    public activatedRoute:any 
+    
   ngOnInit() {
     this.title.setTitle('Screw Prediction | Dynamic Prescriptive Maintenence');
     this.ChangeToBulkPrediction();
@@ -165,6 +166,7 @@ public Predictionbadcount: number = 0;
     this.GetAllRecords()
     this.GetPredictionRecords()
     this.GerAllPredictionRecords()
+  
   }
   showModalDialog() {
     this.displayModal = true;
@@ -184,8 +186,7 @@ public Predictionbadcount: number = 0;
   }
 
   RouteTodashboard(){
-    this.router.navigateByUrl('/Home/Dashboard'); 
-   // this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId} })
+     this.router.navigateByUrl('/Home/Dashboard', { state: { PredictionNavigate:1}})
  }
   Downloadfile() {
     let link = document.createElement("a");

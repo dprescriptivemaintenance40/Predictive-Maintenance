@@ -156,8 +156,8 @@ export class TrainComponent implements OnInit {
     }
   
     RouteTodashboard(){
-      this.router.navigateByUrl('/Home/Dashboard'); 
-     // this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId} })
+      // this.router.navigateByUrl('/Home/Dashboard'); 
+      this.router.navigateByUrl('/Home/Dashboard', { state: { TrainnNavigate:2}})
    }
   SelectFailureModeType(){
     this.getScrewCompressureList();

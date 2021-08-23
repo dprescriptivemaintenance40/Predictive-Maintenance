@@ -173,7 +173,7 @@ export class CostBenefitAnalysisComponent {
       }
 
     RouteTodashboard(){
-        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, ETBF : this.ETBF}})
+        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, ETBF : this.ETBF, CBANAV:3}})
       }
     MachineEquipmentSelect() {
         if (this.MachineType == "Pump") {
@@ -597,7 +597,7 @@ export class CostBenefitAnalysisComponent {
                 if(count === 0){
                 this.CBAReportDetails.CentrifugalPumpMssModel.push(obj);
                 }
-                
+            
             });
             this.CBAReportDetails.WithDPM = WithDPM.toFixed(0)
             this.CBAReportDetails.WithOutDPM = WithOutDPM.toFixed(0)

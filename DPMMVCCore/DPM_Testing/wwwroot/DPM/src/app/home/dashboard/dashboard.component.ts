@@ -8,7 +8,7 @@ import * as Chart from 'chart.js';
 import * as moment from "moment";
 import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.directive";
 import Dygraph from 'dygraphs'
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from '@angular/common';
 import { SCConstantsAPI } from "../Compressor/ScrewCompressor/shared/ScrewCompressorAPI.service";
 import { ProfileConstantAPI } from "../profile/profileAPI.service";
@@ -104,6 +104,7 @@ export class DashboardComponent {
   public PredictonDataDegradeCount: any = [];
   public PredictionDataBadCount: any = [];
   public state: any;
+  public state1: any;
     //For FutuerPrediction
     public FutuerselectedYear: string = "";
     public FutuerPredictedDate = [];
@@ -218,6 +219,7 @@ export class DashboardComponent {
     public PSRModel: any =[];
     public showcbi:boolean=false;
 
+
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -233,6 +235,7 @@ export class DashboardComponent {
     private PSRAPIs : PrescriptiveContantAPI,
     private configService: ConfigService,
     private location: Location,
+    private route: ActivatedRoute,
 
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
@@ -250,6 +253,8 @@ export class DashboardComponent {
     this.getPrescriptiveRecords()
     this.getUserDetails()
   }
+
+
   ngOnInit() {
     // this.getRecordsByEqui()
     this.showReport()
@@ -259,7 +264,9 @@ export class DashboardComponent {
     this.GerAllPredictionRecords();
     this.dygraph()
     this.ComboDates()
-    this.CBICharts()
+    this.CBICharts() 
+ 
+
   }
 
   public CBI_etbf:number = 0;
@@ -275,6 +282,7 @@ export class DashboardComponent {
   public EconomicRiskWithDPM:number = 0;
   public EconomicRiskWithOutDPM:number = 0;
   public EconomicRiskWithConstraintDPMCR:number = 0;
+
  
   getUserDetails() {
     if(!!localStorage.getItem('CBAOBJ')){
@@ -287,16 +295,13 @@ export class DashboardComponent {
     this.EconomicRiskWithDPM= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
     this.EconomicRiskWithOutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPM;
     this.EconomicRiskWithConstraintDPMCR= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithConstraintDPMCR;
+
+    this.MEIWithDPMWithoutConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPM;
+    this.MEIWithDPMWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMConstraint;
+    this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
     this.showcbi=true;
-  }
  
-    // this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
-    // this.ETBFWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).ETBFWithConstraint;
-    // this.MEIWithDPMWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithConstraint;
-    // this.MEIWithDPMWithoutConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMWithoutConstraint;
-    // this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
-      // this.TotalAnnualCostWithMaintenance= JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualCostWithMaintenance;
-    // this.DPMCost = (this.TotalAnnualCostWithMaintenance - this.TotalAnnualPOC)
+  }
   }
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -742,7 +747,7 @@ export class DashboardComponent {
       console.log(err.err);
     });
   }
-public etbf_Values:number=0
+ public etbf_Values:number=0
   DynamicCBA(res){
     this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
     this.CFrequencyMaintainenance = res.CFrequencyMaintainenance
@@ -1132,6 +1137,10 @@ public etbf_Values:number=0
 
   AllRecordBarcharts() {
     this.changeDetectorRef.detectChanges();
+    if (this.state.TrainnNavigate == 2) { 
+      var elmnt = document.getElementById("Trainnavigate");
+      elmnt.scrollIntoView();
+    }
     let dateForFilter = [];
     this.TrainDataIncipientCount = []
     this.TrainDataNormalCount = []
@@ -1234,6 +1243,7 @@ public etbf_Values:number=0
   }
 
   PredictionAllRecordDonught() {
+    // document.getElementById("predictScroll").scrollIntoView({behavior:"smooth",block: 'end' })
     // var a: any = [];
     // this.PredictionNormalcount = 0,
     //   this.PredictionIncipientcount = 0,
@@ -1427,6 +1437,13 @@ public etbf_Values:number=0
 
   PredictionAllRecordBarcharts() {
     this.changeDetectorRef.detectChanges();
+    if (this.state.PredictionNavigate == 1) { 
+      // const element = document.querySelector("#Predictionnavigate")
+      //  element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      var elmnt = document.getElementById("Predictionnavigate");
+      elmnt.scrollIntoView();
+    }
+
     let dateForFilter = [];
     this.PredictionDataNormalCount = []
     this.PredictionDataIncipientCount = []
@@ -1948,214 +1965,418 @@ public etbf_Values:number=0
 
 
 
-   dygraph(){ 
-        this.chart = new Dygraph(
-          document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
-          {
-            visibility: [true, false, false, true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-           colors: ['green','green',],
-           showLabelsOnHighlight: false,
-           showRangeSelector: true,
-           series: {
-                        'TD1': {
-                          strokePattern: null,
-                          drawPoints: true,
-                          pointSize: 1,
-                        },
-                        'FTD1': {
-                          strokePattern: Dygraph.DASHED_LINE,
-                          strokeWidth: 2.6,
-                          drawPoints: true,
-                          pointSize: 3.5,
-                        },
-                     }
-          }) 
+  //  dygraph(){ 
+  //       this.chart = new Dygraph(
+  //         document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
+  //         {
+  //           visibility: [true, false, false, true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+  //          colors: ['green','green',],
+  //          showLabelsOnHighlight: false,
+  //          showRangeSelector: true,
+  //          series: {
+  //                       'TD1': {
+  //                         strokePattern: null,
+  //                         drawPoints: true,
+  //                         pointSize: 1,
+  //                       },
+  //                       'FTD1': {
+  //                         strokePattern: Dygraph.DASHED_LINE,
+  //                         strokeWidth: 2.6,
+  //                         drawPoints: true,
+  //                         pointSize: 3.5,
+  //                       },
+  //                    }
+  //         }) 
 
   
-        // this.http.get("dist/DPM/assets/temperatures.csv",{responseType:'text'}).subscribe((res: any) => {
-        //   console.log(res)
-        //   var prediction = res;
+  //       // this.http.get("dist/DPM/assets/temperatures.csv",{responseType:'text'}).subscribe((res: any) => {
+  //       //   console.log(res)
+  //       //   var prediction = res;
 
-        //   this.chart = new Dygraph(
-        //       document.getElementById("graph"),res,
-        //       {
-        //         showRangeSelector: true,
-        //       }
-        //       )
-        // })
+  //       //   this.chart = new Dygraph(
+  //       //       document.getElementById("graph"),res,
+  //       //       {
+  //       //         showRangeSelector: true,
+  //       //       }
+  //       //       )
+  //       // })
     
    
 
-      //   this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-      //        var prediction = res;
-      //       //  this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
-      //         var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
-      // this.screwCompressorMethod.getWithoutParameters(url)
-      // .subscribe(
-      //    (res : any) => {
-      //   // async (res : any) => {
-      //       // if(res.length === 0){
-      //       //   await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetail.UserId}&name=''&type=forecast`, { responseType: 'text' })
-      //       // }
-      //       var futureData = res 
+  //     //   this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+  //     //        var prediction = res;
+  //     //       //  this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
+  //     //         var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
+  //     // this.screwCompressorMethod.getWithoutParameters(url)
+  //     // .subscribe(
+  //     //    (res : any) => {
+  //     //   // async (res : any) => {
+  //     //       // if(res.length === 0){
+  //     //       //   await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetail.UserId}&name=''&type=forecast`, { responseType: 'text' })
+  //     //       // }
+  //     //       var futureData = res 
 
-      //         // this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
-      //         // this.highlight_end = moment(this.date).format('YYYY/MM/DD')
+  //     //         // this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
+  //     //         // this.highlight_end = moment(this.date).format('YYYY/MM/DD')
 
-      //         var result1 : any= futureData.filter(f =>
-      //           prediction.some(d => d.Date == f.Date) 
-      //         );
+  //     //         var result1 : any= futureData.filter(f =>
+  //     //           prediction.some(d => d.Date == f.Date) 
+  //     //         );
               
-      //          result1.forEach(element => {
-      //            var d = prediction.filter(r=>r.Date === element.Date)
-      //            element.TD1 = d[0].TD1;
-      //            element.Residual = element.FTD1 - d[0].TD1            
-      //          });
-      //          futureData.forEach(element => {
-      //            if(element.TD1 == 0){
-      //             element.Residual = ''
-      //            }
-      //          });
-      //          prediction.forEach(element => {
-      //           element.Residual = 0
-      //           for (var i = 0; i < result1.length; i++) {
-      //             if (result1[i].Date == element.Date) {
-      //             element.FTD1 = result1[i].FTD1
-      //             element.TD1 = result1[i].TD1
-      //             element.Residual = result1[i].Residual
-      //             }
-      //           }
-      //         });
+  //     //          result1.forEach(element => {
+  //     //            var d = prediction.filter(r=>r.Date === element.Date)
+  //     //            element.TD1 = d[0].TD1;
+  //     //            element.Residual = element.FTD1 - d[0].TD1            
+  //     //          });
+  //     //          futureData.forEach(element => {
+  //     //            if(element.TD1 == 0){
+  //     //             element.Residual = ''
+  //     //            }
+  //     //          });
+  //     //          prediction.forEach(element => {
+  //     //           element.Residual = 0
+  //     //           for (var i = 0; i < result1.length; i++) {
+  //     //             if (result1[i].Date == element.Date) {
+  //     //             element.FTD1 = result1[i].FTD1
+  //     //             element.TD1 = result1[i].TD1
+  //     //             element.Residual = result1[i].Residual
+  //     //             }
+  //     //           }
+  //     //         });
 
-      //          const result = futureData.filter(f =>
-      //           !prediction.some(d => d.Date == f.Date)
-      //          );
-      //          result.forEach(element => {
-      //              prediction.push(element);
-      //          });
-      //         //this.mergedarray = prediction.concat(result);
-      //         prediction.forEach(element => {
-      //           if(element.Residual === 0){
-      //             element.Residual = ''
-      //           }
-      //           if(element.TD1 === 0){
-      //             element.TD1 = ''
-      //           }
-      //           if(element.FTD1 === 0){
-      //             element.FTD1 = ''
-      //           }
-      //           if (element.TD1 > 180 && element.TD1 < 210) {
-      //             element.alarm = element.TD1
+  //     //          const result = futureData.filter(f =>
+  //     //           !prediction.some(d => d.Date == f.Date)
+  //     //          );
+  //     //          result.forEach(element => {
+  //     //              prediction.push(element);
+  //     //          });
+  //     //         //this.mergedarray = prediction.concat(result);
+  //     //         prediction.forEach(element => {
+  //     //           if(element.Residual === 0){
+  //     //             element.Residual = ''
+  //     //           }
+  //     //           if(element.TD1 === 0){
+  //     //             element.TD1 = ''
+  //     //           }
+  //     //           if(element.FTD1 === 0){
+  //     //             element.FTD1 = ''
+  //     //           }
+  //     //           if (element.TD1 > 180 && element.TD1 < 210) {
+  //     //             element.alarm = element.TD1
 
-      //           } else{
-      //             element.alarm = ''
-      //           }
-      //            if (element.TD1 > 210) {
-      //             element.trigger = element.TD1
-      //           }else{
-      //             element.trigger = ''
-      //           }
-      //           if(element.FTD1 > 190 && element.FTD1 < 210) {
-      //             element.falarm = element.FTD1
-      //           }
-      //           else {
-      //             element.falarm = ''
-      //           }
-      //           if(element.FTD1 > 210) {
-      //             element.ftrigger = element.FTD1
-      //           }
-      //           else {
-      //             element.ftrigger = ''
-      //           }
-      //          }); 
-      //          this.csvData = this.ConvertToCSV(prediction);
-      //         //  this.csvData = this.ConvertToCSV( this.mergedarray);
-      //         //  var highlight_start = new Date(this.highlight_start);
-      //         //  var highlight_end = new Date(this.highlight_end);
+  //     //           } else{
+  //     //             element.alarm = ''
+  //     //           }
+  //     //            if (element.TD1 > 210) {
+  //     //             element.trigger = element.TD1
+  //     //           }else{
+  //     //             element.trigger = ''
+  //     //           }
+  //     //           if(element.FTD1 > 190 && element.FTD1 < 210) {
+  //     //             element.falarm = element.FTD1
+  //     //           }
+  //     //           else {
+  //     //             element.falarm = ''
+  //     //           }
+  //     //           if(element.FTD1 > 210) {
+  //     //             element.ftrigger = element.FTD1
+  //     //           }
+  //     //           else {
+  //     //             element.ftrigger = ''
+  //     //           }
+  //     //          }); 
+  //     //          this.csvData = this.ConvertToCSV(prediction);
+  //     //         //  this.csvData = this.ConvertToCSV( this.mergedarray);
+  //     //         //  var highlight_start = new Date(this.highlight_start);
+  //     //         //  var highlight_end = new Date(this.highlight_end);
 
-      //          this.chart = new Dygraph(
-      //           document.getElementById("graph"),this.csvData,
-      //           {
-      //             colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
-      //             visibility: [true, true, false, true,true,true,true,],
-      //             showRangeSelector: true,
-      //             fillGraph:true,
-      //             fillAlpha: 0.1,
-      //             connectSeparatedPoints: false,
-      //             drawPoints: true,
-      //             strokeWidth: 1.5,
-      //             stepPlot: false,
-      //             errorbar: true,
-      //             drawXGrid: true,
-      //             valueRange: [150,250],
-      //             includeZero: false,
-      //             drawAxesAtZero: false,
-      //             series: {
-      //               'TD1': {
-      //                 strokePattern: null,
-      //                 drawPoints: true,
-      //                 pointSize: 2,
-      //               },
-      //               'FTD1': {
-      //                 strokePattern: Dygraph.DASHED_LINE,
-      //                 strokeWidth: 2.6,
-      //                 drawPoints: true,
-      //                 pointSize: 3.5
-      //               },
-      //               'Residual': {
-      //               },
-      //               'alarm': {
-      //                 strokeWidth: 2,
-      //               },
-      //               'trigger': {
-      //                 strokePattern: Dygraph.DOT_DASH_LINE,
-      //                 strokeWidth: 2,
-      //                 highlightCircleSize: 3
-      //               },
-      //               'falarm': {
-      //                 color: ['#ffb801'],
-      //                 strokePattern: Dygraph.DASHED_LINE1,
-      //                 strokeWidth: 1.6,
-      //                 drawPoints: true,
-      //                 pointSize: 2.5
-      //               },
-      //               'ftrigger': {
-      //                 strokePattern: Dygraph.DASHED_LINE,
-      //                 strokeWidth: 1.0,
-      //                 drawPoints: true,
-      //                 pointSize: 1.5
-      //               },
-      //             },
-      //             // underlayCallback: function(canvas, area, g) {
-      //             //     var bottom_left = g.toDomCoords(highlight_start);
-      //             //     var top_right = g.toDomCoords(highlight_end); 
+  //     //          this.chart = new Dygraph(
+  //     //           document.getElementById("graph"),this.csvData,
+  //     //           {
+  //     //             colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
+  //     //             visibility: [true, true, false, true,true,true,true,],
+  //     //             showRangeSelector: true,
+  //     //             fillGraph:true,
+  //     //             fillAlpha: 0.1,
+  //     //             connectSeparatedPoints: false,
+  //     //             drawPoints: true,
+  //     //             strokeWidth: 1.5,
+  //     //             stepPlot: false,
+  //     //             errorbar: true,
+  //     //             drawXGrid: true,
+  //     //             valueRange: [150,250],
+  //     //             includeZero: false,
+  //     //             drawAxesAtZero: false,
+  //     //             series: {
+  //     //               'TD1': {
+  //     //                 strokePattern: null,
+  //     //                 drawPoints: true,
+  //     //                 pointSize: 2,
+  //     //               },
+  //     //               'FTD1': {
+  //     //                 strokePattern: Dygraph.DASHED_LINE,
+  //     //                 strokeWidth: 2.6,
+  //     //                 drawPoints: true,
+  //     //                 pointSize: 3.5
+  //     //               },
+  //     //               'Residual': {
+  //     //               },
+  //     //               'alarm': {
+  //     //                 strokeWidth: 2,
+  //     //               },
+  //     //               'trigger': {
+  //     //                 strokePattern: Dygraph.DOT_DASH_LINE,
+  //     //                 strokeWidth: 2,
+  //     //                 highlightCircleSize: 3
+  //     //               },
+  //     //               'falarm': {
+  //     //                 color: ['#ffb801'],
+  //     //                 strokePattern: Dygraph.DASHED_LINE1,
+  //     //                 strokeWidth: 1.6,
+  //     //                 drawPoints: true,
+  //     //                 pointSize: 2.5
+  //     //               },
+  //     //               'ftrigger': {
+  //     //                 strokePattern: Dygraph.DASHED_LINE,
+  //     //                 strokeWidth: 1.0,
+  //     //                 drawPoints: true,
+  //     //                 pointSize: 1.5
+  //     //               },
+  //     //             },
+  //     //             // underlayCallback: function(canvas, area, g) {
+  //     //             //     var bottom_left = g.toDomCoords(highlight_start);
+  //     //             //     var top_right = g.toDomCoords(highlight_end); 
                  
-      //             //     var left = bottom_left[0];
-      //             //     var right = top_right[0];
+  //     //             //     var left = bottom_left[0];
+  //     //             //     var right = top_right[0];
 
-      //             //      canvas.fillStyle = "rgba(245, 252, 255)";
-      //             //     canvas.fillRect(left, area.y, right - left, area.h);
-      //             // }
-      //           },
-      //           ) 
-      //           // this.chart = new Dygraph(
-      //           //   document.getElementById("graph1"),this.csvData,
-      //           //   {
-      //           //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
-      //           //     showRangeSelector: true,
-      //           //     connectSeparatedPoints: true,
-      //           //     fillGraph: true,
-      //           //     drawPoints: true,
-      //           //     strokeWidth: 5,
-      //           //     drawXGrid: false,
-      //           //     visibility: [false, false, true, false,false,false,false,],
-      //           //   },
-      //           //   ) 
+  //     //             //      canvas.fillStyle = "rgba(245, 252, 255)";
+  //     //             //     canvas.fillRect(left, area.y, right - left, area.h);
+  //     //             // }
+  //     //           },
+  //     //           ) 
+  //     //           // this.chart = new Dygraph(
+  //     //           //   document.getElementById("graph1"),this.csvData,
+  //     //           //   {
+  //     //           //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
+  //     //           //     showRangeSelector: true,
+  //     //           //     connectSeparatedPoints: true,
+  //     //           //     fillGraph: true,
+  //     //           //     drawPoints: true,
+  //     //           //     strokeWidth: 5,
+  //     //           //     drawXGrid: false,
+  //     //           //     visibility: [false, false, true, false,false,false,false,],
+  //     //           //   },
+  //     //           //   ) 
 
-      //       })}
-      //   )
-   }
-  
+  //     //       })}
+  //     //   )
+  //  }
+  dygraph(){ 
+    // this.chart = new Dygraph(
+    //   document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
+    //   {
+    //     visibility: [true, false, false, true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+    //    colors: ['green','green',],
+    //    showLabelsOnHighlight: false,
+    //    showRangeSelector: true,
+    //    series: {
+    //                 'TD1': {
+    //                   strokePattern: null,
+    //                   drawPoints: true,
+    //                   pointSize: 1,
+    //                 },
+    //                 'FTD1': {
+    //                   strokePattern: Dygraph.DASHED_LINE,
+    //                   strokeWidth: 2.6,
+    //                   drawPoints: true,
+    //                   pointSize: 3.5,
+    //                 },
+    //              }
+    //   }) 
+
+
+    // this.http.get("dist/DPM/assets/temperatures.csv",{responseType:'text'}).subscribe((res: any) => {
+    //   console.log(res)
+    //   var prediction = res;
+
+    //   this.chart = new Dygraph(
+    //       document.getElementById("graph"),res,
+    //       {
+    //         showRangeSelector: true,
+    //       }
+    //       )
+    // })
+
+
+
+    this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+         var prediction = res;
+        //  this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
+          var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
+      this.screwCompressorMethod.getWithoutParameters(url)
+        .subscribe(
+          (res: any) => {
+            var futureData = res
+
+          // this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
+          // this.highlight_end = moment(this.date).format('YYYY/MM/DD')
+
+          var result1 : any= futureData.filter(f =>
+            prediction.some(d => d.Date == f.Date) 
+          );
+          
+           result1.forEach(element => {
+             var d = prediction.filter(r=>r.Date === element.Date)
+             element.TD1 = d[0].TD1;
+             element.Residual = element.FTD1 - d[0].TD1            
+           });
+           futureData.forEach(element => {
+             if(element.TD1 == 0){
+              element.Residual = ''
+             }
+           });
+           prediction.forEach(element => {
+            element.Residual = 0
+            for (var i = 0; i < result1.length; i++) {
+              if (result1[i].Date == element.Date) {
+              element.FTD1 = result1[i].FTD1
+              element.TD1 = result1[i].TD1
+              element.Residual = result1[i].Residual
+              }
+            }
+          });
+
+           const result = futureData.filter(f =>
+            !prediction.some(d => d.Date == f.Date)
+           );
+           result.forEach(element => {
+               prediction.push(element);
+           });
+          //this.mergedarray = prediction.concat(result);
+          prediction.forEach(element => {
+            if(element.Residual === 0){
+              element.Residual = ''
+            }
+            if(element.TD1 === 0){
+              element.TD1 = ''
+            }
+            if(element.FTD1 === 0){
+              element.FTD1 = ''
+            }
+            // if (element.TD1 > 180 && element.TD1 < 210) {
+            //   element.alarm = element.TD1
+
+            // } else{
+            //   element.alarm = ''
+            // }
+            //  if (element.TD1 > 210) {
+            //   element.trigger = element.TD1
+            // }else{
+            //   element.trigger = ''
+            // }
+            // if(element.FTD1 > 190 && element.FTD1 < 210) {
+            //   element.falarm = element.FTD1
+            // }
+            // else {
+            //   element.falarm = ''
+            // }
+            // if(element.FTD1 > 210) {
+            //   element.ftrigger = element.FTD1
+            // }
+            // else {
+            //   element.ftrigger = ''
+            // }
+           }); 
+           this.csvData = this.ConvertToCSV(prediction);
+          //  this.csvData = this.ConvertToCSV( this.mergedarray);
+          //  var highlight_start = new Date(this.highlight_start);
+          //  var highlight_end = new Date(this.highlight_end);
+
+           this.chart = new Dygraph(
+            document.getElementById("graph"),this.csvData,
+            {
+              // colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
+              colors: ['green','green', 'gray',],
+              // visibility: [true, true, false, true,true,true,true,],
+              visibility: [true, true, false,],
+              showRangeSelector: true,
+              fillGraph:true,
+              fillAlpha: 0.1,
+              connectSeparatedPoints: false,
+              drawPoints: true,
+              strokeWidth: 1.5,
+              stepPlot: false,
+              errorbar: true,
+              drawXGrid: true,
+              valueRange: [150,250],
+              includeZero: false,
+              drawAxesAtZero: false,
+              series: {
+                'TD1': {
+                  strokePattern: null,
+                  drawPoints: true,
+                  pointSize: 2,
+                },
+                'FTD1': {
+                  strokePattern: Dygraph.DASHED_LINE,
+                  strokeWidth: 2.6,
+                  drawPoints: true,
+                  pointSize: 3.5
+                },
+                // 'Residual': {
+                // },
+                // 'alarm': {
+                //   strokeWidth: 2,
+                // },
+                // 'trigger': {
+                //   strokePattern: Dygraph.DOT_DASH_LINE,
+                //   strokeWidth: 2,
+                //   highlightCircleSize: 3
+                // },
+                // 'falarm': {
+                //   color: ['#ffb801'],
+                //   strokePattern: Dygraph.DASHED_LINE1,
+                //   strokeWidth: 1.6,
+                //   drawPoints: true,
+                //   pointSize: 2.5
+                // },
+                // 'ftrigger': {
+                //   strokePattern: Dygraph.DASHED_LINE,
+                //   strokeWidth: 1.0,
+                //   drawPoints: true,
+                //   pointSize: 1.5
+                // },
+              },
+              // underlayCallback: function(canvas, area, g) {
+              //     var bottom_left = g.toDomCoords(highlight_start);
+              //     var top_right = g.toDomCoords(highlight_end); 
+             
+              //     var left = bottom_left[0];
+              //     var right = top_right[0];
+
+              //      canvas.fillStyle = "rgba(245, 252, 255)";
+              //     canvas.fillRect(left, area.y, right - left, area.h);
+              // }
+            },
+            ) 
+            // this.chart = new Dygraph(
+            //   document.getElementById("graph1"),this.csvData,
+            //   {
+            //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
+            //     showRangeSelector: true,
+            //     connectSeparatedPoints: true,
+            //     fillGraph: true,
+            //     drawPoints: true,
+            //     strokeWidth: 5,
+            //     drawXGrid: false,
+            //     visibility: [false, false, true, false,false,false,false,],
+            //   },
+            //   ) 
+
+        })}
+    )
+}
 
     ConvertToCSV(objArray) {
       var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
@@ -2352,6 +2573,11 @@ public etbf_Values:number=0
   }
   public allCBI:boolean = true;
   CBICharts(){
+    this.changeDetectorRef.detectChanges();
+    if (this.state.CBANAV == 3) { 
+      var elmnt = document.getElementById("CBAnavigate");
+      elmnt.scrollIntoView();
+    }
     if(this.CBIGraphs =="Ecomomic_Risk"){
       this.ecomomic_risk_Graph = true
       this.residual_risk_Graph = false
@@ -2374,7 +2600,7 @@ public etbf_Values:number=0
       this.allCBI=false
       this.MEIGraph()
     }
-    else if(this.CBIGraphs =="Choose"){
+    else if(this.CBIGraphs ==""){
       this.MEI_risk_Graph = false
       this.Skill_risk_Graph =false;
       this.ecomomic_risk_Graph = false
@@ -2416,6 +2642,9 @@ public etbf_Values:number=0
       },
             scales: {
               yAxes: [{
+                gridLines: {
+                  display: false,
+                },
                 scaleLabel: {
                   display: true,
                   labelString: 'In_Percentage'
@@ -2464,6 +2693,9 @@ public etbf_Values:number=0
       },
         scales: {
           yAxes: [{
+            gridLines: {
+              display: false,
+            },
             scaleLabel: {
               display: true,
               labelString: 'In_Percentage'
@@ -2481,14 +2713,14 @@ public etbf_Values:number=0
   }
   MEIGraph (){
     this.changeDetectorRef.detectChanges();
-    var meicostWithoutDPM =20
-    var meiCostDPMWithoutConstraint = 25
-    var meiCostWithDPMConstraint = 55
-    var meitotal =(meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
+    var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
+    var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
+    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
+    var meitotal: number = + (meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
      
-    var meicost = ((meicostWithoutDPM/meitotal)*100).toFixed(2)
-    var meicostWithoutConstraint = ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
-    var meicostwithConstraint = ((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
+    var meicost: number = +((meicostWithoutDPM/meitotal)*100).toFixed(2)
+    var meicostWithoutConstraint : number = + ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
+    var meicostwithConstraint : number = +((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
     
     this.chart = new Chart('mei_risk', {
       type: 'bar',
@@ -2511,6 +2743,9 @@ public etbf_Values:number=0
       },
         scales: {
           yAxes: [{
+            gridLines: {
+              display: false,
+            },
             scaleLabel: {
               display: true,
               labelString: 'In_Percentage'
@@ -2546,14 +2781,22 @@ public etbf_Values:number=0
    var residualcostWithoutConstraint = ((residualCostDPMWithoutConstraint/residualtotal)*100).toFixed(2)
    var residualcostwithConstraint = ((residualCostWithDPMConstraint/residualtotal)*100).toFixed(2)
     
-    var meicostWithoutDPM =20
-    var meiCostDPMWithoutConstraint = 25
-    var meiCostWithDPMConstraint = 55
-    var meitotal =(meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
+    // var meicostWithoutDPM =20
+    // var meiCostDPMWithoutConstraint = 25
+    // var meiCostWithDPMConstraint = 55
+    // var meitotal =(meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
      
-    var meicost = ((meicostWithoutDPM/meitotal)*100).toFixed(2)
-    var meicostWithoutConstraint = ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
-    var meicostwithConstraint = ((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
+    // var meicost = ((meicostWithoutDPM/meitotal)*100).toFixed(2)
+    // var meicostWithoutConstraint = ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
+    // var meicostwithConstraint = ((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
+    var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
+    var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
+    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
+    var meitotal: number = + (meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
+     
+    var meicost: number = +((meicostWithoutDPM/meitotal)*100).toFixed(2)
+    var meicostWithoutConstraint : number = + ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
+    var meicostwithConstraint : number = +((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
     this.changeDetectorRef.detectChanges();
 
       this.chart = new Chart('allGraphCBI', {
@@ -2561,7 +2804,7 @@ public etbf_Values:number=0
       labels:["All Data"],
       data: {
         labels: ['Economic_Risk without DPM','Residual Risk Without DPM','MEI Risk Without DPM','Economic_Risk With DPM With constraint','Residual Risk with DPM with constarint','MEI_with DPM with constraint',
-                 'Economic Risk with DPM without constraint','Residual Risk with DPM with constarint','MEI_with DPM with constarint' ],
+                 'Economic Risk with DPM without constraint','Residual Risk with DPM without constarint','MEI_with DPM with constarint' ],
         datasets: [
           {
             data: [economiccost,residualcost,meicost,economiccostwithConstraint,residualcostwithConstraint,meicostwithConstraint,economiccostWithoutConstraint,residualcostWithoutConstraint,meicostWithoutConstraint],
@@ -2583,13 +2826,13 @@ public etbf_Values:number=0
                 display: false,
               },
               scaleLabel: {
-                display: true,
+                 display: true,
                 labelString: 'In_Percentage'
               },
               ticks: {
                 min: 1,
                 // max: 60,
-                stepSize: 1,
+                 stepSize: 1,
               }
             }]
           }
