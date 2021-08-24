@@ -825,6 +825,7 @@ label {
   color: #495057;
   padding: 1rem;
   border-radius: 10px;
+  width: 210px;
 }
 
 .alert-dpmprimary {
@@ -1463,4 +1464,7 @@ table.p-organizationchart-table {
     align-items: center;
     height: 100%;
   }
+}
+.calculate-dialog .p-dialog {
+  max-width: 500px;
 }

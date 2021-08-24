@@ -157,6 +157,7 @@
                                         <!-- <span>Functional Failure&nbsp;</span>&nbsp; -->
                                         <span><i class="pi pi-info-circle"></i>{{prescriptiveRecords.FunctionFailure}}</span>
                                     </div>
+                                    <small> <button (click)="OpenMEI()" class="badge badge-primary"> Click here to calculate MEI</button></small>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -197,8 +198,7 @@
                 </div>
                 <div class="card-body task-body">
                     <div class="col-sm-12 p-0">
-                        <h5>Tasks</h5>
-                        <small> <button (click)="OpenMEI()" class="form-control"> MEI Calculation</button></small>
+                        <h5>Tasks</h5>                       
                         <div class="table-responsive-sm bg-white p-2 mb-4">
                             <table class="table">
                                 <thead>
@@ -237,7 +237,7 @@
 
                     <div class="col-md-12 bg-white py-3">
                         <div class="col-sm">
-                            <button style="float: right" class="btn btn-dark" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line"></i></button>
+                            <button style="float: right" class="btn btn-outline-dark btn-sm" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line mr-0"></i></button>
                         </div>
                         <div class="row mb-4">
                             <div class="col-sm-12">
@@ -462,18 +462,20 @@
 </div>
 
 
-<p-dialog header="Enter ETBC to calculate MEI" [(visible)]="AddMEIPopup" [style]="{width: '50em'}">
-    <div class="col-md-2 pr-0">
-        <div class="d-flex flex-column">
-            <label style="">ETBC without DPM</label>
-            <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="{{ VendorETBF === 0 ? 'Enter ETBF' : VendorETBF }}"  [(ngModel)]="VendorETBF" pTooltip="Enter ETBF in years" class="form-control">
+<p-dialog header="Enter ETBC to calculate MEI" [(visible)]="AddMEIPopup" [style]="{width: '500px'}" class="col-md-6 d-flex calculate-dialog">
+    <div class="row">
+        <div class="col-md-12 pr-0 mb-4">
+            <div class="d-flex flex-column">
+                <label style="">ETBC without DPM</label>
+                <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="{{ VendorETBF === 0 ? 'Enter ETBF' : VendorETBF }}"  [(ngModel)]="VendorETBF" pTooltip="Enter ETBF in years" class="form-control">
 
+            </div>
         </div>
-    </div>
-    <div class="col-md-2 pr-0">
-        <div class="d-flex flex-column">
-            <label style="">ETBC with DPM</label>
-            <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="Enter ETBF"  [(ngModel)]="MSSETBF" pTooltip="Enter ETBF in years" class="form-control">
+        <div class="col-md-12 pr-0">
+            <div class="d-flex flex-column">
+                <label style="">ETBC with DPM</label>
+                <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="Enter ETBF"  [(ngModel)]="MSSETBF" pTooltip="Enter ETBF in years" class="form-control">
+            </div>
         </div>
     </div>
 </p-dialog>
