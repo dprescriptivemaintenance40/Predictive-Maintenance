@@ -73,7 +73,7 @@ namespace DPM_Testing.Controllers
                             {
                         new Claim("UserID",user.UserId.ToString())
                             }),
-                            Expires = DateTime.UtcNow.AddMinutes(60),
+                            Expires = DateTime.UtcNow.AddDays(1),
                             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                         };
                         var tokenHandler = new JwtSecurityTokenHandler();

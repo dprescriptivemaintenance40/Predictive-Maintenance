@@ -136,7 +136,7 @@ public Predictionbadcount: number = 0;
   public FromDate: string = ""
   public ToDate: string = ""
   public SingleBulkPredictionName: string = ""
-  public FailureModeSelect: string = "All"
+  public FailureModeSelect: string = "SSRB"
 
   constructor(public title: Title,
     public http: HttpClient,
