@@ -67,25 +67,25 @@
                             <!-- <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td> -->
                             <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.MachineType}}</small><span class="d-block font-weight-normal h5 mt-2">{{p.EquipmentType}}<span (click)="FailureModeTable(p)" class="badge badge-info ml-2"><small><i
                                         class="pi pi-tag mr-1"></i></small>Tag No.{{p.TagNumber}}</span>
-                            <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-chart-line"></i></small> Critical Factor: {{p.ComponentCriticalityFactor}}</span>
-                            <span (click)="FailureModeTable(p)" class="badge badge-warning"><i
+                                <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-chart-line"></i></small> Critical Factor: {{p.ComponentCriticalityFactor}}</span>
+                                <span (click)="FailureModeTable(p)" class="badge badge-warning"><i
                                     class="pi pi-star-o small mr-1"></i>Rating: {{p.ComponentRating}}</span>
-                        <span (click)="FailureModeTable(p)" class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1"></i>Maintainenance Practice:{{p.CMaintainenancePractice}}</span></span>
-                        </h1>
+                                <span (click)="FailureModeTable(p)" class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1"></i>Maintainenance Practice:{{p.CMaintainenancePractice}}</span></span>
+                            </h1>
                             <span class="">
                                 <a class="link-primary mr-1" *ngIf="p.MSSAdded == 1" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded != 1}"><small><i class="pi pi-pencil mr-2"></i></small>Update RCM</a>
                             </span>
                             <span class="">
                                 <a title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add Consequence</a>
                             </span>
-                           
-                        <span class="">
+
+                            <span class="">
                                 <a  [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}" (click)="getFCAData(p)" title="Add FCA" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add FCA</a>
                             </span>
                             <span class="">
                                 <a *ngIf="p.FCAAdded == 1" [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}" title="Add MSS to tree" (click)="getMSSData(p)" class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Add MSS</a>
                             </span>
-                            
+
                             <span class="">
                                 <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal" class="link-primary mr-1"> <i class="fa fa-paperclip mr-2" aria-hidden="true"></i>Upload</a>
                                 <a title="View Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal" class="link-primary mr-1"><i class="fa fa-eye mr-2" aria-hidden="true"></i>View Attachment</a>
@@ -114,24 +114,23 @@
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                         <div class="prescriptive-card mb-0 p-3">
                             <!-- <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td> -->
-                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.FrequencyMaintainenance}}</small><span
-                                    class="d-block font-weight-normal h5 mt-2">{{p.MaintainenancePractice}}<span (click)="FailureModeTable(p)"
+                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.FrequencyMaintainenance}}</small><span class="d-block font-weight-normal h5 mt-2">{{p.MaintainenancePractice}}<span (click)="FailureModeTable(p)"
                                         class="badge badge-info ml-2"><small><i class="pi pi-tag mr-1"></i></small>Critical Factor{{p.CriticalityFactor}}</span>
-                                    <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i
+                                <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i
                                                 class="pi pi-chart-line"></i></small> Failure Mode:
                                         {{p.FunctionMode}}</span>
-                                        <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Rating:
+                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Rating:
                                             {{p.Rating}}</span>
-                                            <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Local Effect:
+                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Local Effect:
                                             {{p.LocalEffect}}</span>
-                                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>System Effect:
+                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>System Effect:
                                                     {{p.SystemEffect}}</span>
-                                   </span>
-                                   
+                                </span>
+
                             </h1>
                             <p class="mb-1 alert bg-white"><i class="pi pi-info-circle small mr-1"></i>Condition Monitoring: {{p.ConditionMonitoring}}</p>
                             <p class="mb-0 alert bg-white"><i class="pi pi-info-circle small mr-1"></i>Consequence: {{p.Consequence}}</p>
-                            
+
                             <!-- <td>
                                                     <a style="color: green;" [ngClass]="{disabled:p.MSSAdded == 1}" (click)="getMSSData(p)" title="Add MSS"><i class="pi pi-plus"></i></a>
                                                 </td> -->
@@ -247,7 +246,7 @@
                             <td>{{rowIndex + 1}}</td>
                             <td> {{p.MSSStartergy}} </td>
                             <td> {{p.MSSMaintenanceInterval}} </td>
-                            <td> {{p.MSSFinalAvaliability}} </td>
+                            <td> {{p.MSSFinalAvaliability.toFixed(2)}} </td>
                             <td> {{p.MSSMaintenanceTask}} </td>
                             <td> {{p.MSSIntervalSelectionCriteria}} </td>
                         </tr>

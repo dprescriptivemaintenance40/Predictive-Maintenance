@@ -15,6 +15,7 @@ export class ModerateDataCollectionComponent implements OnInit {
   public MinedSensorData : any = [] ;
   public RawData : boolean = true;
   public SensorData : boolean = false;
+  public loading:boolean = false;
 
   constructor(public http: HttpClient,
     public title: Title,
@@ -55,7 +56,8 @@ export class ModerateDataCollectionComponent implements OnInit {
 
 
   getRawSensorData(){
-    this.commonLoadingDirective.showLoading(true, "Please wait");
+    this.loading = true;
+    //this.commonLoadingDirective.showLoading(true, "Please wait");
     this.http.get('dist/DPM/assets/RawDataFile.xlsx',{responseType:'blob'}).subscribe(
       (res : any) => {
         let fileReader = new FileReader();
@@ -70,7 +72,8 @@ export class ModerateDataCollectionComponent implements OnInit {
                     var first_sheet_name = workbook.SheetNames[0];
                     var worksheet = workbook.Sheets[first_sheet_name];
                     this.UploadCompDetailList = await XLSX.utils.sheet_to_json(worksheet, { raw: true });
-                    this.commonLoadingDirective.showLoading(false, "");
+                   // this.commonLoadingDirective.showLoading(false, "");
+                   this.loading = false;
                 }
       }
     )
