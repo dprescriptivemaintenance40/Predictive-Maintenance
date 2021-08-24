@@ -141,11 +141,13 @@
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>TD1</th>
+                                <th>DATE</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-futurePredictionDataTableList>
                             <tr>
-                                <td>{{futurePredictionDataTableList.FTD1.toFixed(2)}}</td>
+                                <td>{{futurePredictionDataTableList.TD1.toFixed(2)}}</td>
+                                <td>{{futurePredictionDataTableList.Date | date : 'medium'}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
