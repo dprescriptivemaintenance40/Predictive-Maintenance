@@ -416,7 +416,7 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                     long date = DateToValues(screwCompressorForecastModels[i].Date);
                       screwCompressorForecastModels[i].FDate = date;
                 }
-                var Data = screwCompressorForecastModels.Select(d => new { d.FDate, d.TD1, d.FTD1, }).ToList();
+                var Data = screwCompressorForecastModels.Select(d => new { d.FDate, d.FTD1, d.TD1, }).ToList();
                 return Ok(Data);
             }
             catch (Exception exe)

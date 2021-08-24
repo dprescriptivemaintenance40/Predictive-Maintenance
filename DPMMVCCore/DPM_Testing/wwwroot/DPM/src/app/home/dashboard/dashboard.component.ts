@@ -105,119 +105,119 @@ export class DashboardComponent {
   public PredictionDataBadCount: any = [];
   public state: any;
   public state1: any;
-    //For FutuerPrediction
-    public FutuerselectedYear: string = "";
-    public FutuerPredictedDate = [];
-    public FuterPredictyearlist = [];
-    public FutuerPredictionData: string = "";
-    public FutuerPredictionAllData: any;
-    public FutuerPredictionDataNormalCount: any = [];
-    public FutuerPredictionDataIncipientCount: any = [];
-    public FutuerPredictonDataDegradeCount: any = [];
-    public FutuerPredictionDataBadCount: any = [];
-    public FutuerPredictionDegradecount: number = 0;
-    public FutuerPredictionNormalcount: number = 0;
-    public FutuerPredictionIncipientcount: number = 0;
-    public FutuerPredictionbadcount: number = 0;
-    public FutuerPrediction: any = [];
-    public PredictionShow:boolean = true;
-    public FuterPredictionShow:boolean = false;
+  //For FutuerPrediction
+  public FutuerselectedYear: string = "";
+  public FutuerPredictedDate = [];
+  public FuterPredictyearlist = [];
+  public FutuerPredictionData: string = "";
+  public FutuerPredictionAllData: any;
+  public FutuerPredictionDataNormalCount: any = [];
+  public FutuerPredictionDataIncipientCount: any = [];
+  public FutuerPredictonDataDegradeCount: any = [];
+  public FutuerPredictionDataBadCount: any = [];
+  public FutuerPredictionDegradecount: number = 0;
+  public FutuerPredictionNormalcount: number = 0;
+  public FutuerPredictionIncipientcount: number = 0;
+  public FutuerPredictionbadcount: number = 0;
+  public FutuerPrediction: any = [];
+  public PredictionShow: boolean = true;
+  public FuterPredictionShow: boolean = false;
 
-    public td2: any = [];
-    public td1: any = [];
-    public ts1: any = [];
-    public ts2: any = [];
-    public TD2Data: any = [];
-    public CFPPrescriptiveId : number = 0 ;
-    public DatesforCSV : number = 0 ;
-    public date: string = "";
-    public CBIGraphs:string = "";
-
-
-    public DOA = new Date();
-    public ACC: string;
-    public AFP: string;
-    public RK: any = "L/M/H= M | HSECES= Y | CRIT= II";
-    public DAB: any;
-  
-    public incipient: number = 0;
-    public degrade: number = 0;
-    public normal: number = 0;
-  
-    public AFPincipient: number = 0;
-    public AFPdegrade: number = 0;
-    public AFPnormal: number = 0;
-  
-    public FinalAFPincipient: number = 0;
-    public FinalAFPdegrade: number = 0;
-    public FinalAFPnormal: number = 0;
-  
-    public totalCount: number = 0;
-    public AFPtotalCount: number = 0;
-    public FinalAFPTotalCount: number = 0;
-  
-    public incipientPerentage: number = 0
-    public degradePercentage: number = 0
-    public normalpercentage: number = 0
-    public PerformanceNumber: any = 0
-  
-    public AFPincipientPerentage: number = 0
-    public AFPdegradePercentage: number = 0
-    public AFPnormalpercentage: number = 0
-  
-    public finalPerformanceNumber: number = 0
-    public finalACCCalculation: number = 0;
-    public FinalAFCCalcuation: number = 0;
-    public screwWithPredictionDetails: any = []
-    public classificationDetails: any = []
-
-    public FinalNormal:any=[]
-    public FinalIncipient:any=[]
-    public FinaldDegrade:any=[]
-    public FinalBad:any=[]
+  public td2: any = [];
+  public td1: any = [];
+  public ts1: any = [];
+  public ts2: any = [];
+  public TD2Data: any = [];
+  public CFPPrescriptiveId: number = 0;
+  public DatesforCSV: number = 0;
+  public date: string = "";
+  public CBIGraphs: string = "";
 
 
-    public FPFinalNormal:any=[]
-    public FPFinalIncipient:any=[]
-    public FPFinaldDegrade:any=[]
-    public FPFinalBad:any=[]
+  public DOA = new Date();
+  public ACC: string;
+  public AFP: string;
+  public RK: any = "L/M/H= M | HSECES= Y | CRIT= II";
+  public DAB: any;
 
-    public forcastFinalNormal:any=[]
-    public forcastFinalIncipient:any=[]
-    public forcastFinaldDegrade:any=[]
-    public forcastFinalBad:any=[]
+  public incipient: number = 0;
+  public degrade: number = 0;
+  public normal: number = 0;
 
-    public ClassDegradepercentage=0
-    public ClassIncipientpercentage=0
-    public ClassNormalpercentage=0
+  public AFPincipient: number = 0;
+  public AFPdegrade: number = 0;
+  public AFPnormal: number = 0;
 
-    public csvData: any
-    public mergedarray: any;
-    public highlight_start: any
-    public highlight_end: any
+  public FinalAFPincipient: number = 0;
+  public FinalAFPdegrade: number = 0;
+  public FinalAFPnormal: number = 0;
 
-    public SCFinalNormal:any=[]
-    public SCFinalIncipient:any=[]
-    public SCFinaldDegrade:any=[]
-    public SCFinalBad:any=[]
-    public RiskMatrixLibraryRecords : any = [];
-    public EconmicConsequenceClass : string ="";
-    public CriticalityRating : string = "";
-    public MaintenanceStrategyList : any =[];
-    public SavedPCRRecordsList : any =[];
-    public SkillLibraryAllrecords : any =[];
-    public PSRClientContractorData : any = [];
-    public UserProductionCost : number = 0;
+  public totalCount: number = 0;
+  public AFPtotalCount: number = 0;
+  public FinalAFPTotalCount: number = 0;
 
-    public Skill_risk_Graph:boolean = false;
-    public MEI_risk_Graph:boolean = false;
-    public residual_risk_Graph:boolean = false;
-    public ecomomic_risk_Graph:boolean = false;
-    public UserData: any = []
-    private userModel: any;
-    private SkillLibraryData: any = [];
-    public PSRModel: any =[];
-    public showcbi:boolean=false;
+  public incipientPerentage: number = 0
+  public degradePercentage: number = 0
+  public normalpercentage: number = 0
+  public PerformanceNumber: any = 0
+
+  public AFPincipientPerentage: number = 0
+  public AFPdegradePercentage: number = 0
+  public AFPnormalpercentage: number = 0
+
+  public finalPerformanceNumber: number = 0
+  public finalACCCalculation: number = 0;
+  public FinalAFCCalcuation: number = 0;
+  public screwWithPredictionDetails: any = []
+  public classificationDetails: any = []
+
+  public FinalNormal: any = []
+  public FinalIncipient: any = []
+  public FinaldDegrade: any = []
+  public FinalBad: any = []
+
+
+  public FPFinalNormal: any = []
+  public FPFinalIncipient: any = []
+  public FPFinaldDegrade: any = []
+  public FPFinalBad: any = []
+
+  public forcastFinalNormal: any = []
+  public forcastFinalIncipient: any = []
+  public forcastFinaldDegrade: any = []
+  public forcastFinalBad: any = []
+
+  public ClassDegradepercentage = 0
+  public ClassIncipientpercentage = 0
+  public ClassNormalpercentage = 0
+
+  public csvData: any
+  public mergedarray: any;
+  public highlight_start: any
+  public highlight_end: any
+
+  public SCFinalNormal: any = []
+  public SCFinalIncipient: any = []
+  public SCFinaldDegrade: any = []
+  public SCFinalBad: any = []
+  public RiskMatrixLibraryRecords: any = [];
+  public EconmicConsequenceClass: string = "";
+  public CriticalityRating: string = "";
+  public MaintenanceStrategyList: any = [];
+  public SavedPCRRecordsList: any = [];
+  public SkillLibraryAllrecords: any = [];
+  public PSRClientContractorData: any = [];
+  public UserProductionCost: number = 0;
+
+  public Skill_risk_Graph: boolean = false;
+  public MEI_risk_Graph: boolean = false;
+  public residual_risk_Graph: boolean = false;
+  public ecomomic_risk_Graph: boolean = false;
+  public UserData: any = []
+  private userModel: any;
+  private SkillLibraryData: any = [];
+  public PSRModel: any = [];
+  public showcbi: boolean = false;
 
 
   constructor(private title: Title,
@@ -228,24 +228,24 @@ export class DashboardComponent {
     private dashboardContantAPI: DashboardConstantAPI,
     private dashboardContantMethod: CommonBLService,
     private changeDetectorRef: ChangeDetectorRef,
-    private screwCompressorAPIName : SCConstantsAPI,
-    private screwCompressorMethod : CommonBLService,
+    private screwCompressorAPIName: SCConstantsAPI,
+    private screwCompressorMethod: CommonBLService,
     private profileAPIName: ProfileConstantAPI,
-    private commonBLervice : CommonBLService,
-    private PSRAPIs : PrescriptiveContantAPI,
+    private commonBLervice: CommonBLService,
+    private PSRAPIs: PrescriptiveContantAPI,
     private configService: ConfigService,
     private location: Location,
     private route: ActivatedRoute,
 
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
-    this.state = window.history.state; 
-    if (!!this.state.CFPPrescriptiveId) { 
-      this.CFPPrescriptiveId= this.state.CFPPrescriptiveId;
-      this.ETBF=this.state.ETBF 
+    this.state = window.history.state;
+    if (!!this.state.CFPPrescriptiveId) {
+      this.CFPPrescriptiveId = this.state.CFPPrescriptiveId;
+      this.ETBF = this.state.ETBF
       this.CBAWithId(this.CFPPrescriptiveId)
     }
-    this.date =  moment().add(1, 'days').format('YYYY-MM-DD');
+    this.date = moment().add(1, 'days').format('YYYY-MM-DD');
     this.GetReportRecords()
     this.userModel = JSON.parse(localStorage.getItem('userObject'));
     this.GetPSRClientContractorData();
@@ -264,77 +264,90 @@ export class DashboardComponent {
     this.GerAllPredictionRecords();
     this.dygraph()
     this.ComboDates()
-    this.CBICharts() 
- 
+    this.CBICharts()
+
 
   }
 
-  public CBI_etbf:number = 0;
-  public ETBFWithConstraint:number = 0;
-  public MEIWithDPMWithConstraint:number = 0;
-  public MEIWithDPMWithoutConstraint:number = 0;
-  public MEIWithoutDPM:number = 0;
-  public OverallETBC:number = 0;
-  public TotalAnnualCostWithMaintenance:number = 0;
-  public TotalAnnualPOC:number = 0;
-  public TotalPONC:number = 0;
-  public VendorETBC:number = 0;
-  public EconomicRiskWithDPM:number = 0;
-  public EconomicRiskWithOutDPM:number = 0;
-  public EconomicRiskWithConstraintDPMCR:number = 0;
+  public CBI_etbf: number = 0;
+  public ETBFWithConstraint: number = 0;
+  public MEIWithDPMWithConstraint: number = 0;
+  public MEIWithDPMWithoutConstraint: number = 0;
+  public MEIWithoutDPM: number = 0;
+  public OverallETBC: number = 0;
+  public TotalAnnualCostWithMaintenance: number = 0;
+  public TotalAnnualPOC: number = 0;
+  public TotalPONC: number = 0;
+  public VendorETBC: number = 0;
 
- 
+  public EconomicRiskWithDPM: number = 0;
+  public EconomicRiskWithOutDPM: number = 0;
+  public EconomicRiskWithConstraintDPM: number = 0;
+
+  public ResidualRiskWithDPM: number = 0;
+  public ResidualRiskWithOutDPM: number = 0;
+  public ResidualRiskWithConstraintDPMCR: number = 0;
+
+  public EconomicRiskWithDPMCR: string = "";
+
   getUserDetails() {
-    if(!!localStorage.getItem('CBAOBJ')){
-    this.UserData = JSON.parse(localStorage.getItem('CBAOBJ'));
-    this.CBI_etbf= JSON.parse(localStorage.getItem('CBAOBJ')).ETBF;
-    this.OverallETBC= JSON.parse(localStorage.getItem('CBAOBJ')).OverallETBC;
-    this.TotalAnnualPOC= JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
-    this.TotalPONC= JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
-    this.VendorETBC= JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
-    this.EconomicRiskWithDPM= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
-    this.EconomicRiskWithOutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPM;
-    this.EconomicRiskWithConstraintDPMCR= JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithConstraintDPMCR;
+    if (!!localStorage.getItem('CBAOBJ')) {
+      this.UserData = JSON.parse(localStorage.getItem('CBAOBJ'));
+      this.CBI_etbf = JSON.parse(localStorage.getItem('CBAOBJ')).ETBF;
+      this.OverallETBC = JSON.parse(localStorage.getItem('CBAOBJ')).OverallETBC;
+      this.TotalAnnualPOC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
+      this.TotalPONC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
+      this.VendorETBC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
+      this.EconomicRiskWithDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCR;
 
-    this.MEIWithDPMWithoutConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPM;
-    this.MEIWithDPMWithConstraint= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMConstraint;
-    this.MEIWithoutDPM= JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
-    this.showcbi=true;
- 
-  }
+      this.EconomicRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
+      this.EconomicRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPM;
+      this.EconomicRiskWithConstraintDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraint;
+
+      this.MEIWithDPMWithoutConstraint = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPM;
+      this.MEIWithDPMWithConstraint = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMConstraint;
+      this.MEIWithoutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
+
+      this.ResidualRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCRValue;
+      this.ResidualRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPMCRValue;
+      this.ResidualRiskWithConstraintDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraintCRValue;
+
+      this.showcbi = true;
+
+    }
   }
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
       .subscribe((res: any) => {
-        this.PrescriptiveRecordsList =res;
-        this.MachineType=  this.PrescriptiveRecordsList[0].MachineType 
-        this.EquipmentType= this.PrescriptiveRecordsList[0].EquipmentType
-        this.SelectedTagNumber= this.PrescriptiveRecordsList[0].TagNumber
+        this.PrescriptiveRecordsList = res;
+        this.MachineType = this.PrescriptiveRecordsList[0].MachineType
+        this.EquipmentType = this.PrescriptiveRecordsList[0].EquipmentType
+        this.SelectedTagNumber = this.PrescriptiveRecordsList[0].TagNumber
         // this.SelectedTagNumber= this.PrescriptiveRecordsList[11].TagNumber
-        this.getRecordsByEqui() 
+        this.getRecordsByEqui()
       });
   }
-  RouteToTrain(){
-    this.router.navigateByUrl('/Home/Compressor/ScrewTrain'); 
+  RouteToTrain() {
+    this.router.navigateByUrl('/Home/Compressor/ScrewTrain');
   }
-  RouteToPredict(){
-    this.router.navigateByUrl('/Home/Compressor/ScrewPrediction'); 
+  RouteToPredict() {
+    this.router.navigateByUrl('/Home/Compressor/ScrewPrediction');
   }
-  RouteToCostBenifit(){
-     this.router.navigateByUrl('/Home/CostBenefitAnalysis');
+  RouteToCostBenifit() {
+    this.router.navigateByUrl('/Home/CostBenefitAnalysis');
   }
-  ComboDates(){
-    if(this.date =="1Week"){
-      this.date =  moment().add(7, 'days').format('YYYY-MM-DD');
+  ComboDates() {
+    if (this.date == "1Week") {
+      this.date = moment().add(7, 'days').format('YYYY-MM-DD');
       this.dygraph()
-    }else if(this.date =="15days"){
-      this.date =  moment().add(15, 'days').format('YYYY-MM-DD');
+    } else if (this.date == "15days") {
+      this.date = moment().add(15, 'days').format('YYYY-MM-DD');
       this.dygraph()
-    }else if(this.date =="1Month"){
-      this.date =  moment().add(30, 'days').format('YYYY-MM-DD');
+    } else if (this.date == "1Month") {
+      this.date = moment().add(30, 'days').format('YYYY-MM-DD');
       this.dygraph()
     }
-    
+
   }
   isDateInArray(needle, haystack) {
     for (var i = 0; i < haystack.length; i++) {
@@ -377,25 +390,25 @@ export class DashboardComponent {
       .subscribe(
         res => {
           this.ScrewPredictionAllData = res;
-          var Data : any = []
+          var Data: any = []
           Data = res;
-          Data.sort((a,b)=>( moment(a.InsertedDate) > moment(b.InsertedDate) ? 1 : -1 ));
+          Data.sort((a, b) => (moment(a.InsertedDate) > moment(b.InsertedDate) ? 1 : -1));
           Data.reverse();
-          var incipient =0, degrade=0, normal =0;
-          var counter : number =0;
+          var incipient = 0, degrade = 0, normal = 0;
+          var counter: number = 0;
           for (let index = 0; index < Data.length; index++) {
-            if((Data[index].Prediction).toLowerCase() === 'normal'){
+            if ((Data[index].Prediction).toLowerCase() === 'normal') {
               normal = normal + 1;
-            }else if((Data[index].Prediction).toLowerCase() === 'incipient'){
+            } else if ((Data[index].Prediction).toLowerCase() === 'incipient') {
               incipient = incipient + 1;
-            }else if((Data[index].Prediction).toLowerCase() === 'degrade' || (Data[index].Prediction).toLowerCase() === 'degarde'){
+            } else if ((Data[index].Prediction).toLowerCase() === 'degrade' || (Data[index].Prediction).toLowerCase() === 'degarde') {
               degrade = degrade + 1;
             }
             counter = counter + 1;
-            if(counter === 100){
-              if(incipient > 60){
+            if (counter === 100) {
+              if (incipient > 60) {
                 this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'RCM is recomended' });
-              }else if(degrade > 60){
+              } else if (degrade > 60) {
                 this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Machine starts for degradation, RCA is recomended' });
               }
               break;
@@ -433,7 +446,7 @@ export class DashboardComponent {
 
           });
           this.ScrewPredictionAllData.forEach(predict => {
-             this.PredictionData = predict.Prediction;
+            this.PredictionData = predict.Prediction;
             let Predictyeardata = { PredictyearId: 0, Predictyearname: '' };
             Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
             this.PInsertedDate.push(Predictyeardata);
@@ -447,9 +460,9 @@ export class DashboardComponent {
             return m;
           }, []);
 
-          var Degradepercentage 
+          var Degradepercentage
           var Incipientpercentage
-          var Normalpercentage 
+          var Normalpercentage
           for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
             if (this.Prediction[i] == "degarde" || this.Prediction[i] == "degrade") {
               this.PredictionDegradecount = this.PredictionDegradecount + 1
@@ -460,14 +473,14 @@ export class DashboardComponent {
             } else
               this.Predictionbadcount = this.Predictionbadcount + 1
           }
-          Degradepercentage= (this.Degradecount/this.ScrewPredictionAllData.length )*100
-          Incipientpercentage= (this.Incipientcount/this.ScrewPredictionAllData.length )*100
-          Normalpercentage= (this.Normalcount/this.ScrewPredictionAllData.length )*100
+          Degradepercentage = (this.Degradecount / this.ScrewPredictionAllData.length) * 100
+          Incipientpercentage = (this.Incipientcount / this.ScrewPredictionAllData.length) * 100
+          Normalpercentage = (this.Normalcount / this.ScrewPredictionAllData.length) * 100
 
           this.PredictionAllRecordDonught();
           this.PredictionAllRecordBarcharts();
-           this.PredictionAllRecordPie();
-           this.GenerateReport()
+          this.PredictionAllRecordPie();
+          this.GenerateReport()
         }, error => {
           console.log(error.error)
         })
@@ -502,9 +515,9 @@ export class DashboardComponent {
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
     this.PredictionAllRecordBarcharts()
-   // this.PredictionAllRecordDonught()
+    // this.PredictionAllRecordDonught()
     // this.PredictionAllRecordPie()
-}
+  }
   PredictFModeType() {
     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
@@ -549,8 +562,8 @@ export class DashboardComponent {
             this.ClassificationData = r.Classification;
             r.FailureModeType
             this.FailuerModetypeFilteredData
-             this.td2 = r.TD2
-              this.TD2Data.push(this.td2 )
+            this.td2 = r.TD2
+            this.TD2Data.push(this.td2)
 
             this.FailuerModetypeFilteredData1 = { FMId: 0, FMname: '' };
             this.FailuerModetypeFilteredData1.FMname = r.FailureModeType
@@ -619,16 +632,16 @@ export class DashboardComponent {
             } else
               this.badcount = this.badcount + 1
           }
-          ClassDegradepercentage= ((this.Degradecount/this.ScrewCompressorAllData.length )*100).toFixed(2);
-          ClassIncipientpercentage= ((this.Incipientcount/this.ScrewCompressorAllData.length )*100).toFixed(2);
-          ClassNormalpercentage= ((this.Normalcount/this.ScrewCompressorAllData.length )*100).toFixed(2);
+          ClassDegradepercentage = ((this.Degradecount / this.ScrewCompressorAllData.length) * 100).toFixed(2);
+          ClassIncipientpercentage = ((this.Incipientcount / this.ScrewCompressorAllData.length) * 100).toFixed(2);
+          ClassNormalpercentage = ((this.Normalcount / this.ScrewCompressorAllData.length) * 100).toFixed(2);
 
           this.AllRecordBarcharts();
           this.ClassificationOfAllRecordDonught();
           this.GenerateReport()
-           this.ClassificationOfAllpolarchart()
+          this.ClassificationOfAllpolarchart()
           // this.ScatterChart()
-        
+
         }, error => {
           console.log(error.error)
         }
@@ -708,7 +721,7 @@ export class DashboardComponent {
     // this.ClassificationOfAllRecordDonught()
     //  this.ComboChart();
   }
-  public PrescriptiveRecordsList : any=[];
+  public PrescriptiveRecordsList: any = [];
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
       this.EquipmentList = []
@@ -718,11 +731,11 @@ export class DashboardComponent {
       this.EquipmentList = []
       this.EquipmentList = ["Screw Compressor"]
     }
-    
-    var list = this.PrescriptiveRecordsList.filter(r=>r.EquipmentType === this.EquipmentType)
+
+    var list = this.PrescriptiveRecordsList.filter(r => r.EquipmentType === this.EquipmentType)
     this.TagList = []
     list.forEach(element => {
-        this.TagList.push(element.TagNumber)
+      this.TagList.push(element.TagNumber)
     });
   }
   getAllRecordsbyTag() {
@@ -734,21 +747,21 @@ export class DashboardComponent {
       });
   }
 
-  CBAWithId(CFPPrescriptiveId){
+  CBAWithId(CFPPrescriptiveId) {
     const params = new HttpParams()
-    .set("cfprescriptiveId", CFPPrescriptiveId)
+      .set("cfprescriptiveId", CFPPrescriptiveId)
     var url: string = this.dashboardContantAPI.CBARecorsWithId
-   this.dashboardContantMethod.getWithParameters(url, params)
-    .subscribe((res: any) => {
-      this.prescriptiveRecords=[]
-      this.prescriptiveRecords = res;
-      this.DynamicCBA(res)
-    }, err => {
-      console.log(err.err);
-    });
+    this.dashboardContantMethod.getWithParameters(url, params)
+      .subscribe((res: any) => {
+        this.prescriptiveRecords = []
+        this.prescriptiveRecords = res;
+        this.DynamicCBA(res)
+      }, err => {
+        console.log(err.err);
+      });
   }
- public etbf_Values:number=0
-  DynamicCBA(res){
+  public etbf_Values: number = 0
+  DynamicCBA(res) {
     this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
     this.CFrequencyMaintainenance = res.CFrequencyMaintainenance
     this.CConditionMonitoring = res.CConditionMonitoring
@@ -777,12 +790,12 @@ export class DashboardComponent {
       row.ETBC = 10;
       row.TotalPONC = 194.4872;
       row.ETBF = this.ETBF ? this.ETBF : 2;
-      this.etbf_Values=row.ETBF
+      this.etbf_Values = row.ETBF
       row.TotalAnnualCostWithMaintenance = 1.777;
       row.EconomicRiskWithoutMaintenance = (row.TotalPONC / row.ETBF).toFixed(3);
       this.DPMWithoutCost = row.EconomicRiskWithoutMaintenance
       row.ResidualRiskWithMaintenance = parseFloat((row.TotalAnnualCostWithMaintenance - row.TotalAnnualPOC).toFixed(3));
-       this.DPMCost = row.ResidualRiskWithMaintenance
+      this.DPMCost = row.ResidualRiskWithMaintenance
       let WithETBCAndPONC = row.TotalPONC / row.ETBC;
       let WithoutETBCAndPONC = row.TotalPONC / 5;
       row.WithMEI = (((row.TotalPONC / row.ETBF) - (row.TotalPONC / row.ETBC)) / WithETBCAndPONC).toFixed(0);
@@ -791,20 +804,20 @@ export class DashboardComponent {
       this.DPMWithoutMEI = row.WithOutMEI
       row.ConsequenceCategory = row.Consequence.split(' ')[0];
     });
-    
+
     // this.CostRisk = true; 
     //  this.gaugechartwithDPM()
     //  this.gaugechartwithoutDPM()
-     this.CBICharts()
-     this.ALLGraphCBA()
+    this.CBICharts()
+    this.ALLGraphCBA()
   }
 
   getRecordsByEqui() {
-    if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) { 
+    if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
       this.prescriptiveRecords = [];
       this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
         .subscribe((res: any) => {
-          this.prescriptiveRecords=[]
+          this.prescriptiveRecords = []
           this.prescriptiveRecords = res;
           this.DynamicCBA(res)
         }, err => {
@@ -817,17 +830,17 @@ export class DashboardComponent {
 
   }
   gaugechartwithDPM() {
-    var x= this.DPMMEI *100
-    var y : number = + this.DPMMEI
-    var z:number= +this.DPMWithoutMEI
-    var w:number= y+z
-    var WithDPM_MEI = (x /w).toFixed(0)
+    var x = this.DPMMEI * 100
+    var y: number = + this.DPMMEI
+    var z: number = +this.DPMWithoutMEI
+    var w: number = y + z
+    var WithDPM_MEI = (x / w).toFixed(0)
 
-    var xcost= this.DPMCost *100
-    var ycost : number = + this.DPMCost
-    var zcost:number= +this.DPMWithoutCost
-    var wcost:number= ycost+zcost
-    var WithDPM_Cost= (xcost /wcost).toFixed(0)
+    var xcost = this.DPMCost * 100
+    var ycost: number = + this.DPMCost
+    var zcost: number = +this.DPMWithoutCost
+    var wcost: number = ycost + zcost
+    var WithDPM_Cost = (xcost / wcost).toFixed(0)
     this.changeDetectorRef.detectChanges();
     // this.chart = new Chart('gaugechart', {
     //   type: 'doughnut',
@@ -860,7 +873,7 @@ export class DashboardComponent {
             barPercentage: 12,
             barThickness: 30,
             maxBarThickness: 38,
-          }, 
+          },
           {
             label: "Total Cost",
             data: [WithDPM_Cost],
@@ -869,7 +882,7 @@ export class DashboardComponent {
             barPercentage: 12,
             barThickness: 30,
             maxBarThickness: 28,
-          }, 
+          },
           {
             label: " Economic Risk",
             data: [3,],
@@ -882,17 +895,17 @@ export class DashboardComponent {
 
         ],
         options: {
-         scales: {
-           yAxes: [{
-             ticks: {
-              steps: 10,
-              stepValue: 5,
+          scales: {
+            yAxes: [{
+              ticks: {
+                steps: 10,
+                stepValue: 5,
                 max: 100,
                 beginAtZero: true
-             }
-           }]
-         }
-       }
+              }
+            }]
+          }
+        }
       },
     });
 
@@ -900,30 +913,30 @@ export class DashboardComponent {
   }
   gaugechartwithoutDPM() {
 
-    var x= this.DPMMEI *100
-    var y : number = + this.DPMMEI
-    var z:number= +this.DPMWithoutMEI
-    var w:number= y+z
-    var WithDPM_MEI = (x /w).toFixed(0)
+    var x = this.DPMMEI * 100
+    var y: number = + this.DPMMEI
+    var z: number = +this.DPMWithoutMEI
+    var w: number = y + z
+    var WithDPM_MEI = (x / w).toFixed(0)
 
-    var xcost= this.DPMCost *100
-    var ycost : number = + this.DPMCost
-    var zcost:number= +this.DPMWithoutCost
-    var wcost:number= ycost+zcost
-    var WithDPM_Cost= (xcost /wcost).toFixed(0)
+    var xcost = this.DPMCost * 100
+    var ycost: number = + this.DPMCost
+    var zcost: number = +this.DPMWithoutCost
+    var wcost: number = ycost + zcost
+    var WithDPM_Cost = (xcost / wcost).toFixed(0)
     this.changeDetectorRef.detectChanges();
 
-    var a= this.DPMWithoutMEI *100
-    var b : number = + this.DPMWithoutMEI
-    var c:number= +this.DPMMEI
-    var d:number= b+c
-    var WithoutDPM_MEI = (a /d).toFixed(0)
+    var a = this.DPMWithoutMEI * 100
+    var b: number = + this.DPMWithoutMEI
+    var c: number = +this.DPMMEI
+    var d: number = b + c
+    var WithoutDPM_MEI = (a / d).toFixed(0)
 
-    var acost= this.DPMWithoutCost *100
-    var bcost : number = + this.DPMWithoutCost
-    var ccost:number= +this.DPMCost
-    var dcost:number= bcost+ccost
-    var WithoutDPM_Cost= (acost /dcost).toFixed(0)
+    var acost = this.DPMWithoutCost * 100
+    var bcost: number = + this.DPMWithoutCost
+    var ccost: number = +this.DPMCost
+    var dcost: number = bcost + ccost
+    var WithoutDPM_Cost = (acost / dcost).toFixed(0)
 
     this.changeDetectorRef.detectChanges();
     // this.chart = new Chart('canvasDPM', {
@@ -958,7 +971,7 @@ export class DashboardComponent {
             barPercentage: 12,
             barThickness: 30,
             maxBarThickness: 38,
-          }, 
+          },
           {
             label: "Total Cost",
             data: [WithoutDPM_Cost],
@@ -976,21 +989,21 @@ export class DashboardComponent {
             barPercentage: 12,
             barThickness: 30,
             maxBarThickness: 38,
-          },  
+          },
 
         ],
         options: {
-         scales: {
-           yAxes: [{
-             ticks: {
-              steps: 10,
-              stepValue: 1,
+          scales: {
+            yAxes: [{
+              ticks: {
+                steps: 10,
+                stepValue: 1,
                 max: 100,
                 beginAtZero: true
-             }
-           }]
-         }
-       }
+              }
+            }]
+          }
+        }
       },
     });
   }
@@ -1025,17 +1038,17 @@ export class DashboardComponent {
       } else
         this.badcount = this.badcount + 1
     }
-    this.ClassDegradepercentage= (this.Degradecount/this.ScrewCompressorAllData.length )*100
-    this.ClassIncipientpercentage= (this.Incipientcount/this.ScrewCompressorAllData.length )*100
-    this.ClassNormalpercentage= (this.Normalcount/this.ScrewCompressorAllData.length )*100
+    this.ClassDegradepercentage = (this.Degradecount / this.ScrewCompressorAllData.length) * 100
+    this.ClassIncipientpercentage = (this.Incipientcount / this.ScrewCompressorAllData.length) * 100
+    this.ClassNormalpercentage = (this.Normalcount / this.ScrewCompressorAllData.length) * 100
 
     this.chart = new Chart('canvasClass', {
       type: 'doughnut',
       data: {
-        labels: ["Normal", "incipient", "Degrade"],
+        labels: ["Normal", "Incipient", "Degrade"],
         datasets: [
           {
-            backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
+            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
             data: [this.ClassNormalpercentage, this.ClassIncipientpercentage, this.ClassDegradepercentage]
           }
         ]
@@ -1050,94 +1063,109 @@ export class DashboardComponent {
   ClassificationOfAllpolarchart() {
     this.changeDetectorRef.detectChanges();
     this.ScrewCompressorAllData.sort()
-    var LabelDates : any = [];
+    var LabelDates: any = [];
     this.yearlist.forEach(element => {
-     LabelDates.push(element.yearname)
+      LabelDates.push(element.yearname)
+      LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     });
 
-    for(var i=0; i < this.yearlist.length; ++i) {
-     var SCFPnormal =0
-     var SCFPincipient =0
-     var SCFPdegrade =0
-     var SCFPbad =0
-     var SCcounter = 0
-     this.ScrewCompressorAllData.forEach(value => {
-       var a = moment(value.InsertedDate).format('YYYY')
-       if(a == this.yearlist[i].yearname){
-         if (value.Classification == 'normal') {
-           SCFPnormal = SCFPnormal + 1
-         } else if (value.Classification == 'incipient') {
-           SCFPincipient = SCFPincipient + 1
-         } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
-           SCFPdegrade = SCFPdegrade + 1
-         } else {
-           SCFPbad = SCFPbad + 1
-         }
-         SCcounter=SCcounter+1
-       }
+    for (var i = 0; i < this.yearlist.length; ++i) {
+      var SCFPnormal = 0
+      var SCFPincipient = 0
+      var SCFPdegrade = 0
+      var SCFPbad = 0
+      var SCcounter = 0
+      this.ScrewCompressorAllData.forEach(value => {
+        var a = moment(value.InsertedDate).format('YYYY')
+        if (a == this.yearlist[i].yearname) {
+          if (value.Classification == 'normal') {
+            SCFPnormal = SCFPnormal + 1
+          } else if (value.Classification == 'incipient') {
+            SCFPincipient = SCFPincipient + 1
+          } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
+            SCFPdegrade = SCFPdegrade + 1
+          } else {
+            SCFPbad = SCFPbad + 1
+          }
+          SCcounter = SCcounter + 1
+        }
 
       });
-      SCFPnormal= ((SCFPnormal/SCcounter)*100)
-      SCFPincipient=((SCFPincipient/SCcounter)*100)
-      SCFPdegrade=((SCFPdegrade/SCcounter)*100)
-      SCFPbad=((SCFPbad/SCcounter)*100)
+      SCFPnormal = ((SCFPnormal / SCcounter) * 100)
+      SCFPincipient = ((SCFPincipient / SCcounter) * 100)
+      SCFPdegrade = ((SCFPdegrade / SCcounter) * 100)
+      SCFPbad = ((SCFPbad / SCcounter) * 100)
 
-     this.FinalNormal.push(SCFPnormal)
-     this.SCFinalIncipient.push(SCFPincipient)
-     this.SCFinaldDegrade.push(SCFPdegrade)
-     this.SCFinalBad.push(SCFPbad)
-    
+      this.FinalNormal.push(SCFPnormal)
+      this.SCFinalIncipient.push(SCFPincipient)
+      this.SCFinaldDegrade.push(SCFPdegrade)
+      this.SCFinalBad.push(SCFPbad)
+
     }
 
-   this.changeDetectorRef.detectChanges();
-   this.chart = new Chart("polarArea", {
-     type:"bar",
-     data: {
-      labels: LabelDates,
-       fill: true,
-       datasets: [
-         {
-           label: "Normal",
-           data: this.SCFinalNormal,
-           borderWidth: 1,
-           borderColor: "#3cd3d8",
-           backgroundColor: '#3cd3d8',
-           fill: true,
-         }, 
-         {
-           label: "Incipient",
-           data: this.SCFinalIncipient,
-           borderWidth: 1,
-           borderColor: "#ffb801",
-           backgroundColor: '#ffb801',
-           fill: true,
-         }, 
-         {
-           label: "Degrade",
-           data: this.SCFinaldDegrade,
-           borderWidth: 1,
-           borderColor: "#fe4c61",
-           backgroundColor: '#fe4c61',
-           fill: true,
-         },
-         {
-           label: "Bad",
-           data: this.SCFinalBad,
-           borderWidth: 1,
-           borderColor: "blue",
-           backgroundColor: 'blue',
-           fill: true,
-         },  
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("polarArea", {
+      type: "bar",
+      data: {
+        labels: LabelDates,
+        fill: true,
+        datasets: [
+          {
+            label: "Normal",
+            data: this.SCFinalNormal,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
+          },
+          {
+            label: "Incipient",
+            data: this.SCFinalIncipient,
+            borderWidth: 1,
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
+            fill: true,
+          },
+          {
+            label: "Degrade",
+            data: this.SCFinaldDegrade,
+            borderWidth: 1,
+            borderColor: "#fe4c61",
+            backgroundColor: '#fe4c61',
+            fill: true,
+          },
+          {
+            label: "Bad",
+            data: this.SCFinalBad,
+            borderWidth: 1,
+            borderColor: "blue",
+            backgroundColor: 'blue',
+            fill: true,
+          },
 
-       ],
-     },
-
-   });
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
   }
 
   AllRecordBarcharts() {
     this.changeDetectorRef.detectChanges();
-    if (this.state.TrainnNavigate == 2) { 
+    if (this.state.TrainnNavigate == 2) {
       var elmnt = document.getElementById("Trainnavigate");
       elmnt.scrollIntoView();
     }
@@ -1154,6 +1182,7 @@ export class DashboardComponent {
     dateForFilter.forEach((value) => {
       var Date = moment(value).format('YYYY-MM-DD');
       dateForFilter1.push(Date);
+      dateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     });
     for (var i = 0; i < dateForFilter1.length; i++) {
       var a = [];
@@ -1198,7 +1227,7 @@ export class DashboardComponent {
             label: "Normal",
             data: this.TrainDataNormalCount,
             borderWidth: 1,
-            backgroundColor: "#3cd3d8",
+            backgroundColor: "#008000",
           },
           {
             label: "Degrade",
@@ -1227,18 +1256,18 @@ export class DashboardComponent {
       // }
       options: {
         events: [],
-       scales: {
-         xAxes: [{
+        scales: {
+          xAxes: [{
             stacked: true,
-         }],
-         yAxes: [{
+          }],
+          yAxes: [{
             stacked: true,
-           ticks: {
-           
-           }
-         }]
-       }
-     }
+            ticks: {
+
+            }
+          }]
+        }
+      }
     });
   }
 
@@ -1289,25 +1318,26 @@ export class DashboardComponent {
     //   }
     // });
     this.changeDetectorRef.detectChanges();
-     this.ScrewPredictionAllData.sort()
+    this.ScrewPredictionAllData.sort()
 
-     var LabelDatess : any = [];
-     this.Predictyearlist.forEach(element  => {
-      LabelDatess = LabelDatess.filter(function( element ) {
+    var LabelDatess: any = [];
+    this.Predictyearlist.forEach(element => {
+      LabelDatess = LabelDatess.filter(function (element) {
         return element !== undefined;
-     });
+      });
       LabelDatess.push(element.Predictyearname)
-     });
- 
-     for(var i=0; i < this.Predictyearlist.length; ++i) {
-      var FPnormal =0
-      var FPincipient =0
-      var FPdegrade =0
-      var FPbad =0
+      LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    });
+
+    for (var i = 0; i < this.Predictyearlist.length; ++i) {
+      var FPnormal = 0
+      var FPincipient = 0
+      var FPdegrade = 0
+      var FPbad = 0
       var counter = 0
       this.ScrewPredictionAllData.forEach(value => {
         var a = moment(value.InsertedDate).format('YYYY')
-        if(a == this.Predictyearlist[i].Predictyearname){
+        if (a == this.Predictyearlist[i].Predictyearname) {
           if (value.Prediction == 'normal') {
             FPnormal = FPnormal + 1
           } else if (value.Prediction == 'incipient') {
@@ -1317,37 +1347,37 @@ export class DashboardComponent {
           } else {
             FPbad = FPbad + 1
           }
-          counter=counter+1
+          counter = counter + 1
         }
 
-       });
-       FPnormal= ((FPnormal/counter)*100)
-       FPincipient=((FPincipient/counter)*100)
-       FPdegrade=((FPdegrade/counter)*100)
-       FPbad=((FPbad/counter)*100)
+      });
+      FPnormal = ((FPnormal / counter) * 100)
+      FPincipient = ((FPincipient / counter) * 100)
+      FPdegrade = ((FPdegrade / counter) * 100)
+      FPbad = ((FPbad / counter) * 100)
 
       this.FPFinalNormal.push(FPnormal)
       this.FPFinalIncipient.push(FPincipient)
       this.FPFinaldDegrade.push(FPdegrade)
       this.FPFinalBad.push(FPbad)
-     
-     }
+
+    }
 
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictioncanvasClass", {
-      type:"bar",
+      type: "bar",
       data: {
-       labels: LabelDatess,
+        labels: LabelDatess,
         fill: true,
         datasets: [
           {
             label: "Normal",
             data: this.FPFinalNormal,
             borderWidth: 1,
-            borderColor: "#3cd3d8",
-            backgroundColor: '#3cd3d8',
+            borderColor: "#008000",
+            backgroundColor: '#008000',
             fill: true,
-          }, 
+          },
           {
             label: "Incipient",
             data: this.FPFinalIncipient,
@@ -1355,7 +1385,7 @@ export class DashboardComponent {
             borderColor: "#ffb801",
             backgroundColor: '#ffb801',
             fill: true,
-          }, 
+          },
           {
             label: "Degrade",
             data: this.FPFinaldDegrade,
@@ -1371,13 +1401,25 @@ export class DashboardComponent {
             borderColor: "blue",
             backgroundColor: 'blue',
             fill: true,
-          },  
+          },
 
         ],
       },
       options: {
-
-          }
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
 
     });
   }
@@ -1401,10 +1443,10 @@ export class DashboardComponent {
       }
 
     });
-    var Degradepercentage 
+    var Degradepercentage
     var Incipientpercentage
-    var Normalpercentage 
- 
+    var Normalpercentage
+
     a.forEach(element => {
       if (element == 'normal') {
         this.PredictionNormalcount = this.PredictionNormalcount + 1;
@@ -1414,20 +1456,20 @@ export class DashboardComponent {
         this.PredictionDegradecount = this.PredictionDegradecount + 1;
       }
     });
-    Degradepercentage= ((this.PredictionDegradecount/a.length )*100).toFixed(2);
-    Incipientpercentage= ((this.PredictionIncipientcount/a.length )*100).toFixed(2);
-    Normalpercentage= ((this.PredictionNormalcount/a.length )*100).toFixed(2);
+    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
+    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
+    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
 
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionPie", {
       type: 'pie',
       data: {
-        labels: ["Normal", "incipient", "Degrade"],
+        labels: ["Normal", "Incipient", "Degrade"],
         fill: true,
         datasets: [
           {
-            backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
-            data: [Normalpercentage,Incipientpercentage,Degradepercentage]
+            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
+            data: [Normalpercentage, Incipientpercentage, Degradepercentage]
           }
         ]
       },
@@ -1437,7 +1479,7 @@ export class DashboardComponent {
 
   PredictionAllRecordBarcharts() {
     this.changeDetectorRef.detectChanges();
-    if (this.state.PredictionNavigate == 1) { 
+    if (this.state.PredictionNavigate == 1) {
       // const element = document.querySelector("#Predictionnavigate")
       //  element.scrollIntoView({ behavior: 'smooth', block: 'center' })
       var elmnt = document.getElementById("Predictionnavigate");
@@ -1457,6 +1499,7 @@ export class DashboardComponent {
     dateForFilter.forEach((value) => {
       var Date = moment(value).format('YYYY-MM-DD');
       dateForFilter1.push(Date);
+      dateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     });
     for (var i = 0; i < dateForFilter1.length; i++) {
       var a = [];
@@ -1508,8 +1551,8 @@ export class DashboardComponent {
             label: "Normal",
             data: this.PredictionDataNormalCount,
             borderWidth: 1,
-            borderColor: "#3cd3d8",
-            backgroundColor: '#3cd3d8',
+            borderColor: "#008000",
+            backgroundColor: '#008000',
             fill: true,
           }, {
             label: "Incipent",
@@ -1530,15 +1573,15 @@ export class DashboardComponent {
         ]
       },
       options: {
-         events: [],
+        events: [],
         scales: {
           xAxes: [{
-             stacked: true,
+            stacked: true,
           }],
           yAxes: [{
-             stacked: true,
+            stacked: true,
             ticks: {
-            
+
             }
           }]
         }
@@ -1617,8 +1660,8 @@ export class DashboardComponent {
               this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
           }
           this.FutuerlineChart()
-            this.FutuerdDonughtchart()
-           this.Futuerpiechart()
+          this.FutuerdDonughtchart()
+          this.Futuerpiechart()
         }, error => {
           console.log(error.error)
         })
@@ -1657,7 +1700,7 @@ export class DashboardComponent {
     this.FutuerlineChart()
     // this.FutuerdDonughtchart()
     // this.Futuerpiechart()
-    }
+  }
 
   FutuerlineChart() {
     this.changeDetectorRef.detectChanges();
@@ -1674,6 +1717,7 @@ export class DashboardComponent {
     FutuerdateForFilter.forEach((value) => {
       var Date = moment(value).format('YYYY-MM-DD');
       FutuerdateForFilter1.push(Date);
+      FutuerdateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     });
 
     for (var i = 0; i < FutuerdateForFilter1.length; i++) {
@@ -1725,8 +1769,8 @@ export class DashboardComponent {
             label: "Normal",
             data: this.FutuerPredictionDataNormalCount,
             borderWidth: 1,
-            borderColor: "#3cd3d8",
-            backgroundColor: '#3cd3d8',
+            borderColor: "#008000",
+            backgroundColor: '#008000',
           }, {
             label: "Incipent",
             data: this.FutuerPredictionDataIncipientCount,
@@ -1752,12 +1796,11 @@ export class DashboardComponent {
           yAxes: [{
             stacked: true,
             ticks: {
-             
             }
           }]
         }
       }
-      
+
     });
   }
 
@@ -1806,89 +1849,104 @@ export class DashboardComponent {
     // });
     this.changeDetectorRef.detectChanges();
     this.FutuerPredictionAllData.sort()
-    var LabelDates : any = [];
+    var LabelDates: any = [];
     this.FuterPredictyearlist.forEach(element => {
-     LabelDates.push(element.FutuerPredictyearname)
+      LabelDates.push(element.FutuerPredictyearname)
+      LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     });
 
-    for(var i=0; i < this.FuterPredictyearlist.length; ++i) {
-     var forcastPnormal =0
-     var forcastFPincipient =0
-     var forcastFPdegrade =0
-     var forcastFPbad =0
-     var forcastcounter = 0
-     this.FutuerPredictionAllData.forEach(value => {
-       var a = moment(value.PredictedDate).format('YYYY')
-       if(a == this.FuterPredictyearlist[i].FutuerPredictyearname){
-         if (value.Prediction == 'normal') {
-          forcastPnormal = forcastPnormal + 1
-         } else if (value.Prediction == 'incipient') {
-          forcastFPincipient = forcastFPincipient + 1
-         } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
-          forcastFPdegrade = forcastFPdegrade + 1
-         } else {
-          forcastFPbad = forcastFPbad + 1
-         }
-         forcastcounter=forcastcounter+1
-       }
+    for (var i = 0; i < this.FuterPredictyearlist.length; ++i) {
+      var forcastPnormal = 0
+      var forcastFPincipient = 0
+      var forcastFPdegrade = 0
+      var forcastFPbad = 0
+      var forcastcounter = 0
+      this.FutuerPredictionAllData.forEach(value => {
+        var a = moment(value.PredictedDate).format('YYYY')
+        if (a == this.FuterPredictyearlist[i].FutuerPredictyearname) {
+          if (value.Prediction == 'normal') {
+            forcastPnormal = forcastPnormal + 1
+          } else if (value.Prediction == 'incipient') {
+            forcastFPincipient = forcastFPincipient + 1
+          } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+            forcastFPdegrade = forcastFPdegrade + 1
+          } else {
+            forcastFPbad = forcastFPbad + 1
+          }
+          forcastcounter = forcastcounter + 1
+        }
 
       });
-      forcastPnormal= ((forcastPnormal/forcastcounter)*100)
-      forcastFPincipient=((forcastFPincipient/forcastcounter)*100)
-      forcastFPdegrade=((forcastFPdegrade/forcastcounter)*100)
-      forcastFPbad=((forcastFPbad/forcastcounter)*100)
+      forcastPnormal = ((forcastPnormal / forcastcounter) * 100)
+      forcastFPincipient = ((forcastFPincipient / forcastcounter) * 100)
+      forcastFPdegrade = ((forcastFPdegrade / forcastcounter) * 100)
+      forcastFPbad = ((forcastFPbad / forcastcounter) * 100)
 
-     this.forcastFinalNormal.push(forcastPnormal)
-     this.forcastFinalIncipient.push(forcastFPincipient)
-     this.forcastFinaldDegrade.push(forcastFPdegrade)
-     this.forcastFinalBad.push(forcastFPbad)
-    
+      this.forcastFinalNormal.push(forcastPnormal)
+      this.forcastFinalIncipient.push(forcastFPincipient)
+      this.forcastFinaldDegrade.push(forcastFPdegrade)
+      this.forcastFinalBad.push(forcastFPbad)
+
     }
 
-   this.changeDetectorRef.detectChanges();
-   this.chart = new Chart("donughtChart", {
-     type:"bar",
-     data: {
-      labels: LabelDates,
-       fill: true,
-       datasets: [
-         {
-           label: "Normal",
-           data: this.forcastFinalNormal,
-           borderWidth: 1,
-           borderColor: "#3cd3d8",
-           backgroundColor: '#3cd3d8',
-           fill: true,
-         }, 
-         {
-           label: "Incipient",
-           data: this.forcastFinalIncipient,
-           borderWidth: 1,
-           borderColor: "#ffb801",
-           backgroundColor: '#ffb801',
-           fill: true,
-         }, 
-         {
-           label: "Degrade",
-           data: this.forcastFinaldDegrade,
-           borderWidth: 1,
-           borderColor: "#fe4c61",
-           backgroundColor: '#fe4c61',
-           fill: true,
-         },
-         {
-           label: "Bad",
-           data: this.forcastFinalBad,
-           borderWidth: 1,
-           borderColor: "blue",
-           backgroundColor: 'blue',
-           fill: true,
-         },  
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("donughtChart", {
+      type: "bar",
+      data: {
+        labels: LabelDates,
+        fill: true,
+        datasets: [
+          {
+            label: "Normal",
+            data: this.forcastFinalNormal,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
+          },
+          {
+            label: "Incipient",
+            data: this.forcastFinalIncipient,
+            borderWidth: 1,
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
+            fill: true,
+          },
+          {
+            label: "Degrade",
+            data: this.forcastFinaldDegrade,
+            borderWidth: 1,
+            borderColor: "#fe4c61",
+            backgroundColor: '#fe4c61',
+            fill: true,
+          },
+          {
+            label: "Bad",
+            data: this.forcastFinalBad,
+            borderWidth: 1,
+            borderColor: "blue",
+            backgroundColor: 'blue',
+            fill: true,
+          },
 
-       ],
-     },
-
-   });
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
 
   }
 
@@ -1898,9 +1956,9 @@ export class DashboardComponent {
     this.FutuerPredictionNormalcount = 0,
       this.FutuerPredictionIncipientcount = 0,
       this.FutuerPredictionDegradecount = 0;
-      var FPClassDegradepercentage
-      var FPClassIncipientpercentage
-      var FPClassNormalpercentage
+    var FPClassDegradepercentage
+    var FPClassIncipientpercentage
+    var FPClassNormalpercentage
     this.FutuerPredictionAllData.forEach(element => {
       if (this.fmtype != "") {
         if (this.fmtype == "SSRB") {
@@ -1924,18 +1982,18 @@ export class DashboardComponent {
         this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1;
       }
     });
-    FPClassDegradepercentage= ((this.FutuerPredictionDegradecount/a.length )*100).toFixed(2);
-    FPClassIncipientpercentage= ((this.FutuerPredictionIncipientcount/a.length )*100).toFixed(2);
-    FPClassNormalpercentage= ((this.FutuerPredictionNormalcount/a.length )*100).toFixed(2);
+    FPClassDegradepercentage = ((this.FutuerPredictionDegradecount / a.length) * 100).toFixed(2);
+    FPClassIncipientpercentage = ((this.FutuerPredictionIncipientcount / a.length) * 100).toFixed(2);
+    FPClassNormalpercentage = ((this.FutuerPredictionNormalcount / a.length) * 100).toFixed(2);
 
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart('FutuerPredictionPie', {
       type: 'pie',
       data: {
-        labels: ["Normal", "incipient", "Degrade"],
+        labels: ["Normal", "Incipient", "Degrade"],
         datasets: [
           {
-            backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
+            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
             data: [FPClassNormalpercentage, FPClassIncipientpercentage, FPClassDegradepercentage]
           }
         ]
@@ -1945,271 +2003,50 @@ export class DashboardComponent {
       }
     });
   }
-  FutuerPredictionClick(){
+  FutuerPredictionClick() {
     this.changeDetectorRef.detectChanges();
     this.GerAllFutuerPredictionRecords();
-    this.FuterPredictionShow= true;
-    this.PredictionShow=false;
-    this.PredictionselectedYear=""
-    this.fmtype =""
+    this.FuterPredictionShow = true;
+    this.PredictionShow = false;
+    this.PredictionselectedYear = ""
+    this.fmtype = ""
 
   }
-  PredictionOnClick(){
+  PredictionOnClick() {
     this.changeDetectorRef.detectChanges();
     this.GerAllPredictionRecords();
-    this.FuterPredictionShow=false ;
-    this.PredictionShow=true;
-    this.FutuerselectedYear=""
-    this.fmtype =""
+    this.FuterPredictionShow = false;
+    this.PredictionShow = true;
+    this.FutuerselectedYear = ""
+    this.fmtype = ""
   }
 
-
-
-  //  dygraph(){ 
-  //       this.chart = new Dygraph(
-  //         document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
-  //         {
-  //           visibility: [true, false, false, true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-  //          colors: ['green','green',],
-  //          showLabelsOnHighlight: false,
-  //          showRangeSelector: true,
-  //          series: {
-  //                       'TD1': {
-  //                         strokePattern: null,
-  //                         drawPoints: true,
-  //                         pointSize: 1,
-  //                       },
-  //                       'FTD1': {
-  //                         strokePattern: Dygraph.DASHED_LINE,
-  //                         strokeWidth: 2.6,
-  //                         drawPoints: true,
-  //                         pointSize: 3.5,
-  //                       },
-  //                    }
-  //         }) 
-
-  
-  //       // this.http.get("dist/DPM/assets/temperatures.csv",{responseType:'text'}).subscribe((res: any) => {
-  //       //   console.log(res)
-  //       //   var prediction = res;
-
-  //       //   this.chart = new Dygraph(
-  //       //       document.getElementById("graph"),res,
-  //       //       {
-  //       //         showRangeSelector: true,
-  //       //       }
-  //       //       )
-  //       // })
-    
-   
-
-  //     //   this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-  //     //        var prediction = res;
-  //     //       //  this.http.get(`/api/ScrewCompressorFuturePredictionAPI/GetFutuerPredictionRecordsInCSVFormat?date=${this.date}`).subscribe((res: any) => {
-  //     //         var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
-  //     // this.screwCompressorMethod.getWithoutParameters(url)
-  //     // .subscribe(
-  //     //    (res : any) => {
-  //     //   // async (res : any) => {
-  //     //       // if(res.length === 0){
-  //     //       //   await this.http.get(`${this.configService.getApi('PREDICTION_URL')}UserId=${this.UserDetail.UserId}&name=''&type=forecast`, { responseType: 'text' })
-  //     //       // }
-  //     //       var futureData = res 
-
-  //     //         // this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
-  //     //         // this.highlight_end = moment(this.date).format('YYYY/MM/DD')
-
-  //     //         var result1 : any= futureData.filter(f =>
-  //     //           prediction.some(d => d.Date == f.Date) 
-  //     //         );
-              
-  //     //          result1.forEach(element => {
-  //     //            var d = prediction.filter(r=>r.Date === element.Date)
-  //     //            element.TD1 = d[0].TD1;
-  //     //            element.Residual = element.FTD1 - d[0].TD1            
-  //     //          });
-  //     //          futureData.forEach(element => {
-  //     //            if(element.TD1 == 0){
-  //     //             element.Residual = ''
-  //     //            }
-  //     //          });
-  //     //          prediction.forEach(element => {
-  //     //           element.Residual = 0
-  //     //           for (var i = 0; i < result1.length; i++) {
-  //     //             if (result1[i].Date == element.Date) {
-  //     //             element.FTD1 = result1[i].FTD1
-  //     //             element.TD1 = result1[i].TD1
-  //     //             element.Residual = result1[i].Residual
-  //     //             }
-  //     //           }
-  //     //         });
-
-  //     //          const result = futureData.filter(f =>
-  //     //           !prediction.some(d => d.Date == f.Date)
-  //     //          );
-  //     //          result.forEach(element => {
-  //     //              prediction.push(element);
-  //     //          });
-  //     //         //this.mergedarray = prediction.concat(result);
-  //     //         prediction.forEach(element => {
-  //     //           if(element.Residual === 0){
-  //     //             element.Residual = ''
-  //     //           }
-  //     //           if(element.TD1 === 0){
-  //     //             element.TD1 = ''
-  //     //           }
-  //     //           if(element.FTD1 === 0){
-  //     //             element.FTD1 = ''
-  //     //           }
-  //     //           if (element.TD1 > 180 && element.TD1 < 210) {
-  //     //             element.alarm = element.TD1
-
-  //     //           } else{
-  //     //             element.alarm = ''
-  //     //           }
-  //     //            if (element.TD1 > 210) {
-  //     //             element.trigger = element.TD1
-  //     //           }else{
-  //     //             element.trigger = ''
-  //     //           }
-  //     //           if(element.FTD1 > 190 && element.FTD1 < 210) {
-  //     //             element.falarm = element.FTD1
-  //     //           }
-  //     //           else {
-  //     //             element.falarm = ''
-  //     //           }
-  //     //           if(element.FTD1 > 210) {
-  //     //             element.ftrigger = element.FTD1
-  //     //           }
-  //     //           else {
-  //     //             element.ftrigger = ''
-  //     //           }
-  //     //          }); 
-  //     //          this.csvData = this.ConvertToCSV(prediction);
-  //     //         //  this.csvData = this.ConvertToCSV( this.mergedarray);
-  //     //         //  var highlight_start = new Date(this.highlight_start);
-  //     //         //  var highlight_end = new Date(this.highlight_end);
-
-  //     //          this.chart = new Dygraph(
-  //     //           document.getElementById("graph"),this.csvData,
-  //     //           {
-  //     //             colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
-  //     //             visibility: [true, true, false, true,true,true,true,],
-  //     //             showRangeSelector: true,
-  //     //             fillGraph:true,
-  //     //             fillAlpha: 0.1,
-  //     //             connectSeparatedPoints: false,
-  //     //             drawPoints: true,
-  //     //             strokeWidth: 1.5,
-  //     //             stepPlot: false,
-  //     //             errorbar: true,
-  //     //             drawXGrid: true,
-  //     //             valueRange: [150,250],
-  //     //             includeZero: false,
-  //     //             drawAxesAtZero: false,
-  //     //             series: {
-  //     //               'TD1': {
-  //     //                 strokePattern: null,
-  //     //                 drawPoints: true,
-  //     //                 pointSize: 2,
-  //     //               },
-  //     //               'FTD1': {
-  //     //                 strokePattern: Dygraph.DASHED_LINE,
-  //     //                 strokeWidth: 2.6,
-  //     //                 drawPoints: true,
-  //     //                 pointSize: 3.5
-  //     //               },
-  //     //               'Residual': {
-  //     //               },
-  //     //               'alarm': {
-  //     //                 strokeWidth: 2,
-  //     //               },
-  //     //               'trigger': {
-  //     //                 strokePattern: Dygraph.DOT_DASH_LINE,
-  //     //                 strokeWidth: 2,
-  //     //                 highlightCircleSize: 3
-  //     //               },
-  //     //               'falarm': {
-  //     //                 color: ['#ffb801'],
-  //     //                 strokePattern: Dygraph.DASHED_LINE1,
-  //     //                 strokeWidth: 1.6,
-  //     //                 drawPoints: true,
-  //     //                 pointSize: 2.5
-  //     //               },
-  //     //               'ftrigger': {
-  //     //                 strokePattern: Dygraph.DASHED_LINE,
-  //     //                 strokeWidth: 1.0,
-  //     //                 drawPoints: true,
-  //     //                 pointSize: 1.5
-  //     //               },
-  //     //             },
-  //     //             // underlayCallback: function(canvas, area, g) {
-  //     //             //     var bottom_left = g.toDomCoords(highlight_start);
-  //     //             //     var top_right = g.toDomCoords(highlight_end); 
-                 
-  //     //             //     var left = bottom_left[0];
-  //     //             //     var right = top_right[0];
-
-  //     //             //      canvas.fillStyle = "rgba(245, 252, 255)";
-  //     //             //     canvas.fillRect(left, area.y, right - left, area.h);
-  //     //             // }
-  //     //           },
-  //     //           ) 
-  //     //           // this.chart = new Dygraph(
-  //     //           //   document.getElementById("graph1"),this.csvData,
-  //     //           //   {
-  //     //           //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
-  //     //           //     showRangeSelector: true,
-  //     //           //     connectSeparatedPoints: true,
-  //     //           //     fillGraph: true,
-  //     //           //     drawPoints: true,
-  //     //           //     strokeWidth: 5,
-  //     //           //     drawXGrid: false,
-  //     //           //     visibility: [false, false, true, false,false,false,false,],
-  //     //           //   },
-  //     //           //   ) 
-
-  //     //       })}
-  //     //   )
-  //  }
-  dygraph(){ 
-     this.chart = new Dygraph(
-       document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
+  dygraph() {
+    this.chart = new Dygraph(
       // document.getElementById("graph"),"dist/DPM/assets/demoFileDygraphs.csv",
+      // document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
+      document.getElementById("graph"), "dist/DPM/assets/addforcastandprediction.csv",
       {
-        visibility: [true, false, false, true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-       colors: ['green','green',],
-       showLabelsOnHighlight: false,
-       showRangeSelector: true,
-       series: {
-                    'TD1': {
-                      strokePattern: null,
-                      drawPoints: true,
-                      pointSize: 1,
-                    },
-                    'FTD1': {
-                      strokePattern: Dygraph.DASHED_LINE,
-                      strokeWidth: 2.6,
-                      drawPoints: true,
-                      pointSize: 3.5,
-                    },
-                 }
-      }) 
-
-
-    // this.http.get("dist/DPM/assets/temperatures.csv",{responseType:'text'}).subscribe((res: any) => {
-    //   console.log(res)
-    //   var prediction = res;
-
-    //   this.chart = new Dygraph(
-    //       document.getElementById("graph"),res,
-    //       {
-    //         showRangeSelector: true,
-    //       }
-    //       )
-    // })
-
-
+        // visibility: [true, false, false, true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+        visibility: [true, true, true, true],
+        colors: ['green', 'blue',],
+        showLabelsOnHighlight: false,
+        showRangeSelector: true,
+        valueRange: [100],
+        series: {
+          'TD1': {
+            strokePattern: null,
+            drawPoints: true,
+            pointSize: 1,
+          },
+          'FTD1': {
+            strokePattern: Dygraph.DASHED_LINE,
+            strokeWidth: 2.6,
+            drawPoints: true,
+            pointSize: 3.5,
+          },
+        }
+      })
 
     // this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
     //      var prediction = res;
@@ -2225,19 +2062,21 @@ export class DashboardComponent {
     //       var result1 : any= futureData.filter(f =>
     //         prediction.some(d => d.Date == f.Date) 
     //       );
-          
+
     //        result1.forEach(element => {
     //          var d = prediction.filter(r=>r.Date === element.Date)
     //          element.TD1 = d[0].TD1;
-    //          element.Residual = element.FTD1 - d[0].TD1            
+    //           element.Residual = element.FTD1 - d[0].TD1    
+    //         // element.FFTD1 = d[0].TD1           
     //        });
     //        futureData.forEach(element => {
     //          if(element.TD1 == 0){
-    //           element.Residual = ''
+    //            element.Residual = ''
     //          }
     //        });
     //        prediction.forEach(element => {
-    //         element.Residual = 0
+    //          element.Residual = 0
+    //         element.FFTD1 = 0
     //         for (var i = 0; i < result1.length; i++) {
     //           if (result1[i].Date == element.Date) {
     //           element.FTD1 = result1[i].FTD1
@@ -2297,7 +2136,7 @@ export class DashboardComponent {
     //         document.getElementById("graph"),this.csvData,
     //         {
     //           // colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
-    //           colors: ['green','green', 'gray',],
+    //           colors: ['green','green', 'green',],
     //           // visibility: [true, true, false, true,true,true,true,],
     //           visibility: [true, true, false,],
     //           showRangeSelector: true,
@@ -2351,7 +2190,7 @@ export class DashboardComponent {
     //           // underlayCallback: function(canvas, area, g) {
     //           //     var bottom_left = g.toDomCoords(highlight_start);
     //           //     var top_right = g.toDomCoords(highlight_end); 
-             
+
     //           //     var left = bottom_left[0];
     //           //     var right = top_right[0];
 
@@ -2376,156 +2215,156 @@ export class DashboardComponent {
 
     //     })}
     // )
-}
+  }
 
-    ConvertToCSV(objArray) {
-      var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-      var str = '';
-      var row = "";
-  
-      for (var index in objArray[0]) {
-        row += index + ',';
+  ConvertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    var row = "";
+
+    for (var index in objArray[0]) {
+      row += index + ',';
+    }
+    row = row.slice(0, -1);
+    str += row + '\r\n';
+
+    for (var i = 0; i < array.length; i++) {
+      var line = '';
+      for (var index in array[i]) {
+        if (line != '') line += ','
+
+        line += array[i][index];
       }
-      row = row.slice(0, -1);
-      str += row + '\r\n';
-  
-      for (var i = 0; i < array.length; i++) {
-        var line = '';
-        for (var index in array[i]) {
-          if (line != '') line += ','
-  
-          line += array[i][index];
-        }
-        str += line + '\r\n';
+      str += line + '\r\n';
+    }
+    return str;
+  }
+
+
+
+  public GenerateReport() {
+    var countKey = Object.keys(this.classificationDetails).length;
+    this.totalCount = countKey
+    var uniqueNames = [];
+    var uniqueObj = [];
+
+    for (var i = 0; i < this.classificationDetails.length; i++) {
+
+      if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
+        uniqueObj.push(this.classificationDetails[i])
+        uniqueNames.push(this.classificationDetails[i].Classification);
       }
-      return str;
+
     }
 
+    var result: any = [];
 
-    
-  public GenerateReport() {
-      var countKey = Object.keys(this.classificationDetails).length;
-      this.totalCount = countKey
-      var uniqueNames = [];
-      var uniqueObj = [];
+    if (this.classificationDetails != 0) {
 
-      for (var i = 0; i < this.classificationDetails.length; i++) {
-
-        if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
-          uniqueObj.push(this.classificationDetails[i])
-          uniqueNames.push(this.classificationDetails[i].Classification);
-        }
-
-      }
-
-      var result: any = [];
-
-      if (this.classificationDetails != 0) {
-
-        this.classificationDetails.forEach(function (o) {
-          Object.keys(o).forEach(function (k) {
-            result[k] = result[k] || {};
-            result[k][o[k]] = (result[k][o[k]] || 0) + 1;
-          });
+      this.classificationDetails.forEach(function (o) {
+        Object.keys(o).forEach(function (k) {
+          result[k] = result[k] || {};
+          result[k][o[k]] = (result[k][o[k]] || 0) + 1;
         });
-        this.incipient = result.Classification.incipient;
-        if (this.incipient == undefined) {
-          this.incipient = 0;
-        }
-        this.degrade = result.Classification.degrade;
-        if (this.degrade == undefined) {
-          this.degrade = 0;
-        }
-        this.normal = result.Classification.normal;
-        if (this.normal == undefined) {
-          this.normal = 0;
-        }
-        this.normalpercentage = this.normal / this.totalCount * 100
-        this.incipientPerentage = this.incipient / this.totalCount * 100
-        this.degradePercentage = this.degrade / this.totalCount * 100
-
-        var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
-
-        if (ACCCalculation == NaN) {
-          ACCCalculation = 0;
-        }
-
-        this.finalACCCalculation = parseFloat(ACCCalculation);
+      });
+      this.incipient = result.Classification.incipient;
+      if (this.incipient == undefined) {
+        this.incipient = 0;
       }
-      var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
-      this.AFPtotalCount = AFPcountKey
-
-
-      var AFPuniqueNames = [];
-      var AFPuniqueObj = [];
-
-      for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
-
-        if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
-          AFPuniqueObj.push(this.screwWithPredictionDetails[i])
-          AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
-        }
-
+      this.degrade = result.Classification.degrade;
+      if (this.degrade == undefined) {
+        this.degrade = 0;
       }
-      var result: any = [];
+      this.normal = result.Classification.normal;
+      if (this.normal == undefined) {
+        this.normal = 0;
+      }
+      this.normalpercentage = this.normal / this.totalCount * 100
+      this.incipientPerentage = this.incipient / this.totalCount * 100
+      this.degradePercentage = this.degrade / this.totalCount * 100
 
-      if (this.screwWithPredictionDetails.length != 0) {
-        this.screwWithPredictionDetails.forEach(function (o) {
-          Object.keys(o).forEach(function (k) {
-            result[k] = result[k] || {};
-            result[k][o[k]] = (result[k][o[k]] || 0) + 1;
-          });
+      var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
+
+      if (ACCCalculation == NaN) {
+        ACCCalculation = 0;
+      }
+
+      this.finalACCCalculation = parseFloat(ACCCalculation);
+    }
+    var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
+    this.AFPtotalCount = AFPcountKey
+
+
+    var AFPuniqueNames = [];
+    var AFPuniqueObj = [];
+
+    for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
+
+      if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
+        AFPuniqueObj.push(this.screwWithPredictionDetails[i])
+        AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
+      }
+
+    }
+    var result: any = [];
+
+    if (this.screwWithPredictionDetails.length != 0) {
+      this.screwWithPredictionDetails.forEach(function (o) {
+        Object.keys(o).forEach(function (k) {
+          result[k] = result[k] || {};
+          result[k][o[k]] = (result[k][o[k]] || 0) + 1;
         });
+      });
 
-        this.AFPincipient = result.Prediction.incipient;
-        if (this.AFPincipient == undefined) {
-          this.AFPincipient = 0;
-        }
-        this.AFPdegrade = result.Prediction.degrade;
-        if (this.AFPdegrade == undefined) {
-          this.AFPdegrade = 0;
-        }
-        this.AFPnormal = result.Prediction.normal;
-        if (this.AFPnormal == undefined) {
-          this.AFPnormal = 0;
-        }
-        this.FinalAFPnormal = (this.AFPnormal + this.normal);
-        this.FinalAFPincipient = (this.AFPincipient + this.incipient);
-        this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
-
-        this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
-
-        this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
-
-        this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
-
-        this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
-
-        var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
-
-        this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
+      this.AFPincipient = result.Prediction.incipient;
+      if (this.AFPincipient == undefined) {
+        this.AFPincipient = 0;
       }
-      var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
-
-      var HSECES: any = [(0 * 1) + (1 * 10)]
-
-      var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
-
-
-      this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
-        parseFloat(LMH) + parseFloat(HSECES)
-        + parseFloat(CRIT)];
-
-      this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
-
-      if (this.PerformanceNumber > 10) {
-        this.DAB = "Yes"
-      } else {
-        this.DAB = "No"
+      this.AFPdegrade = result.Prediction.degrade;
+      if (this.AFPdegrade == undefined) {
+        this.AFPdegrade = 0;
       }
+      this.AFPnormal = result.Prediction.normal;
+      if (this.AFPnormal == undefined) {
+        this.AFPnormal = 0;
+      }
+      this.FinalAFPnormal = (this.AFPnormal + this.normal);
+      this.FinalAFPincipient = (this.AFPincipient + this.incipient);
+      this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
+
+      this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
+
+      this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
+
+      this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
+
+      this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
+
+      var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
+
+      this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
+    }
+    var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
+
+    var HSECES: any = [(0 * 1) + (1 * 10)]
+
+    var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
+
+
+    this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
+      parseFloat(LMH) + parseFloat(HSECES)
+      + parseFloat(CRIT)];
+
+    this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
+
+    if (this.PerformanceNumber > 10) {
+      this.DAB = "Yes"
+    } else {
+      this.DAB = "No"
+    }
   }
   public CBAReportDetails: any;
-  
+
   public user: any = [];
   GetReportRecords() {
     const url: string = this.screwCompressorAPIName.getTrainList
@@ -2569,332 +2408,315 @@ export class DashboardComponent {
         console.log(err.error);
       });
   }
-  public allCBI:boolean = true;
-  CBICharts(){
+  public allCBI: boolean = true;
+  CBICharts() {
     this.changeDetectorRef.detectChanges();
-    if (this.state.CBANAV == 3) { 
+    if (this.state.CBANAV == 3) {
       var elmnt = document.getElementById("CBAnavigate");
       elmnt.scrollIntoView();
     }
-    if(this.CBIGraphs =="Ecomomic_Risk"){
+    if (this.CBIGraphs == "Ecomomic_Risk") {
       this.ecomomic_risk_Graph = true
       this.residual_risk_Graph = false
       this.MEI_risk_Graph = false
-      this.Skill_risk_Graph =false;
-      this.allCBI=false
+      this.allCBI = false
       this.EcomomicRiskGraph()
-    }else if(this.CBIGraphs =="Residual_Risk"){
+    } else if (this.CBIGraphs == "Residual_Risk") {
       this.residual_risk_Graph = true
       this.MEI_risk_Graph = false
-      this.Skill_risk_Graph =false;
       this.ecomomic_risk_Graph = false
-      this.allCBI=false
+      this.allCBI = false
       this.ResidualRiskGraph()
-    }else if(this.CBIGraphs =="MEI"){
+    } else if (this.CBIGraphs == "MEI") {
       this.MEI_risk_Graph = true
-      this.Skill_risk_Graph =false;
       this.ecomomic_risk_Graph = false
       this.residual_risk_Graph = false
-      this.allCBI=false
+      this.allCBI = false
       this.MEIGraph()
     }
-    else if(this.CBIGraphs ==""){
+    else if (this.CBIGraphs == "") {
       this.MEI_risk_Graph = false
-      this.Skill_risk_Graph =false;
       this.ecomomic_risk_Graph = false
       this.residual_risk_Graph = false
-      this.allCBI=true;
+      this.allCBI = true;
       this.ALLGraphCBA()
     }
   }
 
-  EcomomicRiskGraph (){
+  EcomomicRiskGraph() {
     this.changeDetectorRef.detectChanges();
-    var costWithoutDPM:number = +(this.TotalPONC)
-    var CostDPMWithoutConstraint: number = +(this.TotalAnnualPOC)
-    // CostWithDPMConstraint = this.EconomicRiskWithConstraintDPMCR
-    var CostWithDPMConstraint = 470
-   var total: number= (costWithoutDPM+CostDPMWithoutConstraint+CostWithDPMConstraint)
-     
-    var economiccost = ((costWithoutDPM/total)*100).toFixed(2)
-    var economiccostWithoutConstraint = ((CostDPMWithoutConstraint/total)*100).toFixed(2)
-    var economiccostwithConstraint = ((CostWithDPMConstraint/total)*100).toFixed(2)
-     this.chart = new Chart('ecomomic_risk', {
-      type: 'bar',
+    var eonomicriskwithoutDPM: number = +(this.EconomicRiskWithOutDPM)
+    var eonomicriskwithDPM: number = +(this.EconomicRiskWithDPM)
+    var eonomicriskwithConstraint: number = +(this.EconomicRiskWithConstraintDPM)
+    var total: number = (eonomicriskwithoutDPM + eonomicriskwithDPM + eonomicriskwithConstraint)
+
+    var economiccostWithoutDPM = ((eonomicriskwithoutDPM / total) * 100).toFixed(2)
+    var economiccostWithDPM = ((eonomicriskwithDPM / total) * 100).toFixed(2)
+    var economiccostwithConstraint = ((eonomicriskwithConstraint / total) * 100).toFixed(2)
+
+    this.chart = new Chart("ecomomic_risk", {
+      type: "bar",
       data: {
-        labels: ['Cost without DPM','Cost with DPM without constraint','cost with DPM with constraint'],
+        labels: ["Economic Risk",],
         datasets: [
           {
-            data: [economiccost,economiccostWithoutConstraint,economiccostwithConstraint],
-            backgroundColor: ['#408ec6', '#7a2048', '#1e2761'],
-            fill: true,
-            barPercentage: 42,
-            barThickness: 60,
-            maxBarThickness: 70,     
-          }, 
-        ],
-      },
-      options: {
-        legend: {
-          display: false
-      },
-            scales: {
-              yAxes: [{
-                gridLines: {
-                  display: false,
-                },
-                scaleLabel: {
-                  display: true,
-                  labelString: 'In_Percentage'
-                },
-                ticks: {
-                  min: 1,
-                  //  max: 50,
-                  stepSize: 1,
-                  label: "In_Percentage"
-                }
-              }]
-            }
-          }
-    }); 
-  }
-
-  ResidualRiskGraph (){
-    this.changeDetectorRef.detectChanges();
-     var residualcostWithoutDPM: number = + (this.CBI_etbf)
-     var residualCostDPMWithoutConstraint: number = + (this.OverallETBC)
-     var residualCostWithDPMConstraint: number = + (this.VendorETBC)
-     var residualtotal =(residualcostWithoutDPM+residualCostDPMWithoutConstraint+residualCostWithDPMConstraint)
-     
-    var residualcost = ((residualcostWithoutDPM/residualtotal)*100).toFixed(2)
-    var residualcostWithoutConstraint = ((residualCostDPMWithoutConstraint/residualtotal)*100).toFixed(2)
-    var residualcostwithConstraint = ((residualCostWithDPMConstraint/residualtotal)*100).toFixed(2)
-    
-    this.chart = new Chart('residual_risk', {
-      type: 'bar',
-      data: {
-        labels: ['Residual Risk Without DPM','Residual Risk with DPM without constraint','Residual Risk with DPM with constarint'],
-        datasets: [
-          {
-            data: [residualcost,residualcostWithoutConstraint,residualcostwithConstraint],
-            backgroundColor: ['#a2d5c6','#3cd3d8','#5c3c92'],
-            fill: true,
-            barPercentage: 42,
-            barThickness: 60,
-            maxBarThickness: 70,
-          }, 
-        ],
-      },
-      options: {
-        legend: {
-          display: false
-      },
-        scales: {
-          yAxes: [{
-            gridLines: {
-              display: false,
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'In_Percentage'
-            },
-            ticks: {
-              min: 1,
-                // max: 50,
-              stepSize: 1,
-            }
-          }]
-        }
-      }
-    }); 
-    
-  }
-  MEIGraph (){
-    this.changeDetectorRef.detectChanges();
-    var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
-    var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
-    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
-    var meitotal: number = + (meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
-     
-    var meicost: number = +((meicostWithoutDPM/meitotal)*100).toFixed(2)
-    var meicostWithoutConstraint : number = + ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
-    var meicostwithConstraint : number = +((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
-    
-    this.chart = new Chart('mei_risk', {
-      type: 'bar',
-      data: {
-        labels: ['MEI_Without DPM','MEI_with DPM without constraint','MEI_with DPM with constarint'],
-        datasets: [
-          {
-            data: [meicost,meicostWithoutConstraint,meicostwithConstraint],
-            backgroundColor: ['#26495c','#c4a35a','#c66b3d'],
-            fill: true,
-            barPercentage: 42,
-            barThickness: 60,
-            maxBarThickness: 70,
-          }, 
-        ],
-      },
-      options: {
-        legend: {
-          display: false
-      },
-        scales: {
-          yAxes: [{
-            gridLines: {
-              display: false,
-            },
-            scaleLabel: {
-              display: true,
-              labelString: 'In_Percentage'
-            },
-            ticks: {
-              min: 10,
-              //  max: 50,
-              stepSize: 1,
-            }
-          }]
-        }
-      }
-    }); 
-      
-  }
-
-  ALLGraphCBA (){
-    var costWithoutDPM:number = +(this.TotalPONC)
-    var CostDPMWithoutConstraint: number = +(this.TotalAnnualPOC)
-    var CostWithDPMConstraint = 40
-    var total: number= (costWithoutDPM+CostDPMWithoutConstraint+CostWithDPMConstraint)
-     
-    var economiccost = ((costWithoutDPM/total)*100).toFixed(2)
-    var economiccostWithoutConstraint = ((CostDPMWithoutConstraint/total)*100).toFixed(2)
-    var economiccostwithConstraint = ((CostWithDPMConstraint/total)*100).toFixed(2)
-
-    var residualcostWithoutDPM: number = + (this.CBI_etbf)
-    var residualCostDPMWithoutConstraint: number = + (this.OverallETBC)
-    var residualCostWithDPMConstraint: number = + (this.VendorETBC)
-    var residualtotal =(residualcostWithoutDPM+residualCostDPMWithoutConstraint+residualCostWithDPMConstraint)
-    
-   var residualcost = ((residualcostWithoutDPM/residualtotal)*100).toFixed(2)
-   var residualcostWithoutConstraint = ((residualCostDPMWithoutConstraint/residualtotal)*100).toFixed(2)
-   var residualcostwithConstraint = ((residualCostWithDPMConstraint/residualtotal)*100).toFixed(2)
-    
-    // var meicostWithoutDPM =20
-    // var meiCostDPMWithoutConstraint = 25
-    // var meiCostWithDPMConstraint = 55
-    // var meitotal =(meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
-     
-    // var meicost = ((meicostWithoutDPM/meitotal)*100).toFixed(2)
-    // var meicostWithoutConstraint = ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
-    // var meicostwithConstraint = ((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
-    var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
-    var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
-    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
-    var meitotal: number = + (meicostWithoutDPM+meiCostDPMWithoutConstraint+meiCostWithDPMConstraint)
-     
-    var meicost: number = +((meicostWithoutDPM/meitotal)*100).toFixed(2)
-    var meicostWithoutConstraint : number = + ((meiCostDPMWithoutConstraint/meitotal)*100).toFixed(2)
-    var meicostwithConstraint : number = +((meiCostWithDPMConstraint/meitotal)*100).toFixed(2)
-    this.changeDetectorRef.detectChanges();
-
-      this.chart = new Chart('allGraphCBI', {
-      type: 'bar',
-      labels:["All Data"],
-      data: {
-        labels: ['Economic_Risk without DPM','Residual Risk Without DPM','MEI Risk Without DPM','Economic_Risk With DPM With constraint','Residual Risk with DPM with constarint','MEI_with DPM with constraint',
-                 'Economic Risk with DPM without constraint','Residual Risk with DPM without constarint','MEI_with DPM with constarint' ],
-        datasets: [
-          {
-            data: [economiccost,residualcost,meicost,economiccostwithConstraint,residualcostwithConstraint,meicostwithConstraint,economiccostWithoutConstraint,residualcostWithoutConstraint,meicostWithoutConstraint],
-            backgroundColor: ['#408ec6','#a2d5c6','#26495c','#1e2761','#5c3c92','#c66b3d','#7a2048','#3cd3d8','#c4a35a'],
-            fill: true,
-            barPercentage: 42,
-            barThickness: 60,
-            maxBarThickness: 70,
-          }, 
-        ],
-      },
-        options: {
-          legend: {
-            display: false
+            label: "Without DPM",
+            backgroundColor: "#d72631",
+            borderColor: "#d72631",
+            borderWidth: 1,
+            data: [economiccostWithoutDPM,]
           },
-          scales: {
-            yAxes: [{
-              gridLines: {
-                display: false,
-              },
+          {
+            label: "With DPM",
+            backgroundColor: "#039fbe",
+            borderColor: "#039fbe",
+            borderWidth: 1,
+            data: [economiccostWithDPM,]
+          },
+          {
+            label: "With Constraint",
+            backgroundColor: "#5c3c92",
+            borderColor: "#5c3c92",
+            borderWidth: 1,
+            data: [economiccostwithConstraint]
+          },
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
               scaleLabel: {
-                 display: true,
+                display: true,
                 labelString: 'In_Percentage'
               },
               ticks: {
-                min: 1,
-                // max: 60,
-                 stepSize: 1,
+                beginAtZero: true
               }
-            }]
+            }
+          ]
+        }
+      }
+    });
+  }
+
+  ResidualRiskGraph() {
+    this.changeDetectorRef.detectChanges();
+    var residualcostWithoutDPM: number = + (this.ResidualRiskWithOutDPM)
+    var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithDPM)
+    var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
+    var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
+
+    var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
+    var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
+    var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
+
+    this.chart = new Chart("residual_risk", {
+      type: "bar",
+      data: {
+        labels: ["Residual Risk"],
+        datasets: [
+          {
+            label: "Without DPM",
+            backgroundColor: "#d72631",
+            borderColor: "#d72631",
+            borderWidth: 1,
+            data: [resdualtWithoutDPM,]
+          },
+          {
+            label: "With DPM",
+            backgroundColor: "#039fbe",
+            borderColor: "#039fbe",
+            borderWidth: 1,
+            data: [residualcostwithDPM,]
+          },
+          {
+            label: "With Constraint",
+            backgroundColor: "#5c3c92",
+            borderColor: "#5c3c92",
+            borderWidth: 1,
+            data: [residualwithConstraint]
+          },
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
+
+  }
+  MEIGraph() {
+    this.changeDetectorRef.detectChanges();
+    var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
+    var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
+    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
+    var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
+
+    var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
+    var meicostwithDPM = ((meiCostDPMWithoutConstraint / meitotal) * 100).toFixed(2)
+    var meicostwithConstraint = ((meiCostWithDPMConstraint / meitotal) * 100).toFixed(2)
+
+    this.chart = new Chart("mei_risk", {
+      type: "bar",
+      data: {
+        labels: ["MEI Risk",],
+        datasets: [
+          {
+            label: "Without DPM",
+            backgroundColor: "#d72631",
+            borderColor: "#d72631",
+            borderWidth: 1,
+            data: [meicostwithoutDPM,]
+          },
+          {
+            label: "With DPM",
+            backgroundColor: "#039fbe",
+            borderColor: "#039fbe",
+            borderWidth: 1,
+            data: [meicostwithDPM,]
+          },
+          {
+            label: "With Constraint",
+            backgroundColor: "#5c3c92",
+            borderColor: "#5c3c92",
+            borderWidth: 1,
+            data: [meicostwithConstraint]
+          },
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
+
+  }
+
+  ALLGraphCBA() {
+    var eonomicriskwithoutDPM: number = +(this.EconomicRiskWithOutDPM)
+    var eonomicriskwithDPM: number = +(this.EconomicRiskWithDPM)
+    var eonomicriskwithConstraint: number = +(this.EconomicRiskWithConstraintDPM)
+    var total: number = (eonomicriskwithoutDPM + eonomicriskwithDPM + eonomicriskwithConstraint)
+
+    var economiccostWithoutDPM = ((eonomicriskwithoutDPM / total) * 100).toFixed(2)
+    var economiccostWithDPM = ((eonomicriskwithDPM / total) * 100).toFixed(2)
+    var economiccostwithConstraint = ((eonomicriskwithConstraint / total) * 100).toFixed(2)
+
+    var residualcostWithoutDPM: number = + (this.ResidualRiskWithOutDPM)
+    var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithDPM)
+    var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
+    var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
+
+    var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
+    var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
+    var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
+
+    var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
+    var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
+    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
+    var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
+
+    var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
+    var meicostwithDPM = ((meiCostDPMWithoutConstraint / meitotal) * 100).toFixed(2)
+    var meicostwithConstraint = ((meiCostWithDPMConstraint / meitotal) * 100).toFixed(2)
+
+    this.changeDetectorRef.detectChanges();
+
+    this.chart = new Chart("allGraphCBI", {
+      type: "bar",
+      data: {
+        labels: ["Economic Risk", "MEI", "Residual Risk",],
+        datasets: [
+          {
+            label: "Without DPM",
+            backgroundColor: "#d72631",
+            borderColor: "#d72631",
+            borderWidth: 1,
+            data: [economiccostWithoutDPM, meicostwithoutDPM, resdualtWithoutDPM]
+          },
+          {
+            label: "With DPM",
+            backgroundColor: "#039fbe",
+            borderColor: "#039fbe",
+            borderWidth: 1,
+            data: [economiccostWithDPM, meicostwithDPM, residualcostwithDPM]
+          },
+          {
+            label: "With Constraint",
+            backgroundColor: "#5c3c92",
+            borderColor: "#5c3c92",
+            borderWidth: 1,
+            data: [economiccostwithConstraint, meicostwithConstraint, residualwithConstraint]
+          },
+        ]
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
+  }
+
+  getUserSkillRecords() {
+    this.commonBLervice.getWithoutParameters('/SkillLibraryAPI/GetAllConfigurationRecords').subscribe(
+      (res: any) => {
+        this.SkillLibraryAllrecords = res;
+        this.PSRClientContractorData
+        for (var i = 0; i < this.SkillLibraryAllrecords.length; i++) {
+          for (var j = 0; j < this.PSRClientContractorData.length; j++) {
+            this.SkillLibraryAllrecords.forEach(element => {
+              if (this.PSRClientContractorData[j].PSRClientContractorId == this.SkillLibraryAllrecords[i].Craft) {
+                element.CraftSF = this.PSRClientContractorData[j].CraftSF
+              }
+            });
           }
         }
-    }); 
-  }
-  SkillLevelGraph (){
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart('skilllevel_risk', {
-  //   type: 'bar',
-  //   data: {
-  //      labels: ['OPS','OPS_GEP','REL','REL_GEP'],
-  //     datasets: [
-  //       {
-  //         // data: [this.MEIWithoutDPM,this.MEIWithDPMWithoutConstraint,this.MEIWithDPMWithConstraint],
-  //         data: [100,75,90,70],
-  //         backgroundColor: ['purple','blueviolet','indigo','green',],
-  //         fill: false
-  //       },
-  //     ]
-  //   },
-  //   options: {
-  //     scales: {
-  //       yAxes: [{
-  //         ticks: {
-  //           min: 0,
-  //           stepSize: 1,
-  //         }
-  //       }]
-  //     }
-  //   }
-  // });
-      
-  }
-public  level =[]
-public  craft =[]
-public craftarray : any =[];
 
- getUserSkillRecords(){
-  this.commonBLervice.getWithoutParameters('/SkillLibraryAPI/GetAllConfigurationRecords').subscribe(
-    (res : any) => {
-      this.SkillLibraryAllrecords =res;
-      this.PSRClientContractorData
-       for (var i = 0; i <this.SkillLibraryAllrecords.length; i++) {
-        for (var j = 0; j <this.PSRClientContractorData.length; j++) { 
-            this.SkillLibraryAllrecords.forEach(element => {
-            if(this.PSRClientContractorData[j].PSRClientContractorId == this.SkillLibraryAllrecords[i].Craft){
-               element.CraftSF = this.PSRClientContractorData[j].CraftSF 
-            }
-          });
-        }
-       }
-
-    }, err=>{ console.log(err.error)}
-  );
-}
- GetPSRClientContractorData() {
-  this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords')
-    .subscribe((res1: any) => {
-      this.PSRClientContractorData = res1;
-
-    }, err=>{ console.log(err.error)}
+      }, err => { console.log(err.error) }
     );
-}
+  }
+  GetPSRClientContractorData() {
+    this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords')
+      .subscribe((res1: any) => {
+        this.PSRClientContractorData = res1;
+
+      }, err => { console.log(err.error) }
+      );
+  }
 
 }
 
