@@ -504,12 +504,22 @@ export class DashboardComponent {
     this.PredictionNormalcount = 0
     this.Predictionbadcount = 0
 
+    // for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+    //   if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "degarde") {
+    //     this.PredictionDegradecount = this.PredictionDegradecount + 1
+    //   } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
+    //     this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+    //   } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
+    //     this.PredictionNormalcount = this.PredictionNormalcount + 1
+    //   } else
+    //     this.Predictionbadcount = this.Predictionbadcount + 1
+    // }
     for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "degarde") {
+      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "degarde") {
         this.PredictionDegradecount = this.PredictionDegradecount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "incipient") {
         this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "normal") {
         this.PredictionNormalcount = this.PredictionNormalcount + 1
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
@@ -526,11 +536,11 @@ export class DashboardComponent {
     this.Predictionbadcount = 0
 
     for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "degarde") {
+      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "degarde") {
         this.PredictionDegradecount = this.PredictionDegradecount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "incipient") {
         this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "normal") {
         this.PredictionNormalcount = this.PredictionNormalcount + 1
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
@@ -698,10 +708,19 @@ export class DashboardComponent {
   }
 
   FModeType() {
-    if (this.fmtype != "" && this.selectedYear == "") {
-      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === this.fmtype.toString()));
-    } else if (this.fmtype != "" && this.selectedYear != "") {
-      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    // if (this.fmtype != "" && this.selectedYear == "") {
+    //   this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === this.fmtype.toString()));
+    // } else if (this.fmtype != "" && this.selectedYear != "") {
+    //   this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    // }
+    if (this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"  && this.selectedYear == "") {
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "SSRB") || (val.FailureModeType === "CF") || (val.FailureModeType === "RD"));
+    } else if (this.fmtype != "SSRB"  && this.selectedYear != "") {
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "SSRB" ) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    } else if (this.fmtype != "RD"  && this.selectedYear != "") {
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "RD" ) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    } else if (this.fmtype != "CF"  && this.selectedYear != "") {
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "CF" ) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
     }
     this.Degradecount = 0
     this.Incipientcount = 0
@@ -1688,11 +1707,11 @@ export class DashboardComponent {
     this.FutuerPredictionbadcount = 0
 
     for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
-      if (`${this.FutuerPredictionAllData[i]}.${this.fmtype}` == "degarde") {
+      if (`${this.FutuerPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "degarde") {
         this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1
-      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype}` == "incipient") {
+      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "incipient") {
         this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1
-      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype}` == "normal") {
+      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "normal") {
         this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1
       } else
         this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1

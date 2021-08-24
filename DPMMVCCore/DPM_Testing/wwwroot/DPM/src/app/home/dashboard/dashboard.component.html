@@ -36,11 +36,17 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="">
-                    <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FModeType()" class="form-control">
+                    <!-- <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FModeType()" class="form-control">
                         <option value="">Select Failure Mode</option> Type
                         <ng-container *ngFor="let mode of FMList">
                             <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
                         </ng-container>
+                    </select> -->
+                    <select [(ngModel)]="fmtype" class="form-select" (change)="FModeType()" class="form-control">
+                        <option value="" selected>Select Failure Mode</option>
+                        <option value="SSRB" selected>Second stage rotar breakdown</option>
+                        <option value="CF" selected>Cooler Failure</option>
+                        <option value="RD">Rotar Damage</option>
                     </select>
                 </div>
             </div>
@@ -144,12 +150,18 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
-                        <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="PredictFModeType()"
+                        <!-- <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="PredictFModeType()"
                             class="form-control">
                             <option value="">Select Failuer Mode</option> Type
                             <ng-container *ngFor="let mode of FMList">
                                 <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
                             </ng-container>
+                        </select> -->
+                        <select [(ngModel)]="fmtype" class="form-select" (change)="PredictFModeType()" class="form-control">
+                            <option value="" selected>Select Failure Mode</option>
+                            <option value="SSRB" selected>Second stage rotar breakdown</option>
+                            <option value="CF" selected>Cooler Failure</option>
+                            <option value="RD">Rotar Damage</option>
                         </select>
                     </div>
                 </div>
@@ -212,11 +224,17 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
-                        <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FutuerDates()" class="form-control">
+                        <!-- <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FutuerDates()" class="form-control">
                             <option value="">Select Failure Mode</option> Type
                             <ng-container *ngFor="let mode of FMList">
                                 <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
                             </ng-container>
+                        </select> -->
+                        <select [(ngModel)]="fmtype" class="form-select" (change)="FutuerDates()" class="form-control">
+                            <option value="" selected>Select Failure Mode</option>
+                            <option value="SSRB" selected>Second stage rotar breakdown</option>
+                            <option value="CF" selected>Cooler Failure</option>
+                            <option value="RD">Rotar Damage</option>
                         </select>
                     </div>
                 </div>
