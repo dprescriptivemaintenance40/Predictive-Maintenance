@@ -379,14 +379,14 @@
                                     </div>
                                     <div class="col-sm">
                                         <div class="mb-2">
-                                            <strong>Economic RISK with DPM: <span class="badge badge-success">{{CBAReportDetails.WithDPM}}</span></strong>
+                                            <strong> {{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true ? 'Economic RISK with DPM' : 'Economic RISK with DPM with Constraint'}} : <span class="badge badge-success">{{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true ? CBAReportDetails.WithDPM : CBAReportDetails.WithDPMConstraint}}</span></strong>
                                         </div>
                                     </div>
-                                    <div *ngIf="MSSETBF !== 0" class="col-sm">
+                                    <!-- <div *ngIf="CBAReportDetails.EconomicRiskWithDPMConstraintCR !== ''" class="col-sm">
                                         <div class="mb-2">
-                                            <strong>Economic RISK with DPM Constraint: <span class="badge badge-success">{{CBAReportDetails.EconomicRiskWithConstraintDPMCR}}</span></strong>
+                                            <strong>Economic RISK with DPM Constraint: <span class="badge badge-success">{{CBAReportDetails.EconomicRiskWithDPMConstraintCR}}</span></strong>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!-- <div class="col-sm">
                                         <div class="mb-2">
                                             <strong>MEI Without DPM: <span class="badge badge-success">{{CBAReportDetails.MEIWithoutDPM}}</span></strong>
