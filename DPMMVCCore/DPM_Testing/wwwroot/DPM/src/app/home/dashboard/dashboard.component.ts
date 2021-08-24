@@ -640,8 +640,9 @@ export class DashboardComponent {
           this.ClassificationOfAllRecordDonught();
           this.GenerateReport()
           this.ClassificationOfAllpolarchart()
+         
           // this.ScatterChart()
-
+            
         }, error => {
           console.log(error.error)
         }
@@ -1263,7 +1264,7 @@ export class DashboardComponent {
           yAxes: [{
             stacked: true,
             ticks: {
-
+              max:12
             }
           }]
         }
@@ -1581,7 +1582,7 @@ export class DashboardComponent {
           yAxes: [{
             stacked: true,
             ticks: {
-
+              max:10
             }
           }]
         }

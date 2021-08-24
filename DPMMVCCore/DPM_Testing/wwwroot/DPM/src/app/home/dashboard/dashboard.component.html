@@ -7,10 +7,31 @@
 <p-toast position="top-right"></p-toast>
 <div class="card bg-transparent border-0" id="Trainnavigate">
     <div class="d-flex justify-content-between align-items-center">
-        <h5><b> Screw Compressor-Trained Classification Data</b> </h5>
+        <h5><b> Screw Compressor-Trained Classification Data - Tag Number :K100</b> </h5>
         <button style="float: right" class="btn btn-primary btn-sm" (click)="RouteToTrain()" data-toggle="tooltip"
             data-placement="top" title="Go to Train"><i class="fas fa-table"></i></button>
     </div><br>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card bg-white p-3 border-0 ">
+                        <strong> Overall Classification Chart</strong>
+                        <strong> All Failure Modes All Years</strong>
+                        <canvas id="canvasClass"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-white p-3 border-0 ">
+                <strong> Overall Classification Chart</strong>
+                <strong> All Failure Modes Based On Years</strong>
+                <canvas id="polarArea"></canvas>
+            </div>
+        </div>
+    </div>
+    <br><br>
     <div class="bg-white rounded p-3 br-3">
         <div class="row">
             <div class="col-md-2">
@@ -36,35 +57,15 @@
             </div>
         </div>
     </div>
-
     <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-sm">
-                    <div class="card bg-white p-3 border-0 ">
-                        <strong> Overall Classification Chart</strong>
-                        <strong> All Failure Modes All Years</strong>
-                        <canvas id="canvasClass"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card bg-white p-3 border-0 ">
-                <strong> Overall Classification Chart</strong>
-                <strong> All Failure Modes Based On Years</strong>
-                <canvas id="polarArea"></canvas>
-            </div>
-        </div>
-        <div class="col-md-12 mt-4">
-            <div class="card bg-white p-3 border-0 ">
-                <strong> Overall Classification Chart</strong>
-                <strong> Based On Selected Failure Modes & Selected Years</strong>
-                <canvas id="canvas1" style="height: 350px">{{ chart }}</canvas>
-            </div>
+    <div class="col-md-12 mt-4">
+        <div class="card bg-white p-3 border-0 ">
+            <strong> Overall Classification Chart</strong>
+            <strong> Based On Selected Failure Modes & Selected Years</strong>
+            <canvas id="canvas1" style="height: 350px">{{ chart }}</canvas>
         </div>
     </div>
-
+</div>
 </div>
 
 <div class="card bg-transparent border-0 mt-4" *ngIf="PredictionShow" id="Predictionnavigate">
@@ -75,35 +76,6 @@
                 data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
             <button class="btn btn-primary btn-sm ml-2" id="Predictionnavigate" (click)="FutuerPredictionClick()">Future
                 Forcast</button>
-        </div>
-    </div>
-    <div class="d-block mt-4">
-        <div class="bg-white rounded p-3 br-3 mb-4">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="">
-                        <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="PredictFModeType()"
-                            class="form-control">
-                            <option value="">Select Failuer Mode</option> Type
-                            <ng-container *ngFor="let mode of FMList">
-                                <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
-                            </ng-container>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="">
-                        <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
-                            (ngModelChange)="PredictFModeType()" class="form-control">
-                            <option value="">Select Year</option>
-                            <ng-container *ngFor="let year of Predictyearlist">
-                                <option [value]="year.Predictyearname" name="PredictionselectedYear">
-                                    {{year.Predictyearname}}</option>
-                            </ng-container>
-                        </select>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="row">
@@ -161,16 +133,48 @@
                             <canvas id="PredictioncanvasClass" height="150"></canvas>
                         </div>
                     </div>
-                    <div class="col-md-12 mt-4">
-                        <div class="bg-white rounded  px-5 py-3  br-3">
-                            <strong> Overall Prediction Chart</strong><br>
-                            <strong> Based On Selected Failure Modes & Selected Years</strong>
-                            <canvas id="Predictionbarline"></canvas>
-                        </div>
-
+    
+                </div>
+            </div>
+        </div>
+    </div><br>
+    
+    <div class="d-block mt-4">
+        <div class="bg-white rounded p-3 br-3 mb-4">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="">
+                        <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="PredictFModeType()"
+                            class="form-control">
+                            <option value="">Select Failuer Mode</option> Type
+                            <ng-container *ngFor="let mode of FMList">
+                                <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="">
+                        <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
+                            (ngModelChange)="PredictFModeType()" class="form-control">
+                            <option value="">Select Year</option>
+                            <ng-container *ngFor="let year of Predictyearlist">
+                                <option [value]="year.Predictyearname" name="PredictionselectedYear">
+                                    {{year.Predictyearname}}</option>
+                            </ng-container>
+                        </select>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="d-block mt-4">
+    <div class="col-md-12 mt-4">
+        <div class="bg-white rounded  px-5 py-3  br-3">
+            <strong> Overall Prediction Chart</strong><br>
+            <strong> Based On Selected Failure Modes & Selected Years</strong>
+            <canvas id="Predictionbarline"></canvas>
+        </div>
         </div>
     </div>
 </div>
@@ -184,6 +188,25 @@
             <button class="btn btn-primary btn-sm" (click)="PredictionOnClick()"> Prediction</button>
         </div>
     </div>
+
+    <div class="d-block mt-4">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="h-100 bg-white p-3">
+                    <strong> Overall Forcast Chart</strong><br>
+                    <strong> All Failure Modes All Years</strong>
+                    <canvas id="FutuerPredictionPie"></canvas>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="bg-white p-3">
+                    <strong> Overall Forcast Chart</strong><br>
+                    <strong> All Failure Modes Based On Years</strong>
+                    <canvas id="donughtChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div><br>
     <div class="bg-white p-3 mt-4">
         <div class="d-block">
             <div class="row">
@@ -213,30 +236,14 @@
         </div>
     </div>
     <div class="d-block mt-4">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="h-100 bg-white p-3">
-                    <strong> Overall Forcast Chart</strong><br>
-                    <strong> All Failure Modes All Years</strong>
-                    <canvas id="FutuerPredictionPie"></canvas>
-                </div>
-            </div>
-            <div class="col-md-7">
-                <div class="bg-white p-3">
-                    <strong> Overall Forcast Chart</strong><br>
-                    <strong> All Failure Modes Based On Years</strong>
-                    <canvas id="donughtChart"></canvas>
-                </div>
-            </div>
-            <div class="col-md-12 mt-4">
-                <div class="h-100 bg-white p-3">
-                    <strong> Overall Forcast Chart</strong><br>
-                    <strong> Based On Selected Failure Modes & Selected Years</strong>
-                    <canvas id="BarChart"></canvas>
-                </div>
-            </div>
+    <div class="col-md-12 mt-4">
+        <div class="h-100 bg-white p-3">
+            <strong> Overall Forcast Chart</strong><br>
+            <strong> Based On Selected Failure Modes & Selected Years</strong>
+            <canvas id="BarChart"></canvas>
         </div>
     </div>
+</div>
 </div>
 <div class="bg-white p-3 rounded mt-4">
     <div class="row d-flex flex-column justify-content-between align-items-center">
