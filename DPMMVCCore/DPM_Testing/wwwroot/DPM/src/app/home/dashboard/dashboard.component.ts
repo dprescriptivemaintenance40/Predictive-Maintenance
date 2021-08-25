@@ -529,6 +529,7 @@ export class DashboardComponent {
     // this.PredictionAllRecordPie()
   }
   PredictFModeType() {
+
     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
