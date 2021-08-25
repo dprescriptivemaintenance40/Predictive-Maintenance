@@ -1607,7 +1607,7 @@ export class DashboardComponent {
           yAxes: [{
             stacked: true,
             ticks: {
-              max:10
+               max:5
             }
           }]
         }
