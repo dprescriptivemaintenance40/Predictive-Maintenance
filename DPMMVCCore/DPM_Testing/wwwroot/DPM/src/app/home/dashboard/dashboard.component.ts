@@ -289,7 +289,8 @@ export class DashboardComponent {
   public ResidualRiskWithConstraintDPMCR: number = 0;
 
   public EconomicRiskWithDPMCR: string = "";
-
+  displayModal: boolean;
+  displayBasic: boolean;
   getUserDetails() {
     if (!!localStorage.getItem('CBAOBJ')) {
       this.UserData = JSON.parse(localStorage.getItem('CBAOBJ'));
@@ -315,6 +316,10 @@ export class DashboardComponent {
       this.showcbi = true;
 
     }
+  }
+
+  showBasicDialog() {
+    this.displayBasic = true;
   }
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
