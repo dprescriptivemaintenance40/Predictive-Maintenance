@@ -110,7 +110,7 @@ export class DashboardComponent {
   public FutuerPredictedDate = [];
   public FuterPredictyearlist = [];
   public FutuerPredictionData: string = "";
-  public FutuerPredictionAllData: any;
+  public FutuerPredictionAllData: any = [];
   public FutuerPredictionDataNormalCount: any = [];
   public FutuerPredictionDataIncipientCount: any = [];
   public FutuerPredictonDataDegradeCount: any = [];

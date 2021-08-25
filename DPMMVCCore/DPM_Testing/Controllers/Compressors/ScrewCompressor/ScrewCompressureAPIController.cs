@@ -100,12 +100,8 @@ namespace DPM_Testing.Controllers
                 double PD2aPS2aTrigger = Convert.ToDouble(ScrewCompressorConfigurationModel[3].Trigger);
                 foreach (var item in trainClassificationModels)
                 {
-                    DateTime datetime = Convert.ToDateTime(item.Date).Date;
-                    item.InsertedDate = datetime;
-                    if (datetime == DateTime.MinValue)
-                    {
-                        item.InsertedDate = DateTime.Now.Date;
-                    }
+                   // DateTime datetime = Convert.ToDateTime(item.Date).Date;
+                    item.InsertedDate = Convert.ToDateTime(item.InsertedDate); 
                     item.UserId = userId;
                     item.FailureModeType = "SSRB";
                     item.TenantId = 1;
