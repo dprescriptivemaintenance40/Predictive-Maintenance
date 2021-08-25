@@ -1279,12 +1279,12 @@ export class DashboardComponent {
         events: [],
         scales: {
           xAxes: [{
-            // stacked: true,
+            stacked: true,
           }],
           yAxes: [{
-            // stacked: true,
+            stacked: true,
             ticks: {
-              max:20
+              max:12
             }
           }]
         }
