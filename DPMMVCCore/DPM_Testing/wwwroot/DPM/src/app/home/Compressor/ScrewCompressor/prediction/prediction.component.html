@@ -18,6 +18,10 @@
         animation: glowing 1500ms infinite;
     }
     
+    .glowing {
+        animation: glowing 1500ms infinite;
+    }
+    
     @-webkit-keyframes glowing {
         0% {
             background-color: #B20000;
@@ -82,8 +86,8 @@
 
 <div class="row">
     <div class=" col-md-12">
-        <div class="alert alert-danger d-flex justify-content-between align-items-center">
-            <label class="mb-0"><i class="lnr lnr-warning mr-2"></i>{{RecommendationAlertMessage}}</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
+        <div class="alert alert-danger d-flex justify-content-between align-items-center glowing" style="color: #fff;">
+            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
         </div>
         <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
             <p class="mb-0"><i class="pi pi-info-circle" class="mr-1"></i>To know about Taxonomy of Compressor</p>
@@ -91,8 +95,7 @@
                 <button *ngIf="enableImage" class="btn btn-primary btn-sm mr-1" (click)="compressorImage()">Click Here</button>
                 <button *ngIf="CancelImage" class="btn btn-outline-danger btn-sm mr-1" (click)="compressorImageCancel()">Cancel</button>
                 <button type="button" (click)="ChangeToBulkPrediction()" class="btn btn-dark btn-sm mr-1">{{SingleBulkPredictionName}}</button>
-                <button class="btn btn-sm btn-outline-dark ml-1" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top"
-                    title="Go to Dashboard"><i class="fas fa-chart-line"></i></button>
+                <button class="btn btn-sm btn-outline-dark ml-1" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line"></i></button>
             </div>
         </div>
     </div>
@@ -138,11 +141,13 @@
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>TD1</th>
+                                <th>DATE</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-futurePredictionDataTableList>
                             <tr>
                                 <td>{{futurePredictionDataTableList.TD1.toFixed(2)}}</td>
+                                <td>{{futurePredictionDataTableList.Date | date : 'medium'}}</td>
                             </tr>
                         </ng-template>
                     </p-table>

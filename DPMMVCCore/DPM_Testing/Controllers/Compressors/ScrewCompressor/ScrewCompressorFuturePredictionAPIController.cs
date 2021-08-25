@@ -397,27 +397,27 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                //List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels.Where(a => a.UserId == userId).ToListAsync();
+                List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels.Where(a => a.UserId == userId).ToListAsync();
 
 
 
-                List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels
-                                                                                                         .Where(a => a.UserId == userId)
-                                                                                                         .OrderBy(a => a.Date.Year)
-                                                                                                         .ThenBy(d => d.Date.Month)
-                                                                                                 .ThenBy(d => d.Date.Day)
-                                                                                                         .ToListAsync();
-                for (int i = 0; i < screwCompressorForecastModels.Count; i++)
-                {
+              //  List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels
+                                                                                                 //        .Where(a => a.UserId == userId)
+                                                                                                 //        .OrderBy(a => a.Date.Year)
+                                                                                                 //        .ThenBy(d => d.Date.Month)
+                                                                                                 //.ThenBy(d => d.Date.Day)
+                                                                                                 //        .ToListAsync();
+                //for (int i = 0; i < screwCompressorForecastModels.Count; i++)
+                //{
 
-                    screwCompressorForecastModels[i].FTD1 = screwCompressorForecastModels[i].TD1;
+                //    screwCompressorForecastModels[i].FTD1 = screwCompressorForecastModels[i].TD1;
 
-                    screwCompressorForecastModels[i].TD1 = 0;
-                    long date = DateToValues(screwCompressorForecastModels[i].Date);
-                      screwCompressorForecastModels[i].FDate = date;
-                }
-                var Data = screwCompressorForecastModels.Select(d => new { d.FDate, d.FTD1, d.TD1, }).ToList();
-                return Ok(Data);
+                //    screwCompressorForecastModels[i].TD1 = 0;
+                //    long date = DateToValues(screwCompressorForecastModels[i].Date);
+                //      screwCompressorForecastModels[i].FDate = date;
+                //}
+              //  var Data = screwCompressorForecastModels.Select(d => new { d.FDate, d.FTD1, d.TD1, }).ToList();
+                return Ok(screwCompressorForecastModels);
             }
             catch (Exception exe)
             {

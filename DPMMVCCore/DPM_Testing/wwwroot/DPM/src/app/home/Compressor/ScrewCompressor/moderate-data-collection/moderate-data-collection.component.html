@@ -6,25 +6,26 @@
 
 <div class="row mb-3">
     <div class="col-sm col-md-4 form-group mb-0">
-       <label class="mb-0 bg-white px-4 py-3 rounded w-100 d-block">Raw Data Count : <span class="d-block h4 mb-0 text-primary">{{UploadCompDetailList.length}}</span></label>
+        <label class="mb-0 bg-white px-4 py-3 rounded w-100 d-block">Raw Data Count : <span class="d-block h4 mb-0 text-primary">{{UploadCompDetailList.length}}</span></label>
     </div>
     <div class="col-sm col-md-4 form-group mb-0">
         <label class="mb-0 bg-white px-4 py-3 rounded w-100 d-block">After Data Mining : <span class="d-block h4 mb-0 text-primary">{{MinedSensorData.length}}</span></label>
-     </div>
+    </div>
     <div class="col-sm col-md-4 form-group mb-0">
         <label class="mb-0 bg-white px-4 py-3 rounded w-100 d-block">Cleaned data percentage : <span class="d-block h4 mb-0 text-primary">{{((MinedSensorData.length/UploadCompDetailList.length) * 100).toFixed(2)}} %</span></label>
-     </div>
+    </div>
 </div>
 <div class="row bg-white p-3">
     <div class="col-sm">
         <button class="btn btn-primary mr-2" (click)="GetRawData()">RawData</button>
-   
+
         <button class="btn btn-primary" (click)="GetSensorData()">Cleaned Data</button>
     </div>
 </div>
 <div style="padding: 5px;" style="overflow: auto;">
     <div class="card">
-        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="RawData === true ? UploadCompDetailList : MinedSensorData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="RawData === true ? UploadCompDetailList : MinedSensorData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [loading]="loading">
             <ng-template pTemplate="colgroup">
                 <colgroup>
                     <col *ngIf="RawData" style="width:8em;">
@@ -36,7 +37,6 @@
                     <col style="width:8em;">
                     <col style="width:8em;">
                     <col style="width:8em;">
-                    <col style="width:12em;">
                 </colgroup>
             </ng-template>
             <ng-template pTemplate="header">
