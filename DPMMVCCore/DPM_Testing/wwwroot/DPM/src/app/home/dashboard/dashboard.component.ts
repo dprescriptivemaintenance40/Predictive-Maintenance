@@ -45,7 +45,7 @@ export class DashboardComponent {
   public classi: any = [];
   public Prediction: any = [];
   public PredictionFilteredData: any;
-  public ScrewCompressorAllData: any;
+  public ScrewCompressorAllData: any = [];
   public ScrewCompressorFilteredData: any;
   public FailuerModetypeFilteredData: any;
   public FailuerModetypeFilteredData1: any;
