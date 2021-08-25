@@ -120,7 +120,7 @@ namespace DPM_Testing.Controllers
                     }
                     else if (item.TD1 > Convert.ToDecimal(TD1Trigger) || ( (PD1a/PS1a) > Convert.ToDecimal(PD1aPS1aTrigger) ) || ((PD2a / PS2a) > Convert.ToDecimal(PD2aPS2aTrigger)))
                     {
-                        item.Classification = "degarde";
+                        item.Classification = "degrade";
                     }
                     else if (item.TD1 > Convert.ToDecimal(TD1Alaram) || ((PD1a / PS1a) > Convert.ToDecimal(PD1aPS1aAlaram)) || ((PD2a / PS2a) > Convert.ToDecimal(PD2aPS2aAlaram)))
                     {
