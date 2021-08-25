@@ -1606,9 +1606,19 @@ export class DashboardComponent {
           }],
           yAxes: [{
             stacked: true,
+            // ticks: {
+            //     max:10
+            // }
             ticks: {
-               max:5
-            }
+              beginAtZero: true,
+              max:3,
+              userCallback: function(label, index, labels) {
+                  if (Math.floor(label) === label) {
+                      return label;
+                  }
+
+              },
+          }
           }]
         }
       }
