@@ -33,7 +33,7 @@ export class TrainComponent implements OnInit {
   public Image = false;
   public enableImage = true;
   public CancelImage = false;
-  public failureModeType: string = "RD";
+  public failureModeType: string = "SSRB";
   displayModal: boolean;
   displayBasic: boolean;
 
