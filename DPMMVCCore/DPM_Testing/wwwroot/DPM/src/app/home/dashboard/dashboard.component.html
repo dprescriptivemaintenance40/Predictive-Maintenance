@@ -20,8 +20,20 @@
                 <div class="col-sm">
                     <div class="card bg-white p-3 border-0 ">
                         <strong> Overall Classification Chart</strong>
-                        <strong> All Failure Modes All Years</strong>
-                        <canvas id="canvasClass"></canvas>
+                        <strong> All Failure Modes All Years (In Percentage)</strong>
+                        <canvas id="canvasClass"></canvas> <br>
+                        <marquee width="100%" direction="left" height="100px">
+                            <label style="font-size:12;color:black"><i class="lnr lnr-warning  mr-2"></i>
+                                {{ ClassDegradepercentageForMessage.length > ClassIncipientpercentageForMessage.length ? 'The Graph Shows Machine goes on Breakdown stage' :
+                                ClassDegradepercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph Shows Machine is Under worst Condition,Need to do
+                                Maintenance' :
+                                ClassIncipientpercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph shows Machine needs 
+                                Maintenance' :
+                                ClassNormalpercentageForMessage.length > ClassIncipientpercentageForMessage.length ? 'The Graph shows Machine Work at good condition' :'The Graph shows Machine needs Maintenance'
+                             }}
+
+                            </label>
+                        </marquee>
                     </div>
                 </div>
             </div>
@@ -29,11 +41,11 @@
         <div class="col-md-6">
             <div class="card bg-white p-3 border-0 ">
                 <strong> Overall Classification Chart</strong>
-                <strong> All Failure Modes Based On Years</strong>
-                <canvas id="polarArea"></canvas>
+                <strong> All Failure Modes Based On Years (In Percentage)</strong>
+                <canvas id="polarArea"></canvas><br><br>
             </div>
         </div>
-    </div>
+    </div><br>
     <br><br>
     <div class="bg-white rounded p-3 br-3">
         <div class="row">
@@ -134,15 +146,28 @@
                     <div class="col-md-6">
                         <div class="bg-white rounded px-5 py-3 br-3">
                             <strong> Overall Prediction Chart</strong><br>
-                            <strong> All Failure Modes All Years</strong>
-                            <canvas id="PredictionPie"></canvas>
+                            <strong> All Failure Modes All Years (In Percentage)</strong>
+                            <canvas id="PredictionPie"></canvas><br>
+
+                            <marquee width="100%" direction="left" height="100px">
+                                <label style="font-size:14;color:black"><i class="lnr lnr-warning  mr-2"></i>
+            
+                                 {{ predictionDegradeMessage.length > predictionIncipientMessage.length ? ' The Graph Shows Machine goes on Breakdown stage' :
+                                 predictionDegradeMessage.length > predictionNormalMessage.length ? ' The Graph Shows Machine is Under worst Condition,Need to do
+                                 Maintenance' :
+                                 predictionIncipientMessage.length > predictionNormalMessage.length ? ' The Graph shows Machine needs 
+                                 Maintenance' :
+                                 predictionNormalMessage.length > predictionIncipientMessage.length ? 'The Graph shows Machine Work at good condition' :'The Graph shows Machine needs Maintenance'
+                              }}
+                                </label>
+                            </marquee>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="bg-white rounded  px-5 py-3  br-3">
                             <strong> Overall Prediction Chart</strong><br>
-                            <strong> All Failure Modes Based On Years</strong>
-                            <canvas id="PredictioncanvasClass" height="150"></canvas>
+                            <strong> All Failure Modes Based On Years (In Percentage)</strong>
+                            <canvas style="width: 70px;height: 50px" id="PredictioncanvasClass"></canvas><br>
                         </div>
                     </div>
     
@@ -191,7 +216,7 @@
     </div>
     <div class="d-block mt-4">
     <div class="col-md-12 mt-4">
-        <div class="bg-white rounded  px-5 py-3  br-3">
+        <div class="bg-white rounded  px-5 py-3  br-3" >
             <strong> Overall Prediction Chart</strong><br>
             <strong> Based On Selected Failure Modes & Selected Years</strong>
             <canvas id="Predictionbarline"></canvas>
