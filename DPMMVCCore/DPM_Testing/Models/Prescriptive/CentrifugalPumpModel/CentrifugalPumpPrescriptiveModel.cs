@@ -29,6 +29,7 @@ namespace DPM.Models.Prescriptive
         public string CRemarks { get; set; }
         public string FCAAdded { get; set; }
         public string MSSAdded { get; set; }
+        public string Type { get; set; }
         public List<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
 
     }

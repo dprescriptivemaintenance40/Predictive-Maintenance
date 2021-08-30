@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { MenuItem } from 'primeng/api';
 import { Title } from '@angular/platform-browser';
 import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CentrifugalPumpPrescriptiveModel } from './prescriptive-model'
 import { CanComponentDeactivate } from 'src/app/auth.guard';
 import { Observable } from 'rxjs';
@@ -236,17 +236,26 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
  public patternaddshow: boolean  = false
  public FunctionFailure : string = ""
- 
+ public Type : string = "";
 
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
     public router: Router,
+    private route : ActivatedRoute,
     public commonLoadingDirective: CommonLoadingDirective,
     private changeDetectorRef: ChangeDetectorRef,
     private prescriptiveBLService : CommonBLService,
-    private prescriptiveContantAPI : PrescriptiveContantAPI) { }
+    private prescriptiveContantAPI : PrescriptiveContantAPI) { 
+      var type ;
+      this.route.params.subscribe(params => {
+        type = params['type'];
+        if(type !== undefined){
+          this.Type =type;
+        }
+       });
+    }
 
 
 
@@ -827,6 +836,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     })
     this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
     this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
+    this.centrifugalPumpPrescriptiveOBJ.Type = this.treeResponseData.Type;
     this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
     localStorage.setItem('TestingOBj', JSON.stringify(this.data1))
     for (let index = 0; index < this.FMChild.length; index++) {
@@ -896,6 +906,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
       obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
+      obj['Type']=this.Type;
       this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
     }
 

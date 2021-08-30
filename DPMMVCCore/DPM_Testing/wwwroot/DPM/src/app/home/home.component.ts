@@ -227,7 +227,7 @@ export class HomeComponent implements OnInit {
           items: [ 
             {
               label:'RCM',
-              url: '#/Home/Prescriptive/ADD'
+              url: '#/Home/Prescriptive/ADD/CA'
             },
             {
               label: 'CBA',
@@ -240,7 +240,7 @@ export class HomeComponent implements OnInit {
           items: [ 
             {
               label:'FMEA',
-              url: '#/Home/Prescriptive/ADD'
+              url: '#/Home/Prescriptive/ADD/SCA'
             },
             {
               label:'CBA',
