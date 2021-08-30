@@ -318,6 +318,7 @@ export class CostBenefitAnalysisComponent {
             this.CBAOBJ.EconomicRiskWithDPMConstraint = WithDPMConstraint.toFixed(0);
             var WDC : number= await this.getValue(WithDPMConstraintCR.CriticalityRating);
             this.CBAOBJ.EconomicRiskWithDPMConstraintCRValue = WDC;
+            this.CBAOBJ.FullObject = JSON.stringify(this.CBAReportDetails);
             localStorage.removeItem('CBAOBJ');
             localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
     }
@@ -544,6 +545,7 @@ export class CostBenefitAnalysisComponent {
             this.CBAOBJ.EconomicRiskWithDPMCRValue = 0;
             this.CBAOBJ.EconomicRiskWithOutDPMCRValue = 0;
             this.CBAOBJ.EconomicRiskWithDPMConstraintCRValue = 0;
+            this.CBAOBJ.FullObject = JSON.stringify(this.CBAReportDetails);
             localStorage.removeItem('CBAOBJ');
             localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
     }
@@ -568,6 +570,7 @@ export class CostBenefitAnalysisComponent {
         
         this.CBAOBJ.EconomicRiskWithDPMCRValue = WD;
         this.CBAOBJ.EconomicRiskWithOutDPMCRValue = WOD;
+        this.CBAOBJ.FullObject = JSON.stringify(this.CBAReportDetails);
         localStorage.removeItem('CBAOBJ');
         localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
     }
