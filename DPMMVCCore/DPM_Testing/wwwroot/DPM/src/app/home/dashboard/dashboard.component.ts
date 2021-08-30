@@ -272,7 +272,7 @@ export class DashboardComponent {
     this.dygraph()
     this.ComboDates()
     this.CBICharts()
-
+    // this.PredictionAllRecordBarcharts1()
 
   }
 
@@ -324,7 +324,18 @@ export class DashboardComponent {
 
     }
   }
-
+  public SelectTagNumbers: string = "";
+  public PredictiongraphShow:boolean=false;
+  public PredictiongraphShow1:boolean=false;
+  TagNumberSelsection(){
+    if(this.SelectTagNumbers =="K100"){
+      this.PredictiongraphShow=true;
+      this.PredictiongraphShow1=true;
+      this.PredictionWithTagNumber()
+      this.PredictionWithActionPieChart()
+      this.PredictionWithAlertPieChart ()  
+    }
+  }
   showBasicDialog() {
     this.displayBasic = true;
   }
@@ -386,7 +397,12 @@ export class DashboardComponent {
           this.getAllFilterData = res
         })
   }
-
+  public RecommendationAlertMessage : string = "";
+  public RecommendationAlertEnable : boolean = false;
+  public RecommendationAlertMessagelength
+  public Degrademessagecount: number = 0;
+  public Normalemessagecount: number = 0;
+  public Incipientemessagecount: number = 0;
   GerAllPredictionRecords() {
     this.PredictionDataNormalCount = null;
     this.PredictionDataIncipientCount = null;
@@ -417,14 +433,21 @@ export class DashboardComponent {
               degrade = degrade + 1;
             }
             counter = counter + 1;
-            if (counter === 100) {
-              if (incipient > 60) {
-                this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'RCM is recomended' });
-              } else if (degrade > 60) {
-                this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Machine starts for degradation, RCA is recomended' });
+            if (counter === 97) {
+              if (degrade > 6) {
+                this.RecommendationAlertMessage = 'Machine starts degrading, RCA is recomended';
+                this.Degrademessagecount = this.Degrademessagecount+1
+                this.RecommendationAlertEnable = true;
+              } else if (incipient > 6) {
+                this.RecommendationAlertMessage ='RCM is recomended';
+                 this.Incipientemessagecount = this.Incipientemessagecount+1
+                this.RecommendationAlertEnable = true;
+              }else{
+                this.RecommendationAlertEnable = false;
               }
-              break;
+             break;
             }
+            this.PredictionWithAlertPieChart()
           }
           this.PredictionFilteredData = res;
           this.ScrewPredictionAllData.forEach(element => {
@@ -493,6 +516,9 @@ export class DashboardComponent {
           this.PredictionAllRecordBarcharts();
           this.PredictionAllRecordPie();
           this.GenerateReport()
+          this.TagNumberSelsection()
+          // this.PredictionWithTagNumber()
+          // this.PredictionWithActionPieChart()
         }, error => {
           console.log(error.error)
         })
@@ -1446,7 +1472,6 @@ export class DashboardComponent {
   }
 
   PredictionAllRecordDonught() {
-
     this.changeDetectorRef.detectChanges();
     this.ScrewPredictionAllData.sort()
 
@@ -1589,6 +1614,7 @@ export class DashboardComponent {
 
     });
   }
+  
 public predictionDegradeMessage:any=[]
 public predictionIncipientMessage:any=[]
 public predictionNormalMessage:any=[]
@@ -1687,8 +1713,6 @@ public predictionNormalMessage:any=[]
   PredictionAllRecordBarcharts() {
     this.changeDetectorRef.detectChanges();
     if (this.state.PredictionNavigate == 1) {
-      // const element = document.querySelector("#Predictionnavigate")
-      //  element.scrollIntoView({ behavior: 'smooth', block: 'center' })
       var elmnt = document.getElementById("Predictionnavigate");
       elmnt.scrollIntoView();
     }
@@ -2036,48 +2060,6 @@ public predictionNormalMessage:any=[]
   }
 
   FutuerdDonughtchart() {
-    // var a: any = [];
-    // this.FutuerPredictionNormalcount = 0,
-    //   this.FutuerPredictionIncipientcount = 0,
-    //   this.FutuerPredictionDegradecount = 0;
-    // this.FutuerPredictionAllData.forEach(element => {
-    //   if (this.fmtype != "") {
-    //     if (this.fmtype == "SSRB") {
-    //       a.push(element.SSRB)
-    //     } else if (this.fmtype == "CF") {
-    //       a.push(element.CF)
-    //     } if (this.fmtype == "RD") {
-    //       a.push(element.RD)
-    //     }
-    //   } else {
-    //     a.push(element.Prediction)
-    //   }
-
-    // });
-    // a.forEach(element => {
-    //   if (element == 'normal') {
-    //     this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1;
-    //   } else if (element == 'incipient') {
-    //     this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1;
-    //   } else if (element == 'degrade' || element == 'degarde') {
-    //     this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1;
-    //   }
-    // });
-    // this.chart = new Chart('donughtChart', {
-    //   type: 'doughnut',
-    //   data: {
-    //     labels: ["Normal", "incipient", "Degrade"],
-    //     datasets: [
-    //       {
-    //         backgroundColor: ["#3cd3d8", "#ffb801", "#fe4c61"],
-    //         data: [this.FutuerPredictionNormalcount, this.FutuerPredictionIncipientcount, this.FutuerPredictionDegradecount]
-    //       }
-    //     ]
-    //   },
-    //   options: {
-    //     events: [],
-    //   }
-    // });
     this.changeDetectorRef.detectChanges();
     this.FutuerPredictionAllData.sort()
     var LabelDates: any = [];
@@ -2449,6 +2431,62 @@ public predictionNormalMessage:any=[]
   //   // )
   // }
 
+  // PredictionAllRecordBarcharts1() {
+  //   this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+  //        var prediction = res;
+  //        prediction.forEach(element => {
+  //         if (element.TD1 > 180 && element.TD1 < 210) {
+  //           element.alarm = element.TD1
+  //         }else{
+  //           element.alarm = ''
+  //         }
+  //          if (element.TD1 > 210) {
+  //           element.trigger = element.TD1
+  //         }else{
+  //           element.trigger = ''
+  //         }
+  //        });
+  //        this.csvData = this.ConvertToCSV(prediction);
+  //          this.chart = new Dygraph(
+  //           document.getElementById("Predictiongraph"),this.csvData,
+  //           {
+  //              colors: ['green','#ffb801','red',],
+  //             //  visibility: [ true,true, false,, true, true,],
+  //             showRangeSelector: true,
+  //             fillGraph:true,
+  //             fillAlpha: 0.1,
+  //             connectSeparatedPoints: false,
+  //             drawPoints: true,
+  //             strokeWidth: 1.5,
+  //             stepPlot: false,
+  //             errorbar: true,
+  //             drawXGrid: true,
+  //             valueRange: [150,250],
+  //             includeZero: false,
+  //             drawAxesAtZero: false,
+  //             series: {
+  //               'TD1': {
+  //                 strokePattern: null,
+  //                 drawPoints: true,
+  //                 pointSize: 2,
+  //               },
+  //               'alarm': {
+  //                 strokePattern: null,
+  //                 drawPoints: true,
+  //                 pointSize: 2,
+  //               },
+  //               'trigger': {
+  //                 strokePattern: null,
+  //                 drawPoints: true,
+  //                 pointSize: 2,
+  //               },
+              
+  //             },
+  //       })}
+  //   )
+  // }
+
+ 
   dygraph() {
     this.chart = new Dygraph(
       // document.getElementById("graph"),"dist/DPM/assets/newDygraphForSensordata.csv",
@@ -2979,5 +3017,198 @@ public predictionNormalMessage:any=[]
       );
   }
 
+
+  PredictionWithTagNumber() {
+    var a: any = [];
+    this.PredictionNormalcount = 0,
+      this.PredictionIncipientcount = 0,
+      this.PredictionDegradecount = 0;
+    this.ScrewPredictionAllData.forEach(element => {
+      if (this.fmtype != "") {
+        if (this.fmtype == "SSRB") {
+          a.push(element.SSRB)
+        } else if (this.fmtype == "CF") {
+          a.push(element.CF)
+        } if (this.fmtype == "RD") {
+          a.push(element.RD)
+        }
+      } else {
+        a.push(element.Prediction)
+      }
+    });
+    var Degradepercentage
+    var Incipientpercentage
+    var Normalpercentage
+    var Badpercentage
+    a.forEach(element => {
+      if (element == 'normal') {
+        this.PredictionNormalcount = this.PredictionNormalcount + 1;
+      } else if (element == 'incipient') {
+        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+      } else if (element == 'degrade' || element == 'degarde') {
+        this.PredictionDegradecount = this.PredictionDegradecount + 1;
+      }else{
+        this.Predictionbadcount = this.Predictionbadcount+1
+      }
+    });
+    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
+    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
+    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+    Badpercentage = ((this.Predictionbadcount / a.length) * 100).toFixed(2);
+
+    this.predictionDegradeMessage = Degradepercentage
+    this.predictionIncipientMessage = Incipientpercentage
+    this.predictionNormalMessage = Normalpercentage
+  
+
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("PredictionbarWithTage", {
+      type: "bar",
+      data: {
+        labels: ['K100'],
+        fill: true,
+        datasets: [
+          {
+            label: "Normal",
+            data: [Normalpercentage],
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
+
+          },
+          {
+            label: "Incipient",
+            data: [Incipientpercentage],
+            borderWidth: 1,
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
+            fill: true,
+
+          },
+          {
+            label: "Degrade",
+            data: [Degradepercentage],
+            borderWidth: 1,
+            borderColor: "#fe4c61",
+            backgroundColor: '#fe4c61',
+            fill: true,
+
+          },
+          {
+            label: "Bad",
+            data: Badpercentage,
+            borderWidth: 1,
+            borderColor: "blue",
+            backgroundColor: 'blue',
+            fill: true,
+          },
+
+        ],
+      },
+      options: {
+        scales: {
+          xAxes: [{
+            stacked: true,
+            barPercentage: 0.2,
+            scaleLabel: {
+              display: true,
+              labelString: 'Tag Numbers'
+            },
+            gridLines: {
+              display: false
+            },
+          }],
+          yAxes: [{
+            stacked: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Percentage '
+            },
+            ticks: {
+            },
+            gridLines: {
+              display: false
+            },
+          }]
+        }
+      }
+
+    });
+  }
+
+  PredictionWithActionPieChart(){
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("PredictionActionPiechart", {
+      type: 'pie',
+      data: {
+        labels: ["Complete", "Ongoing", "Overdue"],
+        fill: true,
+        datasets: [
+          {
+            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
+            data: [0, 4, 1]
+          }
+        ]
+      },
+      options: {
+         events: [],
+        animation: {
+          duration: 500,
+          easing: "easeOutQuart",
+          onComplete: function () {
+            var ctx = this.chart.ctx;
+            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+      
+            this.data.datasets.forEach(function (dataset) {
+              for (var i = 0; i < dataset.data.length; i++) {
+                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                    total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                    mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
+                    start_angle = model.startAngle,
+                    end_angle = model.endAngle,
+                    mid_angle = start_angle + (end_angle - start_angle)/2;
+      
+                var x = mid_radius * Math.cos(mid_angle);
+                var y = mid_radius * Math.sin(mid_angle);
+      
+                ctx.fillStyle = '#fff';
+                if (i == 3){ 
+                  ctx.fillStyle = '#444';
+                }
+                if (i >0){ 
+                  var percent = String(Math.round(dataset.data[i]/total*100)) + "%";
+                  ctx.fillText(percent, model.x + x, model.y + y + 15);
+                }
+              
+              }
+            });               
+          }
+        }
+      }
+    });
+  }
+
+  PredictionWithAlertPieChart(){
+    this.changeDetectorRef.detectChanges();
+    // this.chart = new Chart("PredictionAlertsPiechart", {
+    //   type: 'pie',
+    //   data: {
+    //     labels: ["Acknowledged", "Not_Acknowledged"],
+    //     fill: true,
+    //     datasets: [
+    //       {
+    //         backgroundColor: ["gray", "#ffb801",],
+    //         data: [this.Degrademessagecount,this.Incipientemessagecount ]
+    //       }
+    //     ]
+    //   },
+
+    // });
+  }
+
+  
 }
 

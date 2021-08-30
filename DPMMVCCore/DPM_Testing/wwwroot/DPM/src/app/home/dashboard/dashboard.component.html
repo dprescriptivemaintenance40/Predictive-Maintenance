@@ -166,7 +166,7 @@
                     <div class="col-md-6">
                         <div class="bg-white rounded  px-5 py-3  br-3">
                             <strong> Overall Prediction Chart</strong><br>
-                            <strong> All Failure Modes Based On Years (In Percentage)</strong>
+                            <strong> All Failure Modes Based On Years</strong>
                             <canvas style="width: 70px;height: 50px" id="PredictioncanvasClass"></canvas><br>
                         </div>
                     </div>
@@ -219,7 +219,7 @@
         <div class="bg-white rounded  px-5 py-3  br-3" >
             <strong> Overall Prediction Chart</strong><br>
             <strong> Based On Selected Failure Modes & Selected Years</strong>
-            <canvas id="Predictionbarline"></canvas>
+            <canvas id="Predictionbarline" #Predictionbarline></canvas>
         </div>
         </div>
     </div>
@@ -430,3 +430,106 @@
         <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/NEW_PNID_Image.png" alt="">
     </div>
 </p-dialog>
+<br>
+
+<div class="col-md-4">
+    <select [(ngModel)]="SelectTagNumbers" class="form-select" (change)="TagNumberSelsection()" class="form-control">
+        <option value="">Tag Numbers</option>
+        <option value="K100">K100</option>  
+    </select>
+</div><br>
+
+<div class="row mt-4" *ngIf="PredictiongraphShow">
+    <div class="col-md-12">
+        <div class="graph w-100" id="Predictiongraph" #Predictiongraph></div>
+    </div>
+</div>
+
+
+<div class="card bg-transparent border-0" *ngIf="PredictiongraphShow1">
+    <div class="d-block mt-4">
+        <div class="col-md-12 mt-4">
+            <div class="bg-white rounded  px-5 py-3  br-3" >
+                <strong>Asset Condition Status</strong><br>
+                <canvas id="PredictionbarWithTage"></canvas>
+            </div>
+            </div>
+        </div><br><br>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card bg-white p-3 border-0 ">
+                <strong>Recommendation Status</strong>
+                <canvas id="PredictionActionPiechart"></canvas><br><br>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card bg-white p-3 border-0 ">
+                        <strong>Alert Acknowledgement</strong><br>
+                        <!-- <h1 style="color:black;font-size: 14px"><i class="pi pi-star-o mr-1 text-warning"></i>{{RecommendationAlertMessage}}</h1><a *ngIf="RecommendationAlertEnable"></a> -->
+                        <!-- {{Degrademessagecount}}  -->
+                        <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number : K100</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
+                        <canvas id="PredictionAlertsPiechart"> </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-body task-body">
+    <div class="col-sm-12 p-0">
+        <h5>Tasks</h5>                       
+        <div class="table-responsive-sm bg-white p-2 mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Task Details</th>
+                        <th>Indicators</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <td class="left strong">{{mss.MSSIntervalSelectionCriteria}}</td> -->
+                    <!-- <tr *ngFor="let mss of CBAReportDetails.CentrifugalPumpMssModel">
+                        <td>
+                            <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [(ngModel)]="mss.Checked"/>
+                        </td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- <div class="col-md-12 bg-white py-3">
+        <div class="col-sm">
+            <button style="float: right" class="btn btn-outline-dark btn-sm" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line mr-0"></i></button>
+        </div>
+        <div class="row mb-4">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="mb-2">
+                            <strong>Total PONC: <span class="badge badge-success">{{UserProductionCost}}</span></strong>
+                        </div>
+                    </div> 
+                    <div class="col-sm">
+                        <div class="mb-2">
+                            <strong>Economic RISK without DPM: <span class="badge badge-success">{{CBAReportDetails.WithOutDPM}}</span></strong>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="mb-2">
+                            <strong> {{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true ? 'Economic RISK with DPM' : 'Economic RISK with DPM with Constraint'}} : <span class="badge badge-success">{{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true ? CBAReportDetails.WithDPM : CBAReportDetails.WithDPMConstraint}}</span></strong>
+                        </div>
+                    </div>
+     
+                </div>
+            </div>
+
+   
+        </div>                       
+
+    </div> -->
+</div>
