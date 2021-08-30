@@ -16,6 +16,8 @@ import { CentrifugalPumpPredictiondataUploadComponent } from "./Pump/centrifugal
 import { ScrewCompressorTraindataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-traindata-upload/screw-compressor-traindata-upload.component";
 import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-predictiondata-upload/screw-compressor-predictiondata-upload.component";
 import { PrescriptionComponent } from "./prescription/prescription.component";
+import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
+import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -41,6 +43,8 @@ import { PrescriptionComponent } from "./prescription/prescription.component";
                 { path: 'PredictionUploadData', component: CentrifugalPumpPredictiondataUploadComponent }, 
                 { path: 'CompTrainUploadData', component: ScrewCompressorTraindataUploadComponent },
                 { path: 'CompPredictionUploadData', component: ScrewCompressorPredictiondataUploadComponent },                 
+                { path: 'WeibullAnalysis', component: WeibullAnalysis },                 
+                { path: 'FailureHistory', component: FailureHistoryComponent },                 
             ]
         }
     ])],

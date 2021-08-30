@@ -5,7 +5,6 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as Chart from 'chart.js';
 import { MessageService, TreeNode } from 'primeng/api';
-import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 import * as XLSX from 'xlsx';
 import { ExcelFormatService } from 'src/app/home/Services/excel-format.service';
@@ -79,7 +78,7 @@ export class FCAADDComponent implements OnInit {
   public FCAFreeTextSave1: boolean = true
   public patternaddshow: boolean = false
   public PatternFailuerAll: boolean = false
-   
+
 
   public PrescriptiveTreeList: any = [];
   public TagList: any = [];
@@ -167,14 +166,14 @@ export class FCAADDComponent implements OnInit {
       this.PatternTree();
       this.prescriptiveTree = true;
       this.PatternNextOnPrescriptiveTree = true;
-      this.FinalBack= true;
+      this.FinalBack = true;
     }
   }
   async ngOnDestroy() {
     await localStorage.removeItem('FCAObject');
   }
 
-  BaxkToAssetList(){
+  BaxkToAssetList() {
     this.router.navigateByUrl('/Home/Prescriptive/List');
   }
   async getPrescriptiveRecords() {
@@ -1218,7 +1217,7 @@ export class FCAADDComponent implements OnInit {
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
         this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
         this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Add Next FCA, So click on +FCA button' });
-      }else{
+      } else {
         this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Save FCA' });
       }
       this.PatternCounter = this.PatternCounter + 1
@@ -1683,13 +1682,14 @@ export class FCAADDComponent implements OnInit {
         Data.push(element.Days)
       });
       var url: string = this.prescriptiveContantAPI.FCAWebal
-      this.prescriptiveBLService.postWithHeaders(url, Data).subscribe(
-        (res: any) => {
-          this.alpha = res.alpha;
-          this.beta = res.beta;
-          this.changeDetectorRef.detectChanges();
-        }, err => { console.log(err.error) }
-      )
+      this.prescriptiveBLService.postWithHeaders(url, Data)
+        .subscribe(
+          (res: any) => {
+            this.alpha = res.alpha;
+            this.beta = res.beta;
+            this.changeDetectorRef.detectChanges();
+          }, err => { console.log(err.error) }
+        )
     }
 
   }

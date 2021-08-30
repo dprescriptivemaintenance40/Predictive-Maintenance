@@ -163,7 +163,11 @@ export class HomeComponent implements OnInit {
                   // ]
                 }
               ]
-            }
+            },
+            {
+              label:'Failure History',
+              url: '#/Home/FailureHistory'
+            },
           ]
         },
         {
@@ -253,7 +257,7 @@ export class HomeComponent implements OnInit {
           items: [ 
             {
               label:'Weibull Analysis',
-              // url: '#/Home/Prescriptive/ADD'
+              url: '#/Home/WeibullAnalysis'
             },
             {
               label:'CBA',

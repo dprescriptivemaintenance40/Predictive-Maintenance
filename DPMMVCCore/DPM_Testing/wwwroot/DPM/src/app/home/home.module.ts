@@ -21,6 +21,8 @@ import { CentrifugalPumpTraindataUploadComponent } from './Pump/centrifugal-pump
 import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component';
 import {DialogModule} from 'primeng/dialog';
 import { PrescriptionComponent } from './prescription/prescription.component';
+import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
+import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
 
 @NgModule({
     declarations: [
@@ -38,6 +40,8 @@ import { PrescriptionComponent } from './prescription/prescription.component';
         CentrifugalPumpTraindataUploadComponent,
         CentrifugalPumpPredictiondataUploadComponent,
         PrescriptionComponent,
+        WeibullAnalysis,
+        FailureHistoryComponent
     ],
     imports: [        
         HomeRoutingModule,       
