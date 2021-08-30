@@ -260,6 +260,7 @@ export class DashboardComponent {
     this.getPrescriptiveRecords()
     this.getUserDetails()
     this.FullCBAObject()
+    
   }
 
 
@@ -331,8 +332,10 @@ export class DashboardComponent {
   public PredictiongraphShow1:boolean=false;
   public myObj : any =[];
   public centrifugalmssmodel:any =[]
+  public centrifugalmssmodelFilter:any =[]
   public MSSCount:any = []
   public GDECount:number =0
+  public notification = null
   FullCBAObject(){
       this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
        this.myObj = JSON.parse(this.fullCBAobject);
@@ -349,8 +352,42 @@ export class DashboardComponent {
         }
         )
        this.MSSCount.push(MSScount)
+       const ids = this.centrifugalmssmodel.map(o => o.MSSIntervalSelectionCriteria)
+       this.centrifugalmssmodelFilter= this.centrifugalmssmodel.filter(({MSSIntervalSelectionCriteria}, index) => !ids.includes(MSSIntervalSelectionCriteria, index + 1))
+       this.centrifugalmssmodel.forEach((element) => { 
+       if(element.CentrifugalPumpMssId= "MSS"){
+        this.notification = { class: 'text-warning', };
+       }else  if(element.CentrifugalPumpMssId= "GDE"){
+        this.notification = { class: 'text-warning', };
+       }
+       })
     }
 
+   
+
+    // showNotification(notification) {
+    //   switch (notification) {
+    //     case '':
+    //        this.notification = { class: '',};
+    //       break; 
+    //     case 'MSS':
+    //        this.notification = { class: 'text-success', };
+    //       break;
+    //     case 'GDE':
+    //        this.notification = { class: 'text-success',  };
+    //       break;
+    //     case 'New':
+    //        this.notification = { class: 'text-primary', };
+    //       break;
+    //     case 'FMEA':
+    //        this.notification = { class: 'text-danger', };
+    //       break;
+    //     default:
+    //       break;
+    //   }
+      
+  
+    // }
   TagNumberSelsection(){
     if(this.SelectTagNumbers =="K100"){
       this.PredictiongraphShow=true;

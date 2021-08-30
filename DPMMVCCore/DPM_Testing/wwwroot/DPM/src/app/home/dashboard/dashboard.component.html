@@ -508,8 +508,11 @@
                      </tr>
                 </tbody> -->
                 <tbody>
-                    <tr *ngFor="let mss of centrifugalmssmodel">
-                        <td><i class="fas fa-check-circle"></i></td>
+                    <tr *ngFor="let mss of centrifugalmssmodelFilter">
+                        <!-- <td><i class="fas fa-check-circle"></i></td> -->
+                        <td><span *ngIf="notification">
+                            <i class="fas fa-exclamation-circle {{notification.class}}"></i>
+                        </span></td>
                         <td class="left strong">{{mss.MSSIntervalSelectionCriteria}}</td>
                     </tr>
                 </tbody>
