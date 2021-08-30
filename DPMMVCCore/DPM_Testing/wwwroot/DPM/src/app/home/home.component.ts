@@ -217,6 +217,52 @@ export class HomeComponent implements OnInit {
         }
       ]
     },
+    
+    {
+      label: 'Criticality Assesment',
+      icon: 'pi pi-book',
+      items: [
+        {
+          label: 'Critical Asset',
+          items: [ 
+            {
+              label:'RCM',
+              url: '#/Home/Prescriptive/ADD'
+            },
+            {
+              label: 'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            }
+          ]
+        },
+        {
+          label: 'Semi Critical Asset',
+          items: [ 
+            {
+              label:'FMEA',
+              url: '#/Home/Prescriptive/ADD'
+            },
+            {
+              label:'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            },
+          ]
+        },
+        {
+          label: 'Normal Criticality',
+          items: [ 
+            {
+              label:'Weibull Analysis',
+              // url: '#/Home/Prescriptive/ADD'
+            },
+            {
+              label:'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            },
+          ]
+        }
+      ]
+    },
     {
       label: 'Strategic Analysis',
       icon: 'pi pi-chart-line',
