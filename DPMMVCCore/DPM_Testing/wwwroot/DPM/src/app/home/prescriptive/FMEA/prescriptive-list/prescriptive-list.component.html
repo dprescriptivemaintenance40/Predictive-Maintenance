@@ -73,13 +73,13 @@
                                 <span (click)="FailureModeTable(p)" class="badge badge-dark ml-2"><i class="pi pi-star-o small mr-1"></i>Maintainenance Practice:{{p.CMaintainenancePractice}}</span></span>
                             </h1>
                             <span class="">
-                                <a class="link-primary mr-1" *ngIf="p.MSSAdded == 1" title="Update FMECA Tree" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled:p.FCAAdded != 1}"><small><i class="pi pi-pencil mr-2"></i></small>Update RCM</a>
+                                <a class="link-primary mr-1" *ngIf="p.Type === 'CA'? p.MSSAdded == 1 : p.FMWithConsequenceTree.length >0" title="p.Type === 'CA'?'Update RCM Tree':'Update FMEA Tree'}}" (click)="UpdatePrescriptiveRecords(p)" [ngClass]="{disabled: p.Type ==='CA'? p.FCAAdded != 1 : ''}"><small><i class="pi pi-pencil mr-2"></i></small>{{p.Type === 'CA'?'Update RCM':'Update FMEA'}}</a>
                             </span>
                             <span class="">
                                 <a title="Add Consequence" (click)="ADDConsequenceRecords(p)" [ngClass]="{disabled:p.FMWithConsequenceTree.length > 0}" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add Consequence</a>
                             </span>
 
-                            <span class="">
+                            <span *ngIf="p.Type === 'CA'" class="">
                                 <a  [ngClass]="{disabled:(p.FCAAdded == 1 ||  p.FMWithConsequenceTree.length == 0)}" (click)="getFCAData(p)" title="Add FCA" class="link-primary mr-1"><small><i class="pi pi-plus mr-2"></i></small>Add FCA</a>
                             </span>
                             <span class="">
