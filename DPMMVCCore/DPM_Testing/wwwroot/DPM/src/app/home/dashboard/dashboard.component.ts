@@ -259,6 +259,7 @@ export class DashboardComponent {
     this.getUserSkillRecords();
     this.getPrescriptiveRecords()
     this.getUserDetails()
+    this.FullCBAObject()
   }
 
 
@@ -294,6 +295,7 @@ export class DashboardComponent {
   public ResidualRiskWithDPM: number = 0;
   public ResidualRiskWithOutDPM: number = 0;
   public ResidualRiskWithConstraintDPMCR: number = 0;
+  public fullCBAobject:any=[]
 
   public EconomicRiskWithDPMCR: string = "";
   displayModal: boolean;
@@ -319,7 +321,7 @@ export class DashboardComponent {
       this.ResidualRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCRValue;
       this.ResidualRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPMCRValue;
       this.ResidualRiskWithConstraintDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraintCRValue;
-
+    
       this.showcbi = true;
 
     }
@@ -327,6 +329,28 @@ export class DashboardComponent {
   public SelectTagNumbers: string = "";
   public PredictiongraphShow:boolean=false;
   public PredictiongraphShow1:boolean=false;
+  public myObj : any =[];
+  public centrifugalmssmodel:any =[]
+  public MSSCount:any = []
+  public GDECount:number =0
+  FullCBAObject(){
+      this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
+       this.myObj = JSON.parse(this.fullCBAobject);
+       this.centrifugalmssmodel= this.myObj.CentrifugalPumpMssModel
+       var MSScount:number=0
+       var GDEcount:number=0
+          this.centrifugalmssmodel.forEach((element) => { 
+            if(element.CentrifugalPumpMssId === "MSS"){
+               MSScount= MSScount + 1
+            }else if(element.CentrifugalPumpMssId === "GDE"){
+               this.GDECount = this.GDECount+1
+            }
+          
+        }
+        )
+       this.MSSCount.push(MSScount)
+    }
+
   TagNumberSelsection(){
     if(this.SelectTagNumbers =="K100"){
       this.PredictiongraphShow=true;
@@ -3147,7 +3171,7 @@ public predictionNormalMessage:any=[]
         datasets: [
           {
             backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
-            data: [0, 4, 1]
+            data: [0,  this.MSSCount, 1]
           }
         ]
       },
@@ -3209,6 +3233,5 @@ public predictionNormalMessage:any=[]
     // });
   }
 
-  
 }
 

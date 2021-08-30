@@ -490,46 +490,30 @@
                         <th>Indicators</th>
                     </tr>
                 </thead>
+                <!-- <tbody>
+                    <tr>
+                        <td><i class="fas fa-check-circle"></i></td>
+                        <td class="left strong">Install second stage rotor assembly as per procedure</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td><i class="fas fa-check-circle"></i></td>
+                        <td class="left strong">Good Engineering Practice</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td><i class="fas fa-check-circle"></i></td>
+                        <td class="left strong">Install second stage rotor assembly as per procedure</td>
+                        <td></td>
+                     </tr>
+                </tbody> -->
                 <tbody>
-                    <!-- <td class="left strong">{{mss.MSSIntervalSelectionCriteria}}</td> -->
-                    <!-- <tr *ngFor="let mss of CBAReportDetails.CentrifugalPumpMssModel">
-                        <td>
-                            <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [(ngModel)]="mss.Checked"/>
-                        </td>
-                    </tr> -->
+                    <tr *ngFor="let mss of centrifugalmssmodel">
+                        <td><i class="fas fa-check-circle"></i></td>
+                        <td class="left strong">{{mss.MSSIntervalSelectionCriteria}}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
-    <!-- <div class="col-md-12 bg-white py-3">
-        <div class="col-sm">
-            <button style="float: right" class="btn btn-outline-dark btn-sm" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line mr-0"></i></button>
-        </div>
-        <div class="row mb-4">
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="mb-2">
-                            <strong>Total PONC: <span class="badge badge-success">{{UserProductionCost}}</span></strong>
-                        </div>
-                    </div> 
-                    <div class="col-sm">
-                        <div class="mb-2">
-                            <strong>Economic RISK without DPM: <span class="badge badge-success">{{CBAReportDetails.WithOutDPM}}</span></strong>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="mb-2">
-                            <strong> {{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true ? 'Economic RISK with DPM' : 'Economic RISK with DPM with Constraint'}} : <span class="badge badge-success">{{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true ? CBAReportDetails.WithDPM : CBAReportDetails.WithDPMConstraint}}</span></strong>
-                        </div>
-                    </div>
-     
-                </div>
-            </div>
-
-   
-        </div>                       
-
-    </div> -->
 </div>
