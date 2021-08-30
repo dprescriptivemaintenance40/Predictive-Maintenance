@@ -45,6 +45,7 @@ export class CostBenefitAnalysisComponent {
     public PSRClientContractorData : any = [];
     public UserProductionCost : number = 0;
     public GoodEngineeringTaskList : any = [];
+    public FMEATaskList : any = [];
     public CBAOBJ : any ={};
     private MSSStrategyReplacePSR : any =[];
     constructor(private messageService: MessageService,
@@ -159,13 +160,17 @@ export class CostBenefitAnalysisComponent {
             this.MaintenanceStrategyList = res;
             this.GoodEngineeringTaskList = [];
             this.MSSStrategyReplacePSR = [];
+            this.FMEATaskList = [];
             this.SavedPCRRecordsList.forEach(element => {
                var Data = this.MaintenanceStrategyList.find(r=>r.MaintenanceTask === element.MaintenanceTask)
                if(Data !== undefined && Data.Strategy === "GEP"){
                   this.GoodEngineeringTaskList.push(element)
                }
-               if(Data !== undefined && Data.Strategy === "NEW"){
+               if(Data !== undefined && Data.Strategy === "VENDOR"){
                 this.MSSStrategyReplacePSR.push(element);
+               }
+               if(Data !== undefined && Data.Strategy === "FMEA"){
+                this.FMEATaskList.push(element);
                }
             });
           }
@@ -288,11 +293,11 @@ export class CostBenefitAnalysisComponent {
             if(element.Checked === true){
                 counter = counter +1;
                 levelCount = levelCount + parseFloat(element.Level)
-                if(element.CentrifugalPumpMssId === 'GDE'  || element.CentrifugalPumpMssId === 'MSS' || element.CentrifugalPumpMssId === 'NEW'){
-                    if(element.CentrifugalPumpMssId === 'NEW'){
+                if(element.CentrifugalPumpMssId === 'GDE'  || element.CentrifugalPumpMssId === 'MSS' || element.CentrifugalPumpMssId === 'VENDOR' || element.CentrifugalPumpMssId === 'FMEA'){
+                    if(element.CentrifugalPumpMssId === 'VENDOR'){
                         if(element.Status == "Retained"){
                             WithDPMConstraint = WithDPMConstraint + parseFloat(element.AnnualPOC);
-                        }else if(element.Status == "New"){
+                        }else if(element.Status == "VENDOR"){
                             WithDPMConstraint = WithDPMConstraint + parseFloat(element.AnnualPOC);
                         }
                     }                
@@ -384,168 +389,336 @@ export class CostBenefitAnalysisComponent {
         var WithOutDPM : number= 0;
         var TotalAnnualPOC : number = 0
         var vendorPOC : number = 0;
-        this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => {
-            if(element.CentrifugalPumpMssId == "GDE"){
-                count = count + 1;
-            }else{
-
-                this.MSSTaskDetailList.forEach(r => {
-                    let obj ={}
-                    obj['Craft']= r.Craft;
-                    var weeks = element.MSSMaintenanceInterval.split(" ")[0];
-                    var Years = (parseFloat(weeks)/52).toFixed(0);
-                    obj['AnnualPOC']= ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years)).toFixed(3)
-                    var abc = ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years)).toFixed(3)
-                    if(r.Craft === "MEC"){
-                        obj['AnnualPOC'] = parseFloat(abc) + 1000
+        var Exist = this.CBAReportDetails.CentrifugalPumpMssModel.find(r => r.CentrifugalPumpMssId === "GDE");
+        if(Exist === undefined){
+            this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => {
+                if(element.CentrifugalPumpMssId == "GDE"){
+                    count = count + 1;
+                }else{
+                    if(this.prescriptiveRecords.Type === "CA"){
+                        this.MSSTaskDetailList.forEach(r => {
+                            let obj ={}
+                            obj['Craft']= r.Craft;
+                            var weeks = element.MSSMaintenanceInterval.split(" ")[0];
+                            var Years = (parseFloat(weeks)/52).toFixed(0);
+                            obj['AnnualPOC']= ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years)).toFixed(3)
+                            var abc = ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years)).toFixed(3)
+                            if(r.Craft === "MEC"){
+                                obj['AnnualPOC'] = parseFloat(abc) + 1000
+                            }
+                            obj['Level']= r.Level;
+                            obj['MSSIntervalSelectionCriteria']=element.MSSIntervalSelectionCriteria
+                            obj['CentrifugalPumpMssId']="MSS";
+                            obj['Checked']= true;
+                            obj['MSSMaintenanceTask']=element.MSSMaintenanceTask;
+                            obj['Hours']= `${r.Hours} hrs`;
+                            obj['Status']= r.Status;
+                            
+                            obj['MSSMaintenanceInterval']=element.MSSMaintenanceInterval;
+                            this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+                            WithDPM = WithDPM + ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years))
+                            if(r.Craft === "MEC"){
+                                TotalAnnualPOC = TotalAnnualPOC + (parseFloat(abc) + 1000);
+                            }else{
+                                TotalAnnualPOC = TotalAnnualPOC + ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years));
+                            }
+                           
+                            levelCount = levelCount + r.Level;
+                        });
+                        // TotalAnuualPOC = TotalAnuualPOC + element.AnnualPOC;
+                        // levelCount = levelCount + element.Level
+                        // WithDPM = WithDPM + parseFloat(element.AnnualPOC);
                     }
-                    obj['Level']= r.Level;
-                    obj['MSSIntervalSelectionCriteria']=element.MSSIntervalSelectionCriteria
-                    obj['CentrifugalPumpMssId']="MSS";
+                }
+            });
+            if(this.prescriptiveRecords.Type === "SCA"){
+                var PM = [
+                    {'id':'FMEA', 'MT':'PM - MEC', 'HR':'6 hrs'},
+                    {'id':'FMEA', 'MT':'PM - ELE', 'HR':'3 hrs'},
+                    {'id':'FMEA', 'MT':'PM - CTL', 'HR':'4 hrs'},
+                    {'id':'FMEA', 'MT':'PM - HEL', 'HR':'3 hrs'},
+                    {'id':'FMEA', 'MT':'PM - OPS', 'HR':'1 hr'},
+                ];
+                var BD = [
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - MEC', 'HR':'24 hrs'},
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - ELE', 'HR':'12 hrs'},
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - CTL', 'HR':'16 hrs'},
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - HEL', 'HR':'12 hrs'},
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - OPS', 'HR':'4 hr'},
+                ];
+                if(this.CBAReportDetails.MaintainenancePractice === "CBM and OBM Both"){
+                    let obj = {};
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
                     obj['Checked']= true;
-                    obj['MSSMaintenanceTask']=element.MSSMaintenanceTask;
-                    obj['Hours']= `${r.Hours} hrs`;
-                    obj['Status']= r.Status;
-                    
-                    obj['MSSMaintenanceInterval']=element.MSSMaintenanceInterval;
-                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
-                    WithDPM = WithDPM + ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years))
-                    if(r.Craft === "MEC"){
-                        TotalAnnualPOC = TotalAnnualPOC + (parseFloat(abc) + 1000);
-                    }else{
-                        TotalAnnualPOC = TotalAnnualPOC + ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years));
-                    }
-                   
-                    levelCount = levelCount + r.Level;
-                });
-                // TotalAnuualPOC = TotalAnuualPOC + element.AnnualPOC;
-                // levelCount = levelCount + element.Level
-                // WithDPM = WithDPM + parseFloat(element.AnnualPOC);
-            }
-        });
-            this.GoodEngineeringTaskList.forEach(element => {
-                let CRAFT = this.getCraftValue(element);
-                let LEVEL = this.getEmployeeLevelValue(element);
-                let obj ={}
-                obj['CentrifugalPumpMssId']="GDE";
-                obj['Checked']= true;
-                obj['MSSMaintenanceTask']=element.MaintenanceTask;
-                this.MaintenanceStrategyList
-                if(element.MaintenanceTask == "Weekly site observation as per log sheet - OCM" || element.MaintenanceTask == "Weekly site observation as per log sheet - REL"){
-                    obj['Hours']= '0.25 hrs';
-                    obj['AnnualPOC']= (element.POC).toFixed(3);
+                    obj['Hours']=  '0.25 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
+                    let CRAFT = this.getCraftValue(data);
+                    let LEVEL = this.getEmployeeLevelValue(data);
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
                     obj['Status']= 'Retained';
-                    WithDPM = WithDPM + parseFloat(element.POC);
-                    WithOutDPM = WithOutDPM + parseFloat(element.POC);
+                    obj['MSSMaintenanceInterval']="Daily";
+                    WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+
+                    obj = {};
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '0.5 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
+                    CRAFT = this.getCraftValue(data);
+                    LEVEL = this.getEmployeeLevelValue(data);
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                    obj['Status']= 'Retained';
                     obj['MSSMaintenanceInterval']="1 Week";
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
-                    vendorPOC = vendorPOC + parseFloat(element.POC);
-                }else if(element.MaintenanceTask == "Oil Sampling, Oil/Air Filter Replace, Align (Laser), &  clean intake vents"){
-                    obj['Hours']= '12 hrs';
-                    obj['AnnualPOC']= (element.POC).toFixed(3);
-                    obj['Status']= 'Retained'; 
-                    WithDPM = WithDPM + parseFloat(element.POC);
-                    WithOutDPM = WithOutDPM + parseFloat(element.POC);
-                    obj['MSSMaintenanceInterval']="52 Weeks";
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
-                    vendorPOC = vendorPOC + parseFloat(element.POC);
-                }else if( element.MaintenanceTask == "esd system function check"){
-                    obj['Hours']= '6 hrs';
-                    obj['AnnualPOC']= (element.POC).toFixed(3);
-                    obj['Status']= 'Retained'; 
-                    WithDPM = WithDPM + parseFloat(element.POC);
-                    WithOutDPM = WithOutDPM + parseFloat(element.POC); 
-                    obj['MSSMaintenanceInterval']="52 Weeks"; 
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
-                    vendorPOC = vendorPOC + parseFloat(element.POC);
-                }else if(element.MaintenanceTask == "Annual task as per list"){
-                    obj['Hours']= '12 hrs';
-                    obj['AnnualPOC']= (element.POC).toFixed(3);
-                    obj['Status']= 'Retained'; 
-                    WithDPM = WithDPM + parseFloat(element.POC);
-                    WithOutDPM = WithOutDPM + parseFloat(element.POC);
-                    obj['MSSMaintenanceInterval']="52 Weeks";
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
-                    vendorPOC = vendorPOC + parseFloat(element.POC);
-                }else if(element.MaintenanceTask == "Turn around task - MEC"){
-                    obj['Hours']= '48 hrs';
-                    obj['AnnualPOC']= (parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
-                    obj['Status']= 'Deleted'; 
-                    WithOutDPM = WithOutDPM + (parseFloat(element.MaterialCost) + parseFloat(element.POC));
-                    obj['MSSMaintenanceInterval']="260 Weeks";
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC) + parseFloat(element.MaterialCost);
-                    var poc : number = (parseFloat(element.POC) + parseFloat(element.MaterialCost)) * (260 / 52);
-                    vendorPOC = vendorPOC + (poc/5);
-                }else if(element.MaintenanceTask == "Turn around task - CTL"){
-                    obj['Hours']= '24 hrs';
-                    obj['AnnualPOC']= (element.POC).toFixed(3);
-                    obj['Status']= 'Deleted'; 
-                    WithOutDPM = WithOutDPM + parseFloat(element.POC);
-                    obj['MSSMaintenanceInterval']="260 Weeks";
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
-                    var poc : number = parseFloat(element.POC) * (260 / 52);
-                    vendorPOC = vendorPOC + (poc/5);
-                }else if(element.MaintenanceTask == "Turn around task - HEL"){
-                    obj['Hours']= '48 hrs';
-                    obj['AnnualPOC']= (element.POC).toFixed(3);
-                    obj['Status']= 'Deleted'; 
-                    WithOutDPM = WithOutDPM + parseFloat(element.POC);
-                    obj['MSSMaintenanceInterval']="260 Weeks";
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
-                    var poc : number = parseFloat(element.POC) * (260 / 52);
-                    vendorPOC = vendorPOC + (poc/5);
-                }else if(element.MaintenanceTask == "Turn around task - ELE"){
-                    obj['Hours']= '4 hrs';
-                    obj['AnnualPOC']= (element.POC).toFixed(3);
-                    obj['Status']= 'Deleted'; 
-                    WithOutDPM = WithOutDPM + parseFloat(element.POC);
-                    obj['MSSMaintenanceInterval']="260 Weeks";
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
-                    var poc : number = parseFloat(element.POC) * (260 / 52);
-                    vendorPOC = vendorPOC + (poc/5);
+                    WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+                    
+                }else if(this.CBAReportDetails.MaintainenancePractice === 'PM'){
+                    PM.forEach(element => {
+                        let obj = {};
+                        obj['CentrifugalPumpMssId']="FMEA";
+                        obj['MSSIntervalSelectionCriteria']= "FMEA";
+                        obj['Checked']= true;
+                        obj['Hours']=  element.HR;  
+                        obj['MSSMaintenanceTask'] = element.MT ;
+                        var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  element.MT)
+                        let CRAFT = this.getCraftValue(data);
+                        let LEVEL = this.getEmployeeLevelValue(data);
+                        obj['Craft']= CRAFT;
+                        obj['Level']= LEVEL;
+                        obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                        obj['Status']= 'Retained';
+                        obj['MSSMaintenanceInterval']="26 Week";
+                        WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                        WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                        vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                        this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+                    });
+                }else if(this.CBAReportDetails.MaintainenancePractice === "Breakdown Maintenance"){
+                    BD.forEach(element => {
+                        let obj = {};
+                        obj['CentrifugalPumpMssId']="FMEA";
+                        obj['MSSIntervalSelectionCriteria']= "FMEA";
+                        obj['Checked']= true;
+                        obj['Hours']=  element.HR;  
+                        obj['MSSMaintenanceTask'] = element.MT ;
+                        var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  element.MT)
+                        let CRAFT = this.getCraftValue(data);
+                        let LEVEL = this.getEmployeeLevelValue(data);
+                        obj['Craft']= CRAFT;
+                        obj['Level']= LEVEL;
+                        obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                        obj['Status']= 'Retained';
+                        obj['MSSMaintenanceInterval']="26 Week";
+                        WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                        WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                        vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                        this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+                    });
+                }else if(this.CBAReportDetails.MaintainenancePractice === "TBM"){
+                    let obj = {};
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '2 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
+                    let CRAFT = this.getCraftValue(data);
+                    let LEVEL = this.getEmployeeLevelValue(data);
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                    obj['Status']= 'Retained';
+                    obj['MSSMaintenanceInterval']="4 Week";
+                    WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+                }else if(this.CBAReportDetails.MaintainenancePractice === "CBM"){ 
+                    let obj = {};
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '0.25 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
+                    let CRAFT = this.getCraftValue(data);
+                    let LEVEL = this.getEmployeeLevelValue(data);
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                    obj['Status']= 'Retained';
+                    obj['MSSMaintenanceInterval']="Daily";
+                    WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+                }else if(this.CBAReportDetails.MaintainenancePractice === "OBM"){  
+                    let obj = {};
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '0.5 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
+                    let CRAFT = this.getCraftValue(data);
+                    let LEVEL = this.getEmployeeLevelValue(data);
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                    obj['Status']= 'Retained';
+                    obj['MSSMaintenanceInterval']="1 Week";
+                    WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
                 }
                 
-                obj['Craft']= CRAFT;
-                obj['Level']= LEVEL;
-                levelCount = levelCount + parseFloat(LEVEL);
-                obj['MSSIntervalSelectionCriteria']='Good Engineering Practice';
-                // obj['MSSMaintenanceInterval']="52 Weeks";
-                if(count === 0){
-                this.CBAReportDetails.CentrifugalPumpMssModel.push(obj);
-                }
-            
-            });
-            this.CBAReportDetails.VendorPOC = vendorPOC.toFixed(2);
-            this.CBAReportDetails.ResidualRiskWithMaintenance = (TotalAnnualPOC - vendorPOC).toFixed(2)
-            this.CBAReportDetails.WithDPM = WithDPM.toFixed(0)
-            this.CBAReportDetails.WithOutDPM = WithOutDPM.toFixed(0)
-            this.CBAReportDetails.CentrifugalPumpMssModel.splice(0,1)
-            levelCount = (levelCount/(this.CBAReportDetails.CentrifugalPumpMssModel.length * 100))
-            this.CBAReportDetails.TotalAnnualPOC =TotalAnnualPOC.toFixed(0);
-            
-            this.CBAOBJ.Level = levelCount;
-            this.CBAOBJ.ResidualRiskWithMaintenance = (TotalAnnualPOC - vendorPOC).toFixed(2)
-            this.CBAOBJ.VendorPOC = vendorPOC.toFixed(2);
-            this.CBAOBJ.TotalAnnualPOC = TotalAnnualPOC.toFixed(3);;
-            this.CBAOBJ.TotalPONC = this.UserProductionCost;
-            this.CBAOBJ.ETBF = this.ETBF;
-            this.CBAOBJ.VendorETBC = this.VendorETBF;
-            this.CBAOBJ.OverallETBC = this.MSSETBF;
-
-            this.CBAOBJ.EconomicRiskWithDPM = WithDPM.toFixed(0);
-            this.CBAOBJ.EconomicRiskWithOutDPM= WithOutDPM.toFixed(0);
-            this.CBAOBJ.EconomicRiskWithDPMConstraint = 0;
-            this.CBAOBJ.MEIWithoutDPM = 0;
-            this.CBAOBJ.MEIWithDPM = 0;
-            this.CBAOBJ.MEIWithDPMConstraint = 0;
-            this.CBAOBJ.EconomicRiskWithDPMCR = "";
-            this.CBAOBJ.EconomicRiskWithOutDPMCR = "";
-            this.CBAOBJ.EconomicRiskWithDPMConstraintCR = "";
-            this.CBAOBJ.EconomicRiskWithDPMCRValue = 0;
-            this.CBAOBJ.EconomicRiskWithOutDPMCRValue = 0;
-            this.CBAOBJ.EconomicRiskWithDPMConstraintCRValue = 0;
-            localStorage.removeItem('CBAOBJ');
-            localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
+            }
+                this.GoodEngineeringTaskList.forEach(element => {
+                    let CRAFT = this.getCraftValue(element);
+                    let LEVEL = this.getEmployeeLevelValue(element);
+                    let obj ={}
+                    obj['CentrifugalPumpMssId']="GDE";
+                    obj['Checked']= true;
+                    obj['MSSMaintenanceTask']=element.MaintenanceTask;
+                    this.MaintenanceStrategyList
+                    if(element.MaintenanceTask == "Weekly site observation as per log sheet - OCM" || element.MaintenanceTask == "Weekly site observation as per log sheet - REL"){
+                        obj['Hours']= '0.25 hrs';
+                        obj['AnnualPOC']= (element.POC).toFixed(3);
+                        obj['Status']= 'Retained';
+                        WithDPM = WithDPM + parseFloat(element.POC);
+                        WithOutDPM = WithOutDPM + parseFloat(element.POC);
+                        obj['MSSMaintenanceInterval']="1 Week";
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
+                        vendorPOC = vendorPOC + parseFloat(element.POC);
+                    }else if(element.MaintenanceTask == "Oil Sampling, Oil/Air Filter Replace, Align (Laser), &  clean intake vents"){
+                        obj['Hours']= '12 hrs';
+                        obj['AnnualPOC']= (element.POC).toFixed(3);
+                        obj['Status']= 'Retained'; 
+                        WithDPM = WithDPM + parseFloat(element.POC);
+                        WithOutDPM = WithOutDPM + parseFloat(element.POC);
+                        obj['MSSMaintenanceInterval']="52 Weeks";
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
+                        vendorPOC = vendorPOC + parseFloat(element.POC);
+                    }else if( element.MaintenanceTask == "esd system function check"){
+                        obj['Hours']= '6 hrs';
+                        obj['AnnualPOC']= (element.POC).toFixed(3);
+                        obj['Status']= 'Retained'; 
+                        WithDPM = WithDPM + parseFloat(element.POC);
+                        WithOutDPM = WithOutDPM + parseFloat(element.POC); 
+                        obj['MSSMaintenanceInterval']="52 Weeks"; 
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
+                        vendorPOC = vendorPOC + parseFloat(element.POC);
+                    }else if(element.MaintenanceTask == "Annual task as per list"){
+                        obj['Hours']= '12 hrs';
+                        obj['AnnualPOC']= (element.POC).toFixed(3);
+                        obj['Status']= 'Retained'; 
+                        WithDPM = WithDPM + parseFloat(element.POC);
+                        WithOutDPM = WithOutDPM + parseFloat(element.POC);
+                        obj['MSSMaintenanceInterval']="52 Weeks";
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
+                        vendorPOC = vendorPOC + parseFloat(element.POC);
+                    }else if(element.MaintenanceTask == "Turn around task - MEC"){
+                        obj['Hours']= '48 hrs';
+                        obj['AnnualPOC']= (parseFloat(element.MaterialCost) + parseFloat(element.POC)).toFixed(3);
+                        obj['Status']= 'Deleted'; 
+                        WithOutDPM = WithOutDPM + (parseFloat(element.MaterialCost) + parseFloat(element.POC));
+                        obj['MSSMaintenanceInterval']="260 Weeks";
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC) + parseFloat(element.MaterialCost);
+                        var poc : number = (parseFloat(element.POC) + parseFloat(element.MaterialCost)) * (260 / 52);
+                        vendorPOC = vendorPOC + (poc/5);
+                    }else if(element.MaintenanceTask == "Turn around task - CTL"){
+                        obj['Hours']= '24 hrs';
+                        obj['AnnualPOC']= (element.POC).toFixed(3);
+                        obj['Status']= 'Deleted'; 
+                        WithOutDPM = WithOutDPM + parseFloat(element.POC);
+                        obj['MSSMaintenanceInterval']="260 Weeks";
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
+                        var poc : number = parseFloat(element.POC) * (260 / 52);
+                        vendorPOC = vendorPOC + (poc/5);
+                    }else if(element.MaintenanceTask == "Turn around task - HEL"){
+                        obj['Hours']= '48 hrs';
+                        obj['AnnualPOC']= (element.POC).toFixed(3);
+                        obj['Status']= 'Deleted'; 
+                        WithOutDPM = WithOutDPM + parseFloat(element.POC);
+                        obj['MSSMaintenanceInterval']="260 Weeks";
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
+                        var poc : number = parseFloat(element.POC) * (260 / 52);
+                        vendorPOC = vendorPOC + (poc/5);
+                    }else if(element.MaintenanceTask == "Turn around task - ELE"){
+                        obj['Hours']= '4 hrs';
+                        obj['AnnualPOC']= (element.POC).toFixed(3);
+                        obj['Status']= 'Deleted'; 
+                        WithOutDPM = WithOutDPM + parseFloat(element.POC);
+                        obj['MSSMaintenanceInterval']="260 Weeks";
+                        TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.POC);
+                        var poc : number = parseFloat(element.POC) * (260 / 52);
+                        vendorPOC = vendorPOC + (poc/5);
+                    }
+                    
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    levelCount = levelCount + parseFloat(LEVEL);
+                    obj['MSSIntervalSelectionCriteria']='Good Engineering Practice';
+                    // obj['MSSMaintenanceInterval']="52 Weeks";
+                    if(count === 0){
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj);
+                    }
+                
+                });
+                this.CBAReportDetails.VendorPOC = vendorPOC.toFixed(2);
+                this.CBAReportDetails.ResidualRiskWithMaintenance = (TotalAnnualPOC - vendorPOC).toFixed(2)
+                this.CBAReportDetails.WithDPM = WithDPM.toFixed(0)
+                this.CBAReportDetails.WithOutDPM = WithOutDPM.toFixed(0)
+                this.CBAReportDetails.CentrifugalPumpMssModel.splice(0,1)
+                levelCount = (levelCount/(this.CBAReportDetails.CentrifugalPumpMssModel.length * 100))
+                this.CBAReportDetails.TotalAnnualPOC =TotalAnnualPOC.toFixed(0);
+                
+                this.CBAOBJ.Level = levelCount;
+                this.CBAOBJ.ResidualRiskWithMaintenance = (TotalAnnualPOC - vendorPOC).toFixed(2)
+                this.CBAOBJ.VendorPOC = vendorPOC.toFixed(2);
+                this.CBAOBJ.TotalAnnualPOC = TotalAnnualPOC.toFixed(3);;
+                this.CBAOBJ.TotalPONC = this.UserProductionCost;
+                this.CBAOBJ.ETBF = this.ETBF;
+                this.CBAOBJ.VendorETBC = this.VendorETBF;
+                this.CBAOBJ.OverallETBC = this.MSSETBF;
+    
+                this.CBAOBJ.EconomicRiskWithDPM = WithDPM.toFixed(0);
+                this.CBAOBJ.EconomicRiskWithOutDPM= WithOutDPM.toFixed(0);
+                this.CBAOBJ.EconomicRiskWithDPMConstraint = 0;
+                this.CBAOBJ.MEIWithoutDPM = 0;
+                this.CBAOBJ.MEIWithDPM = 0;
+                this.CBAOBJ.MEIWithDPMConstraint = 0;
+                this.CBAOBJ.EconomicRiskWithDPMCR = "";
+                this.CBAOBJ.EconomicRiskWithOutDPMCR = "";
+                this.CBAOBJ.EconomicRiskWithDPMConstraintCR = "";
+                this.CBAOBJ.EconomicRiskWithDPMCRValue = 0;
+                this.CBAOBJ.EconomicRiskWithOutDPMCRValue = 0;
+                this.CBAOBJ.EconomicRiskWithDPMConstraintCRValue = 0;
+                localStorage.removeItem('CBAOBJ');
+                localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
+        }
+        
     }
 
     public OpenMEI(){

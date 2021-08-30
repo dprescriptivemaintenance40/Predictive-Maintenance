@@ -889,6 +889,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.FunctionRatedHead
     this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType
     this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.FunctionFailure
+    this.centrifugalPumpPrescriptiveOBJ.Type = this.Type
     this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};
