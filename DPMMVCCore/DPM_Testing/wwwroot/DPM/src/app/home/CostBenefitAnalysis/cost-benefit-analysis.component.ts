@@ -486,6 +486,26 @@ export class CostBenefitAnalysisComponent {
                     TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+
+                    obj = {};
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '1 hr';  
+                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring' ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  'Vibration Monitoring')
+                    CRAFT = this.getCraftValue(data);
+                    LEVEL = this.getEmployeeLevelValue(data);
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                    obj['Status']= 'Retained';
+                    obj['MSSMaintenanceInterval']="4 Week";
+                    WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
                     
                 }else if(this.CBAReportDetails.MaintainenancePractice === 'PM'){
                     PM.forEach(element => {
@@ -509,6 +529,26 @@ export class CostBenefitAnalysisComponent {
                         vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                         this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
                     });
+                    let obj = {};
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '1 hr';  
+                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring' ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  'Vibration Monitoring')
+                    let CRAFT = this.getCraftValue(data);
+                    let LEVEL = this.getEmployeeLevelValue(data);
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                    obj['Status']= 'Retained';
+                    obj['MSSMaintenanceInterval']="4 Week";
+                    WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+
                 }else if(this.CBAReportDetails.MaintainenancePractice === "Breakdown Maintenance"){
                     BD.forEach(element => {
                         let obj = {};
@@ -586,6 +626,26 @@ export class CostBenefitAnalysisComponent {
                     obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
                     obj['Status']= 'Retained';
                     obj['MSSMaintenanceInterval']="1 Week";
+                    WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
+                    this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+
+                    obj = {};
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '1 hr';  
+                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring' ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  'Vibration Monitoring')
+                    CRAFT = this.getCraftValue(data);
+                    LEVEL = this.getEmployeeLevelValue(data);
+                    obj['Craft']= CRAFT;
+                    obj['Level']= LEVEL;
+                    obj['AnnualPOC']= (parseFloat(data.MaterialCost) + parseFloat(data.POC)).toFixed(3);
+                    obj['Status']= 'Retained';
+                    obj['MSSMaintenanceInterval']="4 Week";
                     WithDPM = WithDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
                     WithOutDPM = WithOutDPM + (parseFloat(data.MaterialCost) + parseFloat(data.POC));
                     TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
