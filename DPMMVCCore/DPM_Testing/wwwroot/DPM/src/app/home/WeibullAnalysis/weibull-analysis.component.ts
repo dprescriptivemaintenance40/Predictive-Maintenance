@@ -209,8 +209,8 @@ export class WeibullAnalysis {
                         objLine1LNLN["label"] = "LN(LN(1/R(T)))";
                         objLine1LNLN["data"] = [];
                         objLine1LNLN["borderColor"] = '#FFA726';
-                        objLine1LNLN["fill"] = false;
-                        objLine1LNLN["tension"] = .4;
+                        // objLine1LNLN["fill"] = false;
+                        // objLine1LNLN["tension"] = .4;
                         var objLine2Hazard = new Object();
                         objLine2Hazard["label"] = "HazardRate";
                         objLine2Hazard["data"] = [];
@@ -236,10 +236,43 @@ export class WeibullAnalysis {
                         objLine4PDF["fill"] = false;
                         objLine4PDF["tension"] = .4;
                         objLine4PDF["backgroundColor"] = 'rgba(255,167,38,0.2)';
+                        var data = [{
+                            x: 5,
+                            y: 4
+                        }, {
+                            x: 2,
+                            y: 14
+                        },
+                        {
+                            x: 4,
+                            y: 12
+                        },
+                        {
+                            x: 2,
+                            y: 10
+                        },
+                        {
+                            x: 3,
+                            y: 4
+                        },
+                        {
+                            x: 3,
+                            y: 5
+                        },
+                        {
+                            x: 3,
+                            y: 8
+                        },
+                        {
+                            x: 6,
+                            y: 12
+
+                        }];
                         this.WeibullModel.weibullHazardRateModels.forEach((row, index) => {
                             if (row.CyclesDays < 1000) {
-                                this.LabelLineChart1.push(row.WeibullLogx.toFixed(0));
-                                objLine1LNLN["data"].push(row.WeibullLogxOfLogx);
+                                // this.LabelLineChart1.push(row.WeibullLogx.toFixed(0));
+                                objLine1LNLN["data"].push({ x: row.WeibullLogx, y: row.WeibullLogxOfLogx });
+                                //objLine1LNLN["data"] = data;
                             }
                             if (row.CyclesDays <= 1000) {
                                 objLine2Hazard["data"].push(row.HazardRate);
@@ -277,9 +310,9 @@ export class WeibullAnalysis {
 
 
     ShowCharts() {
-        if (this.daysFile != undefined) {
+        if (!!this.daysFile) {
             this.showLineCharts = true;
-            if (this.Chart1 != undefined) {
+            if (!!this.Chart1) {
                 this.Chart1.destroy();
                 this.Chart2.destroy();
                 this.Chart3.destroy();
@@ -288,9 +321,9 @@ export class WeibullAnalysis {
             this.changeDetectorRef.detectChanges();
 
             this.Chart1 = new Chart('chart1', {
-                type: 'line',
+                type: 'scatter',
                 data: {
-                    labels: this.LabelLineChart1,
+                    //labels: this.LabelLineChart1,
                     datasets: this.LineChart1,
                 },
                 options: {
