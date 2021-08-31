@@ -240,7 +240,7 @@ export class CostBenefitAnalysisComponent {
                         let CRAFT = this.getCraftValue(element);
                         let LEVEL = this.getEmployeeLevelValue(element);
                         let obj ={}
-                        obj['CentrifugalPumpMssId']="NEW";
+                        obj['CentrifugalPumpMssId']="VENDOR";
                         obj['Checked']= true;
                         obj['MSSMaintenanceTask']=element.MaintenanceTask;
                         this.MaintenanceStrategyList
@@ -297,7 +297,7 @@ export class CostBenefitAnalysisComponent {
                     if(element.CentrifugalPumpMssId === 'VENDOR'){
                         if(element.Status == "Retained"){
                             WithDPMConstraint = WithDPMConstraint + parseFloat(element.AnnualPOC);
-                        }else if(element.Status == "VENDOR"){
+                        }else if(element.Status == "New"){
                             WithDPMConstraint = WithDPMConstraint + parseFloat(element.AnnualPOC);
                         }
                     }                
