@@ -40,6 +40,13 @@ export class CommonBLService {
             }));
     }
 
+    public postWithoutHeadersWithParameters(url: string, data: any, params) {
+        return this.commonDLService.postWithoutHeadersWithParameters(url, data, params)
+            .pipe(map(res => {
+                return res;
+            }));
+    }
+
     //Dynamic PUT 
     public PutData(url: string, data: any, id?: number) {
         return this.commonDLService.PutData(url, data, id)

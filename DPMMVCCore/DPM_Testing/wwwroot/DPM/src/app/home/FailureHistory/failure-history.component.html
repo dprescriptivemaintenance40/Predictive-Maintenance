@@ -1,0 +1,71 @@
+<div class="row bg-white p-3 mb-3 align-items-center">
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col">
+                <label class="">Assets </label>
+                <select [(ngModel)]="AssetsSelect" class="form-control form-select">
+                    <option value="">Choose..</option>
+                    <option value="Compressor">Compressor</option>
+                    <option value="CentrifugalPump">Centrifugal Pump</option>
+                </select>
+            </div>
+            <div class="col">
+                <label class=""></label>
+                <div class="input-group ">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" (change)="fileTestChange($event)" class="custom-file-input" accept=".csv" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" *ngIf="fileName == ''" for="inputGroupFile01">Choose Days File</label>
+                        <label class="custom-file-label" *ngIf="fileName != ''" for="inputGroupFile01">{{fileName}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <button type="button" (click)="Submit()" class="btn btn-primary mt-4">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <p-table id="exportexcel" [value]="FailureHistoryList" [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:12em;">
+                        <col style="width:12em;">
+                        <col style="width:12em;">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="Equipment">Equipment
+                            <p-sortIcon field="Equipment"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="CommissionedDate">Commissioned date
+                            <p-sortIcon field="CommissionedDate"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="FailureReportedDate">Failure reported date
+                            <p-sortIcon field="FailureReportedDate"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr>
+                        <td>{{row.Equipment}}</td>
+                        <td>{{row.CommissionedDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{row.FailureReportedDate | date: 'dd/MM/yyyy'}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="3">No data found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

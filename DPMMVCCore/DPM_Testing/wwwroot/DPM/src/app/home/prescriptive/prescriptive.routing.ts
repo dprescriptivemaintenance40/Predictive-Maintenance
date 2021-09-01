@@ -27,6 +27,7 @@ import { RCAComponent } from "./RCA/rca.component";
                 { path: 'Update', component: PrescriptiveUpdateComponent, canDeactivate: [AuthGuard] },
                 { path: 'Configuration', component: PrescriptiveConfigurationComponent },
                 { path: 'ADD', component: PrescriptiveAddComponent, canDeactivate: [AuthGuard]  },
+                { path: 'ADD/:type', component: PrescriptiveAddComponent, canDeactivate: [AuthGuard]  },
                 { path: 'Display', component: PrescriptiveDisplayComponent},
                 { path: 'Consequences', component: PrescriptiveConsequencesComponent,  canDeactivate: [AuthGuard]  },
                 { path: 'Report', component: PrescriptiveReportComponent},

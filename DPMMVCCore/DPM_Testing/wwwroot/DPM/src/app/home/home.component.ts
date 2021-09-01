@@ -163,7 +163,11 @@ export class HomeComponent implements OnInit {
                   // ]
                 }
               ]
-            }
+            },
+            {
+              label:'Failure History',
+              url: '#/Home/FailureHistory'
+            },
           ]
         },
         {
@@ -213,6 +217,52 @@ export class HomeComponent implements OnInit {
             //     }
             //   ]
             // }
+          ]
+        }
+      ]
+    },
+    
+    {
+      label: 'Criticality Assesment',
+      icon: 'pi pi-book',
+      items: [
+        {
+          label: 'Critical Asset',
+          items: [ 
+            {
+              label:'RCM',
+              url: '#/Home/Prescriptive/ADD/CA'
+            },
+            {
+              label: 'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            }
+          ]
+        },
+        {
+          label: 'Semi Critical Asset',
+          items: [ 
+            {
+              label:'FMEA',
+              url: '#/Home/Prescriptive/ADD/SCA'
+            },
+            {
+              label:'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            },
+          ]
+        },
+        {
+          label: 'Normal Criticality',
+          items: [ 
+            {
+              label:'Weibull Analysis',
+              url: '#/Home/WeibullAnalysis'
+            },
+            {
+              label:'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            },
           ]
         }
       ]

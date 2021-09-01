@@ -11,8 +11,9 @@ export class CentrifugalPumpPrescriptiveModel{
     public Date : Date ;
     public FailureModeWithLSETree : string = "";
     public FMWithConsequenceTree : string = "";
-    public FCAAdded : string = ""
-    public MSS : string = ""
+    public FCAAdded : string = "";
+    public MSS : string = "";
+    public Type : string = "";
 
     public centrifugalPumpPrescriptiveFailureModes: any = []
 

@@ -137,6 +137,7 @@ public Predictionbadcount: number = 0;
   public ToDate: string = ""
   public SingleBulkPredictionName: string = ""
   public FailureModeSelect: string = "SSRB"
+  public EquipmentTagNumber : string = "";
 
   constructor(public title: Title,
     public http: HttpClient,
@@ -327,7 +328,9 @@ public Predictionbadcount: number = 0;
       var worksheet = workbook.Sheets[first_sheet_name];
       this.commonLoadingDirective.showLoading(true, "Please wait to get the predicted values....");
       var url: string = this.screwCompressorAPIName.PredictionData;
-      this.screwCompressorMethod.postWithHeaders(url, XLSX.utils.sheet_to_json(worksheet, { raw: true }))
+      const params = new HttpParams()
+            .set('tagNumber', this.EquipmentTagNumber)
+      this.screwCompressorMethod.postWithoutHeadersWithParameters(url, XLSX.utils.sheet_to_json(worksheet, { raw: true }), params)
         // this.http.post<any>('api/ScrewCompressureAPI/Prediction', JSON.stringify(XLSX.utils.sheet_to_json(worksheet, { raw: true })), this.headers)
         .subscribe(async res => {
           // var TrainList : any = await this.GetTrainDataList();

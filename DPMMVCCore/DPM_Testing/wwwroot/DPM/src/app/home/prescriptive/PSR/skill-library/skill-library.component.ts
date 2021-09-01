@@ -204,7 +204,7 @@ export class SkillLibraryComponent implements OnInit {
     var Data = this.MaintenanceStrategyList.find(a=>a.MSSStrategyModelId == r.value.Task);
     var craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === r.value.Craft);
     if(Data !== undefined && craft !== undefined){
-      if(Data.Strategy === 'GEP' || Data.Strategy === 'NEW' ){
+      if(Data.Strategy === 'GEP' || Data.Strategy === 'NEW' || Data.Strategy === 'FMEA' ){
          r.value.HourlyRate = craft.ClientHourlyRate;
       }
     }
@@ -277,7 +277,8 @@ export class SkillLibraryComponent implements OnInit {
     this.commonBLervice.postWithHeaders('/PSRClientContractorAPI/PostSkillPSRMapping', this.PSRModel)
     .subscribe(
       (res : any)=>{
-
+       this.PSRModel = [];
+       this.GetSavedPSRRecords();
       }, err => { console.log(err.error) }
     )
   }

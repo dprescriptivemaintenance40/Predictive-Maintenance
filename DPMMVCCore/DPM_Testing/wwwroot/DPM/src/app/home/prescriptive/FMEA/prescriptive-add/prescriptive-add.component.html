@@ -22,6 +22,14 @@
         <div class="row">
             <div class="col-md-3 d-flex flex-column">
                 <label style=" margin-right: 12px;">Assets</label>
+                <select [(ngModel)]="Type" class="form-select" class="form-control">
+                        <option value="">Choose..</option>
+                        <option value="CA" selected>Critical Asset</option>
+                        <option value="SCA" selected>Semi Critical Asset</option>
+                    </select>
+            </div>
+            <div class="col-md-3 d-flex flex-column">
+                <label style=" margin-right: 12px;">Assets</label>
                 <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
                         <option value="">Choose..</option>
                         <option value="Pump" selected>Pump</option>

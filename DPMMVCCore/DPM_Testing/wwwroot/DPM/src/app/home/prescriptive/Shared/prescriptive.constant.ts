@@ -16,6 +16,7 @@ export class PrescriptiveContantAPI {
     public PrescriptiveRecordsForMSS: string = '/PrescriptiveAPI/GetPrescriptiveRecordsForMSS';
     public FCASave: string = '/PrescriptiveAPI/PrespectivePattern';
     public FCAWebal: string = '/PrescriptiveAPI/WebalAlgo';
+    public FCAWebalWithDetails: string = '/PrescriptiveAPI/WebalAlgoritmWithDetails';
     public MSSSave: string = '/PrescriptiveAPI/UpdatePrespectiveMSS';
     public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
     public FMEAListSingleDelete: string = '/PrescriptiveAPI/DeletePrespectiveModel';
