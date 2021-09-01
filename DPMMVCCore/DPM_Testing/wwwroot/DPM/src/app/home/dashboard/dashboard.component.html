@@ -467,8 +467,6 @@
                 <div class="col-sm">
                     <div class="card bg-white p-3 border-0 ">
                         <strong>Alert Acknowledgement</strong><br>
-                        <!-- <h1 style="color:black;font-size: 14px"><i class="pi pi-star-o mr-1 text-warning"></i>{{RecommendationAlertMessage}}</h1><a *ngIf="RecommendationAlertEnable"></a> -->
-                        <!-- {{Degrademessagecount}}  -->
                         <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number : K100</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
                         <canvas id="PredictionAlertsPiechart"> </canvas>
                     </div>
@@ -490,23 +488,6 @@
                         <th>Indicators</th>
                     </tr>
                 </thead>
-                <!-- <tbody>
-                    <tr>
-                        <td><i class="fas fa-check-circle"></i></td>
-                        <td class="left strong">Install second stage rotor assembly as per procedure</td>
-                        <td></td>
-                     </tr>
-                     <tr>
-                        <td><i class="fas fa-check-circle"></i></td>
-                        <td class="left strong">Good Engineering Practice</td>
-                        <td></td>
-                     </tr>
-                     <tr>
-                        <td><i class="fas fa-check-circle"></i></td>
-                        <td class="left strong">Install second stage rotor assembly as per procedure</td>
-                        <td></td>
-                     </tr>
-                </tbody> -->
                 <tbody>
                     <tr *ngFor="let mss of centrifugalmssmodelFilter">
                         <!-- <td><i class="fas fa-check-circle"></i></td> -->

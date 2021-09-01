@@ -193,6 +193,13 @@ export class DashboardComponent {
   public ClassNormalpercentageForMessage: any = []
   public ClassbadpercentageForMessage: any = []  
 
+  public RecommendationAlertMessage : string = "";
+  public RecommendationAlertEnable : boolean = false;
+  public RecommendationAlertMessagelength
+  public Degrademessagecount: number = 0;
+  public Normalemessagecount: number = 0;
+  public Incipientemessagecount: number = 0;
+
   public ClassDegradepercentage = 0
   public ClassIncipientpercentage = 0
   public ClassNormalpercentage = 0
@@ -226,6 +233,47 @@ export class DashboardComponent {
   public PSRModel: any = [];
   public showcbi: boolean = false;
 
+  public CBI_etbf: number = 0;
+  public ETBFWithConstraint: number = 0;
+  public MEIWithDPMWithConstraint: number = 0;
+  public MEIWithDPMWithoutConstraint: number = 0;
+  public MEIWithoutDPM: number = 0;
+  public OverallETBC: number = 0;
+  public TotalAnnualCostWithMaintenance: number = 0;
+  public TotalAnnualPOC: number = 0;
+  public TotalPONC: number = 0;
+  public VendorETBC: number = 0;
+
+  public EconomicRiskWithDPM: number = 0;
+  public EconomicRiskWithOutDPM: number = 0;
+  public EconomicRiskWithConstraintDPM: number = 0;
+
+  public ResidualRiskWithDPM: number = 0;
+  public ResidualRiskWithOutDPM: number = 0;
+  public ResidualRiskWithConstraintDPMCR: number = 0;
+  public fullCBAobject:any=[]
+
+  public EconomicRiskWithDPMCR: string = "";
+  displayModal: boolean;
+  displayBasic: boolean;
+
+  public SelectTagNumbers: string = "";
+  public PredictiongraphShow:boolean=false;
+  public PredictiongraphShow1:boolean=false;
+  public myObj : any =[];
+  public centrifugalmssmodel:any =[]
+  public centrifugalmssmodelFilter:any =[]
+  public MSSCount:any = []
+  public GDECount:number =0
+  public notification = null
+  public etbf_Values: number = 0
+  public PrescriptiveRecordsList: any = [];
+  public predictionDegradeMessage:any=[]
+  public predictionIncipientMessage:any=[]
+  public predictionNormalMessage:any=[]
+  public CBAReportDetails: any;
+  public allCBI: boolean = true;
+  public user: any = [];
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -243,6 +291,7 @@ export class DashboardComponent {
     private configService: ConfigService,
     private location: Location,
     private route: ActivatedRoute,
+    
 
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
@@ -278,29 +327,6 @@ export class DashboardComponent {
 
   }
 
-  public CBI_etbf: number = 0;
-  public ETBFWithConstraint: number = 0;
-  public MEIWithDPMWithConstraint: number = 0;
-  public MEIWithDPMWithoutConstraint: number = 0;
-  public MEIWithoutDPM: number = 0;
-  public OverallETBC: number = 0;
-  public TotalAnnualCostWithMaintenance: number = 0;
-  public TotalAnnualPOC: number = 0;
-  public TotalPONC: number = 0;
-  public VendorETBC: number = 0;
-
-  public EconomicRiskWithDPM: number = 0;
-  public EconomicRiskWithOutDPM: number = 0;
-  public EconomicRiskWithConstraintDPM: number = 0;
-
-  public ResidualRiskWithDPM: number = 0;
-  public ResidualRiskWithOutDPM: number = 0;
-  public ResidualRiskWithConstraintDPMCR: number = 0;
-  public fullCBAobject:any=[]
-
-  public EconomicRiskWithDPMCR: string = "";
-  displayModal: boolean;
-  displayBasic: boolean;
   getUserDetails() {
     if (!!localStorage.getItem('CBAOBJ')) {
       this.UserData = JSON.parse(localStorage.getItem('CBAOBJ'));
@@ -327,15 +353,7 @@ export class DashboardComponent {
 
     }
   }
-  public SelectTagNumbers: string = "";
-  public PredictiongraphShow:boolean=false;
-  public PredictiongraphShow1:boolean=false;
-  public myObj : any =[];
-  public centrifugalmssmodel:any =[]
-  public centrifugalmssmodelFilter:any =[]
-  public MSSCount:any = []
-  public GDECount:number =0
-  public notification = null
+
   FullCBAObject(){
       this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
        this.myObj = JSON.parse(this.fullCBAobject);
@@ -345,49 +363,18 @@ export class DashboardComponent {
           this.centrifugalmssmodel.forEach((element) => { 
             if(element.CentrifugalPumpMssId === "MSS"){
                MSScount= MSScount + 1
+                this.notification = { class: 'text-warning', };
             }else if(element.CentrifugalPumpMssId === "GDE"){
                this.GDECount = this.GDECount+1
-            }
-          
+                this.notification = { class: 'text-warning', };
+            } 
         }
         )
        this.MSSCount.push(MSScount)
        const ids = this.centrifugalmssmodel.map(o => o.MSSIntervalSelectionCriteria)
        this.centrifugalmssmodelFilter= this.centrifugalmssmodel.filter(({MSSIntervalSelectionCriteria}, index) => !ids.includes(MSSIntervalSelectionCriteria, index + 1))
-       this.centrifugalmssmodel.forEach((element) => { 
-       if(element.CentrifugalPumpMssId= "MSS"){
-        this.notification = { class: 'text-warning', };
-       }else  if(element.CentrifugalPumpMssId= "GDE"){
-        this.notification = { class: 'text-warning', };
-       }
-       })
-    }
+  }
 
-   
-
-    // showNotification(notification) {
-    //   switch (notification) {
-    //     case '':
-    //        this.notification = { class: '',};
-    //       break; 
-    //     case 'MSS':
-    //        this.notification = { class: 'text-success', };
-    //       break;
-    //     case 'GDE':
-    //        this.notification = { class: 'text-success',  };
-    //       break;
-    //     case 'New':
-    //        this.notification = { class: 'text-primary', };
-    //       break;
-    //     case 'FMEA':
-    //        this.notification = { class: 'text-danger', };
-    //       break;
-    //     default:
-    //       break;
-    //   }
-      
-  
-    // }
   TagNumberSelsection(){
     if(this.SelectTagNumbers =="K100"){
       this.PredictiongraphShow=true;
@@ -397,9 +384,11 @@ export class DashboardComponent {
       this.PredictionWithAlertPieChart ()  
     }
   }
+
   showBasicDialog() {
     this.displayBasic = true;
   }
+
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
       .subscribe((res: any) => {
@@ -411,15 +400,19 @@ export class DashboardComponent {
         this.getRecordsByEqui()
       });
   }
+
   RouteToTrain() {
     this.router.navigateByUrl('/Home/Compressor/ScrewTrain');
   }
+
   RouteToPredict() {
     this.router.navigateByUrl('/Home/Compressor/ScrewPrediction');
   }
+
   RouteToCostBenifit() {
     this.router.navigateByUrl('/Home/CostBenefitAnalysis');
   }
+
   ComboDates() {
     if (this.date == "1Week") {
       this.date = moment().add(7, 'days').format('YYYY-MM-DD');
@@ -433,6 +426,7 @@ export class DashboardComponent {
     }
 
   }
+
   isDateInArray(needle, haystack) {
     for (var i = 0; i < haystack.length; i++) {
       if (needle.getDate() === haystack[i].getDate()) {
@@ -441,6 +435,7 @@ export class DashboardComponent {
     }
     return false;
   }
+
   showReport() {
     let embedUrl = 'https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D';
   }
@@ -458,12 +453,7 @@ export class DashboardComponent {
           this.getAllFilterData = res
         })
   }
-  public RecommendationAlertMessage : string = "";
-  public RecommendationAlertEnable : boolean = false;
-  public RecommendationAlertMessagelength
-  public Degrademessagecount: number = 0;
-  public Normalemessagecount: number = 0;
-  public Incipientemessagecount: number = 0;
+
   GerAllPredictionRecords() {
     this.PredictionDataNormalCount = null;
     this.PredictionDataIncipientCount = null;
@@ -584,6 +574,7 @@ export class DashboardComponent {
           console.log(error.error)
         })
   }
+
   groupByPredict(list,) {
     list.reduce((m, o) => {
       var found1 = m.find(s => s.Predictyearname === o.Predictyearname);
@@ -595,6 +586,7 @@ export class DashboardComponent {
     },
       []);
   }
+
   onPredictionChangeYear() {
     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
 
@@ -627,6 +619,7 @@ export class DashboardComponent {
     // this.PredictionAllRecordDonught()
     // this.PredictionAllRecordPie()
   }
+
   PredictFModeType() {
 
     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
@@ -841,7 +834,7 @@ export class DashboardComponent {
     // this.ClassificationOfAllRecordDonught()
     //  this.ComboChart();
   }
-  public PrescriptiveRecordsList: any = [];
+
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
       this.EquipmentList = []
@@ -880,7 +873,7 @@ export class DashboardComponent {
         console.log(err.err);
       });
   }
-  public etbf_Values: number = 0
+
   DynamicCBA(res) {
     this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
     this.CFrequencyMaintainenance = res.CFrequencyMaintainenance
@@ -949,6 +942,7 @@ export class DashboardComponent {
     }
 
   }
+
   gaugechartwithDPM() {
     var x = this.DPMMEI * 100
     var y: number = + this.DPMMEI
@@ -1031,6 +1025,7 @@ export class DashboardComponent {
 
 
   }
+
   gaugechartwithoutDPM() {
 
     var x = this.DPMMEI * 100
@@ -1676,11 +1671,6 @@ export class DashboardComponent {
     });
   }
   
-public predictionDegradeMessage:any=[]
-public predictionIncipientMessage:any=[]
-public predictionNormalMessage:any=[]
-
-
   PredictionAllRecordPie() {
     var a: any = [];
     this.PredictionNormalcount = 0,
@@ -1771,6 +1761,7 @@ public predictionNormalMessage:any=[]
     });
 
   }
+
   PredictionAllRecordBarcharts() {
     this.changeDetectorRef.detectChanges();
     if (this.state.PredictionNavigate == 1) {
@@ -2224,7 +2215,6 @@ public predictionNormalMessage:any=[]
 
   }
 
-
   Futuerpiechart() {
     var a: any = [];
     this.FutuerPredictionNormalcount = 0,
@@ -2277,6 +2267,7 @@ public predictionNormalMessage:any=[]
       }
     });
   }
+
   FutuerPredictionClick() {
     this.changeDetectorRef.detectChanges();
     this.GerAllFutuerPredictionRecords();
@@ -2286,6 +2277,7 @@ public predictionNormalMessage:any=[]
     this.fmtype = ""
 
   }
+  
   PredictionOnClick() {
     this.changeDetectorRef.detectChanges();
     this.GerAllPredictionRecords();
@@ -2723,9 +2715,7 @@ public predictionNormalMessage:any=[]
       this.DAB = "No"
     }
   }
-  public CBAReportDetails: any;
 
-  public user: any = [];
   GetReportRecords() {
     const url: string = this.screwCompressorAPIName.getTrainList
     // this.screwCompressorMethod.getWithoutParameters(url)
@@ -2768,7 +2758,7 @@ public predictionNormalMessage:any=[]
         console.log(err.error);
       });
   }
-  public allCBI: boolean = true;
+ 
   CBICharts() {
     this.changeDetectorRef.detectChanges();
     if (this.state.CBANAV == 3) {
