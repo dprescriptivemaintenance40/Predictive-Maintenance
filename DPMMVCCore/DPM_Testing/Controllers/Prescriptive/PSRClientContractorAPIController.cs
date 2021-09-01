@@ -184,7 +184,9 @@ namespace DPM_Testing.Controllers
         {
             try
             {
-                return Ok(await this._context.SkillPSRMappingModels.Where(a => a.UserId == UserId).ToListAsync());
+                return Ok(await this._context.SkillPSRMappingModels.Where(a => a.UserId == UserId)
+                                                                   .Include(r=>r.SkillPSRMappingMSS)
+                                                                   .ToListAsync());
             }
             catch (Exception exe)
             {

@@ -264,7 +264,13 @@
         <p-button (click)="BackSkillData()" label="Back" styleClass="p-button-text"></p-button>
     </ng-template> -->
     <div class="card-title d-flex justify-content-between align-items-center mb-0">
-        <h3>Save PSR</h3>       
+        <h3>Save PSR</h3> 
+        <select class="form-control col-sm-2" (change)="getFilteredPSRModel()" [(ngModel)]="SelectedType" >
+            <option value="MSS"> MSS </option>
+            <option value="GEP"> Good Engineering Practice </option>
+            <option value="CONSTRAINT"> Constraint </option>
+            <option value="FMEA"> FMEA </option>
+        </select>      
         <p-button icon="pi pi-check" (click)="SavePSR()" label="Save" styleClass="btn btn-primary btm-sm mb-2"></p-button>
     </div>
     <table>
@@ -297,7 +303,7 @@
             </tr>
         </tbody>
         <tbody>
-            <tr class="row pt-2" *ngFor="let r of PSRModel">
+            <tr class="row pt-2" *ngFor="let r of FilteredPSRModel">
                 <td class="col-sm-3">
                     <!-- <input type="text" value="Remove, overhaul, and rectify" class="form-control"> -->
                     <label>{{r.MaintenanceTask}}</label>
@@ -308,9 +314,13 @@
                 <td class="col-sm-2">
                     <label>{{r.EmployeeName !== '' ? r.EmployeeName : 'Not added'}}</label>
                 </td>
-                <td class="col-sm">
+                <td *ngIf="r.TYPE !== 'MSS'" class="col-sm">
                     <p-button *ngIf="r.Craft == 0"  icon="pi pi-plus" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
                     <p-button *ngIf="r.Craft !== 0" icon="pi pi-pencil" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
+                </td>
+                <td *ngIf="r.TYPE == 'MSS'" class="col-sm">
+                    <p-button *ngIf="r.SkillPSRMappingMSS ===  null || r.SkillPSRMappingMSS.length == 0"  icon="pi pi-plus" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
+                    <p-button *ngIf="r.SkillPSRMappingMSS.length >0" icon="pi pi-pencil" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
                 </td>
                 <td class="col-sm">
                     <input type="number" [(ngModel)]="r.TaskDuration" (change)="generateTaskDuration(r)" class="form-control" style="height: 35px;">
@@ -365,5 +375,82 @@
             </tr>
         </tbody>
     </table>
+
+</p-dialog>
+
+<p-dialog header="Select Craft" [(visible)]="MSSCraftModal" [style]="{width: '80em'}">
+    
+    <div class="row">
+        <div class="col-sm-2" *ngFor="let r of PSRClientContractorDataOBJ">
+            <label>
+                <input type="checkbox"
+                       name = "{{r.CraftSF}}"
+                       [checked]="r.values"
+                       (click)="MSSCraftSelection(r, $event)"
+                       [(ngModel)]="r.checked"
+                        />
+                       {{r.CraftSF}}
+            </label>
+        </div>
+    </div>
+    
+    <div>
+        <table class="table table-striped">
+            <tbody>
+                <tr class="row">
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Craft</label>
+                    </td>
+                    <td class="col-sm-2 p-2  bg-primary">
+                        <label>Employee Name</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Yearly Task duration</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Hourly rate</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Material Cost</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Annual POC</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Action</label>
+                    </td>
+                </tr>   
+            </tbody>
+            <tbody>
+                <tr class="row pt-2" *ngFor="let r of  SelectedCraftToEdit.SkillPSRMappingMSS">
+                    <td class="col-sm">
+                        <label>{{r.CraftOriginalId !== 0 ? getCraftForMSSSelection(r) : 'Not added'}}</label>
+                    </td>
+                    <td class="col-sm-2">
+                        <label>{{r.EmployeeName !== '' ? r.EmployeeName : 'Not added'}}</label>
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.TaskDuration" (change)="generateTaskDuration(r)" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.HourlyRate" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.MaterialCost" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input [(ngModel)]="r.POC" type="number" class="form-control" disabled style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <p-button *ngIf="r.CraftOriginalId == 0"  icon="pi pi-plus" (click)="AddCraftForMSS(r)" styleClass="p-button-text"></p-button>
+                        <p-button *ngIf="r.CraftOriginalId !== 0" icon="pi pi-pencil" (click)="AddCraftForMSS(r)" styleClass="p-button-text"></p-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+      
+       
 
 </p-dialog>

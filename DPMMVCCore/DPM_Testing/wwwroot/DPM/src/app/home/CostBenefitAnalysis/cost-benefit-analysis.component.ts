@@ -166,7 +166,7 @@ export class CostBenefitAnalysisComponent {
                if(Data !== undefined && Data.Strategy === "GEP"){
                   this.GoodEngineeringTaskList.push(element)
                }
-               if(Data !== undefined && Data.Strategy === "VENDOR"){
+               if(Data !== undefined && Data.Strategy === "CONSTRAINT"){
                 this.MSSStrategyReplacePSR.push(element);
                }
                if(Data !== undefined && Data.Strategy === "FMEA"){
@@ -216,11 +216,11 @@ export class CostBenefitAnalysisComponent {
 
                 for (let index = 0; index < this.CBAReportDetails.CentrifugalPumpMssModel.length; index++) {
                     this.CBAReportDetails.CentrifugalPumpMssModel.forEach((element, index) => { 
-                        if(element.CentrifugalPumpMssId === "NEW"){
+                        if(element.CentrifugalPumpMssId === "CONSTRAINT"){
                             this.CBAReportDetails.CentrifugalPumpMssModel.splice(index,1);
                          }
                      })
-                     var fil = this.CBAReportDetails.CentrifugalPumpMssModel.filter(r=>r.CentrifugalPumpMssId === "NEW")
+                     var fil = this.CBAReportDetails.CentrifugalPumpMssModel.filter(r=>r.CentrifugalPumpMssId === "CONSTRAINT")
                      if(fil.length === 0){
                          break;
                      }
@@ -240,7 +240,7 @@ export class CostBenefitAnalysisComponent {
                         let CRAFT = this.getCraftValue(element);
                         let LEVEL = this.getEmployeeLevelValue(element);
                         let obj ={}
-                        obj['CentrifugalPumpMssId']="VENDOR";
+                        obj['CentrifugalPumpMssId']="CONSTRAINT";
                         obj['Checked']= true;
                         obj['MSSMaintenanceTask']=element.MaintenanceTask;
                         this.MaintenanceStrategyList
@@ -293,8 +293,8 @@ export class CostBenefitAnalysisComponent {
             if(element.Checked === true){
                 counter = counter +1;
                 levelCount = levelCount + parseFloat(element.Level)
-                if(element.CentrifugalPumpMssId === 'GDE'  || element.CentrifugalPumpMssId === 'MSS' || element.CentrifugalPumpMssId === 'VENDOR' || element.CentrifugalPumpMssId === 'FMEA'){
-                    if(element.CentrifugalPumpMssId === 'VENDOR'){
+                if(element.CentrifugalPumpMssId === 'GDE'  || element.CentrifugalPumpMssId === 'MSS' || element.CentrifugalPumpMssId === 'CONSTRAINT' || element.CentrifugalPumpMssId === 'FMEA'){
+                    if(element.CentrifugalPumpMssId === 'CONSTRAINT'){
                         if(element.Status == "Retained"){
                             WithDPMConstraint = WithDPMConstraint + parseFloat(element.AnnualPOC);
                         }else if(element.Status == "New"){
