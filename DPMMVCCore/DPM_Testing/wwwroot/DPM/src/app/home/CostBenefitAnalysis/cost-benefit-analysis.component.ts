@@ -776,6 +776,7 @@ export class CostBenefitAnalysisComponent {
             this.CBAOBJ.EconomicRiskWithDPMCRValue = 0;
             this.CBAOBJ.EconomicRiskWithOutDPMCRValue = 0;
             this.CBAOBJ.EconomicRiskWithDPMConstraintCRValue = 0;
+            this.CBAOBJ.FullObject = JSON.stringify(this.CBAReportDetails);
             localStorage.removeItem('CBAOBJ');
             localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
         }

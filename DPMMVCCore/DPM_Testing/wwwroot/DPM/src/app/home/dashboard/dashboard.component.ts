@@ -274,6 +274,23 @@ export class DashboardComponent {
   public CBAReportDetails: any;
   public allCBI: boolean = true;
   public user: any = [];
+  
+  public GoodEnggiPractice:any=[] 
+  public CMaintainenancePractice: string = "";
+  public CPPrescriptiveTagNumber: string = "";
+  public FunctionFailure : string = ""
+  public FunctionMode : string = ""
+  public MSSStartergy : string = ""
+  public Consequence : string = ""
+  public DownTimeFactor : string = ""
+  public ProtectionFactor : string = "" 
+  public AnnualPOC : string = ""                   
+  public MSSIntervalSelectionCriteria : string = "" 
+  public MSSMaintenanceInterval : string = "" 
+  public Craft : string = "" 
+  public MSSMaintenanceTask : string = "" 
+  public Level : string = "" 
+  public Hours : string = "" 
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -308,10 +325,8 @@ export class DashboardComponent {
     this.getUserSkillRecords();
     this.getPrescriptiveRecords()
     this.getUserDetails()
-    this.FullCBAObject()
-    
+    this.FullCBAObject() 
   }
-
 
   ngOnInit() {
     // this.getRecordsByEqui()
@@ -323,8 +338,8 @@ export class DashboardComponent {
     this.dygraph()
     this.ComboDates()
     this.CBICharts()
-    // this.PredictionAllRecordBarcharts1()
-
+    this.PrescripitiveUpdatestatusGraph() 
+ 
   }
 
   getUserDetails() {
@@ -357,15 +372,33 @@ export class DashboardComponent {
   FullCBAObject(){
       this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
        this.myObj = JSON.parse(this.fullCBAobject);
+       this.ComponentCriticalityFactor = this.myObj.CriticalityFactor
+       this.DownTimeFactor = this.myObj.DownTimeFactor
+       this.CFrequencyMaintainenance = this.myObj.FrequencyMaintainenance
+       this.CConditionMonitoring = this.myObj.ConditionMonitoring
+       this.ProtectionFactor = this.myObj.ProtectionFactor
+       this.ComponentRating = this.myObj.Rating
+       this.CMaintainenancePractice= this.myObj.MaintainenancePractice
+       this.CPPrescriptiveTagNumber= this.myObj.TagNumber
+       this.FunctionMode=  this.myObj.FunctionMode
+       this.Consequence=  this.myObj.Consequence
        this.centrifugalmssmodel= this.myObj.CentrifugalPumpMssModel
        var MSScount:number=0
        var GDEcount:number=0
+       this.GoodEnggiPractice= this.centrifugalmssmodel
           this.centrifugalmssmodel.forEach((element) => { 
+           this.AnnualPOC = element.AnnualPOC                   
+           this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
+           this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
+           this.Craft = element.Craft
+           this.MSSMaintenanceTask = element.MSSMaintenanceTask
+           this.Level = element.Level
+           this.Hours = element.Hours
             if(element.CentrifugalPumpMssId === "MSS"){
                MSScount= MSScount + 1
                 this.notification = { class: 'text-warning', };
             }else if(element.CentrifugalPumpMssId === "GDE"){
-               this.GDECount = this.GDECount+1
+                this.GDECount = this.GDECount+1
                 this.notification = { class: 'text-warning', };
             } 
         }
@@ -373,17 +406,29 @@ export class DashboardComponent {
        this.MSSCount.push(MSScount)
        const ids = this.centrifugalmssmodel.map(o => o.MSSIntervalSelectionCriteria)
        this.centrifugalmssmodelFilter= this.centrifugalmssmodel.filter(({MSSIntervalSelectionCriteria}, index) => !ids.includes(MSSIntervalSelectionCriteria, index + 1))
+
+       this.GoodEnggiPractice.forEach(element => {
+         if(element.CentrifugalPumpMssId === "GDE"){
+          this.AnnualPOC = element.AnnualPOC                   
+          this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
+          this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
+          this.Craft = element.Craft
+          this.MSSMaintenanceTask = element.MSSMaintenanceTask
+          this.Level = element.Level
+          this.Hours = element.Hours
+         }
+       });
   }
 
-  TagNumberSelsection(){
-    if(this.SelectTagNumbers =="K100"){
-      this.PredictiongraphShow=true;
-      this.PredictiongraphShow1=true;
-      this.PredictionWithTagNumber()
-      this.PredictionWithActionPieChart()
-      this.PredictionWithAlertPieChart ()  
-    }
-  }
+  // TagNumberSelsection(){
+  //   if(this.SelectTagNumbers =="K100"){
+  //     this.PredictiongraphShow=true;
+  //     this.PredictiongraphShow1=true;
+  //     this.PredictionWithTagNumber()
+  //     this.PredictionWithActionPieChart()
+  //     this.PredictionWithAlertPieChart ()  
+  //   }
+  // }
 
   showBasicDialog() {
     this.displayBasic = true;
@@ -396,7 +441,7 @@ export class DashboardComponent {
         this.MachineType = this.PrescriptiveRecordsList[0].MachineType
         this.EquipmentType = this.PrescriptiveRecordsList[0].EquipmentType
         this.SelectedTagNumber = this.PrescriptiveRecordsList[0].TagNumber
-        // this.SelectedTagNumber= this.PrescriptiveRecordsList[11].TagNumber
+
         this.getRecordsByEqui()
       });
   }
@@ -453,7 +498,7 @@ export class DashboardComponent {
           this.getAllFilterData = res
         })
   }
-
+  public PTagNumberList = [];
   GerAllPredictionRecords() {
     this.PredictionDataNormalCount = null;
     this.PredictionDataIncipientCount = null;
@@ -531,21 +576,38 @@ export class DashboardComponent {
             this.PredictonDataDegradeCount = PredictiondegradeCount;
 
           });
+          // this.ScrewPredictionAllData.forEach(predict => {
+          //   this.PredictionData = predict.Prediction;
+          //   let Predictyeardata = { PredictyearId: 0, Predictyearname: '' };
+          //   Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
+          //   this.PInsertedDate.push(Predictyeardata);
+          // })
+          // this.Predictyearlist = this.PInsertedDate.reduce((m, o) => {
+          //   var found = m.find(s => s.Predictyearname === o.Predictyearname);
+          //   if (found) {
+          //   } else {
+          //     m.push(o);
+          //   }
+          //   return m;
+          // }, []);
           this.ScrewPredictionAllData.forEach(predict => {
             this.PredictionData = predict.Prediction;
-            let Predictyeardata = { PredictyearId: 0, Predictyearname: '' };
-            Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
-            this.PInsertedDate.push(Predictyeardata);
+            let Predictyeardata = { PredictTagId: 0, PredictyTagnumber: '' };
+            Predictyeardata.PredictyTagnumber = predict.TagNumber
+            this.PTagNumberList.push(Predictyeardata);
           })
-          this.Predictyearlist = this.PInsertedDate.reduce((m, o) => {
-            var found = m.find(s => s.Predictyearname === o.Predictyearname);
+          this.Predictyearlist = this.PTagNumberList.reduce((m, o) => {
+            var found = m.find(s => s.PredictTagId === o.PredictyTagnumber);
             if (found) {
             } else {
               m.push(o);
             }
             return m;
           }, []);
-
+          
+          
+          const ids = this.Predictyearlist.map(o => o.PredictyTagnumber)
+          this.Predictyearlist= this.Predictyearlist.filter(({PredictyTagnumber}, index) => !ids.includes(PredictyTagnumber, index + 1))
           var Degradepercentage
           var Incipientpercentage
           var Normalpercentage
@@ -567,9 +629,9 @@ export class DashboardComponent {
           this.PredictionAllRecordBarcharts();
           this.PredictionAllRecordPie();
           this.GenerateReport()
-          this.TagNumberSelsection()
-          // this.PredictionWithTagNumber()
-          // this.PredictionWithActionPieChart()
+          //   this.PredictionWithTagNumber()
+          //  this.PredictionWithActionPieChart()
+          //  this.PredictionWithAlertPieChart()
         }, error => {
           console.log(error.error)
         })
@@ -577,7 +639,7 @@ export class DashboardComponent {
 
   groupByPredict(list,) {
     list.reduce((m, o) => {
-      var found1 = m.find(s => s.Predictyearname === o.Predictyearname);
+      var found1 = m.find(s => s.PredictyTagnumber === o.PredictyTagnumber);
       if (found1) { }
       else {
         m.push(o);
@@ -588,23 +650,13 @@ export class DashboardComponent {
   }
 
   onPredictionChangeYear() {
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
-
+    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
+    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
     this.Predictionbadcount = 0
 
-    // for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-    //   if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "degarde") {
-    //     this.PredictionDegradecount = this.PredictionDegradecount + 1
-    //   } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "incipient") {
-    //     this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-    //   } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype}` == "normal") {
-    //     this.PredictionNormalcount = this.PredictionNormalcount + 1
-    //   } else
-    //     this.Predictionbadcount = this.Predictionbadcount + 1
-    // }
     for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
       if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "degarde") {
         this.PredictionDegradecount = this.PredictionDegradecount + 1
@@ -615,14 +667,19 @@ export class DashboardComponent {
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
-    this.PredictionAllRecordBarcharts()
+    // this.PredictionAllRecordBarcharts()
     // this.PredictionAllRecordDonught()
     // this.PredictionAllRecordPie()
+    this.PredictiongraphShow=true;
+    this.PredictiongraphShow1=true;
+    this.PredictionWithTagNumber()
+    this.PredictionWithActionPieChart()
+    this.PredictionWithAlertPieChart ()  
   }
 
   PredictFModeType() {
-
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
+    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
+    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber)=== this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -638,9 +695,14 @@ export class DashboardComponent {
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
-    this.PredictionAllRecordBarcharts()
+    // this.PredictionAllRecordBarcharts()
     // this.PredictionAllRecordDonught()
     // this.PredictionAllRecordPie()
+    this.PredictiongraphShow=true;
+    this.PredictiongraphShow1=true;
+    this.PredictionWithTagNumber()
+    this.PredictionWithActionPieChart()
+    this.PredictionWithAlertPieChart ()  
   }
 
   GetAllRecords() {
@@ -874,18 +936,19 @@ export class DashboardComponent {
       });
   }
 
+
   DynamicCBA(res) {
     this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
     this.CFrequencyMaintainenance = res.CFrequencyMaintainenance
-    this.CConditionMonitoring = res.CConditionMonitoring
-    this.ComponentRating = res.ComponentRating
     this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
       row.TotalAnnualPOC = 0;
       row.CentrifugalPumpMssModel.forEach(mss => {
+      this.MSSStartergy =  mss.MSSStartergy
         if (!mss.MSSMaintenanceInterval || mss.MSSMaintenanceInterval === 'NA' || mss.MSSMaintenanceInterval === 'Not Applicable') {
           mss.POC = 0;
           mss.AnnualPOC = 0;
           mss.Status = '';
+          mss.MSSStartergy
         } else {
           let annu = mss.MSSMaintenanceInterval.split(' ');
           if (mss.MSSMaintenanceInterval.toLowerCase().includes('week')) {
@@ -932,6 +995,7 @@ export class DashboardComponent {
         .subscribe((res: any) => {
           this.prescriptiveRecords = []
           this.prescriptiveRecords = res;
+         
           this.DynamicCBA(res)
         }, err => {
           console.log(err.err);
@@ -2277,7 +2341,7 @@ export class DashboardComponent {
     this.fmtype = ""
 
   }
-  
+
   PredictionOnClick() {
     this.changeDetectorRef.detectChanges();
     this.GerAllPredictionRecords();
@@ -2539,7 +2603,6 @@ export class DashboardComponent {
   //   )
   // }
 
- 
   dygraph() {
     this.chart = new Dygraph(
       // document.getElementById("graph"),"dist/DPM/assets/newDygraphForSensordata.csv",
@@ -2591,8 +2654,6 @@ export class DashboardComponent {
     }
     return str;
   }
-
-
 
   public GenerateReport() {
     var countKey = Object.keys(this.classificationDetails).length;
@@ -3059,6 +3120,7 @@ export class DashboardComponent {
       }, err => { console.log(err.error) }
     );
   }
+
   GetPSRClientContractorData() {
     this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords')
       .subscribe((res1: any) => {
@@ -3068,12 +3130,21 @@ export class DashboardComponent {
       );
   }
 
-
   PredictionWithTagNumber() {
     var a: any = [];
     this.PredictionNormalcount = 0,
       this.PredictionIncipientcount = 0,
       this.PredictionDegradecount = 0;
+      let tagnumberlist = []
+    
+      let b = []
+      for(var i=0;i<this.ScrewPredictionAllData.length;++i){
+         b=this.ScrewPredictionAllData[i].TagNumber
+        tagnumberlist.push(b)
+      }
+      const ids = tagnumberlist.map(o => o.TagNumber)
+      this.PTagNumberList= tagnumberlist.filter(({TagNumber}, index) => !ids.includes(TagNumber, index + 1))
+
     this.ScrewPredictionAllData.forEach(element => {
       if (this.fmtype != "") {
         if (this.fmtype == "SSRB") {
@@ -3116,7 +3187,7 @@ export class DashboardComponent {
     this.chart = new Chart("PredictionbarWithTage", {
       type: "bar",
       data: {
-        labels: ['K100'],
+        labels: this.PTagNumberList,
         fill: true,
         datasets: [
           {
@@ -3158,6 +3229,7 @@ export class DashboardComponent {
         ],
       },
       options: {
+          events: [], 
         scales: {
           xAxes: [{
             stacked: true,
@@ -3181,7 +3253,23 @@ export class DashboardComponent {
             gridLines: {
               display: false
             },
-          }]
+          }],
+          "animation": {
+            "duration": 1,
+            "onComplete": function () {
+              var chartInstance = this.chart,
+                ctx = chartInstance.ctx;
+              this.data.datasets.forEach(function (dataset, i) {
+                var meta = chartInstance.controller.getDatasetMeta(i);
+                meta.data.forEach(function (bar, index) {
+                  var data = dataset.data[index];
+                  if (data > 0) {
+                    ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                 }
+                });
+              });
+            }
+          },
         }
       }
 
@@ -3258,6 +3346,70 @@ export class DashboardComponent {
     //   },
 
     // });
+  }
+
+  PrescripitiveUpdatestatusGraph(){
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("Prescriptivestatus_bar", {
+      type: "horizontalBar",
+      data: {
+        labels:[],
+        datasets: [{
+          data: [1,1,1],
+          backgroundColor: "#008000",
+          hoverBackgroundColor: "#008000"
+      },{
+          data: [3,3,3],
+          backgroundColor: "yellow",
+          hoverBackgroundColor: "yellow"
+      },{
+          data: [1,1,1],
+          backgroundColor: "red",
+          hoverBackgroundColor: "red"
+      }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        },
+        scales: {
+          xAxes: [{
+            display: false,
+            stacked: true
+          }],
+          yAxes: [{
+            display: false,
+            stacked: true
+          }],
+        } ,
+        animation: {
+          onComplete: function () {
+              var chartInstance = this.chart;
+              var ctx = chartInstance.ctx;
+              ctx.textAlign = "left";
+              ctx.font = "9px Open Sans";
+              ctx.fillStyle = "black";
+  
+              Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                  var meta = chartInstance.controller.getDatasetMeta(i);
+                  Chart.helpers.each(meta.data.forEach(function (bar, index) {
+                      var data = dataset.data[index];
+                      if(i==0){
+                          ctx.fillText( data, 50, bar._model.y+4);
+                      } else {
+                          ctx.fillText( data, bar._model.x-25, bar._model.y+4);
+                      }
+                  }),this)
+              }),this);
+          }
+      },
+      }, 
+ 
+ 
+    });
   }
 
 }
