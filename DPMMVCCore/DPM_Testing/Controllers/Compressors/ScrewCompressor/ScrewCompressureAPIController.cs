@@ -334,7 +334,7 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("Prediction")]
-        public async Task<IActionResult> PostPrediction([FromBody] List<ScrewCompressorPredictionModel> predictionDetails)
+        public async Task<IActionResult> PostPrediction([FromBody] List<ScrewCompressorPredictionModel> predictionDetails, string tagNumber)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
@@ -347,8 +347,8 @@ namespace DPM_Testing.Controllers
                         item.InsertedDate = DateTime.Now;
                     }
                     DateTime dt = item.InsertedDate;
-                    DateTime dateOnly = dt.Date;
-                    item.InsertedDate = dateOnly;
+                    item.TagNumber = tagNumber.ToUpper();
+                    item.InsertedDate = dt.Date;
                     item.UserId = userId;
                     item.TenantId = 1;
                     _context.ScrewCompressurePredictionData.Add(item);

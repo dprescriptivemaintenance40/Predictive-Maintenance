@@ -15,6 +15,7 @@ namespace DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel
         public string UserId { get; set; }
         public int BatchId { get; set; }
         public int TenantId { get; set; }
+        public string TagNumber { get; set; }
         public decimal PS1 { get; set; }
         public decimal PD1 { get; set; }
         public decimal PS2 { get; set; }

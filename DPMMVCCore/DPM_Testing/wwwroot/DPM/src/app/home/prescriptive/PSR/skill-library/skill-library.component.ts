@@ -277,7 +277,8 @@ export class SkillLibraryComponent implements OnInit {
     this.commonBLervice.postWithHeaders('/PSRClientContractorAPI/PostSkillPSRMapping', this.PSRModel)
     .subscribe(
       (res : any)=>{
-
+       this.PSRModel = [];
+       this.GetSavedPSRRecords();
       }, err => { console.log(err.error) }
     )
   }

@@ -51,6 +51,10 @@ export class CommonDLService {
         return this.http.post(`${this.URL}${url}`, JSON.stringify(data), this.headers);
     }
 
+    public postWithoutHeadersWithParameters(url: string, data: any, params) {
+        return this.http.post(`${this.URL}${url}`, data, {params});
+    }
+
 
     //#endregion
 

@@ -172,6 +172,10 @@
                     <option value="CF">Cooler Failure</option>
                 </select>
             </div>
+            <div class="col-sm-2">
+                <label class="">Tag Number</label>
+                <input type="text" class="form-control" [(ngModel)]="EquipmentTagNumber" />
+            </div>
             <div class="col">
                 <label class="">Select File</label>
                 <input type="file" class="form-control-file form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
