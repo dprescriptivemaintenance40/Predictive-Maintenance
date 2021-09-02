@@ -147,8 +147,12 @@ export class HomeComponent implements OnInit {
                   label: 'Digital data',
                   items: [
                     {
-                      label:'Compressor Data Upload',
+                      label:'Sensor Data Upload',
                       url: '#/Home/Compressor/SCModerateDataCollection'
+                    },
+                    {
+                      label:'Field Data Upload',
+                      url: '#/Home/Compressor/SCModerateFieldDataCollection'
                     },
                     {
                       label: 'Pump Data Upload',
@@ -294,6 +298,10 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Prescriptive/MSSAdd'
                 },
                 {
+                  label: "Add CRAFT's",
+                  url: '#/Home/Prescriptive/CCL'
+                },
+                {
                   label: 'Skill Library',
                   url: '#/Home/Prescriptive/SkillLibrary'
                 },
@@ -329,7 +337,21 @@ export class HomeComponent implements OnInit {
           items: [
             {
               label: 'Cost Benefit Analysis',
-              url: '#/Home/CostBenefitAnalysis'
+              items: [
+                {
+                  label: 'CBA Report',
+                  url: '#/Home/CostBenefitAnalysis'
+                },
+                {
+                  label: 'Constraint Management',
+                  url: '#/Home/Constraint'
+                },
+                {
+                  label: 'Alert Management',
+                  url: '#/Home/Alert'
+                },
+              ]
+              
             },
             {
               label: 'Assesment Report',

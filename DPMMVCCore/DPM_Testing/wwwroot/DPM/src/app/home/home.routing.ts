@@ -18,6 +18,8 @@ import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/Screw
 import { PrescriptionComponent } from "./prescription/prescription.component";
 import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
 import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
+import { ConstarintManagementComponent } from "./CBA_Library/constarint-management/constarint-management.component";
+import { AlertManagementComponent } from "./CBA_Library/alert-management/alert-management.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -44,7 +46,9 @@ import { FailureHistoryComponent } from "./FailureHistory/failure-history.compon
                 { path: 'CompTrainUploadData', component: ScrewCompressorTraindataUploadComponent },
                 { path: 'CompPredictionUploadData', component: ScrewCompressorPredictiondataUploadComponent },                 
                 { path: 'WeibullAnalysis', component: WeibullAnalysis },                 
-                { path: 'FailureHistory', component: FailureHistoryComponent },                 
+                { path: 'FailureHistory', component: FailureHistoryComponent },  
+                { path: 'Constraint', component: ConstarintManagementComponent },                 
+                { path: 'Alert', component: AlertManagementComponent },  
             ]
         }
     ])],

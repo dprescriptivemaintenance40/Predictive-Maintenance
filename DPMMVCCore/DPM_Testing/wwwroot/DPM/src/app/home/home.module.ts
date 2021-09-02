@@ -23,6 +23,8 @@ import {DialogModule} from 'primeng/dialog';
 import { PrescriptionComponent } from './prescription/prescription.component';
 import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
 import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
+import { ConstarintManagementComponent } from './CBA_Library/constarint-management/constarint-management.component';
+import { AlertManagementComponent } from './CBA_Library/alert-management/alert-management.component';
 
 @NgModule({
     declarations: [
@@ -41,7 +43,9 @@ import { FailureHistoryComponent } from "./FailureHistory/failure-history.compon
         CentrifugalPumpPredictiondataUploadComponent,
         PrescriptionComponent,
         WeibullAnalysis,
-        FailureHistoryComponent
+        FailureHistoryComponent,
+        ConstarintManagementComponent,
+        AlertManagementComponent
     ],
     imports: [        
         HomeRoutingModule,       
