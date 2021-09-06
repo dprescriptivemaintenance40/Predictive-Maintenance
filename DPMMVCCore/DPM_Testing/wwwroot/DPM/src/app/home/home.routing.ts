@@ -16,12 +16,15 @@ import { CentrifugalPumpPredictiondataUploadComponent } from "./Pump/centrifugal
 import { ScrewCompressorTraindataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-traindata-upload/screw-compressor-traindata-upload.component";
 import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-predictiondata-upload/screw-compressor-predictiondata-upload.component";
 import { PrescriptionComponent } from "./prescription/prescription.component";
+import { LandingPageComponent } from "./landing-page/landing-page.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: '', component: HomeComponent,
             children: [
-                { path: '', redirectTo: 'Dashboard', pathMatch: 'full' },
+                // { path: '', redirectTo: 'Dashboard', pathMatch: 'full' },
+                { path: '', redirectTo: 'LandingPage', pathMatch: 'full' },
+                { path: 'LandingPage', component: LandingPageComponent },
                 { path: 'Education', component: EducationComponent },
                 { path: 'Dashboard', component: DashboardComponent },
                 { path: 'Compressor', loadChildren: () => import('./Compressor/ScrewCompressor/compressor.module').then(a => a.CompressorModule) },
