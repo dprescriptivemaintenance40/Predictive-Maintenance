@@ -291,6 +291,9 @@ export class DashboardComponent {
   public MSSMaintenanceTask: string = ""
   public Level: string = ""
   public Hours: string = ""
+  public Table1: boolean = false;
+  public MitigatingActionshow: boolean = true;
+  public mssmodelFilter: any = []
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -370,7 +373,15 @@ export class DashboardComponent {
     }
   }
 
-  public mssmodelFilter: any = []
+  RiskTable(){
+    this.showcbi=true
+    this.MitigatingActionshow=false;
+  }
+  RiskTableback(){
+    this.Table1= true
+    this.showcbi=false
+    this.MitigatingActionshow=true;
+  }
   FullCBAObject() {
     this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
     this.myObj = JSON.parse(this.fullCBAobject);
@@ -3102,30 +3113,30 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
 
     this.chart = new Chart("allGraphCBI", {
-      type: "bar",
+      type: "horizontalBar",
       data: {
-        labels: ["Economic Risk", "MEI", "Residual Risk",],
+        labels: ["Economic Risk", "Residual Risk","MEI"],
         datasets: [
           {
             label: "Without DPM",
             backgroundColor: "#d72631",
             borderColor: "#d72631",
             borderWidth: 1,
-            data: [economiccostWithoutDPM, meicostwithoutDPM, resdualtWithoutDPM]
+            data: [economiccostWithoutDPM, resdualtWithoutDPM ,meicostwithoutDPM,]
           },
           {
             label: "With DPM",
             backgroundColor: "#039fbe",
             borderColor: "#039fbe",
             borderWidth: 1,
-            data: [economiccostWithDPM, meicostwithDPM, residualcostwithDPM]
+            data: [economiccostWithDPM, residualcostwithDPM,meicostwithDPM,]
           },
           {
             label: "With Constraint",
             backgroundColor: "#5c3c92",
             borderColor: "#5c3c92",
             borderWidth: 1,
-            data: [economiccostwithConstraint, meicostwithConstraint, residualwithConstraint]
+            data: [economiccostwithConstraint, residualwithConstraint, meicostwithConstraint]
           },
         ]
       },
@@ -3135,7 +3146,18 @@ export class DashboardComponent {
             {
               scaleLabel: {
                 display: true,
-                labelString: 'In_Percentage'
+                // labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ],
+          xAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                 labelString: 'In_Percentage'
               },
               ticks: {
                 beginAtZero: true

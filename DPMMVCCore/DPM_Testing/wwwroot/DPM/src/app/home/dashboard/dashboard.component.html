@@ -3,7 +3,17 @@
         src="https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D"
         frameborder="0" allowFullScreen="true"></iframe>
 </div> -->
+<style>
+    .blink_me {
+  animation: blinker 1s linear infinite;
+}
 
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+</style>
 <p-toast position="top-right"></p-toast>
 <div class="card bg-transparent border-0" id="Trainnavigate">
     <div class="d-flex justify-content-between align-items-center">
@@ -359,10 +369,6 @@
 <br>
 
 <div class="col-md-4">
-    <!-- <select [(ngModel)]="SelectTagNumbers" class="form-select" (change)="TagNumberSelsection()" class="form-control">
-        <option value="">Tag Numbers</option>
-        <option value="K100">K100</option>  
-    </select> -->
     <div class="d-block mt-4">
         <div class="bg-white rounded p-3 br-3 mb-4">
             <div class="row">
@@ -392,13 +398,6 @@
         </div>
     </div>
 </div><br>
-
-<!-- <div class="row mt-4" *ngIf="PredictiongraphShow">
-    <div class="col-md-12">
-        <div class="graph w-100" id="Predictiongraph" #Predictiongraph></div>
-    </div>
-</div> -->
-
 
 <div class="card bg-transparent border-0" *ngIf="PredictiongraphShow1">
     <div class="d-block mt-4">
@@ -467,10 +466,18 @@
                 <h5>Risks</h5>  
                 <div class="row">
                     <div class="col-sm-6">
+                        <!-- <h1 (click)="RiskTable()">
                         <strong style="text-align: left;color:black;font-size: 12px">{{FunctionMode}} </strong><br>
                         <strong style="text-align: left;color:black;font-size: 12px">Risk Rank Without DPM : {{EconomicRiskWithOutDPM}}  </strong><br>
                         <strong style="text-align: left;color:black;font-size: 12px"> Risk Rank With DPM  : {{EconomicRiskWithDPM}} </strong><br>
                         <strong style="text-align: left;color:black;font-size: 12px">Source : MSS | GEP </strong><br><br>
+                   </h1> -->
+                 
+                    <strong style="text-align: left;color:black;font-size: 12px">{{FunctionMode}} </strong><br>
+                    <strong style="text-align: left;color:black;font-size: 12px">Risk Rank Without DPM : {{EconomicRiskWithOutDPM}}  </strong><br>
+                    <strong style="text-align: left;color:black;font-size: 12px"> Risk Rank With DPM  : {{EconomicRiskWithDPM}} </strong><br>
+                    <strong style="text-align: left;color:black;font-size: 12px">Source : MSS | GEP </strong><br><br>
+            
                     </div>
                     <div class="col-sm-6">
                         <canvas id="Prescriptivestatus_bar" height="20"></canvas>
@@ -478,7 +485,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="MitigatingActionshow">
             <div class="bg-white p-3">
                 <h5>Mitigating Actions</h5> 
                 <div class="row">
@@ -502,43 +509,10 @@
 <div *ngIf="showcbi" id="CBAnavigate">
     <div class="bg-transparent mt-4">
         <div class="d-flex justify-content-between align-items-center">
-            <h5><b>Cost Benefit Risk Analysis</b> </h5>
+            <h5><b>Risk Analysis</b> </h5>
             <button class="btn btn-outline-dark btn-sm" (click)="RouteToCostBenifit()" data-toggle="tooltip"
                 data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
         </div>
-        <!-- <div class="row mt-4">
-            <div class="col">
-                <div class="card h-100 p-3 border-0">Total PONC: <b>{{TotalPONC}} $</b></div>
-            </div>
-            <div class="col">
-                <div class="card h-100 p-3 border-0">ETBF: <b>{{CBI_etbf}} Y</b></div>
-            </div>
-            <div class="col">
-                <div class="card h-100 p-3 border-0">Economic Risk : <b>{{EconomicRiskWithDPMCR}}</b></div>
-            </div>
-            <div class="col">
-                <div class="card h-100 p-3 border-0">Cost Without D.P.M (Total Cost): <b>{{EconomicRiskWithOutDPM}}
-                    $</b></div>
-            </div>
-            <div class="col">
-                <div class="card h-100 p-3 border-0">Cost With D.P.M (Total Cost): <b>{{EconomicRiskWithDPM}} $</b>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="row mt-4">
-            <div class="col-6">
-                <div class="card p-3 border-0">
-                    <b>With D.P.M </b>
-                    <canvas id="gaugechart"></canvas>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="card p-3 border-0">
-                    <b>Without D.P.M </b>
-                    <canvas id="canvasDPM"></canvas>
-                </div>
-            </div>
-        </div> -->
         <br><br>
         <div class="col-md-4">
             <select [(ngModel)]="CBIGraphs" class="form-select" (change)="CBICharts()" class="form-control">
