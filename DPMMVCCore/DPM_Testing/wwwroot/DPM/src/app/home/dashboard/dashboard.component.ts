@@ -13,7 +13,7 @@ import { Location } from '@angular/common';
 import { SCConstantsAPI } from "../Compressor/ScrewCompressor/shared/ScrewCompressorAPI.service";
 import { ProfileConstantAPI } from "../profile/profileAPI.service";
 import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
-import { element } from "protractor";
+import { element, } from "protractor";
 import { ConfigService } from "src/app/shared/config.service";
 @Component({
   selector: 'app-dashboard',
@@ -191,10 +191,10 @@ export class DashboardComponent {
   public ClassDegradepercentageForMessage: any = []
   public ClassIncipientpercentageForMessage: any = []
   public ClassNormalpercentageForMessage: any = []
-  public ClassbadpercentageForMessage: any = []  
+  public ClassbadpercentageForMessage: any = []
 
-  public RecommendationAlertMessage : string = "";
-  public RecommendationAlertEnable : boolean = false;
+  public RecommendationAlertMessage: string = "";
+  public RecommendationAlertEnable: boolean = false;
   public RecommendationAlertMessagelength
   public Degrademessagecount: number = 0;
   public Normalemessagecount: number = 0;
@@ -251,46 +251,46 @@ export class DashboardComponent {
   public ResidualRiskWithDPM: number = 0;
   public ResidualRiskWithOutDPM: number = 0;
   public ResidualRiskWithConstraintDPMCR: number = 0;
-  public fullCBAobject:any=[]
+  public fullCBAobject: any = []
 
   public EconomicRiskWithDPMCR: string = "";
   displayModal: boolean;
   displayBasic: boolean;
 
   public SelectTagNumbers: string = "";
-  public PredictiongraphShow:boolean=false;
-  public PredictiongraphShow1:boolean=false;
-  public myObj : any =[];
-  public centrifugalmssmodel:any =[]
-  public centrifugalmssmodelFilter:any =[]
-  public MSSCount:any = []
-  public GDECount:number =0
+  public PredictiongraphShow: boolean = true;
+  public PredictiongraphShow1: boolean = true;
+  public myObj: any = [];
+  public centrifugalmssmodel: any = []
+  public centrifugalmssmodelFilter: any = []
+  public MSSCount: any = []
+  public GDECount: number = 0
   public notification = null
   public etbf_Values: number = 0
   public PrescriptiveRecordsList: any = [];
-  public predictionDegradeMessage:any=[]
-  public predictionIncipientMessage:any=[]
-  public predictionNormalMessage:any=[]
+  public predictionDegradeMessage: any = []
+  public predictionIncipientMessage: any = []
+  public predictionNormalMessage: any = []
   public CBAReportDetails: any;
   public allCBI: boolean = true;
   public user: any = [];
-  
-  public GoodEnggiPractice:any=[] 
+
+  public GoodEnggiPractice: any = []
   public CMaintainenancePractice: string = "";
   public CPPrescriptiveTagNumber: string = "";
-  public FunctionFailure : string = ""
-  public FunctionMode : string = ""
-  public MSSStartergy : string = ""
-  public Consequence : string = ""
-  public DownTimeFactor : string = ""
-  public ProtectionFactor : string = "" 
-  public AnnualPOC : string = ""                   
-  public MSSIntervalSelectionCriteria : string = "" 
-  public MSSMaintenanceInterval : string = "" 
-  public Craft : string = "" 
-  public MSSMaintenanceTask : string = "" 
-  public Level : string = "" 
-  public Hours : string = "" 
+  public FunctionFailure: string = ""
+  public FunctionMode: string = ""
+  public MSSStartergy: string = ""
+  public Consequence: string = ""
+  public DownTimeFactor: string = ""
+  public ProtectionFactor: string = ""
+  public AnnualPOC: string = ""
+  public MSSIntervalSelectionCriteria: string = ""
+  public MSSMaintenanceInterval: string = ""
+  public Craft: string = ""
+  public MSSMaintenanceTask: string = ""
+  public Level: string = ""
+  public Hours: string = ""
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -308,7 +308,7 @@ export class DashboardComponent {
     private configService: ConfigService,
     private location: Location,
     private route: ActivatedRoute,
-    
+
 
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
@@ -325,7 +325,7 @@ export class DashboardComponent {
     this.getUserSkillRecords();
     this.getPrescriptiveRecords()
     this.getUserDetails()
-    this.FullCBAObject() 
+    this.FullCBAObject()
   }
 
   ngOnInit() {
@@ -338,8 +338,9 @@ export class DashboardComponent {
     this.dygraph()
     this.ComboDates()
     this.CBICharts()
-    this.PrescripitiveUpdatestatusGraph() 
- 
+    this.PrescripitiveUpdatestatusGraph()
+    this.getcombinerecords()
+
   }
 
   getUserDetails() {
@@ -363,72 +364,93 @@ export class DashboardComponent {
       this.ResidualRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCRValue;
       this.ResidualRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPMCRValue;
       this.ResidualRiskWithConstraintDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraintCRValue;
-    
+
       this.showcbi = true;
 
     }
   }
 
-  FullCBAObject(){
-      this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
-       this.myObj = JSON.parse(this.fullCBAobject);
-       this.ComponentCriticalityFactor = this.myObj.CriticalityFactor
-       this.DownTimeFactor = this.myObj.DownTimeFactor
-       this.CFrequencyMaintainenance = this.myObj.FrequencyMaintainenance
-       this.CConditionMonitoring = this.myObj.ConditionMonitoring
-       this.ProtectionFactor = this.myObj.ProtectionFactor
-       this.ComponentRating = this.myObj.Rating
-       this.CMaintainenancePractice= this.myObj.MaintainenancePractice
-       this.CPPrescriptiveTagNumber= this.myObj.TagNumber
-       this.FunctionMode=  this.myObj.FunctionMode
-       this.Consequence=  this.myObj.Consequence
-       this.centrifugalmssmodel= this.myObj.CentrifugalPumpMssModel
-       var MSScount:number=0
-       var GDEcount:number=0
-       this.GoodEnggiPractice= this.centrifugalmssmodel
-          this.centrifugalmssmodel.forEach((element) => { 
-           this.AnnualPOC = element.AnnualPOC                   
-           this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
-           this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
-           this.Craft = element.Craft
-           this.MSSMaintenanceTask = element.MSSMaintenanceTask
-           this.Level = element.Level
-           this.Hours = element.Hours
-            if(element.CentrifugalPumpMssId === "MSS"){
-               MSScount= MSScount + 1
-                this.notification = { class: 'text-warning', };
-            }else if(element.CentrifugalPumpMssId === "GDE"){
-                this.GDECount = this.GDECount+1
-                this.notification = { class: 'text-warning', };
-            } 
-        }
-        )
-       this.MSSCount.push(MSScount)
-       const ids = this.centrifugalmssmodel.map(o => o.MSSIntervalSelectionCriteria)
-       this.centrifugalmssmodelFilter= this.centrifugalmssmodel.filter(({MSSIntervalSelectionCriteria}, index) => !ids.includes(MSSIntervalSelectionCriteria, index + 1))
+  public mssmodelFilter: any = []
+  FullCBAObject() {
+    this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
+    this.myObj = JSON.parse(this.fullCBAobject);
+    this.ComponentCriticalityFactor = this.myObj.CriticalityFactor
+    this.DownTimeFactor = this.myObj.DownTimeFactor
+    this.CFrequencyMaintainenance = this.myObj.FrequencyMaintainenance
+    this.CConditionMonitoring = this.myObj.ConditionMonitoring
+    this.ProtectionFactor = this.myObj.ProtectionFactor
+    this.ComponentRating = this.myObj.Rating
+    this.CMaintainenancePractice = this.myObj.MaintainenancePractice
+    this.CPPrescriptiveTagNumber = this.myObj.TagNumber
+    this.FunctionMode = this.myObj.FunctionMode
+    this.Consequence = this.myObj.Consequence
+    this.centrifugalmssmodel = this.myObj.CentrifugalPumpMssModel
+    var MSScount: number = 0
+    var GDEcount: number = 0
 
-       this.GoodEnggiPractice.forEach(element => {
-         if(element.CentrifugalPumpMssId === "GDE"){
-          this.AnnualPOC = element.AnnualPOC                   
-          this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
-          this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
-          this.Craft = element.Craft
-          this.MSSMaintenanceTask = element.MSSMaintenanceTask
-          this.Level = element.Level
-          this.Hours = element.Hours
-         }
-       });
+
+
+    this.GoodEnggiPractice = this.centrifugalmssmodel
+    this.centrifugalmssmodel.forEach((element) => {
+      this.AnnualPOC = element.AnnualPOC
+      this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
+      this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
+      this.Craft = element.Craft
+      this.MSSMaintenanceTask = element.MSSMaintenanceTask
+      this.Level = element.Level
+      this.Hours = element.Hours
+      if (element.CentrifugalPumpMssId === "MSS") {
+        MSScount = MSScount + 1
+        this.notification = { class: 'text-warning', };
+      } else if (element.CentrifugalPumpMssId === "GDE") {
+        this.GDECount = this.GDECount + 1
+        this.notification = { class: 'text-warning', };
+      }
+    }
+    )
+
+    this.MSSCount.push(MSScount)
+    var result = this.groupByKey(this.centrifugalmssmodel, 'MSSIntervalSelectionCriteria');
+
+    var newarray =[];
+     Object.keys(result).map(function (personNamedIndex) {
+       let newobj ={MSSIntervalSelectionCriteria:personNamedIndex,centrifugalmssmodel:[]}
+      newarray.push(newobj);
+
+    });
+     newarray.forEach(itm=>{
+      this.centrifugalmssmodel.forEach(res=>{
+       if(res.MSSIntervalSelectionCriteria == itm.MSSIntervalSelectionCriteria){
+        itm.centrifugalmssmodel.push(res);
+       }
+     })
+   }); 
+   this.centrifugalmssmodelFilter = newarray;
+
+     const ids = this.centrifugalmssmodel.map(o => o.MSSIntervalSelectionCriteria)
+     this.mssmodelFilter= this.centrifugalmssmodel.filter(({MSSIntervalSelectionCriteria}, index) => !ids.includes(MSSIntervalSelectionCriteria, index + 1))
+
+
+    this.GoodEnggiPractice.forEach(element => {
+      if (element.CentrifugalPumpMssId === "GDE") {
+        this.AnnualPOC = element.AnnualPOC
+        this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
+        this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
+        this.Craft = element.Craft
+        this.MSSMaintenanceTask = element.MSSMaintenanceTask
+        this.Level = element.Level
+        this.Hours = element.Hours
+      }
+    });
   }
 
-  // TagNumberSelsection(){
-  //   if(this.SelectTagNumbers =="K100"){
-  //     this.PredictiongraphShow=true;
-  //     this.PredictiongraphShow1=true;
-  //     this.PredictionWithTagNumber()
-  //     this.PredictionWithActionPieChart()
-  //     this.PredictionWithAlertPieChart ()  
-  //   }
-  // }
+  groupByKey(array, key) {
+    return array
+      .reduce((hash, obj) => {
+        if (obj[key] === undefined) return hash;
+        return Object.assign(hash, { [obj[key]]: (hash[obj[key]] || []).concat(obj) })
+      }, {})
+  }
 
   showBasicDialog() {
     this.displayBasic = true;
@@ -443,6 +465,14 @@ export class DashboardComponent {
         this.SelectedTagNumber = this.PrescriptiveRecordsList[0].TagNumber
 
         this.getRecordsByEqui()
+      });
+  }
+
+  public mergerecords: any = [];
+  getcombinerecords() {
+    this.http.get('api/ScrewCompressorFuturePredictionAPI/MergepredictionAndForcast')
+      .subscribe((res: any) => {
+        this.mergerecords = res;
       });
   }
 
@@ -499,6 +529,7 @@ export class DashboardComponent {
         })
   }
   public PTagNumberList = [];
+  public tagnumbershow: string = ""
   GerAllPredictionRecords() {
     this.PredictionDataNormalCount = null;
     this.PredictionDataIncipientCount = null;
@@ -514,6 +545,7 @@ export class DashboardComponent {
       .subscribe(
         res => {
           this.ScrewPredictionAllData = res;
+
           var Data: any = []
           Data = res;
           Data.sort((a, b) => (moment(a.InsertedDate) > moment(b.InsertedDate) ? 1 : -1));
@@ -532,16 +564,16 @@ export class DashboardComponent {
             if (counter === 97) {
               if (degrade > 6) {
                 this.RecommendationAlertMessage = 'Machine starts degrading, RCA is recomended';
-                this.Degrademessagecount = this.Degrademessagecount+1
+                this.Degrademessagecount = this.Degrademessagecount + 1
                 this.RecommendationAlertEnable = true;
               } else if (incipient > 6) {
-                this.RecommendationAlertMessage ='RCM is recomended';
-                 this.Incipientemessagecount = this.Incipientemessagecount+1
+                this.RecommendationAlertMessage = 'RCM is recomended';
+                this.Incipientemessagecount = this.Incipientemessagecount + 1
                 this.RecommendationAlertEnable = true;
-              }else{
+              } else {
                 this.RecommendationAlertEnable = false;
               }
-             break;
+              break;
             }
             this.PredictionWithAlertPieChart()
           }
@@ -604,10 +636,10 @@ export class DashboardComponent {
             }
             return m;
           }, []);
-          
-          
+
+
           const ids = this.Predictyearlist.map(o => o.PredictyTagnumber)
-          this.Predictyearlist= this.Predictyearlist.filter(({PredictyTagnumber}, index) => !ids.includes(PredictyTagnumber, index + 1))
+          this.Predictyearlist = this.Predictyearlist.filter(({ PredictyTagnumber }, index) => !ids.includes(PredictyTagnumber, index + 1))
           var Degradepercentage
           var Incipientpercentage
           var Normalpercentage
@@ -618,7 +650,7 @@ export class DashboardComponent {
               this.PredictionIncipientcount = this.PredictionIncipientcount + 1
             } else if (this.Prediction[i] == "normal") {
               this.PredictionNormalcount = this.PredictionNormalcount + 1
-            } else
+            } else if (this.Prediction[i] == "bad")
               this.Predictionbadcount = this.Predictionbadcount + 1
           }
           Degradepercentage = (this.Degradecount / this.ScrewPredictionAllData.length) * 100
@@ -629,9 +661,13 @@ export class DashboardComponent {
           this.PredictionAllRecordBarcharts();
           this.PredictionAllRecordPie();
           this.GenerateReport()
-          //   this.PredictionWithTagNumber()
-          //  this.PredictionWithActionPieChart()
+          this.PredictionWithTagNumber()
+          this.PredictionWithActionPieChart()
+          this.IndicationGraphSSRB()
+          this.IndicationGraphRD()
+          this.IndicationGraphCF()
           //  this.PredictionWithAlertPieChart()
+          //  this.FullCBAObject()
         }, error => {
           console.log(error.error)
         })
@@ -658,39 +694,41 @@ export class DashboardComponent {
     this.Predictionbadcount = 0
 
     for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "degarde") {
+      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
         this.PredictionDegradecount = this.PredictionDegradecount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "incipient") {
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
         this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "normal") {
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
         this.PredictionNormalcount = this.PredictionNormalcount + 1
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
+
     // this.PredictionAllRecordBarcharts()
     // this.PredictionAllRecordDonught()
     // this.PredictionAllRecordPie()
-    this.PredictiongraphShow=true;
-    this.PredictiongraphShow1=true;
+    this.PredictiongraphShow = true;
+    this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber()
     this.PredictionWithActionPieChart()
-    this.PredictionWithAlertPieChart ()  
+    this.PredictionWithAlertPieChart()
+    // this.FullCBAObject()
   }
 
   PredictFModeType() {
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber)=== this.PredictionselectedYear.toString());
+    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
     this.Predictionbadcount = 0
 
     for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "degarde") {
+      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
         this.PredictionDegradecount = this.PredictionDegradecount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "incipient") {
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
         this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "normal") {
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
         this.PredictionNormalcount = this.PredictionNormalcount + 1
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
@@ -698,11 +736,13 @@ export class DashboardComponent {
     // this.PredictionAllRecordBarcharts()
     // this.PredictionAllRecordDonught()
     // this.PredictionAllRecordPie()
-    this.PredictiongraphShow=true;
-    this.PredictiongraphShow1=true;
+    this.PredictiongraphShow = true;
+    this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber()
     this.PredictionWithActionPieChart()
-    this.PredictionWithAlertPieChart ()  
+    this.PredictionWithAlertPieChart()
+    
+    // this.FullCBAObject()
   }
 
   GetAllRecords() {
@@ -754,7 +794,18 @@ export class DashboardComponent {
             }
             return s;
           }, []);
-
+          this.FMList.forEach(item => {
+            if(item.FMname === "SSRB"){
+              item.FMname="Second stage rotar breakdown"
+              item.chartID ="indication_barSSRB"
+            }else  if(item.FMname === "RD"){
+              item.FMname="Rotar Damage"
+              item.chartID ="indication_barRD"
+            }else  if(item.FMname === "CF"){
+              item.FMname="Cooler Failure"
+              item.chartID ="indication_barCF"
+            }
+          })
           this.ScrewCompressorAllData.forEach(element => {
             this.classi.push(element.Classification);
           });
@@ -868,14 +919,14 @@ export class DashboardComponent {
     // } else if (this.fmtype != "" && this.selectedYear != "") {
     //   this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
     // }
-    if (this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"  && this.selectedYear == "") {
+    if (this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD" && this.selectedYear == "") {
       this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "SSRB") || (val.FailureModeType === "CF") || (val.FailureModeType === "RD"));
-    } else if (this.fmtype != "SSRB"  && this.selectedYear != "") {
-      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "SSRB" ) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
-    } else if (this.fmtype != "RD"  && this.selectedYear != "") {
-      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "RD" ) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
-    } else if (this.fmtype != "CF"  && this.selectedYear != "") {
-      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "CF" ) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    } else if (this.fmtype != "SSRB" && this.selectedYear != "") {
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "SSRB") && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    } else if (this.fmtype != "RD" && this.selectedYear != "") {
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "RD") && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
+    } else if (this.fmtype != "CF" && this.selectedYear != "") {
+      this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "CF") && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
     }
     this.Degradecount = 0
     this.Incipientcount = 0
@@ -943,7 +994,7 @@ export class DashboardComponent {
     this.prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes.forEach(row => {
       row.TotalAnnualPOC = 0;
       row.CentrifugalPumpMssModel.forEach(mss => {
-      this.MSSStartergy =  mss.MSSStartergy
+        this.MSSStartergy = mss.MSSStartergy
         if (!mss.MSSMaintenanceInterval || mss.MSSMaintenanceInterval === 'NA' || mss.MSSMaintenanceInterval === 'Not Applicable') {
           mss.POC = 0;
           mss.AnnualPOC = 0;
@@ -995,7 +1046,7 @@ export class DashboardComponent {
         .subscribe((res: any) => {
           this.prescriptiveRecords = []
           this.prescriptiveRecords = res;
-         
+
           this.DynamicCBA(res)
         }, err => {
           console.log(err.err);
@@ -1234,27 +1285,27 @@ export class DashboardComponent {
       this.ClassNormalpercentage = (this.Normalcount / this.ScrewCompressorAllData.length) * 100
       this.Classbadpercentage = (this.badcount / this.ScrewCompressorAllData.length) * 100
 
-       this.ClassDegradepercentageForMessage =this.ClassDegradepercentage
-       this.ClassIncipientpercentageForMessage= this.ClassIncipientpercentage
-       this.ClassNormalpercentageForMessage =this.ClassNormalpercentage 
-       this.ClassbadpercentageForMessage =this.Classbadpercentage 
+      this.ClassDegradepercentageForMessage = this.ClassDegradepercentage
+      this.ClassIncipientpercentageForMessage = this.ClassIncipientpercentage
+      this.ClassNormalpercentageForMessage = this.ClassNormalpercentage
+      this.ClassbadpercentageForMessage = this.Classbadpercentage
 
-        precetagedegrade =this.ClassDegradepercentage.toFixed()
-        precetageincipient= this.ClassIncipientpercentage.toFixed()
-        precetagenornal =this.ClassNormalpercentage.toFixed() 
-        precetagebad =this.Classbadpercentage.toFixed() 
+      precetagedegrade = this.ClassDegradepercentage.toFixed()
+      precetageincipient = this.ClassIncipientpercentage.toFixed()
+      precetagenornal = this.ClassNormalpercentage.toFixed()
+      precetagebad = this.Classbadpercentage.toFixed()
     }
-    
+
 
 
     this.chart = new Chart('canvasClass', {
       type: 'doughnut',
       data: {
-        labels: ["Normal", "Incipient", "Degrade","Bad"],
+        labels: ["Normal", "Incipient", "Degrade", "Bad"],
         datasets: [
           {
-            backgroundColor: ["#008000", "#ffb801", "#fe4c61","blue"],
-            data: [precetagenornal, precetageincipient, precetagedegrade,precetagebad],
+            backgroundColor: ["#008000", "#ffb801", "#fe4c61", "blue"],
+            data: [precetagenornal, precetageincipient, precetagedegrade, precetagebad],
           }
         ]
       },
@@ -1268,27 +1319,27 @@ export class DashboardComponent {
             ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
-      
+
             this.data.datasets.forEach(function (dataset) {
               for (var i = 0; i < dataset.data.length; i++) {
                 var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                    total = dataset._meta[Object.keys(dataset._meta)[0]].total,
-                    mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
-                    start_angle = model.startAngle,
-                    end_angle = model.endAngle,
-                    mid_angle = start_angle + (end_angle - start_angle)/2;
-      
+                  total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                  mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
+                  start_angle = model.startAngle,
+                  end_angle = model.endAngle,
+                  mid_angle = start_angle + (end_angle - start_angle) / 2;
+
                 var x = mid_radius * Math.cos(mid_angle);
                 var y = mid_radius * Math.sin(mid_angle);
-      
+
                 ctx.fillStyle = '#fff';
-                if (i == 3){ 
+                if (i == 3) {
                   ctx.fillStyle = '#444';
                 }
-                var percent = String(Math.round(dataset.data[i]/total*100)) + "%";
+                var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
                 ctx.fillText(percent, model.x + x, model.y + y + 15);
               }
-            });               
+            });
           }
         }
       }
@@ -1326,11 +1377,11 @@ export class DashboardComponent {
 
     for (var i = 0; i < this.yearlist.length; ++i) {
       var SCFPnormal = 0
-        var SCFPincipient = 0
-        var SCFPdegrade = 0
-        var SCFPbad = 0
-        var SCcounter = 0
-      
+      var SCFPincipient = 0
+      var SCFPdegrade = 0
+      var SCFPbad = 0
+      var SCcounter = 0
+
       this.ScrewCompressorAllData.forEach(value => {
         var a = moment(value.InsertedDate).format('YYYY')
         if (a == this.yearlist[i].yearname) {
@@ -1357,10 +1408,10 @@ export class DashboardComponent {
       SCFPdegrade = ((SCFPdegrade / SCcounter) * 100)
       SCFPbad = ((SCFPbad / SCcounter) * 100)
 
-      precetagedegrade  =SCFPdegrade.toFixed()
-      precetageincipient =SCFPincipient.toFixed()
-      precetagenornal =SCFPnormal.toFixed()
-      precetagebad = SCFPbad.toFixed() 
+      precetagedegrade = SCFPdegrade.toFixed()
+      precetageincipient = SCFPincipient.toFixed()
+      precetagenornal = SCFPnormal.toFixed()
+      precetagebad = SCFPbad.toFixed()
 
       this.SCFinalNormal.push(precetagenornal)
       this.SCFinalIncipient.push(precetageincipient)
@@ -1420,7 +1471,7 @@ export class DashboardComponent {
             gridLines: {
               display: false,
               labelString: 'Years'
-            }, 
+            },
           }],
           yAxes: [
             {
@@ -1433,7 +1484,7 @@ export class DashboardComponent {
               },
               gridLines: {
                 display: false
-              },  
+              },
             }
           ]
         },
@@ -1448,7 +1499,7 @@ export class DashboardComponent {
                 var data = dataset.data[index];
                 if (data > 0) {
                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
-               }
+                }
               });
             });
           }
@@ -1541,7 +1592,7 @@ export class DashboardComponent {
         ]
       },
       options: {
-          events: [], 
+        events: [],
         scales: {
           xAxes: [{
             scaleLabel: {
@@ -1551,7 +1602,7 @@ export class DashboardComponent {
             gridLines: {
               display: false,
             },
-            stacked: true, 
+            stacked: true,
           }],
           yAxes: [
             {
@@ -1562,11 +1613,11 @@ export class DashboardComponent {
               },
               ticks: {
                 beginAtZero: true,
-                max:12,
+                max: 12,
               },
               gridLines: {
                 display: false
-              },  
+              },
             }
           ]
         },
@@ -1587,7 +1638,7 @@ export class DashboardComponent {
         //   }
         // },
       }
- 
+
     });
   }
 
@@ -1626,7 +1677,7 @@ export class DashboardComponent {
         }
 
       });
-      var fperc_Incipient  
+      var fperc_Incipient
       var fperc_Normal
       var fperc_Degrade
       var fperc_Bad
@@ -1635,10 +1686,10 @@ export class DashboardComponent {
       FPdegrade = ((FPdegrade / counter) * 100)
       FPbad = ((FPbad / counter) * 100)
 
-       fperc_Incipient = FPnormal.toFixed()
-       fperc_Normal= FPincipient.toFixed()
-       fperc_Degrade= FPdegrade.toFixed()
-       fperc_Bad= FPbad.toFixed()
+      fperc_Incipient = FPnormal.toFixed()
+      fperc_Normal = FPincipient.toFixed()
+      fperc_Degrade = FPdegrade.toFixed()
+      fperc_Bad = FPbad.toFixed()
 
       this.FPFinalNormal.push(fperc_Normal)
       this.FPFinalIncipient.push(fperc_Incipient)
@@ -1697,7 +1748,7 @@ export class DashboardComponent {
           xAxes: [{
             gridLines: {
               display: false
-            }, 
+            },
           }],
           yAxes: [
             {
@@ -1708,7 +1759,7 @@ export class DashboardComponent {
               ticks: {
                 beginAtZero: true,
                 gridLines: {
-                  display:false
+                  display: false
                 },
               }
             }
@@ -1725,7 +1776,7 @@ export class DashboardComponent {
                 var data = dataset.data[index];
                 if (data > 0) {
                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
-               }
+                }
               });
             });
           }
@@ -1734,7 +1785,7 @@ export class DashboardComponent {
 
     });
   }
-  
+
   PredictionAllRecordPie() {
     var a: any = [];
     this.PredictionNormalcount = 0,
@@ -1798,27 +1849,27 @@ export class DashboardComponent {
             ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
-      
+
             this.data.datasets.forEach(function (dataset) {
               for (var i = 0; i < dataset.data.length; i++) {
                 var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                    total = dataset._meta[Object.keys(dataset._meta)[0]].total,
-                    mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
-                    start_angle = model.startAngle,
-                    end_angle = model.endAngle,
-                    mid_angle = start_angle + (end_angle - start_angle)/2;
-      
+                  total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                  mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
+                  start_angle = model.startAngle,
+                  end_angle = model.endAngle,
+                  mid_angle = start_angle + (end_angle - start_angle) / 2;
+
                 var x = mid_radius * Math.cos(mid_angle);
                 var y = mid_radius * Math.sin(mid_angle);
-      
+
                 ctx.fillStyle = '#fff';
-                if (i == 3){ 
+                if (i == 3) {
                   ctx.fillStyle = '#444';
                 }
-                var percent = String(Math.round(dataset.data[i]/total*100)) + "%";
+                var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
                 ctx.fillText(percent, model.x + x, model.y + y + 15);
               }
-            });               
+            });
           }
         }
       }
@@ -1925,18 +1976,18 @@ export class DashboardComponent {
           xAxes: [{
             gridLines: {
               display: false
-            }, 
-             stacked: true,
+            },
+            stacked: true,
           }],
           yAxes: [{
-           stacked: true,
+            stacked: true,
             ticks: {
               beginAtZero: true,
-              max:3,
-          }, 
-          gridLines: {
-            display: false
-          }, 
+              max: 3,
+            },
+            gridLines: {
+              display: false
+            },
           }]
         },
         // "animation": {
@@ -1955,7 +2006,7 @@ export class DashboardComponent {
         //     });
         //   }
         // },
-    
+
       }
     });
   }
@@ -2058,11 +2109,11 @@ export class DashboardComponent {
     this.FutuerPredictionbadcount = 0
 
     for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
-      if (`${this.FutuerPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "degarde") {
+      if (`${this.FutuerPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
         this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1
-      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "incipient") {
+      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
         this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1
-      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype =="SSRB" || this.fmtype =="CF" || this.fmtype =="RD"}` == "normal") {
+      } else if (`${this.FutuerPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
         this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1
       } else
         this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
@@ -2548,60 +2599,6 @@ export class DashboardComponent {
   //   // )
   // }
 
-  // PredictionAllRecordBarcharts1() {
-  //   this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-  //        var prediction = res;
-  //        prediction.forEach(element => {
-  //         if (element.TD1 > 180 && element.TD1 < 210) {
-  //           element.alarm = element.TD1
-  //         }else{
-  //           element.alarm = ''
-  //         }
-  //          if (element.TD1 > 210) {
-  //           element.trigger = element.TD1
-  //         }else{
-  //           element.trigger = ''
-  //         }
-  //        });
-  //        this.csvData = this.ConvertToCSV(prediction);
-  //          this.chart = new Dygraph(
-  //           document.getElementById("Predictiongraph"),this.csvData,
-  //           {
-  //              colors: ['green','#ffb801','red',],
-  //             //  visibility: [ true,true, false,, true, true,],
-  //             showRangeSelector: true,
-  //             fillGraph:true,
-  //             fillAlpha: 0.1,
-  //             connectSeparatedPoints: false,
-  //             drawPoints: true,
-  //             strokeWidth: 1.5,
-  //             stepPlot: false,
-  //             errorbar: true,
-  //             drawXGrid: true,
-  //             valueRange: [150,250],
-  //             includeZero: false,
-  //             drawAxesAtZero: false,
-  //             series: {
-  //               'TD1': {
-  //                 strokePattern: null,
-  //                 drawPoints: true,
-  //                 pointSize: 2,
-  //               },
-  //               'alarm': {
-  //                 strokePattern: null,
-  //                 drawPoints: true,
-  //                 pointSize: 2,
-  //               },
-  //               'trigger': {
-  //                 strokePattern: null,
-  //                 drawPoints: true,
-  //                 pointSize: 2,
-  //               },
-              
-  //             },
-  //       })}
-  //   )
-  // }
 
   dygraph() {
     this.chart = new Dygraph(
@@ -2609,7 +2606,7 @@ export class DashboardComponent {
       // document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
       // document.getElementById("graph"), "dist/DPM/assets/addforcastandprediction.csv",
       //  document.getElementById("graph"), "dist/DPM/assets/sensor200dataforDydraph.csv",
-        document.getElementById("graph"), "dist/DPM/assets/dygraph2018-19.csv",
+      document.getElementById("graph"), "dist/DPM/assets/dygraph2018-19.csv",
       {
         visibility: [true, true, true,],
         colors: ['green', 'blue',],
@@ -2819,7 +2816,7 @@ export class DashboardComponent {
         console.log(err.error);
       });
   }
- 
+
   CBICharts() {
     this.changeDetectorRef.detectChanges();
     if (this.state.CBANAV == 3) {
@@ -2906,7 +2903,23 @@ export class DashboardComponent {
               }
             }
           ]
-        }
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                }
+              });
+            });
+          }
+        },
       }
     });
   }
@@ -2963,7 +2976,23 @@ export class DashboardComponent {
               }
             }
           ]
-        }
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                }
+              });
+            });
+          }
+        },
       }
     });
 
@@ -3020,7 +3049,23 @@ export class DashboardComponent {
               }
             }
           ]
-        }
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                }
+              });
+            });
+          }
+        },
       }
     });
 
@@ -3097,7 +3142,23 @@ export class DashboardComponent {
               }
             }
           ]
-        }
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                }
+              });
+            });
+          }
+        },
       }
     });
   }
@@ -3135,16 +3196,20 @@ export class DashboardComponent {
     this.PredictionNormalcount = 0,
       this.PredictionIncipientcount = 0,
       this.PredictionDegradecount = 0;
-      let tagnumberlist = []
-    
-      let b = []
-      for(var i=0;i<this.ScrewPredictionAllData.length;++i){
-         b=this.ScrewPredictionAllData[i].TagNumber
-        tagnumberlist.push(b)
-      }
-      const ids = tagnumberlist.map(o => o.TagNumber)
-      this.PTagNumberList= tagnumberlist.filter(({TagNumber}, index) => !ids.includes(TagNumber, index + 1))
+    let tagnumberlist = []
 
+    // let b = []
+    // for (var i = 0; i < this.ScrewPredictionAllData.length; ++i) {
+    //   b = this.ScrewPredictionAllData[i].TagNumber
+    //   tagnumberlist.push(b)
+    // }
+    const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
+    this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
+    this.PTagNumberList =   this.PTagNumberList.filter(r => r.TagNumber !== null)
+     let tagnumbers:any =[]
+    this.PTagNumberList.forEach(element=>{
+      tagnumbers.push(element.TagNumber) 
+    })
     this.ScrewPredictionAllData.forEach(element => {
       if (this.fmtype != "") {
         if (this.fmtype == "SSRB") {
@@ -3169,8 +3234,8 @@ export class DashboardComponent {
         this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
       } else if (element == 'degrade' || element == 'degarde') {
         this.PredictionDegradecount = this.PredictionDegradecount + 1;
-      }else{
-        this.Predictionbadcount = this.Predictionbadcount+1
+      } else if (element == 'bad') {
+        this.Predictionbadcount = this.Predictionbadcount + 1
       }
     });
     Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
@@ -3181,13 +3246,16 @@ export class DashboardComponent {
     this.predictionDegradeMessage = Degradepercentage
     this.predictionIncipientMessage = Incipientpercentage
     this.predictionNormalMessage = Normalpercentage
-  
+
 
     this.changeDetectorRef.detectChanges();
+    if (this.chart) {
+      this.chart.destroy();
+    }
     this.chart = new Chart("PredictionbarWithTage", {
       type: "bar",
       data: {
-        labels: this.PTagNumberList,
+        labels:tagnumbers,
         fill: true,
         datasets: [
           {
@@ -3229,7 +3297,11 @@ export class DashboardComponent {
         ],
       },
       options: {
-          events: [], 
+        // events: [], 
+        // events: ["mouseout",  "touchmove", "touchend"],
+        tooltips: {
+          mode: 'index',
+        },
         scales: {
           xAxes: [{
             stacked: true,
@@ -3265,18 +3337,18 @@ export class DashboardComponent {
                   var data = dataset.data[index];
                   if (data > 0) {
                     ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                 }
+                  }
                 });
               });
             }
           },
         }
       }
-
     });
+    this.chart.update()
   }
 
-  PredictionWithActionPieChart(){
+  PredictionWithActionPieChart() {
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionActionPiechart", {
       type: 'pie',
@@ -3286,12 +3358,12 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
-            data: [0,  this.MSSCount, 1]
+            data: [0, this.MSSCount, 1]
           }
         ]
       },
       options: {
-         events: [],
+        events: [],
         animation: {
           duration: 500,
           easing: "easeOutQuart",
@@ -3300,37 +3372,37 @@ export class DashboardComponent {
             ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
-      
+
             this.data.datasets.forEach(function (dataset) {
               for (var i = 0; i < dataset.data.length; i++) {
                 var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                    total = dataset._meta[Object.keys(dataset._meta)[0]].total,
-                    mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
-                    start_angle = model.startAngle,
-                    end_angle = model.endAngle,
-                    mid_angle = start_angle + (end_angle - start_angle)/2;
-      
+                  total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                  mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
+                  start_angle = model.startAngle,
+                  end_angle = model.endAngle,
+                  mid_angle = start_angle + (end_angle - start_angle) / 2;
+
                 var x = mid_radius * Math.cos(mid_angle);
                 var y = mid_radius * Math.sin(mid_angle);
-      
+
                 ctx.fillStyle = '#fff';
-                if (i == 3){ 
+                if (i == 3) {
                   ctx.fillStyle = '#444';
                 }
-                if (i >0){ 
-                  var percent = String(Math.round(dataset.data[i]/total*100)) + "%";
+                if (i > 0) {
+                  var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
                   ctx.fillText(percent, model.x + x, model.y + y + 15);
                 }
-              
+
               }
-            });               
+            });
           }
         }
       }
     });
   }
 
-  PredictionWithAlertPieChart(){
+  PredictionWithAlertPieChart() {
     this.changeDetectorRef.detectChanges();
     // this.chart = new Chart("PredictionAlertsPiechart", {
     //   type: 'pie',
@@ -3348,25 +3420,25 @@ export class DashboardComponent {
     // });
   }
 
-  PrescripitiveUpdatestatusGraph(){
+  PrescripitiveUpdatestatusGraph() {
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("Prescriptivestatus_bar", {
       type: "horizontalBar",
       data: {
-        labels:[],
+        labels: [],
         datasets: [{
-          data: [1,1,1],
+          data: [1],
           backgroundColor: "#008000",
           hoverBackgroundColor: "#008000"
-      },{
-          data: [3,3,3],
+        }, {
+          data: [1],
           backgroundColor: "yellow",
           hoverBackgroundColor: "yellow"
-      },{
-          data: [1,1,1],
+        }, {
+          data: [1],
           backgroundColor: "red",
           hoverBackgroundColor: "red"
-      }]
+        }]
       },
       options: {
         legend: {
@@ -3384,33 +3456,335 @@ export class DashboardComponent {
             display: false,
             stacked: true
           }],
-        } ,
-        animation: {
-          onComplete: function () {
-              var chartInstance = this.chart;
-              var ctx = chartInstance.ctx;
-              ctx.textAlign = "left";
-              ctx.font = "9px Open Sans";
-              ctx.fillStyle = "black";
-  
-              Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
-                  var meta = chartInstance.controller.getDatasetMeta(i);
-                  Chart.helpers.each(meta.data.forEach(function (bar, index) {
-                      var data = dataset.data[index];
-                      if(i==0){
-                          ctx.fillText( data, 50, bar._model.y+4);
-                      } else {
-                          ctx.fillText( data, bar._model.x-25, bar._model.y+4);
-                      }
-                  }),this)
-              }),this);
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y + 4);
+                }
+              });
+            });
           }
+        },
       },
-      }, 
- 
- 
+
+
     });
   }
 
+  IndicationGraphSSRB() {
+    var a: any = [];
+    this.PredictionNormalcount = 0,
+      this.PredictionIncipientcount = 0,
+      this.PredictionDegradecount = 0;
+    this.ScrewPredictionAllData.forEach(element => {
+      if (this.fmtype != "") {
+        if (this.fmtype == "SSRB") {
+          a.push(element.SSRB)
+        } else if (this.fmtype == "CF") {
+          a.push(element.CF)
+        } if (this.fmtype == "RD") {
+          a.push(element.RD)
+        }
+      } else {
+        a.push(element.Prediction)
+      }
+
+    });
+
+    var Degradepercentage
+    var Incipientpercentage
+    var Normalpercentage
+
+    this.ScrewPredictionAllData.forEach(element => {
+      if (element.SSRB == 'normal') {
+        this.PredictionNormalcount = this.PredictionNormalcount + 1;
+      } else if (element.SSRB == 'incipient') {
+        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+      } else if (element.SSRB == 'degrade' || element == 'degarde') {
+        this.PredictionDegradecount = this.PredictionDegradecount + 1;
+      }
+    
+    });
+    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
+    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
+    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+
+    this.predictionDegradeMessage = Degradepercentage
+    this.predictionIncipientMessage = Incipientpercentage
+    this.predictionNormalMessage = Normalpercentage
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("indication_barSSRB", {
+      type: "horizontalBar",
+      data: {
+        labels: [],
+        datasets: [{
+          data: [Normalpercentage],
+          backgroundColor: "#008000",
+          hoverBackgroundColor: "#008000"
+        }, {
+          data: [Incipientpercentage],
+          backgroundColor: "yellow",
+          hoverBackgroundColor: "yellow"
+        }, {
+          data: [Degradepercentage],
+          backgroundColor: "red",
+          hoverBackgroundColor: "red"
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        },
+        scales: {
+          xAxes: [{
+            display: false,
+            stacked: true
+          }],
+          yAxes: [{
+            display: false,
+            stacked: true
+          }],
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if(i==0){
+                  ctx.fillText(data, 50, bar._model.y+4);
+              } else {
+                  ctx.fillText(data, bar._model.x-25, bar._model.y+4);
+              }
+                // if (data > 0) {
+                //    ctx.fillText(data, bar._model.x, bar._model.y + 4);
+                // }
+              });
+            });
+          }
+        },
+      },
+
+    });
+  }
+
+  IndicationGraphRD() {
+    var a: any = [];
+    this.PredictionNormalcount = 0,
+      this.PredictionIncipientcount = 0,
+      this.PredictionDegradecount = 0;
+    this.ScrewPredictionAllData.forEach(element => {
+      if (this.fmtype != "") {
+        if (this.fmtype == "SSRB") {
+          a.push(element.SSRB)
+        } else if (this.fmtype == "CF") {
+          a.push(element.CF)
+        } if (this.fmtype == "RD") {
+          a.push(element.RD)
+        }
+      } else {
+        a.push(element.Prediction)
+      }
+
+    });
+
+    var Degradepercentage
+    var Incipientpercentage
+    var Normalpercentage
+
+    this.ScrewPredictionAllData.forEach(element => {
+      if (element.RD == 'normal') {
+        this.PredictionNormalcount = this.PredictionNormalcount + 1;
+      } else if (element.RD == 'incipient') {
+        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+      } else if (element.RD == 'degrade' || element == 'degarde') {
+        this.PredictionDegradecount = this.PredictionDegradecount + 1;
+      }
+    
+    });
+    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
+    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
+    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+
+    this.predictionDegradeMessage = Degradepercentage
+    this.predictionIncipientMessage = Incipientpercentage
+    this.predictionNormalMessage = Normalpercentage
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("indication_barRD", {
+      type: "horizontalBar",
+      data: {
+        labels: [],
+        datasets: [{
+          data: [Normalpercentage],
+          backgroundColor: "#008000",
+          hoverBackgroundColor: "#008000"
+        }, {
+          data: [Incipientpercentage],
+          backgroundColor: "yellow",
+          hoverBackgroundColor: "yellow"
+        }, {
+          data: [Degradepercentage],
+          backgroundColor: "red",
+          hoverBackgroundColor: "red"
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        },
+        scales: {
+          xAxes: [{
+            display: false,
+            stacked: true
+          }],
+          yAxes: [{
+            display: false,
+            stacked: true
+          }],
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if(i==0){
+                  ctx.fillText(data, 50, bar._model.y+4);
+              } else {
+                  ctx.fillText(data, bar._model.x-25, bar._model.y+4);
+              }
+              });
+            });
+          }
+        },
+      },
+
+    });
+  }
+
+  IndicationGraphCF() {
+    var a: any = [];
+    this.PredictionNormalcount = 0,
+      this.PredictionIncipientcount = 0,
+      this.PredictionDegradecount = 0;
+    this.ScrewPredictionAllData.forEach(element => {
+      if (this.fmtype != "") {
+        if (this.fmtype == "SSRB") {
+          a.push(element.SSRB)
+        } else if (this.fmtype == "CF") {
+          a.push(element.CF)
+        } if (this.fmtype == "RD") {
+          a.push(element.RD)
+        }
+      } else {
+        a.push(element.Prediction)
+      }
+
+    });
+
+    var Degradepercentage
+    var Incipientpercentage
+    var Normalpercentage
+
+    this.ScrewPredictionAllData.forEach(element => {
+      if (element.CF == 'normal') {
+        this.PredictionNormalcount = this.PredictionNormalcount + 1;
+      } else if (element.CF == 'incipient') {
+        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+      } else if (element.CF == 'degrade' || element == 'degarde') {
+        this.PredictionDegradecount = this.PredictionDegradecount + 1;
+      }
+    
+    });
+    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
+    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
+    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+
+    this.predictionDegradeMessage = Degradepercentage
+    this.predictionIncipientMessage = Incipientpercentage
+    this.predictionNormalMessage = Normalpercentage
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("indication_barCF", {
+      type: "horizontalBar",
+      data: {
+        labels: [],
+        datasets: [{
+          data: [Normalpercentage],
+          backgroundColor: "#008000",
+          hoverBackgroundColor: "#008000"
+        }, {
+          data: [Incipientpercentage],
+          backgroundColor: "yellow",
+          hoverBackgroundColor: "yellow"
+        }, {
+          data: [Degradepercentage],
+          backgroundColor: "red",
+          hoverBackgroundColor: "red"
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        },
+        scales: {
+          xAxes: [{
+            display: false,
+            stacked: true
+          }],
+          yAxes: [{
+            display: false,
+            stacked: true
+          }],
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                // if (data > 0) {
+                //   ctx.fillText(data, bar._model.x + 25 , bar._model.y + 5);
+                // }
+                if(i==0){
+                  ctx.fillText(data, 50, bar._model.y+4);
+              } else {
+                  ctx.fillText(data, bar._model.x-25, bar._model.y+4);
+              }
+              });
+            });
+          }
+        },
+      },
+
+    });
+  }
 }
 

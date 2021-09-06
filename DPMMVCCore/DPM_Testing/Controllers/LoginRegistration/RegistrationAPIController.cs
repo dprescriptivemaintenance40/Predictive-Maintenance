@@ -92,7 +92,7 @@ namespace DPM_Testing.Controllers
                 }
             }
             catch (Exception ex)
-            {
+            { 
                 return BadRequest("Incorrect username or password");
             }
         }

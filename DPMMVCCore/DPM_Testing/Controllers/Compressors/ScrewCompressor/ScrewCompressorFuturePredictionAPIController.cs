@@ -427,7 +427,27 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
         }
 
 
+        //[HttpGet]
+        //[Route("MergepredictionAndForcast")]
+        //public  IActionResult MergepredictionAndForcast()
+        //{
+        //    string userId = User.Claims.First(c => c.Type == "UserID").Value;
+        //    var q = (from pd in _context.ScrewCompressurePredictionData
+        //            where pd.UserId == userId
+        //             select new
+        //             {
 
-   
+        //                 InsertedDate= pd.InsertedDate,
+        //                 FTD1 = _context.ScrewCompressorForecastModels.Where(obj=>obj.UserId == pd.UserId && obj.TD1 != null).Select(s=>s.TD1).FirstOrDefault(),
+        //                 TD1 = pd.TD1
+                          
+        //             }).ToList();
+         
+
+        //    return Ok(q);
+
+        //}
+
+
     }
 }
