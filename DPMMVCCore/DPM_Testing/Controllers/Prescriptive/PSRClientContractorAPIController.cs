@@ -178,6 +178,38 @@ namespace DPM_Testing.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("UpdateSkillPSRMSSMapping")]
+        public async Task<IActionResult> UpdateSkillPSRMSSMapping(SkillPSRMappingModel skillPSRMapping)
+        {
+            try
+            {
+                _context.Entry(skillPSRMapping).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateSkillPSRMappingFGC")]
+        public async Task<IActionResult> UpdateSkillPSRMappingFGC(SkillPSRMappingMSS skillPSRMappingMSS)
+        {
+            try
+            {
+                _context.Entry(skillPSRMappingMSS).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
         [HttpGet]
         [Route("GetSkillPSRMapping")]
         public async Task<IActionResult> GetSkillPSRMapping(string UserId)
