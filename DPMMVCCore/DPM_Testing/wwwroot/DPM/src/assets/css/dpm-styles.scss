@@ -1475,7 +1475,6 @@ table.p-organizationchart-table {
   .step-card {
     align-items: center;
     position: relative;
-    z-index: 999999;
     background: #fff;
     display: inline-flex;
     flex-direction: row;
@@ -1544,4 +1543,8 @@ table.p-organizationchart-table {
       }
     }
   }
+}
+.steps-link:hover {
+  text-decoration: none;
+  color: #333;
 }
