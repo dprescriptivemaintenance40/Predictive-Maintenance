@@ -40,6 +40,7 @@ namespace DPM_ServerSide.DAL
         public DbSet<MSSStrategyModel> MSSStrategyModels { get; set; }
         public DbSet<MapStrategySkillModel> MapStrategySkillModels { get; set; }
         public DbSet<SkillPSRMappingModel> SkillPSRMappingModels { get; set; }
+        public DbSet<SkillPSRMappingMSS> SkillPSRMappingMSS { get; set; }
         public DbSet<UserSkillLibraryModel> UserSkillLibraryModels { get; set; }
         public DbSet<UserProductionModel> UserProductionModels { get; set; }
         public DbSet<ScrewCompressorForecastModel> ScrewCompressorForecastModels { get; set; }
@@ -82,6 +83,11 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<MSSStrategyModel>().ToTable("MSSStrategyMaintenanceTask");
             modelBuilder.Entity<MapStrategySkillModel>().ToTable("MapStrategySkillModel");
             modelBuilder.Entity<SkillPSRMappingModel>().ToTable("SkillPSRMappingtable");
+            modelBuilder.Entity<SkillPSRMappingMSS>().ToTable("SkillPSRMappingMSSModel");
+            modelBuilder.Entity<SkillPSRMappingMSS>()
+                        .HasOne(p => p.SkillPSRMappingModel)
+                        .WithMany(b => b.SkillPSRMappingMSS)
+                        .HasForeignKey(a => a.PSRId);
             modelBuilder.Entity<UserSkillLibraryModel>().ToTable("UserSkillLibraryModelTable");
             modelBuilder.Entity<UserProductionModel>().ToTable("UserProductionModelTable");
             modelBuilder.Entity<ScrewCompressorForecastModel>().ToTable("forecast").HasNoKey();

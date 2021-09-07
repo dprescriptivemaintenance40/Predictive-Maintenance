@@ -17,6 +17,10 @@ import { ScrewCompressorTraindataUploadComponent } from "./Compressor/ScrewCompr
 import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-predictiondata-upload/screw-compressor-predictiondata-upload.component";
 import { PrescriptionComponent } from "./prescription/prescription.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
+import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
+import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
+import { ConstarintManagementComponent } from "./CBA_Library/constarint-management/constarint-management.component";
+import { AlertManagementComponent } from "./CBA_Library/alert-management/alert-management.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -44,6 +48,10 @@ import { LandingPageComponent } from "./landing-page/landing-page.component";
                 { path: 'PredictionUploadData', component: CentrifugalPumpPredictiondataUploadComponent }, 
                 { path: 'CompTrainUploadData', component: ScrewCompressorTraindataUploadComponent },
                 { path: 'CompPredictionUploadData', component: ScrewCompressorPredictiondataUploadComponent },                 
+                { path: 'WeibullAnalysis', component: WeibullAnalysis },                 
+                { path: 'FailureHistory', component: FailureHistoryComponent },  
+                { path: 'Constraint', component: ConstarintManagementComponent },                 
+                { path: 'Alert', component: AlertManagementComponent },  
             ]
         }
     ])],

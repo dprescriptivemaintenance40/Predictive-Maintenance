@@ -184,7 +184,7 @@ export class MSSAddComponent implements OnInit {
     this.RED = false;
     this.OFM = false;
     this.FailureModeName = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].FunctionMode
-    this.ConsequenceBasedMSS = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].Consequence
+    this.ConsequenceBasedMSS = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].Consequence.split(' ')[0];
     this.PrescriptiveTree = false
     this.AvailabilityYNCheck = true
     this.AvailabilityCalculations = false
@@ -201,7 +201,7 @@ export class MSSAddComponent implements OnInit {
   SelectMssStrategy() {
     let obj = {}
     this.StrategyList =[]
-    if (this.ConsequenceBasedMSS == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard)') {
+    if (this.ConsequenceBasedMSS == 'A') {
       this.StrategyTemp = []
       if (this.OCM == true) {
         obj['OCM'] = "A-OCM (On Condition Maintainenance Task)"
@@ -228,7 +228,7 @@ export class MSSAddComponent implements OnInit {
         this.StrategyTemp.push("A-OFM (On Failure Maintainenance)")
       }
       this.StrategyList.push(obj)
-    } else if (this.ConsequenceBasedMSS == "B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)") {
+    } else if (this.ConsequenceBasedMSS == "B") {
       this.StrategyTemp = []
       if (this.OCM == true) {
         obj['OCM'] = "B-OCM (On condition Maintainenance Task)"
@@ -248,7 +248,7 @@ export class MSSAddComponent implements OnInit {
       }
       this.StrategyList.push(obj)
     }
-    else if (this.ConsequenceBasedMSS == "C (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Operational capability adversly affected but no effect on safety or environment)") {
+    else if (this.ConsequenceBasedMSS == "C") {
       this.StrategyTemp = []
       if (this.OCM == true) {
         obj['OCM'] = "C-OCM (On condition Maintainenance Task)"

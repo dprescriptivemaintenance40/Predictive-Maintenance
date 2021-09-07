@@ -1,0 +1,240 @@
+<style>
+    i {
+        font-weight: bold;
+        margin-right: 5px;
+        font-size: 80%;
+    }
+    
+    strong {
+        font-size: 90%;
+    }
+</style>
+<p-toast position="top-right"></p-toast>
+
+<p-card class="dpm-card mt-4">
+    <div class="card-title d-flex justify-content-between align-items-center mb-0">
+        <h3>PSR</h3> 
+    </div>
+    <ng-template pTemplate="content">
+        <div class="d-flex justify-content-between align-items-center mb-0">
+            <h4>MSS Task Input Pending List</h4> 
+        </div>
+        <div *ngFor="let r of MSSPendingList" class="alert alert-danger d-flex justify-content-between align-items-center" style="color: #ffffff; background-color: #ff3939;">
+            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{r.message}}</label>
+            <p-button *ngIf="r.Route ==='' " icon="pi pi-pencil" (click)="EditMSSAlertTask(r)" styleClass="p-button-text"></p-button>
+            <a *ngIf="r.Route !== ''" class="btn btn-sm btn-danger" href="{{r.Route}}" target="_blank">Click Here</a>
+        </div>
+        <br />
+        <br />
+        <div class="d-flex justify-content-between align-items-center mb-0">
+            <h4>FMEA Task Input Pending List</h4> 
+        </div>
+        <div *ngFor="let r of FMEAPendingList" class="alert alert-danger d-flex justify-content-between align-items-center" style="color: #ffffff; background-color: #ff3939;">
+            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{r.message}}</label>
+            <p-button icon="pi pi-pencil" (click)="EditFMEAGEPCONEdit(r)" styleClass="p-button-text"></p-button>
+        </div>
+        <br />
+        <br />
+        <div class="d-flex justify-content-between align-items-center mb-0">
+            <h4>GEP Task Input Pending List</h4> 
+        </div>
+        <div *ngFor="let r of GEPPendingList" class="alert alert-danger d-flex justify-content-between align-items-center" style="color: #ffffff; background-color: #ff3939;">
+            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{r.message}}</label>
+            <p-button icon="pi pi-pencil" (click)="EditFMEAGEPCONEdit(r)" styleClass="p-button-text"></p-button>
+        </div>
+        <br />
+        <br />
+        <div class="d-flex justify-content-between align-items-center mb-0">
+            <h4>Constraint Task Input Pending List</h4> 
+        </div>
+        <div *ngFor="let r of ConstraintPendingList" class="alert alert-danger d-flex justify-content-between align-items-center" style="color: #ffffff; background-color: #ff3939;">
+            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{r.message}}</label>
+            <p-button icon="pi pi-pencil" (click)="EditFMEAGEPCONEdit(r)" styleClass="p-button-text"></p-button>
+        </div>
+        <br />
+        <br />
+
+    </ng-template>
+</p-card>
+
+
+
+<p-dialog header="Select Craft" [(visible)]="CraftModal" [style]="{width: '50em'}">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Sr. No</th>
+                <th scope="col">Craft</th>
+                <th scope="col">Employee</th>
+                <th scope="col">Level</th>
+                <th scope="col">Hourly Rate</th>
+                <th scope="col">Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let r of craftModalData ; let i=index">
+                <th scope="row">
+                    <label>{{i+1}}</label>
+                </th>
+                <td>
+                    <label>{{r.Craft}}</label>
+                </td>
+                <td>
+                    <label>{{r.Employee}}</label>
+                </td>
+                <td>
+                    <label>{{r.Level}}</label>
+                </td>
+                <td>
+                    <label>{{r.HR}}</label>
+                </td>
+                <td>
+                    <input type="checkbox" (click)="PSRCraftSelected(r, $event)" [(ngModel)]="r.Selected"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="CraftModal=false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog header="Select Craft" [(visible)]="MSSCraftModal" [style]="{width: '80em'}">
+    <div>
+        <table class="table table-striped">
+            <tbody>
+                <tr class="row">
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Craft</label>
+                    </td>
+                    <td class="col-sm-2 p-2  bg-primary">
+                        <label>Employee Name</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Yearly Task duration</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Hourly rate</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Material Cost</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Annual POC</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Action</label>
+                    </td>
+                </tr>   
+            </tbody>
+            <tbody>
+                <tr class="row pt-2" *ngFor="let r of  SelectedCraftToEdit">
+                    <td class="col-sm">
+                        <label>{{r.CraftOriginalId !== 0 ? getCraftForMSSSelection(r) : 'Not added'}}</label>
+                    </td>
+                    <td class="col-sm-2">
+                        <label>{{r.EmployeeName !== '' ? r.EmployeeName : 'Not added'}}</label>
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.TaskDuration" (change)="generateTaskDuration(r)" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.HourlyRate" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.MaterialCost" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input [(ngModel)]="r.POC" type="number" class="form-control" disabled style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <p-button *ngIf="r.CraftOriginalId == 0"  icon="pi pi-plus" (click)="AddCraftForMSS(r)" styleClass="p-button-text"></p-button>
+                        <p-button *ngIf="r.CraftOriginalId !== 0" icon="pi pi-pencil" (click)="AddCraftForMSS(r)" styleClass="p-button-text"></p-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="SaveMSSPSRUpdate()" label="Save" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
+
+
+<p-dialog [(visible)]="showPSR" [style]="{width: '80em'}">
+    <div class="card-title d-flex justify-content-between align-items-center mb-0">
+        <h3>PSR</h3>      
+        <p-button icon="pi pi-check" (click)="SaveFGCPSRUpdate()" label="Save" styleClass="btn btn-primary btm-sm mb-2"></p-button>
+    </div>
+    <p-table [style]="{width:'100%'}" [value]="FilteredPSRModel" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:15em;">
+                    <col style="width:10em;">
+                    <col style="width:10em;">
+                    <col style="width:8em;">
+                    <col *ngIf="SelectedType !== 'MSS'" style="width:8em;">
+                    <col *ngIf="SelectedType !== 'MSS'" style="width:8em;">
+                    <col *ngIf="SelectedType !== 'MSS'" style="width:8em;">
+                    <col *ngIf="SelectedType !== 'MSS'" style="width:8em;">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Maintenance Task </th>
+                    <th>Craft </th>
+                    <th>Employee Name </th>
+                    <th>Action </th>
+                    <th *ngIf="SelectedType !== 'MSS'">Yearly Task duration </th>
+                    <th *ngIf="SelectedType !== 'MSS'">Hourly rate </th>
+                    <th *ngIf="SelectedType !== 'MSS'">Material Cost </th>
+                    <th *ngIf="SelectedType !== 'MSS'">Annual POC</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-FilteredPSRModel>
+                <tr>
+                    <td>
+                        {{FilteredPSRModel.MaintenanceTask}}
+                    </td>
+                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0">
+                        <label>{{FilteredPSRModel.Craft !== 0 ? getCraftValue(FilteredPSRModel) : 'Not added'}}</label>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length > 0">
+                        <label *ngFor="let a of FilteredPSRModel.SkillPSRMappingMSS"> {{a.CraftOriginalId !== 0 ? getCraftForMSSSelection(a) : 'Not added'}}, &nbsp;</label>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0">
+                        <label>{{FilteredPSRModel.EmployeeName !== '' ? FilteredPSRModel.EmployeeName : 'Not added'}}</label>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length > 0">
+                        <label *ngFor="let a of FilteredPSRModel.SkillPSRMappingMSS">{{a.EmployeeName !== '' ? a.EmployeeName : 'Not added'}}, &nbsp;</label>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.TYPE !== 'MSS'">
+                        <p-button *ngIf="FilteredPSRModel.Craft == 0"  icon="pi pi-plus" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                        <p-button *ngIf="FilteredPSRModel.Craft !== 0" icon="pi pi-pencil" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.TYPE == 'MSS'">
+                        <p-button *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0"  icon="pi pi-plus" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                        <p-button *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length >0" icon="pi pi-pencil" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                    </td>
+                    <td *ngIf="SelectedType !== 'MSS'">
+                        <input [disabled]="FilteredPSRModel.TYPE == 'MSS'" type="number" [(ngModel)]="FilteredPSRModel.TaskDuration" (change)="generateTaskDuration(FilteredPSRModel)" class="form-control" style="height: 35px;">
+                    </td>
+                    <td *ngIf="SelectedType !== 'MSS'">
+                        <input [disabled]="FilteredPSRModel.TYPE == 'MSS'" type="number" [(ngModel)]="FilteredPSRModel.HourlyRate" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td *ngIf="SelectedType !== 'MSS'">
+                        <input [disabled]="FilteredPSRModel.TYPE == 'MSS'" type="number" [(ngModel)]="FilteredPSRModel.MaterialCost" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td *ngIf="SelectedType !== 'MSS'">
+                        <input [(ngModel)]="FilteredPSRModel.POC" type="number" class="form-control" disabled style="height: 35px;">
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">No data found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+</p-dialog>

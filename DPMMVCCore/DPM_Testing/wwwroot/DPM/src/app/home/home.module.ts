@@ -22,6 +22,10 @@ import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal
 import {DialogModule} from 'primeng/dialog';
 import { PrescriptionComponent } from './prescription/prescription.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
+import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
+import { ConstarintManagementComponent } from './CBA_Library/constarint-management/constarint-management.component';
+import { AlertManagementComponent } from './CBA_Library/alert-management/alert-management.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +44,10 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
         CentrifugalPumpPredictiondataUploadComponent,
         PrescriptionComponent,
         LandingPageComponent,
+        WeibullAnalysis,
+        FailureHistoryComponent,
+        ConstarintManagementComponent,
+        AlertManagementComponent
     ],
     imports: [        
         HomeRoutingModule,       
