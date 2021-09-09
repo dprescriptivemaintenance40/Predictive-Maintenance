@@ -12,7 +12,9 @@
   50% {
     opacity: 0;
   }
+
 }
+
 </style>
 <p-toast position="top-right"></p-toast>
 <div class="card" style="width: 30rem;">
@@ -783,14 +785,19 @@
                     <tbody>
                         <tr>
                             <td>GREEN /  AMBER / RED</td>
-                            <td> </td>
-                            <td> </td>
-                            <td> -</td>
-                            <td> </td>
-                            <td> </td>
+                            <td> <strong style="font-size: 12px;"><span
+                                style="background-color: orange;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
+                                <td> <strong style="font-size: 12px;"><span
+                                    style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
+                                    <td> <strong style="font-size: 12px;"><span
+                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
+                                        <td> <strong style="font-size: 12px;"><span
+                                            style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
+                                            <td> <strong style="font-size: 12px;"><span
+                                                style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
+                            <td>Machine starts degrading, RCA is recomended </td>
                             <td>- </td>
-                            <td>- </td>
-                            <td> </td>
+                            <td>-</td>
       
                         </tr>
                     </tbody>
@@ -817,27 +824,27 @@
                     <tbody>
                         <tr>
                             <td> Current </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td> - </td>
+                            <td> 2</td>
+                            <td>3.6 </td>
+                            <td>4 </td>
+                            <td>11726 </td>
                         </tr>
                         <tr>
                             <td>DPM w/o mitigating constraints</td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td> - </td>
+                            <td> 4</td>
+                            <td> 5.4</td>
+                            <td> 2</td>
+                            <td>2029 </td>
                         </tr>
                         <tr>
                             <td>DPM with constraint mitigation</td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td> - </td>
+                            <td>7.5 </td>
+                            <td>4.8</td>
+                            <td> 1</td>
+                            <td>5000 </td>
                         </tr>
                     </tbody>
                 </table>
@@ -863,53 +870,97 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                       
+                        <tr *ngFor="let obj of centrifugalmssmodel;">
                             <td> Good engineering practices </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td>Current maintenance practices </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td>FMEA recommendation</td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td >{{obj.MSSMaintenanceTask}} </td>
+                            <td>{{obj.MSSMaintenanceInterval}} </td>
+                            <td></td>
+                            <td> -</td>
+                            <td>{{obj.Craft}} </td>
+                            <td>{{obj.Hours}} </td>
+                            <td>{{obj.Level}} </td>
+                           
                         </tr>
                         <tr>
                             <td>RCM recommendation</td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td> Install second stage rotor assembly as per procedure</td>
+                            <td>156 Week </td>
+                            <td>- </td>
+                            <td>- </td>
+                            <td> MEC</td>
+                            <td>48 hrs</td>
+                            <td> 0</td>
                         </tr>
                         <tr>
-                            <td>RCA recommendation</td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td>RCM recommendation</td>
+                            <td> Install second stage rotor assembly as per procedure</td>
+                            <td>156 Week </td>
+                            <td>- </td>
+                            <td>- </td>
+                            <td> HEL</td>
+                            <td>48 hrs</td>
+                            <td> 25</td>
+                        </tr>
+                        <tr>
+                            <td>RCM recommendation</td>
+                            <td> Install second stage rotor assembly as per procedurey</td>
+                            <td>156 Week </td>
+                            <td>- </td>
+                            <td>- </td>
+                            <td> HEL</td>
+                            <td>4 hrs</td>
+                            <td> 75</td>
+                        </tr>
+                        <tr>
+                            <td>RCM recommendation</td>
+                            <td> Install second stage rotor assembly as per procedure</td>
+                            <td>156 Week </td>
+                            <td>- </td>
+                            <td>- </td>
+                            <td> 	CTL</td>
+                            <td>24 hrs</td>
+                            <td> 100</td>
                         </tr>
                         <tr>
                             <td>Constraint management recommendationn</td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
-                            <td> </td>
+                            <td>Change-over @3-4 days between Operating and standby compressors</td>
+                            <td>52 Week </td>
+                            <td> -</td>
+                            <td> -</td>
+                            <td>OPS </td>
+                            <td> 6 hrs</td>
+                            <td>50 </td>
+                        </tr>
+                        <tr>
+                            <td>Constraint management recommendationn</td>
+                            <td>Modify piping to Purge dry air to 1st stage outlet to prevent moisture ingress during standstill </td>
+                            <td>52 Week </td>
+                            <td> -</td>
+                            <td> -</td>
+                            <td>HEL </td>
+                            <td> 6 hrs</td>
+                            <td>50 </td>
+                        </tr>
+                        <tr>
+                            <td>Constraint management recommendationn</td>
+                            <td>Defer rotor assembly replacement when predction clasification sharply moves from incipient to degraded state - MEC </td>
+                            <td>156 Week </td>
+                            <td> -</td>
+                            <td> -</td>
+                            <td>CTL </td>
+                            <td> 12 hrs</td>
+                            <td>75 </td>
+                        </tr>
+                        <tr>
+                            <td>Constraint management recommendationn</td>
+                            <td>Defer rotor assembly replacement when predction clasification sharply moves from incipient to degraded state - MEC </td>
+                            <td>24 Week </td>
+                            <td> -</td>
+                            <td> -</td>
+                            <td>OPS </td>
+                            <td> 24 hrs</td>
+                            <td>100 </td>
                         </tr>
                     </tbody>
                 </table>

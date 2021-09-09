@@ -424,6 +424,7 @@ export class DashboardComponent {
     this.showcbi=false
     this.MitigatingActionshow=true;
   }
+  public onlymssmodel: any = []
   FullCBAObject() {
     this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
     this.myObj = JSON.parse(this.fullCBAobject);
@@ -442,6 +443,7 @@ export class DashboardComponent {
     var GDEcount: number = 0
 
     this.GoodEnggiPractice = this.centrifugalmssmodel
+
     this.centrifugalmssmodel.forEach((element) => {
       this.AnnualPOC = element.AnnualPOC
       this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
@@ -3536,12 +3538,14 @@ export class DashboardComponent {
   //     options: {
   //       scales: {
   //         xAxes: [{
+              //stacked: true,
   //           gridLines: {
   //             display: false
   //           },
   //         }],
   //         yAxes: [
   //           {
+               // stacked: true,
   //             scaleLabel: {
   //               display: true,
   //               labelString: 'In_Percentage'
