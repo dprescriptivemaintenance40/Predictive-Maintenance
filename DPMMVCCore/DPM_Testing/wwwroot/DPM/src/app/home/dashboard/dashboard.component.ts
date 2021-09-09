@@ -40,6 +40,7 @@ export class DashboardComponent {
   public failuerModetype: [];
   public yearlist = [];
   public Predictyearlist = [];
+  public Pyearlist =[];
   public FMList = [];
   public PredictionFMList = [];
   public classi: any = [];
@@ -86,6 +87,7 @@ export class DashboardComponent {
 
   public selectedYear: string = "";
   public PredictionselectedYear: string = "";
+  public PselectedYear: string = "";
   public fmtype: string = "";
   public predictionfmtype: string = "";
   public ComponentCriticalityFactor: string = "";
@@ -243,6 +245,7 @@ export class DashboardComponent {
   public TotalAnnualPOC: number = 0;
   public TotalPONC: number = 0;
   public VendorETBC: number = 0;
+  public VendorPOC: any = [];
 
   public EconomicRiskWithDPM: number = 0;
   public EconomicRiskWithOutDPM: number = 0;
@@ -272,7 +275,7 @@ export class DashboardComponent {
   public predictionIncipientMessage: any = []
   public predictionNormalMessage: any = []
   public CBAReportDetails: any;
-  public allCBI: boolean = true;
+  public allCBI: boolean = false;
   public user: any = [];
 
   public GoodEnggiPractice: any = []
@@ -294,7 +297,8 @@ export class DashboardComponent {
   public Table1: boolean = false;
   public MitigatingActionshow: boolean = true;
   public mssmodelFilter: any = []
-
+  public RiskGraphList: any = []
+  public fakeriskandMetigateActions: any = [];
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -329,23 +333,61 @@ export class DashboardComponent {
     this.getPrescriptiveRecords()
     this.getUserDetails()
     this.FullCBAObject()
+    this.fakeriskandMetigateActions = [
+      { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'N', 'FinancialRisk': 2029, 'TagNumber': 'K100' },
+      { 'FunctionMode': 'Cooler Failure', 'RiskRank': 'L', 'FinancialRisk': 2035, 'TagNumber': 'K101' },
+      { 'FunctionMode': 'Rotar Damage', 'RiskRank': 'H', 'FinancialRisk': 1029, 'TagNumber': 'K102' },
+      { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'MH', 'FinancialRisk': 2000, 'TagNumber': 'K103' },
+      { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'M', 'FinancialRisk': 2029, 'TagNumber': 'K104' },
+      // { 'FunctionMode': 'Cooler Failure', 'RiskRank': 'M', 'FinancialRisk': 1198, 'TagNumber': 'K105' },
+      // { 'FunctionMode': 'Rotar Damage', 'RiskRank': 'M', 'FinancialRisk': 1998, 'TagNumber': 'K106' },
+      // { 'FunctionMode': 'Rotar Damage', 'RiskRank': 'H', 'FinancialRisk': 2059, 'TagNumber': 'K107' },
+      // { 'FunctionMode': 'Cooler Failure', 'RiskRank': 'N', 'FinancialRisk': 2029, 'TagNumber': 'K108' },
+      // { 'FunctionMode': 'Cooler Failure', 'RiskRank': 'N', 'FinancialRisk': 2049, 'TagNumber': 'K109' },
+  ]
   }
 
   ngOnInit() {
-    // this.getRecordsByEqui()
+    this.fakePredictionWithTagNumber()
     this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
-    this.GerAllPredictionRecords();
-    this.dygraph()
+    // this.GerAllPredictionRecords();
+     this.dygraph()
     this.ComboDates()
-    this.CBICharts()
-    this.PrescripitiveUpdatestatusGraph()
     this.getcombinerecords()
-
+    this.FakeRiskMetigateactions()
   }
+  public dashboardshow:string = ""
+  public ExecutorShow:boolean = false
+  public PrescriptiveShow:boolean = false
 
+
+  Dashboardshowcriteria(){
+
+   if(this.dashboardshow=="Prescription"){
+    this.PrescriptiveShow=true;
+    this.ExecutorShow=false;
+   }else if(this.dashboardshow=="Management"){
+    this.ExecutorShow=false;
+    this.PrescriptiveShow=false;
+  }else if(this.dashboardshow=="Executor"){
+     this.ExecutorShow=true;
+     this.allCBI= true
+     this.PrescriptiveShow=false;
+     this.GerAllPredictionRecords();
+     this.CBICharts()
+    this.riskGraph_N()
+
+    //  this.FakeRiskMetigateactions()
+     this.RiskProfile()
+    //  this.riskGraph_M()
+    //  this.riskGraph_H()
+    //  this.riskGraph_L()
+    //  this.riskGraph_MH()
+  }
+  }
   getUserDetails() {
     if (!!localStorage.getItem('CBAOBJ')) {
       this.UserData = JSON.parse(localStorage.getItem('CBAOBJ'));
@@ -354,6 +396,7 @@ export class DashboardComponent {
       this.TotalAnnualPOC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
       this.TotalPONC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
       this.VendorETBC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
+      this.VendorPOC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorPOC;
       this.EconomicRiskWithDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCR;
 
       this.EconomicRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
@@ -367,7 +410,6 @@ export class DashboardComponent {
       this.ResidualRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCRValue;
       this.ResidualRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPMCRValue;
       this.ResidualRiskWithConstraintDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraintCRValue;
-
       this.showcbi = true;
 
     }
@@ -398,8 +440,6 @@ export class DashboardComponent {
     this.centrifugalmssmodel = this.myObj.CentrifugalPumpMssModel
     var MSScount: number = 0
     var GDEcount: number = 0
-
-
 
     this.GoodEnggiPractice = this.centrifugalmssmodel
     this.centrifugalmssmodel.forEach((element) => {
@@ -466,6 +506,8 @@ export class DashboardComponent {
   showBasicDialog() {
     this.displayBasic = true;
   }
+
+  
 
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -619,20 +661,20 @@ export class DashboardComponent {
             this.PredictonDataDegradeCount = PredictiondegradeCount;
 
           });
-          // this.ScrewPredictionAllData.forEach(predict => {
-          //   this.PredictionData = predict.Prediction;
-          //   let Predictyeardata = { PredictyearId: 0, Predictyearname: '' };
-          //   Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
-          //   this.PInsertedDate.push(Predictyeardata);
-          // })
-          // this.Predictyearlist = this.PInsertedDate.reduce((m, o) => {
-          //   var found = m.find(s => s.Predictyearname === o.Predictyearname);
-          //   if (found) {
-          //   } else {
-          //     m.push(o);
-          //   }
-          //   return m;
-          // }, []);
+          this.ScrewPredictionAllData.forEach(predict => {
+            this.PredictionData = predict.Prediction;
+            let Predictyeardata = { PredictyearId: 0, Predictyearname: '' };
+            Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
+            this.PInsertedDate.push(Predictyeardata);
+          })
+          this.Pyearlist = this.PInsertedDate.reduce((m, o) => {
+            var found = m.find(s => s.Predictyearname === o.Predictyearname);
+            if (found) {
+            } else {
+              m.push(o);
+            }
+            return m;
+          }, []);
           this.ScrewPredictionAllData.forEach(predict => {
             this.PredictionData = predict.Prediction;
             let Predictyeardata = { PredictTagId: 0, PredictyTagnumber: '' };
@@ -651,6 +693,12 @@ export class DashboardComponent {
 
           const ids = this.Predictyearlist.map(o => o.PredictyTagnumber)
           this.Predictyearlist = this.Predictyearlist.filter(({ PredictyTagnumber }, index) => !ids.includes(PredictyTagnumber, index + 1))
+          this.Predictyearlist =   this.Predictyearlist.filter(r => r.PredictyTagnumber !== null)
+          
+          this.Predictyearlist.forEach(element=>{
+            this.tag.push(element.PredictyTagnumber) 
+          })
+
           var Degradepercentage
           var Incipientpercentage
           var Normalpercentage
@@ -668,17 +716,15 @@ export class DashboardComponent {
           Incipientpercentage = (this.Incipientcount / this.ScrewPredictionAllData.length) * 100
           Normalpercentage = (this.Normalcount / this.ScrewPredictionAllData.length) * 100
 
-          this.PredictionAllRecordDonught();
-          this.PredictionAllRecordBarcharts();
-          this.PredictionAllRecordPie();
+          // this.PredictionAllRecordDonught();
+          // this.PredictionAllRecordBarcharts();
+          // this.PredictionAllRecordPie();
           this.GenerateReport()
           this.PredictionWithTagNumber()
           this.PredictionWithActionPieChart()
           this.IndicationGraphSSRB()
           this.IndicationGraphRD()
           this.IndicationGraphCF()
-          //  this.PredictionWithAlertPieChart()
-          //  this.FullCBAObject()
         }, error => {
           console.log(error.error)
         })
@@ -697,7 +743,6 @@ export class DashboardComponent {
   }
 
   onPredictionChangeYear() {
-    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
@@ -723,12 +768,11 @@ export class DashboardComponent {
     this.PredictionWithTagNumber()
     this.PredictionWithActionPieChart()
     this.PredictionWithAlertPieChart()
-    // this.FullCBAObject()
   }
 
   PredictFModeType() {
-    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
+      //  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -752,8 +796,6 @@ export class DashboardComponent {
     this.PredictionWithTagNumber()
     this.PredictionWithActionPieChart()
     this.PredictionWithAlertPieChart()
-    
-    // this.FullCBAObject()
   }
 
   GetAllRecords() {
@@ -863,13 +905,10 @@ export class DashboardComponent {
           ClassIncipientpercentage = ((this.Incipientcount / this.ScrewCompressorAllData.length) * 100).toFixed(2);
           ClassNormalpercentage = ((this.Normalcount / this.ScrewCompressorAllData.length) * 100).toFixed(2);
 
-          this.AllRecordBarcharts();
-          this.ClassificationOfAllRecordDonught();
+          // this.AllRecordBarcharts();
+          // this.ClassificationOfAllRecordDonught();
+          // this.ClassificationOfAllpolarchart()
           this.GenerateReport()
-          this.ClassificationOfAllpolarchart()
-
-          // this.ScatterChart()
-
         }, error => {
           console.log(error.error)
         }
@@ -919,17 +958,12 @@ export class DashboardComponent {
       } else
         this.badcount = this.badcount + 1
     }
-    this.AllRecordBarcharts();
+    // this.AllRecordBarcharts();
     // this.ClassificationOfAllpolarchart()
     // this.ClassificationOfAllRecordDonught()
   }
 
   FModeType() {
-    // if (this.fmtype != "" && this.selectedYear == "") {
-    //   this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === this.fmtype.toString()));
-    // } else if (this.fmtype != "" && this.selectedYear != "") {
-    //   this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === this.fmtype.toString()) && moment(val.InsertedDate).format('YYYY') === this.selectedYear.toString());
-    // }
     if (this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD" && this.selectedYear == "") {
       this.ScrewCompressorAllData = this.ScrewCompressorFilteredData.filter(val => (val.FailureModeType === "SSRB") || (val.FailureModeType === "CF") || (val.FailureModeType === "RD"));
     } else if (this.fmtype != "SSRB" && this.selectedYear != "") {
@@ -953,12 +987,15 @@ export class DashboardComponent {
       } else
         this.badcount = this.badcount + 1
     }
-    this.AllRecordBarcharts();
+    // this.AllRecordBarcharts();
     // this.ClassificationOfAllpolarchart()
     // this.ClassificationOfAllRecordDonught()
     //  this.ComboChart();
   }
-
+ public assetselection:boolean=false;
+ assetSelection(){
+   this.assetselection= true;
+ }
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
       this.EquipmentList = []
@@ -981,6 +1018,8 @@ export class DashboardComponent {
         res.forEach(element => {
           this.TagList.push(element.TagNumber)
         });
+        this.PrescriptiveRecordsList = []
+        this.PrescriptiveRecordsList = res;
       });
   }
 
@@ -1153,7 +1192,6 @@ export class DashboardComponent {
   }
 
   gaugechartwithoutDPM() {
-
     var x = this.DPMMEI * 100
     var y: number = + this.DPMMEI
     var z: number = +this.DPMWithoutMEI
@@ -1249,778 +1287,778 @@ export class DashboardComponent {
     });
   }
 
-  ClassificationOfAllRecordDonught() {
-    var a: any = [];
-    this.Normalcount = 0,
-      this.Incipientcount = 0,
-      this.Degradecount = 0;
-    this.ScrewCompressorAllData.forEach(element => {
-      if (this.fmtype != "") {
-        if (this.fmtype == "SSRB") {
-          a.push(element.SSRB)
-        } else if (this.fmtype == "CF") {
-          a.push(element.CF)
-        } if (this.fmtype == "RD") {
-          a.push(element.RD)
-        }
-      } else {
-        a.push(element.Classification)
-      }
+  // ClassificationOfAllRecordDonught() {
+  //   var a: any = [];
+  //   this.Normalcount = 0,
+  //     this.Incipientcount = 0,
+  //     this.Degradecount = 0;
+  //   this.ScrewCompressorAllData.forEach(element => {
+  //     if (this.fmtype != "") {
+  //       if (this.fmtype == "SSRB") {
+  //         a.push(element.SSRB)
+  //       } else if (this.fmtype == "CF") {
+  //         a.push(element.CF)
+  //       } if (this.fmtype == "RD") {
+  //         a.push(element.RD)
+  //       }
+  //     } else {
+  //       a.push(element.Classification)
+  //     }
 
-    });
+  //   });
 
-    var precetagedegrade
-    var precetageincipient
-    var precetagenornal
-    var precetagebad
-    for (var i = 0; i < this.yearlist.length; ++i) {
-      var SCcounter = 0
-      this.ScrewCompressorAllData.forEach(value => {
-        var a = moment(value.InsertedDate).format('YYYY')
-        if (a == this.yearlist[i].yearname) {
-          if (value.Classification == 'normal') {
-            this.Normalcount = this.Normalcount + 1
-          } else if (value.Classification == 'incipient') {
-            this.Incipientcount = this.Incipientcount + 1
-          } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
-            this.Degradecount = this.Degradecount + 1
-          } else {
-            this.badcount = this.badcount + 1
-          }
-          SCcounter = SCcounter + 1
-        }
+  //   var precetagedegrade
+  //   var precetageincipient
+  //   var precetagenornal
+  //   var precetagebad
+  //   for (var i = 0; i < this.yearlist.length; ++i) {
+  //     var SCcounter = 0
+  //     this.ScrewCompressorAllData.forEach(value => {
+  //       var a = moment(value.InsertedDate).format('YYYY')
+  //       if (a == this.yearlist[i].yearname) {
+  //         if (value.Classification == 'normal') {
+  //           this.Normalcount = this.Normalcount + 1
+  //         } else if (value.Classification == 'incipient') {
+  //           this.Incipientcount = this.Incipientcount + 1
+  //         } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
+  //           this.Degradecount = this.Degradecount + 1
+  //         } else {
+  //           this.badcount = this.badcount + 1
+  //         }
+  //         SCcounter = SCcounter + 1
+  //       }
 
-      });
-      this.ClassDegradepercentage = (this.Degradecount / this.ScrewCompressorAllData.length) * 100
-      this.ClassIncipientpercentage = (this.Incipientcount / this.ScrewCompressorAllData.length) * 100
-      this.ClassNormalpercentage = (this.Normalcount / this.ScrewCompressorAllData.length) * 100
-      this.Classbadpercentage = (this.badcount / this.ScrewCompressorAllData.length) * 100
+  //     });
+  //     this.ClassDegradepercentage = (this.Degradecount / this.ScrewCompressorAllData.length) * 100
+  //     this.ClassIncipientpercentage = (this.Incipientcount / this.ScrewCompressorAllData.length) * 100
+  //     this.ClassNormalpercentage = (this.Normalcount / this.ScrewCompressorAllData.length) * 100
+  //     this.Classbadpercentage = (this.badcount / this.ScrewCompressorAllData.length) * 100
 
-      this.ClassDegradepercentageForMessage = this.ClassDegradepercentage
-      this.ClassIncipientpercentageForMessage = this.ClassIncipientpercentage
-      this.ClassNormalpercentageForMessage = this.ClassNormalpercentage
-      this.ClassbadpercentageForMessage = this.Classbadpercentage
+  //     this.ClassDegradepercentageForMessage = this.ClassDegradepercentage
+  //     this.ClassIncipientpercentageForMessage = this.ClassIncipientpercentage
+  //     this.ClassNormalpercentageForMessage = this.ClassNormalpercentage
+  //     this.ClassbadpercentageForMessage = this.Classbadpercentage
 
-      precetagedegrade = this.ClassDegradepercentage.toFixed()
-      precetageincipient = this.ClassIncipientpercentage.toFixed()
-      precetagenornal = this.ClassNormalpercentage.toFixed()
-      precetagebad = this.Classbadpercentage.toFixed()
-    }
+  //     precetagedegrade = this.ClassDegradepercentage.toFixed()
+  //     precetageincipient = this.ClassIncipientpercentage.toFixed()
+  //     precetagenornal = this.ClassNormalpercentage.toFixed()
+  //     precetagebad = this.Classbadpercentage.toFixed()
+  //   }
 
 
 
-    this.chart = new Chart('canvasClass', {
-      type: 'doughnut',
-      data: {
-        labels: ["Normal", "Incipient", "Degrade", "Bad"],
-        datasets: [
-          {
-            backgroundColor: ["#008000", "#ffb801", "#fe4c61", "blue"],
-            data: [precetagenornal, precetageincipient, precetagedegrade, precetagebad],
-          }
-        ]
-      },
-      options: {
-        // events: [],
-        animation: {
-          duration: 500,
-          easing: "easeOutQuart",
-          onComplete: function () {
-            var ctx = this.chart.ctx;
-            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
+  //   this.chart = new Chart('canvasClass', {
+  //     type: 'doughnut',
+  //     data: {
+  //       labels: ["Normal", "Incipient", "Degrade", "Bad"],
+  //       datasets: [
+  //         {
+  //           backgroundColor: ["#008000", "#ffb801", "#fe4c61", "blue"],
+  //           data: [precetagenornal, precetageincipient, precetagedegrade, precetagebad],
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       // events: [],
+  //       animation: {
+  //         duration: 500,
+  //         easing: "easeOutQuart",
+  //         onComplete: function () {
+  //           var ctx = this.chart.ctx;
+  //           ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+  //           ctx.textAlign = 'center';
+  //           ctx.textBaseline = 'bottom';
 
-            this.data.datasets.forEach(function (dataset) {
-              for (var i = 0; i < dataset.data.length; i++) {
-                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                  total = dataset._meta[Object.keys(dataset._meta)[0]].total,
-                  mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
-                  start_angle = model.startAngle,
-                  end_angle = model.endAngle,
-                  mid_angle = start_angle + (end_angle - start_angle) / 2;
+  //           this.data.datasets.forEach(function (dataset) {
+  //             for (var i = 0; i < dataset.data.length; i++) {
+  //               var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+  //                 total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+  //                 mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
+  //                 start_angle = model.startAngle,
+  //                 end_angle = model.endAngle,
+  //                 mid_angle = start_angle + (end_angle - start_angle) / 2;
 
-                var x = mid_radius * Math.cos(mid_angle);
-                var y = mid_radius * Math.sin(mid_angle);
+  //               var x = mid_radius * Math.cos(mid_angle);
+  //               var y = mid_radius * Math.sin(mid_angle);
 
-                ctx.fillStyle = '#fff';
-                if (i == 3) {
-                  ctx.fillStyle = '#444';
-                }
-                var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
-                ctx.fillText(percent, model.x + x, model.y + y + 15);
-              }
-            });
-          }
-        }
-      }
-    });
+  //               ctx.fillStyle = '#fff';
+  //               if (i == 3) {
+  //                 ctx.fillStyle = '#444';
+  //               }
+  //               var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
+  //               ctx.fillText(percent, model.x + x, model.y + y + 15);
+  //             }
+  //           });
+  //         }
+  //       }
+  //     }
+  //   });
 
-  }
+  // }
 
-  ClassificationOfAllpolarchart() {
-    this.changeDetectorRef.detectChanges();
-    this.ScrewCompressorAllData.sort()
-    var LabelDates: any = [];
-    this.yearlist.forEach(element => {
-      LabelDates.push(element.yearname)
-      LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    });
+  // ClassificationOfAllpolarchart() {
+  //   this.changeDetectorRef.detectChanges();
+  //   this.ScrewCompressorAllData.sort()
+  //   var LabelDates: any = [];
+  //   this.yearlist.forEach(element => {
+  //     LabelDates.push(element.yearname)
+  //     LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+  //   });
 
-    var a: any = [];
-    this.Normalcount = 0,
-      this.Incipientcount = 0,
-      this.Degradecount = 0;
-    this.ScrewCompressorAllData.forEach(element => {
-      if (this.fmtype != "") {
-        if (this.fmtype == "SSRB") {
-          a.push(element.SSRB)
-        } else if (this.fmtype == "CF") {
-          a.push(element.CF)
-        } if (this.fmtype == "RD") {
-          a.push(element.RD)
-        }
-      } else {
-        a.push(element.Classification)
-      }
+  //   var a: any = [];
+  //   this.Normalcount = 0,
+  //     this.Incipientcount = 0,
+  //     this.Degradecount = 0;
+  //   this.ScrewCompressorAllData.forEach(element => {
+  //     if (this.fmtype != "") {
+  //       if (this.fmtype == "SSRB") {
+  //         a.push(element.SSRB)
+  //       } else if (this.fmtype == "CF") {
+  //         a.push(element.CF)
+  //       } if (this.fmtype == "RD") {
+  //         a.push(element.RD)
+  //       }
+  //     } else {
+  //       a.push(element.Classification)
+  //     }
 
-    });
+  //   });
 
-    for (var i = 0; i < this.yearlist.length; ++i) {
-      var SCFPnormal = 0
-      var SCFPincipient = 0
-      var SCFPdegrade = 0
-      var SCFPbad = 0
-      var SCcounter = 0
+  //   for (var i = 0; i < this.yearlist.length; ++i) {
+  //     var SCFPnormal = 0
+  //     var SCFPincipient = 0
+  //     var SCFPdegrade = 0
+  //     var SCFPbad = 0
+  //     var SCcounter = 0
 
-      this.ScrewCompressorAllData.forEach(value => {
-        var a = moment(value.InsertedDate).format('YYYY')
-        if (a == this.yearlist[i].yearname) {
-          if (value.Classification == 'normal') {
-            SCFPnormal = SCFPnormal + 1
-          } else if (value.Classification == 'incipient') {
-            SCFPincipient = SCFPincipient + 1
-          } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
-            SCFPdegrade = SCFPdegrade + 1
-          } else {
-            SCFPbad = SCFPbad + 1
-          }
-          SCcounter = SCcounter + 1
-        }
+  //     this.ScrewCompressorAllData.forEach(value => {
+  //       var a = moment(value.InsertedDate).format('YYYY')
+  //       if (a == this.yearlist[i].yearname) {
+  //         if (value.Classification == 'normal') {
+  //           SCFPnormal = SCFPnormal + 1
+  //         } else if (value.Classification == 'incipient') {
+  //           SCFPincipient = SCFPincipient + 1
+  //         } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
+  //           SCFPdegrade = SCFPdegrade + 1
+  //         } else {
+  //           SCFPbad = SCFPbad + 1
+  //         }
+  //         SCcounter = SCcounter + 1
+  //       }
 
-      });
-      var precetagedegrade
-      var precetageincipient
-      var precetagenornal
-      var precetagebad
+  //     });
+  //     var precetagedegrade
+  //     var precetageincipient
+  //     var precetagenornal
+  //     var precetagebad
 
-      SCFPnormal = ((SCFPnormal / SCcounter) * 100)
-      SCFPincipient = ((SCFPincipient / SCcounter) * 100)
-      SCFPdegrade = ((SCFPdegrade / SCcounter) * 100)
-      SCFPbad = ((SCFPbad / SCcounter) * 100)
+  //     SCFPnormal = ((SCFPnormal / SCcounter) * 100)
+  //     SCFPincipient = ((SCFPincipient / SCcounter) * 100)
+  //     SCFPdegrade = ((SCFPdegrade / SCcounter) * 100)
+  //     SCFPbad = ((SCFPbad / SCcounter) * 100)
 
-      precetagedegrade = SCFPdegrade.toFixed()
-      precetageincipient = SCFPincipient.toFixed()
-      precetagenornal = SCFPnormal.toFixed()
-      precetagebad = SCFPbad.toFixed()
+  //     precetagedegrade = SCFPdegrade.toFixed()
+  //     precetageincipient = SCFPincipient.toFixed()
+  //     precetagenornal = SCFPnormal.toFixed()
+  //     precetagebad = SCFPbad.toFixed()
 
-      this.SCFinalNormal.push(precetagenornal)
-      this.SCFinalIncipient.push(precetageincipient)
-      this.SCFinaldDegrade.push(precetagedegrade)
-      this.SCFinalBad.push(precetagebad)
-    }
+  //     this.SCFinalNormal.push(precetagenornal)
+  //     this.SCFinalIncipient.push(precetageincipient)
+  //     this.SCFinaldDegrade.push(precetagedegrade)
+  //     this.SCFinalBad.push(precetagebad)
+  //   }
 
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("polarArea", {
-      type: "bar",
-      data: {
-        labels: LabelDates,
-        fill: true,
-        datasets: [
-          {
-            label: "Normal",
-            data: this.SCFinalNormal,
-            borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
-            fill: true,
-          },
-          {
-            label: "Incipient",
-            data: this.SCFinalIncipient,
-            borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
-            fill: true,
-          },
-          {
-            label: "Degrade",
-            data: this.SCFinaldDegrade,
-            borderWidth: 1,
-            borderColor: "#fe4c61",
-            backgroundColor: '#fe4c61',
-            fill: true,
-          },
-          {
-            label: "Bad",
-            data: this.SCFinalBad,
-            borderWidth: 1,
-            borderColor: "blue",
-            backgroundColor: 'blue',
-            fill: true,
-          },
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("polarArea", {
+  //     type: "bar",
+  //     data: {
+  //       labels: LabelDates,
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           label: "Normal",
+  //           data: this.SCFinalNormal,
+  //           borderWidth: 1,
+  //           borderColor: "#008000",
+  //           backgroundColor: '#008000',
+  //           fill: true,
+  //         },
+  //         {
+  //           label: "Incipient",
+  //           data: this.SCFinalIncipient,
+  //           borderWidth: 1,
+  //           borderColor: "#ffb801",
+  //           backgroundColor: '#ffb801',
+  //           fill: true,
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: this.SCFinaldDegrade,
+  //           borderWidth: 1,
+  //           borderColor: "#fe4c61",
+  //           backgroundColor: '#fe4c61',
+  //           fill: true,
+  //         },
+  //         {
+  //           label: "Bad",
+  //           data: this.SCFinalBad,
+  //           borderWidth: 1,
+  //           borderColor: "blue",
+  //           backgroundColor: 'blue',
+  //           fill: true,
+  //         },
 
-        ],
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Years'
-            },
-            gridLines: {
-              display: false,
-              labelString: 'Years'
-            },
-          }],
-          yAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: 'Percentage'
-              },
-              ticks: {
-                beginAtZero: true
-              },
-              gridLines: {
-                display: false
-              },
-            }
-          ]
-        },
-        "animation": {
-          "duration": 1,
-          "onComplete": function () {
-            var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
-            this.data.datasets.forEach(function (dataset, i) {
-              var meta = chartInstance.controller.getDatasetMeta(i);
-              meta.data.forEach(function (bar, index) {
-                var data = dataset.data[index];
-                if (data > 0) {
-                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                }
-              });
-            });
-          }
-        },
-      }
-    });
-  }
+  //       ],
+  //     },
+  //     options: {
+  //       scales: {
+  //         xAxes: [{
+  //           scaleLabel: {
+  //             display: true,
+  //             labelString: 'Years'
+  //           },
+  //           gridLines: {
+  //             display: false,
+  //             labelString: 'Years'
+  //           },
+  //         }],
+  //         yAxes: [
+  //           {
+  //             scaleLabel: {
+  //               display: true,
+  //               labelString: 'Percentage'
+  //             },
+  //             ticks: {
+  //               beginAtZero: true
+  //             },
+  //             gridLines: {
+  //               display: false
+  //             },
+  //           }
+  //         ]
+  //       },
+  //       "animation": {
+  //         "duration": 1,
+  //         "onComplete": function () {
+  //           var chartInstance = this.chart,
+  //             ctx = chartInstance.ctx;
+  //           this.data.datasets.forEach(function (dataset, i) {
+  //             var meta = chartInstance.controller.getDatasetMeta(i);
+  //             meta.data.forEach(function (bar, index) {
+  //               var data = dataset.data[index];
+  //               if (data > 0) {
+  //                 ctx.fillText(data, bar._model.x, bar._model.y - 5);
+  //               }
+  //             });
+  //           });
+  //         }
+  //       },
+  //     }
+  //   });
+  // }
 
-  AllRecordBarcharts() {
-    this.changeDetectorRef.detectChanges();
-    if (this.state.TrainnNavigate == 2) {
-      var elmnt = document.getElementById("Trainnavigate");
-      elmnt.scrollIntoView();
-    }
-    let dateForFilter = [];
-    this.TrainDataIncipientCount = []
-    this.TrainDataNormalCount = []
-    this.TrainDataDegradeCount = []
-    for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-      if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
-        dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
-      }
-    }
-    let dateForFilter1 = [];
-    dateForFilter.forEach((value) => {
-      var Date = moment(value).format('YYYY-MM-DD');
-      dateForFilter1.push(Date);
-      dateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    });
-    var SCcounter = 0
-    for (var i = 0; i < dateForFilter1.length; i++) {
-      var a = [];
-      this.ScrewCompressorAllData.forEach(element => {
-        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
-          a.push(element.Classification)
-        }
-        SCcounter = SCcounter + 1
-      });
-      var normal = 0
-      var incipient = 0
-      var degrade = 0
-      var bad = 0
-      a.forEach((value) => {
-        if (value == 'normal') {
-          normal = normal + 1
-        } else if (value == 'incipient') {
-          incipient = incipient + 1
-        } else if (value == 'degarde' || value == 'degrade') {
-          degrade = degrade + 1
-        } else {
-          bad = bad + 1
-        }
-      });
+  // AllRecordBarcharts() {
+  //   this.changeDetectorRef.detectChanges();
+  //   if (this.state.TrainnNavigate == 2) {
+  //     var elmnt = document.getElementById("Trainnavigate");
+  //     elmnt.scrollIntoView();
+  //   }
+  //   let dateForFilter = [];
+  //   this.TrainDataIncipientCount = []
+  //   this.TrainDataNormalCount = []
+  //   this.TrainDataDegradeCount = []
+  //   for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
+  //     if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
+  //       dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
+  //     }
+  //   }
+  //   let dateForFilter1 = [];
+  //   dateForFilter.forEach((value) => {
+  //     var Date = moment(value).format('YYYY-MM-DD');
+  //     dateForFilter1.push(Date);
+  //     dateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+  //   });
+  //   var SCcounter = 0
+  //   for (var i = 0; i < dateForFilter1.length; i++) {
+  //     var a = [];
+  //     this.ScrewCompressorAllData.forEach(element => {
+  //       if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
+  //         a.push(element.Classification)
+  //       }
+  //       SCcounter = SCcounter + 1
+  //     });
+  //     var normal = 0
+  //     var incipient = 0
+  //     var degrade = 0
+  //     var bad = 0
+  //     a.forEach((value) => {
+  //       if (value == 'normal') {
+  //         normal = normal + 1
+  //       } else if (value == 'incipient') {
+  //         incipient = incipient + 1
+  //       } else if (value == 'degarde' || value == 'degrade') {
+  //         degrade = degrade + 1
+  //       } else {
+  //         bad = bad + 1
+  //       }
+  //     });
 
-      this.TrainDataIncipientCount.push(incipient)
-      this.TrainDataNormalCount.push(normal)
-      this.TrainDataDegradeCount.push(degrade)
-      this.TrainDataBadCount.push(bad)
+  //     this.TrainDataIncipientCount.push(incipient)
+  //     this.TrainDataNormalCount.push(normal)
+  //     this.TrainDataDegradeCount.push(degrade)
+  //     this.TrainDataBadCount.push(bad)
 
-    }
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("canvas1", {
-      type: "bar",
-      data: {
-        labels: dateForFilter1,
-        datasets: [
-          {
-            label: "Incipent",
-            data: this.TrainDataIncipientCount,
-            borderWidth: 1,
-            backgroundColor: "#ffb801",
-          }, {
-            label: "Normal",
-            data: this.TrainDataNormalCount,
-            borderWidth: 1,
-            backgroundColor: "#008000",
-          },
-          {
-            label: "Degrade",
-            data: this.TrainDataDegradeCount,
-            borderWidth: 2,
-            backgroundColor: "#fe4c61",
-          },
-          {
-            label: "Bad",
-            data: this.TrainDataBadCount,
-            borderWidth: 1,
-            backgroundColor: "blue",
-          }
-        ]
-      },
-      options: {
-        events: [],
-        scales: {
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Days'
-            },
-            gridLines: {
-              display: false,
-            },
-            stacked: true,
-          }],
-          yAxes: [
-            {
-              scaleLabel: {
-                stacked: true,
-                display: true,
-                labelString: 'Recoreded Data In Numbers'
-              },
-              ticks: {
-                beginAtZero: true,
-                max: 12,
-              },
-              gridLines: {
-                display: false
-              },
-            }
-          ]
-        },
-        // "animation": {
-        //   "duration": 1,
-        //   "onComplete": function () {
-        //     var chartInstance = this.chart,
-        //       ctx = chartInstance.ctx;
-        //     this.data.datasets.forEach(function (dataset, i) {
-        //       var meta = chartInstance.controller.getDatasetMeta(i);
-        //       meta.data.forEach(function (bar, index) {
-        //         var data = dataset.data[index];
-        //         if (data > 0) {
-        //           ctx.fillText(data, bar._model.x, bar._model.y - 5);
-        //        }
-        //       });
-        //     });
-        //   }
-        // },
-      }
+  //   }
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("canvas1", {
+  //     type: "bar",
+  //     data: {
+  //       labels: dateForFilter1,
+  //       datasets: [
+  //         {
+  //           label: "Incipent",
+  //           data: this.TrainDataIncipientCount,
+  //           borderWidth: 1,
+  //           backgroundColor: "#ffb801",
+  //         }, {
+  //           label: "Normal",
+  //           data: this.TrainDataNormalCount,
+  //           borderWidth: 1,
+  //           backgroundColor: "#008000",
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: this.TrainDataDegradeCount,
+  //           borderWidth: 2,
+  //           backgroundColor: "#fe4c61",
+  //         },
+  //         {
+  //           label: "Bad",
+  //           data: this.TrainDataBadCount,
+  //           borderWidth: 1,
+  //           backgroundColor: "blue",
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       events: [],
+  //       scales: {
+  //         xAxes: [{
+  //           scaleLabel: {
+  //             display: true,
+  //             labelString: 'Days'
+  //           },
+  //           gridLines: {
+  //             display: false,
+  //           },
+  //           stacked: true,
+  //         }],
+  //         yAxes: [
+  //           {
+  //             scaleLabel: {
+  //               stacked: true,
+  //               display: true,
+  //               labelString: 'Recoreded Data In Numbers'
+  //             },
+  //             ticks: {
+  //               beginAtZero: true,
+  //               max: 12,
+  //             },
+  //             gridLines: {
+  //               display: false
+  //             },
+  //           }
+  //         ]
+  //       },
+  //       // "animation": {
+  //       //   "duration": 1,
+  //       //   "onComplete": function () {
+  //       //     var chartInstance = this.chart,
+  //       //       ctx = chartInstance.ctx;
+  //       //     this.data.datasets.forEach(function (dataset, i) {
+  //       //       var meta = chartInstance.controller.getDatasetMeta(i);
+  //       //       meta.data.forEach(function (bar, index) {
+  //       //         var data = dataset.data[index];
+  //       //         if (data > 0) {
+  //       //           ctx.fillText(data, bar._model.x, bar._model.y - 5);
+  //       //        }
+  //       //       });
+  //       //     });
+  //       //   }
+  //       // },
+  //     }
 
-    });
-  }
+  //   });
+  // }
 
-  PredictionAllRecordDonught() {
-    this.changeDetectorRef.detectChanges();
-    this.ScrewPredictionAllData.sort()
+  // PredictionAllRecordDonught() {
+  //   this.changeDetectorRef.detectChanges();
+  //   this.ScrewPredictionAllData.sort()
 
-    var LabelDatess: any = [];
-    this.Predictyearlist.forEach(element => {
-      LabelDatess = LabelDatess.filter(function (element) {
-        return element !== undefined;
-      });
-      LabelDatess.push(element.Predictyearname)
-      LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    });
+  //   var LabelDatess: any = [];
+  //   this.Predictyearlist.forEach(element => {
+  //     LabelDatess = LabelDatess.filter(function (element) {
+  //       return element !== undefined;
+  //     });
+  //     LabelDatess.push(element.Predictyearname)
+  //     LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+  //   });
 
-    for (var i = 0; i < this.Predictyearlist.length; ++i) {
-      var FPnormal = 0
-      var FPincipient = 0
-      var FPdegrade = 0
-      var FPbad = 0
-      var counter = 0
-      this.ScrewPredictionAllData.forEach(value => {
-        var a = moment(value.InsertedDate).format('YYYY')
-        if (a == this.Predictyearlist[i].Predictyearname) {
-          if (value.Prediction == 'normal') {
-            FPnormal = FPnormal + 1
-          } else if (value.Prediction == 'incipient') {
-            FPincipient = FPincipient + 1
-          } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
-            FPdegrade = FPdegrade + 1
-          } else {
-            FPbad = FPbad + 1
-          }
-          counter = counter + 1
-        }
+  //   for (var i = 0; i < this.Predictyearlist.length; ++i) {
+  //     var FPnormal = 0
+  //     var FPincipient = 0
+  //     var FPdegrade = 0
+  //     var FPbad = 0
+  //     var counter = 0
+  //     this.ScrewPredictionAllData.forEach(value => {
+  //       var a = moment(value.InsertedDate).format('YYYY')
+  //       if (a == this.Predictyearlist[i].Predictyearname) {
+  //         if (value.Prediction == 'normal') {
+  //           FPnormal = FPnormal + 1
+  //         } else if (value.Prediction == 'incipient') {
+  //           FPincipient = FPincipient + 1
+  //         } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+  //           FPdegrade = FPdegrade + 1
+  //         } else {
+  //           FPbad = FPbad + 1
+  //         }
+  //         counter = counter + 1
+  //       }
 
-      });
-      var fperc_Incipient
-      var fperc_Normal
-      var fperc_Degrade
-      var fperc_Bad
-      FPnormal = ((FPnormal / counter) * 100)
-      FPincipient = ((FPincipient / counter) * 100)
-      FPdegrade = ((FPdegrade / counter) * 100)
-      FPbad = ((FPbad / counter) * 100)
+  //     });
+  //     var fperc_Incipient
+  //     var fperc_Normal
+  //     var fperc_Degrade
+  //     var fperc_Bad
+  //     FPnormal = ((FPnormal / counter) * 100)
+  //     FPincipient = ((FPincipient / counter) * 100)
+  //     FPdegrade = ((FPdegrade / counter) * 100)
+  //     FPbad = ((FPbad / counter) * 100)
 
-      fperc_Incipient = FPnormal.toFixed()
-      fperc_Normal = FPincipient.toFixed()
-      fperc_Degrade = FPdegrade.toFixed()
-      fperc_Bad = FPbad.toFixed()
+  //     fperc_Incipient = FPnormal.toFixed()
+  //     fperc_Normal = FPincipient.toFixed()
+  //     fperc_Degrade = FPdegrade.toFixed()
+  //     fperc_Bad = FPbad.toFixed()
 
-      this.FPFinalNormal.push(fperc_Normal)
-      this.FPFinalIncipient.push(fperc_Incipient)
-      this.FPFinaldDegrade.push(fperc_Degrade)
-      this.FPFinalBad.push(fperc_Bad)
+  //     this.FPFinalNormal.push(fperc_Normal)
+  //     this.FPFinalIncipient.push(fperc_Incipient)
+  //     this.FPFinaldDegrade.push(fperc_Degrade)
+  //     this.FPFinalBad.push(fperc_Bad)
 
-    }
+  //   }
 
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("PredictioncanvasClass", {
-      type: "bar",
-      data: {
-        labels: LabelDatess,
-        fill: true,
-        datasets: [
-          {
-            label: "Normal",
-            data: this.FPFinalNormal,
-            borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
-            fill: true,
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("PredictioncanvasClass", {
+  //     type: "bar",
+  //     data: {
+  //       labels: LabelDatess,
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           label: "Normal",
+  //           data: this.FPFinalNormal,
+  //           borderWidth: 1,
+  //           borderColor: "#008000",
+  //           backgroundColor: '#008000',
+  //           fill: true,
 
-          },
-          {
-            label: "Incipient",
-            data: this.FPFinalIncipient,
-            borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
-            fill: true,
+  //         },
+  //         {
+  //           label: "Incipient",
+  //           data: this.FPFinalIncipient,
+  //           borderWidth: 1,
+  //           borderColor: "#ffb801",
+  //           backgroundColor: '#ffb801',
+  //           fill: true,
 
-          },
-          {
-            label: "Degrade",
-            data: this.FPFinaldDegrade,
-            borderWidth: 1,
-            borderColor: "#fe4c61",
-            backgroundColor: '#fe4c61',
-            fill: true,
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: this.FPFinaldDegrade,
+  //           borderWidth: 1,
+  //           borderColor: "#fe4c61",
+  //           backgroundColor: '#fe4c61',
+  //           fill: true,
 
-          },
-          {
-            label: "Bad",
-            data: this.FPFinalBad,
-            borderWidth: 1,
-            borderColor: "blue",
-            backgroundColor: 'blue',
-            fill: true,
-          },
+  //         },
+  //         {
+  //           label: "Bad",
+  //           data: this.FPFinalBad,
+  //           borderWidth: 1,
+  //           borderColor: "blue",
+  //           backgroundColor: 'blue',
+  //           fill: true,
+  //         },
 
-        ],
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            gridLines: {
-              display: false
-            },
-          }],
-          yAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: 'In_Percentage'
-              },
-              ticks: {
-                beginAtZero: true,
-                gridLines: {
-                  display: false
-                },
-              }
-            }
-          ]
-        },
-        "animation": {
-          "duration": 1,
-          "onComplete": function () {
-            var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
-            this.data.datasets.forEach(function (dataset, i) {
-              var meta = chartInstance.controller.getDatasetMeta(i);
-              meta.data.forEach(function (bar, index) {
-                var data = dataset.data[index];
-                if (data > 0) {
-                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                }
-              });
-            });
-          }
-        },
-      }
+  //       ],
+  //     },
+  //     options: {
+  //       scales: {
+  //         xAxes: [{
+  //           gridLines: {
+  //             display: false
+  //           },
+  //         }],
+  //         yAxes: [
+  //           {
+  //             scaleLabel: {
+  //               display: true,
+  //               labelString: 'In_Percentage'
+  //             },
+  //             ticks: {
+  //               beginAtZero: true,
+  //               gridLines: {
+  //                 display: false
+  //               },
+  //             }
+  //           }
+  //         ]
+  //       },
+  //       "animation": {
+  //         "duration": 1,
+  //         "onComplete": function () {
+  //           var chartInstance = this.chart,
+  //             ctx = chartInstance.ctx;
+  //           this.data.datasets.forEach(function (dataset, i) {
+  //             var meta = chartInstance.controller.getDatasetMeta(i);
+  //             meta.data.forEach(function (bar, index) {
+  //               var data = dataset.data[index];
+  //               if (data > 0) {
+  //                 ctx.fillText(data, bar._model.x, bar._model.y - 5);
+  //               }
+  //             });
+  //           });
+  //         }
+  //       },
+  //     }
 
-    });
-  }
+  //   });
+  // }
 
-  PredictionAllRecordPie() {
-    var a: any = [];
-    this.PredictionNormalcount = 0,
-      this.PredictionIncipientcount = 0,
-      this.PredictionDegradecount = 0;
-    this.ScrewPredictionAllData.forEach(element => {
-      if (this.fmtype != "") {
-        if (this.fmtype == "SSRB") {
-          a.push(element.SSRB)
-        } else if (this.fmtype == "CF") {
-          a.push(element.CF)
-        } if (this.fmtype == "RD") {
-          a.push(element.RD)
-        }
-      } else {
-        a.push(element.Prediction)
-      }
+  // PredictionAllRecordPie() {
+  //   var a: any = [];
+  //   this.PredictionNormalcount = 0,
+  //     this.PredictionIncipientcount = 0,
+  //     this.PredictionDegradecount = 0;
+  //   this.ScrewPredictionAllData.forEach(element => {
+  //     if (this.fmtype != "") {
+  //       if (this.fmtype == "SSRB") {
+  //         a.push(element.SSRB)
+  //       } else if (this.fmtype == "CF") {
+  //         a.push(element.CF)
+  //       } if (this.fmtype == "RD") {
+  //         a.push(element.RD)
+  //       }
+  //     } else {
+  //       a.push(element.Prediction)
+  //     }
 
-    });
-    var Degradepercentage
-    var Incipientpercentage
-    var Normalpercentage
+  //   });
+  //   var Degradepercentage
+  //   var Incipientpercentage
+  //   var Normalpercentage
 
-    a.forEach(element => {
-      if (element == 'normal') {
-        this.PredictionNormalcount = this.PredictionNormalcount + 1;
-      } else if (element == 'incipient') {
-        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-      } else if (element == 'degrade' || element == 'degarde') {
-        this.PredictionDegradecount = this.PredictionDegradecount + 1;
-      }
-    });
-    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
-    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
-    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+  //   a.forEach(element => {
+  //     if (element == 'normal') {
+  //       this.PredictionNormalcount = this.PredictionNormalcount + 1;
+  //     } else if (element == 'incipient') {
+  //       this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+  //     } else if (element == 'degrade' || element == 'degarde') {
+  //       this.PredictionDegradecount = this.PredictionDegradecount + 1;
+  //     }
+  //   });
+  //   Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
+  //   Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
+  //   Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
 
-    this.predictionDegradeMessage = Degradepercentage
-    this.predictionIncipientMessage = Incipientpercentage
-    this.predictionNormalMessage = Normalpercentage
+  //   this.predictionDegradeMessage = Degradepercentage
+  //   this.predictionIncipientMessage = Incipientpercentage
+  //   this.predictionNormalMessage = Normalpercentage
 
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("PredictionPie", {
-      type: 'pie',
-      data: {
-        labels: ["Normal", "Incipient", "Degrade"],
-        fill: true,
-        datasets: [
-          {
-            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
-            data: [Normalpercentage, Incipientpercentage, Degradepercentage]
-          }
-        ]
-      },
-      options: {
-        // events: [],
-        animation: {
-          duration: 500,
-          easing: "easeOutQuart",
-          onComplete: function () {
-            var ctx = this.chart.ctx;
-            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("PredictionPie", {
+  //     type: 'pie',
+  //     data: {
+  //       labels: ["Normal", "Incipient", "Degrade"],
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
+  //           data: [Normalpercentage, Incipientpercentage, Degradepercentage]
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       // events: [],
+  //       animation: {
+  //         duration: 500,
+  //         easing: "easeOutQuart",
+  //         onComplete: function () {
+  //           var ctx = this.chart.ctx;
+  //           ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+  //           ctx.textAlign = 'center';
+  //           ctx.textBaseline = 'bottom';
 
-            this.data.datasets.forEach(function (dataset) {
-              for (var i = 0; i < dataset.data.length; i++) {
-                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-                  total = dataset._meta[Object.keys(dataset._meta)[0]].total,
-                  mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
-                  start_angle = model.startAngle,
-                  end_angle = model.endAngle,
-                  mid_angle = start_angle + (end_angle - start_angle) / 2;
+  //           this.data.datasets.forEach(function (dataset) {
+  //             for (var i = 0; i < dataset.data.length; i++) {
+  //               var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+  //                 total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+  //                 mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
+  //                 start_angle = model.startAngle,
+  //                 end_angle = model.endAngle,
+  //                 mid_angle = start_angle + (end_angle - start_angle) / 2;
 
-                var x = mid_radius * Math.cos(mid_angle);
-                var y = mid_radius * Math.sin(mid_angle);
+  //               var x = mid_radius * Math.cos(mid_angle);
+  //               var y = mid_radius * Math.sin(mid_angle);
 
-                ctx.fillStyle = '#fff';
-                if (i == 3) {
-                  ctx.fillStyle = '#444';
-                }
-                var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
-                ctx.fillText(percent, model.x + x, model.y + y + 15);
-              }
-            });
-          }
-        }
-      }
-    });
+  //               ctx.fillStyle = '#fff';
+  //               if (i == 3) {
+  //                 ctx.fillStyle = '#444';
+  //               }
+  //               var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
+  //               ctx.fillText(percent, model.x + x, model.y + y + 15);
+  //             }
+  //           });
+  //         }
+  //       }
+  //     }
+  //   });
 
-  }
+  // }
 
-  PredictionAllRecordBarcharts() {
-    this.changeDetectorRef.detectChanges();
-    if (this.state.PredictionNavigate == 1) {
-      var elmnt = document.getElementById("Predictionnavigate");
-      elmnt.scrollIntoView();
-    }
+  // PredictionAllRecordBarcharts() {
+  //   this.changeDetectorRef.detectChanges();
+  //   if (this.state.PredictionNavigate == 1) {
+  //     var elmnt = document.getElementById("Predictionnavigate");
+  //     elmnt.scrollIntoView();
+  //   }
 
-    let dateForFilter = [];
-    this.PredictionDataNormalCount = []
-    this.PredictionDataIncipientCount = []
-    this.PredictonDataDegradeCount = []
-    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
-        dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
-      }
-    }
-    let dateForFilter1 = [];
-    dateForFilter.forEach((value) => {
-      var Date = moment(value).format('YYYY-MM-DD');
-      dateForFilter1.push(Date);
-      dateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    });
-    for (var i = 0; i < dateForFilter1.length; i++) {
-      var a = [];
-      this.ScrewPredictionAllData.forEach(element => {
-        if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
-          if (this.fmtype != "") {
-            if (this.fmtype == "SSRB") {
-              a.push(element.SSRB)
-            } else if (this.fmtype == "CF") {
-              a.push(element.CF)
-            } if (this.fmtype == "RD") {
-              a.push(element.RD)
-            }
-          } else {
-            a.push(element.Prediction)
-          }
-        }
-      });
+  //   let dateForFilter = [];
+  //   this.PredictionDataNormalCount = []
+  //   this.PredictionDataIncipientCount = []
+  //   this.PredictonDataDegradeCount = []
+  //   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+  //     if (!this.isDateInArray(new Date(this.ScrewPredictionAllData[i].InsertedDate), dateForFilter)) {
+  //       dateForFilter.push(new Date(this.ScrewPredictionAllData[i].InsertedDate));
+  //     }
+  //   }
+  //   let dateForFilter1 = [];
+  //   dateForFilter.forEach((value) => {
+  //     var Date = moment(value).format('YYYY-MM-DD');
+  //     dateForFilter1.push(Date);
+  //     dateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+  //   });
+  //   for (var i = 0; i < dateForFilter1.length; i++) {
+  //     var a = [];
+  //     this.ScrewPredictionAllData.forEach(element => {
+  //       if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
+  //         if (this.fmtype != "") {
+  //           if (this.fmtype == "SSRB") {
+  //             a.push(element.SSRB)
+  //           } else if (this.fmtype == "CF") {
+  //             a.push(element.CF)
+  //           } if (this.fmtype == "RD") {
+  //             a.push(element.RD)
+  //           }
+  //         } else {
+  //           a.push(element.Prediction)
+  //         }
+  //       }
+  //     });
 
-      var normal = 0
-      var incipient = 0
-      var degrade = 0
-      var bad = 0
+  //     var normal = 0
+  //     var incipient = 0
+  //     var degrade = 0
+  //     var bad = 0
 
-      a.forEach((value) => {
-        if (value == 'normal') {
-          normal = normal + 1
-        } else if (value == 'incipient') {
-          incipient = incipient + 1
-        } else if (value == 'degarde' || value == 'degrade') {
-          degrade = degrade + 1
-        } else {
-          bad = bad + 1
-        }
-      });
-      this.PredictionDataNormalCount.push(normal)
-      this.PredictionDataIncipientCount.push(incipient)
-      this.PredictonDataDegradeCount.push(degrade)
-      this.PredictionDataBadCount.push(bad)
-    }
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("Predictionbarline", {
-      type: "bar",
-      data: {
-        labels: dateForFilter1,
-        fill: true,
-        datasets: [
-          {
-            label: "Normal",
-            data: this.PredictionDataNormalCount,
-            borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
-            fill: true,
-          }, {
-            label: "Incipent",
-            data: this.PredictionDataIncipientCount,
-            borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
-            fill: true,
-          },
-          {
-            label: "Degrade",
-            data: this.PredictonDataDegradeCount,
-            borderWidth: 1,
-            borderColor: " #fe4c61",
-            backgroundColor: '#fe4c61',
-            fill: true,
-          }
-        ]
-      },
-      options: {
-        events: [],
-        scales: {
-          xAxes: [{
-            gridLines: {
-              display: false
-            },
-            stacked: true,
-          }],
-          yAxes: [{
-            stacked: true,
-            ticks: {
-              beginAtZero: true,
-              max: 3,
-            },
-            gridLines: {
-              display: false
-            },
-          }]
-        },
-        // "animation": {
-        //   "duration": 1,
-        //   "onComplete": function () {
-        //     var chartInstance = this.chart,
-        //       ctx = chartInstance.ctx;
-        //     this.data.datasets.forEach(function (dataset, i) {
-        //       var meta = chartInstance.controller.getDatasetMeta(i);
-        //       meta.data.forEach(function (bar, index) {
-        //         var data = dataset.data[index];
-        //         if (data > 0) {
-        //           ctx.fillText(data, bar._model.x, bar._model.y - 5);
-        //        }
-        //       });
-        //     });
-        //   }
-        // },
+  //     a.forEach((value) => {
+  //       if (value == 'normal') {
+  //         normal = normal + 1
+  //       } else if (value == 'incipient') {
+  //         incipient = incipient + 1
+  //       } else if (value == 'degarde' || value == 'degrade') {
+  //         degrade = degrade + 1
+  //       } else {
+  //         bad = bad + 1
+  //       }
+  //     });
+  //     this.PredictionDataNormalCount.push(normal)
+  //     this.PredictionDataIncipientCount.push(incipient)
+  //     this.PredictonDataDegradeCount.push(degrade)
+  //     this.PredictionDataBadCount.push(bad)
+  //   }
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("Predictionbarline", {
+  //     type: "bar",
+  //     data: {
+  //       labels: dateForFilter1,
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           label: "Normal",
+  //           data: this.PredictionDataNormalCount,
+  //           borderWidth: 1,
+  //           borderColor: "#008000",
+  //           backgroundColor: '#008000',
+  //           fill: true,
+  //         }, {
+  //           label: "Incipent",
+  //           data: this.PredictionDataIncipientCount,
+  //           borderWidth: 1,
+  //           borderColor: "#ffb801",
+  //           backgroundColor: '#ffb801',
+  //           fill: true,
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: this.PredictonDataDegradeCount,
+  //           borderWidth: 1,
+  //           borderColor: " #fe4c61",
+  //           backgroundColor: '#fe4c61',
+  //           fill: true,
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       events: [],
+  //       scales: {
+  //         xAxes: [{
+  //           gridLines: {
+  //             display: false
+  //           },
+  //           stacked: true,
+  //         }],
+  //         yAxes: [{
+  //           stacked: true,
+  //           ticks: {
+  //             beginAtZero: true,
+  //             max: 3,
+  //           },
+  //           gridLines: {
+  //             display: false
+  //           },
+  //         }]
+  //       },
+  //       // "animation": {
+  //       //   "duration": 1,
+  //       //   "onComplete": function () {
+  //       //     var chartInstance = this.chart,
+  //       //       ctx = chartInstance.ctx;
+  //       //     this.data.datasets.forEach(function (dataset, i) {
+  //       //       var meta = chartInstance.controller.getDatasetMeta(i);
+  //       //       meta.data.forEach(function (bar, index) {
+  //       //         var data = dataset.data[index];
+  //       //         if (data > 0) {
+  //       //           ctx.fillText(data, bar._model.x, bar._model.y - 5);
+  //       //        }
+  //       //       });
+  //       //     });
+  //       //   }
+  //       // },
 
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
 
   GerAllFutuerPredictionRecords() {
     this.FutuerPredictionDataNormalCount = null;
@@ -2092,9 +2130,9 @@ export class DashboardComponent {
             } else
               this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
           }
-          this.FutuerlineChart()
-          this.FutuerdDonughtchart()
-          this.Futuerpiechart()
+          // this.FutuerlineChart()
+          // this.FutuerdDonughtchart()
+          // this.Futuerpiechart()
         }, error => {
           console.log(error.error)
         })
@@ -2130,269 +2168,269 @@ export class DashboardComponent {
         this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
     }
 
-    this.FutuerlineChart()
+    // this.FutuerlineChart()
     // this.FutuerdDonughtchart()
     // this.Futuerpiechart()
   }
 
-  FutuerlineChart() {
-    this.changeDetectorRef.detectChanges();
-    let FutuerdateForFilter = [];
-    this.FutuerPredictionDataNormalCount = []
-    this.FutuerPredictionDataIncipientCount = []
-    this.FutuerPredictonDataDegradeCount = []
-    for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
-      if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
-        FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
-      }
-    }
-    let FutuerdateForFilter1 = [];
-    FutuerdateForFilter.forEach((value) => {
-      var Date = moment(value).format('YYYY-MM-DD');
-      FutuerdateForFilter1.push(Date);
-      FutuerdateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    });
+  // FutuerlineChart() {
+  //   this.changeDetectorRef.detectChanges();
+  //   let FutuerdateForFilter = [];
+  //   this.FutuerPredictionDataNormalCount = []
+  //   this.FutuerPredictionDataIncipientCount = []
+  //   this.FutuerPredictonDataDegradeCount = []
+  //   for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
+  //     if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
+  //       FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
+  //     }
+  //   }
+  //   let FutuerdateForFilter1 = [];
+  //   FutuerdateForFilter.forEach((value) => {
+  //     var Date = moment(value).format('YYYY-MM-DD');
+  //     FutuerdateForFilter1.push(Date);
+  //     FutuerdateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+  //   });
 
-    for (var i = 0; i < FutuerdateForFilter1.length; i++) {
-      var a = [];
-      this.FutuerPredictionAllData.forEach(element => {
-        if (moment(element.PredictedDate).format('YYYY-MM-DD') == FutuerdateForFilter1[i]) {
-          if (this.fmtype != "") {
-            if (this.fmtype == "SSRB") {
-              a.push(element.SSRB)
-            } else if (this.fmtype == "CF") {
-              a.push(element.CF)
-            } if (this.fmtype == "RD") {
-              a.push(element.RD)
-            }
-          } else {
-            a.push(element.Prediction)
-          }
-        }
-      });
-      var normal = 0
-      var incipient = 0
-      var degrade = 0
-      var bad = 0
+  //   for (var i = 0; i < FutuerdateForFilter1.length; i++) {
+  //     var a = [];
+  //     this.FutuerPredictionAllData.forEach(element => {
+  //       if (moment(element.PredictedDate).format('YYYY-MM-DD') == FutuerdateForFilter1[i]) {
+  //         if (this.fmtype != "") {
+  //           if (this.fmtype == "SSRB") {
+  //             a.push(element.SSRB)
+  //           } else if (this.fmtype == "CF") {
+  //             a.push(element.CF)
+  //           } if (this.fmtype == "RD") {
+  //             a.push(element.RD)
+  //           }
+  //         } else {
+  //           a.push(element.Prediction)
+  //         }
+  //       }
+  //     });
+  //     var normal = 0
+  //     var incipient = 0
+  //     var degrade = 0
+  //     var bad = 0
 
-      a.forEach((value) => {
-        if (value == 'normal') {
-          normal = normal + 1
-        } else if (value == 'incipient') {
-          incipient = incipient + 1
-        } else if (value == 'degarde' || value == 'degrade') {
-          degrade = degrade + 1
-        } else {
-          bad = bad + 1
-        }
-      });
-      this.FutuerPredictionDataNormalCount.push(normal)
-      this.FutuerPredictionDataIncipientCount.push(incipient)
-      this.FutuerPredictonDataDegradeCount.push(degrade)
-      this.FutuerPredictionDataBadCount.push(bad)
-    }
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("BarChart", {
-      type: 'bar',
-      data: {
-        labels: FutuerdateForFilter1,
-        fill: true,
-        datasets: [
-          {
-            label: "Normal",
-            data: this.FutuerPredictionDataNormalCount,
-            borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
-          }, {
-            label: "Incipent",
-            data: this.FutuerPredictionDataIncipientCount,
-            borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
-          },
-          {
-            label: "Degrade",
-            data: this.FutuerPredictonDataDegradeCount,
-            borderWidth: 1,
-            borderColor: " #fe4c61",
-            backgroundColor: '#fe4c61',
-          }
-        ]
-      },
-      options: {
-        events: [],
-        scales: {
-          xAxes: [{
-            stacked: true,
-          }],
-          yAxes: [{
-            stacked: true,
-            ticks: {
-            }
-          }]
-        }
-      }
+  //     a.forEach((value) => {
+  //       if (value == 'normal') {
+  //         normal = normal + 1
+  //       } else if (value == 'incipient') {
+  //         incipient = incipient + 1
+  //       } else if (value == 'degarde' || value == 'degrade') {
+  //         degrade = degrade + 1
+  //       } else {
+  //         bad = bad + 1
+  //       }
+  //     });
+  //     this.FutuerPredictionDataNormalCount.push(normal)
+  //     this.FutuerPredictionDataIncipientCount.push(incipient)
+  //     this.FutuerPredictonDataDegradeCount.push(degrade)
+  //     this.FutuerPredictionDataBadCount.push(bad)
+  //   }
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("BarChart", {
+  //     type: 'bar',
+  //     data: {
+  //       labels: FutuerdateForFilter1,
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           label: "Normal",
+  //           data: this.FutuerPredictionDataNormalCount,
+  //           borderWidth: 1,
+  //           borderColor: "#008000",
+  //           backgroundColor: '#008000',
+  //         }, {
+  //           label: "Incipent",
+  //           data: this.FutuerPredictionDataIncipientCount,
+  //           borderWidth: 1,
+  //           borderColor: "#ffb801",
+  //           backgroundColor: '#ffb801',
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: this.FutuerPredictonDataDegradeCount,
+  //           borderWidth: 1,
+  //           borderColor: " #fe4c61",
+  //           backgroundColor: '#fe4c61',
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       events: [],
+  //       scales: {
+  //         xAxes: [{
+  //           stacked: true,
+  //         }],
+  //         yAxes: [{
+  //           stacked: true,
+  //           ticks: {
+  //           }
+  //         }]
+  //       }
+  //     }
 
-    });
-  }
+  //   });
+  // }
 
-  FutuerdDonughtchart() {
-    this.changeDetectorRef.detectChanges();
-    this.FutuerPredictionAllData.sort()
-    var LabelDates: any = [];
-    this.FuterPredictyearlist.forEach(element => {
-      LabelDates.push(element.FutuerPredictyearname)
-      LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    });
+  // FutuerdDonughtchart() {
+  //   this.changeDetectorRef.detectChanges();
+  //   this.FutuerPredictionAllData.sort()
+  //   var LabelDates: any = [];
+  //   this.FuterPredictyearlist.forEach(element => {
+  //     LabelDates.push(element.FutuerPredictyearname)
+  //     LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+  //   });
 
-    for (var i = 0; i < this.FuterPredictyearlist.length; ++i) {
-      var forcastPnormal = 0
-      var forcastFPincipient = 0
-      var forcastFPdegrade = 0
-      var forcastFPbad = 0
-      var forcastcounter = 0
-      this.FutuerPredictionAllData.forEach(value => {
-        var a = moment(value.PredictedDate).format('YYYY')
-        if (a == this.FuterPredictyearlist[i].FutuerPredictyearname) {
-          if (value.Prediction == 'normal') {
-            forcastPnormal = forcastPnormal + 1
-          } else if (value.Prediction == 'incipient') {
-            forcastFPincipient = forcastFPincipient + 1
-          } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
-            forcastFPdegrade = forcastFPdegrade + 1
-          } else {
-            forcastFPbad = forcastFPbad + 1
-          }
-          forcastcounter = forcastcounter + 1
-        }
+  //   for (var i = 0; i < this.FuterPredictyearlist.length; ++i) {
+  //     var forcastPnormal = 0
+  //     var forcastFPincipient = 0
+  //     var forcastFPdegrade = 0
+  //     var forcastFPbad = 0
+  //     var forcastcounter = 0
+  //     this.FutuerPredictionAllData.forEach(value => {
+  //       var a = moment(value.PredictedDate).format('YYYY')
+  //       if (a == this.FuterPredictyearlist[i].FutuerPredictyearname) {
+  //         if (value.Prediction == 'normal') {
+  //           forcastPnormal = forcastPnormal + 1
+  //         } else if (value.Prediction == 'incipient') {
+  //           forcastFPincipient = forcastFPincipient + 1
+  //         } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+  //           forcastFPdegrade = forcastFPdegrade + 1
+  //         } else {
+  //           forcastFPbad = forcastFPbad + 1
+  //         }
+  //         forcastcounter = forcastcounter + 1
+  //       }
 
-      });
-      forcastPnormal = ((forcastPnormal / forcastcounter) * 100)
-      forcastFPincipient = ((forcastFPincipient / forcastcounter) * 100)
-      forcastFPdegrade = ((forcastFPdegrade / forcastcounter) * 100)
-      forcastFPbad = ((forcastFPbad / forcastcounter) * 100)
+  //     });
+  //     forcastPnormal = ((forcastPnormal / forcastcounter) * 100)
+  //     forcastFPincipient = ((forcastFPincipient / forcastcounter) * 100)
+  //     forcastFPdegrade = ((forcastFPdegrade / forcastcounter) * 100)
+  //     forcastFPbad = ((forcastFPbad / forcastcounter) * 100)
 
-      this.forcastFinalNormal.push(forcastPnormal)
-      this.forcastFinalIncipient.push(forcastFPincipient)
-      this.forcastFinaldDegrade.push(forcastFPdegrade)
-      this.forcastFinalBad.push(forcastFPbad)
+  //     this.forcastFinalNormal.push(forcastPnormal)
+  //     this.forcastFinalIncipient.push(forcastFPincipient)
+  //     this.forcastFinaldDegrade.push(forcastFPdegrade)
+  //     this.forcastFinalBad.push(forcastFPbad)
 
-    }
+  //   }
 
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("donughtChart", {
-      type: "bar",
-      data: {
-        labels: LabelDates,
-        fill: true,
-        datasets: [
-          {
-            label: "Normal",
-            data: this.forcastFinalNormal,
-            borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
-            fill: true,
-          },
-          {
-            label: "Incipient",
-            data: this.forcastFinalIncipient,
-            borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
-            fill: true,
-          },
-          {
-            label: "Degrade",
-            data: this.forcastFinaldDegrade,
-            borderWidth: 1,
-            borderColor: "#fe4c61",
-            backgroundColor: '#fe4c61',
-            fill: true,
-          },
-          {
-            label: "Bad",
-            data: this.forcastFinalBad,
-            borderWidth: 1,
-            borderColor: "blue",
-            backgroundColor: 'blue',
-            fill: true,
-          },
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("donughtChart", {
+  //     type: "bar",
+  //     data: {
+  //       labels: LabelDates,
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           label: "Normal",
+  //           data: this.forcastFinalNormal,
+  //           borderWidth: 1,
+  //           borderColor: "#008000",
+  //           backgroundColor: '#008000',
+  //           fill: true,
+  //         },
+  //         {
+  //           label: "Incipient",
+  //           data: this.forcastFinalIncipient,
+  //           borderWidth: 1,
+  //           borderColor: "#ffb801",
+  //           backgroundColor: '#ffb801',
+  //           fill: true,
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: this.forcastFinaldDegrade,
+  //           borderWidth: 1,
+  //           borderColor: "#fe4c61",
+  //           backgroundColor: '#fe4c61',
+  //           fill: true,
+  //         },
+  //         {
+  //           label: "Bad",
+  //           data: this.forcastFinalBad,
+  //           borderWidth: 1,
+  //           borderColor: "blue",
+  //           backgroundColor: 'blue',
+  //           fill: true,
+  //         },
 
-        ],
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: 'In_Percentage'
-              },
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
-    });
+  //       ],
+  //     },
+  //     options: {
+  //       scales: {
+  //         yAxes: [
+  //           {
+  //             scaleLabel: {
+  //               display: true,
+  //               labelString: 'In_Percentage'
+  //             },
+  //             ticks: {
+  //               beginAtZero: true
+  //             }
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   });
 
-  }
+  // }
 
-  Futuerpiechart() {
-    var a: any = [];
-    this.FutuerPredictionNormalcount = 0,
-      this.FutuerPredictionIncipientcount = 0,
-      this.FutuerPredictionDegradecount = 0;
-    var FPClassDegradepercentage
-    var FPClassIncipientpercentage
-    var FPClassNormalpercentage
-    this.FutuerPredictionAllData.forEach(element => {
-      if (this.fmtype != "") {
-        if (this.fmtype == "SSRB") {
-          a.push(element.SSRB)
-        } else if (this.fmtype == "CF") {
-          a.push(element.CF)
-        } if (this.fmtype == "RD") {
-          a.push(element.RD)
-        }
-      } else {
-        a.push(element.Prediction)
-      }
+  // Futuerpiechart() {
+  //   var a: any = [];
+  //   this.FutuerPredictionNormalcount = 0,
+  //     this.FutuerPredictionIncipientcount = 0,
+  //     this.FutuerPredictionDegradecount = 0;
+  //   var FPClassDegradepercentage
+  //   var FPClassIncipientpercentage
+  //   var FPClassNormalpercentage
+  //   this.FutuerPredictionAllData.forEach(element => {
+  //     if (this.fmtype != "") {
+  //       if (this.fmtype == "SSRB") {
+  //         a.push(element.SSRB)
+  //       } else if (this.fmtype == "CF") {
+  //         a.push(element.CF)
+  //       } if (this.fmtype == "RD") {
+  //         a.push(element.RD)
+  //       }
+  //     } else {
+  //       a.push(element.Prediction)
+  //     }
 
-    });
-    a.forEach(element => {
-      if (element == 'normal') {
-        this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1;
-      } else if (element == 'incipient') {
-        this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1;
-      } else if (element == 'degrade' || element == 'degarde') {
-        this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1;
-      }
-    });
-    FPClassDegradepercentage = ((this.FutuerPredictionDegradecount / a.length) * 100).toFixed(2);
-    FPClassIncipientpercentage = ((this.FutuerPredictionIncipientcount / a.length) * 100).toFixed(2);
-    FPClassNormalpercentage = ((this.FutuerPredictionNormalcount / a.length) * 100).toFixed(2);
+  //   });
+  //   a.forEach(element => {
+  //     if (element == 'normal') {
+  //       this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1;
+  //     } else if (element == 'incipient') {
+  //       this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1;
+  //     } else if (element == 'degrade' || element == 'degarde') {
+  //       this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1;
+  //     }
+  //   });
+  //   FPClassDegradepercentage = ((this.FutuerPredictionDegradecount / a.length) * 100).toFixed(2);
+  //   FPClassIncipientpercentage = ((this.FutuerPredictionIncipientcount / a.length) * 100).toFixed(2);
+  //   FPClassNormalpercentage = ((this.FutuerPredictionNormalcount / a.length) * 100).toFixed(2);
 
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart('FutuerPredictionPie', {
-      type: 'pie',
-      data: {
-        labels: ["Normal", "Incipient", "Degrade"],
-        datasets: [
-          {
-            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
-            data: [FPClassNormalpercentage, FPClassIncipientpercentage, FPClassDegradepercentage]
-          }
-        ]
-      },
-      options: {
-        // events: [],
-      }
-    });
-  }
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart('FutuerPredictionPie', {
+  //     type: 'pie',
+  //     data: {
+  //       labels: ["Normal", "Incipient", "Degrade"],
+  //       datasets: [
+  //         {
+  //           backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
+  //           data: [FPClassNormalpercentage, FPClassIncipientpercentage, FPClassDegradepercentage]
+  //         }
+  //       ]
+  //     },
+  //     options: {
+  //       // events: [],
+  //     }
+  //   });
+  // }
 
   FutuerPredictionClick() {
     this.changeDetectorRef.detectChanges();
@@ -3114,29 +3152,55 @@ export class DashboardComponent {
 
     this.chart = new Chart("allGraphCBI", {
       type: "horizontalBar",
+      // data: {
+      //   labels: ["Economic Risk", "Residual Risk","MEI"],
+      //   datasets: [
+      //     {
+      //       label: "Without DPM",
+      //       backgroundColor: "#d72631",
+      //       borderColor: "#d72631",
+      //       borderWidth: 1,
+      //       data: [economiccostWithoutDPM, resdualtWithoutDPM ,meicostwithoutDPM,]
+      //     },
+      //     {
+      //       label: "With DPM",
+      //       backgroundColor: "#039fbe",
+      //       borderColor: "#039fbe",
+      //       borderWidth: 1,
+      //       data: [economiccostWithDPM, residualcostwithDPM,meicostwithDPM,]
+      //     },
+      //     {
+      //       label: "With Constraint",
+      //       backgroundColor: "#5c3c92",
+      //       borderColor: "#5c3c92",
+      //       borderWidth: 1,
+      //       data: [economiccostwithConstraint, residualwithConstraint, meicostwithConstraint]
+      //     },
+      //   ]
+      // },
       data: {
-        labels: ["Economic Risk", "Residual Risk","MEI"],
+        labels: ["Economic Risk","MEI"],
         datasets: [
           {
             label: "Without DPM",
             backgroundColor: "#d72631",
             borderColor: "#d72631",
             borderWidth: 1,
-            data: [economiccostWithoutDPM, resdualtWithoutDPM ,meicostwithoutDPM,]
+            data: [economiccostWithoutDPM ,meicostwithoutDPM,]
           },
           {
             label: "With DPM",
             backgroundColor: "#039fbe",
             borderColor: "#039fbe",
             borderWidth: 1,
-            data: [economiccostWithDPM, residualcostwithDPM,meicostwithDPM,]
+            data: [economiccostWithDPM, meicostwithDPM,]
           },
           {
             label: "With Constraint",
             backgroundColor: "#5c3c92",
             borderColor: "#5c3c92",
             borderWidth: 1,
-            data: [economiccostwithConstraint, residualwithConstraint, meicostwithConstraint]
+            data: [economiccostwithConstraint,  meicostwithConstraint]
           },
         ]
       },
@@ -3212,6 +3276,8 @@ export class DashboardComponent {
       }, err => { console.log(err.error) }
       );
   }
+  public  tagnumbers:any =[]
+  public  tag:any =[]
 
   PredictionWithTagNumber() {
     var a: any = [];
@@ -3219,19 +3285,18 @@ export class DashboardComponent {
       this.PredictionIncipientcount = 0,
       this.PredictionDegradecount = 0;
     let tagnumberlist = []
-
-    // let b = []
-    // for (var i = 0; i < this.ScrewPredictionAllData.length; ++i) {
-    //   b = this.ScrewPredictionAllData[i].TagNumber
-    //   tagnumberlist.push(b)
-    // }
+ 
     const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
     this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
     this.PTagNumberList =   this.PTagNumberList.filter(r => r.TagNumber !== null)
-     let tagnumbers:any =[]
+  
     this.PTagNumberList.forEach(element=>{
-      tagnumbers.push(element.TagNumber) 
+      this.tagnumbers.push(element.TagNumber) 
     })
+    var LabelDatess : any = [];
+    this.Pyearlist.forEach(element => {
+     LabelDatess.push(element.Predictyearname)
+    });
     this.ScrewPredictionAllData.forEach(element => {
       if (this.fmtype != "") {
         if (this.fmtype == "SSRB") {
@@ -3260,6 +3325,8 @@ export class DashboardComponent {
         this.Predictionbadcount = this.Predictionbadcount + 1
       }
     });
+
+    
     Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
     Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
     Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
@@ -3271,13 +3338,10 @@ export class DashboardComponent {
 
 
     this.changeDetectorRef.detectChanges();
-    if (this.chart) {
-      this.chart.destroy();
-    }
     this.chart = new Chart("PredictionbarWithTage", {
       type: "bar",
       data: {
-        labels:tagnumbers,
+        labels: this.tagnumbers,
         fill: true,
         datasets: [
           {
@@ -3320,7 +3384,6 @@ export class DashboardComponent {
       },
       options: {
         // events: [], 
-        // events: ["mouseout",  "touchmove", "touchend"],
         tooltips: {
           mode: 'index',
         },
@@ -3367,8 +3430,151 @@ export class DashboardComponent {
         }
       }
     });
-    this.chart.update()
   }
+
+  // PredictionWithTagNumber() {
+  //   this.changeDetectorRef.detectChanges();
+  //   this.ScrewPredictionAllData.sort()
+
+  //   var LabelDatess: any = [];
+  //   this.Predictyearlist.forEach(element => {
+  //     LabelDatess = LabelDatess.filter(function (element) {
+  //       return element !== undefined;
+  //     });
+  //     LabelDatess.push(element.Predictyearname)
+  //     LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+  //   });
+
+  //   for (var i = 0; i < this.Predictyearlist.length; ++i) {
+  //     var FPnormal = 0
+  //     var FPincipient = 0
+  //     var FPdegrade = 0
+  //     var FPbad = 0
+  //     var counter = 0
+  //     this.ScrewPredictionAllData.forEach(value => {
+  //       var a = moment(value.InsertedDate).format('YYYY')
+  //       if (a == this.Predictyearlist[i].Predictyearname) {
+  //         if (value.Prediction == 'normal') {
+  //           FPnormal = FPnormal + 1
+  //         } else if (value.Prediction == 'incipient') {
+  //           FPincipient = FPincipient + 1
+  //         } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+  //           FPdegrade = FPdegrade + 1
+  //         } else {
+  //           FPbad = FPbad + 1
+  //         }
+  //         counter = counter + 1
+  //       }
+
+  //     });
+  //     var fperc_Incipient
+  //     var fperc_Normal
+  //     var fperc_Degrade
+  //     var fperc_Bad
+  //     FPnormal = ((FPnormal / counter) * 100)
+  //     FPincipient = ((FPincipient / counter) * 100)
+  //     FPdegrade = ((FPdegrade / counter) * 100)
+  //     FPbad = ((FPbad / counter) * 100)
+
+  //     fperc_Incipient = FPnormal.toFixed()
+  //     fperc_Normal = FPincipient.toFixed()
+  //     fperc_Degrade = FPdegrade.toFixed()
+  //     fperc_Bad = FPbad.toFixed()
+
+  //     this.FPFinalNormal.push(fperc_Normal)
+  //     this.FPFinalIncipient.push(fperc_Incipient)
+  //     this.FPFinaldDegrade.push(fperc_Degrade)
+  //     this.FPFinalBad.push(fperc_Bad)
+
+  //   }
+
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("PredictionbarWithTage", {
+  //     type: "bar",
+  //     data: {
+  //       labels: LabelDatess,
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           label: "Normal",
+  //           data: this.FPFinalNormal,
+  //           borderWidth: 1,
+  //           borderColor: "#008000",
+  //           backgroundColor: '#008000',
+  //           fill: true,
+
+  //         },
+  //         {
+  //           label: "Incipient",
+  //           data: this.FPFinalIncipient,
+  //           borderWidth: 1,
+  //           borderColor: "#ffb801",
+  //           backgroundColor: '#ffb801',
+  //           fill: true,
+
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: this.FPFinaldDegrade,
+  //           borderWidth: 1,
+  //           borderColor: "#fe4c61",
+  //           backgroundColor: '#fe4c61',
+  //           fill: true,
+
+  //         },
+  //         {
+  //           label: "Bad",
+  //           data: this.FPFinalBad,
+  //           borderWidth: 1,
+  //           borderColor: "blue",
+  //           backgroundColor: 'blue',
+  //           fill: true,
+  //         },
+
+  //       ],
+  //     },
+  //     options: {
+  //       scales: {
+  //         xAxes: [{
+  //           gridLines: {
+  //             display: false
+  //           },
+  //         }],
+  //         yAxes: [
+  //           {
+  //             scaleLabel: {
+  //               display: true,
+  //               labelString: 'In_Percentage'
+  //             },
+  //             ticks: {
+  //               beginAtZero: true,
+  //               gridLines: {
+  //                 display: false
+  //               },
+  //             }
+  //           }
+  //         ]
+  //       },
+  //       "animation": {
+  //         "duration": 1,
+  //         "onComplete": function () {
+  //           var chartInstance = this.chart,
+  //             ctx = chartInstance.ctx;
+  //           this.data.datasets.forEach(function (dataset, i) {
+  //             var meta = chartInstance.controller.getDatasetMeta(i);
+  //             meta.data.forEach(function (bar, index) {
+  //               var data = dataset.data[index];
+  //               if (data > 0) {
+  //                 ctx.fillText(data, bar._model.x, bar._model.y - 5);
+  //               }
+  //             });
+  //           });
+  //         }
+  //       },
+  //     }
+
+  //   });
+  // }
 
   PredictionWithActionPieChart() {
     this.changeDetectorRef.detectChanges();
@@ -3442,22 +3648,28 @@ export class DashboardComponent {
     // });
   }
 
-  PrescripitiveUpdatestatusGraph() {
+ riskGraph_N() {
     this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("Prescriptivestatus_bar", {
+    this.chart = new Chart("risk_N", {
       type: "horizontalBar",
       data: {
         labels: [],
         datasets: [{
           data: [1],
-          backgroundColor: "#008000",
-          hoverBackgroundColor: "#008000"
+          backgroundColor: "#47d147",
+          hoverBackgroundColor: " #47d147"
         }, {
-          data: [1],
-          backgroundColor: "yellow",
-          hoverBackgroundColor: "yellow"
-        }, {
-          data: [1],
+          data: [0.5],
+          backgroundColor: "#ffff99",
+          hoverBackgroundColor: "#ffff99"
+        },
+        {
+          data: [0.5],
+          backgroundColor: "#ffff00",
+          hoverBackgroundColor: "#ffff00"
+        },
+         {
+          data: [0.5],
           backgroundColor: "red",
           hoverBackgroundColor: "red"
         }]
@@ -3488,15 +3700,14 @@ export class DashboardComponent {
               var meta = chartInstance.controller.getDatasetMeta(i);
               meta.data.forEach(function (bar, index) {
                 var data = dataset.data[index];
-                if (data > 0) {
-                  ctx.fillText(data, bar._model.x, bar._model.y + 4);
+                if (data == 1) {
+                  ctx.fillText(data, 50, bar._model.y+4);
                 }
               });
             });
           }
         },
       },
-
 
     });
   }
@@ -3808,5 +4019,281 @@ export class DashboardComponent {
 
     });
   }
+
+  RiskProfile(){
+    var  a:any=[]
+     a= parseFloat(this.VendorPOC)
+    this.chart = new Chart("profile_risk", {
+      type: "bar",
+      data: {
+        labels: ["Risk"],
+        datasets: [
+          {
+            label: "With DPM",
+            backgroundColor: "#618685",
+            borderColor: "#618685",
+            data:[50.2]
+          },
+          {
+            label: "Without DPM",
+            backgroundColor: "#36486b",
+            borderColor: "#36486b",
+            data: [200,]
+          },
+          {
+            label: "With Constraint",
+            backgroundColor: "#006699",
+            borderColor: "#006699",
+            data: [700]
+          },
+          {
+            label: "Miigated",
+            backgroundColor: "#36486b",
+            borderColor: "#36486b",
+            borderWidth: 1,
+            data: [800,]
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        title: {
+            display: true,
+            text: 'Risk Analysis'
+        },
+        backgroundRules: [{
+            backgroundColor: "#adebad", 
+            yAxisSegement: 100
+        }, {
+          backgroundColor: "#ffffb3",
+            yAxisSegement: 500
+        },  {
+          backgroundColor: "#ffc2b3",
+          yAxisSegement: 700
+        },
+        { 
+          backgroundColor: "#ff4d4d",
+            yAxisSegement: 1000
+        }],
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                min: 1, 
+                max: 13000, 
+                labelString: 'Risk Rank'
+              },
+              ticks: {
+                beginAtZero: 0
+              }
+            }
+          ],
+          xAxes: [{
+            barPercentage: 0.4
+        }]
+        },
+      },
+      plugins: [{
+        beforeDraw: function (chart) {
+            var ctx = chart.chart.ctx;
+            var ruleIndex = 0;
+            var rules = chart.chart.options.backgroundRules;
+            var yaxis = chart.chart.scales["y-axis-0"];
+            var xaxis = chart.chart.scales["x-axis-0"];
+            var partPercentage = 1 / (yaxis.ticksAsNumbers.length - 1);
+            for (var i = yaxis.ticksAsNumbers.length - 1; i > 0; i--) {
+                if (yaxis.ticksAsNumbers[i] < rules[ruleIndex].yAxisSegement) {
+                    ctx.fillStyle = rules[ruleIndex].backgroundColor;
+                    ctx.fillRect(xaxis.left, yaxis.top + ((i - 1) * (yaxis.height * partPercentage)), xaxis.width, yaxis.height * partPercentage);
+                } else {
+                    ruleIndex++;
+                    i++;
+                }
+            }
+        }
+    }]
+    });
+  }
+
+  FakeRiskMetigateactions(){
+    this.changeDetectorRef.detectChanges();  
+  this.fakeriskandMetigateActions.forEach((r,index) =>{
+    if(r.RiskRank ==="N"){
+       r.rankgraphId=`risk${index+1}`
+      const patternData2 = [1,0.5,0.5,0.5];
+      this.getChartTree( patternData2, r.rankgraphId, 'N');
+    }else if(r.RiskRank ==="H"){
+      r.rankgraphId=`risk${index+1}`
+      const patternData4 = [0.5,0.5,1,0.5];
+      this.getChartTree( patternData4, r.rankgraphId, 'H');
+    }
+    else if(r.RiskRank ==="M"){
+      r.rankgraphId=`risk${index+1}`
+      const patternData3 = [0.5,1,0.5,0.5];
+      this.getChartTree( patternData3, r.rankgraphId, 'M');
+    } else  if(r.RiskRank ==="L"){
+      r.rankgraphId=`risk${index+1}`
+      const patternData1 = [1,0.5,0.5,0.5];
+      this.getChartTree(patternData1, r.rankgraphId, 'L');
+    } else  if(r.RiskRank ==="MH"){
+      r.rankgraphId=`risk${index+1}`
+      const patternData5 = [0.5,0.5,0.5,1];
+      this.getChartTree( patternData5, r.rankgraphId, 'MH');
+    }
+  })
+  }
+
+  private getChartTree( data: any[], id: string, title: string) {
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart(id, {
+      type: 'horizontalBar',
+      data: {
+        labels: [],
+        datasets: [{
+          data: data,
+          backgroundColor: "#47d147",
+          hoverBackgroundColor: " #47d147"
+        }, {
+          data: data,
+          backgroundColor: "#ffff99",
+          hoverBackgroundColor: "#ffff99"
+        },
+        {
+          data: data,
+          backgroundColor: "#ffff00",
+          hoverBackgroundColor: "#ffff00"
+        },
+         {
+          data: data,
+          backgroundColor: "red",
+          hoverBackgroundColor: "red"
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: false
+        },
+        scales: {
+          xAxes: [{
+            display: false,
+            stacked: true
+          }],
+          yAxes: [{
+            display: false,
+            stacked: true
+          }],
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data == 1) {
+                  ctx.fillText(data, 50, bar._model.y+4);
+                }
+              });
+            });
+          }
+        },
+      },
+
+    });
+    this.changeDetectorRef.detectChanges();
+  }
+
+  fakePredictionWithTagNumber(){
+    this.chart = new Chart("FakePredictionbarWithTage", {
+      type: "bar",
+      data: {
+        labels: ["K100-2020", "K101-2020", "K102-2020","K103-2020","K104-2020","K105-2020","K106-2020","K107-2020","K108-2020","K109-2020",],
+        fill: true,
+        datasets: [
+          {
+            label: "Normal",
+            data: [50,55,56,57,60,63,56,69,15,25],
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
+
+          },
+          {
+            label: "Incipient",
+            data: [15,20,23,28,31,34,39,4,77,25],
+            borderWidth: 1,
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
+            fill: true,
+
+          },
+          {
+            label: "Degrade",
+            data: [7,9,11,12,8,7,12,0,4,17],
+            borderWidth: 1,
+            borderColor: "#fe4c61",
+            backgroundColor: '#fe4c61',
+            fill: true,
+
+          },
+
+        ],
+      },
+      options: {
+        tooltips: {
+          mode: 'index',
+        },
+        scales: {
+          xAxes: [{
+            stacked: true,
+            barPercentage: 0.2,
+            scaleLabel: {
+              display: true,
+              labelString: 'Tag Numbers & Years'
+            },
+            gridLines: {
+              display: false
+            },
+          }],
+          yAxes: [{
+            stacked: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Percentage '
+            },
+            ticks: {
+            },
+            gridLines: {
+              display: false
+            },
+          }],
+          "animation": {
+            "duration": 1,
+            "onComplete": function () {
+              var chartInstance = this.chart,
+                ctx = chartInstance.ctx;
+              this.data.datasets.forEach(function (dataset, i) {
+                var meta = chartInstance.controller.getDatasetMeta(i);
+                meta.data.forEach(function (bar, index) {
+                  var data = dataset.data[index];
+                  if (data > 0) {
+                    ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                  }
+                });
+              });
+            }
+          },
+        }
+      }
+    });
+  }
+
 }
 
