@@ -69,12 +69,12 @@ export class CostBenefitAnalysisComponent {
         this.GetMssStartegyList();
         this.getPrescriptiveRecords();
         this.GetRiskMatrixLibraryRecords();
-        this.MSSTaskDetailList = [
-            { 'Hours': 48, 'HR': 22.7, 'Craft': 'MEC','Level': 0, 'Status':'Retained' },
-            { 'Hours': 48, 'HR': 11.4, 'Craft': 'HEL','Level': 25, 'Status':'Retained' },
-            { 'Hours': 4, 'HR': 22.7, 'Craft': 'ELE' ,'Level': 75, 'Status':'Retained' },
-            { 'Hours': 24, 'HR': 22.7, 'Craft': 'CTL','Level': 100, 'Status':'Retained' }
-        ]
+        // this.MSSTaskDetailList = [
+        //     { 'Hours': 48, 'HR': 22.7, 'Craft': 'MEC','Level': 0, 'Status':'Retained' },
+        //     { 'Hours': 48, 'HR': 11.4, 'Craft': 'HEL','Level': 25, 'Status':'Retained' },
+        //     { 'Hours': 4, 'HR': 22.7, 'Craft': 'ELE' ,'Level': 75, 'Status':'Retained' },
+        //     { 'Hours': 24, 'HR': 22.7, 'Craft': 'CTL','Level': 100, 'Status':'Retained' }
+        // ]
     }
 
     GetRiskMatrixLibraryRecords(){
@@ -170,12 +170,12 @@ export class CostBenefitAnalysisComponent {
                var Data = this.MaintenanceStrategyList.find(r=>r.MaintenanceTask === element.MaintenanceTask)
                if(Data !== undefined && Data.Strategy === "GEP"){
                   this.GoodEngineeringTaskList.push(element)
-               }
-               if(Data !== undefined && Data.Strategy === "CONSTRAINT"){
+               }else if(Data !== undefined && Data.Strategy === "CONSTRAINT"){
                 this.MSSStrategyReplacePSR.push(element);
-               }
-               if(Data !== undefined && Data.Strategy === "FMEA"){
+               }else if(Data !== undefined && Data.Strategy === "FMEA"){
                 this.FMEATaskList.push(element);
+               }else{
+                this.MSSTaskDetailList.push(element)
                }
             });
           }
@@ -345,7 +345,7 @@ export class CostBenefitAnalysisComponent {
 
             var WithDPMConstraintCR =  await this.getTotalEconomicConsequenceClass((this.MSSETBF * levelCount), (WithDPMConstraint /1000).toFixed(0));
             this.CBAReportDetails.EconomicRiskWithDPMConstraintCR = WithDPMConstraintCR.CriticalityRating;
-            this.CBAOBJ.levelCount = levelCount;
+            this.CBAOBJ.LevelCount = levelCount;
             this.CBAOBJ.TotalAnnualPOC = TotalAnnualPOC.toFixed(3);;
             this.CBAOBJ.TotalPONC = this.UserProductionCost;
             this.CBAOBJ.ETBF = this.ETBF;
@@ -370,7 +370,9 @@ export class CostBenefitAnalysisComponent {
         }
       }
     GetUserProductionDetailRecords(){
-        this.commonBLervice.getWithoutParameters(this.PSRAPIs.GetUserProductionDetail).subscribe(
+        const params = new HttpParams()
+              .set('UserId', this.UserDetails.UserId)
+        this.commonBLervice.getWithParameters(this.PSRAPIs.GetUserProductionDetail, params).subscribe(
          (res : any) => { 
             this.UserProductionCost = 0;
             var labor = 0;
@@ -454,33 +456,37 @@ export class CostBenefitAnalysisComponent {
                 }else{
                     if(this.prescriptiveRecords.Type === "CA"){
                         this.MSSTaskDetailList.forEach(r => {
-                            let obj ={}
-                            obj['Craft']= r.Craft;
-                            var weeks = element.MSSMaintenanceInterval.split(" ")[0];
-                            var Years = (parseFloat(weeks)/52).toFixed(0);
-                            obj['AnnualPOC']= ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years)).toFixed(3)
-                            var abc = ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years)).toFixed(3)
-                            if(r.Craft === "MEC"){
-                                obj['AnnualPOC'] = parseFloat(abc) + 1000
+                            if(row.CentrifugalPumpMssModel[0].MSSMaintenanceTask === r.MaintenanceTask){
+                                if(r.SkillPSRMappingMSS.length > 0){
+                                    r.SkillPSRMappingMSS.forEach(a => {
+                                        let obj ={}
+                                        var CRAFTData = this.PSRClientContractorData.find(res=>res.PSRClientContractorId === a.CraftOriginalId);
+                                        var LEVELData = this.SkillLibraryAllrecords.find(res=>res.SKillLibraryId === a.Craft);
+                                        obj['Craft']= CRAFTData.CraftSF;
+                                        var weeks = element.MSSMaintenanceInterval.split(" ")[0];
+                                        var Years = (parseFloat(weeks)/52).toFixed(0);
+                                        if(parseFloat(Years) < 1){
+                                            Years = "1"; 
+                                        }
+                                       // obj['AnnualPOC']= ((parseFloat(a.TaskDuration) * parseFloat(a.HourlyRate)) / parseFloat(Years)).toFixed(3) 
+                                        var abc = ((parseFloat(a.TaskDuration) * parseFloat(a.HourlyRate)) / parseFloat(Years)).toFixed(3)
+                                        obj['AnnualPOC'] = (parseFloat(abc) + parseFloat(a.MaterialCost)).toFixed(2) 
+                                        obj['Level']= LEVELData.Level;
+                                        obj['MSSIntervalSelectionCriteria']=element.MSSIntervalSelectionCriteria
+                                        obj['CentrifugalPumpMssId']="MSS";
+                                        obj['Checked']= true;
+                                        obj['MSSMaintenanceTask']=element.MSSMaintenanceTask;
+                                        obj['Hours']= `${a.TaskDuration} hrs`;
+                                        obj['Status']= 'Retained';
+                                        obj['Progress']= 0;
+                                        obj['MSSMaintenanceInterval']=element.MSSMaintenanceInterval;
+                                        this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
+                                        WithDPM = WithDPM + ((parseFloat(a.TaskDuration) * parseFloat(a.HourlyRate)) / parseFloat(Years))
+                                        TotalAnnualPOC = TotalAnnualPOC + (parseFloat(abc) + parseFloat(a.MaterialCost));
+                                        levelCount = levelCount + parseFloat(LEVELData.Level);
+                                    });
+                                }
                             }
-                            obj['Level']= r.Level;
-                            obj['MSSIntervalSelectionCriteria']=element.MSSIntervalSelectionCriteria
-                            obj['CentrifugalPumpMssId']="MSS";
-                            obj['Checked']= true;
-                            obj['MSSMaintenanceTask']=element.MSSMaintenanceTask;
-                            obj['Hours']= `${r.Hours} hrs`;
-                            obj['Status']= r.Status;
-                            obj['Progress']= 0;
-                            obj['MSSMaintenanceInterval']=element.MSSMaintenanceInterval;
-                            this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
-                            WithDPM = WithDPM + ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years))
-                            if(r.Craft === "MEC"){
-                                TotalAnnualPOC = TotalAnnualPOC + (parseFloat(abc) + 1000);
-                            }else{
-                                TotalAnnualPOC = TotalAnnualPOC + ((parseFloat(r.Hours) * parseFloat(r.HR)) / parseFloat(Years));
-                            }
-                           
-                            levelCount = levelCount + r.Level;
                         });
                         // TotalAnuualPOC = TotalAnuualPOC + element.AnnualPOC;
                         // levelCount = levelCount + element.Level
@@ -822,7 +828,7 @@ export class CostBenefitAnalysisComponent {
                 levelCount = (levelCount/(this.CBAReportDetails.CentrifugalPumpMssModel.length * 100))
                 this.CBAReportDetails.TotalAnnualPOC =TotalAnnualPOC.toFixed(0);
                 
-                this.CBAOBJ.levelCount = levelCount;
+                this.CBAOBJ.LevelCount = levelCount;
                 this.CBAOBJ.ResidualRiskWithMaintenance = (TotalAnnualPOC - vendorPOC).toFixed(2)
                 this.CBAOBJ.VendorPOC = vendorPOC.toFixed(2);
                 this.CBAOBJ.TotalAnnualPOC = TotalAnnualPOC.toFixed(3);;
@@ -981,7 +987,9 @@ export class CostBenefitAnalysisComponent {
         popupWinindow.document.close();
     }
     private getUserSkillRecords(){
-        this.commonBLervice.getWithoutParameters('/SkillLibraryAPI/GetAllConfigurationRecords').subscribe(
+        const params = new HttpParams()
+              .set('UserId', this.UserDetails.UserId)
+        this.commonBLervice.getWithParameters('/SkillLibraryAPI/GetAllConfigurationRecords', params).subscribe(
           (res : any) => {
             this.SkillLibraryAllrecords =res;
           })

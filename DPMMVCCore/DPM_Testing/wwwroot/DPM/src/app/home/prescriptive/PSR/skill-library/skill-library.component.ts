@@ -366,6 +366,7 @@ export class SkillLibraryComponent implements OnInit {
   skillLibraryForm() {
     this.skillLibraryForms.push(this.fb.group({
       SKillLibraryId: [0],
+      UserId:[this.userModel.UserId],
       Craft: [0, Validators.required],
       EmpId: [0, Validators.required],
       Task: [0, Validators.required],
@@ -397,7 +398,9 @@ export class SkillLibraryComponent implements OnInit {
       var PSRData : any = this.PSRModel.find(r=>r.MaintenanceTaskId === Data.Task);
       var EmployeeData = this.EmployeeList.find(r=>r.id === Data.EmpId);
       var craftData = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === Data.Craft)
-      var craft = this.getCraftValue(PSRData);
+      if(PSRData.Craft !== 0){
+        var craft = this.getCraftValue(PSRData);
+      }
       if((Data.Task === PSRData.MaintenanceTaskId) 
           && (PSRData.EmployeeName === EmployeeData.name)
           && (craftData.CraftSF === craft) ){
