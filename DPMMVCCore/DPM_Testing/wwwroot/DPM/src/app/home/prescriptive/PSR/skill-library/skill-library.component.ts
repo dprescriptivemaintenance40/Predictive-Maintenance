@@ -439,7 +439,9 @@ export class SkillLibraryComponent implements OnInit {
 
   getUserSkillRecords(){
     this.skillLibraryForms = this.fb.array([]);
-    this.commonBLervice.getWithoutParameters('/SkillLibraryAPI/GetAllConfigurationRecords').subscribe(
+    const params = new HttpParams()
+          .set('UserId', this.userModel.UserId)
+    this.commonBLervice.getWithParameters('/SkillLibraryAPI/GetAllConfigurationRecords', params).subscribe(
       (res : any) => {
         this.SkillLibraryAllrecords =res;
         if (res.length == 0)

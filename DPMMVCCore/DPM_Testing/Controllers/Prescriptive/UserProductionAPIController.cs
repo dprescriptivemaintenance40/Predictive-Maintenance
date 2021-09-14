@@ -23,9 +23,9 @@ namespace DPM_Testing.Controllers
 
         [HttpGet]
         [Route("GetAllConfigurationRecords")]
-        public async Task<ActionResult<IEnumerable<UserProductionModel>>> GetUserProductionModels()
+        public async Task<ActionResult<IEnumerable<UserProductionModel>>> GetUserProductionModels(string UserId)
         {
-              return await _context.UserProductionModels.OrderBy(a=> a.UserProductionId).ToListAsync();
+              return await _context.UserProductionModels.Where(r =>r.UserId == UserId).OrderBy(a=> a.UserProductionId).ToListAsync();
         }
 
         [HttpGet("{id}")]

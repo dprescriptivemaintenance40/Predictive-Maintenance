@@ -225,5 +225,71 @@ namespace DPM_Testing.Controllers
                 return BadRequest(exe.Message);
             }
         }
+
+        [HttpPost]
+        [Route("PostCBATask")]
+        public async Task<IActionResult> PostCBATask(CBAModel CBAModel)
+        {
+            try
+            {
+                
+                if (CBAModel.CBAId == 0)
+                {
+                    List<CBAModel> CheckAlreadySaved = new List<CBAModel>();
+                    CheckAlreadySaved = await _context.CBAModels.Where(r=>r.TagNumber == CBAModel.TagNumber && r.FailureMode == CBAModel.FailureMode 
+                                                                       && r.EquipmentType == CBAModel.EquipmentType && r.MachineType == CBAModel.MachineType).ToListAsync();
+                    if(CheckAlreadySaved.Count == 0)
+                    {
+                        _context.CBAModels.Add(CBAModel);
+                        await this._context.SaveChangesAsync();
+                        return Ok();
+                    }
+                    else
+                    {
+                        return BadRequest("Already saved in database, Update it if any changes");
+                    }
+                }
+                else
+                {
+                    CBAModel cBAModel = new CBAModel();
+                    cBAModel.CBATaskModel = CBAModel.CBATaskModel;
+                    CBAModel.CBATaskModel = null;
+                    _context.Entry(CBAModel).State = EntityState.Modified;
+                    var add = cBAModel.CBATaskModel.Where(a => a.CBATaskId == 0).ToList();
+                    var update = cBAModel.CBATaskModel.Where(a => a.CBATaskId != 0).ToList();
+                    if (update.Count > 0)
+                    {
+                        this._context.CBATaskModels.UpdateRange(update);
+                    }
+                    if (add.Count > 0)
+                    {
+                        this._context.CBATaskModels.AddRange(add);
+                    }
+                   await this._context.SaveChangesAsync();
+                return Ok();
+                }
+                
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetSavedCBA")]
+        public async Task<IActionResult> GetSavedCBA(string UserId)
+        {
+            try
+            {
+                return Ok(await this._context.CBAModels.Where(a => a.UserId == UserId)
+                                                                   .Include(r => r.CBATaskModel)
+                                                                   .ToListAsync());
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
     }
 }

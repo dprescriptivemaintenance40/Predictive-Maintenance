@@ -15,6 +15,9 @@
         <div class="dpm-steps">
             <div class="w-50 m-auto d-flex justify-content-around">
                 <div class="step active align-items-center text-center justify-content-center d-flex flex-column">
+                    <label class="d-flex align-items-center justify-content-center text-center">1</label> Already Saved
+                </div>
+                <div class="step active align-items-center text-center justify-content-center d-flex flex-column">
                     <label class="d-flex align-items-center justify-content-center text-center">1</label> Site Information
                 </div>
                 <div class="step align-items-center text-center justify-content-center d-flex flex-column">
@@ -25,13 +28,23 @@
         <div class="card-title-dpm text-center"><i class="pi pi-info-circle mr-1"></i>Please provide listed information</div>
         <div class="row d-flex m-auto w-100 align-items-center justify-content-center">
 
-            <div class="col-md-3 pr-0">
+            <div class="col-md-2 pr-0">
+                <div class="d-flex flex-column">
+                    <!-- <label style="">Site</label> -->
+                    <select class="form-control" [(ngModel)]="AlreadySaved">
+                        <option value="">View already saved CBA</option>
+                        <option value="Y">Yes</option>
+                        <option value="N">No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2 pr-0">
                 <div class="d-flex flex-column">
                     <!-- <label style="">Site</label> -->
                     <input type="text" [(ngModel)]="Site" placeholder="Enter Site" class="form-control">
                 </div>
             </div>
-            <div class="col-md-3 pr-0">
+            <div class="col-md-2 pr-0">
                 <div class="d-flex flex-column">
                     <!-- <label style="">Plant</label> -->
                     <input type="text" [(ngModel)]="Plant" placeholder="Enter Plant" class="form-control">
@@ -92,9 +105,15 @@
             </div>
             <div class="col-sm">
                 <!-- <label>Tag Number</label> -->
-                <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                <select class="form-select" [(ngModel)]="SelectedTagNumber" (change)="MachineEquipmentSelect()" class="form-control">
                  <option value="">Choose Tag Number</option>
                  <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+            </select>
+            </div>
+            <div *ngIf="AlreadySaved === 'Y'" class="col-sm">
+                <select class="form-select" [(ngModel)]="FMSelected" class="form-control">
+                 <option value="">Choose Failure Mode</option>
+                 <option *ngFor="let EL of FMList" [ngValue]="EL">{{EL}}</option>
             </select>
             </div>
             <div class="col-sm-1">
@@ -137,6 +156,13 @@
             </ul>
         </div>
         <div class="w-100" *ngIf="CBAReportDetails" style="margin-top: 13px;">
+            <div class="col-sm-1">
+                <div class="row">
+                    <div class="col-sm">
+                        <a class="btn btn-primary" (click)="Save()">{{AlreadySaved === 'Y' ? 'Update' :'Save'}}</a>
+                    </div>
+                </div>
+            </div>
             <div class="card dpm-card p-4" id="CBAReport">
                 <h4>D.P.M. Cost Benefit Analysis<a (click)="PrintCBAReport()" style="cursor: pointer; float: right;"><i class="fa fa-print text-dark"></i></a></h4>
                 <!-- <a (click)="PDFCBAReport()" style="cursor: pointer;"><i class="fa fa-file-pdf text-danger mr-2"></i></a> -->
@@ -196,7 +222,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body task-body">
+                <div class="card-body task-body" style="overflow: auto;">
                     <div class="col-sm-12 p-0">
                         <h5>Tasks</h5>                       
                         <div class="table-responsive-sm bg-white p-2 mb-4">
@@ -212,6 +238,7 @@
                                         <!-- <th>POC</th> -->
                                         <th>Annual POC</th>
                                         <th>Status</th>
+                                        <th>Progress</th>
                                         <th>Select</th>
                                     </tr>
                                 </thead>
@@ -226,6 +253,14 @@
                                         <!-- <td class="left">{{mss.POC}}</td> -->
                                         <td class="left">{{mss.AnnualPOC}}</td>
                                         <td class="left">{{mss.Status}}</td>
+                                        <td class="left">
+                                            <select class="form-control" [(ngModel)]="mss.Progress" >
+                                                <option value="0">Choose</option>
+                                                <option value="1">Complete</option>
+                                                <option value="2">On Progress</option>
+                                                <option value="3">Delayed</option>
+                                            </select>
+                                        </td>
                                         <td>
                                             <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [(ngModel)]="mss.Checked"/>
                                         </td>
@@ -369,7 +404,7 @@
                                 <div class="row">
                                     <div class="col-sm">
                                         <div class="mb-2">
-                                            <strong>Total PONC: <span class="badge badge-success">{{UserProductionCost}}</span></strong>
+                                            <strong>Total PONC : <span class="badge badge-success">{{UserProductionCost}}</span></strong>
                                         </div>
                                     </div> 
                                     <div class="col-sm">
@@ -379,7 +414,7 @@
                                     </div>
                                     <div class="col-sm">
                                         <div class="mb-2">
-                                            <strong> {{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true ? 'Economic RISK with DPM' : 'Economic RISK with DPM with Constraint'}} : <span class="badge badge-success">{{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true ? CBAReportDetails.WithDPM : CBAReportDetails.WithDPMConstraint}}</span></strong>
+                                            <strong> {{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true || CBAReportDetails.CentrifugalPumpMssModel[0].Checked == 'true' ? 'Economic RISK with DPM' : 'Economic RISK with DPM with Constraint'}} : <span class="badge badge-success">{{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true || CBAReportDetails.CentrifugalPumpMssModel[0].Checked == 'true' ? CBAReportDetails.WithDPM : CBAReportDetails.WithDPMConstraint}}</span></strong>
                                         </div>
                                     </div>
                                     <!-- <div *ngIf="CBAReportDetails.EconomicRiskWithDPMConstraintCR !== ''" class="col-sm">

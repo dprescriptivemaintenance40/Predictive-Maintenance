@@ -19,6 +19,7 @@ import { MssStrategyComponent } from './PSR/mss-strategy/mss-strategy.component'
 import { SkillLibraryComponent } from './PSR/skill-library/skill-library.component';
 import { MSRComponent } from './PSR/msr/msr.component';
 import { UserProductionDetailsComponent } from './PSR/user-production-details/user-production-details.component';
+import { InputDataManagementComponent } from './PSR/input-data-management/input-data-management.component';
 
 @NgModule({
     declarations: [PrescriptiveComponent,
@@ -36,7 +37,8 @@ import { UserProductionDetailsComponent } from './PSR/user-production-details/us
         MssStrategyComponent,
         SkillLibraryComponent,
         MSRComponent,
-        UserProductionDetailsComponent
+        UserProductionDetailsComponent,
+        InputDataManagementComponent
     ],
     imports: [
         SharedModule,

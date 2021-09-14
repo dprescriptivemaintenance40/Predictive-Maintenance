@@ -310,6 +310,10 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Prescriptive/UPD'
                 },
                 {
+                  label:'Input Data Management',
+                  url : '#/Home/Prescriptive/InputDataManagement'
+                },
+                {
                   label: 'Display',
                   url: '#/Home/Prescriptive/Display'
                 }

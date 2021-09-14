@@ -44,6 +44,8 @@ namespace DPM_ServerSide.DAL
         public DbSet<UserSkillLibraryModel> UserSkillLibraryModels { get; set; }
         public DbSet<UserProductionModel> UserProductionModels { get; set; }
         public DbSet<ScrewCompressorForecastModel> ScrewCompressorForecastModels { get; set; }
+        public DbSet<CBAModel> CBAModels { get; set; }
+        public DbSet<CBATaskModel> CBATaskModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -91,6 +93,12 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<UserSkillLibraryModel>().ToTable("UserSkillLibraryModelTable");
             modelBuilder.Entity<UserProductionModel>().ToTable("UserProductionModelTable");
             modelBuilder.Entity<ScrewCompressorForecastModel>().ToTable("forecast").HasNoKey();
+            modelBuilder.Entity<CBAModel>().ToTable("CBAModelTable");
+            modelBuilder.Entity<CBATaskModel>().ToTable("CBATaskModelTable");
+            modelBuilder.Entity<CBATaskModel>()
+                        .HasOne(p => p.CBAModel)
+                        .WithMany(b => b.CBATaskModel)
+                        .HasForeignKey(a => a.CBAId);
         }
 
     }
