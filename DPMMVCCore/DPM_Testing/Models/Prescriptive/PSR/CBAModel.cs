@@ -11,6 +11,7 @@ namespace DPM.Models.Prescriptive.PSR
         [Key]
         public int CBAId { get; set; }
         public string UserId { get; set; }
+        public DateTime CommisionDate { get; set; }
         public int RCMTreeId { get; set; }
         public string FailureMode { get; set; }
         public string MachineType { get; set; }

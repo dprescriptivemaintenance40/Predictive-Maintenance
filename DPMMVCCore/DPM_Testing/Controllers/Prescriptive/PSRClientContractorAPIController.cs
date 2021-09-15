@@ -240,6 +240,8 @@ namespace DPM_Testing.Controllers
                                                                        && r.EquipmentType == CBAModel.EquipmentType && r.MachineType == CBAModel.MachineType).ToListAsync();
                     if(CheckAlreadySaved.Count == 0)
                     {
+                        DateTime dt = DateTime.Now;
+                        CBAModel.CommisionDate = dt;
                         _context.CBAModels.Add(CBAModel);
                         await this._context.SaveChangesAsync();
                         return Ok();
