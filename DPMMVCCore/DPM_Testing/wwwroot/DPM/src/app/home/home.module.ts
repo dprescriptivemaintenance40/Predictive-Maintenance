@@ -26,6 +26,8 @@ import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
 import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
 import { ConstarintManagementComponent } from './CBA_Library/constarint-management/constarint-management.component';
 import { AlertManagementComponent } from './CBA_Library/alert-management/alert-management.component';
+import { DesignatonAccessComponent } from './Admin/designaton-access/designaton-access.component';
+import { StaffComponent } from './Admin/staff/staff.component';
 
 @NgModule({
     declarations: [
@@ -47,7 +49,9 @@ import { AlertManagementComponent } from './CBA_Library/alert-management/alert-m
         WeibullAnalysis,
         FailureHistoryComponent,
         ConstarintManagementComponent,
-        AlertManagementComponent
+        AlertManagementComponent,
+        DesignatonAccessComponent,
+        StaffComponent
     ],
     imports: [        
         HomeRoutingModule,       

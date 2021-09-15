@@ -46,6 +46,7 @@ namespace DPM_ServerSide.DAL
         public DbSet<ScrewCompressorForecastModel> ScrewCompressorForecastModels { get; set; }
         public DbSet<CBAModel> CBAModels { get; set; }
         public DbSet<CBATaskModel> CBATaskModels { get; set; }
+        public DbSet<DesignationAccessModel> DesignationAccessModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -99,6 +100,7 @@ namespace DPM_ServerSide.DAL
                         .HasOne(p => p.CBAModel)
                         .WithMany(b => b.CBATaskModel)
                         .HasForeignKey(a => a.CBAId);
+            modelBuilder.Entity<DesignationAccessModel>().ToTable("DesignationAccessModelTable");
         }
 
     }
