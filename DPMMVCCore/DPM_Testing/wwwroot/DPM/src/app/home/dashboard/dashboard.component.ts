@@ -344,11 +344,11 @@ export class DashboardComponent {
 
   ngOnInit() {
     // this.fakePredictionWithTagNumber()
+       // this.GerAllPredictionRecords();
     this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
-    // this.GerAllPredictionRecords();
     this.dygraph()
     this.ComboDates()
     this.getcombinerecords()
@@ -361,7 +361,6 @@ export class DashboardComponent {
 
 
   Dashboardshowcriteria(){
-
    if(this.dashboardshow=="Prescription"){
     this.PrescriptiveShow=true;
     this.GerAllPredictionRecords();
@@ -384,26 +383,6 @@ export class DashboardComponent {
   getUserDetails() {
     if (!!localStorage.getItem('CBAOBJ')) {
       this.UserData = JSON.parse(localStorage.getItem('CBAOBJ'));
-      // this.CBI_etbf = JSON.parse(localStorage.getItem('CBAOBJ')).ETBF;
-      // this.OverallETBC = JSON.parse(localStorage.getItem('CBAOBJ')).OverallETBC;
-      // this.TotalAnnualPOC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
-      // this.TotalPONC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
-      // this.VendorETBC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
-      // this.VendorPOC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorPOC;
-      // this.EconomicRiskWithDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCR;
-
-      // this.EconomicRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
-      // this.EconomicRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPM;
-      // this.EconomicRiskWithConstraintDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraint;
-
-      // this.MEIWithDPMWithoutConstraint = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPM;
-      // this.MEIWithDPMWithConstraint = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMConstraint;
-      // this.MEIWithoutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
-
-      // this.ResidualRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCRValue;
-      // this.ResidualRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPMCRValue;
-      // this.ResidualRiskWithConstraintDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraintCRValue;
-     
       this.showcbi = true;
 
     }
@@ -413,11 +392,7 @@ export class DashboardComponent {
     this.showcbi=true
     this.MitigatingActionshow=false;
   }
-  RiskTableback(){
-    this.Table1= true
-    this.showcbi=false
-    this.MitigatingActionshow=true;
-  }
+
   public onlymssmodel: any = []
   FullCBAObject() {
     this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
@@ -446,8 +421,6 @@ export class DashboardComponent {
   showBasicDialog() {
     this.displayBasic = true;
   }
-
-  
 
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -538,7 +511,6 @@ export class DashboardComponent {
       .subscribe(
         res => {
           this.ScrewPredictionAllData = res;
-
           var Data: any = []
           Data = res;
           Data.sort((a, b) => (moment(a.InsertedDate) > moment(b.InsertedDate) ? 1 : -1));
@@ -603,7 +575,7 @@ export class DashboardComponent {
           });
           this.ScrewPredictionAllData.forEach(predict => {
             this.PredictionData = predict.Prediction;
-            let Predictyeardata = { PredictyearId: 0, Predictyearname: '' };
+            let Predictyeardata = { PredictyearId: 0, Predictyearname: '', };
             Predictyeardata.Predictyearname = moment(predict.InsertedDate).format('YYYY')
             this.PInsertedDate.push(Predictyeardata);
           })
@@ -707,7 +679,7 @@ export class DashboardComponent {
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber()
-    this.PredictionWithTagNumber1()
+    // this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
     this.PredictionWithAlertPieChart()
   }
@@ -736,7 +708,7 @@ export class DashboardComponent {
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber()
-    this.PredictionWithTagNumber1()
+    // this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
     this.PredictionWithAlertPieChart()
   }
@@ -2217,6 +2189,11 @@ export class DashboardComponent {
   //   });
   // }
 
+  public forcastPnormal: number = 0;
+  public forcastFPincipient: number = 0;
+  public forcastFPdegrade: number = 0;
+  public forcastFPbad: number = 0;
+  public forcastcounter: number = 0;
   FutuerdDonughtchart() {
     this.changeDetectorRef.detectChanges();
     this.FutuerPredictionAllData.sort()
@@ -2227,36 +2204,42 @@ export class DashboardComponent {
     });
 
     for (var i = 0; i < this.FuterPredictyearlist.length; ++i) {
-      var forcastPnormal=0
-      var forcastFPincipient=0
-      var forcastFPdegrade=0
-      var forcastFPbad=0
-      var forcastcounter=0
+
       this.FutuerPredictionAllData.forEach(value => {
         var a = moment(value.PredictedDate).format('YYYY')
         if (a == this.FuterPredictyearlist[i].FutuerPredictyearname) {
           if (value.Prediction == 'normal') {
-            forcastPnormal = forcastPnormal + 1
+            this.forcastPnormal =  this.forcastPnormal + 1
           } else if (value.Prediction == 'incipient') {
-            forcastFPincipient = forcastFPincipient + 1
+            this.forcastFPincipient =  this.forcastFPincipient + 1
           } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
-            forcastFPdegrade = forcastFPdegrade + 1
+            this.forcastFPdegrade =  this.forcastFPdegrade + 1
           } else {
-            forcastFPbad = forcastFPbad + 1
+            this.forcastFPbad =  this.forcastFPbad + 1
           }
-          forcastcounter = forcastcounter + 1
+          this.forcastcounter =  this.forcastcounter + 1
         }
 
       });
-      forcastPnormal = ((forcastPnormal / forcastcounter) * 100)
-      forcastFPincipient = ((forcastFPincipient / forcastcounter) * 100)
-      forcastFPdegrade = ((forcastFPdegrade / forcastcounter) * 100)
-      forcastFPbad = ((forcastFPbad / forcastcounter) * 100)
+      var a: any = [];
+      var b: any = [];
+      var c: any = [];
+      var d: any = [];
+      this.forcastPnormal = (( this.forcastPnormal /  this.forcastcounter) * 100)
+      this.forcastFPincipient = (( this.forcastFPincipient /  this.forcastcounter) * 100)
+      this.forcastFPdegrade = (( this.forcastFPdegrade /  this.forcastcounter) * 100)
+      this.forcastFPbad = (( this.forcastFPbad /  this.forcastcounter) * 100)
 
-      this.forcastFinalNormal.push(forcastPnormal)
-      this.forcastFinalIncipient.push(forcastFPincipient)
-      this.forcastFinaldDegrade.push(forcastFPdegrade)
-      this.forcastFinalBad.push(forcastFPbad)
+
+      a.push(this.forcastPnormal)
+      b.push(this.forcastFPincipient)
+      c.push(this.forcastFPdegrade)
+      d.push(this.forcastFPbad)
+
+      this.forcastFinalNormal= parseFloat(a).toFixed(1)
+      this.forcastFinalIncipient= parseFloat(b).toFixed(1)
+      this.forcastFinaldDegrade= parseFloat(c).toFixed(1)
+      this.forcastFinalBad= parseFloat(d).toFixed(1)
 
     }
 
@@ -3365,20 +3348,10 @@ export class DashboardComponent {
       }
     });
   }
-
+  public combinationList:any = []
   PredictionWithTagNumber1() {
     this.changeDetectorRef.detectChanges();
     this.ScrewPredictionAllData.sort()
-
-    var LabelDatess: any = [];
-    this.Pyearlist.forEach(element => {
-      LabelDatess = LabelDatess.filter(function (element) {
-        return element !== undefined;
-      });
-      LabelDatess.push(element.Predictyearname)
-      LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    });
-
     const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
     this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
     this.PTagNumberList =   this.PTagNumberList.filter(r => r.TagNumber !== null)
@@ -3386,18 +3359,32 @@ export class DashboardComponent {
     this.PTagNumberList.forEach(element=>{
       this.tagnumbers.push(element.TagNumber) 
     })
+    var LabelDatess: any = [];
     var combo: any = [];
-    combo= `${LabelDatess} ${this.tagnumbers}`
-
-    for (var i = 0; i < this.Pyearlist.length; ++i) {
+    this.Pyearlist.forEach(element => {
+      LabelDatess = LabelDatess.filter(function (element) {
+        return element !== undefined;
+      });
+      LabelDatess.push(element.Predictyearname)
+      LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    });
+    this.Pyearlist.forEach(element => {
+      this.Predictyearlist.forEach(value => {
+        combo= `${element.Predictyearname}${value.PredictyTagnumber}`
+      })
+      this.combinationList.push(combo)
+      this.combinationList.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    })
+   
+    for (var i = 0; i < this.combinationList.length; ++i) {
       var FPnormal = 0
       var FPincipient = 0
       var FPdegrade = 0
       var FPbad = 0
       var counter = 0
       this.ScrewPredictionAllData.forEach(value => {
-        var a = moment(value.InsertedDate).format('YYYY')
-        if (a == this.Pyearlist[i].Predictyearname) {
+        var a = `${moment(value.InsertedDate).format('YYYY')}${value.TagNumber}`
+        if (a == this.combinationList[i]) {
           if (value.Prediction == 'normal') {
             FPnormal = FPnormal + 1
           } else if (value.Prediction == 'incipient') {
@@ -3436,7 +3423,7 @@ export class DashboardComponent {
     this.chart = new Chart("PredictionbarWithYear", {
       type: "bar",
       data: {
-        labels: LabelDatess,
+        labels: this.combinationList,
         fill: true,
         datasets: [
           {
@@ -3466,18 +3453,11 @@ export class DashboardComponent {
             fill: true,
 
           },
-          // {
-          //   label: "Bad",
-          //   data: this.FPFinalBad,
-          //   borderWidth: 1,
-          //   borderColor: "blue",
-          //   backgroundColor: 'blue',
-          //   fill: true,
-          // },
 
         ],
       },
       options: {
+        events: [],
         scales: {
           xAxes: [{
               stacked: true,
@@ -4295,6 +4275,13 @@ export class DashboardComponent {
       this.ResidualRiskWithConstraintDPMCR = this.allCBAdata[i].EconomicRiskWithDPMConstraintCRValue
      }
      this.allCBAdata .forEach((element) => {
+       if(element.EconomicRiskWithDPMCR=="N"){
+        this.ResidualRiskWithDPM =  1
+       }
+       if(element.EconomicRiskWithOutDPMCR=="L"){
+        this.ResidualRiskWithOutDPM =  2
+       }
+    
              var a:number = element.LevelCount
              this.LevelCount = a*100
          if(this.LevelCount <50){

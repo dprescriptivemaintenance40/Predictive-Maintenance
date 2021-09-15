@@ -377,7 +377,7 @@
 
 <div *ngIf="ExecutorShow">
     <div class="col-md-4">
-        <div class="d-block mt-4">
+        <!-- <div class="d-block mt-4">
             <div class="bg-white rounded p-3 br-3 mb-4">
                 <div class="row">
                     <div class="col-md-4">
@@ -404,11 +404,11 @@
                     </div>
                     <div class="col-md-4">
                         <div class="">
-                            <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
+                            <select name="combinationList" [(ngModel)]="combinationList"
                                 (ngModelChange)="PredictFModeType()" class="form-control">
                                 <option value="">Select Year</option>
                                 <ng-container *ngFor="let year of Pyearlist">
-                                    <option [value]="year.Predictyearname" name="PredictionselectedYear">
+                                    <option [value]="year.Predictyearname" name="combinationList">
                                         {{year.Predictyearname}}</option>
                                 </ng-container>
                             </select>
@@ -416,18 +416,18 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     
     <div class="card bg-transparent border-0">
         <div class="d-block mt-4">
-            <div class="col-md-12 mt-4">
+            <!-- <div class="col-md-12 mt-4">
                 <div class="bg-white rounded  px-5 py-3  br-3" >
                     <strong>Asset Condition Status</strong><br>
                     <canvas id="PredictionbarWithTage"></canvas>
                 </div>
                 </div>
-            </div><br>
+            </div><br> -->
             <div class="d-block mt-4">
                 <div class="col-md-12 mt-4">
                     <div class="bg-white rounded  px-5 py-3  br-3" >
@@ -582,7 +582,7 @@
     </div>
     
 </div>
-
+</div>
 
 <!-- <div class="bg-white rounded  px-5 py-3  br-3" >
     <canvas id="FakePredictionbarWithTage"></canvas>
