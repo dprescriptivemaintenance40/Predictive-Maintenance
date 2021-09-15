@@ -26,7 +26,7 @@ namespace DPM_Testing.Controllers
         public async Task<ActionResult<IEnumerable<DesignationAccessModel>>> GetDesignationAccessModels(string UserId)
         {
               return await _context.DesignationAccessModels.Where(a=>a.CompanyUserId == UserId)
-                                                 .OrderBy(a=> a.CompanyUserId).ToListAsync();
+                                                 .OrderBy(a=> a.DAId).ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -77,10 +77,19 @@ namespace DPM_Testing.Controllers
         {
             try
             {
-                _context.DesignationAccessModels.Add(designationAccessModels);
-                await _context.SaveChangesAsync();
+                DesignationAccessModel CheckDesignationAccessModel = await _context.DesignationAccessModels.Where(r => r.CompanyUserId == designationAccessModels.CompanyUserId && r.DesignationName == designationAccessModels.DesignationName).FirstOrDefaultAsync();
+                if(CheckDesignationAccessModel == null)
+                {
+                    _context.DesignationAccessModels.Add(designationAccessModels);
+                    await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetDesignationAccessModel", new { id = designationAccessModels.DAId }, designationAccessModels);
+                    return CreatedAtAction("GetDesignationAccessModel", new { id = designationAccessModels.DAId }, designationAccessModels);
+
+                }
+                else
+                {
+                    return Ok(new { message = "Designation already exist !!!" });
+                }
             }
             catch (System.Exception exe)
             {

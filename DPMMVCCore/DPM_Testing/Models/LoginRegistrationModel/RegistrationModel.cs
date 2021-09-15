@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace DPM_Testing.Models
 {
     public class RegistrationModel : BaseModel
@@ -15,5 +14,6 @@ namespace DPM_Testing.Models
         public string Password { get; set; }        
         public int UserType { get; set; } // 1 => Company Admin & 0 => Trial
         public string ImageUrl { get; set; }
+        public int DesignationId { get; set; } // 0 => Admin & other than 0 is DesignationAccessModel PK.
     }
 }

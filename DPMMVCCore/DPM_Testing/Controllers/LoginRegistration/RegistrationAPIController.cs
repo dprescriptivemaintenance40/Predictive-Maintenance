@@ -10,6 +10,8 @@ using System.Text;
 using DPM_ServerSide.DAL;
 using Microsoft.EntityFrameworkCore;
 using DPM.Utilities;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DPM_Testing.Controllers
 {
@@ -37,8 +39,8 @@ namespace DPM_Testing.Controllers
                 var user = await this.context.RegisterUsers.FirstOrDefaultAsync(a => a.UserName == model.UserName);
                 if (user == null)
                 {
+                    model.CreatedDate = DateTime.Now;
                     model.UserId = Guid.NewGuid().ToString();
-                    model.UserType = 0;
                     model.Password = EncryptDecryptPassword.Encrypt(model.Password, model.UserId.ToString());
                     this.context.RegisterUsers.Add(model);
                     await this.context.SaveChangesAsync();
@@ -95,6 +97,72 @@ namespace DPM_Testing.Controllers
             catch (Exception ex)
             { 
                 return BadRequest("Incorrect username or password");
+            }
+        }
+
+        [HttpGet]
+        [Route("RecordsByUserId")]
+        public async Task<IActionResult> GetRecords(string UserId)
+        {
+            try
+            {
+                var registrationModel = await (from staff in this.context.RegisterUsers
+                                                                   join designation in this.context.DesignationAccessModels
+                                                                   on staff.DesignationId equals designation.DAId
+                                                                   where staff.CreatedBy == UserId
+                                                                   select new 
+                                                                   {
+                                                                       UserId = staff.UserId,
+                                                                       Password = EncryptDecryptPassword.Decrypt(staff.Password, staff.UserId.ToString()),
+                                                                       UserName = staff.UserName,
+                                                                       CreatedBy = staff.CreatedBy,
+                                                                       CreatedDate = staff.CreatedDate,
+                                                                       FirstName = staff.FirstName,
+                                                                       LastName = staff.LastName,
+                                                                       Company = staff.Company,
+                                                                       Email = staff.Email,
+                                                                       PhoneNumber = staff.PhoneNumber,
+                                                                       UserType = staff.UserType,
+                                                                       ImageUrl = staff.ImageUrl,
+                                                                       DesignationId = staff.DesignationId,
+                                                                       DesignationName = designation.DesignationName,
+                                                                       Dashborad = designation.Dashborad,
+                                                                       TrainConfiguration = designation.TrainConfiguration,
+                                                                       ScrewTrain = designation.ScrewTrain,
+                                                                       ScrewPrediction = designation.ScrewPrediction,
+                                                                       FMEA = designation.FMEA,
+                                                                       RCM = designation.RCM,
+                                                                       RCMConfiguration = designation.RCMConfiguration,
+                                                                       RCA = designation.RCA,
+                                                                       CBA = designation.CBA,
+                                                                       AssesmentReport = designation.AssesmentReport,
+                                                                       SkillLibrary = designation.SkillLibrary,
+                                                                       UPD = designation.UPD,
+                                                                       CCL = designation.CCL,
+                                                                       RecycleBin = designation.RecycleBin,
+                                                                   }).ToListAsync();
+
+                return Ok(registrationModel);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateStaff")]
+        public async Task<IActionResult> UpdateStaff(RegistrationModel registration)
+        {
+            try
+            {
+                registration.Password = EncryptDecryptPassword.Encrypt(registration.Password, registration.UserId.ToString());
+                this.context.Entry(registration).State = EntityState.Modified;
+                return Ok();
+            }
+            catch (Exception exe)
+            {   
+                return BadRequest();
             }
         }
     }

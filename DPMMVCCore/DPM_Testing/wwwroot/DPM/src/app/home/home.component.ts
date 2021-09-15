@@ -40,6 +40,20 @@ export class HomeComponent implements OnInit {
       icon: 'pi pi-book',
     },
     {
+      label: 'Admin',
+      icon: 'pi pi-user',
+      items: [
+            {
+              label: 'Designation',
+              url: '#/Home/Designation'
+            },
+            {
+              label: 'Staff',
+              url: '#/Home/Staff'
+            }
+       ]
+    },
+    {
       label: 'Failure Mode Library',
       icon: 'pi pi-bookmark',
       items: [

@@ -1,1 +1,193 @@
-<p>designaton-access works!</p>
+<p-toast position="top-right"></p-toast>
+<form [formGroup]="designationForm">
+    <div class="form-group">
+       <label for="DesignationName">Designation</label>
+       <input formControlName="DesignationName" type="text" class="form-control" id="DesignationName" placeholder="Enter Designation Name">
+    </div>
+    <div class="form-group row">
+      <div class="col">
+        <label>Dashborad</label>
+        <label class="switch">
+            <input formControlName="Dashborad" type="checkbox" checked>
+            <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="col">
+        <label>Train Configuration</label>
+        <label class="switch">
+            <input formControlName="TrainConfiguration" type="checkbox" checked>
+            <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="col">
+        <label>Screw Train</label>
+        <label class="switch">
+            <input formControlName="ScrewTrain" type="checkbox" checked>
+            <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="col">
+        <label>Screw Prediction</label>
+        <label class="switch">
+            <input formControlName="ScrewPrediction" type="checkbox" checked>
+            <span class="slider round"></span>
+        </label>
+      </div>
+   </div>
+
+   <div class="form-group row">
+    <div class="col">
+      <label>FMEA</label>
+      <label class="switch">
+          <input formControlName="FMEA" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col">
+      <label>RCM</label>
+      <label class="switch">
+          <input formControlName="RCM" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col">
+      <label>RCM Configuration</label>
+      <label class="switch">
+          <input formControlName="RCMConfiguration" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col">
+      <label>RCA</label>
+      <label class="switch">
+          <input formControlName="RCA" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+ </div>
+
+ <div class="form-group row">
+    <div class="col">
+      <label>CBA</label>
+      <label class="switch">
+          <input formControlName="CBA" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col">
+      <label>Assesment Report</label>
+      <label class="switch">
+          <input formControlName="AssesmentReport" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col">
+      <label>Skill Library</label>
+      <label class="switch">
+          <input formControlName="SkillLibrary" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col">
+      <label>User Production Details</label>
+      <label class="switch">
+          <input formControlName="UPD" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+ </div>
+
+ <div class="form-group row">
+    <div class="col">
+      <label>Client Contractor Library</label>
+      <label class="switch">
+          <input formControlName="CCL" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col">
+      <label>Recycle Bin</label>
+      <label class="switch">
+          <input formControlName="RecycleBin" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+ </div>
+ <button (click)="onCancel()" type="submit" class="btn btn-primary">Cancel</button>
+ &ensp;
+ <button (click)="AddDesignation()" type="submit" class="btn btn-primary">{{designationForm.get('DAId').value === 0 ?'Submit':'Update'}}</button>
+</form>
+<br />
+<br />
+<p-card class="dpm-card mt-4">
+    <p-table [style]="{width:'100%', overflow:'scroll'}" [value]="designationObjList" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:15em;">
+                <col style="width:15em;">
+                <col style="width:15em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:8em;">
+                <col style="width:12em;">
+            </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr> 
+                <th>Designation</th>
+                <th>Dashborad</th>
+                <th>Train Configuration</th>
+                <th>Screw Train</th>
+                <th>Screw Prediction</th>
+                <th>FMEA</th>
+                <th>RCM</th>
+                <th>RCM Configuration</th>
+                <th>RCA</th>
+                <th>CBA</th>
+                <th>Assesment Report</th>
+                <th>Skill Library</th>
+                <th>UPD</th>
+                <th>CCL</th>
+                <th>Recycle Bin</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-designationObjList>
+            <tr>
+                <td>{{designationObjList.DesignationName}}</td>
+                <td>{{designationObjList.Dashborad === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.TrainConfiguration === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.ScrewTrain === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.ScrewPrediction === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.FMEA === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.RCM === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.RCMConfiguration === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.RCA === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.CBA === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.AssesmentReport === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.SkillLibrary === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.UPD === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.CCL === 1 ? 'Enable' :'Disable'}}</td>
+                <td>{{designationObjList.RecycleBin === 1 ? 'Enable' :'Disable'}}</td>
+                <td>
+                    <button pButton title="Edit" icon="pi pi-pencil" (click)="onEdit(designationObjList)" class="p-button-rounded p-button-success p-button-text"></button>
+                    <button pButton title="Delete" icon="pi pi-trash" (click)="onDelete(designationObjList)" class="p-button-rounded p-button-danger p-button-text"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">No data found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>
