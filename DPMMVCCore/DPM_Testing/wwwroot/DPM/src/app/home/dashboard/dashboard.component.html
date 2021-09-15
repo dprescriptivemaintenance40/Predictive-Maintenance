@@ -402,18 +402,18 @@
                             </select>
                         </div>
                     </div>
-                    <!-- <div class="col-md-4">
+                    <div class="col-md-4">
                         <div class="">
                             <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
                                 (ngModelChange)="PredictFModeType()" class="form-control">
-                                <option value="">Select Tag Number</option>
-                                <ng-container *ngFor="let year of Predictyearlist">
+                                <option value="">Select Year</option>
+                                <ng-container *ngFor="let year of Pyearlist">
                                     <option [value]="year.Predictyearname" name="PredictionselectedYear">
                                         {{year.Predictyearname}}</option>
                                 </ng-container>
                             </select>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -427,12 +427,23 @@
                     <canvas id="PredictionbarWithTage"></canvas>
                 </div>
                 </div>
-            </div><br><br>
+            </div><br>
+            <div class="d-block mt-4">
+                <div class="col-md-12 mt-4">
+                    <div class="bg-white rounded  px-5 py-3  br-3" >
+                        <strong>Asset Condition Status</strong><br>
+                        <canvas id="PredictionbarWithYear"></canvas>
+                    </div>
+                    </div>
+                </div><br>
         <div class="row mt-4">
             <div class="col-md-6">
                 <div class="card bg-white p-3 border-0 ">
                     <strong>Recommendation Status</strong>
+                    <div *ngFor="let obj of allCBAdata;">
+                        <strong style="text-align: left;color:black;font-size: 12px">Recommendation Status For:{{obj.MachineType}}, {{obj.EquipmentType}}, {{obj.TagNumber}}</strong><br>
                     <canvas id="PredictionActionPiechart"></canvas><br><br>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -487,16 +498,16 @@
                     <h1 (click)="RiskTableback()"></h1>
                     <div class="row">
                         <div class="col-sm-6">
-                            <h1 (click)="RiskTable()">
-                            <strong style="text-align: left;color:black;font-size: 12px">{{FunctionMode}} </strong><br>
-                            <strong style="text-align: left;color:black;font-size: 12px">Strategy Mitigated Risk Rank : {{EconomicRiskWithDPMCR}}  </strong><br>
-                            <strong style="text-align: left;color:black;font-size: 12px"> Strategy Mitigated Financial Risk  : {{EconomicRiskWithDPM}} </strong><br>
-                       </h1>
+                            <div *ngFor="let obj of allCBAdata;">
+                            <strong style="text-align: left;color:black;font-size: 12px">Risk :{{obj.MachineType}}, {{obj.EquipmentType}}, {{obj.TagNumber}} </strong><br>
+                            <strong style="text-align: left;color:black;font-size: 12px">{{obj.FailureMode}} </strong><br>
+                            <strong style="text-align: left;color:black;font-size: 12px">Strategy Mitigated Risk Rank : {{obj.EconomicRiskWithDPMCR}}  </strong><br>
+                            <strong style="text-align: left;color:black;font-size: 12px"> Strategy Mitigated Financial Risk  : {{obj.EconomicRiskWithDPM}} </strong><br>
+                            <div>
+                                <canvas id="{{obj.rankgraphId}}" height="20"></canvas>
+                            </div>
                         </div>
-                        <div class="col-sm-6">
-                            <canvas id="risk_N" height="20"></canvas>
                         </div>
-              
                     </div>
                 </div>
             </div>
@@ -540,7 +551,7 @@
                 <select [(ngModel)]="CBIGraphs" class="form-select" (change)="CBICharts()" class="form-control">
                     <option value="">All Graph.</option>
                     <option value="Ecomomic_Risk" selected>Ecomomic Risk Graph</option>
-                    <option value="Residual_Risk" selected>Residual Risk Graph</option>
+                    <!-- <option value="Residual_Risk" selected>Residual Risk Graph</option> -->
                     <option value="MEI" selected>MEI</option>
                 </select>
             </div><br>
@@ -555,12 +566,12 @@
                     <canvas id="ecomomic_risk"></canvas>
                 </div>
             </div><br>
-            <div *ngIf="residual_risk_Graph">
+            <!-- <div *ngIf="residual_risk_Graph">
                 <div class="card" style="width:50rem;margin-left: 10rem;">
                     <strong>Residual Risk Graph</strong>
                     <canvas id="residual_risk"></canvas>
                 </div>
-            </div><br>
+            </div><br> -->
             <div *ngIf="MEI_risk_Graph">
                 <div class="card" style="width:50rem;margin-left: 10rem;">
                     <strong>MEI Graph</strong>
@@ -573,11 +584,11 @@
 </div>
 
 
-<div class="bg-white rounded  px-5 py-3  br-3" >
+<!-- <div class="bg-white rounded  px-5 py-3  br-3" >
     <canvas id="FakePredictionbarWithTage"></canvas>
-</div>
+</div> -->
 
-<div class="d-block mt-4">
+<!-- <div class="d-block mt-4">
     <div class="row">
         <div class="col-md-6">
             <div class="h-100 bg-white p-3">
@@ -616,7 +627,7 @@
             </div>
         </div>
     </div>
-</div><br>
+</div><br> -->
 
 
 <div *ngIf="PrescriptiveShow"> 
@@ -651,19 +662,6 @@
     </div>
    </div><br>
     <div *ngIf="assetselection">
-        <!-- <div class="row">
-            <div class="card">
-            <div class="col-sm">
-                <h6>Machine Type : {{MachineType}}</h6>  
-            </div>
-            <div class="col-sm">
-                <h6>Equipment Type : {{EquipmentType}} </h6>  
-            </div>
-            <div class="col-sm">
-                <h6>Tag Number : {{SelectedTagNumber}} </h6>  
-            </div>
-            </div>
-        </div> <br> -->
     <div class="card-body task-body">
         <div class="col-sm-12 p-0">
             <h5>Asset Functional Description </h5>                       
@@ -686,10 +684,10 @@
                             <th>Data quality </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngFor="let obj of allCBAdata;">
                         <tr>
                         <td> 0.999500</td>
-                        <td> N</td>
+                        <td> {{obj.EconomicRiskWithDPMCR}}</td>
                         <td>06/11/2016</td>
                         <td>30/03/2017 </td>
                         <td>2.833213 </td>
@@ -718,7 +716,8 @@
                             <th>Health status</th>
                             <th>Current </th>
                             <th>Forecast</th>
-                        
+                            <th></th>
+                            <th></th>
                         </tr>
                         <tr>
                             <th></th>
@@ -731,30 +730,24 @@
                     <tbody>
                         <tr>
                         <td> N- Normal</td>
-                        <td>79</td>
-                        <td>82</td>
-                        <td>90</td>
-                        <td>90</td>
+                        <td>{{Normalpercentage}}</td>
+                        <td>{{forcastFinalNormal}}</td>
+
                         
                         </tr>
                         <tr>
                             <td>I- Incipient</td>
-                            <td>69</td>
-                            <td>45</td>
-                            <td>40</td>
-                            <td>90</td>
+                            <td>{{Incipientpercentage}}</td>
+                            <td>{{forcastFinalIncipient}}</td>
+
                         </tr>
                         <tr>
                             <td> D- Degraded </td>
-                            <td>49</td>
-                            <td>60</td>
-                            <td>67</td>
-                            <td>90</td>
+                            <td>{{Degradepercentage}}</td>
+                            <td>{{forcastFinaldDegrade}}</td>
                         </tr>
                         <tr>
                             <td> Upper/ Lower confidence level</td>
-                            <td>50</td>
-                            <td>50</td>
                             <td>50</td>
                             <td>50</td>
                         </tr>
@@ -784,18 +777,23 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>GREEN /  AMBER / RED</td>
+                            <td>GREEN / AMBER / RED</td>
+                            <td><span *ngIf="notifications">
+                                <i class="fas fa-exclamation-circle {{notifications.class}}"></i>
+                            </span></td>
                             <td> <strong style="font-size: 12px;"><span
-                                style="background-color: orange;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
-                                <td> <strong style="font-size: 12px;"><span
-                                    style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
-                                    <td> <strong style="font-size: 12px;"><span
-                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
-                                        <td> <strong style="font-size: 12px;"><span
-                                            style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
-                                            <td> <strong style="font-size: 12px;"><span
-                                                style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span> </strong></td>
-                            <td>Machine starts degrading, RCA is recomended </td>
+                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+                                </strong></td>
+                            <td> <strong style="font-size: 12px;"><span
+                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+                                </strong></td>
+                            <td> <strong style="font-size: 12px;"><span
+                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+                                </strong></td>
+                            <td> <strong style="font-size: 12px;"><span
+                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+                                </strong></td>
+                            <td>{{RecommendationAlertMessage}}</td>
                             <td>- </td>
                             <td>-</td>
       
@@ -821,31 +819,32 @@
                             <th>ECONOMIC RISK </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
+                    <tbody >
+                        <tr *ngFor="let obj of allCBAdata;">
                             <td> Current </td>
                             <td> - </td>
-                            <td> 2</td>
-                            <td>3.6 </td>
-                            <td>4 </td>
-                            <td>11726 </td>
+                            <td> {{obj.VendorETBC}}</td>
+                            <td>{{obj.MEIWithoutDPM}} </td>
+                            <td>{{obj.MEIWithoutDPM}}</td>
+                            <td>{{obj.EconomicRiskWithOutDPM}}</td> 
                         </tr>
-                        <tr>
-                            <td>DPM w/o mitigating constraints</td>
+                        <tr *ngFor="let obj of allCBAdata;">
+                            <td> DPM w/o mitigating constraints </td>
                             <td> - </td>
-                            <td> 4</td>
-                            <td> 5.4</td>
-                            <td> 2</td>
-                            <td>2029 </td>
+                            <td> {{obj.VendorETBC}}</td>
+                            <td>{{obj.MEIWithDPM}} </td>
+                            <td>{{obj.MEIWithoutDPM}}</td>
+                            <td>{{obj.EconomicRiskWithDPM}}</td> 
                         </tr>
-                        <tr>
-                            <td>DPM with constraint mitigation</td>
+                        <tr *ngFor="let obj of allCBAdata;">
+                            <td> DPM with constraint mitigation </td>
                             <td> - </td>
-                            <td>7.5 </td>
-                            <td>4.8</td>
-                            <td> 1</td>
-                            <td>5000 </td>
+                            <td> {{obj.VendorETBC}}</td>
+                            <td>{{obj.MEIWithDPMConstraint}} </td>
+                            <td>{{obj.MEIWithDPMConstraint}}</td>
+                            <td>{{obj.EconomicRiskWithDPMConstraintCR}}</td>
                         </tr>
+                   
                     </tbody>
                 </table>
             </div>
@@ -882,85 +881,25 @@
                             <td>{{obj.Level}} </td>
                            
                         </tr>
-                        <tr>
+                        <tr *ngFor="let obj of MSSTaskList;">
                             <td>RCM recommendation</td>
-                            <td> Install second stage rotor assembly as per procedure</td>
-                            <td>156 Week </td>
-                            <td>- </td>
-                            <td>- </td>
-                            <td> MEC</td>
-                            <td>48 hrs</td>
-                            <td> 0</td>
+                            <td >{{obj.MSSMaintenanceTask}} </td>
+                            <td>{{obj.MSSMaintenanceInterval}} </td>
+                            <td></td>
+                            <td> -</td>
+                            <td>{{obj.Craft}} </td>
+                            <td>{{obj.Hours}} </td>
+                            <td>{{obj.Level}} </td>
                         </tr>
-                        <tr>
-                            <td>RCM recommendation</td>
-                            <td> Install second stage rotor assembly as per procedure</td>
-                            <td>156 Week </td>
-                            <td>- </td>
-                            <td>- </td>
-                            <td> HEL</td>
-                            <td>48 hrs</td>
-                            <td> 25</td>
-                        </tr>
-                        <tr>
-                            <td>RCM recommendation</td>
-                            <td> Install second stage rotor assembly as per procedurey</td>
-                            <td>156 Week </td>
-                            <td>- </td>
-                            <td>- </td>
-                            <td> HEL</td>
-                            <td>4 hrs</td>
-                            <td> 75</td>
-                        </tr>
-                        <tr>
-                            <td>RCM recommendation</td>
-                            <td> Install second stage rotor assembly as per procedure</td>
-                            <td>156 Week </td>
-                            <td>- </td>
-                            <td>- </td>
-                            <td> 	CTL</td>
-                            <td>24 hrs</td>
-                            <td> 100</td>
-                        </tr>
-                        <tr>
+                        <tr *ngFor="let obj of ConstraintTaskList;">
                             <td>Constraint management recommendationn</td>
-                            <td>Change-over @3-4 days between Operating and standby compressors</td>
-                            <td>52 Week </td>
+                            <td >{{obj.MSSMaintenanceTask}} </td>
+                            <td>{{obj.MSSMaintenanceInterval}} </td>
+                            <td></td>
                             <td> -</td>
-                            <td> -</td>
-                            <td>OPS </td>
-                            <td> 6 hrs</td>
-                            <td>50 </td>
-                        </tr>
-                        <tr>
-                            <td>Constraint management recommendationn</td>
-                            <td>Modify piping to Purge dry air to 1st stage outlet to prevent moisture ingress during standstill </td>
-                            <td>52 Week </td>
-                            <td> -</td>
-                            <td> -</td>
-                            <td>HEL </td>
-                            <td> 6 hrs</td>
-                            <td>50 </td>
-                        </tr>
-                        <tr>
-                            <td>Constraint management recommendationn</td>
-                            <td>Defer rotor assembly replacement when predction clasification sharply moves from incipient to degraded state - MEC </td>
-                            <td>156 Week </td>
-                            <td> -</td>
-                            <td> -</td>
-                            <td>CTL </td>
-                            <td> 12 hrs</td>
-                            <td>75 </td>
-                        </tr>
-                        <tr>
-                            <td>Constraint management recommendationn</td>
-                            <td>Defer rotor assembly replacement when predction clasification sharply moves from incipient to degraded state - MEC </td>
-                            <td>24 Week </td>
-                            <td> -</td>
-                            <td> -</td>
-                            <td>OPS </td>
-                            <td> 24 hrs</td>
-                            <td>100 </td>
+                            <td>{{obj.Craft}} </td>
+                            <td>{{obj.Hours}} </td>
+                            <td>{{obj.Level}} </td>
                         </tr>
                     </tbody>
                 </table>

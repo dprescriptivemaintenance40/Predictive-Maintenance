@@ -339,25 +339,21 @@ export class DashboardComponent {
       { 'FunctionMode': 'Rotar Damage', 'RiskRank': 'H', 'FinancialRisk': 1029, 'TagNumber': 'K102' },
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'MH', 'FinancialRisk': 2000, 'TagNumber': 'K103' },
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'M', 'FinancialRisk': 2029, 'TagNumber': 'K104' },
-      // { 'FunctionMode': 'Cooler Failure', 'RiskRank': 'M', 'FinancialRisk': 1198, 'TagNumber': 'K105' },
-      // { 'FunctionMode': 'Rotar Damage', 'RiskRank': 'M', 'FinancialRisk': 1998, 'TagNumber': 'K106' },
-      // { 'FunctionMode': 'Rotar Damage', 'RiskRank': 'H', 'FinancialRisk': 2059, 'TagNumber': 'K107' },
-      // { 'FunctionMode': 'Cooler Failure', 'RiskRank': 'N', 'FinancialRisk': 2029, 'TagNumber': 'K108' },
-      // { 'FunctionMode': 'Cooler Failure', 'RiskRank': 'N', 'FinancialRisk': 2049, 'TagNumber': 'K109' },
   ]
   }
 
   ngOnInit() {
-    this.fakePredictionWithTagNumber()
+    // this.fakePredictionWithTagNumber()
     this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
     // this.GerAllPredictionRecords();
-     this.dygraph()
+    this.dygraph()
     this.ComboDates()
     this.getcombinerecords()
-    this.FakeRiskMetigateactions()
+    this.GetALLCBA()
+    this.GerAllFutuerPredictionRecords()
   }
   public dashboardshow:string = ""
   public ExecutorShow:boolean = false
@@ -368,6 +364,7 @@ export class DashboardComponent {
 
    if(this.dashboardshow=="Prescription"){
     this.PrescriptiveShow=true;
+    this.GerAllPredictionRecords();
     this.ExecutorShow=false;
    }else if(this.dashboardshow=="Management"){
     this.ExecutorShow=false;
@@ -378,38 +375,35 @@ export class DashboardComponent {
      this.PrescriptiveShow=false;
      this.GerAllPredictionRecords();
      this.CBICharts()
-    this.riskGraph_N()
-
-    //  this.FakeRiskMetigateactions()
+     this.riskGraph_N()
+     this.FakeRiskMetigateactions()
      this.RiskProfile()
-    //  this.riskGraph_M()
-    //  this.riskGraph_H()
-    //  this.riskGraph_L()
-    //  this.riskGraph_MH()
+
   }
   }
   getUserDetails() {
     if (!!localStorage.getItem('CBAOBJ')) {
       this.UserData = JSON.parse(localStorage.getItem('CBAOBJ'));
-      this.CBI_etbf = JSON.parse(localStorage.getItem('CBAOBJ')).ETBF;
-      this.OverallETBC = JSON.parse(localStorage.getItem('CBAOBJ')).OverallETBC;
-      this.TotalAnnualPOC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
-      this.TotalPONC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
-      this.VendorETBC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
-      this.VendorPOC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorPOC;
-      this.EconomicRiskWithDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCR;
+      // this.CBI_etbf = JSON.parse(localStorage.getItem('CBAOBJ')).ETBF;
+      // this.OverallETBC = JSON.parse(localStorage.getItem('CBAOBJ')).OverallETBC;
+      // this.TotalAnnualPOC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalAnnualPOC;
+      // this.TotalPONC = JSON.parse(localStorage.getItem('CBAOBJ')).TotalPONC;
+      // this.VendorETBC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorETBC;
+      // this.VendorPOC = JSON.parse(localStorage.getItem('CBAOBJ')).VendorPOC;
+      // this.EconomicRiskWithDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCR;
 
-      this.EconomicRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
-      this.EconomicRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPM;
-      this.EconomicRiskWithConstraintDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraint;
+      // this.EconomicRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPM;
+      // this.EconomicRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPM;
+      // this.EconomicRiskWithConstraintDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraint;
 
-      this.MEIWithDPMWithoutConstraint = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPM;
-      this.MEIWithDPMWithConstraint = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMConstraint;
-      this.MEIWithoutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
+      // this.MEIWithDPMWithoutConstraint = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPM;
+      // this.MEIWithDPMWithConstraint = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithDPMConstraint;
+      // this.MEIWithoutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).MEIWithoutDPM;
 
-      this.ResidualRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCRValue;
-      this.ResidualRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPMCRValue;
-      this.ResidualRiskWithConstraintDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraintCRValue;
+      // this.ResidualRiskWithDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMCRValue;
+      // this.ResidualRiskWithOutDPM = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithOutDPMCRValue;
+      // this.ResidualRiskWithConstraintDPMCR = JSON.parse(localStorage.getItem('CBAOBJ')).EconomicRiskWithDPMConstraintCRValue;
+     
       this.showcbi = true;
 
     }
@@ -438,63 +432,7 @@ export class DashboardComponent {
     this.CPPrescriptiveTagNumber = this.myObj.TagNumber
     this.FunctionMode = this.myObj.FunctionMode
     this.Consequence = this.myObj.Consequence
-    this.centrifugalmssmodel = this.myObj.CentrifugalPumpMssModel
-    var MSScount: number = 0
-    var GDEcount: number = 0
-
-    this.GoodEnggiPractice = this.centrifugalmssmodel
-
-    this.centrifugalmssmodel.forEach((element) => {
-      this.AnnualPOC = element.AnnualPOC
-      this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
-      this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
-      this.Craft = element.Craft
-      this.MSSMaintenanceTask = element.MSSMaintenanceTask
-      this.Level = element.Level
-      this.Hours = element.Hours
-      if (element.CentrifugalPumpMssId === "MSS") {
-        MSScount = MSScount + 1
-        this.notification = { class: 'text-warning', };
-      } else if (element.CentrifugalPumpMssId === "GDE") {
-        this.GDECount = this.GDECount + 1
-        this.notification = { class: 'text-warning', };
-      }
-    }
-    )
-
-    this.MSSCount.push(MSScount)
-    var result = this.groupByKey(this.centrifugalmssmodel, 'MSSIntervalSelectionCriteria');
-
-    var newarray =[];
-     Object.keys(result).map(function (personNamedIndex) {
-       let newobj ={MSSIntervalSelectionCriteria:personNamedIndex,centrifugalmssmodel:[]}
-      newarray.push(newobj);
-
-    });
-     newarray.forEach(itm=>{
-      this.centrifugalmssmodel.forEach(res=>{
-       if(res.MSSIntervalSelectionCriteria == itm.MSSIntervalSelectionCriteria){
-        itm.centrifugalmssmodel.push(res);
-       }
-     })
-   }); 
-   this.centrifugalmssmodelFilter = newarray;
-
-     const ids = this.centrifugalmssmodel.map(o => o.MSSIntervalSelectionCriteria)
-     this.mssmodelFilter= this.centrifugalmssmodel.filter(({MSSIntervalSelectionCriteria}, index) => !ids.includes(MSSIntervalSelectionCriteria, index + 1))
-
-
-    this.GoodEnggiPractice.forEach(element => {
-      if (element.CentrifugalPumpMssId === "GDE") {
-        this.AnnualPOC = element.AnnualPOC
-        this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
-        this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
-        this.Craft = element.Craft
-        this.MSSMaintenanceTask = element.MSSMaintenanceTask
-        this.Level = element.Level
-        this.Hours = element.Hours
-      }
-    });
+    // this.centrifugalmssmodel = this.myObj.CentrifugalPumpMssModel
   }
 
   groupByKey(array, key) {
@@ -720,9 +658,10 @@ export class DashboardComponent {
 
           // this.PredictionAllRecordDonught();
           // this.PredictionAllRecordBarcharts();
-          // this.PredictionAllRecordPie();
+           this.PredictionAllRecordPie();
           this.GenerateReport()
           this.PredictionWithTagNumber()
+          this.PredictionWithTagNumber1()
           this.PredictionWithActionPieChart()
           this.IndicationGraphSSRB()
           this.IndicationGraphRD()
@@ -764,16 +703,17 @@ export class DashboardComponent {
 
     // this.PredictionAllRecordBarcharts()
     // this.PredictionAllRecordDonught()
-    // this.PredictionAllRecordPie()
+    //  this.PredictionAllRecordPie()
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber()
+    this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
     this.PredictionWithAlertPieChart()
   }
 
   PredictFModeType() {
-      //  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
+      // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
      this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
@@ -792,10 +732,11 @@ export class DashboardComponent {
     }
     // this.PredictionAllRecordBarcharts()
     // this.PredictionAllRecordDonught()
-    // this.PredictionAllRecordPie()
+  //  this.PredictionAllRecordPie()
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber()
+    this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
     this.PredictionWithAlertPieChart()
   }
@@ -1836,97 +1777,95 @@ export class DashboardComponent {
 
   //   });
   // }
+ public Degradepercentage:any=[]
+ public Incipientpercentage:any=[]
+ public Normalpercentage:any=[]
+  PredictionAllRecordPie() {
+    var a: any = [];
+    this.PredictionNormalcount = 0,
+      this.PredictionIncipientcount = 0,
+      this.PredictionDegradecount = 0;
+    this.ScrewPredictionAllData.forEach(element => {
+      if (this.fmtype != "") {
+        if (this.fmtype == "SSRB") {
+          a.push(element.SSRB)
+        } else if (this.fmtype == "CF") {
+          a.push(element.CF)
+        } if (this.fmtype == "RD") {
+          a.push(element.RD)
+        }
+      } else {
+        a.push(element.Prediction)
+      }
 
-  // PredictionAllRecordPie() {
-  //   var a: any = [];
-  //   this.PredictionNormalcount = 0,
-  //     this.PredictionIncipientcount = 0,
-  //     this.PredictionDegradecount = 0;
-  //   this.ScrewPredictionAllData.forEach(element => {
-  //     if (this.fmtype != "") {
-  //       if (this.fmtype == "SSRB") {
-  //         a.push(element.SSRB)
-  //       } else if (this.fmtype == "CF") {
-  //         a.push(element.CF)
-  //       } if (this.fmtype == "RD") {
-  //         a.push(element.RD)
-  //       }
-  //     } else {
-  //       a.push(element.Prediction)
-  //     }
+    });
+ 
+ 
 
-  //   });
-  //   var Degradepercentage
-  //   var Incipientpercentage
-  //   var Normalpercentage
+    a.forEach(element => {
+      if (element == 'normal') {
+        this.PredictionNormalcount = this.PredictionNormalcount + 1;
+      } else if (element == 'incipient') {
+        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+      } else if (element == 'degrade' || element == 'degarde') {
+        this.PredictionDegradecount = this.PredictionDegradecount + 1;
+      }
+    });
+    this.Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
+    this.Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
+    this.Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
 
-  //   a.forEach(element => {
-  //     if (element == 'normal') {
-  //       this.PredictionNormalcount = this.PredictionNormalcount + 1;
-  //     } else if (element == 'incipient') {
-  //       this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-  //     } else if (element == 'degrade' || element == 'degarde') {
-  //       this.PredictionDegradecount = this.PredictionDegradecount + 1;
-  //     }
-  //   });
-  //   Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
-  //   Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
-  //   Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
 
-  //   this.predictionDegradeMessage = Degradepercentage
-  //   this.predictionIncipientMessage = Incipientpercentage
-  //   this.predictionNormalMessage = Normalpercentage
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("PredictionPie", {
+      type: 'pie',
+      data: {
+        labels: ["Normal", "Incipient", "Degrade"],
+        fill: true,
+        datasets: [
+          {
+            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
+            data: [this.Normalpercentage, this.Incipientpercentage, this.Degradepercentage]
+          }
+        ]
+      },
+      options: {
+        // events: [],
+        animation: {
+          duration: 500,
+          easing: "easeOutQuart",
+          onComplete: function () {
+            var ctx = this.chart.ctx;
+            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
 
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("PredictionPie", {
-  //     type: 'pie',
-  //     data: {
-  //       labels: ["Normal", "Incipient", "Degrade"],
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
-  //           data: [Normalpercentage, Incipientpercentage, Degradepercentage]
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       // events: [],
-  //       animation: {
-  //         duration: 500,
-  //         easing: "easeOutQuart",
-  //         onComplete: function () {
-  //           var ctx = this.chart.ctx;
-  //           ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
-  //           ctx.textAlign = 'center';
-  //           ctx.textBaseline = 'bottom';
+            this.data.datasets.forEach(function (dataset) {
+              for (var i = 0; i < dataset.data.length; i++) {
+                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                  total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                  mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
+                  start_angle = model.startAngle,
+                  end_angle = model.endAngle,
+                  mid_angle = start_angle + (end_angle - start_angle) / 2;
 
-  //           this.data.datasets.forEach(function (dataset) {
-  //             for (var i = 0; i < dataset.data.length; i++) {
-  //               var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-  //                 total = dataset._meta[Object.keys(dataset._meta)[0]].total,
-  //                 mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
-  //                 start_angle = model.startAngle,
-  //                 end_angle = model.endAngle,
-  //                 mid_angle = start_angle + (end_angle - start_angle) / 2;
+                var x = mid_radius * Math.cos(mid_angle);
+                var y = mid_radius * Math.sin(mid_angle);
 
-  //               var x = mid_radius * Math.cos(mid_angle);
-  //               var y = mid_radius * Math.sin(mid_angle);
+                ctx.fillStyle = '#fff';
+                if (i == 3) {
+                  ctx.fillStyle = '#444';
+                }
+                var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
+                ctx.fillText(percent, model.x + x, model.y + y + 15);
+              }
+            });
+          }
+        }
+      }
+    });
 
-  //               ctx.fillStyle = '#fff';
-  //               if (i == 3) {
-  //                 ctx.fillStyle = '#444';
-  //               }
-  //               var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
-  //               ctx.fillText(percent, model.x + x, model.y + y + 15);
-  //             }
-  //           });
-  //         }
-  //       }
-  //     }
-  //   });
-
-  // }
+  }
 
   // PredictionAllRecordBarcharts() {
   //   this.changeDetectorRef.detectChanges();
@@ -2080,6 +2019,7 @@ export class DashboardComponent {
             this.FutuerPrediction.push(element.Prediction);
           });
           this.FutuerPrediction.forEach((value) => {
+            var counter = 0
             if (value == 'normal') {
               FutuerPredictionnormalValuation = FutuerPredictionnormalValuation + 1;
               FutuerPredictionnormalCount.push(FutuerPredictionnormalValuation);
@@ -2101,9 +2041,9 @@ export class DashboardComponent {
               FutuerPredictionincipientCount.push(FutuerPredictionincipientValuation);
 
             }
-            this.FutuerPredictionDataNormalCount = FutuerPredictionnormalCount;
-            this.FutuerPredictionDataIncipientCount = FutuerPredictionincipientCount;
-            this.FutuerPredictonDataDegradeCount = FutuerPredictiondegradeCount;
+            this.FutuerPredictionDataNormalCount = (FutuerPredictionnormalCount)
+            this.FutuerPredictionDataIncipientCount = (FutuerPredictionincipientCount)
+            this.FutuerPredictonDataDegradeCount = (FutuerPredictiondegradeCount)
 
           });
           this.FutuerPredictionAllData.forEach(Futuerpredict => {
@@ -2133,7 +2073,7 @@ export class DashboardComponent {
               this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
           }
           // this.FutuerlineChart()
-          // this.FutuerdDonughtchart()
+           this.FutuerdDonughtchart()
           // this.Futuerpiechart()
         }, error => {
           console.log(error.error)
@@ -2277,109 +2217,102 @@ export class DashboardComponent {
   //   });
   // }
 
-  // FutuerdDonughtchart() {
-  //   this.changeDetectorRef.detectChanges();
-  //   this.FutuerPredictionAllData.sort()
-  //   var LabelDates: any = [];
-  //   this.FuterPredictyearlist.forEach(element => {
-  //     LabelDates.push(element.FutuerPredictyearname)
-  //     LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-  //   });
+  FutuerdDonughtchart() {
+    this.changeDetectorRef.detectChanges();
+    this.FutuerPredictionAllData.sort()
+    var LabelDates: any = [];
+    this.FuterPredictyearlist.forEach(element => {
+      LabelDates.push(element.FutuerPredictyearname)
+      LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    });
 
-  //   for (var i = 0; i < this.FuterPredictyearlist.length; ++i) {
-  //     var forcastPnormal = 0
-  //     var forcastFPincipient = 0
-  //     var forcastFPdegrade = 0
-  //     var forcastFPbad = 0
-  //     var forcastcounter = 0
-  //     this.FutuerPredictionAllData.forEach(value => {
-  //       var a = moment(value.PredictedDate).format('YYYY')
-  //       if (a == this.FuterPredictyearlist[i].FutuerPredictyearname) {
-  //         if (value.Prediction == 'normal') {
-  //           forcastPnormal = forcastPnormal + 1
-  //         } else if (value.Prediction == 'incipient') {
-  //           forcastFPincipient = forcastFPincipient + 1
-  //         } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
-  //           forcastFPdegrade = forcastFPdegrade + 1
-  //         } else {
-  //           forcastFPbad = forcastFPbad + 1
-  //         }
-  //         forcastcounter = forcastcounter + 1
-  //       }
+    for (var i = 0; i < this.FuterPredictyearlist.length; ++i) {
+      var forcastPnormal=0
+      var forcastFPincipient=0
+      var forcastFPdegrade=0
+      var forcastFPbad=0
+      var forcastcounter=0
+      this.FutuerPredictionAllData.forEach(value => {
+        var a = moment(value.PredictedDate).format('YYYY')
+        if (a == this.FuterPredictyearlist[i].FutuerPredictyearname) {
+          if (value.Prediction == 'normal') {
+            forcastPnormal = forcastPnormal + 1
+          } else if (value.Prediction == 'incipient') {
+            forcastFPincipient = forcastFPincipient + 1
+          } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+            forcastFPdegrade = forcastFPdegrade + 1
+          } else {
+            forcastFPbad = forcastFPbad + 1
+          }
+          forcastcounter = forcastcounter + 1
+        }
 
-  //     });
-  //     forcastPnormal = ((forcastPnormal / forcastcounter) * 100)
-  //     forcastFPincipient = ((forcastFPincipient / forcastcounter) * 100)
-  //     forcastFPdegrade = ((forcastFPdegrade / forcastcounter) * 100)
-  //     forcastFPbad = ((forcastFPbad / forcastcounter) * 100)
+      });
+      forcastPnormal = ((forcastPnormal / forcastcounter) * 100)
+      forcastFPincipient = ((forcastFPincipient / forcastcounter) * 100)
+      forcastFPdegrade = ((forcastFPdegrade / forcastcounter) * 100)
+      forcastFPbad = ((forcastFPbad / forcastcounter) * 100)
 
-  //     this.forcastFinalNormal.push(forcastPnormal)
-  //     this.forcastFinalIncipient.push(forcastFPincipient)
-  //     this.forcastFinaldDegrade.push(forcastFPdegrade)
-  //     this.forcastFinalBad.push(forcastFPbad)
+      this.forcastFinalNormal.push(forcastPnormal)
+      this.forcastFinalIncipient.push(forcastFPincipient)
+      this.forcastFinaldDegrade.push(forcastFPdegrade)
+      this.forcastFinalBad.push(forcastFPbad)
 
-  //   }
+    }
 
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("donughtChart", {
-  //     type: "bar",
-  //     data: {
-  //       labels: LabelDates,
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           label: "Normal",
-  //           data: this.forcastFinalNormal,
-  //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
-  //           fill: true,
-  //         },
-  //         {
-  //           label: "Incipient",
-  //           data: this.forcastFinalIncipient,
-  //           borderWidth: 1,
-  //           borderColor: "#ffb801",
-  //           backgroundColor: '#ffb801',
-  //           fill: true,
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: this.forcastFinaldDegrade,
-  //           borderWidth: 1,
-  //           borderColor: "#fe4c61",
-  //           backgroundColor: '#fe4c61',
-  //           fill: true,
-  //         },
-  //         {
-  //           label: "Bad",
-  //           data: this.forcastFinalBad,
-  //           borderWidth: 1,
-  //           borderColor: "blue",
-  //           backgroundColor: 'blue',
-  //           fill: true,
-  //         },
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("donughtChart", {
+      type: "bar",
+      data: {
+        labels: LabelDates,
+        fill: true,
+        datasets: [
+          {
+            label: "Normal",
+            data: this.forcastFinalNormal,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
+          },
+          {
+            label: "Incipient",
+            data: this.forcastFinalIncipient,
+            borderWidth: 1,
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
+            fill: true,
+          },
+          {
+            label: "Degrade",
+            data: this.forcastFinaldDegrade,
+            borderWidth: 1,
+            borderColor: "#fe4c61",
+            backgroundColor: '#fe4c61',
+            fill: true,
+          },
+       
 
-  //       ],
-  //     },
-  //     options: {
-  //       scales: {
-  //         yAxes: [
-  //           {
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'In_Percentage'
-  //             },
-  //             ticks: {
-  //               beginAtZero: true
-  //             }
-  //           }
-  //         ]
-  //       }
-  //     }
-  //   });
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        }
+      }
+    });
 
-  // }
+  }
 
   // Futuerpiechart() {
   //   var a: any = [];
@@ -2446,7 +2379,7 @@ export class DashboardComponent {
 
   PredictionOnClick() {
     this.changeDetectorRef.detectChanges();
-    this.GerAllPredictionRecords();
+    // this.GerAllPredictionRecords();
     this.FuterPredictionShow = false;
     this.PredictionShow = true;
     this.FutuerselectedYear = ""
@@ -2880,13 +2813,15 @@ export class DashboardComponent {
       this.MEI_risk_Graph = false
       this.allCBI = false
       this.EcomomicRiskGraph()
-    } else if (this.CBIGraphs == "Residual_Risk") {
-      this.residual_risk_Graph = true
-      this.MEI_risk_Graph = false
-      this.ecomomic_risk_Graph = false
-      this.allCBI = false
-      this.ResidualRiskGraph()
-    } else if (this.CBIGraphs == "MEI") {
+    } 
+    // else if (this.CBIGraphs == "Residual_Risk") {
+    //   this.residual_risk_Graph = true
+    //   this.MEI_risk_Graph = false
+    //   this.ecomomic_risk_Graph = false
+    //   this.allCBI = false
+    //   this.ResidualRiskGraph()
+    // } 
+    else if (this.CBIGraphs == "MEI") {
       this.MEI_risk_Graph = true
       this.ecomomic_risk_Graph = false
       this.residual_risk_Graph = false
@@ -2975,79 +2910,79 @@ export class DashboardComponent {
     });
   }
 
-  ResidualRiskGraph() {
-    this.changeDetectorRef.detectChanges();
-    var residualcostWithoutDPM: number = + (this.ResidualRiskWithOutDPM)
-    var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithDPM)
-    var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
-    var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
+  // ResidualRiskGraph() {
+  //   this.changeDetectorRef.detectChanges();
+  //   var residualcostWithoutDPM: number = + (this.ResidualRiskWithOutDPM)
+  //   var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithDPM)
+  //   var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
+  //   var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
 
-    var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
-    var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
-    var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
+  //   var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
+  //   var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
+  //   var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
 
-    this.chart = new Chart("residual_risk", {
-      type: "bar",
-      data: {
-        labels: ["Residual Risk"],
-        datasets: [
-          {
-            label: "Without DPM",
-            backgroundColor: "#d72631",
-            borderColor: "#d72631",
-            borderWidth: 1,
-            data: [resdualtWithoutDPM,]
-          },
-          {
-            label: "With DPM",
-            backgroundColor: "#039fbe",
-            borderColor: "#039fbe",
-            borderWidth: 1,
-            data: [residualcostwithDPM,]
-          },
-          {
-            label: "With Constraint",
-            backgroundColor: "#5c3c92",
-            borderColor: "#5c3c92",
-            borderWidth: 1,
-            data: [residualwithConstraint]
-          },
-        ]
-      },
-      options: {
-        scales: {
-          yAxes: [
-            {
-              scaleLabel: {
-                display: true,
-                labelString: 'In_Percentage'
-              },
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        },
-        "animation": {
-          "duration": 1,
-          "onComplete": function () {
-            var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
-            this.data.datasets.forEach(function (dataset, i) {
-              var meta = chartInstance.controller.getDatasetMeta(i);
-              meta.data.forEach(function (bar, index) {
-                var data = dataset.data[index];
-                if (data > 0) {
-                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                }
-              });
-            });
-          }
-        },
-      }
-    });
+  //   this.chart = new Chart("residual_risk", {
+  //     type: "bar",
+  //     data: {
+  //       labels: ["Residual Risk"],
+  //       datasets: [
+  //         {
+  //           label: "Without DPM",
+  //           backgroundColor: "#d72631",
+  //           borderColor: "#d72631",
+  //           borderWidth: 1,
+  //           data: [resdualtWithoutDPM,]
+  //         },
+  //         {
+  //           label: "With DPM",
+  //           backgroundColor: "#039fbe",
+  //           borderColor: "#039fbe",
+  //           borderWidth: 1,
+  //           data: [residualcostwithDPM,]
+  //         },
+  //         {
+  //           label: "With Constraint",
+  //           backgroundColor: "#5c3c92",
+  //           borderColor: "#5c3c92",
+  //           borderWidth: 1,
+  //           data: [residualwithConstraint]
+  //         },
+  //       ]
+  //     },
+  //     options: {
+  //       scales: {
+  //         yAxes: [
+  //           {
+  //             scaleLabel: {
+  //               display: true,
+  //               labelString: 'In_Percentage'
+  //             },
+  //             ticks: {
+  //               beginAtZero: true
+  //             }
+  //           }
+  //         ]
+  //       },
+  //       "animation": {
+  //         "duration": 1,
+  //         "onComplete": function () {
+  //           var chartInstance = this.chart,
+  //             ctx = chartInstance.ctx;
+  //           this.data.datasets.forEach(function (dataset, i) {
+  //             var meta = chartInstance.controller.getDatasetMeta(i);
+  //             meta.data.forEach(function (bar, index) {
+  //               var data = dataset.data[index];
+  //               if (data > 0) {
+  //                 ctx.fillText(data, bar._model.x, bar._model.y - 5);
+  //               }
+  //             });
+  //           });
+  //         }
+  //       },
+  //     }
+  //   });
 
-  }
+  // }
   MEIGraph() {
     this.changeDetectorRef.detectChanges();
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
@@ -3132,14 +3067,14 @@ export class DashboardComponent {
     var economiccostWithDPM = ((eonomicriskwithDPM / total) * 100).toFixed(2)
     var economiccostwithConstraint = ((eonomicriskwithConstraint / total) * 100).toFixed(2)
 
-    var residualcostWithoutDPM: number = + (this.ResidualRiskWithOutDPM)
-    var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithDPM)
-    var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
-    var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
+    // var residualcostWithoutDPM: number = + (this.ResidualRiskWithOutDPM)
+    // var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithDPM)
+    // var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
+    // var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
 
-    var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
-    var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
-    var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
+    // var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
+    // var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
+    // var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
 
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
     var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
@@ -3295,10 +3230,7 @@ export class DashboardComponent {
     this.PTagNumberList.forEach(element=>{
       this.tagnumbers.push(element.TagNumber) 
     })
-    var LabelDatess : any = [];
-    this.Pyearlist.forEach(element => {
-     LabelDatess.push(element.Predictyearname)
-    });
+
     this.ScrewPredictionAllData.forEach(element => {
       if (this.fmtype != "") {
         if (this.fmtype == "SSRB") {
@@ -3434,151 +3366,161 @@ export class DashboardComponent {
     });
   }
 
-  // PredictionWithTagNumber() {
-  //   this.changeDetectorRef.detectChanges();
-  //   this.ScrewPredictionAllData.sort()
+  PredictionWithTagNumber1() {
+    this.changeDetectorRef.detectChanges();
+    this.ScrewPredictionAllData.sort()
 
-  //   var LabelDatess: any = [];
-  //   this.Predictyearlist.forEach(element => {
-  //     LabelDatess = LabelDatess.filter(function (element) {
-  //       return element !== undefined;
-  //     });
-  //     LabelDatess.push(element.Predictyearname)
-  //     LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-  //   });
+    var LabelDatess: any = [];
+    this.Pyearlist.forEach(element => {
+      LabelDatess = LabelDatess.filter(function (element) {
+        return element !== undefined;
+      });
+      LabelDatess.push(element.Predictyearname)
+      LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    });
 
-  //   for (var i = 0; i < this.Predictyearlist.length; ++i) {
-  //     var FPnormal = 0
-  //     var FPincipient = 0
-  //     var FPdegrade = 0
-  //     var FPbad = 0
-  //     var counter = 0
-  //     this.ScrewPredictionAllData.forEach(value => {
-  //       var a = moment(value.InsertedDate).format('YYYY')
-  //       if (a == this.Predictyearlist[i].Predictyearname) {
-  //         if (value.Prediction == 'normal') {
-  //           FPnormal = FPnormal + 1
-  //         } else if (value.Prediction == 'incipient') {
-  //           FPincipient = FPincipient + 1
-  //         } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
-  //           FPdegrade = FPdegrade + 1
-  //         } else {
-  //           FPbad = FPbad + 1
-  //         }
-  //         counter = counter + 1
-  //       }
+    const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
+    this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
+    this.PTagNumberList =   this.PTagNumberList.filter(r => r.TagNumber !== null)
+  
+    this.PTagNumberList.forEach(element=>{
+      this.tagnumbers.push(element.TagNumber) 
+    })
+    var combo: any = [];
+    combo= `${LabelDatess} ${this.tagnumbers}`
 
-  //     });
-  //     var fperc_Incipient
-  //     var fperc_Normal
-  //     var fperc_Degrade
-  //     var fperc_Bad
-  //     FPnormal = ((FPnormal / counter) * 100)
-  //     FPincipient = ((FPincipient / counter) * 100)
-  //     FPdegrade = ((FPdegrade / counter) * 100)
-  //     FPbad = ((FPbad / counter) * 100)
+    for (var i = 0; i < this.Pyearlist.length; ++i) {
+      var FPnormal = 0
+      var FPincipient = 0
+      var FPdegrade = 0
+      var FPbad = 0
+      var counter = 0
+      this.ScrewPredictionAllData.forEach(value => {
+        var a = moment(value.InsertedDate).format('YYYY')
+        if (a == this.Pyearlist[i].Predictyearname) {
+          if (value.Prediction == 'normal') {
+            FPnormal = FPnormal + 1
+          } else if (value.Prediction == 'incipient') {
+            FPincipient = FPincipient + 1
+          } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+            FPdegrade = FPdegrade + 1
+          } else {
+            FPbad = FPbad + 1
+          }
+          counter = counter + 1
+        }
 
-  //     fperc_Incipient = FPnormal.toFixed()
-  //     fperc_Normal = FPincipient.toFixed()
-  //     fperc_Degrade = FPdegrade.toFixed()
-  //     fperc_Bad = FPbad.toFixed()
+      });
+      var fperc_Incipient
+      var fperc_Normal
+      var fperc_Degrade
+      var fperc_Bad
+      FPnormal = ((FPnormal / counter) * 100)
+      FPincipient = ((FPincipient / counter) * 100)
+      FPdegrade = ((FPdegrade / counter) * 100)
+      FPbad = ((FPbad / counter) * 100)
 
-  //     this.FPFinalNormal.push(fperc_Normal)
-  //     this.FPFinalIncipient.push(fperc_Incipient)
-  //     this.FPFinaldDegrade.push(fperc_Degrade)
-  //     this.FPFinalBad.push(fperc_Bad)
+      fperc_Incipient = FPnormal.toFixed()
+      fperc_Normal = FPincipient.toFixed()
+      fperc_Degrade = FPdegrade.toFixed()
+      fperc_Bad = FPbad.toFixed()
 
-  //   }
+      this.FPFinalNormal.push(fperc_Normal)
+      this.FPFinalIncipient.push(fperc_Incipient)
+      this.FPFinaldDegrade.push(fperc_Degrade)
+      this.FPFinalBad.push(fperc_Bad)
 
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("PredictionbarWithTage", {
-  //     type: "bar",
-  //     data: {
-  //       labels: LabelDatess,
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           label: "Normal",
-  //           data: this.FPFinalNormal,
-  //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
-  //           fill: true,
+    }
 
-  //         },
-  //         {
-  //           label: "Incipient",
-  //           data: this.FPFinalIncipient,
-  //           borderWidth: 1,
-  //           borderColor: "#ffb801",
-  //           backgroundColor: '#ffb801',
-  //           fill: true,
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("PredictionbarWithYear", {
+      type: "bar",
+      data: {
+        labels: LabelDatess,
+        fill: true,
+        datasets: [
+          {
+            label: "Normal",
+            data: this.FPFinalNormal,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
 
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: this.FPFinaldDegrade,
-  //           borderWidth: 1,
-  //           borderColor: "#fe4c61",
-  //           backgroundColor: '#fe4c61',
-  //           fill: true,
+          },
+          {
+            label: "Incipient",
+            data: this.FPFinalIncipient,
+            borderWidth: 1,
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
+            fill: true,
 
-  //         },
-  //         {
-  //           label: "Bad",
-  //           data: this.FPFinalBad,
-  //           borderWidth: 1,
-  //           borderColor: "blue",
-  //           backgroundColor: 'blue',
-  //           fill: true,
-  //         },
+          },
+          {
+            label: "Degrade",
+            data: this.FPFinaldDegrade,
+            borderWidth: 1,
+            borderColor: "#fe4c61",
+            backgroundColor: '#fe4c61',
+            fill: true,
 
-  //       ],
-  //     },
-  //     options: {
-  //       scales: {
-  //         xAxes: [{
-              //stacked: true,
-  //           gridLines: {
-  //             display: false
-  //           },
-  //         }],
-  //         yAxes: [
-  //           {
-               // stacked: true,
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'In_Percentage'
-  //             },
-  //             ticks: {
-  //               beginAtZero: true,
-  //               gridLines: {
-  //                 display: false
-  //               },
-  //             }
-  //           }
-  //         ]
-  //       },
-  //       "animation": {
-  //         "duration": 1,
-  //         "onComplete": function () {
-  //           var chartInstance = this.chart,
-  //             ctx = chartInstance.ctx;
-  //           this.data.datasets.forEach(function (dataset, i) {
-  //             var meta = chartInstance.controller.getDatasetMeta(i);
-  //             meta.data.forEach(function (bar, index) {
-  //               var data = dataset.data[index];
-  //               if (data > 0) {
-  //                 ctx.fillText(data, bar._model.x, bar._model.y - 5);
-  //               }
-  //             });
-  //           });
-  //         }
-  //       },
-  //     }
+          },
+          // {
+          //   label: "Bad",
+          //   data: this.FPFinalBad,
+          //   borderWidth: 1,
+          //   borderColor: "blue",
+          //   backgroundColor: 'blue',
+          //   fill: true,
+          // },
 
-  //   });
-  // }
+        ],
+      },
+      options: {
+        scales: {
+          xAxes: [{
+              stacked: true,
+            gridLines: {
+              display: false
+            },
+          }],
+          yAxes: [
+            {
+               stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true,
+                gridLines: {
+                  display: false
+                },
+              }
+            }
+          ]
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                }
+              });
+            });
+          }
+        },
+      }
+
+    });
+  }
 
   PredictionWithActionPieChart() {
     this.changeDetectorRef.detectChanges();
@@ -3590,7 +3532,7 @@ export class DashboardComponent {
         datasets: [
           {
             backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
-            data: [0, this.MSSCount, 1]
+            data: [this.CompleteStatus, this.Ongoingstatus, this.Overduestatus]
           }
         ]
       },
@@ -4122,25 +4064,25 @@ export class DashboardComponent {
 
   FakeRiskMetigateactions(){
     this.changeDetectorRef.detectChanges();  
-  this.fakeriskandMetigateActions.forEach((r,index) =>{
-    if(r.RiskRank ==="N"){
+  this.allCBAdata.forEach((r,index) =>{
+    if(r.EconomicRiskWithDPMCR ==="N"){
        r.rankgraphId=`risk${index+1}`
       const patternData2 = [1,0.5,0.5,0.5];
       this.getChartTree( patternData2, r.rankgraphId, 'N');
-    }else if(r.RiskRank ==="H"){
+    }else if(r.EconomicRiskWithDPMCR ==="H"){
       r.rankgraphId=`risk${index+1}`
       const patternData4 = [0.5,0.5,1,0.5];
       this.getChartTree( patternData4, r.rankgraphId, 'H');
     }
-    else if(r.RiskRank ==="M"){
+    else if(r.EconomicRiskWithDPMCR ==="M"){
       r.rankgraphId=`risk${index+1}`
       const patternData3 = [0.5,1,0.5,0.5];
       this.getChartTree( patternData3, r.rankgraphId, 'M');
-    } else  if(r.RiskRank ==="L"){
+    } else  if(r.EconomicRiskWithDPMCR ==="L"){
       r.rankgraphId=`risk${index+1}`
       const patternData1 = [1,0.5,0.5,0.5];
       this.getChartTree(patternData1, r.rankgraphId, 'L');
-    } else  if(r.RiskRank ==="MH"){
+    } else  if(r.EconomicRiskWithDPMCR ==="MH"){
       r.rankgraphId=`risk${index+1}`
       const patternData5 = [0.5,0.5,0.5,1];
       this.getChartTree( patternData5, r.rankgraphId, 'MH');
@@ -4213,90 +4155,224 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  fakePredictionWithTagNumber(){
-    this.chart = new Chart("FakePredictionbarWithTage", {
-      type: "bar",
-      data: {
-        labels: ["K100-2020", "K101-2020", "K102-2020","K103-2020","K104-2020","K105-2020","K106-2020","K107-2020","K108-2020","K109-2020",],
-        fill: true,
-        datasets: [
-          {
-            label: "Normal",
-            data: [50,55,56,57,60,63,56,69,15,25],
-            borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
-            fill: true,
+  // fakePredictionWithTagNumber(){
+  //   this.chart = new Chart("FakePredictionbarWithTage", {
+  //     type: "bar",
+  //     data: {
+  //       labels: ["K100-2020", "K101-2020", "K102-2020","K103-2020","K104-2020","K105-2020","K106-2020","K107-2020","K108-2020","K109-2020",],
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           label: "Normal",
+  //           data: [50,55,56,57,60,63,56,69,15,25],
+  //           borderWidth: 1,
+  //           borderColor: "#008000",
+  //           backgroundColor: '#008000',
+  //           fill: true,
 
-          },
-          {
-            label: "Incipient",
-            data: [15,20,23,28,31,34,39,4,77,25],
-            borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
-            fill: true,
+  //         },
+  //         {
+  //           label: "Incipient",
+  //           data: [15,20,23,28,31,34,39,4,77,25],
+  //           borderWidth: 1,
+  //           borderColor: "#ffb801",
+  //           backgroundColor: '#ffb801',
+  //           fill: true,
 
-          },
-          {
-            label: "Degrade",
-            data: [7,9,11,12,8,7,12,0,4,17],
-            borderWidth: 1,
-            borderColor: "#fe4c61",
-            backgroundColor: '#fe4c61',
-            fill: true,
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: [7,9,11,12,8,7,12,0,4,17],
+  //           borderWidth: 1,
+  //           borderColor: "#fe4c61",
+  //           backgroundColor: '#fe4c61',
+  //           fill: true,
 
-          },
+  //         },
 
-        ],
-      },
-      options: {
-        tooltips: {
-          mode: 'index',
-        },
-        scales: {
-          xAxes: [{
-            stacked: true,
-            barPercentage: 0.2,
-            scaleLabel: {
-              display: true,
-              labelString: 'Tag Numbers & Years'
-            },
-            gridLines: {
-              display: false
-            },
-          }],
-          yAxes: [{
-            stacked: true,
-            scaleLabel: {
-              display: true,
-              labelString: 'Percentage '
-            },
-            ticks: {
-            },
-            gridLines: {
-              display: false
-            },
-          }],
-          "animation": {
-            "duration": 1,
-            "onComplete": function () {
-              var chartInstance = this.chart,
-                ctx = chartInstance.ctx;
-              this.data.datasets.forEach(function (dataset, i) {
-                var meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function (bar, index) {
-                  var data = dataset.data[index];
-                  if (data > 0) {
-                    ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                  }
-                });
-              });
-            }
-          },
-        }
+  //       ],
+  //     },
+  //     options: {
+  //       tooltips: {
+  //         mode: 'index',
+  //       },
+  //       scales: {
+  //         xAxes: [{
+  //           stacked: true,
+  //           barPercentage: 0.2,
+  //           scaleLabel: {
+  //             display: true,
+  //             labelString: 'Tag Numbers & Years'
+  //           },
+  //           gridLines: {
+  //             display: false
+  //           },
+  //         }],
+  //         yAxes: [{
+  //           stacked: true,
+  //           scaleLabel: {
+  //             display: true,
+  //             labelString: 'Percentage '
+  //           },
+  //           ticks: {
+  //           },
+  //           gridLines: {
+  //             display: false
+  //           },
+  //         }],
+  //         "animation": {
+  //           "duration": 1,
+  //           "onComplete": function () {
+  //             var chartInstance = this.chart,
+  //               ctx = chartInstance.ctx;
+  //             this.data.datasets.forEach(function (dataset, i) {
+  //               var meta = chartInstance.controller.getDatasetMeta(i);
+  //               meta.data.forEach(function (bar, index) {
+  //                 var data = dataset.data[index];
+  //                 if (data > 0) {
+  //                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
+  //                 }
+  //               });
+  //             });
+  //           }
+  //         },
+  //       }
+  //     }
+  //   });
+  // }
+
+// public CBATasklist:any=[]
+//   CBATAskList(){
+//     const params = new HttpParams()
+//     .set('MachineType', this.MachineType)
+//     .set('EquipmentType', this.EquipmentType)
+//     .set('TagNumber', this.TagNumber)
+//   var url: string = this.dashboardContantAPI.GetCBATaskList;
+//   this.dashboardBLService.getWithParameters(url, params).subscribe(
+//       res => {
+//          this.CBATasklist = res;
+//       }, error => {
+//         console.log(error.error)
+//       })
+//   }
+
+  public allCBAdata:any=[]
+  public CBAOBJ : any ={};
+  public CBAdataForRisk:any=[]
+  public CompleteStatus: number = 0
+  public Ongoingstatus: number = 0
+  public Overduestatus: number = 0
+  public LevelCount:any=[]
+  public notifications = null
+  public MSSTaskList:any=[]
+  public ConstraintTaskList:any=[]
+  GetALLCBA(){
+    const params = new HttpParams()
+    .set('UserId',this.userModel.UserId)
+    this.http.get('api/PSRClientContractorAPI/GetSavedCBA', {params})
+   .subscribe((res: any) => {
+     this.allCBAdata = res;
+     this.FakeRiskMetigateactions()
+      this.CBAdataForRisk = this.allCBAdata
+
+     for (var i = 0; i < this.allCBAdata.length; i++) {
+      this.centrifugalmssmodel=  this.allCBAdata[i].CBATaskModel
+      this.CBI_etbf = this.allCBAdata[i].ETBF;
+      this.OverallETBC = this.allCBAdata[i].OverallETBC;
+      this.TotalAnnualPOC = this.allCBAdata[i].TotalAnnualPOC;
+      this.TotalPONC = this.allCBAdata[i].TotalPONC;
+      this.VendorETBC = this.allCBAdata[i].VendorETBC;
+      this.VendorPOC = this.allCBAdata[i].VendorPOC;
+      this.EconomicRiskWithDPMCR = this.allCBAdata[i].EconomicRiskWithDPMCR;
+      this.EconomicRiskWithDPM = this.allCBAdata[i].EconomicRiskWithDPM
+      this.EconomicRiskWithOutDPM = this.allCBAdata[i].EconomicRiskWithOutDPM
+      this.EconomicRiskWithConstraintDPM = this.allCBAdata[i].EconomicRiskWithDPMConstraint
+      this.MEIWithDPMWithoutConstraint =this.allCBAdata[i].MEIWithDPM
+      this.MEIWithDPMWithConstraint =this.allCBAdata[i].MEIWithDPMConstraint
+      this.MEIWithoutDPM = this.allCBAdata[i].MEIWithoutDPM
+      this.ResidualRiskWithDPM = this.allCBAdata[i].EconomicRiskWithDPMCRValue
+      this.ResidualRiskWithOutDPM = this.allCBAdata[i].EconomicRiskWithOutDPMCRValue
+      this.ResidualRiskWithConstraintDPMCR = this.allCBAdata[i].EconomicRiskWithDPMConstraintCRValue
+     }
+     this.allCBAdata .forEach((element) => {
+             var a:number = element.LevelCount
+             this.LevelCount = a*100
+         if(this.LevelCount <50){
+          this.notifications = { class: 'text-danger', };
+         }else if(this.LevelCount > 50 || this.LevelCount <80){
+          this.notifications = { class: 'text-warning', };
+         }else if(this.LevelCount >81){
+          this.notifications = { class: 'text-success', };
+         }
+     })
+  
+    this.centrifugalmssmodel.forEach((element) => {
+      this.AnnualPOC = element.AnnualPOC
+      this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
+      this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
+      this.Craft = element.Craft
+      this.MSSMaintenanceTask = element.MSSMaintenanceTask
+      this.Level = element.Level
+      this.Hours = element.Hours
+      if (element.CentrifugalPumpMssId === "MSS") {
+        this.notification = { class: 'text-warning', };
+      } else if (element.CentrifugalPumpMssId === "GDE") {
+        this.GDECount = this.GDECount + 1
+        this.notification = { class: 'text-warning', };
       }
+      if(element.Progress === 1){
+        this.CompleteStatus = this.CompleteStatus+1
+      }else if(element.Progress === 2){
+        this.Ongoingstatus = this.Ongoingstatus+1
+      }
+      else if(element.Progress === 3){
+        this.Overduestatus = this.Overduestatus+1
+      }
+    }
+    )
+    this.centrifugalmssmodel .forEach(element => {
+      if(element.CentrifugalPumpMssId=="MSS"){
+        let obj ={}
+        obj['AnnualPOC'] = element.AnnualPOC
+        obj['Level']= element.Level;
+        obj['MSSIntervalSelectionCriteria']=element.MSSIntervalSelectionCriteria
+        obj['MSSMaintenanceTask']=element.MSSMaintenanceTask;
+        obj['Hours']= element.Hours;
+        obj['Craft']= element.Craft;
+        obj['MSSMaintenanceInterval']=element.MSSMaintenanceInterval;
+        this.MSSTaskList.push(obj)
+      }
+      if(element.CentrifugalPumpMssId=="CONSTRAINT"){
+        let obj ={}
+        obj['AnnualPOC'] = element.AnnualPOC
+        obj['Level']= element.Level;
+        obj['MSSIntervalSelectionCriteria']=element.MSSIntervalSelectionCriteria
+        obj['MSSMaintenanceTask']=element.MSSMaintenanceTask;
+        obj['Hours']= element.Hours;
+        obj['Craft']= element.Craft;
+        obj['MSSMaintenanceInterval']=element.MSSMaintenanceInterval;
+        this.ConstraintTaskList.push(obj)
+      }
+    })
+    var result = this.groupByKey(this.centrifugalmssmodel, 'MSSIntervalSelectionCriteria');
+    var newarray =[];
+     Object.keys(result).map(function (personNamedIndex) {
+       let newobj ={MSSIntervalSelectionCriteria:personNamedIndex,centrifugalmssmodel:[]}
+      newarray.push(newobj);
+
     });
+     newarray.forEach(itm=>{
+      this.centrifugalmssmodel.forEach(res=>{
+       if(res.MSSIntervalSelectionCriteria == itm.MSSIntervalSelectionCriteria){
+        itm.centrifugalmssmodel.push(res);
+       }
+     })
+   }); 
+     this.centrifugalmssmodelFilter = newarray;
+     const ids = this.centrifugalmssmodel.map(o => o.MSSIntervalSelectionCriteria)
+     this.mssmodelFilter= this.centrifugalmssmodel.filter(({MSSIntervalSelectionCriteria}, index) => !ids.includes(MSSIntervalSelectionCriteria, index + 1))
+   });
+
   }
 
 }
