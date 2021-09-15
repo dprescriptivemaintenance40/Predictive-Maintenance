@@ -23,7 +23,7 @@ export class SCConstantsAPI{
   public TrainAddDataCoolerFailure : string = '/ScrewCompressureAPI/PostCoolerFailure';
   public ChangeInConfiguration : string = '/ScrewCompressureAPI/ConfigurationChange';
   public getPredictedListByDate : string = '/ScrewCompressureAPI/GetPredictionByDate';
-
+  public GetAllRecords: string = '/ScrewCompressorTrainChartAPI/GetAllRecords'
 
   //#region  Dashboard ScrewCompressureAPI
 
@@ -36,6 +36,7 @@ export class SCConstantsAPI{
     public ScrewPredictionLastUploadList : string = '/ScrewCompressorPredictionChartAPI/ScrewPredictionLastUpload'
     public ScrewPredictionPreviousWeek : string = '/ScrewCompressorPredictionChartAPI/GetPredictionPreviousWeek'
 
+    public GetScrewCompressorForecastRecords : string = '/ScrewCompressorFuturePredictionAPI/GetForecast'
  //#endregion
 
 

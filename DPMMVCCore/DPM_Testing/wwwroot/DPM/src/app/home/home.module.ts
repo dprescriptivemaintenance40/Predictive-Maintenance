@@ -19,7 +19,15 @@ import { CostBenefitAnalysisComponent } from "./CostBenefitAnalysis/cost-benefit
 import { CentrifugalPumpPredictionComponent } from './Pump/centrifugal-pump/centrifugal-pump-prediction/centrifugal-pump-prediction.component';
 import { CentrifugalPumpTraindataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-traindata-upload/centrifugal-pump-traindata-upload.component';
 import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component';
+import {DialogModule} from 'primeng/dialog';
 import { PrescriptionComponent } from './prescription/prescription.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
+import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
+import { ConstarintManagementComponent } from './CBA_Library/constarint-management/constarint-management.component';
+import { AlertManagementComponent } from './CBA_Library/alert-management/alert-management.component';
+import { DesignatonAccessComponent } from './Admin/designaton-access/designaton-access.component';
+import { StaffComponent } from './Admin/staff/staff.component';
 
 @NgModule({
     declarations: [
@@ -37,10 +45,18 @@ import { PrescriptionComponent } from './prescription/prescription.component';
         CentrifugalPumpTraindataUploadComponent,
         CentrifugalPumpPredictiondataUploadComponent,
         PrescriptionComponent,
+        LandingPageComponent,
+        WeibullAnalysis,
+        FailureHistoryComponent,
+        ConstarintManagementComponent,
+        AlertManagementComponent,
+        DesignatonAccessComponent,
+        StaffComponent
     ],
     imports: [        
         HomeRoutingModule,       
-        SharedModule
+        SharedModule,
+        DialogModule
     ],
     providers: [UserService,ProfileService,EventEmitterService,ExcelFormatService],
     bootstrap: [HomeComponent]

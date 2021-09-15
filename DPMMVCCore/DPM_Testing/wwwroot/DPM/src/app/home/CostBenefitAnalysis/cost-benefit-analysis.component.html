@@ -1,233 +1,463 @@
 <style>
-    .custom-card-header {
-        padding: .2rem .2rem;
-        margin-bottom: 0;
-        border-bottom: 3px solid;
+    i {
+        font-weight: bold;
+        margin-right: 5px;
+        font-size: 80%;
+    }
+    
+    strong {
+        font-size: 90%;
     }
 </style>
-
 <p-toast position="top-right"></p-toast>
 <div *ngIf="!showCostBenefitAnalysis">
-    <div class="card shadow div-in-middle">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Please provide listed information</b></li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">Site</label>
+    <div class="card br-7 w-100 dpm-card p-3">
+        <div class="dpm-steps">
+            <div class="w-50 m-auto d-flex justify-content-around">
+                <div class="step active align-items-center text-center justify-content-center d-flex flex-column">
+                    <label class="d-flex align-items-center justify-content-center text-center">1</label> Already Saved
+                </div>
+                <div class="step active align-items-center text-center justify-content-center d-flex flex-column">
+                    <label class="d-flex align-items-center justify-content-center text-center">1</label> Site Information
+                </div>
+                <div class="step align-items-center text-center justify-content-center d-flex flex-column">
+                    <label class="d-flex align-items-center justify-content-center text-center">2</label> Machine Information
+                </div>
+            </div>
+        </div>
+        <div class="card-title-dpm text-center"><i class="pi pi-info-circle mr-1"></i>Please provide listed information</div>
+        <div class="row d-flex m-auto w-100 align-items-center justify-content-center">
+
+            <div class="col-md-2 pr-0">
+                <div class="d-flex flex-column">
+                    <!-- <label style="">Site</label> -->
+                    <select class="form-control" [(ngModel)]="AlreadySaved">
+                        <option value="">View already saved CBA</option>
+                        <option value="Y">Yes</option>
+                        <option value="N">No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2 pr-0">
+                <div class="d-flex flex-column">
+                    <!-- <label style="">Site</label> -->
                     <input type="text" [(ngModel)]="Site" placeholder="Enter Site" class="form-control">
                 </div>
-            </li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">Plant</label>
+            </div>
+            <div class="col-md-2 pr-0">
+                <div class="d-flex flex-column">
+                    <!-- <label style="">Plant</label> -->
                     <input type="text" [(ngModel)]="Plant" placeholder="Enter Plant" class="form-control">
                 </div>
-            </li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">Unit</label>
+            </div>
+            <div class="col-md-2 pr-0">
+                <div class="d-flex flex-column">
+                    <!-- <label style="">Unit</label> -->
                     <input type="text" [(ngModel)]="Unit" placeholder="Enter Unit" class="form-control">
                 </div>
-            </li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">ETBF</label>
-                    <input type="number" [(ngModel)]="ETBF" class="form-control">
+            </div>
+            <div class="col-md-2 pr-0">
+                <div class="d-flex flex-column">
+                    <!-- <label style="">ETBF</label> -->
+                    <input type="text" (keypress)=onlyNumbers($event) placeholder="Enter ETBF"  [(ngModel)]="ETBF" pTooltip="Enter ETBF in years" class="form-control">
                 </div>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-dark" (click)="GenerateCostBenefitReport()">Done</button>
-            </li>
+            </div>
+            <div class="col-md-1">
+                <!-- <label style="visibility: hidden;">action</label> -->
+                <button class="btn btn-primary" (click)="GenerateCostBenefitReport()">Next</button>
+            </div>
 
-        </ul>
+        </div>
     </div>
 </div>
 <div *ngIf="showCostBenefitAnalysis">
-    <div>
-        <button style="margin: 20px;" class="btn btn-dark" (click)="showCostBenefitAnalysis = false" pTooltip="Back" tooltipPosition="top"><i class="fas fa-arrow-left"></i></button>
-        <button *ngIf="showDashboard" style="float: right" class="btn btn-dark" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard">Dashboard</button>
-    </div>
-    <div>
-        
-    </div>
-    <div class="card shadow div-in-middle" style="width: 70rem;">
-        <div class="row">
-            <div class="col-sm" style="padding:30px;">
-                <label style=" margin-right: 12px;">
-                <h5>Machine type</h5>
-            </label>
+
+    <div class="card search-card">
+        <div class="dpm-steps">
+            <div class="w-50 m-auto d-flex justify-content-around">
+                <div class="step active align-items-center text-center justify-content-center d-flex flex-column">
+                    <label class="d-flex align-items-center justify-content-center text-center"><i class="pi pi-check font-weight-bolder mr-0"></i></label> Site Information
+                </div>
+                <div class="step active last align-items-center text-center justify-content-center d-flex flex-column">
+                    <label class="d-flex align-items-center justify-content-center text-center">2</label> Machine Information
+                </div>
+            </div>
+        </div>
+        <div class="card-title-dpm text-center"><i class="pi pi-info-circle mr-1"></i>Please provide more information</div>
+        <div class="row w-75 text-center m-auto">
+            <div class="col-sm-2">
+                <button class="btn btn-outline-secondary btn-sm no-border" (click)="showCostBenefitAnalysis = false" pTooltip="Back" tooltipPosition="top" style="height: 35px"><small><i class="fas fa-arrow-left mr-1"></i>Previous</small></button>
+            </div>
+            <div class="col-sm">
+                <!-- <label>Machine type</label> -->
                 <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
-                <option value="">Choose..</option>
+                <option value="">Choose Machine Type</option>
                 <option value="Compressor" selected>Compressor</option>
                 <option value="Pump" selected>Pump</option>
             </select>
             </div>
-            <div class="col-sm" style="padding:30px;">
-                <label style=" margin-right: 12px;">
-                <h5>Equipment Type</h5>
-            </label>
+            <div class="col-sm">
+                <!-- <label>Equipment Type</label> -->
                 <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
-                <option value="">Choose..</option>
+                <option value="">Choose Equipment Type</option>
                 <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
             </select>
             </div>
-            <div class="col-sm" style="padding:30px;">
-                <label style=" margin-right: 12px;"> <h5>Tag Number</h5></label>
-                <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
-                 <option value="">Choose..</option>
+            <div class="col-sm">
+                <!-- <label>Tag Number</label> -->
+                <select class="form-select" [(ngModel)]="SelectedTagNumber" (change)="MachineEquipmentSelect()" class="form-control">
+                 <option value="">Choose Tag Number</option>
                  <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
             </select>
             </div>
-            <div class="col-sm" style="padding:30px;">
+            <div *ngIf="AlreadySaved === 'Y'" class="col-sm">
+                <select class="form-select" [(ngModel)]="FMSelected" class="form-control">
+                 <option value="">Choose Failure Mode</option>
+                 <option *ngFor="let EL of FMList" [ngValue]="EL">{{EL}}</option>
+            </select>
+            </div>
+            <div class="col-sm-1">
                 <div class="row">
-                    <div class="col-sm" style="padding:30px;">
-                        <a class="btn btn-dark" (click)="getPrescriptiveRecordsByEqui()">Done</a>
+                    <div class="col-sm">
+                        <a class="btn btn-primary" (click)="getPrescriptiveRecordsByEqui()">Done</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container" *ngIf="showPrescriptive" style="margin-top: 13px;">
- 
-        <div class="card" *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
-            <div style="padding: 1.25rem 1.25rem 0rem;">
-                <div class="custom-card-header">
-                    <h4>D.P.M. Cost Benefit Analysis</h4>
-                </div>
-                <div class="custom-card-header">
-                    <span> Currency: $</span>
+    <div *ngIf="showPrescriptive">
+        <div class="dpm-menu">
+            <ul class="navbar-nav ml-auto flex-row">
+
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                        <span class="mr-2"><i class="pi pi-chart-line text-white font-weight-light"></i>Reports</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                        <div class="dpm-menu-icons">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-dpmprimary">
+                                        <div class="row">
+                                            <div class="col-md-3" *ngFor="let row of prescriptiveRecords.centrifugalPumpPrescriptiveFailureModes">
+                                                <a (click)="OpenCBAReport(row)" style="cursor: pointer;" class="d-flex justify-content-between">
+                                                    <label>{{row.FunctionMode}}</label>
+                                                    <label class="d-flex"></label>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="w-100" *ngIf="CBAReportDetails" style="margin-top: 13px;">
+            <div class="col-sm-1">
+                <div class="row">
+                    <div class="col-sm">
+                        <a class="btn btn-primary" (click)="Save()">{{AlreadySaved === 'Y' ? 'Update' :'Save'}}</a>
+                    </div>
                 </div>
             </div>
+            <div class="card dpm-card p-4" id="CBAReport">
+                <h4>D.P.M. Cost Benefit Analysis<a (click)="PrintCBAReport()" style="cursor: pointer; float: right;"><i class="fa fa-print text-dark"></i></a></h4>
+                <!-- <a (click)="PDFCBAReport()" style="cursor: pointer;"><i class="fa fa-file-pdf text-danger mr-2"></i></a> -->
 
-            <div class="card-body">
-                <div>
-                    <div class="row mb-4">
-                        <div class="col-sm-6">
-                            <strong>Customer Name:</strong>&nbsp;&nbsp;
-                            <span> {{UserDetails.FirstName}}&nbsp;{{UserDetails.LastName}} </span>
-                        </div>
-                        <div class="col-sm-6">
-                            <strong>Plant:</strong>
-                            <span> {{this.Plant}}</span>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-sm-6">
-                            <strong>Site:</strong>
-                            <span> {{this.Site}} </span>
-                        </div>
-                        <div class="col-sm-6">
-                            <strong>Unit:</strong>
-                            <span> {{this.Unit}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div style="border-bottom: 1px solid;"></div>
-                <div class="row mb-4">
-                    <div class="col-sm-6">
-                        <strong>Tagnumber:</strong>
-                        <span> {{SelectedTagNumber}} </span>
-                    </div>
-                    <div class="col-sm-6">
-                        <strong>Failure Mode:</strong>
-                        <span> {{row.FunctionMode}}</span>
-                    </div>
-                </div>
-                <div style="border-bottom: 1px solid;"></div>
-
-                <div class="row mb-4">
-                    <div class="col-sm-6">
-                        <div class="m-1 p-1" style="border: 1px solid;">
-                            <span style="border-right: 1px solid;">Functional Failure&nbsp;</span>&nbsp;
-                            <span>{{prescriptiveRecords.FunctionFailure}}</span>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Total PONC</strong>
-                                    <span class="float-right">{{row.TotalPONC}} K</span>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <div class="row mb-2">
+                                <div class="col-sm-6 card-heading">
+                                    <div class="d-block">
+                                        <strong><i class="pi pi-user"></i>Customer Name:</strong>&nbsp;&nbsp;
+                                        <span> {{UserDetails.FirstName}}&nbsp;{{UserDetails.LastName}} </span>
+                                    </div>
+                                    <div class="badge badge-danger">
+                                        <span><strong>Failure Mode:</strong>{{CBAReportDetails.FunctionMode}}</span>
+                                    </div>
+                                    <div class="w-100 text-danger">
+                                        <!-- <span>Functional Failure&nbsp;</span>&nbsp; -->
+                                        <span><i class="pi pi-info-circle"></i>{{prescriptiveRecords.FunctionFailure}}</span>
+                                    </div>
+                                    <small> <button (click)="OpenMEI()" class="badge badge-primary"> Click here to calculate MEI</button></small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>ETBF [y]</strong>
-                                    <span class="float-right">{{row.ETBF}} Y</span>
+                            <div class="row mb-2">
+                                <div class="col-sm-4">
+                                    <strong><i class="pi pi-map"></i>Plant:</strong>
+                                    <span> {{this.Plant}}</span>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <strong><i class="pi pi-map-marker"></i>Site:</strong>
+                                    <span> {{this.Site}} </span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <strong><i class="pi pi-clone"></i>Unit:</strong>
+                                    <span> {{this.Unit}}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="m-1 p-1" style="border: 1px solid;">
-                            <strong>Equipment Type</strong> &nbsp;
-                            <span>{{EquipmentType}}</span>
+                    <div class="col-md-12">
+                        <div class="custom-card-header">
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <strong><i class="pi pi-tag"></i>Tagnumber:</strong>
+                                    <span> {{SelectedTagNumber}} </span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span><i class="pi pi-money-bill"></i><strong>Currency:</strong> $</span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <strong><i class="pi pi-cog"></i>Equipment Type</strong> &nbsp;
+                                    <span>{{EquipmentType}}</span>
+                                </div>
+                            </div>
                         </div>
-                        <h2>Tasks</h2>
-                        <div class="table-responsive-sm">
+                    </div>
+                </div>
+                <div class="card-body task-body" style="overflow: auto;">
+                    <div class="col-sm-12 p-0">
+                        <h5>Tasks</h5>                       
+                        <div class="table-responsive-sm bg-white p-2 mb-4">
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th>Task Details</th>
                                         <th>Maintenance Task</th>
                                         <th>Maintenance Interval</th>
+                                        <th>Hours</th>
                                         <th>RWC</th>
                                         <th>Level</th>
-                                        <th>POC</th>
+                                        <!-- <th>POC</th> -->
                                         <th>Annual POC</th>
                                         <th>Status</th>
+                                        <th>Progress</th>
+                                        <th>Select</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let mss of row.CentrifugalPumpMssModel">
-                                        <td class="left strong">{{mss.MSSMaintenanceTask}}</td>
+                                    <tr *ngFor="let mss of CBAReportDetails.CentrifugalPumpMssModel">
+                                        <td class="left strong">{{mss.MSSIntervalSelectionCriteria}}</td>
+                                        <td class="left">{{mss.MSSMaintenanceTask}}</td>
                                         <td class="left">{{mss.MSSMaintenanceInterval}}</td>
+                                        <td class="left">{{mss.Hours}}</td>
                                         <td class="left">{{mss.Craft}}</td>
                                         <td class="left">{{mss.Level}}</td>
-                                        <td class="left">{{mss.POC}}</td>
+                                        <!-- <td class="left">{{mss.POC}}</td> -->
                                         <td class="left">{{mss.AnnualPOC}}</td>
                                         <td class="left">{{mss.Status}}</td>
+                                        <td class="left">
+                                            <select class="form-control" [(ngModel)]="mss.Progress" >
+                                                <option value="0">Choose</option>
+                                                <option value="1">Complete</option>
+                                                <option value="2">On going</option>
+                                                <option value="3">Overdue</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [(ngModel)]="mss.Checked"/>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="col-sm-6">
-                        <div class="row">
-                            <div class="col-sm-6" style="padding-right: 0px !important;">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Consequence class</strong>
-                                    <div class="m-1 p-1">
-                                        <div>
-                                            ECO&nbsp;&nbsp;HS&nbsp;&nbsp;ENV
-                                        </div>
-                                        <div>
-                                            {{CriticalityRating}} - &nbsp;L&nbsp; - &nbsp;&nbsp;L
+
+                    <div class="col-md-12 bg-white py-3">
+                        <div class="col-sm">
+                            <button style="float: right" class="btn btn-outline-dark btn-sm" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line mr-0"></i></button>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-sm-12">
+                                <!-- <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="mb-2">
+                                            <strong class="d-block">Total PONC: <span class="badge badge-primary">{{CBAReportDetails.TotalPONC}} K</span></strong>
+
                                         </div>
                                     </div>
+                                    <div class="col-sm-3">
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBF [y]: <span class="badge badge-primary">{{CBAReportDetails.ETBF}} Y</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="mb-2">
+                                            <strong>Consequence class: <span class="badge badge-primary mr-1">ECO</span> <span class="badge badge-primary mr-1">HS</span> <span
+                                        class="badge badge-primary mr-1">ENV</span>
+                                    <span class="badge badge-primary mr-1">L</span><span class="badge badge-primary mr-1">N</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="mb-2">
+                                            <strong>Consequence category: <span class="badge badge-primary">{{CBAReportDetails.ConsequenceCategory}}</span></strong>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <strong>Criticality Rating: <span class="badge badge-warning">M</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="mb-2">
+                                            <strong>Economic Risk Without D.P.M. Total Cost: <span
+                                            class="badge badge-primary">{{CBAReportDetails.EconomicRiskWithoutMaintenance}} K</span></strong>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="mb-2">
+                                            <strong>With D.P.M. MEI: <span class="badge badge-primary">{{CBAReportDetails.WithMEI}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="mb-2">
+                                            <strong>Without D.P.M. MEI: <span class="badge badge-primary">{{CBAReportDetails.WithOutMEI}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="mb-2">
+                                            <strong>Residual Risk With D.P.M. Total Cost: <span
+                                                class="badge badge-primary">{{CBAReportDetails.ResidualRiskWithMaintenance}} K</span></strong>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="mb-2">
+                                            <strong>Tasks approved: <span class="badge badge-success">Yes</span></strong>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                <div class="row"></div>
+                                <!-- <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong class="d-block">Total PONC: <span class="badge badge-primary">{{CBAReportDetails.TotalPONC}} K</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBF: <span class="badge badge-primary">{{ETBF}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Consequence category: <span class="badge badge-primary">{{CBAReportDetails.ConsequenceCategory}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Risk Ranking: <span class="badge badge-primary">{{CBAReportDetails.IntialCR}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBC: <span class="badge badge-primary">{{VendorETBF}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Economic Risk Without DPM : <span class="badge badge-primary">{{CBAReportDetails.EconomicRiskWithoutMaintenance}} K</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Consequence class: <span class="badge badge-primary mr-1">ECO</span> <span class="badge badge-primary mr-1">HS</span> <span
+                                        class="badge badge-primary mr-1">ENV : </span>
+                                         <span class="badge badge-primary mr-1">{{CBAReportDetails.VendorCR}}</span><span class="badge badge-primary mr-1">L</span><span class="badge badge-primary mr-1">L</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Criticality Rating : <span class="badge badge-primary">{{CBAReportDetails.VendorCR}} </span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Residual risk without DPM  : <span class="badge badge-primary"></span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">MEI without DPM  : <span class="badge badge-primary">{{CBAReportDetails.WithOutMEI}} K</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBC: <span class="badge badge-primary">{{MSSETBF}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Consequence class: <span class="badge badge-primary mr-1">ECO</span> <span class="badge badge-primary mr-1">HS</span> <span
+                                        class="badge badge-primary mr-1">ENV : </span>
+                                         <span class="badge badge-primary mr-1">{{CBAReportDetails.MSSCR}}</span><span class="badge badge-primary mr-1">L</span><span class="badge badge-primary mr-1">L</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Criticality Rating : <span class="badge badge-primary">{{CBAReportDetails.MSSCR}} </span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">MEI with DPM  : <span class="badge badge-primary">{{CBAReportDetails.WithMEI}} K</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"> 
+                                        <div class="mb-2">
+                                            <strong class="d-block">ETBC with constraint: <span class="badge badge-primary">{{CBAReportDetails.ETBFWithConstraint}} Y</span></strong>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="d-block">Criticality rating with constraint: <span class="badge badge-primary">{{CBAReportDetails.ETBFWithConstraintCR}} Y</span></strong>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Total PONC : <span class="badge badge-success">{{UserProductionCost}}</span></strong>
+                                        </div>
+                                    </div> 
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Economic RISK without DPM: <span class="badge badge-success">{{CBAReportDetails.WithOutDPM}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong> {{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true || CBAReportDetails.CentrifugalPumpMssModel[0].Checked == 'true' ? 'Economic RISK with DPM' : 'Economic RISK with DPM with Constraint'}} : <span class="badge badge-success">{{CBAReportDetails.CentrifugalPumpMssModel[0].Checked == true || CBAReportDetails.CentrifugalPumpMssModel[0].Checked == 'true' ? CBAReportDetails.WithDPM : CBAReportDetails.WithDPMConstraint}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <!-- <div *ngIf="CBAReportDetails.EconomicRiskWithDPMConstraintCR !== ''" class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>Economic RISK with DPM Constraint: <span class="badge badge-success">{{CBAReportDetails.EconomicRiskWithDPMConstraintCR}}</span></strong>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>MEI Without DPM: <span class="badge badge-success">{{CBAReportDetails.MEIWithoutDPM}}</span></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="mb-2">
+                                            <strong>MEI With DPM without Constraint: <span class="badge badge-success">{{CBAReportDetails.MEIWithDPMWithConstraint}}</span></strong>
+                                        </div>
+                                    </div> -->
                                 </div>
                             </div>
-                            <div class="col-sm-6" style="padding-right: 0px !important; padding-left: 3px !important;">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Consequence category</strong>
+
+                            <!-- <div class="col-sm-6" style="padding-right: 0px !important; padding-left: 3px !important;">
+                                <div class="m-1 p-1">
+                                    <strong>Consequence category:</strong>
                                     <span class="float-right">{{row.ConsequenceCategory}}</span>
                                 </div>
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Criticality Rating with DPM</strong>
+                                <div class="m-1 p-1">
+                                    <strong>Criticality Rating with DPM:</strong>
                                     <span class="float-right">{{row.ResidualRiskWithMaintenanceCR}}</span>
                                 </div>
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Criticality Rating without DPM</strong>
+                                <div class="m-1 p-1">
+                                    <strong>Criticality Rating without DPM:</strong>
                                     <span class="float-right">{{row.EconomicRiskWithoutMaintenanceCR}}</span>
                                 </div>
+                            </div> -->
+                        </div>                       
+                        <div class="row mb-4">
+                            <div class="col-sm-6">
+                                <h6><i class="pi pi-eye"></i>Scenario</h6>
+                                <p class="alert alert-primary d-flex justify-content-center align-items-center"><i class="lnr lnr-warning mr-1 font-weight-bold mr-2" style="font-size: 25px;"></i>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface
+                                    without relying on meaningful content.</p>
                             </div>
-                        </div>
-                        <div class="col-sm-12 m-1 p-1" style="border: 1px solid;">
-                            <h6>Scenario</h6>
-                            <p>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <!-- <div class="row">
+                            <div class="col-sm-6">
+                                <!-- <div class="row">
                         <div class="col-sm-6">
                             <div class="m-1 p-1" style="border: 1px solid;">
                                 <strong>ETBC [y]</strong>
@@ -255,50 +485,9 @@
                             </div>
                         </div>
                     </div> -->
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Economic Risk Without D.P.M. Total Cost</strong>
-                                    <span class="float-right">{{row.EconomicRiskWithoutMaintenance}} K</span>
-                                </div>
+
+                                <h6><i class="pi pi-chart-bar"></i>Task Justification</h6>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Residual Risk With D.P.M. Total Cost</strong>
-                                    <span class="float-right">{{row.ResidualRiskWithMaintenance}} K</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>With D.P.M. MEI</strong>
-                                    <span class="float-right">{{row.WithMEI}}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Without D.P.M. MEI</strong>
-                                    <span class="float-right">{{row.WithOutMEI}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <!-- <div class="col-sm-6">
-                            <div class="m-1 p-1" style="border: 1px solid;">
-                                <strong>Residual Criticality</strong>
-                                <span class="float-right">N</span>
-                            </div>
-                        </div> -->
-                            <div class="col-sm-6">
-                                <div class="m-1 p-1" style="border: 1px solid;">
-                                    <strong>Tasks approved</strong>
-                                    <span class="float-right">Yes</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 m-1 p-1" style="border: 1px solid;">
-                            <h6>Task Justification</h6>
                         </div>
                     </div>
                 </div>
@@ -306,3 +495,22 @@
         </div>
     </div>
 </div>
+
+
+<p-dialog header="Enter ETBC to calculate MEI" [(visible)]="AddMEIPopup" [style]="{width: '500px'}" class="col-md-6 d-flex calculate-dialog">
+    <div class="row">
+        <div class="col-md-12 pr-0 mb-4">
+            <div class="d-flex flex-column">
+                <label >ETBC without DPM</label>
+                <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="{{ VendorETBF === 0 ? 'Enter ETBF' : VendorETBF }}"  [(ngModel)]="VendorETBF" pTooltip="Enter ETBF in years" class="form-control">
+
+            </div>
+        </div>
+        <div class="col-md-12 pr-0">
+            <div class="d-flex flex-column">
+                <label>ETBC with DPM</label>
+                <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="Enter ETBF"  [(ngModel)]="MSSETBF" pTooltip="Enter ETBF in years" class="form-control">
+            </div>
+        </div>
+    </div>
+</p-dialog>

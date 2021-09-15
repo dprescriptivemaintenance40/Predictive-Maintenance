@@ -5,7 +5,6 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as Chart from 'chart.js';
 import { MessageService, TreeNode } from 'primeng/api';
-import { CommonLoadingDirective } from 'src/app/shared/Loading/common-loading.directive';
 import { CentrifugalPumpPrescriptiveModel } from './../../FMEA/prescriptive-add/prescriptive-model'
 import * as XLSX from 'xlsx';
 import { ExcelFormatService } from 'src/app/home/Services/excel-format.service';
@@ -79,7 +78,7 @@ export class FCAADDComponent implements OnInit {
   public FCAFreeTextSave1: boolean = true
   public patternaddshow: boolean = false
   public PatternFailuerAll: boolean = false
-   
+
 
   public PrescriptiveTreeList: any = [];
   public TagList: any = [];
@@ -167,14 +166,14 @@ export class FCAADDComponent implements OnInit {
       this.PatternTree();
       this.prescriptiveTree = true;
       this.PatternNextOnPrescriptiveTree = true;
-      this.FinalBack= true;
+      this.FinalBack = true;
     }
   }
   async ngOnDestroy() {
     await localStorage.removeItem('FCAObject');
   }
 
-  BaxkToAssetList(){
+  BaxkToAssetList() {
     this.router.navigateByUrl('/Home/Prescriptive/List');
   }
   async getPrescriptiveRecords() {
@@ -211,32 +210,35 @@ export class FCAADDComponent implements OnInit {
 
 
   private GetChartData() {
+    this.changeDetectorRef.detectChanges();
     const patternLabel1 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData1 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 20];
     this.getChartTree(patternLabel1, patternData1, 'pattern1', 'Pattern 1');
-
+    this.changeDetectorRef.detectChanges();
     const patternLabel2 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData2 = [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 6, 8, 10, 20];
     this.getChartTree(patternLabel2, patternData2, 'pattern2', 'Pattern 2');
-
+    this.changeDetectorRef.detectChanges();
     const patternLabel3 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData3 = [0, 0, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 14, 15, 20];
     this.getChartTree(patternLabel3, patternData3, 'pattern3', 'Pattern 3');
-
+    this.changeDetectorRef.detectChanges();
     const patternLabel4 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData4 = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1, 1, 1, 1, 1];
     this.getChartTree(patternLabel4, patternData4, 'pattern4', 'Pattern 4');
-
+    this.changeDetectorRef.detectChanges();
     const patternLabel5 = ["20", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "20"];
     const patternData5 = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
     this.getChartTree(patternLabel5, patternData5, 'pattern5', 'Pattern 5');
-
+    this.changeDetectorRef.detectChanges();
     const patternLabel6 = ["20", "10", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "8", "10", "20"];
     const patternData6 = [20, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8];
     this.getChartTree(patternLabel6, patternData6, 'pattern6', 'Pattern 6');
+    this.changeDetectorRef.detectChanges();
   }
 
   private getChartTree(labels: any[], data: any[], id: string, title: string) {
+    this.changeDetectorRef.detectChanges();
     let patternCharts = new Chart(id, {
       type: 'line',
       data: {
@@ -251,6 +253,7 @@ export class FCAADDComponent implements OnInit {
         }]
       },
       options: {
+        events: [],
         elements: {
           point: {
             radius: 0
@@ -621,6 +624,7 @@ export class FCAADDComponent implements OnInit {
   ADDFMToFCA() {
     this.prescriptiveTree = false
     this.FailureModePatternTree = true
+    this.changeDetectorRef.detectChanges();
     this.PattenNode1 = 'p-person'
     this.PattenNode2 = 'p-person'
     this.PattenNode3 = 'p-person'
@@ -646,7 +650,9 @@ export class FCAADDComponent implements OnInit {
     var e: string = 'L10';
     this.SafeLifeCalculation(e);
     this.PatternNextOnPrescriptiveTree = false;
+    this.changeDetectorRef.detectChanges();
     this.GetChartData();
+    this.changeDetectorRef.detectChanges();
     this.ConsequenceFM = this.data1[0].children[0].children[0].children[this.PatternCounter].children[0].children[2].data.name
     if (this.ConsequenceFM == 'A (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : Safety and/or environmental hazard))' || this.ConsequenceFM == 'B (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : Safety and/or environmental hazard)') {
       this.UsefulLife = 0;
@@ -1211,7 +1217,7 @@ export class FCAADDComponent implements OnInit {
       if (this.PatternCounter < this.data1[0].children[0].children[0].children.length - 1) {
         this.PatternFMName = this.data1[0].children[0].children[0].children[this.PatternCounter + 1].data.name
         this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Add Next FCA, So click on +FCA button' });
-      }else{
+      } else {
         this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Save FCA' });
       }
       this.PatternCounter = this.PatternCounter + 1
@@ -1676,13 +1682,14 @@ export class FCAADDComponent implements OnInit {
         Data.push(element.Days)
       });
       var url: string = this.prescriptiveContantAPI.FCAWebal
-      this.prescriptiveBLService.postWithHeaders(url, Data).subscribe(
-        (res: any) => {
-          this.alpha = res.alpha;
-          this.beta = res.beta;
-          this.changeDetectorRef.detectChanges();
-        }, err => { console.log(err.error) }
-      )
+      this.prescriptiveBLService.postWithHeaders(url, Data)
+        .subscribe(
+          (res: any) => {
+            this.alpha = res.alpha;
+            this.beta = res.beta;
+            this.changeDetectorRef.detectChanges();
+          }, err => { console.log(err.error) }
+        )
     }
 
   }
@@ -1733,13 +1740,15 @@ export class FCAADDComponent implements OnInit {
   SafeLifeCalculation(e) {
     var FMName = this.PatternFMName;
     var dataFromLibrary = this.MSSLibraryJsonData.find(a => a['name'] === FMName);
-    var MTBF: number = dataFromLibrary.mtbf;
-    if (e === 'L10') {
-      var cal: any = - MTBF * Math.log(0.9)
-      this.SafeLife = cal.toFixed(2)
-    } else if (e === 'L20') {
-      var cal: any = - MTBF * Math.log(0.8)
-      this.SafeLife = cal.toFixed(2)
+    if (dataFromLibrary !== undefined) {
+      var MTBF: number = dataFromLibrary.mtbf;
+      if (e === 'L10') {
+        var cal: any = - MTBF * Math.log(0.9)
+        this.SafeLife = cal.toFixed(2)
+      } else if (e === 'L20') {
+        var cal: any = - MTBF * Math.log(0.8)
+        this.SafeLife = cal.toFixed(2)
+      }
     }
   }
 

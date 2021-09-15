@@ -1,150 +1,151 @@
 <p-toast position="top-right"></p-toast>
-<div class="shadow p-3 mb-5 bg-white rounded">
-    <div class="card">
-        <h5 style="background-color: #585570;padding: 10px; ; border-color:#585570" class="card-header">Report</h5>
+<div class="dpm-card p-3 mb-5 bg-white rounded">
+    <div class="">
+        <h5 class="card-header">Report</h5>
 
-        <div *ngIf="reportHide" class="div-in-middle">
-            <div class="card shadow ">
-
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">To generate report please input some data</li>
-                    <li class="list-group-item">
-                        <div class="input-group mb-3">
-                            <label style="margin-right: 12px;">Equipment Type</label>
-                            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="EquipmentType"
-                                class="form-select" class="form-control">
-                                <option value="">Select Type</option>
-                                <option value="Compressor">Compressor</option>
-                            </select>
-
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="input-group mb-3">
-                            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber"
-                                class="form-control" placeholder="Tag Number" aria-label="Tag Number"
-                                aria-describedby="basic-addon1">
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <button (click)="GenerateReport()" class="btn btn-dark">Done</button>
-                    </li>
-                </ul>
+        <div *ngIf="reportHide" class="">
+            <div class="card search-card ">
+                <div class="alert alert-info">To generate report please input some data</div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Equipment Type</label>
+                        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="EquipmentType" class="form-select" class="form-control">
+                            <option value="">Select Type</option>
+                            <option value="Compressor">Compressor</option>
+                            <!-- <option value="Pump" disabled>Pump</option> -->
+                        
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Tag Number</label>
+                        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="TagNumber" class="form-control">
+                            <option value="">Choose Tag Number</option>
+                            <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button (click)="GenerateReport()" class="btn btn-dark mt-4">Done</button>
+                    </div>
+                </div>
+                
             </div>
         </div>
 
 
         <div *ngIf="reportVisible">
             <div class="row">
-                <div class="col-sm-6" style="padding:30px;">
-                    <input type="button" class="btn btn-dark" value="Download Report" (click)="DownloadPDF()" />
+                <div class="col-sm-12" style="text-align: right; padding: 0px 25px; margin-top: -35px;">
+                    <a class="btn btn-sm btn-outline-primary"  (click)="DownloadPDF()"><i class="pi pi-file-pdf mr-2"></i>Download PDF</a>
                 </div>
             </div>
             <div class="card-body" id="contentToConvert">
                 <div class="row" style="padding:30px; color: black;">
-                    <div class="sidebar-brand-icon col-sm-2">
-                        <style>
-                            img {
-                                width: 100%;
-                                height: 100%;
-                            }
-                        </style>
+                    <div class="text-center sidebar-brand-icon col-sm-12">
+                        
 
                         <div class="image-container">
                             <img src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
-
                         </div>
 
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-12 text-center">
                         <span>
                             <h5>Based on data Inputs and Model analysis, please find below Initial<br>
                                 Assessment report and recommendation for further study of the Asset</h5>
                         </span>
                     </div>
                 </div>
-                <div class="row" style="margin: 10px;">
-                    <div class="col" style="padding:30px; color: black;">
-                        <span>
-                            <h5>Customer Data:</h5>
-                        </span>
-                        <table>
+                <div>
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Customer Data:</h6>
+                        <table class="alert alert-dpmprimary w-100" style="border: none">
                             <tr>
-                                <th>Company Name</th>
-                                <td>{{user.Company}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-home mr-2"></i>Company Name</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{user.Company}}</td>
                             </tr>
                             <tr>
-                                <th>Focal Person Name</th>
-                                <td>{{user.Firstname}} {{user.Lastname}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-user mr-2"></i>Focal Person Name</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{Firstname}} {{Lastname}}</td>
                             </tr>
                             <tr>
-                                <th>Email Address</th>
-                                <td>{{user.Email}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-envelope mr-2"></i>Email Address</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{user.Email}}</td>
                             </tr>
                             <tr>
-                                <th>Contact Details</th>
-                                <td>{{user.PhoneNumber}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-phone mr-2"></i>Contact Details</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{user.PhoneNumber}}</td>
                             </tr>
                             <tr>
-                                <th>Tag Number</th>
-                                <td>{{TagNumber}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-tag mr-2"></i>Tag Number</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{TagNumber}}</td>
                             </tr>
                             <tr>
-                                <th>Equipment Type</th>
-                                <td>{{EquipmentType}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-cog mr-2"></i>Equipment Type</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{EquipmentType}}</td>
                             </tr>
                             <tr>
-                                <th>Date of receipt Customer data</th>
-                                <td>{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-calendar mr-2"></i>Date of receipt
+                                    Customer data</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
                             </tr>
-    
+                        
                         </table>
                     </div>
-                    <div class="col" style="padding:30px; color: black;">
-                        <h5>D.P.M. Output:</h5>
-                        <table>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">D.P.M. Output:</h6>
+                        
+                        <table class="alert alert-dpmprimary w-100" style="border: none">
                             <tr>
-                                <th>Date of Analysis</th>
-                                <td>{{DOA | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-calendar mr-2"></i>Date of Analysis</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;"> {{DOA | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
                             </tr>
                             <tr>
-                                <th>Asset Current Condition</th>
-                                <td>Normal={{normalpercentage | number:'1.0-2' }}%, Incipient={{incipientPerentage |
-                                    number:'1.0-2'}}%, Degrade={{degradePercentage| number:'1.0-2' }}%</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-chart-line mr-2"></i>Asset Current Condition</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">Normal={{normalpercentage | number:'1.0-2' }}%,
+                                    Incipient={{incipientPerentage | number:'1.0-2'}}%, Degrade={{degradePercentage| number:'1.0-2' }}%</td>
                             </tr>
                             <!-- <tr>
-                                <th>Asset Forecast Performance</th>
-                                <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
-                            </tr> -->
+                                                    <th style="border: none; padding: 10px; font-size: 13px;">Asset Forecast Performance</th>
+                                                    <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
+                                                </tr> -->
                             <tr>
-                                <th>Risk ranking</th>
-                                <td>{{RK}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-star-o mr-2"></i>Risk ranking</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{RK}}</td>
                             </tr>
                             <tr>
-                                <th>DPM Analysis Beneficial Y/N</th>
-                                <td>{{DAB}} | Performance Number : {{finalPerformanceNumber | number:'1.0-2'}}</td>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-chart-bar mr-2"></i>DPM Analysis Beneficial Y/N</th>
+                                <td style="border: none; padding: 10px; font-size: 13px;">{{DAB}} | Performance Number :
+                                    {{finalPerformanceNumber | number:'1.0-2'}}</td>
                             </tr>
                             <tr *ngIf="AFPVisible">
-                                <th>Performance Number</th>
-                                <!-- <th>Asset Forecast Performance</th> -->
-                                <!-- <td>Normal={{AFPnormalpercentage | number:'1.0-2'}}%, Incipient={{AFPincipientPerentage | number:'1.0-2' }}%, Degrade={{AFPdegradePercentage | number:'1.0-2'}}%</td> -->
-    
-                            </tr>
-                            <!-- <tr *ngIf="AFPNotVisible">
-                                <th>Asset Forecast Performance</th>
-                                <td>No Data to show. Please do Prediction</td>
-                                <td>
-                                    <button class="btn btn-dark" [routerLink]="[ '/ScrewPrediction']" (click)="open(mymodal)">Do Prediction</button>
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-cog mr-2"></i>Asset Forecast Performance</th>
+                        
+                                <td style="border: none; padding: 10px; font-size: 13px;">Normal={{AFPnormalpercentage | number:'1.0-2'}}%,
+                                    Incipient={{AFPincipientPerentage | number:'1.0-2' }}%, Degrade={{AFPdegradePercentage | number:'1.0-2'}}%
                                 </td>
-                            </tr> -->
+                        
+                            </tr>
+                            <tr *ngIf="AFPNotVisible">
+                                <th style="border: none; padding: 10px; font-size: 13px;"><i class="pi pi-cloud mr-2"></i>Asset Forecast Performance</th>
+                                <!--          
+                                                    <td>Normal={{normalpercentage | number:'1.0-0'}}%, Incipient={{incipientPerentage | number:'1.0-0' }}%, Degrade={{degradePercentage | number:'1.0-0'}}%</td>
+                                                    -->
+                                <td style="border: none; padding: 10px; font-size: 13px;">No Data to show. Please do Prediction</td>
+                                <td style="border: none; padding: 10px; font-size: 13px;">
+                                    <button class="btn btn-dark" [routerLink]="[ '/ScrewPrediction']" (click)="open(mymodal)">Do
+                                        Prediction</button>
+                                </td>
+                            </tr>
                         </table>
+                        <span class="alert alert-warning mt-4 d-inline-block">
+                            Note: Any Further technical assistance please email dprescripti@gmail.com
+                        </span>
                     </div>
                 </div>
-                <app-dashboard></app-dashboard>
-                <br>
-                <span>
-                    Note: Any Further technical assistance please email dprescripti@gmail.com
-                </span>
+               
+                </div>
+                
             </div>
         </div>
     </div>

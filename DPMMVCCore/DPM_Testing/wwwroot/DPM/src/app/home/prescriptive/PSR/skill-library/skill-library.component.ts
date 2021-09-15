@@ -25,6 +25,8 @@ export class SkillLibraryComponent implements OnInit {
   public SkillLibraryRows: any = [];
   public SkillData: any = [];
   public CraftModal : boolean = false;
+  public MSSCraftModal : boolean = false;
+  public SelectedType : string = "MSS";
   public EmployeeList : any = [
     {'id': 1 , 'name': 'EMP1'},
     {'id': 2 , 'name': 'EMP2'},
@@ -47,8 +49,10 @@ export class SkillLibraryComponent implements OnInit {
   public SkillLibraryColumns: any = [];
   private userModel: any;
   private SkillLibraryData: any = [];
-  private PSRClientContractorData: any = [];
+  public PSRClientContractorData: any = [];
+  public PSRClientContractorDataOBJ : any = [];
   public PSRModel: any =[];
+  public FilteredPSRModel : any =[]
   public ShowMasterPage : boolean =false;
   public skillLibraryForms: FormArray = this.fb.array([]);
   public notification = null;
@@ -56,7 +60,7 @@ export class SkillLibraryComponent implements OnInit {
   private SkillLibraryAllrecords : any = [];
   public craftModalData : any = [];
   public SavedPCRRecordsList : any = [];
-  public SelectedCraftToEdit : any;
+  public SelectedCraftToEdit : any = [];
   constructor(private http: HttpClient,
     public fb: FormBuilder,
     private commonBLervice: CommonBLService,
@@ -197,7 +201,18 @@ export class SkillLibraryComponent implements OnInit {
     this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords')
       .subscribe((res: any) => {
         this.PSRClientContractorData = res;
+        this.PSRClientContractorDataOBJ = res;
       });
+  }
+
+  public getHourlyRate(r : any){
+    var Data = this.MaintenanceStrategyList.find(a=>a.MSSStrategyModelId == r.value.Task);
+    var craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === r.value.Craft);
+    if(Data !== undefined && craft !== undefined){
+      if(Data.Strategy === 'GEP' || Data.Strategy === 'NEW' || Data.Strategy === 'FMEA' ){
+         r.value.HourlyRate = craft.ClientHourlyRate;
+      }
+    }
   }
 
   BackSkillData() {
@@ -253,8 +268,9 @@ export class SkillLibraryComponent implements OnInit {
 
   public generateTaskDuration(r){
     if(r.TaskDuration !== 0){
-       r.TaskDuration = (r.TaskDuration/60).toFixed(3);
-       r.POC = ((r.TaskDuration * r.HourlyRate)/1000).toFixed(3);
+      // r.TaskDuration = (r.TaskDuration/52).toFixed(3);
+      // r.POC = ((r.TaskDuration * r.HourlyRate)/1000).toFixed(3);
+      r.POC = ((r.TaskDuration * r.HourlyRate)).toFixed(3)
     }else{
       r.TaskDuration = 0;
       r.POC = 0;
@@ -266,7 +282,8 @@ export class SkillLibraryComponent implements OnInit {
     this.commonBLervice.postWithHeaders('/PSRClientContractorAPI/PostSkillPSRMapping', this.PSRModel)
     .subscribe(
       (res : any)=>{
-
+       this.PSRModel = [];
+       this.GetSavedPSRRecords();
       }, err => { console.log(err.error) }
     )
   }
@@ -295,6 +312,7 @@ export class SkillLibraryComponent implements OnInit {
             obj['TaskDuration']= 0 ;
             obj['MaterialCost']= 0 ;
             obj['POC']= 0 ;
+            obj['SkillPSRMappingMSS'] = null;
             this.PSRModel.push(obj);
           });
         }else{
@@ -318,14 +336,21 @@ export class SkillLibraryComponent implements OnInit {
             obj['HourlyRate']= 0;
             obj['TaskDuration']= 0 ;
             obj['MaterialCost']= 0 ;
+            obj['SkillPSRMappingMSS'] = null;
             obj['POC']= 0 ;
             this.PSRModel.push(obj);
            });
 
           }else if(MaintenanceTask.length === res.length){
             res.forEach(element => {
+              if(element.Strategy !== 'GEP' && element.Strategy !== 'CONSTRAINT' && element.Strategy !=='FMEA'){
+                element.TYPE = 'MSS';
+              }else{
+                element.TYPE = element.Strategy;
+              }              
               this.PSRModel.push(element);
             });
+            this.getFilteredPSRModel();
           }
         }
         this.showPSR = true;
@@ -333,10 +358,15 @@ export class SkillLibraryComponent implements OnInit {
     )
   }
 
+  getFilteredPSRModel(){
+    this.FilteredPSRModel = this.PSRModel.filter(r=>r.TYPE === this.SelectedType)
+  }
+
 
   skillLibraryForm() {
     this.skillLibraryForms.push(this.fb.group({
       SKillLibraryId: [0],
+      UserId:[this.userModel.UserId],
       Craft: [0, Validators.required],
       EmpId: [0, Validators.required],
       Task: [0, Validators.required],
@@ -368,7 +398,9 @@ export class SkillLibraryComponent implements OnInit {
       var PSRData : any = this.PSRModel.find(r=>r.MaintenanceTaskId === Data.Task);
       var EmployeeData = this.EmployeeList.find(r=>r.id === Data.EmpId);
       var craftData = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === Data.Craft)
-      var craft = this.getCraftValue(PSRData);
+      if(PSRData.Craft !== 0){
+        var craft = this.getCraftValue(PSRData);
+      }
       if((Data.Task === PSRData.MaintenanceTaskId) 
           && (PSRData.EmployeeName === EmployeeData.name)
           && (craftData.CraftSF === craft) ){
@@ -410,7 +442,9 @@ export class SkillLibraryComponent implements OnInit {
 
   getUserSkillRecords(){
     this.skillLibraryForms = this.fb.array([]);
-    this.commonBLervice.getWithoutParameters('/SkillLibraryAPI/GetAllConfigurationRecords').subscribe(
+    const params = new HttpParams()
+          .set('UserId', this.userModel.UserId)
+    this.commonBLervice.getWithParameters('/SkillLibraryAPI/GetAllConfigurationRecords', params).subscribe(
       (res : any) => {
         this.SkillLibraryAllrecords =res;
         if (res.length == 0)
@@ -435,34 +469,137 @@ export class SkillLibraryComponent implements OnInit {
 
   AddCraft(v){
     this.SelectedCraftToEdit = v;
+    if(v.TYPE !== 'MSS'){
+      if(v.TaskDuration !== 0){
+        // v.TaskDuration =  v.TaskDuration*52;
+         this.generateTaskDuration(v);
+       }
+       if(this.SelectedCraftToEdit.Craft === 0){
+         var data = this.SkillLibraryAllrecords.filter(r=>r.Task === v.MaintenanceTaskId);
+         this.craftModalData = [];
+         data.forEach(element => {
+           var cf = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === element.Craft);
+           var em = this.EmployeeList.find(r=>r.id === element.EmpId);
+           let obj = {}
+           obj['SKillLibraryId']=element.SKillLibraryId
+           obj['Craft'] = cf.CraftSF
+           obj['Employee'] = em.name
+           obj['Level'] = element.Level
+           obj['Selected'] = false;
+           obj['HR'] = element.HourlyRate;
+           this.craftModalData.push(obj);
+         });
+       }else{
+         var data = this.SkillLibraryAllrecords.filter(r=>r.Task === v.MaintenanceTaskId);
+         this.craftModalData = [];
+         data.forEach(element => {
+           var cf = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === element.Craft);
+           var em = this.EmployeeList.find(r=>r.id === element.EmpId);
+           let obj = {}
+           obj['SKillLibraryId']=element.SKillLibraryId
+           if(element.SKillLibraryId === this.SelectedCraftToEdit.Craft){
+             obj['Craft'] = cf.CraftSF
+             obj['Selected'] = true;
+           }else{
+             obj['Craft'] = cf.CraftSF
+             obj['Selected'] = false;
+           }        
+           obj['Employee'] = em.name
+           obj['Level'] = element.Level
+           obj['HR'] = element.HourlyRate;
+           this.craftModalData.push(obj);
+         });
+   
+       }    
+    }
+    
+    if(v.TYPE == 'MSS'){
+      this.MSSCraftModal = true;
+      this.PSRClientContractorDataOBJ.forEach(element => {
+        element.checked = false
+      });
+      if(this.SelectedCraftToEdit.SkillPSRMappingMSS !== null){
+        this.SelectedCraftToEdit.SkillPSRMappingMSS.forEach(element => {
+          let index1 = -1;
+          this.PSRClientContractorDataOBJ.find((item, i) => {
+            if (item.PSRClientContractorId === element.CraftOriginalId) {
+              index1 = i;
+              return i;
+            }
+          });
+          this.PSRClientContractorDataOBJ[index1].checked = true;
+        });
+      }
+    }else{
+      this.CraftModal = true
+    }
+    
+  }
+
+  MSSCraftSelection(r, e){
+    if(e.target.checked === true){
+      var fIO = r.PSRClientContractorId
+      var index1 = -1;
+      var filtObj = this.PSRClientContractorDataOBJ.find((item, i) => {
+        if (item.PSRClientContractorId === fIO) {
+          index1 = i;
+          return i;
+        }
+      });
+      this.PSRClientContractorDataOBJ[index1].checked = true;
+
+      let obj = {}
+      obj['SkillPSRMappingMSSId']=0
+      if(this.SelectedCraftToEdit.PSRId === undefined){
+        obj['PSRId']= 0;
+      }else{
+        obj['PSRId']=this.SelectedCraftToEdit.PSRId
+      }      
+      obj['CraftOriginalId']=this.PSRClientContractorDataOBJ[index1].PSRClientContractorId
+      obj['HourlyRate'] = 0
+      obj['TaskDuration'] = 0
+      obj['MaterialCost'] = 0
+      obj['POC'] = 0
+      obj['MaintenanceTaskId']= this.SelectedCraftToEdit.MaintenanceTaskId;
+      obj['EmployeeName'] ='';
+      obj['Craft'] = 0;
+      if(this.SelectedCraftToEdit.SkillPSRMappingMSS == null){
+        this.SelectedCraftToEdit.SkillPSRMappingMSS = []
+      }else if(this.SelectedCraftToEdit.SkillPSRMappingMSS == undefined){
+        this.SelectedCraftToEdit.SkillPSRMappingMSS = []
+      }
+      this.SelectedCraftToEdit.SkillPSRMappingMSS.push(obj)
+    }
+    if(e.target.checked === false){
+      var findIndexOF = r.PSRClientContractorId
+      var index = -1;
+      var filteredObj = this.SelectedCraftToEdit.SkillPSRMappingMSS.find((item, i) => {
+        if (item.CraftOriginalId === findIndexOF) {
+          index = i;
+          return i;
+        }
+      });
+      this.PSRClientContractorDataOBJ[index].checked = false;
+      this.SelectedCraftToEdit.SkillPSRMappingMSS.splice(index, 1)
+    }
+
+  }
+
+  public ADDMSSCraftTask : any = [];
+
+  AddCraftForMSS(v){
+    this.ADDMSSCraftTask = v;
     if(v.TaskDuration !== 0){
-      v.TaskDuration =  v.TaskDuration*60;
       this.generateTaskDuration(v);
     }
-    if(this.SelectedCraftToEdit.Craft === 0){
-      var data = this.SkillLibraryAllrecords.filter(r=>r.Task === v.MaintenanceTaskId);
+      var data = this.SkillLibraryAllrecords.filter(r=>r.Task === v.MaintenanceTaskId && r.Craft == v.CraftOriginalId);
       this.craftModalData = [];
       data.forEach(element => {
         var cf = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === element.Craft);
         var em = this.EmployeeList.find(r=>r.id === element.EmpId);
         let obj = {}
         obj['SKillLibraryId']=element.SKillLibraryId
-        obj['Craft'] = cf.CraftSF
-        obj['Employee'] = em.name
-        obj['Level'] = element.Level
-        obj['Selected'] = false;
-        obj['HR'] = element.HourlyRate;
-        this.craftModalData.push(obj);
-      });
-    }else{
-      var data = this.SkillLibraryAllrecords.filter(r=>r.Task === v.MaintenanceTaskId);
-      this.craftModalData = [];
-      data.forEach(element => {
-        var cf = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === element.Craft);
-        var em = this.EmployeeList.find(r=>r.id === element.EmpId);
-        let obj = {}
-        obj['SKillLibraryId']=element.SKillLibraryId
-        if(element.SKillLibraryId === this.SelectedCraftToEdit.Craft){
+        if(element.SKillLibraryId === v.Craft){
           obj['Craft'] = cf.CraftSF
           obj['Selected'] = true;
         }else{
@@ -474,9 +611,8 @@ export class SkillLibraryComponent implements OnInit {
         obj['HR'] = element.HourlyRate;
         this.craftModalData.push(obj);
       });
-
-    }    
-    this.CraftModal = true
+      this.CraftModal = true
+    
   }
 
   PSRCraftSelected(a, e){
@@ -485,25 +621,50 @@ export class SkillLibraryComponent implements OnInit {
        element.Selected =false;
      });
      a.Selected = true;
-     this.SelectedCraftToEdit.Craft = a.SKillLibraryId;
-     this.SelectedCraftToEdit.HourlyRate = a.HR;
-     this.SelectedCraftToEdit.EmployeeName = a.Employee
+     if(this.SelectedCraftToEdit.TYPE !== 'MSS'){
+      this.SelectedCraftToEdit.Craft = a.SKillLibraryId;
+      this.SelectedCraftToEdit.HourlyRate = a.HR;
+      this.SelectedCraftToEdit.EmployeeName = a.Employee
+     }
+     if(this.SelectedCraftToEdit.TYPE === 'MSS'){  
+      this.ADDMSSCraftTask.Craft = a.SKillLibraryId;
+      this.ADDMSSCraftTask.HourlyRate = a.HR;
+      this.ADDMSSCraftTask.EmployeeName = a.Employee
+      }  
    }
    if(e.target.checked === false){
      e.Selected = false
-     this.SelectedCraftToEdit.Craft = 0;
-     this.SelectedCraftToEdit.HourlyRate = 0;
-     this.SelectedCraftToEdit.EmployeeName  = '';
+     if(this.SelectedCraftToEdit.TYPE !== 'MSS'){
+      this.SelectedCraftToEdit.Craft = 0;
+      this.SelectedCraftToEdit.HourlyRate = 0;
+      this.SelectedCraftToEdit.EmployeeName  = '';
+     }
+     if(this.SelectedCraftToEdit.TYPE === 'MSS'){ 
+      this.ADDMSSCraftTask.Craft = 0;
+      this.ADDMSSCraftTask.HourlyRate = 0;
+      this.ADDMSSCraftTask.EmployeeName  = '';
+     }
+     
   }
-  if(this.SelectedCraftToEdit.TaskDuration !== 0){
-    this.SelectedCraftToEdit.TaskDuration =  this.SelectedCraftToEdit.TaskDuration*60;
-    this.generateTaskDuration(this.SelectedCraftToEdit);
-   }
+  if(this.SelectedCraftToEdit.TYPE !== 'MSS'){
+    if(this.SelectedCraftToEdit.TaskDuration !== 0){
+       this.generateTaskDuration(this.SelectedCraftToEdit);
+      }
+  }
+  if(this.SelectedCraftToEdit.TYPE === 'MSS'){ 
+    this.generateTaskDuration(this.ADDMSSCraftTask);
+  }
+  
   }
 
   getCraftValue(d){
     var skillData = this.SkillLibraryAllrecords.find(r=>r.SKillLibraryId === d.Craft);
     var craft = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === skillData.Craft);
+    return craft.CraftSF;
+  }
+
+  getCraftForMSSSelection(d){
+    var craft = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === d.CraftOriginalId);
     return craft.CraftSF;
   }
 

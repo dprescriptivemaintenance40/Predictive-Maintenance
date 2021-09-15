@@ -1,4 +1,5 @@
 ﻿using DPM.Models.CompressorModel.ScrewCompressorModel;
+using DPM.Models.PumpModel;
 using DPM_ServerSide.DAL;
 using DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel;
 using Microsoft.AspNetCore.Mvc;
@@ -73,14 +74,11 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 }
                 for (int i = 0; i < screwCompressorFuturePrediction.Count; i++)
                 {
-                    //screwCompressorFuturePrediction[i].FTS1 = screwCompressorFuturePrediction[i].TS1;
+                
                     screwCompressorFuturePrediction[i].FTD1 = screwCompressorFuturePrediction[i].TD1;
-                    //screwCompressorFuturePrediction[i].FTS2 = screwCompressorFuturePrediction[i].TS2;
-                    //screwCompressorFuturePrediction[i].FTD2 = screwCompressorFuturePrediction[i].TD2;
-                    //screwCompressorFuturePrediction[i].TS1 = 0;
+               
                     screwCompressorFuturePrediction[i].TD1 = 0;
-                    //screwCompressorFuturePrediction[i].TS2 = 0;
-                    //screwCompressorFuturePrediction[i].TD2 = 0;
+
                     long date = DateToValues(screwCompressorFuturePrediction[i].PredictedDate);
                     screwCompressorFuturePrediction[i].Date = date;
 
@@ -389,5 +387,67 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 return Ok(exe.Message);
             }
         }
+
+
+
+        [HttpGet]
+        [Route("GetForecast")]
+        public async Task<IActionResult> GetForecast()
+        {
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels.Where(a => a.UserId == userId).ToListAsync();
+
+
+
+              //  List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels
+                                                                                                 //        .Where(a => a.UserId == userId)
+                                                                                                 //        .OrderBy(a => a.Date.Year)
+                                                                                                 //        .ThenBy(d => d.Date.Month)
+                                                                                                 //.ThenBy(d => d.Date.Day)
+                                                                                                 //        .ToListAsync();
+                //for (int i = 0; i < screwCompressorForecastModels.Count; i++)
+                //{
+
+                //    screwCompressorForecastModels[i].FTD1 = screwCompressorForecastModels[i].TD1;
+
+                //    screwCompressorForecastModels[i].TD1 = 0;
+                //    long date = DateToValues(screwCompressorForecastModels[i].Date);
+                //      screwCompressorForecastModels[i].FDate = date;
+                //}
+              //  var Data = screwCompressorForecastModels.Select(d => new { d.FDate, d.FTD1, d.TD1, }).ToList();
+                return Ok(screwCompressorForecastModels);
+            }
+            catch (Exception exe)
+            {
+
+                return Ok(exe.Message);
+            }
+        }
+
+
+        //[HttpGet]
+        //[Route("MergepredictionAndForcast")]
+        //public  IActionResult MergepredictionAndForcast()
+        //{
+        //    string userId = User.Claims.First(c => c.Type == "UserID").Value;
+        //    var q = (from pd in _context.ScrewCompressurePredictionData
+        //            where pd.UserId == userId
+        //             select new
+        //             {
+
+        //                 InsertedDate= pd.InsertedDate,
+        //                 FTD1 = _context.ScrewCompressorForecastModels.Where(obj=>obj.UserId == pd.UserId && obj.TD1 != null).Select(s=>s.TD1).FirstOrDefault(),
+        //                 TD1 = pd.TD1
+                          
+        //             }).ToList();
+         
+
+        //    return Ok(q);
+
+        //}
+
+
     }
 }

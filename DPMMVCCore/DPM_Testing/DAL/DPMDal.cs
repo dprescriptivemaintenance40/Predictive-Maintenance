@@ -40,8 +40,13 @@ namespace DPM_ServerSide.DAL
         public DbSet<MSSStrategyModel> MSSStrategyModels { get; set; }
         public DbSet<MapStrategySkillModel> MapStrategySkillModels { get; set; }
         public DbSet<SkillPSRMappingModel> SkillPSRMappingModels { get; set; }
+        public DbSet<SkillPSRMappingMSS> SkillPSRMappingMSS { get; set; }
         public DbSet<UserSkillLibraryModel> UserSkillLibraryModels { get; set; }
         public DbSet<UserProductionModel> UserProductionModels { get; set; }
+        public DbSet<ScrewCompressorForecastModel> ScrewCompressorForecastModels { get; set; }
+        public DbSet<CBAModel> CBAModels { get; set; }
+        public DbSet<CBATaskModel> CBATaskModels { get; set; }
+        public DbSet<DesignationAccessModel> DesignationAccessModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -81,8 +86,21 @@ namespace DPM_ServerSide.DAL
             modelBuilder.Entity<MSSStrategyModel>().ToTable("MSSStrategyMaintenanceTask");
             modelBuilder.Entity<MapStrategySkillModel>().ToTable("MapStrategySkillModel");
             modelBuilder.Entity<SkillPSRMappingModel>().ToTable("SkillPSRMappingtable");
+            modelBuilder.Entity<SkillPSRMappingMSS>().ToTable("SkillPSRMappingMSSModel");
+            modelBuilder.Entity<SkillPSRMappingMSS>()
+                        .HasOne(p => p.SkillPSRMappingModel)
+                        .WithMany(b => b.SkillPSRMappingMSS)
+                        .HasForeignKey(a => a.PSRId);
             modelBuilder.Entity<UserSkillLibraryModel>().ToTable("UserSkillLibraryModelTable");
             modelBuilder.Entity<UserProductionModel>().ToTable("UserProductionModelTable");
+            modelBuilder.Entity<ScrewCompressorForecastModel>().ToTable("forecast").HasNoKey();
+            modelBuilder.Entity<CBAModel>().ToTable("CBAModelTable");
+            modelBuilder.Entity<CBATaskModel>().ToTable("CBATaskModelTable");
+            modelBuilder.Entity<CBATaskModel>()
+                        .HasOne(p => p.CBAModel)
+                        .WithMany(b => b.CBATaskModel)
+                        .HasForeignKey(a => a.CBAId);
+            modelBuilder.Entity<DesignationAccessModel>().ToTable("DesignationAccessModelTable");
         }
 
     }

@@ -36,7 +36,7 @@ namespace DPM.Controllers.Prescriptive
                 return await _context.PrescriptiveModelData.Where(a => a.UserId == userId)
                                                            .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                            .ThenInclude(a => a.CentrifugalPumpMssModel)
-                                                           .OrderBy(a => a.CFPPrescriptiveId)
+                                                           .OrderByDescending(a => a.CFPPrescriptiveId)
                                                            .ToListAsync();
 
             }
@@ -55,10 +55,10 @@ namespace DPM.Controllers.Prescriptive
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
-                var prescriptiveModelData  = await _context.PrescriptiveModelData.Where(a => a.UserId == userId
-                                                            && a.MachineType == machine
-                                                            && a.EquipmentType == Equi
-                                                            && a.TagNumber == TagNumber)
+                var prescriptiveModelData = await _context.PrescriptiveModelData.Where(a => a.UserId == userId
+                                                           && a.MachineType == machine
+                                                           && a.EquipmentType == Equi
+                                                           && a.TagNumber == TagNumber)
                                                            .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                            .ThenInclude(a => a.CentrifugalPumpMssModel)
                                                            .OrderBy(a => a.CFPPrescriptiveId)
@@ -75,11 +75,11 @@ namespace DPM.Controllers.Prescriptive
 
         [HttpGet]
         [Route("GetCFPPrescriptiveId")]
-              public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetCFPPrescriptiveId(int cfprescriptiveId)
+        public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetCFPPrescriptiveId(int cfprescriptiveId)
         {
             try
             {
- 
+
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
                 var prescriptiveModelIDData = await _context.PrescriptiveModelData.Where(a => a.UserId == userId
@@ -309,6 +309,150 @@ namespace DPM.Controllers.Prescriptive
         }
 
         [HttpPost]
+        [Route("WebalAlgoritmWithDetails")]
+        public async Task<IActionResult> WebalAlgoritmWithDetails([FromBody] int[] Days)
+        {
+            try
+            {
+                WeibullModel weibullModel = new WeibullModel();
+                List<WeibullMTBFModel> weibullMTBFModels = new List<WeibullMTBFModel>();
+                List<WeibullHazardRateModel> weibullHazardRateModels = new List<WeibullHazardRateModel>();
+                List<int> WebalDays = new List<int>();
+
+                WebalDays.AddRange(Days);
+                WebalDays.Sort();
+                for (int i = 0; i < WebalDays.Count(); i++)
+                {
+                    WeibullMTBFModel weibullMTBFModel = new WeibullMTBFModel();
+                    weibullMTBFModel.Rank = i+1;
+                    double median = (weibullMTBFModel.Rank - 0.3) / (WebalDays.Count() + 0.4);
+                    double medianDays = Math.Log(WebalDays[i]);
+                    double medianInverse = 1 / (1 - median);
+                    double l = Math.Log(Math.Log(medianInverse));
+                    weibullMTBFModel.MTBFDays = WebalDays[i];
+                    weibullMTBFModel.MedianRankPercentage = median;
+                    weibullMTBFModel.LogOfMTBFDays = medianDays;
+                    weibullMTBFModel.InverseOfMedianRankPercentage = medianInverse;
+                    weibullMTBFModel.LogOfInverseOfMedianRankPercentage = l;
+                    weibullMTBFModels.Add(weibullMTBFModel);
+                }
+
+                weibullModel = this.GetAlphaBetaValue(weibullMTBFModels);
+
+                List<int> CyclesDays = new List<int>();
+                CyclesDays.Add(1);
+                CyclesDays.Add(5);
+                CyclesDays.Add(10);
+                CyclesDays.Add(15); 
+                CyclesDays.Add(25);
+                CyclesDays.Add(50);
+                CyclesDays.Add(75);
+                CyclesDays.Add(100);
+                CyclesDays.Add(125);
+                CyclesDays.Add(150);
+                CyclesDays.Add(175);
+                CyclesDays.Add(200);
+                CyclesDays.Add(225);
+                CyclesDays.Add(250);
+                CyclesDays.Add(275);
+                CyclesDays.Add(300);
+                CyclesDays.Add(325);
+                CyclesDays.Add(350);
+                CyclesDays.Add(375);
+                CyclesDays.Add(400);
+                CyclesDays.Add(425);
+                CyclesDays.Add(450);
+                CyclesDays.Add(475);
+                CyclesDays.Add(500); 
+                CyclesDays.Add(525);
+                CyclesDays.Add(550);
+                CyclesDays.Add(575);
+                CyclesDays.Add(600);
+                CyclesDays.Add(625);
+                CyclesDays.Add(650);
+                CyclesDays.Add(675);
+                CyclesDays.Add(700);
+                CyclesDays.Add(725); 
+                CyclesDays.Add(750);
+                CyclesDays.Add(775);
+                CyclesDays.Add(800);
+                CyclesDays.Add(825);
+                CyclesDays.Add(850);
+                CyclesDays.Add(875);
+                CyclesDays.Add(900);
+                CyclesDays.Add(925);
+                CyclesDays.Add(950);
+                CyclesDays.Add(975);
+                CyclesDays.Add(1000);
+                CyclesDays.Add(1800);
+
+                for (int i = 0; i < CyclesDays.Count(); i++)
+                {
+                    WeibullHazardRateModel weibullHazardRateModel = new WeibullHazardRateModel();
+                    weibullHazardRateModel.CyclesDays = CyclesDays[i];
+                    weibullHazardRateModel.PDF = (weibullModel.Beta / weibullModel.Alpha) * Math.Pow((CyclesDays[i] / weibullModel.Alpha), (weibullModel.Beta - 1)) * Math.Exp(-(Math.Pow((CyclesDays[i] / weibullModel.Alpha), weibullModel.Beta)));
+                    weibullHazardRateModel.HazardRate = (weibullModel.Beta / weibullModel.Alpha) * Math.Pow((CyclesDays[i] / weibullModel.Alpha), (weibullModel.Beta - 1));
+                    weibullHazardRateModel.Reliability = weibullHazardRateModel.PDF / weibullHazardRateModel.HazardRate;
+                    weibullHazardRateModel.CDF = 1 - weibullHazardRateModel.Reliability;
+                    weibullHazardRateModel.WeibullLogx = Math.Log(CyclesDays[i]);
+                    weibullHazardRateModel.WeibullLogxOfLogx = Math.Log(Math.Log((1 / weibullHazardRateModel.Reliability)));
+                    weibullHazardRateModels.Add(weibullHazardRateModel);
+                }
+
+                weibullModel.weibullHazardRateModels = weibullHazardRateModels;                    
+                return Ok(weibullModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        } 
+
+        private WeibullModel GetAlphaBetaValue(List<WeibullMTBFModel> weibullMTBFModels)
+        {
+            WeibullModel weibullModel = new WeibullModel();
+            double sumOfX = 0;
+            double sumOfY = 0;
+            double sumOfXSq = 0;
+            double sumOfYSq = 0;
+            double sumCodeviates = 0;
+
+            for (var i = 0; i < weibullMTBFModels.Count(); i++)
+            {
+                var x = weibullMTBFModels[i].LogOfInverseOfMedianRankPercentage;
+                var y = weibullMTBFModels[i].LogOfMTBFDays;
+                sumCodeviates += x * y;
+                sumOfX += x;
+                sumOfY += y;
+                sumOfXSq += x * x;
+                sumOfYSq += y * y;
+            }
+
+            var count = weibullMTBFModels.Count();
+            var ssX = sumOfXSq - ((sumOfX * sumOfX) / count);
+            var ssY = sumOfYSq - ((sumOfY * sumOfY) / count);
+
+            var rNumerator = (count * sumCodeviates) - (sumOfX * sumOfY);
+            var rDenom = (count * sumOfXSq - (sumOfX * sumOfX)) * (count * sumOfYSq - (sumOfY * sumOfY));
+            var sCo = sumCodeviates - ((sumOfX * sumOfY) / count);
+
+            var meanX = sumOfX / count;
+            var meanY = sumOfY / count;
+            var dblR = rNumerator / Math.Sqrt(rDenom);
+
+            var rSquared = dblR * dblR;
+            var yIntercept = meanY - ((sCo / ssX) * meanX);
+            var slope = sCo / ssX;
+            var alpha = Math.Exp(yIntercept);
+            var beta = 1 / slope;
+            weibullModel.Alpha = alpha;
+            weibullModel.Beta = beta;
+            weibullModel.rSquare = rSquared;
+            weibullModel.weibullMTBFModels = weibullMTBFModels;
+            return weibullModel;
+        }
+
+        [HttpPost]
         [Route("PostCentrifugalPumpPrescriptiveData")]
         public async Task<ActionResult<CentrifugalPumpPrescriptiveModel>> PostPrescriptive([FromBody] CentrifugalPumpPrescriptiveModel prescriptiveModel)
         {
@@ -498,13 +642,13 @@ namespace DPM.Controllers.Prescriptive
                 var collection = centrifugalPumpPrescriptiveModel[0].centrifugalPumpPrescriptiveFailureModes.ToList();
                 foreach (var item in collection)
                 {
-                   
-                        foreach (var item1 in prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].CentrifugalPumpMssModel)
-                        {
-                            item1.CPPFMId = item.CPPFMId;
-                            _context.CentrifugalPumpMssModels.Add(item1);
-                            await _context.SaveChangesAsync();
-                        }
+
+                    foreach (var item1 in prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].CentrifugalPumpMssModel)
+                    {
+                        item1.CPPFMId = item.CPPFMId;
+                        _context.CentrifugalPumpMssModels.Add(item1);
+                        await _context.SaveChangesAsync();
+                    }
 
                     item.MSSStartergyList = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[i].MSSStartergyList;
                     _context.Entry(item).State = EntityState.Modified;
@@ -546,7 +690,7 @@ namespace DPM.Controllers.Prescriptive
                 failureModeRecord.MSSStartergyList = prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].MSSStartergyList;
                 _context.Entry(failureModeRecord).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-               
+
 
                 var MSSRecords = await _context.CentrifugalPumpMssModels.Where(a => a.CPPFMId == prescriptiveModel.centrifugalPumpPrescriptiveFailureModes[0].CentrifugalPumpMssModel[0].CPPFMId).ToListAsync();
                 foreach (var item in MSSRecords)
@@ -827,7 +971,7 @@ namespace DPM.Controllers.Prescriptive
 
                 foreach (var item in ToAddFM)
                 {
-                    if(item.CPPFMId == 0)
+                    if (item.CPPFMId == 0)
                     {
                         item.CPPFMId = 0;
                         _context.centrifugalPumpPrescriptiveFailureModes.Add(item);
@@ -851,11 +995,11 @@ namespace DPM.Controllers.Prescriptive
                     }
                 }
 
-                
+
                 foreach (var item in ToAddMMS)
                 {
                     item.CentrifugalPumpMssId = 0;
-                    item.CPPFMId = ToAddFM[ToAddFM.Count -1].CPPFMId;
+                    item.CPPFMId = ToAddFM[ToAddFM.Count - 1].CPPFMId;
                     _context.CentrifugalPumpMssModels.Add(item);
                     await _context.SaveChangesAsync();
                 }
@@ -1120,10 +1264,10 @@ namespace DPM.Controllers.Prescriptive
                 await _context.SaveChangesAsync();
 
                 string con = CentrifugalPumpPrescriptiveFailureModeData[0].Consequence.Substring(0, 1);
-                if(con == "A")
+                if (con == "A")
                 {
                     var MSSData = await _context.CentrifugalPumpMssModels.Where(a => a.CPPFMId == ChildId && a.MSSStartergy == "A-FFT (Failure Finding Task)").ToListAsync();
-                    if(MSSData.Count != 0)
+                    if (MSSData.Count != 0)
                     {
                         double availablility = Convert.ToDouble(MSSData[0].MSSFinalAvaliability);
                         var LN = Math.Log((2 * (availablility / 100)) - 1);
@@ -1134,7 +1278,7 @@ namespace DPM.Controllers.Prescriptive
                         await _context.SaveChangesAsync();
                     }
                 }
-                
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -1166,6 +1310,7 @@ namespace DPM.Controllers.Prescriptive
 
                 var prescriptiveModel = _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == id)
                                                          .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                         .ThenInclude(a => a.CentrifugalPumpMssModel)
                                                          .First();
                 if (prescriptiveModel == null)
                 {

@@ -1,5 +1,5 @@
 <p-toast position="top-right"></p-toast>
-<div id="anorlogic" class="col-md-12" style="overflow: scroll; height: 100%">
+<div id="anorlogic" class="col-md-12" style="overflow: auto; height: 100%">
     <p-card>
         <p-organizationChart [value]="ANDORLOGICTREE" (AddNode)="onAddNode($event)" (DeleteNode)="onDeleteNode($event)" (Library)="GetFailureRateAndRepair($event)">
         </p-organizationChart>

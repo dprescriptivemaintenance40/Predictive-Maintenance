@@ -1,16 +1,108 @@
+<style>
+    .button {
+        background-color: #004A7F;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        border: none;
+        color: #FFFFFF;
+        cursor: pointer;
+        display: inline-block;
+        font-family: Arial;
+        font-size: 20px;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        -webkit-animation: glowing 1500ms infinite;
+        -moz-animation: glowing 1500ms infinite;
+        -o-animation: glowing 1500ms infinite;
+        animation: glowing 1500ms infinite;
+    }
+    
+    .glowing {
+        animation: glowing 1500ms infinite;
+    }
+    
+    @-webkit-keyframes glowing {
+        0% {
+            background-color: #B20000;
+            -webkit-box-shadow: 0 0 3px #B20000;
+        }
+        50% {
+            background-color: #FF0000;
+            -webkit-box-shadow: 0 0 40px #FF0000;
+        }
+        100% {
+            background-color: #B20000;
+            -webkit-box-shadow: 0 0 3px #B20000;
+        }
+    }
+    
+    @-moz-keyframes glowing {
+        0% {
+            background-color: #B20000;
+            -moz-box-shadow: 0 0 3px #B20000;
+        }
+        50% {
+            background-color: #FF0000;
+            -moz-box-shadow: 0 0 40px #FF0000;
+        }
+        100% {
+            background-color: #B20000;
+            -moz-box-shadow: 0 0 3px #B20000;
+        }
+    }
+    
+    @-o-keyframes glowing {
+        0% {
+            background-color: #B20000;
+            box-shadow: 0 0 3px #B20000;
+        }
+        50% {
+            background-color: #FF0000;
+            box-shadow: 0 0 40px #FF0000;
+        }
+        100% {
+            background-color: #B20000;
+            box-shadow: 0 0 3px #B20000;
+        }
+    }
+    
+    @keyframes glowing {
+        0% {
+            background-color: #B20000;
+            box-shadow: 0 0 3px #B20000;
+        }
+        50% {
+            background-color: #FF0000;
+            box-shadow: 0 0 40px #FF0000;
+        }
+        100% {
+            background-color: #B20000;
+            box-shadow: 0 0 3px #B20000;
+        }
+    }
+</style>
 <p-toast position="top-right"></p-toast>
-<div style="padding-left: 10px;" class="row col-md-12">
-    <div class="alert alert-dark" role="alert">
-        To know about Taxonomy of Compressor
-        <button *ngIf="enableImage" class="btn btn-outline-dark" (click)="compressorImage()">Click Here</button>
-        <button *ngIf="CancelImage" class="btn btn-outline-dark" (click)="compressorImageCancel()">Cancel</button>
-    </div>
-    <div class="col-sm">
-        <button style="float: right" class="btn btn-dark" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line"></i></button>
+
+<div class="row">
+    <div class=" col-md-12">
+        <div class="alert alert-danger d-flex justify-content-between align-items-center glowing" style="color: #fff;">
+            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
+        </div>
+        <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
+            <p class="mb-0"><i class="pi pi-info-circle" class="mr-1"></i>To know about Taxonomy of Compressor</p>
+            <div>
+                <button *ngIf="enableImage" class="btn btn-primary btn-sm mr-1" (click)="compressorImage()">Click Here</button>
+                <button *ngIf="CancelImage" class="btn btn-outline-danger btn-sm mr-1" (click)="compressorImageCancel()">Cancel</button>
+                <button type="button" (click)="ChangeToBulkPrediction()" class="btn btn-dark btn-sm mr-1">{{SingleBulkPredictionName}}</button>
+                <button class="btn btn-sm btn-outline-dark ml-1" (click)="RouteTodashboard()" data-toggle="tooltip" data-placement="top" title="Go to Dashboard"><i class="fas fa-chart-line"></i></button>
+            </div>
+        </div>
     </div>
 </div>
-<div *ngIf="Image" class="col-md-6">
-    <div class="card shadow mb-4">
+
+<div *ngIf="Image">
+    <div class="card dpm-card mb-4">
         <div class="card-body">
             <span>
                 <img (click)="imgDowd()" class="img-fluid px-3 px-sm-4 mt-3 mb-2" style="width: 50rem;"
@@ -20,22 +112,6 @@
     </div>
 </div>
 
-
-
-<button type="button" style="background-color:#585570 ; border-color:#585570 ;    margin: 0.3em;" (click)="ChangeToBulkPrediction()" class="btn btn-primary">{{SingleBulkPredictionName}}</button>
-<div *ngIf="showBulkPrediction" class="row">
-    <div class="col-sm-3">
-        <label class="form-control">Failure Mode</label>
-    </div>
-    <div class="col-sm-6">
-        <select [(ngModel)]="FailureModeSelect" class="form-control form-select">
-            <option value="All">All</option>
-            <option value="RotaryDamage">Rotar Damage</option>
-            <option value="SSRB">Second Stage Rotar Breakdown</option>
-            <option value="CF">Cooler Failure</option>
-        </select>
-    </div>
-</div>
 
 <div class="modal fade " tabindex="-1" id="Future" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-xl">
@@ -47,65 +123,31 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group col-sm-3">
-                    <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()" [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
+                <!-- <div class="form-group col-sm-3">
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
+                        [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
                         <option value="">Select date</option>
                         <option *ngFor="let item of futurePredictionDatesToShow" [value]="item">{{item}}</option>
                     </select>
-                </div>
-                <div class="card">
+                </div> -->
+                <div class="dpm-card">
 
                     <p-table [value]="futurePredictionDataTableList" [paginator]="true" [rowHover]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[5,10,15]" [loading]="loading">
                         <ng-template pTemplate="colgroup">
                             <colgroup>
-                                <col style="width:3em;">
-                                <col style="width:3em;">
-                                <col style="width:3em;">
-                                <col style="width:3em;">
-                                <col style="width:3em;">
-                                <col style="width:3em;">
-                                <col style="width:3em;">
-                                <col style="width:3em;">
-                                <col style="width:8em;">
-                                <col style="width:5em;">
-                                <col style="width:5em;">
-                                <col style="width:5em;">
                                 <col style="width:5em;">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>PS1</th>
-                                <th>PD1</th>
-                                <th>PS2</th>
-                                <th>PD2</th>
-                                <th>TS1</th>
                                 <th>TD1</th>
-                                <th>TS2</th>
-                                <th>TD2</th>
-                                <th>PREDICTION DATES</th>
-                                <th>PREDICTION</th>
-                                <th>RD</th>
-                                <th>SSRB</th>
-                                <th>CF</th>
+                                <th>DATE</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-futurePredictionDataTableList>
                             <tr>
-                                <td>{{futurePredictionDataTableList.PS1}}</td>
-                                <td>{{futurePredictionDataTableList.PD1}}</td>
-                                <td>{{futurePredictionDataTableList.PS2}}</td>
-                                <td>{{futurePredictionDataTableList.PD2}}</td>
-                                <td>{{futurePredictionDataTableList.TS1}}</td>
-                                <td>{{futurePredictionDataTableList.TD1}}</td>
-                                <td>{{futurePredictionDataTableList.TS2}}</td>
-                                <td>{{futurePredictionDataTableList.TD2}}</td>
-                                <td>{{futurePredictionDataTableList.PredictedDate | date:'medium'}}</td>
-                                <td>{{futurePredictionDataTableList.Prediction}}</td>
-                                <td>{{futurePredictionDataTableList.RD}}</td>
-                                <td>{{futurePredictionDataTableList.SSRB}}</td>
-                                <td>{{futurePredictionDataTableList.CF}}</td>
-
+                                <td>{{futurePredictionDataTableList.TD1.toFixed(2)}}</td>
+                                <td>{{futurePredictionDataTableList.Date | date : 'medium'}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -118,7 +160,57 @@
     </div>
 </div>
 
+<div *ngIf="showBulkPrediction" class="row bg-white p-3 mb-3 align-items-center">
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col">
+                <label class="">Failure Mode</label>
+                <select [(ngModel)]="FailureModeSelect" class="form-control form-select">
+                    <option value="All">All</option>
+                    <option value="RotaryDamage">Rotar Damage</option>
+                    <option value="SSRB">Second Stage Rotar Breakdown</option>
+                    <option value="CF">Cooler Failure</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label class="">Tag Number</label>
+                <input type="text" class="form-control" [(ngModel)]="EquipmentTagNumber" />
+            </div>
+            <div class="col">
+                <label class="">Select File</label>
+                <input type="file" class="form-control-file form-control" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </div>
+            <div class="col">
+                <label>From Date :</label>
+                <input type="date" [(ngModel)]="FromDate" class="form-control" id="FromDate">
+            </div>
+            <div class="col">
+                <label>To Date :</label>
+                <input type="date" [(ngModel)]="ToDate" class="form-control" id="ToDate">
+            </div>
+            <div class="col">
+                <button type="button" (click)="getPredictedListRecordsByDate()" class="btn btn-primary mt-4">Show</button>
+            </div>
+            <div class="col">
+                <button type="button" (click)="showBasicDialog()" class="btn btn-primary mt-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Assessment Report">Assessment</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 mt-1 text-right">
+        <button type="button" [disabled]="enableFuturePredictionButton" class="btn btn-dark btn-sm mr-2" data-target="#Future" data-toggle="modal" (click)="FuturePrediction()">Future Prediction</button>
 
+        <button type="button" (click)="Downloadfile()" class="btn btn-outline-primary btn-sm mr-2"><i
+                class="pi pi-file-excel"></i></button>
+
+
+        <button type="button" (click)="exportToExcel()" class="btn btn-outline-primary btn-sm"><i
+                class="pi pi-download"></i></button>
+
+
+
+    </div>
+</div>
+<!-- 
 <div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
     <div class="col-sm col-md-4 form-group">
         <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
@@ -134,24 +226,71 @@
     <div class="col-sm">
         <button type="button" style="background-color:#585570 ; border-color:#585570 ; width: 10em;" (click)="getPredictedListRecordsByDate()" class="btn btn-primary">Show</button>
     </div>
-</div>
-<div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
+</div> -->
+<!-- <div style="padding-left: 5px;" class="row" *ngIf="showBulkPrediction">
+    <button type="button" (click)="Downloadfile()" class="btn btn-outline-primary btn-sm mr-2"><i
+            class="pi pi-file-excel"></i></button>
+    
+    
+    <button type="button" (click)="exportToExcel()" class="btn btn-outline-primary btn-sm"><i
+            class="pi pi-download"></i></button>
 
-    <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="Downloadfile()" class="btn btn-primary">Get Excel Format</button>
-    </div>
-
-    <div class="col-sm">
-        <button type="button" style="background-color:#585570 ; border-color:#585570 ;" (click)="exportToExcel()" class="btn btn-primary">Download Excel</button>
-    </div>
-    <div class="col-sm">
-        <button type="button" [disabled]="enableFuturePredictionButton" style="background-color:#585570 ; border-color:#585570 ;margin: 0.3em;" class="btn btn-primary" data-target="#Future" data-toggle="modal" (click)="FuturePrediction()">Future Prediction</button>
-    </div>
-</div>
+  
+    <button type="button" [disabled]="enableFuturePredictionButton"  class="btn btn-primary btn-sm mr-2" data-target="#Future" data-toggle="modal" (click)="FuturePrediction()">Future Prediction</button>
+ 
+</div> -->
 
 <div style="text-align: center;" class="tbody" *ngIf="!showBulkPrediction">
-
-    <div class="td">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    <label data-toggle="tooltip" data-placement="top" title="Presssure Suction stage 1">PS1</label>
+                </th>
+                <th>
+                    <label data-toggle="tooltip" data-placement="top" title="Presssure Discharge stage 1">PD1</label>
+                </th>
+                <th>
+                    <label data-toggle="tooltip" data-placement="top" title="Presssure Suction stage 2">PS2</label>
+                </th>
+                <th>
+                    <label data-toggle="tooltip" data-placement="top" title="Presssure Discharge stage 2">PD2</label>
+                </th>
+                <th>
+                    <label data-toggle="tooltip" data-placement="top" title="Temperature Suction stage 1">TS1</label>
+                </th>
+                <th>
+                    <label data-toggle="tooltip" data-placement="top" title="Temperature Discharge stage 1">TD1</label>
+                </th>
+                <th>
+                    <label data-toggle="tooltip" data-placement="top" title="Temperature Suction stage 2">TS2</label>
+                </th>
+                <th>
+                    <label data-toggle="tooltip" data-placement="top" title="Temperature Discharge stage 2">TD2</label>
+                </th>
+                <th>
+                    <button type="button" (click)="Prediction()" class="btn btn-dark btn-sm">Predictions</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="number" [(ngModel)]="configurationObj.PS1" class="form-control" placeholder="Enter value"></td>
+                <td><input type="number" [(ngModel)]="configurationObj.PD1" class="form-control" placeholder="Enter value"></td>
+                <td><input type="number" [(ngModel)]="configurationObj.PS2" class="form-control" placeholder="Enter value"></td>
+                <td><input type="number" [(ngModel)]="configurationObj.PD2" class="form-control" placeholder="Enter value"></td>
+                <td><input type="number" [(ngModel)]="configurationObj.TS1" class="form-control" placeholder="Enter value"></td>
+                <td><input type="number" [(ngModel)]="configurationObj.TD1" class="form-control" placeholder="Enter value"></td>
+                <td><input type="number" [(ngModel)]="configurationObj.TS2" class="form-control" placeholder="Enter value"></td>
+                <td><input type="number" [(ngModel)]="configurationObj.TD2" class="form-control" placeholder="Enter value"></td>
+                <td><span *ngIf="notification">
+                    <i class="fas fa-check-circle {{notification.class}}"></i>
+                    {{notification.message}}
+                </span></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- <div class="td">
         <label data-toggle="tooltip" data-placement="top" title="Presssure Suction stage 1">PS1</label>
         <input type="number" [(ngModel)]="configurationObj.PS1" class="form-control" placeholder="Enter value">
     </div>
@@ -192,11 +331,11 @@
             <i class="fas fa-check-circle {{notification.class}}"></i>
             {{notification.message}}
         </span>
-    </div>
+    </div> -->
 
 </div>
 
-<div style="padding: 5px;" *ngIf="showBulkPrediction" style="overflow: scroll;">
+<div style="padding: 5px;" *ngIf="showBulkPrediction" style="overflow: auto;">
     <div class="card">
         <p-table id="exportexcel" [value]="screwWithPrediction" [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]"
             [loading]="loading">
@@ -219,14 +358,30 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th>PS1 </th>
-                    <th>PD1 </th>
-                    <th>PS2 </th>
-                    <th>PD2 </th>
-                    <th>TS1 </th>
-                    <th>TD1 </th>
-                    <th>TS2 </th>
-                    <th>TD2</th>
+                    <th pSortableColumn="PS1">PS1
+                        <p-sortIcon field="PS1"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="PD1">PD1
+                        <p-sortIcon field="PD1"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="PS2">PS2
+                        <p-sortIcon field="PS2"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="PD2">PD2
+                        <p-sortIcon field="PD2"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TS1">TS1
+                        <p-sortIcon field="TS1"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TD1">TD1
+                        <p-sortIcon field="TD1"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TS2">TS2
+                        <p-sortIcon field="TS2"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TD2">TD2
+                        <p-sortIcon field="TD2"></p-sortIcon>
+                    </th>
                     <th *ngIf="FailureModeSelect === 'RotaryDamage'" pTooltip="Rotar Damage" tooltipPosition="bottom">RD</th>
                     <th *ngIf="FailureModeSelect === 'SSRB'" pTooltip="Second Stage Rotar Breakdown" tooltipPosition="bottom">SSRB</th>
                     <th *ngIf="FailureModeSelect === 'CF'" pTooltip="Cooler Failure" tooltipPosition="bottom">CF</th>
@@ -259,3 +414,75 @@
         </p-table>
     </div>
 </div>
+
+<p-dialog header="Report" [(visible)]="displayBasic" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <div class="card-body" id="contentToConvert">
+        <div class="row" style="padding:30px; color: black;">
+            <div class="col-sm-10">
+                <span>
+                    <h5>Based on data Inputs and Model analysis, please find below Initial<br>
+                        Assessment report and recommendation for further study of the Asset</h5>
+                </span>
+            </div>
+        </div>
+        <div style="padding:30px; color: black;">
+            <span> <br><br>
+                <h5>Customer Data:</h5>
+            </span>
+            <table>
+                <tr>
+                    <th>Company Name: </th>
+                    <td>{{Company}}</td>
+                </tr>
+                <tr>
+                    <th>Focal Person Name: </th>
+                    <td>{{Firstname}} {{Lastname}}</td>
+                </tr>
+                <tr>
+                    <th>Email Address: </th>
+                    <td>{{Email}}</td>
+                </tr>
+                <tr>
+                    <th>Contact Details: </th>
+                    <td>{{PhoneNumber}}</td>
+                </tr>
+                <tr>
+                    <th>Date of receipt Customer data : </th>
+                    <td>{{Date | date:'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                </tr>
+
+            </table>
+            <br><br>
+            <h5>D.P.M. Output:</h5>
+
+            <table>
+                <tr>
+                    <th>Date of Analysis: </th>
+                    <td>{{DOA | date: 'EEEE, MMM d, y, h:mm:ss a'}}</td>
+                </tr>
+                <tr>
+                    <th>Asset Current Condition: </th>
+                    <td>Normal={{normalpercentage | number:'1.0-2' }}%, Incipient={{incipientPerentage | number:'1.0-2'}}%, Degrade={{degradePercentage| number:'1.0-2' }}%</td>
+                </tr>
+                <tr>
+                    <th>Risk ranking:</th>
+                    <td>{{RK}}</td>
+                </tr>
+                <tr>
+                    <th>DPM Analysis Beneficial Y/N : </th>
+                    <td>{{DAB}} | Performance Number : {{finalPerformanceNumber | number:'1.0-2'}}</td>
+                </tr>
+                <tr *ngIf="AFPVisible">
+                    <th>Asset Forecast Performance</th>
+
+                    <td>Normal={{AFPnormalpercentage | number:'1.0-2'}}%, Incipient={{AFPincipientPerentage | number:'1.0-2' }}%, Degrade={{AFPdegradePercentage | number:'1.0-2'}}%</td>
+                </tr>
+            </table>
+        </div>
+        <span>
+            Note: Any Further technical assistance please email dprescripti@gmail.com
+        </span>
+    </div>
+    <ng-template pTemplate="footer">
+    </ng-template>
+</p-dialog>

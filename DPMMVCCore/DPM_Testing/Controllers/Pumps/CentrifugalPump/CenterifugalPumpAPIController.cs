@@ -267,7 +267,7 @@ namespace DPM.Controllers.Pumps
                  //   var HValueLibrary = FirstHClose - (DeviationH * difference);
                  //   var Trigger = (HValueLibrary * HTrigger); // Trigger
                 //    var Alarm = ((HValueLibrary * HAlaram)); // Alarm
-                    string result = "";
+                    //string result = "";
                     //if (Trigger >= HCustomernumber)
                     //{
                     //     result = "Degrade";

@@ -114,21 +114,86 @@
 
 
 <p-toast position="top-right"></p-toast>
-<div class="container">
-    <div class="shadow-sm p-3 mb-5 bg-white rounded" style=" margin-right: 80px;">
-        <div class="table-responsive">
-            <div style="padding:10px;">
+
+        <div class="table-responsive dpm-card mb-3">
+            <div class="card-title d-flex justify-content-between align-items-center p-3 mb-0">
+                <h3>Skill Library</h3>
+                <span *ngIf="notification" class="elementToFadeInAndOut">
+                    <i class="fas fa-check-circle {{notification.class}}"></i>
+                    {{notification.message}}
+                </span>
+                <button class="btn btn-primary btm-sm" (click)="skillLibraryForm()">
+                    <i class="fa fa-plus"></i> New Record
+                </button>
+            </div>           
+            <table class="table table-striped">
+                <div class="col-md-12">
+                    <tr class="d-flex bg-primary">
+                        <th class="border-0" style="width: 150px;">Craft</th>
+                         <th class="border-0" style="width: 150px;">Employee</th>
+                         <th class="border-0" style="width: 150px;">Task</th>
+                         <th class="border-0" style="width: 150px;">Level</th>
+                         <th class="border-0" style="width: 150px;">Hourly Rate</th>
+                         <th class="border-0"></th>
+                         <th class="border-0"></th>
+                    </tr>
+                </div>
+                <div class="col-md-12">  
+                    <form class="tr" [formGroup]="fg" *ngFor="let fg of skillLibraryForms.controls ; let i=index;"
+                        (submit)="recordSubmit(fg)">
+                    <tr class="d-flex flex-1 w-100">
+                        <td style="width: 150px;" class="border-0">
+                            <select class="form-control" (change)="getHourlyRate(fg)" data-toggle="tooltip" data-placement="right" formControlName="Craft" style="height: 35px;">
+                                <option value=0>Choose..</option>
+                                <option *ngFor="let r of PSRClientContractorData" [ngValue]="r.PSRClientContractorId">{{r.CraftSF}}</option>
+                            </select>
+                        </td>
+                        <td style="width: 150px;"class="border-0">
+                            <select class="form-control" data-toggle="tooltip" data-placement="right" formControlName="EmpId" style="height: 35px;">
+                                <option value=0>Choose..</option>
+                                <option *ngFor="let r of EmployeeList" [ngValue]="r.id">{{r.name}}</option>
+                            </select>
+                        </td>
+                        <td style="width: 150px;" class="border-0">
+                            <select class="form-control" (change)="getHourlyRate(fg)" style="width: 10em;" data-toggle="tooltip" data-placement="right" formControlName="Task" style="height: 35px;">
+                                <option value=0>Choose..</option>
+                                <option *ngFor="let r of MaintenanceStrategyList" [ngValue]="r.MSSStrategyModelId">{{r.MaintenanceTask}}</option>
+                            </select>
+                        </td>
+                        <td style="width: 150px;" class="border-0"><input type="number" class="form-control" formControlName="Level" style="height: 35px;"></td>
+                        <td style="width: 150px;" class="border-0"><input type="number" class="form-control" formControlName="HourlyRate" [(ngModel)]="fg.value.HourlyRate" style="height: 35px;"></td>
+                        <td class="border-0">
+                            <button type="submit" class="btn btn-sm" [disabled]="fg.invalid"
+                                [ngClass]="(fg.get('SKillLibraryId').value==0)?'btn btn-sm':'btn-outline-dark'"><i class="far fa-save"></i>
+                                {{fg.get('SKillLibraryId').value==0?'Submit':'Update'}}
+                            </button>
+                        </td>
+                        <td class="border-0">
+                            <button class="btn btn-light ml-1" (click)="onDelete(fg.get('SKillLibraryId').value,i)">
+                                <i class="far fa-trash-alt fa-lg text-danger"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </form>
+                </div>
+            </table>
+      
+
+
+
+
+
+
+            <!-- <div style="padding:10px;">
                 <div class="container">
                     <div class="row">
-                        <div style="text-align: center;" class="col-sm-2">Craft</div>
-                        <div style="text-align: right;" class="col-sm-2">Employee</div>
-                        <div style="text-align: right;" class="col-sm-2">Task</div>
-                        <div style="text-align: center;" class="col-sm-2">Level</div>
-                        <div style="text-align: center;" class="col-sm-2">Hourly Rate</div>
+                        <div style="text-align: center;" class="col-sm-2"></div>
+                        <div style="text-align: right;" class="col-sm-2"></div>
+                        <div style="text-align: right;" class="col-sm-2"></div>
+                        <div style="text-align: center;" class="col-sm-2"></div>
+                        <div style="text-align: center;" class="col-sm-2"></div>
                         <div style="text-align: center;" class="col-sm">
-                            <button class="btn btn-outline-primary btn-sm" (click)="skillLibraryForm()">
-                                <i class="fa fa-plus"></i> New Record
-                            </button>
+                           
                         </div>
                         <div style="text-align: center;" class="col-sm-2"></div>
                         <div class="td col-sm">
@@ -143,7 +208,7 @@
                         <form class="tr" [formGroup]="fg" *ngFor="let fg of skillLibraryForms.controls ; let i=index;"
                             (submit)="recordSubmit(fg)">
                             <div class="td">
-                                <select class="form-control" style="width: 9em;" data-toggle="tooltip" data-placement="right" formControlName="Craft">
+                                <select class="form-control" (change)="getHourlyRate(fg)" style="width: 9em;" data-toggle="tooltip" data-placement="right" formControlName="Craft">
                                     <option value=0>Choose..</option>
                                     <option *ngFor="let r of PSRClientContractorData" [ngValue]="r.PSRClientContractorId">{{r.CraftSF}}</option>
                                 </select>
@@ -155,7 +220,7 @@
                                 </select>
                             </div>
                             <div class="td">
-                                <select class="form-control" style="width: 10em;"  data-toggle="tooltip" data-placement="right" formControlName="Task">
+                                <select class="form-control" (change)="getHourlyRate(fg)" style="width: 10em;"  data-toggle="tooltip" data-placement="right" formControlName="Task">
                                     <option value=0>Choose..</option>
                                     <option *ngFor="let r of MaintenanceStrategyList" [ngValue]="r.MSSStrategyModelId">{{r.MaintenanceTask}}</option>
                                 </select>
@@ -164,7 +229,7 @@
                                 <input type="number" class="form-control" formControlName="Level">
                             </div>
                             <div class="td">
-                                <input type="number" class="form-control" formControlName="HourlyRate">
+                                <input type="number" class="form-control" [(ngModel)]="fg.value.HourlyRate" formControlName="HourlyRate">
                             </div>
                         
                             <div class="td">
@@ -183,10 +248,8 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
-    </div>
-</div>
 
 
 
@@ -196,74 +259,160 @@
 
 
 
-
-<p-card *ngIf="showPSR">
+<p-card *ngIf="showPSR" class="dpm-card mt-4">
     <!-- <ng-template pTemplate="header">
         <p-button (click)="BackSkillData()" label="Back" styleClass="p-button-text"></p-button>
     </ng-template> -->
-    <ng-template pTemplate="header">
-        <p-button icon="pi pi-check" (click)="SavePSR()" label="Save" styleClass="p-button-text"></p-button>
-    </ng-template>
-    <table>
+    <div class="card-title d-flex justify-content-between align-items-center mb-0">
+        <h3>PSR</h3> 
+        <select class="form-control col-sm-2" (change)="getFilteredPSRModel()" [(ngModel)]="SelectedType" >
+            <option value="MSS"> MSS </option>
+            <option value="GEP"> Good Engineering Practice </option>
+            <option value="CONSTRAINT"> Constraint </option>
+            <option value="FMEA"> FMEA </option>
+        </select>      
+        <p-button icon="pi pi-check" (click)="SavePSR()" label="Save" styleClass="btn btn-primary btm-sm mb-2"></p-button>
+    </div>
+    <p-table [style]="{width:'100%'}" [value]="FilteredPSRModel" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:15em;">
+                    <col style="width:10em;">
+                    <col style="width:10em;">
+                    <col style="width:8em;">
+                    <col *ngIf="SelectedType !== 'MSS'" style="width:8em;">
+                    <col *ngIf="SelectedType !== 'MSS'" style="width:8em;">
+                    <col *ngIf="SelectedType !== 'MSS'" style="width:8em;">
+                    <col *ngIf="SelectedType !== 'MSS'" style="width:8em;">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Maintenance Task </th>
+                    <th>Craft </th>
+                    <th>Employee Name </th>
+                    <th>Action </th>
+                    <th *ngIf="SelectedType !== 'MSS'">Yearly Task duration </th>
+                    <th *ngIf="SelectedType !== 'MSS'">Hourly rate </th>
+                    <th *ngIf="SelectedType !== 'MSS'">Material Cost </th>
+                    <th *ngIf="SelectedType !== 'MSS'">Annual POC</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-FilteredPSRModel>
+                <tr>
+                    <td>
+                        <!-- <input type="text" value="Remove, overhaul, and rectify" class="form-control"> -->
+                        {{FilteredPSRModel.MaintenanceTask}}
+                    </td>
+                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0">
+                        <label>{{FilteredPSRModel.Craft !== 0 ? getCraftValue(FilteredPSRModel) : 'Not added'}}</label>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length > 0">
+                        <label *ngFor="let a of FilteredPSRModel.SkillPSRMappingMSS"> {{a.CraftOriginalId !== 0 ? getCraftForMSSSelection(a) : 'Not added'}}, &nbsp;</label>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0">
+                        <label>{{FilteredPSRModel.EmployeeName !== '' ? FilteredPSRModel.EmployeeName : 'Not added'}}</label>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length > 0">
+                        <label *ngFor="let a of FilteredPSRModel.SkillPSRMappingMSS">{{a.EmployeeName !== '' ? a.EmployeeName : 'Not added'}}, &nbsp;</label>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.TYPE !== 'MSS'">
+                        <p-button *ngIf="FilteredPSRModel.Craft == 0"  icon="pi pi-plus" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                        <p-button *ngIf="FilteredPSRModel.Craft !== 0" icon="pi pi-pencil" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                    </td>
+                    <td *ngIf="FilteredPSRModel.TYPE == 'MSS'">
+                        <p-button *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0"  icon="pi pi-plus" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                        <p-button *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length >0" icon="pi pi-pencil" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                    </td>
+                    <td *ngIf="SelectedType !== 'MSS'">
+                        <input [disabled]="FilteredPSRModel.TYPE == 'MSS'" type="number" [(ngModel)]="FilteredPSRModel.TaskDuration" (change)="generateTaskDuration(FilteredPSRModel)" class="form-control" style="height: 35px;">
+                    </td>
+                    <td *ngIf="SelectedType !== 'MSS'">
+                        <input [disabled]="FilteredPSRModel.TYPE == 'MSS'" type="number" [(ngModel)]="FilteredPSRModel.HourlyRate" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td *ngIf="SelectedType !== 'MSS'">
+                        <input [disabled]="FilteredPSRModel.TYPE == 'MSS'" type="number" [(ngModel)]="FilteredPSRModel.MaterialCost" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td *ngIf="SelectedType !== 'MSS'">
+                        <input [(ngModel)]="FilteredPSRModel.POC" type="number" class="form-control" disabled style="height: 35px;">
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">No data found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    <!-- <table>
         <tbody>
             <tr class="row">
-                <td class="col-sm">
+                <td class="col-sm-3 p-2  bg-primary">
                     <label>Maintenance Task</label>
                 </td>
-                <td class="col-sm">
+                <td class="col-sm p-2  bg-primary">
                     <label>Craft</label>
                 </td>
-                <td class="col-sm">
+                <td class="col-sm-2 p-2  bg-primary">
                     <label>Employee Name</label>
                 </td>
-                <td class="col-sm">
+                <td class="col-sm p-2  bg-primary">
                     <label>Action</label>
                 </td>
-                <td class="col-sm">
-                    <label>Task duration</label>
+                <td class="col-sm p-2  bg-primary">
+                    <label>Yearly Task duration</label>
                 </td>
-                <td class="col-sm">
+                <td class="col-sm p-2  bg-primary">
                     <label>Hourly rate</label>
                 </td>
-                <td class="col-sm">
+                <td class="col-sm p-2  bg-primary">
                     <label>Material Cost</label>
                 </td>
-                <td class="col-sm">
-                    <label>POC</label>
+                <td class="col-sm p-2  bg-primary">
+                    <label>Annual POC</label>
                 </td>
             </tr>
         </tbody>
         <tbody>
-            <tr class="row" *ngFor="let r of PSRModel">
-                <td class="col-sm">
-                    <!-- <input type="text" value="Remove, overhaul, and rectify" class="form-control"> -->
-                    <label>{{r.MaintenanceTask}}</label>
+            <tr class="row pt-2" *ngFor="let r of FilteredPSRModel">
+                <td class="col-sm-3">
+                   <label>{{r.MaintenanceTask}}</label>
                 </td>
-                <td class="col-sm">
+                <td *ngIf="r.SkillPSRMappingMSS ===  null || r.SkillPSRMappingMSS.length == 0" class="col-sm">
                     <label>{{r.Craft !== 0 ? getCraftValue(r) : 'Not added'}}</label>
                 </td>
-                <td class="col-sm">
+                <td *ngIf="r.SkillPSRMappingMSS.length > 0" class="col-sm">
+                    <label *ngFor="let a of r.SkillPSRMappingMSS"> {{a.CraftOriginalId !== 0 ? getCraftForMSSSelection(a) : 'Not added'}}, &nbsp;</label>
+                </td>
+                <td *ngIf="r.SkillPSRMappingMSS ===  null || r.SkillPSRMappingMSS.length == 0" class="col-sm-2">
                     <label>{{r.EmployeeName !== '' ? r.EmployeeName : 'Not added'}}</label>
                 </td>
-                <td class="col-sm">
+                <td *ngIf="r.SkillPSRMappingMSS.length > 0" class="col-sm-2">
+                    <label *ngFor="let a of r.SkillPSRMappingMSS">{{a.EmployeeName !== '' ? a.EmployeeName : 'Not added'}}, &nbsp;</label>
+                </td>
+                <td *ngIf="r.TYPE !== 'MSS'" class="col-sm">
                     <p-button *ngIf="r.Craft == 0"  icon="pi pi-plus" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
                     <p-button *ngIf="r.Craft !== 0" icon="pi pi-pencil" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
                 </td>
-                <td class="col-sm">
-                    <input type="number" [(ngModel)]="r.TaskDuration" (change)="generateTaskDuration(r)" class="form-control">
+                <td *ngIf="r.TYPE == 'MSS'" class="col-sm">
+                    <p-button *ngIf="r.SkillPSRMappingMSS ===  null || r.SkillPSRMappingMSS.length == 0"  icon="pi pi-plus" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
+                    <p-button *ngIf="r.SkillPSRMappingMSS.length >0" icon="pi pi-pencil" (click)="AddCraft(r)" styleClass="p-button-text"></p-button>
                 </td>
                 <td class="col-sm">
-                    <input type="number" [(ngModel)]="r.HourlyRate" value="0" class="form-control">
+                    <input [disabled]="r.TYPE == 'MSS'" type="number" [(ngModel)]="r.TaskDuration" (change)="generateTaskDuration(r)" class="form-control" style="height: 35px;">
                 </td>
                 <td class="col-sm">
-                    <input type="number" [(ngModel)]="r.MaterialCost" value="0" class="form-control">
+                    <input [disabled]="r.TYPE == 'MSS'" type="number" [(ngModel)]="r.HourlyRate" value="0" class="form-control" style="height: 35px;">
                 </td>
                 <td class="col-sm">
-                    <input [(ngModel)]="r.POC" type="number" class="form-control" disabled>
+                    <input [disabled]="r.TYPE == 'MSS'" type="number" [(ngModel)]="r.MaterialCost" value="0" class="form-control" style="height: 35px;">
+                </td>
+                <td class="col-sm">
+                    <input [(ngModel)]="r.POC" type="number" class="form-control" disabled style="height: 35px;">
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table> -->
 </p-card>
 
 
@@ -302,5 +451,87 @@
             </tr>
         </tbody>
     </table>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="CraftModal=false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog header="Select Craft" [(visible)]="MSSCraftModal" [style]="{width: '80em'}">
+    
+    <div class="row">
+        <div class="col-sm-2" *ngFor="let r of PSRClientContractorDataOBJ">
+            <label>
+                <input type="checkbox"
+                       name = "{{r.CraftSF}}"
+                       [checked]="r.values"
+                       (click)="MSSCraftSelection(r, $event)"
+                       [(ngModel)]="r.checked"
+                        />
+                       {{r.CraftSF}}
+            </label>
+        </div>
+    </div>
+    
+    <div>
+        <table class="table table-striped">
+            <tbody>
+                <tr class="row">
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Craft</label>
+                    </td>
+                    <td class="col-sm-2 p-2  bg-primary">
+                        <label>Employee Name</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Yearly Task duration</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Hourly rate</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Material Cost</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Annual POC</label>
+                    </td>
+                    <td class="col-sm p-2  bg-primary">
+                        <label>Action</label>
+                    </td>
+                </tr>   
+            </tbody>
+            <tbody>
+                <tr class="row pt-2" *ngFor="let r of  SelectedCraftToEdit.SkillPSRMappingMSS">
+                    <td class="col-sm">
+                        <label>{{r.CraftOriginalId !== 0 ? getCraftForMSSSelection(r) : 'Not added'}}</label>
+                    </td>
+                    <td class="col-sm-2">
+                        <label>{{r.EmployeeName !== '' ? r.EmployeeName : 'Not added'}}</label>
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.TaskDuration" (change)="generateTaskDuration(r)" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.HourlyRate" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input type="number" [(ngModel)]="r.MaterialCost" value="0" class="form-control" style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <input [(ngModel)]="r.POC" type="number" class="form-control" disabled style="height: 35px;">
+                    </td>
+                    <td class="col-sm">
+                        <p-button *ngIf="r.CraftOriginalId == 0"  icon="pi pi-plus" (click)="AddCraftForMSS(r)" styleClass="p-button-text"></p-button>
+                        <p-button *ngIf="r.CraftOriginalId !== 0" icon="pi pi-pencil" (click)="AddCraftForMSS(r)" styleClass="p-button-text"></p-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="MSSCraftModal=false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+      
+       
 
 </p-dialog>

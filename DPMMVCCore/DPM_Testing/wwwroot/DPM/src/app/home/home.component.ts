@@ -15,6 +15,7 @@ import { Title } from '@angular/platform-browser';
   providers: [MessageService]
 })
 export class HomeComponent implements OnInit {
+  menuOpened: boolean = true;
   FormData: FormGroup;
 
   public user: any = [];
@@ -30,14 +31,17 @@ export class HomeComponent implements OnInit {
   public MenuItems: any[] = [
     {
       label: 'Dashboard',
-      url: '#/Home/Dashboard'
+      url: '#/Home/Dashboard',
+      icon: 'pi pi-home',
     },
     {
       label: 'DPM-Education',
-      url: '#/Home/Education'
+      url: '#/Home/Education',
+      icon: 'pi pi-book',
     },
     {
       label: 'Failure Mode Library',
+      icon: 'pi pi-bookmark',
       items: [
         // {
         //   label: 'Asset’s list',
@@ -85,6 +89,7 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Customer database',
+      icon: 'pi pi-users',
       items: [
         {
           label: 'Configuration',
@@ -93,54 +98,62 @@ export class HomeComponent implements OnInit {
         {
           label: 'Data collection',
           items: [
-            {
-              label: 'Big data',
-              items: [
-                {
-                  label: 'Digital data',
-                  items: [
-                    {
-                      label: 'Screw Compressor',
-                      items: [
-                        {
-                          label: 'Train Data Upload',
-                          url: '#/Home/CompTrainUploadData'
-                        },
-                        {
-                          label: 'Prediction Data Upload',
-                          url: '#/Home/CompPredictionUploadData'
-                        }
-                      ]
-                    },
-                    {
-                      label: 'Centrifugal Pump',
-                      items: [
-                        {
-                          label: 'Train Data Upload',
-                          url: '#/Home/TrainUploadData'
-                        },
-                        {
-                          label: 'Prediction Data Upload',
-                          url: '#/Home/PredictionUploadData'
-                        }
-                      ]
-                    }
-                  ],
-                  // items: [
-                  //   {
-                  //     label: 'Analog data',
+            // {
+            //   label: 'Big data',
+            //   items: [
+            //     {
+            //       label: 'Digital data',
+            //       items: [
+            //         {
+            //           label: 'Screw Compressor',
+            //           items: [
+            //             {
+            //               label: 'Train Data Upload',
+            //               url: '#/Home/CompTrainUploadData'
+            //             },
+            //             {
+            //               label: 'Prediction Data Upload',
+            //               url: '#/Home/CompPredictionUploadData'
+            //             }
+            //           ]
+            //         },
+            //         {
+            //           label: 'Centrifugal Pump',
+            //           items: [
+            //             {
+            //               label: 'Train Data Upload',
+            //               url: '#/Home/TrainUploadData'
+            //             },
+            //             {
+            //               label: 'Prediction Data Upload',
+            //               url: '#/Home/PredictionUploadData'
+            //             }
+            //           ]
+            //         }
+            //       ],
+            //       // items: [
+            //       //   {
+            //       //     label: 'Analog data',
 
-                  //   }
-                  // ]
-                }
-              ]
-            },
+            //       //   }
+            //       // ]
+            //     }
+            //   ]
+            // },
             {
               label: 'Moderate data',
               items: [
                 {
                   label: 'Digital data',
                   items: [
+                    {
+                      label:'Sensor Data Upload',
+                      url: '#/Home/Compressor/SCModerateDataCollection'
+                    },
+                    {
+                      label:'Field Data Upload',
+                      url: '#/Home/Compressor/SCModerateFieldDataCollection'
+                    },
                     {
                       label: 'Pump Data Upload',
                       url: '#/Home/CentrifugalPump'
@@ -154,7 +167,11 @@ export class HomeComponent implements OnInit {
                   // ]
                 }
               ]
-            }
+            },
+            {
+              label:'Failure History',
+              url: '#/Home/FailureHistory'
+            },
           ]
         },
         {
@@ -208,8 +225,55 @@ export class HomeComponent implements OnInit {
         }
       ]
     },
+    
+    {
+      label: 'Criticality Assesment',
+      icon: 'pi pi-book',
+      items: [
+        {
+          label: 'Critical Asset',
+          items: [ 
+            {
+              label:'RCM',
+              url: '#/Home/Prescriptive/ADD/CA'
+            },
+            {
+              label: 'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            }
+          ]
+        },
+        {
+          label: 'Semi Critical Asset',
+          items: [ 
+            {
+              label:'FMEA',
+              url: '#/Home/Prescriptive/ADD/SCA'
+            },
+            {
+              label:'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            },
+          ]
+        },
+        {
+          label: 'Normal Criticality',
+          items: [ 
+            {
+              label:'Weibull Analysis',
+              url: '#/Home/WeibullAnalysis'
+            },
+            {
+              label:'CBA',
+              url: '#/Home/CostBenefitAnalysis'
+            },
+          ]
+        }
+      ]
+    },
     {
       label: 'Strategic Analysis',
+      icon: 'pi pi-chart-line',
       items: [
         {
           label: 'Develop maintenance strategy',
@@ -234,12 +298,20 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Prescriptive/MSSAdd'
                 },
                 {
+                  label: "Add CRAFT's",
+                  url: '#/Home/Prescriptive/CCL'
+                },
+                {
                   label: 'Skill Library',
                   url: '#/Home/Prescriptive/SkillLibrary'
                 },
                 {
                   label: 'User Production Details',
                   url: '#/Home/Prescriptive/UPD'
+                },
+                {
+                  label:'Input Data Management',
+                  url : '#/Home/Prescriptive/InputDataManagement'
                 },
                 {
                   label: 'Display',
@@ -262,16 +334,31 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Resource Optimization',
+      icon: 'pi pi-sitemap',
       items: [
         {
           label: 'APM (Assets Performance Management) Platform',
           items: [
             {
               label: 'Cost Benefit Analysis',
-              url: '#/Home/CostBenefitAnalysis'
+              items: [
+                {
+                  label: 'CBA Report',
+                  url: '#/Home/CostBenefitAnalysis'
+                },
+                {
+                  label: 'Constraint Management',
+                  url: '#/Home/Constraint'
+                },
+                {
+                  label: 'Alert Management',
+                  url: '#/Home/Alert'
+                },
+              ]
+              
             },
             {
-              label: 'Residual Risk Analysis',
+              label: 'Assesment Report',
               url: '#/Home/Report'
             },
             // {
@@ -303,6 +390,7 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Prescriptive Maintenance',
+      icon: 'pi pi-sliders-v',
       items: [
         {
           label: 'Prescriptive Recommendation',
@@ -316,6 +404,7 @@ export class HomeComponent implements OnInit {
     },
     {
       label: 'Recycle Bin',
+      icon: 'pi pi-trash',
       url: '#/Home/RecycleBin'
     },
   ];

@@ -100,12 +100,8 @@ namespace DPM_Testing.Controllers
                 double PD2aPS2aTrigger = Convert.ToDouble(ScrewCompressorConfigurationModel[3].Trigger);
                 foreach (var item in trainClassificationModels)
                 {
-                    DateTime datetime = Convert.ToDateTime(item.Date).Date;
-                    item.InsertedDate = datetime;
-                    if (datetime == DateTime.MinValue)
-                    {
-                        item.InsertedDate = DateTime.Now.Date;
-                    }
+                   // DateTime datetime = Convert.ToDateTime(item.Date).Date;
+                    item.InsertedDate = Convert.ToDateTime(item.InsertedDate); 
                     item.UserId = userId;
                     item.FailureModeType = "SSRB";
                     item.TenantId = 1;
@@ -120,7 +116,7 @@ namespace DPM_Testing.Controllers
                     }
                     else if (item.TD1 > Convert.ToDecimal(TD1Trigger) || ( (PD1a/PS1a) > Convert.ToDecimal(PD1aPS1aTrigger) ) || ((PD2a / PS2a) > Convert.ToDecimal(PD2aPS2aTrigger)))
                     {
-                        item.Classification = "degarde";
+                        item.Classification = "degrade";
                     }
                     else if (item.TD1 > Convert.ToDecimal(TD1Alaram) || ((PD1a / PS1a) > Convert.ToDecimal(PD1aPS1aAlaram)) || ((PD2a / PS2a) > Convert.ToDecimal(PD2aPS2aAlaram)))
                     {
@@ -261,7 +257,8 @@ namespace DPM_Testing.Controllers
                 //string data = JsonConvert.SerializeObject(screwCompressorPredictions);
                 //var PredictionData = jsonStringToCSV(data);
                 //var newList = screwCompressorPredictions.Select(d => new { d.Date, d.TS1, d.TD1, d.TS2, d.TD2, d.FTS1, d.FTD1, d.FTS2, d.FTD2 }).ToList();
-                var newList = screwCompressorPredictions.Select(d => new { d.Date,d.TD1,  d.FTD1, }).ToList();
+                var newList = screwCompressorPredictions.Select(d => new { d.Date, d.TD1, }).ToList();
+                //var newList = screwCompressorPredictions.Select(d => new { d.Date,d.TD1,  d.FTD1, }).ToList();
                 return Ok(newList);
             }
             catch (Exception exe)
@@ -338,7 +335,7 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("Prediction")]
-        public async Task<IActionResult> PostPrediction([FromBody] List<ScrewCompressorPredictionModel> predictionDetails)
+        public async Task<IActionResult> PostPrediction([FromBody] List<ScrewCompressorPredictionModel> predictionDetails, string tagNumber)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             try
@@ -351,8 +348,8 @@ namespace DPM_Testing.Controllers
                         item.InsertedDate = DateTime.Now;
                     }
                     DateTime dt = item.InsertedDate;
-                    DateTime dateOnly = dt.Date;
-                    item.InsertedDate = dateOnly;
+                    item.TagNumber = tagNumber.ToUpper();
+                    item.InsertedDate = dt.Date;
                     item.UserId = userId;
                     item.TenantId = 1;
                     _context.ScrewCompressurePredictionData.Add(item);
@@ -540,5 +537,6 @@ namespace DPM_Testing.Controllers
                 return BadRequest(exe.Message);
             }
         }
+      
     }
 }

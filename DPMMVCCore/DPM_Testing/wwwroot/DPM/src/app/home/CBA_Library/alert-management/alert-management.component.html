@@ -1,0 +1,62 @@
+<style>
+    i {
+        font-weight: bold;
+        margin-right: 5px;
+        font-size: 80%;
+    }
+    
+    strong {
+        font-size: 90%;
+    }
+</style>
+<p-tabView>
+    <p-tabPanel header="Latest">
+        <p-card class="dpm-card mt-4">
+            <div class="card-title d-flex justify-content-between align-items-center mb-0">
+                <h5>Notifications</h5> 
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+                <div class="custom-skeleton p-p-4">
+                    <ul class="p-m-0 p-p-0">
+                        <li class="p-mb-3" *ngIf="RecommendationAlertMessage !== '' ">
+                            <div class="p-d-flex">
+                                <div style="flex: 1">
+                                    <div class="badge badge-danger">
+                                        <span><strong>Predicton Alert</strong></span>
+                                    </div>
+                                    <div style="width :100%;" styleClass="p-mb-2">
+                                        <label>All configuration parameters starts degradation.</label>
+                                    </div>
+                                    <div>
+                                        <label>{{RecommendationAlertMessage}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <div *ngIf="SkillLibraryAllrecords.length !== 0" class="alert alert-danger d-flex justify-content-between align-items-center" style="color: #ffffff; background-color: #ff3939;">
+                            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>It will decrease the ETBC. It will also change the confidence level of the forecast value</label>
+                        </div>
+                        <li class="p-mb-3" *ngFor="let r of SkillLibraryAllrecords">
+                            <div class="p-d-flex">
+                                <div style="flex: 1">
+                                    <div class="badge badge-danger">
+                                        <span><strong>Skill Library Alert</strong></span>
+                                    </div>
+                                    <div style="width :100%;" styleClass="p-mb-2">
+                                        <label>Compitent Level is not 100 %</label>
+                                    </div>
+                                    <div>
+                                        <label>{{r.EMPName}} is assigned to {{r.CraftName}} which has {{r.Level >= 75 ? '':'only'}} level {{r.Level}} %</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </p-card>
+    </p-tabPanel>
+    <p-tabPanel header="Saved">
+        Content 2
+    </p-tabPanel>
+</p-tabView>    

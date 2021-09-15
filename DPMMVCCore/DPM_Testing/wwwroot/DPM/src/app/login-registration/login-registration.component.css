@@ -1,4 +1,4 @@
-.col{
+.col {
   padding: 30px;
   max-width: 380px;
   width: 100%;
@@ -10,19 +10,38 @@
   grid-template-columns: 15% 85%;
   padding: 0 0.4rem;
   position: relative;
-
 }
-
-.col{
-    text-align: center;
-    line-height: 55px;
-    color: #acacac;
-    transition: 0.5s;
-    font-size: 1.1rem;
-
+form.sign-up-form .row {
+  width: 100%;
 }
-
-.col input{
+.col.form-group {
+  background-color: #e8f0fe;
+  margin-left: 0;
+  height: 50px;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 15% 85%;
+  padding: 0 0.4rem;
+  position: relative;
+  border: 1px solid #e8f0fe;
+  overflow: hidden;
+  margin-right: 10px;
+  max-width: 100%;
+  width: auto;
+}
+.col.form-group .form-control {
+  background: transparent;
+  outline: none;
+  border: none;
+  line-height: 1;
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: #333;
+  font-family: 'Mukta';
+  appearance: none;
+  padding-left: 8px;
+}
+.col input {
   margin-top: 3%;
   background: none;
   outline: none;
@@ -30,40 +49,39 @@
   line-height: 1;
   font-weight: 300;
   font-size: 1.1rem;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
-.col i{
+.col i {
   padding-left: 10px;
   padding-right: 5px;
   text-align: center;
   line-height: 55px;
-  color: #acacac;
+  color: #999;
   transition: 0.5s;
-  font-size: 1.1rem;
+  font-size: 12px;
 }
 
 .col input::placeholder {
   margin-top: 10px;
   padding: 10px;
-  color: #aaa;
-  font-weight: 500;
+  color: #666;
+  font-weight: 400;
+  font-size: 14px;
 }
 
- .full{
-   background-color: white;
-   position: fixed;
-   z-index: 1;
-   overflow: hidden;
-   left:0;
-   right:0;
-   top:0;
-   bottom:0;
-   width: 100%;
-   height: 100%;
- }
-
- 
+.full {
+  background-color: white;
+  position: fixed;
+  z-index: 1;
+  overflow: hidden;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
 
 * {
   margin: 0;
@@ -72,7 +90,7 @@
 
 body,
 input {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Mukta', sans-serif;
 }
 
 .container {
@@ -81,7 +99,7 @@ input {
   min-height: 100vh;
   overflow: hidden;
   height: 100%;
-
+  min-width: 100%;
 }
 
 .forms-container {
@@ -90,15 +108,16 @@ input {
   height: 100%;
   top: 0;
   left: 0;
+  overflow: auto;
 }
 
 .signin-signup {
   position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  left: 75%;
+  top: 10%;
+  /* transform: translate(-50%, -50%); */
+  left: 50%;
   width: 50%;
-  transition: 1s 0.7s ease-in-out;
+  /* transition: 1s 0.7s ease-in-out; */
   display: grid;
   grid-template-columns: 1fr;
   z-index: 5;
@@ -109,11 +128,16 @@ form {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0rem 5rem;
-  transition: all 0.2s 0.7s;
+  transition: all 0s !important;
   overflow: hidden;
   grid-column: 1 / 2;
   grid-row: 1 / 2;
+  background: #fff;
+  width: 500px;
+  margin: auto;
+  padding: 55px 35px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px #0000006b;
 }
 
 form.sign-up-form {
@@ -127,44 +151,65 @@ form.sign-in-form {
 
 .title {
   font-size: 2.2rem;
-  color: #444;
+  color: #333;
   margin-bottom: 10px;
-}
-
-.input-field {
-  max-width: 380px;
+  text-transform: capitalize;
+  font-weight: 500;
+  float: left;
   width: 100%;
-  background-color: #f0f0f0;
+}
+.title + p {
+  font-size: 14px;
+  text-align: left;
+  width: 100%;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 20px;
+}
+.input-field {
+  max-width: 100%;
+  width: 100%;
+  background-color: #e8f0fe;
   margin: 10px 0;
   height: 55px;
-  border-radius: 55px;
+  border-radius: 5px;
   display: grid;
   grid-template-columns: 15% 85%;
   padding: 0 0.4rem;
   position: relative;
+  border: 1px solid #fff;
+  overflow: hidden;
 }
 
 .input-field i {
   text-align: center;
   line-height: 55px;
-  color: #acacac;
+  color: #25bec3;
   transition: 0.5s;
-  font-size: 1.1rem;
+  font-size: 13px;
 }
-
+.input-field i:after {
+  content: '|';
+  position: relative;
+  right: -10px;
+  top: -2px;
+  height: 20px;
+}
 .input-field input {
-  background: none;
+  background: #e8f0fe;
   outline: none;
   border: none;
   line-height: 1;
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-weight: 400;
+  font-size: 0.95rem;
   color: #333;
+  font-family: 'Mukta';
 }
 
 .input-field input::placeholder {
-  color: #aaa;
-  font-weight: 500;
+  color: #666;
+  font-weight: 400;
+  font-size: 14px;
 }
 
 .social-text {
@@ -199,11 +244,11 @@ form.sign-in-form {
 
 .btn {
   width: 150px;
-  background-color: #585570;
+  background-color: #25bec3;
   border: none;
   outline: none;
   height: 49px;
-  border-radius: 49px;
+  border-radius: 7px;
   color: #fff;
   text-transform: uppercase;
   font-weight: 600;
@@ -225,9 +270,8 @@ form.sign-in-form {
   grid-template-columns: repeat(2, 1fr);
 }
 
-
 .container:before {
-  content: "";
+  content: '';
   position: absolute;
   height: 2000px;
   width: 2000px;
@@ -238,20 +282,21 @@ form.sign-in-form {
   transition: 1.8s ease-in-out;
   border-radius: 50%;
   z-index: 6;
+  display: none;
 }
 
 .image {
   width: 100%;
   transition: transform 1.1s ease-in-out;
   transition-delay: 0.4s;
+  display: none;
 }
 
 .panel {
-  
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-   /* justify-content: space-around;  */
+  /* justify-content: space-around;  */
   text-align: center;
   z-index: 6;
 }
@@ -259,25 +304,27 @@ form.sign-in-form {
 .left-panel {
   pointer-events: all;
   /* padding: 3rem 17% 2rem 12%; */
-  padding: 10rem 17% 2rem 12%;
+  padding: 10rem;
+  padding-left: 0 !important;
 }
-
 
 .right-panel {
   pointer-events: none;
-  padding: 10rem 12% 2rem 17%;
+  padding: 10rem;
+  padding-right: 0 !important;
 }
 
 .panel .content {
   color: #fff;
-  transition: transform 0.9s ease-in-out;
-  transition-delay: 0.6s;
+  /* transition: transform 0.9s ease-in-out;
+  transition-delay: 0.6s; */
+  z-index: 99;
 }
 
 .panel h3 {
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
-  font-size: 1.5rem;
+  font-size: 3rem;
 }
 
 .panel p {
@@ -292,7 +339,10 @@ form.sign-in-form {
   width: 130px;
   height: 41px;
   font-weight: 600;
-  font-size: 0.8rem;
+  text-transform: capitalize;
+  font-size: 16px;
+  color: #333;
+  background: #fff;
 }
 
 .right-panel .image,
@@ -313,7 +363,8 @@ form.sign-in-form {
 }
 
 .container.sign-up-mode .signin-signup {
-  left: 25%;
+  /* left: 25%; */
+  left: 0%;
 }
 
 .container.sign-up-mode form.sign-up-form {
@@ -347,13 +398,13 @@ form.sign-in-form {
   .signin-signup {
     width: 100%;
     top: 95%;
-    transform: translate(-50%, -100%);
-    transition: 1s 0.8s ease-in-out;
+    /* transform: translate(-50%, -100%); */
+    /* transition: 1s 0.8s ease-in-out; */
   }
 
   .signin-signup,
   .container.sign-up-mode .signin-signup {
-    left: 50%;
+    /* left: 50%; */
   }
 
   .panels-container {
@@ -466,10 +517,60 @@ form.sign-in-form {
     bottom: 28%;
     left: 50%;
   }
- 
+}
+.panels-container {
+  background-image: url(../../assets/img/bg-login.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container.sign-up-mode .panel.left-panel {
+  background-image: none;
+}
+.panels-container:before {
+  background-color: #0000006b;
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+input::selected {
+  background-color: #fff !important;
+}
+.container.sign-up-mode .panel.left-panel:before {
+  display: none;
+}
+.form-group i {
+  color: #666;
+  font-weight: 600;
+}
+.form-group i:after {
+  content: '|';
+  position: relative;
+  right: -10px;
+  top: -2px;
+  height: 20px;
+  color: #aaa;
+}
+@-webkit-keyframes autofill {
+  0%,
+  100% {
+    color: #666;
+    background: #fff;
+  }
 }
 
-
-  
-
-    
+input:-webkit-autofill {
+  -webkit-animation-delay: 1s; /* Safari support - any positive time runs instantly */
+  -webkit-animation-name: autofill !important;
+  -webkit-animation-fill-mode: both;
+}
+.container.sign-up-mode form {
+  width: 600px;
+}

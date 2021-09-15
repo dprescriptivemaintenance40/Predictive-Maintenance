@@ -1,25 +1,26 @@
 <p-toast position="top-right"></p-toast>
+<button class="btn btn-dark" *ngIf="prescriptveReportSelect" p-tooltip="Back to prescriptive recommendation list" (click)="goBackToPrescriptiveRecomendationList()">Back</button>
 <div *ngIf="prescriptveReportSelect">
-    <div class="card shadow div-in-middle">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Provide below information</b></li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style=" margin-right: 12px;">Chair Person</label>
-                    <input type="text" class="form-control" [(ngModel)]="ChairPerson" placeholder="Person Name">
+    <div class="card dpm-card p-3">
+        <h5 class="mb-4">Provide below information</h5>
+        <div class="row d-flex flex-row">
+            <div  class="col-md-3">
+                <div class="d-flex flex-column mb-3">
+                    <label class="d-block">Chair Person</label>
+                    <input type="text" class="form-control w-100" [(ngModel)]="ChairPerson" placeholder="Person Name">
                 </div>
-            </li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style="margin-right: 12px;">Participants</label>
-                    <input type="text" class="form-control" [(ngModel)]="Participants" placeholder="Participant Name">
+            </div>
+           <div  class="col-md-3">
+                <div class="d-flex flex-column mb-3">
+                    <label class="d-block">Participants</label>
+                    <input type="text" class="form-control w-100" [(ngModel)]="Participants" placeholder="Participant Name">
                 </div>
-            </li>
-            <li class="list-group-item">
-                <div class="input-group mb-3">
-                    <label style="margin-right: 12px;">Select Report Type</label>
+            </div>
+           <div  class="col-md-3">
+                <div class="d-flex flex-column mb-3">
+                    <label class="d-block">Select Report Type</label>
                     <select [ngModelOptions]="{standalone: true}" [(ngModel)]="ReportRCMType" class="form-select"
-                        class="form-control">
+                        class="form-control w-100">
                         <option value="">Select Type</option>
                         <option value="RCM" [disabled]="data.MSSAdded != '1'">RCM</option>
                         <option value="FMEA">FMEA</option>
@@ -27,11 +28,11 @@
                         <option value="MSS" [disabled]="data.MSSAdded != '1'">MSS</option>
                     </select>
                 </div>
-            </li>
-            <li class="list-group-item">
-                <button class="btn btn-dark" (click)="GeneratePrescriptionReport()">Done</button>
-            </li>
-        </ul>
+            </div>
+           <div  class="col-md-3">
+                <button class="btn btn-dark mt-1" (click)="GeneratePrescriptionReport()">Done</button>
+           </div>
+        </div>
     </div>
 </div>
 
@@ -47,21 +48,22 @@
     </div>
     <div style="margin: 20px;" id="contentToConvert">
         <div class="page" id="pdfTable2" #pdfTable2>
-            <div class="text-center" style="text-align: center">
+            <div class="text-center mb-5" style="text-align: center">
+                <div class="sidebar-brand-icon text-center" *ngIf="imagedivFMEA">
+                    <div class="image-container">
+                        <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                    </div>
+                </div>
+                <div class="text-center" *ngIf="!imagedivFMEA" id="pdfTable2" #pdfTable2>
+                    <div class="image-container">
+                        <img style="width:20px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
+                    </div>
+                </div>
                 <h4><b>{{ReportRCMType}} Report Analysis </b></h4>
             </div>
-            <div class="sidebar-brand-icon col-sm-2" *ngIf="imagedivFMEA" >
-                <div class="image-container" >
-                    <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png"  alt="">
-                </div>
-            </div>
-            <div class="sidebar-brand-icon col-sm-2" *ngIf="!imagedivFMEA" id="pdfTable2" #pdfTable2>
-                <div class="image-container" >
-                    <img style="width:20px;height:15px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
-                </div>
-            </div>
+            
 
-            <div>
+            <div class="mb-4">
                 <h5><b>Executive Summary </b></h5>
                 <p>
                     This document provides guidance and insight into the analysis process for {{ReportRCMType}} .
@@ -115,12 +117,12 @@
                 <!-- <span *ngIf="hide">{{TypeMethodology}}</span> -->
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeMethodology"
                     placeholder="Type Methodology *"> {{TypeMethodology}}</textarea>
-                <h5><b>Current and future actions</b></h5>
+                <h5 class="mt-4"><b>Current and future actions</b></h5>
                 <span *ngIf="hide">{{TypeCurrentandfuture}}</span>
                 <textarea *ngIf="!hide" class="custom-textarea form-control" [(ngModel)]="TypeCurrentandfuture"
                     placeholder="Type Current and future actions *"> {{TypeCurrentandfuture}}</textarea>
             </div>
-            <div  style="margin-top: 10px;">
+            <div  class="mb-4">
                 <h5><b>Conclusion </b></h5>
                 <p>
                     The objective of the task was to analyze the current condition of {{data.EquipmentType}} with Tag No
@@ -161,7 +163,7 @@
             </div>
             <div  style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
-                    <div style="overflow: scroll;overflow: hidden;">
+                    <div style="overflow: auto;overflow: hidden;">
                         <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                         <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode"
                             styleClass="company">
@@ -337,7 +339,7 @@
             </div>
             <div  style="page-break-before: always;">
                 <div *ngFor="let tree of AnnexuresTreeList">
-                    <div style="overflow: scroll;overflow: hidden;">
+                    <div style="overflow: auto;overflow: hidden;">
                         <label style="margin-left: 140px; padding: 30px;"><b>{{tree[0].labels}}</b></label>
                         <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode"
                             styleClass="company">

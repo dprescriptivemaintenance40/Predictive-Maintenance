@@ -1,61 +1,56 @@
 <p-toast position="top-right"></p-toast>
-<div class="container">
-    <div class="shadow-sm p-3 mb-5 bg-white rounded" style=" margin-right: 80px;">
-        <div class="table-responsive">
-            <div style="padding:10px;">
-                <div class="container">
-                    <div class="row">
-                        <div style="text-align: center;" class="col-sm-2">Item</div>
-                        <div style="text-align: right;" class="col-sm-2">Total Hours</div>
-                        <div style="text-align: right;" class="col-sm-2">Production Loss</div>
-                        <div style="text-align: center;" class="col-sm-2">Total Cost</div>
-                        <div style="text-align: center;" class="col-sm-2">
-                            <button class="btn btn-outline-primary btn-sm" (click)="userProductionForm()">
-                                <i class="fa fa-plus"></i> New Record
-                            </button>
-                        </div>
-                        <div style="text-align: center;" class="col-sm-2"></div>
-                        <div class="td col-sm">
-                            <span *ngIf="notification" class="elementToFadeInAndOut">
-                                <i class="fas fa-check-circle {{notification.class}}"></i>
-                                {{notification.message}}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="tbody">
-                        <form class="tr" [formGroup]="fg" *ngFor="let fg of userProductionForms.controls ; let i=index;"
-                            (submit)="recordSubmit(fg)">
-                            <div class="td">
+    <div class="dpm-card p-3">
+        <div class="row">
+            <div class=" col-md-12 card-title d-flex justify-content-between align-items-center mb-0">
+                <h3>User Production Details</h3>
+                <span *ngIf="notification" class="elementToFadeInAndOut">
+                    <i class="fas fa-check-circle {{notification.class}}"></i>
+                    {{notification.message}}
+                </span>
+                <button class="btn btn-primary btn-sm" (click)="userProductionForm()">
+                    <i class="fa fa-plus"></i> New Record
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">           
+            <div class="row m-0">
+                <div class="col-sm-3 p-2 bg-primary">Item</div>
+                <div class="col-sm-3 p-2 bg-primary">Total Hours</div>
+                <div class="col-sm-2 p-2 bg-primary">Production Loss</div>
+                <div class="col-sm-2 p-2 bg-primary">Total Cost</div> 
+                <div class="col-sm-2 p-2 bg-primary"></div>
+            </div>
+            <div class="row m-0 mt-2">
+                <div class="col-md-12 p-0">
+                    <form [formGroup]="fg" *ngFor="let fg of userProductionForms.controls ; let i=index;"
+                        (submit)="recordSubmit(fg)">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
                                 <input class="form-control" data-toggle="tooltip" data-placement="right" formControlName="Item">
                             </div>
-                            <div class="td">
+                            <div class="col-md-3">
                                 <input class="form-control" formControlName="TotalHours">
                             </div>
-                            <div class="td">
+                            <div class="col-md-2">
                                 <input type="number" class="form-control" p-tooltip="Put in Percentage" formControlName="ProductionLossPercentage">
                             </div>
-                            <div class="td">
+                            <div class="col-md-2">
                                 <input type="number" class="form-control" formControlName="TotalCost">
-                            </div>
-                        
-                            <div class="td">
+                            </div>                    
+                            <div class="col-md-2">
                                 <button type="submit" class="btn btn-sm"
                                         [ngClass]="(fg.get('UserProductionId').value==0)?'btn btn-sm':'btn-outline-dark'"><i
                                         class="far fa-save"></i>
                                     {{fg.get('UserProductionId').value==0?'Submit':'Update'}}
                                 </button>
-
-                            </div>
-                            <div class="td">
                                 <button class="btn btn-light ml-1" (click)="onDelete(fg.get('UserProductionId').value,i)">
                                     <i class="far fa-trash-alt fa-lg text-danger"></i>
                                 </button>
                             </div>
-                        </form>
-                    </div>
+                       
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>

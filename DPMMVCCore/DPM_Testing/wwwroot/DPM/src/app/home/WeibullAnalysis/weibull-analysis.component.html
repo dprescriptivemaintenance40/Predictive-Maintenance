@@ -1,0 +1,208 @@
+<div class="row bg-white p-3 mb-3 align-items-center">
+    <div class="col-sm-9">
+        <div class="row">
+            <div class="col">
+                <label class="">Assets </label>
+                <select [(ngModel)]="AssetsSelect" class="form-control form-select">
+                    <option value="">Choose..</option>
+                    <option value="Compressor">Compressor</option>
+                    <option value="CentrifugalPump">Centrifugal Pump</option>
+                </select>
+            </div>
+            <div class="col">
+                <label class=""></label>
+                <div class="input-group ">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" (change)="fileTestChange($event)" class="custom-file-input" accept=".csv" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" *ngIf="fileName == ''" for="inputGroupFile01">Choose Days File</label>
+                        <label class="custom-file-label" *ngIf="fileName != ''" for="inputGroupFile01">{{fileName}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <button type="button" (click)="Submit()" class="btn btn-primary mt-4">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 mt-1 text-right">
+        <button type="button" (click)="exportCSV('days')" class="btn btn-outline-primary btn-sm"><i
+                class="pi pi-file-excel"></i>&nbsp; Export Median Rank</button>
+        <button type="button" title="Show Charts" (click)="ShowCharts()" class="btn btn-outline-primary btn-sm">
+                    <i class="fa fa-line-chart"></i> Charts </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="card">
+            <p-table id="exportexcel" [value]="WeibullModel?.weibullMTBFModels" [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10,25,50]">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:8em;">
+                        <col style="width:6em;">
+                        <col style="width:12em;">
+                        <col style="width:6em;">
+                        <col style="width:8em;">
+                        <col style="width:10em;">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="MTBFDays">MTBF Days
+                            <p-sortIcon field="MTBFDays"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Rank">Rank
+                            <p-sortIcon field="Rank"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="MedianRankPercentage">Median Rank Percentage
+                            <p-sortIcon field="MedianRankPercentage"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="LogOfMTBFDays">ln ( MTBF Days )
+                            <p-sortIcon field="LogOfMTBFDays"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="InverseOfMedianRankPercentage">1/(1 - Median Rank Percentage)
+                            <p-sortIcon field="InverseOfMedianRankPercentage"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="LogOfInverseOfMedianRankPercentage">ln(ln(1/(1- Median Rank Percentage)))
+                            <p-sortIcon field="LogOfInverseOfMedianRankPercentage"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr>
+                        <td>{{row.MTBFDays}}</td>
+                        <td>{{row.Rank}}</td>
+                        <td>{{row.MedianRankPercentage.toFixed(6)}}</td>
+                        <td>{{row.LogOfMTBFDays.toFixed(6)}}</td>
+                        <td>{{row.InverseOfMedianRankPercentage.toFixed(6)}}</td>
+                        <td>{{row.LogOfInverseOfMedianRankPercentage.toFixed(6)}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6">No data found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    Beta :
+                    <td>{{WeibullModel?.Beta.toFixed(4)}}</td>
+                </tr>
+                <tr>
+                    Alpha :
+                    <td>{{WeibullModel?.Alpha.toFixed(4)}}</td>
+                </tr>
+                <tr>
+                    R Square :
+                    <td>{{WeibullModel?.rSquare.toFixed(4)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div style="float: left;">
+            <h3> <span style="color: red;font-size: 2.5em;">*</span><span>Weibull Analysis</span></h3>
+        </div>
+        <div style="float: right;">
+            <!-- <button class="bttn-custom" title="Show Charts" (click)="ShowCharts()" style="font-size: 3em;color: red; margin-right: 12px;"><i class="fa fa-line-chart"></i></button> -->
+            <button class="button" title="Export CSV" (click)="exportCSV('weibull')" class="btn btn-outline-primary btn-sm"><i
+                class="pi pi-file-excel"></i>&nbsp; Export Weibull Analysis</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <p-table id="exportexcel" [value]="WeibullModel?.weibullHazardRateModels" [style]="{width:'100%'}" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10,25,50]">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:8em;">
+                        <col style="width:6em;">
+                        <col style="width:8em;">
+                        <col style="width:8em;">
+                        <col style="width:6em;">
+                        <col style="width:8em;">
+                        <col style="width:12em;">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="CyclesDays">Cycles Days
+                            <p-sortIcon field="CyclesDays"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="CDF">CDF
+                            <p-sortIcon field="CDF"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Reliability">Reliability
+                            <p-sortIcon field="Reliability"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="HazardRate">Hazard Rate
+                            <p-sortIcon field="HazardRate"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="PDF">PDF
+                            <p-sortIcon field="PDF"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="WeibullLogx">ln ( Cycles Days )
+                            <p-sortIcon field="WeibullLogx"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="WeibullLogxOfLogx">ln ( ln (1 / Reliability ) )
+                            <p-sortIcon field="WeibullLogxOfLogx"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr>
+                        <td>{{row.CyclesDays}}</td>
+                        <td>{{row.CDF.toFixed(6)}}</td>
+                        <td>{{row.Reliability.toFixed(6)}}</td>
+                        <td>{{row.HazardRate.toFixed(6)}}</td>
+                        <td>{{row.PDF.toFixed(6)}}</td>
+                        <td>{{row.WeibullLogx.toFixed(6)}}</td>
+                        <td>{{row.WeibullLogxOfLogx.toFixed(6)}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">No data found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+</div>
+<p-dialog header="Charts" [(visible)]="showLineCharts" [baseZIndex]="10000">
+    <ng-template pTemplate="content">
+        <div class="row">
+            <div class="col-md-6" style="width:100%;">
+                <canvas id="chart1" width="700" height="250"></canvas>
+            </div>
+            <div class="col-md-6" style="width:100%;">
+                <canvas id="chart2" width="700" height="250"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" style="width:100%;">
+                <canvas id="chart3" width="700" height="250"></canvas>
+            </div>
+            <div class="col-md-6" style="width:100%;">
+                <canvas id="chart4" width="700" height="250"></canvas>
+            </div>
+        </div>
+    </ng-template>
+</p-dialog>

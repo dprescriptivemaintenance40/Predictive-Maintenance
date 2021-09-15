@@ -5,52 +5,54 @@
             <div class="signin-signup">
                 <form [formGroup]="loginForm" class="sign-in-form" (submit)="onLogin()">
                     <h2 class="title">Sign in</h2>
+                    <p>We make failure visible and prescribe right maintenance right time.</p>
+
                     <div class="input-field form-group required">
-                        <i class="fas fa-user"></i>
+                        <i class="lnr lnr-user"></i>
                         <input name="UserName" formControlName="UserName" type="text" placeholder="User Name" />
                     </div>
-                    <span class="text-danger" *ngIf="loginForm.controls['UserName'].dirty" [hidden]="!(loginForm.hasError('required', 'UserName'))">
+                    <span class="text-danger" *ngIf="loginForm.controls['UserName'].dirty"
+                        [hidden]="!(loginForm.hasError('required', 'UserName'))">
                         <i class="pi pi-info-circle"></i>&nbsp;User name is required.
-                     </span>
+                    </span>
                     <div class="input-field form-group required">
-                        <i class="fas fa-lock"></i>
+                        <i class="lnr lnr-lock"></i>
                         <input name="Password" formControlName="password" type="password" placeholder="Password" />
                     </div>
-                    <span class="text-danger" *ngIf="loginForm.controls['password'].dirty" [hidden]="!(loginForm.hasError('required', 'password'))">
+                    <span class="text-danger" *ngIf="loginForm.controls['password'].dirty"
+                        [hidden]="!(loginForm.hasError('required', 'password'))">
                         <i class="pi pi-info-circle"></i>&nbsp;Password is required.
-                     </span>
+                    </span>
                     <input type="submit" value="Login" [disabled]="loginForm.invalid" class="btn solid" />
                     <!-- <p><a [routerLink]="['/ForgotPassword']" >Forgot Password</a></p> -->
-                    <p class="social-text">Connect us with social platforms</p>
-                    <div class="social-media">
-
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="LinkedIn" href="https://linkedin.com/in/dynamic-prescriptive-maintenance-08bb101b8" class="social-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
                 </form>
 
                 <form [formGroup]="registerForm" class="sign-up-form" (submit)="onSubmit()">
 
                     <h2 class="title">Sign up</h2>
+                    <p>We make failure visible and prescribe right maintenance right time.</p>
 
                     <div class="form-group row">
                         <div class="col-sm-6">
                             <div class="col form-group required">
-                                <i class="fas fa-user"></i>
-                                <input type="text" class="form-control" formControlName="UserName" placeholder="User Name">
+                                <i class="lnr lnr-user"></i>
+                                <input type="text" class="form-control" formControlName="UserName"
+                                    placeholder="User Name">
                             </div>
-                            <span class="text-danger" *ngIf="registerForm.controls['UserName'].dirty" [hidden]="!(registerForm.hasError('required', 'UserName'))">
-                                <i class="pi pi-info-circle"></i>&nbsp;Required 
+                            <span class="text-danger" *ngIf="registerForm.controls['UserName'].dirty"
+                                [hidden]="!(registerForm.hasError('required', 'UserName'))">
+                                <i class="pi pi-info-circle"></i>&nbsp;Required
                             </span>
                         </div>
                         <div class="col-sm-6">
                             <div class="col form-group required">
-                                <i class="fas fa-user"></i>
-                                <input type="text" class="form-control" formControlName="Company" placeholder="Company Name">
+                                <i class="lnr lnr-apartment"></i>
+                                <input type="text" class="form-control" formControlName="Company"
+                                    placeholder="Company Name">
                             </div>
-                            <span class="text-danger" *ngIf="registerForm.controls['Company'].dirty" [hidden]="!(registerForm.hasError('required', 'Company'))">
-                                <i class="pi pi-info-circle"></i>&nbsp;Required 
+                            <span class="text-danger" *ngIf="registerForm.controls['Company'].dirty"
+                                [hidden]="!(registerForm.hasError('required', 'Company'))">
+                                <i class="pi pi-info-circle"></i>&nbsp;Required
                             </span>
                         </div>
                     </div>
@@ -58,20 +60,24 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="col form-group required">
-                                <i class="fas fa-user"></i>
-                                <input type="text" class="form-control" formControlName="Firstname" placeholder="First name">
+                                <i class="lnr lnr-user"></i>
+                                <input type="text" class="form-control" formControlName="Firstname"
+                                    placeholder="First name">
                             </div>
-                            <span class="text-danger" *ngIf="registerForm.controls['Firstname'].dirty" [hidden]="!(registerForm.hasError('required', 'Firstname'))">
-                                <i class="pi pi-info-circle"></i>&nbsp;Required 
-                           </span>
+                            <span class="text-danger" *ngIf="registerForm.controls['Firstname'].dirty"
+                                [hidden]="!(registerForm.hasError('required', 'Firstname'))">
+                                <i class="pi pi-info-circle"></i>&nbsp;Required
+                            </span>
                         </div>
                         <div class="col-sm-6">
                             <div class="col form-group required">
-                                <i class="fas fa-user"></i>
-                                <input type="text" class="form-control" formControlName="Lastname" placeholder="Last name">
+                                <i class="lnr lnr-user"></i>
+                                <input type="text" class="form-control" formControlName="Lastname"
+                                    placeholder="Last name">
                             </div>
-                            <span class="text-danger" *ngIf="registerForm.controls['Lastname'].dirty" [hidden]="!(registerForm.hasError('required', 'Lastname'))">
-                                <i class="pi pi-info-circle"></i>&nbsp;Required 
+                            <span class="text-danger" *ngIf="registerForm.controls['Lastname'].dirty"
+                                [hidden]="!(registerForm.hasError('required', 'Lastname'))">
+                                <i class="pi pi-info-circle"></i>&nbsp;Required
                             </span>
                         </div>
 
@@ -79,26 +85,34 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="col form-group required">
-                                <i class="fas fa-mobile"></i>
-                                <input type="text" class="form-control" formControlName="PhoneNumber" placeholder="Phone Number">
+                                <i class="lnr lnr-phone"></i>
+                                <input type="text" class="form-control" formControlName="PhoneNumber"
+                                    placeholder="Phone Number">
                             </div>
-                            <span class="text-danger" *ngIf="registerForm.controls['PhoneNumber'].dirty" [hidden]="!(registerForm.hasError('pattern', 'PhoneNumber'))">
-                                <i class="pi pi-info-circle"></i>&nbsp;Enter Valid Phone Number 
+                            <span class="text-danger" *ngIf="registerForm.controls['PhoneNumber'].dirty"
+                                [hidden]="!(registerForm.hasError('pattern', 'PhoneNumber'))">
+                                <i class="pi pi-info-circle"></i>&nbsp;Enter Valid Phone Number
                             </span>
-                            <span class="text-danger" *ngIf="registerForm.controls['PhoneNumber'].dirty" [hidden]="!(registerForm.hasError('required', 'PhoneNumber'))">
-                                <i class="pi pi-info-circle"></i>&nbsp;Required 
+                            <span class="text-danger" *ngIf="registerForm.controls['PhoneNumber'].dirty"
+                                [hidden]="!(registerForm.hasError('required', 'PhoneNumber'))">
+                                <i class="pi pi-info-circle"></i>&nbsp;Required
                             </span>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="col form-group required">
-                                <i class="fas fa-envelope"></i>
-                                <input type="email" class="form-control" formControlName="Email" email="true" placeholder="Email">
+                                <i class="lnr lnr-envelope"></i>
+                                <input type="email" class="form-control" formControlName="Email" email="true"
+                                    placeholder="Email">
                             </div>
-                            <span style="margin-left: 0px;" class="text-danger" *ngIf="registerForm.controls['Email'].dirty" [hidden]="!(registerForm.hasError('pattern', 'Email'))">
-                                <i class="pi pi-info-circle"></i>&nbsp;Please Enter Valid Email Address 
+                            <span style="margin-left: 0px;" class="text-danger"
+                                *ngIf="registerForm.controls['Email'].dirty"
+                                [hidden]="!(registerForm.hasError('pattern', 'Email'))">
+                                <i class="pi pi-info-circle"></i>&nbsp;Please Enter Valid Email Address
                             </span>
-                            <span style="margin-left: 0px;" class="text-danger" *ngIf="registerForm.controls['Email'].dirty" [hidden]="!(registerForm.hasError('required', 'Email'))">
+                            <span style="margin-left: 0px;" class="text-danger"
+                                *ngIf="registerForm.controls['Email'].dirty"
+                                [hidden]="!(registerForm.hasError('required', 'Email'))">
                                 <i class="pi pi-info-circle"></i>&nbsp;Required
                             </span>
 
@@ -107,18 +121,22 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="col form-group required">
-                                <i class="fas fa-lock"></i>
-                                <input type="password" class="form-control" formControlName="Password" placeholder="Password">
+                                <i class="lnr lnr-lock"></i>
+                                <input type="password" class="form-control" formControlName="Password"
+                                    placeholder="Password">
                             </div>
 
-                            <span style="margin-left: 0px;" class="text-danger" *ngIf="registerForm.controls['Password'].dirty" [hidden]="!(registerForm.hasError('required', 'Password'))">
-                                <i class="pi pi-info-circle"></i>&nbsp;Required 
+                            <span style="margin-left: 0px;" class="text-danger"
+                                *ngIf="registerForm.controls['Password'].dirty"
+                                [hidden]="!(registerForm.hasError('required', 'Password'))">
+                                <i class="pi pi-info-circle"></i>&nbsp;Required
                             </span>
                         </div>
                         <div class="col-sm-6">
                             <div class="col form-group required">
-                                <i class="fas fa-lock"></i>
-                                <input type="password" class="form-control" formControlName="ConfirmPassword" placeholder="Confirm Password">
+                                <i class="lnr lnr-lock"></i>
+                                <input type="password" class="form-control" formControlName="ConfirmPassword"
+                                    placeholder="Confirm Password">
                             </div>
                             <span class="text-danger" *ngIf="registerForm.hasError('notSame')">
                                 <i class="pi pi-info-circle"></i> Passwords do not match
@@ -128,13 +146,15 @@
 
                     <input type="submit" class="btn" value="Sign up" />
 
-                    <p class="social-text">Connect with us on</p>
+                    <!-- <p class="social-text">Connect with us on</p>
                     <div class="social-media">
 
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="LinkedIn" href="https://linkedin.com/in/dynamic-prescriptive-maintenance-08bb101b8" class="social-icon">
+                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="LinkedIn"
+                            href="https://linkedin.com/in/dynamic-prescriptive-maintenance-08bb101b8"
+                            class="social-icon">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>
