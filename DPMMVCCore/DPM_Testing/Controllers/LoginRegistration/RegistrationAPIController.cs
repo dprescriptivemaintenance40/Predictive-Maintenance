@@ -38,6 +38,7 @@ namespace DPM_Testing.Controllers
                 if (user == null)
                 {
                     model.UserId = Guid.NewGuid().ToString();
+                    model.UserType = 0;
                     model.Password = EncryptDecryptPassword.Encrypt(model.Password, model.UserId.ToString());
                     this.context.RegisterUsers.Add(model);
                     await this.context.SaveChangesAsync();

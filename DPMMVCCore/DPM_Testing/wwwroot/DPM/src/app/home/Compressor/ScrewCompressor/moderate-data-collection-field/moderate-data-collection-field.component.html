@@ -1,0 +1,61 @@
+
+<!-- <div style="padding: 5px;" class="row">
+    <div class="col-sm col-md-4 form-group">
+        <input type="file" class="form-control-file btn btn-secondary" (change)="addfile($event)" placeholder="Upload file" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+    </div>
+</div> -->
+<div class="row bg-white p-3">
+    <div class="col-sm">
+        <button class="btn btn-primary mr-2" (click)="GetRawData()">RawData</button>
+
+        <button class="btn btn-primary" (click)="GetSensorData()">Cleaned Data</button>
+    </div>
+</div>
+<div style="padding: 5px;" style="overflow: auto;">
+    <div class="card">
+        <p-table id="exportexcel" [style]="{width:'100%'}" [value]="RawData === true ? UploadCompDetailList : MinedSensorData" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [loading]="loading">
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col style="width:8em;">
+                    <col *ngIf="SensorData" style="width:8em;">
+                    <col style="width:8em;">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>PD1 </th>
+                    <th>PD2 </th>
+                    <th>TS1 </th>
+                    <th>TD1 </th>
+                    <th>TS2 </th>
+                    <th>TD2</th>
+                    <th *ngIf="SensorData">AMP</th>
+                    <th>DATE</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-UploadCompDetailList>
+                <tr>
+                    <td>{{UploadCompDetailList.PD1}}</td>
+                    <td>{{UploadCompDetailList.PD2}}</td>
+                    <td>{{UploadCompDetailList.TS1}}</td>
+                    <td>{{UploadCompDetailList.TD1}}</td>
+                    <td>{{UploadCompDetailList.TS2}}</td>
+                    <td>{{UploadCompDetailList.TD2}}</td>
+                    <td *ngIf="SensorData">{{UploadCompDetailList.Amp}}</td>
+                    <td>{{UploadCompDetailList.Date | date}}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">No data found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

@@ -21,8 +21,13 @@ import { CentrifugalPumpTraindataUploadComponent } from './Pump/centrifugal-pump
 import { CentrifugalPumpPredictiondataUploadComponent } from './Pump/centrifugal-pump/centrifugal-pump-predictiondata-upload/centrifugal-pump-predictiondata-upload.component';
 import {DialogModule} from 'primeng/dialog';
 import { PrescriptionComponent } from './prescription/prescription.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
 import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
+import { ConstarintManagementComponent } from './CBA_Library/constarint-management/constarint-management.component';
+import { AlertManagementComponent } from './CBA_Library/alert-management/alert-management.component';
+import { DesignatonAccessComponent } from './Admin/designaton-access/designaton-access.component';
+import { StaffComponent } from './Admin/staff/staff.component';
 
 @NgModule({
     declarations: [
@@ -40,8 +45,13 @@ import { FailureHistoryComponent } from "./FailureHistory/failure-history.compon
         CentrifugalPumpTraindataUploadComponent,
         CentrifugalPumpPredictiondataUploadComponent,
         PrescriptionComponent,
+        LandingPageComponent,
         WeibullAnalysis,
-        FailureHistoryComponent
+        FailureHistoryComponent,
+        ConstarintManagementComponent,
+        AlertManagementComponent,
+        DesignatonAccessComponent,
+        StaffComponent
     ],
     imports: [        
         HomeRoutingModule,       

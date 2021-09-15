@@ -24,9 +24,9 @@ namespace DPM_Testing.Controllers
 
         [HttpGet]
         [Route("GetAllConfigurationRecords")]
-        public async Task<ActionResult<IEnumerable<UserSkillLibraryModel>>> GetUserSkillLibraryModels()
+        public async Task<ActionResult<IEnumerable<UserSkillLibraryModel>>> GetUserSkillLibraryModels(string UserId)
         {
-              return await _context.UserSkillLibraryModels.OrderBy(a=> a.SKillLibraryId).ToListAsync();
+              return await _context.UserSkillLibraryModels.Where(r=>r.UserId == UserId).OrderBy(a=> a.SKillLibraryId).ToListAsync();
         }
 
         [HttpGet("{id}")]

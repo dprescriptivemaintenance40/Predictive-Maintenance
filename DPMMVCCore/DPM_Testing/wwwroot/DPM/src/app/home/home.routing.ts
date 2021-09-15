@@ -16,14 +16,19 @@ import { CentrifugalPumpPredictiondataUploadComponent } from "./Pump/centrifugal
 import { ScrewCompressorTraindataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-traindata-upload/screw-compressor-traindata-upload.component";
 import { ScrewCompressorPredictiondataUploadComponent } from "./Compressor/ScrewCompressor/screw-compressor-predictiondata-upload/screw-compressor-predictiondata-upload.component";
 import { PrescriptionComponent } from "./prescription/prescription.component";
+import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
 import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
+import { ConstarintManagementComponent } from "./CBA_Library/constarint-management/constarint-management.component";
+import { AlertManagementComponent } from "./CBA_Library/alert-management/alert-management.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: '', component: HomeComponent,
             children: [
-                { path: '', redirectTo: 'Dashboard', pathMatch: 'full' },
+                // { path: '', redirectTo: 'Dashboard', pathMatch: 'full' },
+                { path: '', redirectTo: 'LandingPage', pathMatch: 'full' },
+                { path: 'LandingPage', component: LandingPageComponent },
                 { path: 'Education', component: EducationComponent },
                 { path: 'Dashboard', component: DashboardComponent },
                 { path: 'Compressor', loadChildren: () => import('./Compressor/ScrewCompressor/compressor.module').then(a => a.CompressorModule) },
@@ -44,7 +49,9 @@ import { FailureHistoryComponent } from "./FailureHistory/failure-history.compon
                 { path: 'CompTrainUploadData', component: ScrewCompressorTraindataUploadComponent },
                 { path: 'CompPredictionUploadData', component: ScrewCompressorPredictiondataUploadComponent },                 
                 { path: 'WeibullAnalysis', component: WeibullAnalysis },                 
-                { path: 'FailureHistory', component: FailureHistoryComponent },                 
+                { path: 'FailureHistory', component: FailureHistoryComponent },  
+                { path: 'Constraint', component: ConstarintManagementComponent },                 
+                { path: 'Alert', component: AlertManagementComponent },  
             ]
         }
     ])],

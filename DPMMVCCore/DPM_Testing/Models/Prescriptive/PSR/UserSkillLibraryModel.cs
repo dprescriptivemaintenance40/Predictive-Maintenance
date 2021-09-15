@@ -10,6 +10,7 @@ namespace DPM.Models.Prescriptive
     {
         [Key]
         public int SKillLibraryId { get; set; }
+        public string UserId { get; set; }
         public int Craft { get; set; }
         public int EmpId { get; set; }
         public int Task { get; set; }

@@ -1468,3 +1468,83 @@ table.p-organizationchart-table {
 .calculate-dialog .p-dialog {
   max-width: 500px;
 }
+
+.eight-steps {
+  position: relative;
+
+  .step-card {
+    align-items: center;
+    position: relative;
+    background: #fff;
+    display: inline-flex;
+    flex-direction: row;
+    border-radius: 7px;
+    overflow: hidden;
+    border: NONE;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 15px;
+    box-shadow: 0px 0px 10px #eeeeee;
+    a:hover {
+      text-decoration: none;
+    }
+    &:hover {
+      box-shadow: 00px 0px 20px #ccd9d8;
+      h6 {
+        color: $primary-color;
+      }
+    }
+    h6 {
+      color: #666;
+      margin-left: 11px;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    p {
+      margin-bottom: 0;
+      i {
+        background: #ceeae8;
+        height: 20px;
+        width: 20px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        margin-right: 5px;
+        font-size: 10px;
+        color: #009688;
+      }
+    }
+    span {
+      height: 75px;
+      width: 75px;
+      background: #009688;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      font-weight: 800;
+      font-size: 25px;
+      color: #fff;
+      max-height: initial;
+      position: relative;
+      &:after {
+        content: '';
+        width: 0;
+        height: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid #009688;
+        right: -15px;
+        position: absolute;
+      }
+    }
+  }
+}
+.steps-link:hover {
+  text-decoration: none;
+  color: #333;
+}

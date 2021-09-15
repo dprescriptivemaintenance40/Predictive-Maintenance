@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
@@ -12,9 +13,11 @@ export class UserProductionDetailsComponent implements OnInit {
 
   public userProductionForms: FormArray = this.fb.array([]);
   public notification = null;
+  private UserDetails: any =[];
   constructor(public fb: FormBuilder,
     private commonBlService : CommonBLService,
     private PCRAPI : PrescriptiveContantAPI) {
+      this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
       this.GetUserProductionDetailRecords();
      }
 
@@ -82,7 +85,9 @@ export class UserProductionDetailsComponent implements OnInit {
 
   GetUserProductionDetailRecords(){
     this.userProductionForms = this.fb.array([]);
-    this.commonBlService.getWithoutParameters(this.PCRAPI.GetUserProductionDetail).subscribe(
+    const params = new HttpParams()
+          .set('UserId', this.UserDetails.UserId)
+    this.commonBlService.getWithParameters(this.PCRAPI.GetUserProductionDetail, params).subscribe(
       res => {
         if (res == [])
           this.userProductionForm();
