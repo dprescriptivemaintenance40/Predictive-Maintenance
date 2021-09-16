@@ -406,7 +406,6 @@ export class DashboardComponent {
      this.PrescriptiveShow=false;
      this.GerAllPredictionRecords();
      this.CBICharts()
-    //  this.riskGraph_N()
      this.FakeRiskMetigateactions()
      this.RiskProfile()
      this.dygraphForJson()
@@ -2626,8 +2625,6 @@ export class DashboardComponent {
       })
   }
 
-
-
   public GenerateReport() {
     var countKey = Object.keys(this.classificationDetails).length;
     this.totalCount = countKey
@@ -3363,6 +3360,7 @@ export class DashboardComponent {
     this.FPFinalNormal=[];
     this.FPFinalIncipient=[];
     this.FPFinaldDegrade=[];
+    this.changeDetectorRef.detectChanges();
     this.ScrewPredictionAllData.sort()
     const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
     this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
@@ -3414,15 +3412,11 @@ export class DashboardComponent {
       var fperc_Normal
       var fperc_Degrade
       var fperc_Bad
-      FPnormal = ((FPnormal / counter) * 100)
-      FPincipient = ((FPincipient / counter) * 100)
-      FPdegrade = ((FPdegrade / counter) * 100)
-      FPbad = ((FPbad / counter) * 100)
 
-      fperc_Incipient = FPnormal.toFixed()
-      fperc_Normal = FPincipient.toFixed()
-      fperc_Degrade = FPdegrade.toFixed()
-      fperc_Bad = FPbad.toFixed()
+      fperc_Incipient =  ((FPincipient / counter) * 100).toFixed()
+      fperc_Normal =  ((FPnormal / counter) * 100).toFixed()
+      fperc_Degrade =  ((FPdegrade / counter) * 100).toFixed()
+      fperc_Bad =  ((FPbad / counter) * 100).toFixed()
 
       this.FPFinalNormal.push(fperc_Normal)
       this.FPFinalIncipient.push(fperc_Incipient)
