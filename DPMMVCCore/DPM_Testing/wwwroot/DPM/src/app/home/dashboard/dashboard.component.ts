@@ -540,7 +540,6 @@ export class DashboardComponent {
               }
               break;
             }
-            this.PredictionWithAlertPieChart()
           }
           this.PredictionFilteredData = res;
           this.ScrewPredictionAllData.forEach(element => {
@@ -681,12 +680,12 @@ export class DashboardComponent {
     this.PredictionWithTagNumber()
     // this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
-    this.PredictionWithAlertPieChart()
   }
 
   PredictFModeType() {
       // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
      this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
+     
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -710,7 +709,6 @@ export class DashboardComponent {
     this.PredictionWithTagNumber()
     // this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
-    this.PredictionWithAlertPieChart()
   }
 
   GetAllRecords() {
@@ -3351,10 +3349,13 @@ export class DashboardComponent {
   public combinationList:any = []
   PredictionWithTagNumber1() {
     this.changeDetectorRef.detectChanges();
+    this.FPFinalNormal=[];
+    this.FPFinalIncipient=[];
+    this.FPFinaldDegrade=[];
     this.ScrewPredictionAllData.sort()
     const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
     this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
-    this.PTagNumberList =   this.PTagNumberList.filter(r => r.TagNumber !== null)
+    this.PTagNumberList = this.PTagNumberList.filter(r => r.TagNumber !== null)
   
     this.PTagNumberList.forEach(element=>{
       this.tagnumbers.push(element.TagNumber) 
@@ -3556,23 +3557,6 @@ export class DashboardComponent {
     });
   }
 
-  PredictionWithAlertPieChart() {
-    this.changeDetectorRef.detectChanges();
-    // this.chart = new Chart("PredictionAlertsPiechart", {
-    //   type: 'pie',
-    //   data: {
-    //     labels: ["Acknowledged", "Not_Acknowledged"],
-    //     fill: true,
-    //     datasets: [
-    //       {
-    //         backgroundColor: ["gray", "#ffb801",],
-    //         data: [this.Degrademessagecount,this.Incipientemessagecount ]
-    //       }
-    //     ]
-    //   },
-
-    // });
-  }
 
  riskGraph_N() {
     this.changeDetectorRef.detectChanges();
@@ -3947,8 +3931,16 @@ export class DashboardComponent {
   }
 
   RiskProfile(){
-    var  a:any=[]
-     a= parseFloat(this.VendorPOC)
+    this.changeDetectorRef.detectChanges();
+
+      var residualcostWithoutDPM: number = + (this.ResidualRiskWithDPM)
+      var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithOutDPM)
+      var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
+      var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
+  
+      var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
+      var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
+      var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
     this.chart = new Chart("profile_risk", {
       type: "bar",
       data: {
@@ -3958,19 +3950,19 @@ export class DashboardComponent {
             label: "With DPM",
             backgroundColor: "#618685",
             borderColor: "#618685",
-            data:[50.2]
+            data:[resdualtWithoutDPM]
           },
           {
             label: "Without DPM",
             backgroundColor: "#36486b",
             borderColor: "#36486b",
-            data: [200,]
+            data: [residualcostwithDPM]
           },
           {
             label: "With Constraint",
             backgroundColor: "#006699",
             borderColor: "#006699",
-            data: [700]
+            data: [residualwithConstraint]
           },
           {
             label: "Miigated",
@@ -4246,7 +4238,9 @@ export class DashboardComponent {
   public notifications = null
   public MSSTaskList:any=[]
   public ConstraintTaskList:any=[]
-  GetALLCBA(){
+  public EconomicRiskWithOutDPMCR: string = "";
+  public EconomicRiskWithDPMConstraintCR: string = "";
+   GetALLCBA(){
     const params = new HttpParams()
     .set('UserId',this.userModel.UserId)
     this.http.get('api/PSRClientContractorAPI/GetSavedCBA', {params})
@@ -4254,7 +4248,6 @@ export class DashboardComponent {
      this.allCBAdata = res;
      this.FakeRiskMetigateactions()
       this.CBAdataForRisk = this.allCBAdata
-
      for (var i = 0; i < this.allCBAdata.length; i++) {
       this.centrifugalmssmodel=  this.allCBAdata[i].CBATaskModel
       this.CBI_etbf = this.allCBAdata[i].ETBF;
@@ -4264,26 +4257,19 @@ export class DashboardComponent {
       this.VendorETBC = this.allCBAdata[i].VendorETBC;
       this.VendorPOC = this.allCBAdata[i].VendorPOC;
       this.EconomicRiskWithDPMCR = this.allCBAdata[i].EconomicRiskWithDPMCR;
+      this.EconomicRiskWithOutDPMCR = this.allCBAdata[i].EconomicRiskWithOutDPMCR;
+      this.EconomicRiskWithDPMConstraintCR = this.allCBAdata[i].EconomicRiskWithDPMConstraintCR;
       this.EconomicRiskWithDPM = this.allCBAdata[i].EconomicRiskWithDPM
       this.EconomicRiskWithOutDPM = this.allCBAdata[i].EconomicRiskWithOutDPM
       this.EconomicRiskWithConstraintDPM = this.allCBAdata[i].EconomicRiskWithDPMConstraint
       this.MEIWithDPMWithoutConstraint =this.allCBAdata[i].MEIWithDPM
       this.MEIWithDPMWithConstraint =this.allCBAdata[i].MEIWithDPMConstraint
       this.MEIWithoutDPM = this.allCBAdata[i].MEIWithoutDPM
-      this.ResidualRiskWithDPM = this.allCBAdata[i].EconomicRiskWithDPMCRValue
-      this.ResidualRiskWithOutDPM = this.allCBAdata[i].EconomicRiskWithOutDPMCRValue
-      this.ResidualRiskWithConstraintDPMCR = this.allCBAdata[i].EconomicRiskWithDPMConstraintCRValue
      }
+     this.Ecoriskvalue()
      this.allCBAdata .forEach((element) => {
-       if(element.EconomicRiskWithDPMCR=="N"){
-        this.ResidualRiskWithDPM =  1
-       }
-       if(element.EconomicRiskWithOutDPMCR=="L"){
-        this.ResidualRiskWithOutDPM =  2
-       }
-    
-             var a:number = element.LevelCount
-             this.LevelCount = a*100
+         var a:number = element.LevelCount
+         this.LevelCount = a*100
          if(this.LevelCount <50){
           this.notifications = { class: 'text-danger', };
          }else if(this.LevelCount > 50 || this.LevelCount <80){
@@ -4361,6 +4347,37 @@ export class DashboardComponent {
    });
 
   }
-
+  public async Ecoriskvalue(){
+    var WD: number = await this.getValue(this.EconomicRiskWithDPMCR);
+    var WOD: number = await this.getValue(this.EconomicRiskWithOutDPMCR);
+    var WDC : number= await this.getValue(this.EconomicRiskWithDPMConstraintCR);
+    this.allCBAdata.forEach(element=>{
+      element.ResidualRiskWithDPM = WD;
+      element.ResidualRiskWithOutDPM = WOD
+      element.ResidualRiskWithConstraintDPMCR = WDC
+    })
+    for (var i = 0; i < this.allCBAdata.length; i++) {
+      this.ResidualRiskWithDPM = this.allCBAdata[i].ResidualRiskWithDPM
+      this.ResidualRiskWithOutDPM = this.allCBAdata[i].ResidualRiskWithOutDPM
+      this.ResidualRiskWithConstraintDPMCR = this.allCBAdata[i].EconomicRiskWithDPMConstraintCR
+    }
+  }
+  public async getValue(r: string) {
+    if (r === "N") {
+        return await 1;
+    } else if (r === "L") {
+        return await 2;
+    } else if (r === "M") {
+        return await 3;
+    } else if (r === "MH") {
+        return await 4;
+    } else if (r === "H") {
+        return await 5;
+    } else if (r === "E") {
+        return await 6;
+    } else {
+        return await 0;
+    }
+}
 }
 
