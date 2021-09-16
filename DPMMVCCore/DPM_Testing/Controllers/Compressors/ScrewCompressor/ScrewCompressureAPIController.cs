@@ -539,34 +539,7 @@ namespace DPM_Testing.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        [Route("GetCBARecords")]
-        public IActionResult GetRecords(string MachineType, string EquipmentType, string TagNumber)
-        {
-            try
-            {
-                string MT = MachineType;
-                string ET = EquipmentType;
-                string TN = TagNumber;
-
-                string userId = User.Claims.First(c => c.Type == "UserID").Value;
-
-                var cbaModelData = _context.CBAModels.Where(a => a.UserId == userId
-                                                          && a.MachineType == MT
-                                                          && a.EquipmentType == ET
-                                                          && a.TagNumber == TN)
-                                                           .Include(a => a.CBATaskModel)
-                                                           .OrderBy(a => a.RCMTreeId)
-                                                           .FirstOrDefaultAsync();
-                return Ok(cbaModelData);
-
-            }
-            catch (Exception exe)
-            {
-                return BadRequest(exe.Message);
-            }
-
-        }
+      
 
     }
 }

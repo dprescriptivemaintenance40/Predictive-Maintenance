@@ -299,6 +299,8 @@ export class DashboardComponent {
   public mssmodelFilter: any = []
   public RiskGraphList: any = []
   public fakeriskandMetigateActions: any = [];
+  public prediction: any = [];
+  public forcast: any = [];
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -340,6 +342,35 @@ export class DashboardComponent {
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'MH', 'FinancialRisk': 2000, 'TagNumber': 'K103' },
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'M', 'FinancialRisk': 2029, 'TagNumber': 'K104' },
   ]
+    this.prediction = [
+      { 'Date': '2020-08-08', 'TD1': 180.17,'FTD1':0},
+      { 'Date': '2020-08-09', 'TD1': 181.17,'FTD1':0},
+      { 'Date': '2020-08-10', 'TD1': 183.17,'FTD1':0},
+      { 'Date': '2020-08-11', 'TD1': 187.17,'FTD1':0},
+      { 'Date': '2020-08-12', 'TD1': 188.17,'FTD1':0},
+      { 'Date': '2020-08-13', 'TD1': 186.17,'FTD1':0},
+      { 'Date': '2020-08-14', 'TD1': 185.17,'FTD1':0},
+      { 'Date': '2020-08-15', 'TD1': 188.17,'FTD1':0},
+      { 'Date': '2020-08-16', 'TD1': 189.17,'FTD1':0},
+      { 'Date': '2020-08-17', 'TD1': 193.17,'FTD1':0},
+      { 'Date': '2020-08-18', 'TD1': 193.17,'FTD1':0},
+      { 'Date': '2020-08-19', 'TD1': 194.17,'FTD1':0},
+      { 'Date': '2020-08-20', 'TD1': 195.17,'FTD1':0},
+      { 'Date': '2020-08-21', 'TD1': 192.17,'FTD1':0},
+      { 'Date': '2020-08-22', 'TD1': 195.17,'FTD1':0},
+      { 'Date': '2020-08-23', 'TD1': 197.17,'FTD1':0},
+      { 'Date': '2020-08-24', 'TD1': 191.17,'FTD1':0},
+      { 'Date': '2020-08-25', 'TD1': 193.17,'FTD1':0},
+    ]
+    this.forcast = [
+      { 'FDate': '2020-08-19', 'fTD1': 194.17,},
+      { 'FDate': '2020-08-20', 'fTD1': 192.37,},
+      { 'FDate': '2020-08-21', 'fTD1': 197.37,},
+      { 'FDate': '2020-08-22', 'fTD1': 199.37,},
+      { 'FDate': '2020-08-23', 'fTD1': 199.37,},
+      { 'FDate': '2020-08-24', 'fTD1': 198.37,},
+      { 'FDate': '2020-08-25', 'fTD1': 199.37,},
+    ]
   }
 
   ngOnInit() {
@@ -374,9 +405,10 @@ export class DashboardComponent {
      this.PrescriptiveShow=false;
      this.GerAllPredictionRecords();
      this.CBICharts()
-     this.riskGraph_N()
+    //  this.riskGraph_N()
      this.FakeRiskMetigateactions()
      this.RiskProfile()
+     this.dygraphForJson()
 
   }
   }
@@ -395,18 +427,18 @@ export class DashboardComponent {
 
   public onlymssmodel: any = []
   FullCBAObject() {
-    this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
-    this.myObj = JSON.parse(this.fullCBAobject);
-    this.ComponentCriticalityFactor = this.myObj.CriticalityFactor
-    this.DownTimeFactor = this.myObj.DownTimeFactor
-    this.CFrequencyMaintainenance = this.myObj.FrequencyMaintainenance
-    this.CConditionMonitoring = this.myObj.ConditionMonitoring
-    this.ProtectionFactor = this.myObj.ProtectionFactor
-    this.ComponentRating = this.myObj.Rating
-    this.CMaintainenancePractice = this.myObj.MaintainenancePractice
-    this.CPPrescriptiveTagNumber = this.myObj.TagNumber
-    this.FunctionMode = this.myObj.FunctionMode
-    this.Consequence = this.myObj.Consequence
+    // this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
+    // this.myObj = JSON.parse(this.fullCBAobject);
+    // this.ComponentCriticalityFactor = this.myObj.CriticalityFactor
+    // this.DownTimeFactor = this.myObj.DownTimeFactor
+    // this.CFrequencyMaintainenance = this.myObj.FrequencyMaintainenance
+    // this.CConditionMonitoring = this.myObj.ConditionMonitoring
+    // this.ProtectionFactor = this.myObj.ProtectionFactor
+    // this.ComponentRating = this.myObj.Rating
+    // this.CMaintainenancePractice = this.myObj.MaintainenancePractice
+    // this.CPPrescriptiveTagNumber = this.myObj.TagNumber
+    // this.FunctionMode = this.myObj.FunctionMode
+    // this.Consequence = this.myObj.Consequence
     // this.centrifugalmssmodel = this.myObj.CentrifugalPumpMssModel
   }
 
@@ -655,7 +687,7 @@ export class DashboardComponent {
   }
 
   onPredictionChangeYear() {
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -677,15 +709,14 @@ export class DashboardComponent {
     //  this.PredictionAllRecordPie()
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
+    this.PredictionWithTagNumber1()
     this.PredictionWithTagNumber()
-    // this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
   }
 
   PredictFModeType() {
       // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
-     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
-     
+    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -707,7 +738,7 @@ export class DashboardComponent {
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber()
-    // this.PredictionWithTagNumber1()
+     this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
   }
 
@@ -2594,28 +2625,7 @@ export class DashboardComponent {
       })
   }
 
-  ConvertToCSV(objArray) {
-    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    var str = '';
-    var row = "";
 
-    for (var index in objArray[0]) {
-      row += index + ',';
-    }
-    row = row.slice(0, -1);
-    str += row + '\r\n';
-
-    for (var i = 0; i < array.length; i++) {
-      var line = '';
-      for (var index in array[i]) {
-        if (line != '') line += ','
-
-        line += array[i][index];
-      }
-      str += line + '\r\n';
-    }
-    return str;
-  }
 
   public GenerateReport() {
     var countKey = Object.keys(this.classificationDetails).length;
@@ -3371,8 +3381,8 @@ export class DashboardComponent {
     });
     this.Pyearlist.forEach(element => {
       this.Predictyearlist.forEach(value => {
-        combo= `${element.Predictyearname}${value.PredictyTagnumber}`
-      })
+        combo= `${element.Predictyearname}-${value.PredictyTagnumber}`
+      });
       this.combinationList.push(combo)
       this.combinationList.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     })
@@ -3384,7 +3394,7 @@ export class DashboardComponent {
       var FPbad = 0
       var counter = 0
       this.ScrewPredictionAllData.forEach(value => {
-        var a = `${moment(value.InsertedDate).format('YYYY')}${value.TagNumber}`
+        var a = `${moment(value.InsertedDate).format('YYYY')}-${value.TagNumber}`
         if (a == this.combinationList[i]) {
           if (value.Prediction == 'normal') {
             FPnormal = FPnormal + 1
@@ -3554,71 +3564,6 @@ export class DashboardComponent {
           }
         }
       }
-    });
-  }
-
-
- riskGraph_N() {
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("risk_N", {
-      type: "horizontalBar",
-      data: {
-        labels: [],
-        datasets: [{
-          data: [1],
-          backgroundColor: "#47d147",
-          hoverBackgroundColor: " #47d147"
-        }, {
-          data: [0.5],
-          backgroundColor: "#ffff99",
-          hoverBackgroundColor: "#ffff99"
-        },
-        {
-          data: [0.5],
-          backgroundColor: "#ffff00",
-          hoverBackgroundColor: "#ffff00"
-        },
-         {
-          data: [0.5],
-          backgroundColor: "red",
-          hoverBackgroundColor: "red"
-        }]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        tooltips: {
-          enabled: false
-        },
-        scales: {
-          xAxes: [{
-            display: false,
-            stacked: true
-          }],
-          yAxes: [{
-            display: false,
-            stacked: true
-          }],
-        },
-        "animation": {
-          "duration": 1,
-          "onComplete": function () {
-            var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
-            this.data.datasets.forEach(function (dataset, i) {
-              var meta = chartInstance.controller.getDatasetMeta(i);
-              meta.data.forEach(function (bar, index) {
-                var data = dataset.data[index];
-                if (data == 1) {
-                  ctx.fillText(data, 50, bar._model.y+4);
-                }
-              });
-            });
-          }
-        },
-      },
-
     });
   }
 
@@ -3932,7 +3877,6 @@ export class DashboardComponent {
 
   RiskProfile(){
     this.changeDetectorRef.detectChanges();
-
       var residualcostWithoutDPM: number = + (this.ResidualRiskWithDPM)
       var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithOutDPM)
       var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
@@ -4213,20 +4157,7 @@ export class DashboardComponent {
   //   });
   // }
 
-// public CBATasklist:any=[]
-//   CBATAskList(){
-//     const params = new HttpParams()
-//     .set('MachineType', this.MachineType)
-//     .set('EquipmentType', this.EquipmentType)
-//     .set('TagNumber', this.TagNumber)
-//   var url: string = this.dashboardContantAPI.GetCBATaskList;
-//   this.dashboardBLService.getWithParameters(url, params).subscribe(
-//       res => {
-//          this.CBATasklist = res;
-//       }, error => {
-//         console.log(error.error)
-//       })
-//   }
+
 
   public allCBAdata:any=[]
   public CBAOBJ : any ={};
@@ -4378,6 +4309,67 @@ export class DashboardComponent {
     } else {
         return await 0;
     }
+}
+
+dygraphForJson() {
+  this.changeDetectorRef.detectChanges();
+  this.prediction.forEach(element=>{
+    this.forcast.forEach(val=>{
+       if(element.Date == val.FDate){
+        element.Date
+        element.TD1
+        element.FTD1 = val.fTD1
+        }
+        if(element.FTD1==0){
+          element.FTD1=''
+        }
+    })
+  })
+  this.csvData = this.ConvertToCSV(this.prediction);
+  this.chart = new Dygraph(
+    document.getElementById('my-first-chart'),
+    this.csvData,
+    {
+      //  visibility: [true, true, true,],
+      colors: ['green', 'blue',],
+      showRangeSelector: true,
+      valueRange: [120],
+      series: {
+        'TD1': {
+          strokePattern: null,
+          drawPoints: true,
+          pointSize: 1,
+        },
+        'FTD1': {
+          strokePattern: Dygraph.DASHED_LINE,
+          strokeWidth: 2.6,
+          drawPoints: true,
+          pointSize: 3.5,
+        },
+      }
+    })
+}
+ConvertToCSV(objArray) {
+  var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+  var str = '';
+  var row = "";
+
+  for (var index in objArray[0]) {
+    row += index + ',';
+  }
+  row = row.slice(0, -1);
+  str += row + '\r\n';
+
+  for (var i = 0; i < array.length; i++) {
+    var line = '';
+    for (var index in array[i]) {
+      if (line != '') line += ','
+
+      line += array[i][index];
+    }
+    str += line + '\r\n';
+  }
+  return str;
 }
 }
 
