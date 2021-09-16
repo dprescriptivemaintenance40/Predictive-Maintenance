@@ -20,6 +20,7 @@ export class StaffComponent implements OnInit {
   public staffList:Array<RegistrationModel> = new Array<RegistrationModel>();
   public staffForm: FormGroup = null;
   public notification: any;
+  public value3 ="Shivani";
   constructor(private commonBLService : CommonBLService,
     public fb: FormBuilder,
     private http : HttpClient,
@@ -67,10 +68,14 @@ export class StaffComponent implements OnInit {
           .set('UserId', this.UserDetails.UserId)
     this.commonBLService.getWithParameters(this.APINames.GetAllStaffRecord, params)
     .subscribe((res: any) => { 
-     this.staffList = res;
+     this.staffList = res; 
     }, err => { console.log(err.error)})
   }
-
+  public isShown: boolean = false ; 
+  toggleShow() {
+    this.isShown = ! this.isShown;
+    }
+ 
   public onEdit(a : RegistrationModel){
     this.staffForm.reset();
     this.staffObj = new RegistrationModel();
@@ -98,6 +103,13 @@ export class StaffComponent implements OnInit {
         checkIsValid = false;
       }
     }
+    if (checkIsValid) {
+      if (this.staffForm.value.Password.length >= 8) {
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'Enter correct Password' });   
+      }
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please fill all mandatory fields' });
+    }
     this.staffObj.UserName = this.staffForm.value.UserName;
     this.staffObj.FirstName = this.staffForm.value.FirstName;
     this.staffObj.LastName = this.staffForm.value.LastName;
@@ -124,7 +136,6 @@ export class StaffComponent implements OnInit {
         })
     }
     if(this.staffObj.UserId !== ""){ 
-       // this.http.put('api/RegistrationAPI/UpdateStaff',this.staffObj)
       this.commonBLService.PutData(this.APINames.UpdateStaff, this.staffObj)
       .subscribe((res: any) => {
           this.staffForm.reset();

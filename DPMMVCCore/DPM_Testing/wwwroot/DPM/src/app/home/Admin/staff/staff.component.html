@@ -96,7 +96,16 @@
                 <td>{{staffList.UserName}}</td>
                 <td>{{staffList.FirstName}}</td>
                 <td>{{staffList.LastName}}</td>
-                <td>{{staffList.Password}}</td>
+                <td>
+                    <span *ngIf="isShown">
+                    {{staffList.Password}}
+                    </span>
+                    <a (click)="toggleShow()"><i
+                        class="pi pi-eye"></i> </a>
+                    <span>
+
+                    </span>
+                </td>
                 <td>{{staffList.Email}}</td>
                 <td>{{staffList.PhoneNumber}}</td>
                 <td>{{staffList.Enable === 1?'Yes':'No'}}</td>

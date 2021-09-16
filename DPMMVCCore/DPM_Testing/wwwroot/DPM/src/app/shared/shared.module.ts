@@ -29,6 +29,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import {TreeTableModule} from 'primeng/treetable';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
+
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [
