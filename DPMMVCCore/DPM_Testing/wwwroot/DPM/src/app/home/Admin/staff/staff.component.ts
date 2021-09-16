@@ -68,11 +68,13 @@ export class StaffComponent implements OnInit {
           .set('UserId', this.UserDetails.UserId)
     this.commonBLService.getWithParameters(this.APINames.GetAllStaffRecord, params)
     .subscribe((res: any) => { 
-     this.staffList = res;
-      
+     this.staffList = res; 
     }, err => { console.log(err.error)})
   }
-
+  public isShown: boolean = false ; 
+  toggleShow() {
+    this.isShown = ! this.isShown;
+    }
  
   public onEdit(a : RegistrationModel){
     this.staffForm.reset();
