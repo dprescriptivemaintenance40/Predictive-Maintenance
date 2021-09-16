@@ -402,6 +402,7 @@ export class DashboardComponent {
   }else if(this.dashboardshow=="Executor"){
      this.ExecutorShow=true;
      this.allCBI= true
+     this.showcbi=true;
      this.PrescriptiveShow=false;
      this.GerAllPredictionRecords();
      this.CBICharts()
@@ -439,6 +440,7 @@ export class DashboardComponent {
     // this.CPPrescriptiveTagNumber = this.myObj.TagNumber
     // this.FunctionMode = this.myObj.FunctionMode
     // this.Consequence = this.myObj.Consequence
+    
     // this.centrifugalmssmodel = this.myObj.CentrifugalPumpMssModel
   }
 
