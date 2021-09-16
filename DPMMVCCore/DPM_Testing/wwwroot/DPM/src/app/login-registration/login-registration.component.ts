@@ -112,7 +112,7 @@ export class LoginRegistrationComponent {
               var data = JSON.parse(localStorage.getItem('userObject'))
               this.eventEmitterService.SendDataToHomeComponent(data);
               this.router.navigateByUrl('Home');
-            }else{
+            }else if(res.user.Enable === 0){
               this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please contact admin, your login has disabled' });
             }
           },
