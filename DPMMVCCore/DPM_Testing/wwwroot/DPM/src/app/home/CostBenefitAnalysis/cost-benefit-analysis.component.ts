@@ -14,7 +14,7 @@ import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.cons
     providers: [MessageService]
 })
 export class CostBenefitAnalysisComponent {
-    public CFPPrescriptiveId: number = 0
+    public CFPPrescriptiveId : number =0
     public MachineType: string = "";
     public EquipmentType: string = "";
     public TagNumber: string = "";
@@ -56,12 +56,13 @@ export class CostBenefitAnalysisComponent {
     constructor(private messageService: MessageService,
         private commonLoadingDirective: CommonLoadingDirective,
         private CD: ChangeDetectorRef,
-        private commonBLervice: CommonBLService,
-        private PSRAPIs: PrescriptiveContantAPI,
+        private commonBLervice : CommonBLService,
+        private PSRAPIs : PrescriptiveContantAPI,
         public router: Router,
         private http: HttpClient) {
         this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
         this.GetSavedPSRRecords();
+        this.GetUserProductionDetailRecords();
         this.GetPSRClientContractorData();
         this.getUserSkillRecords();
         this.MachineEquipmentSelect();
@@ -76,9 +77,9 @@ export class CostBenefitAnalysisComponent {
         // ]
     }
 
-    GetRiskMatrixLibraryRecords() {
-        this.http.get('dist/DPM/assets/RiskMatrixLibrary.xlsx', { responseType: 'blob' }).subscribe(
-            res => {
+    GetRiskMatrixLibraryRecords(){
+        this.http.get('dist/DPM/assets/RiskMatrixLibrary.xlsx', {responseType: 'blob'}).subscribe(
+            res=>{
                 this.RiskMatrixLibraryRecords = [];
                 let fileReader = new FileReader();
                 fileReader.readAsArrayBuffer(res);
@@ -91,72 +92,72 @@ export class CostBenefitAnalysisComponent {
                     var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
                     var first_sheet_name = workbook.SheetNames[0];
                     var worksheet = workbook.Sheets[first_sheet_name];
-                    this.RiskMatrixLibraryRecords = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-                    // this.getTotalEconomicConsequenceClass(2 , 199);
+                    this.RiskMatrixLibraryRecords =  XLSX.utils.sheet_to_json(worksheet, { raw: true });
+                   // this.getTotalEconomicConsequenceClass(2 , 199);
                 }
-            }, err => { console.log(err.error) }
+            }, err=>{ console.log(err.error)}
         )
     }
 
-    // function for getting criticality rating
-    async getTotalEconomicConsequenceClass(Etbf, value) {
-        var ClassData: any = [], ETBFCase: any = [];
+  // function for getting criticality rating
+   async getTotalEconomicConsequenceClass(Etbf , value){
+        var ClassData : any =[], ETBFCase : any = [];
         this.RiskMatrixLibraryRecords.forEach(element => {
-            if (element.Economy === "< 10K") {
-                if (value < 10) {
+            if(element.Economy === "< 10K"){
+                if(value < 10){
                     ClassData = element
                 }
-            } else if (element.Economy === "10 - 100K") {
-                if ((value > 10) && (value < 100)) {
+            }else if(element.Economy === "10 - 100K"){
+                if((value > 10) && (value < 100)){
                     ClassData = element
                 }
-            } else if (element.Economy === "0.1 - 1M") {
-                if ((value > 100) && (value < 1000)) {
+            }else if(element.Economy === "0.1 - 1M"){
+                if((value > 100) && (value < 1000)){
                     ClassData = element
                 }
-            } else if (element.Economy === "1 - 10M") {
-                if ((value > 1000) && (value < 10000)) {
+            }else if(element.Economy === "1 - 10M"){
+                if((value > 1000) && (value < 10000)){
                     ClassData = element
                 }
-            } else if (element.Economy === "> 10M") {
-                if (value >= 10000) {
+            }else if(element.Economy === "> 10M"){
+                if(value >= 10000){
                     ClassData = element
                 }
             }
         });
         ETBFCase.push(this.RiskMatrixLibraryRecords[0])
         ETBFCase.forEach(element => {
-            if (element.Medium === "0.5-4 y") {
-                if (Etbf >= 0.5 && Etbf < 4) {
+            if(element.Medium === "0.5-4 y"){
+                if(Etbf >= 0.5 && Etbf < 4){
                     this.EconmicConsequenceClass = "M";
                     this.CriticalityRating = ClassData.Medium;
                 }
             }
-            if (element.Low === "4-20 y") {
-                if ((Etbf >= 4) && (Etbf < 20)) {
+            if(element.Low === "4-20 y"){
+                if((Etbf >= 4) && (Etbf < 20)){
                     this.EconmicConsequenceClass = "L";
                     this.CriticalityRating = ClassData.Low;
                 }
             }
-            if (element.Negligible === ">20 y") {
-                if (Etbf >= 20) {
+            if(element.Negligible === ">20 y"){
+                if(Etbf >= 20){
                     this.EconmicConsequenceClass = "N";
                     this.CriticalityRating = ClassData.Negligible;
                 }
             }
         });
 
-        return await { 'EconmicConsequenceClass': this.EconmicConsequenceClass, 'CriticalityRating': this.CriticalityRating }
+      return  await { 'EconmicConsequenceClass':this.EconmicConsequenceClass, 'CriticalityRating':this.CriticalityRating}
     }
 
-    private GetSavedPSRRecords() {
+    private GetSavedPSRRecords(){
         const params = new HttpParams()
-            .set('userId', this.UserDetails.UserId)
+              .set('userId', this.UserDetails.UserId)
         this.commonBLervice.getWithParameters('/PSRClientContractorAPI/GetSkillPSRMapping', params)
-            .subscribe(
-                (res: any) => {
-                    this.SavedPCRRecordsList = res;
-                })
+        .subscribe(
+          (res : any) =>{
+            this.SavedPCRRecordsList = res;
+          })
     }
     private GetMssStartegyList(){
         this.commonBLervice.getWithoutParameters(this.PSRAPIs.MSSStrategyGetAllRecords).subscribe( 
@@ -179,11 +180,11 @@ export class CostBenefitAnalysisComponent {
             });
           }
         )
-    }
+      }
 
-    RouteTodashboard() {
-        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, ETBF: this.ETBF, CBANAV: 3 } })
-    }
+    RouteTodashboard(){
+        this.router.navigateByUrl('/Home/Dashboard', { state: { CFPPrescriptiveId: this.CFPPrescriptiveId, ETBF : this.ETBF, CBANAV:3}})
+      }
     MachineEquipmentSelect() {
         if (this.MachineType == "Pump") {
             this.EquipmentList = []
@@ -220,7 +221,7 @@ export class CostBenefitAnalysisComponent {
     getPrescriptiveRecords() {
             this.http.get('api/PrescriptiveAPI/GetTagNumber')
             .subscribe((res: any) => {
-                this.PrescriptiveRecordsList = []
+                this.PrescriptiveRecordsList =[]
                 this.PrescriptiveRecordsList = res;
             });
         
@@ -234,12 +235,12 @@ export class CostBenefitAnalysisComponent {
         
     }
 
-    public async getUncheckedTask(p, e) {
-        if (e.target.checked === true) {
+    public async getUncheckedTask(p , e){
+        if(e.target.checked === true){
             p.Checked = true
-            if (p.CentrifugalPumpMssId === "MSS") {
-                this.CBAReportDetails.CentrifugalPumpMssModel.forEach((element, index) => {
-                    if (element.CentrifugalPumpMssId === "MSS") {
+            if(p.CentrifugalPumpMssId === "MSS"){
+                this.CBAReportDetails.CentrifugalPumpMssModel.forEach((element, index) => { 
+                    if(element.CentrifugalPumpMssId === "MSS"){
                         element.Checked = true;
                     }
                 })
@@ -256,16 +257,16 @@ export class CostBenefitAnalysisComponent {
                      }
                 }
             }
-        } else if (e.target.checked === false) {
+        }else if(e.target.checked === false){
             p.Checked = false
-            if (p.CentrifugalPumpMssId === "MSS") {
-                this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => {
-                    if (element.CentrifugalPumpMssId === "MSS") {
+            if(p.CentrifugalPumpMssId === "MSS"){
+                this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => { 
+                    if(element.CentrifugalPumpMssId === "MSS"){
                         element.Checked = false;
                     }
                 })
-                var d = this.CBAReportDetails.CentrifugalPumpMssModel.filter(r => r.CentrifugalPumpMssId === 'NEW');
-                if (d.length === 0) {
+                var d =  this.CBAReportDetails.CentrifugalPumpMssModel.filter(r=>r.CentrifugalPumpMssId === 'NEW');
+                if(d.length === 0){
                     this.MSSStrategyReplacePSR.forEach(element => {
                         let CRAFT = this.getCraftValue(element);
                         let LEVEL = this.getEmployeeLevelValue(element);
@@ -306,37 +307,41 @@ export class CostBenefitAnalysisComponent {
                             obj['Status']= 'New'; 
                             obj['MSSMaintenanceInterval']="10 Years";
                         }
-                        obj['Craft'] = CRAFT;
-                        obj['Level'] = LEVEL;
-                        obj['MSSIntervalSelectionCriteria'] = 'Resource Leveling Recommendation';
+                        obj['Craft']= CRAFT;
+                        obj['Level']= LEVEL;
+                        obj['MSSIntervalSelectionCriteria']='Resource Leveling Recommendation';
                         this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
                     });
                 }
-
+                
             }
         }
 
-        var levelCount: number = 0;
-        var WithDPMConstraint: number = 0;
-        var TotalAnnualPOC: number = 0;
-        var counter = 0;
+        var levelCount : number = 0;
+        var WithDPMConstraint : number= 0;
+        var TotalAnnualPOC : number = 0;
+        var counter =0;
         this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => {
-            if (element.Checked === true) {
-                counter = counter + 1;
+            if(element.Checked === true){
+                counter = counter +1;
                 levelCount = levelCount + parseFloat(element.Level)
                 if(element.CentrifugalPumpMssId === 'GDE'  || element.CentrifugalPumpMssId === 'MSS' || element.CentrifugalPumpMssId === 'CONSTRAINT' || element.CentrifugalPumpMssId === 'FMEA'){
                     if(element.CentrifugalPumpMssId === 'CONSTRAINT'){
                         if(element.Status == "Retained"){
                             WithDPMConstraint = WithDPMConstraint + parseFloat(element.AnnualPOC);
-                        } else if (element.Status == "New") {
+                        }else if(element.Status == "New"){
                             WithDPMConstraint = WithDPMConstraint + parseFloat(element.AnnualPOC);
                         }
-                    }
-                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.AnnualPOC);
+                    }                
+                    TotalAnnualPOC = TotalAnnualPOC + parseFloat(element.AnnualPOC); 
                 }
             }
-
+            
         });
+        
+            levelCount = levelCount / (counter * 100); 
+            this.CBAReportDetails.WithDPMConstraint = WithDPMConstraint.toFixed(0);
+            this.CBAReportDetails.TotalAnnualPOC =TotalAnnualPOC.toFixed(3);
 
             var WithDPMConstraintCR =  await this.getTotalEconomicConsequenceClass((this.MSSETBF * levelCount), (WithDPMConstraint /1000).toFixed(0));
             this.CBAReportDetails.EconomicRiskWithDPMConstraintCR = WithDPMConstraintCR.CriticalityRating;
@@ -360,15 +365,36 @@ export class CostBenefitAnalysisComponent {
         const pattern = /[0-9]/;
         let inputChar = String.fromCharCode(event.charCode);
         if (!pattern.test(inputChar)) {
-            event.preventDefault();
-
+          event.preventDefault();
+    
         }
+      }
+    GetUserProductionDetailRecords(){
+        const params = new HttpParams()
+              .set('UserId', this.UserDetails.UserId)
+        this.commonBLervice.getWithParameters(this.PSRAPIs.GetUserProductionDetail, params).subscribe(
+         (res : any) => { 
+            this.UserProductionCost = 0;
+            var labor = 0;
+             res.forEach(element => {
+                 if(element.Item === 'Craftsmen' || element.Item === 'Operator' || element.Item === 'Staff' || element.Item === 'Contractor'){
+                    labor = labor + element.TotalCost;
+                 }else  if(element.Item !== 'Craftsmen' || element.Item !== 'Operator' || element.Item !== 'Staff' || element.Item !== 'Contractor'){
+                    this.UserProductionCost = this.UserProductionCost + element.TotalCost;
+                 }
+                
+             });
+             this.UserProductionCost = this.UserProductionCost + (labor/1000);
+             this.UserProductionCost = this.UserProductionCost * 1000
+          }, err=> {console.log(err.error)})
+    }
+  async  getPrescriptiveRecordsByEqui() {
     if(this.AlreadySaved === 'N'){
         if (this.MachineType && this.EquipmentType && this.SelectedTagNumber) {
             this.prescriptiveRecords = [];
             this.CBAReportDetails = undefined;
             this.http.get(`api/PrescriptiveAPI/GetPrescriptiveByEquipmentType?machine=${this.MachineType}&Equi=${this.EquipmentType}&TagNumber=${this.SelectedTagNumber}`)
-                .subscribe(async (res: any) => {
+                .subscribe( async (res: any) => {
                     this.prescriptiveRecords = res;
                     this.TagNumberToSave = res.TagNumber;
                     this.showPrescriptive = true;
@@ -385,6 +411,7 @@ export class CostBenefitAnalysisComponent {
         this.CBAReportDetails = [];
         this.showPrescriptive = true;
         this.CBAReportDetails.VendorPOC = list[0].VendorPOC.toFixed(2);
+        this.CBAReportDetails.ResidualRiskWithMaintenance = list[0].ResidualRiskWithMaintenance.toFixed(2);
         this.CBAReportDetails.WithDPM = list[0].EconomicRiskWithDPM.toFixed(2);
         this.CBAReportDetails.WithOutDPM = list[0].EconomicRiskWithOutDPM.toFixed(2);
         this.CBAReportDetails.WithDPMConstraint = list[0].EconomicRiskWithDPMConstraint.toFixed(2);
@@ -412,22 +439,22 @@ export class CostBenefitAnalysisComponent {
     public async OpenCBAReport(row) {
         this.CBAReportDetails = []
         this.CBAReportDetails = row;
-        var TotalAnuualPOC: number = 0;
-        var count: number = 0;
+        var TotalAnuualPOC : number = 0;
+        var count : number= 0;
         // var VendorPONC : number = 0;
-        var levelCount: number = 0;
+        var levelCount : number = 0;
         //************************* */
-        var WithDPM: number = 0;
-        var WithOutDPM: number = 0;
-        var TotalAnnualPOC: number = 0
-        var vendorPOC: number = 0;
+        var WithDPM : number= 0;
+        var WithOutDPM : number= 0;
+        var TotalAnnualPOC : number = 0
+        var vendorPOC : number = 0;
         var Exist = this.CBAReportDetails.CentrifugalPumpMssModel.find(r => r.CentrifugalPumpMssId === "GDE");
-        if (Exist === undefined) {
+        if(Exist === undefined){
             this.CBAReportDetails.CentrifugalPumpMssModel.forEach(element => {
-                if (element.CentrifugalPumpMssId == "GDE") {
+                if(element.CentrifugalPumpMssId == "GDE"){
                     count = count + 1;
-                } else {
-                    if (this.prescriptiveRecords.Type === "CA") {
+                }else{
+                    if(this.prescriptiveRecords.Type === "CA"){
                         this.MSSTaskDetailList.forEach(r => {
                             if(row.CentrifugalPumpMssModel[0].MSSMaintenanceTask === r.MaintenanceTask){
                                 if(r.SkillPSRMappingMSS.length > 0){
@@ -467,29 +494,29 @@ export class CostBenefitAnalysisComponent {
                     }
                 }
             });
-            if (this.prescriptiveRecords.Type === "SCA") {
+            if(this.prescriptiveRecords.Type === "SCA"){
                 var PM = [
-                    { 'id': 'FMEA', 'MT': 'PM - MEC', 'HR': '6 hrs' },
-                    { 'id': 'FMEA', 'MT': 'PM - ELE', 'HR': '3 hrs' },
-                    { 'id': 'FMEA', 'MT': 'PM - CTL', 'HR': '4 hrs' },
-                    { 'id': 'FMEA', 'MT': 'PM - HEL', 'HR': '3 hrs' },
-                    { 'id': 'FMEA', 'MT': 'PM - OPS', 'HR': '1 hr' },
+                    {'id':'FMEA', 'MT':'PM - MEC', 'HR':'6 hrs'},
+                    {'id':'FMEA', 'MT':'PM - ELE', 'HR':'3 hrs'},
+                    {'id':'FMEA', 'MT':'PM - CTL', 'HR':'4 hrs'},
+                    {'id':'FMEA', 'MT':'PM - HEL', 'HR':'3 hrs'},
+                    {'id':'FMEA', 'MT':'PM - OPS', 'HR':'1 hr'},
                 ];
                 var BD = [
-                    { 'id': 'FMEA', 'MT': 'Breakdown Maintenance - MEC', 'HR': '24 hrs' },
-                    { 'id': 'FMEA', 'MT': 'Breakdown Maintenance - ELE', 'HR': '12 hrs' },
-                    { 'id': 'FMEA', 'MT': 'Breakdown Maintenance - CTL', 'HR': '16 hrs' },
-                    { 'id': 'FMEA', 'MT': 'Breakdown Maintenance - HEL', 'HR': '12 hrs' },
-                    { 'id': 'FMEA', 'MT': 'Breakdown Maintenance - OPS', 'HR': '4 hr' },
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - MEC', 'HR':'24 hrs'},
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - ELE', 'HR':'12 hrs'},
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - CTL', 'HR':'16 hrs'},
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - HEL', 'HR':'12 hrs'},
+                    {'id':'FMEA', 'MT':'Breakdown Maintenance - OPS', 'HR':'4 hr'},
                 ];
-                if (this.CBAReportDetails.MaintainenancePractice === "CBM and OBM Both") {
+                if(this.CBAReportDetails.MaintainenancePractice === "CBM and OBM Both"){
                     let obj = {};
-                    obj['CentrifugalPumpMssId'] = "FMEA";
-                    obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                    obj['Checked'] = true;
-                    obj['Hours'] = '0.25 hrs';
-                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice;
-                    var data = this.FMEATaskList.find(r => r.MaintenanceTask === this.CBAReportDetails.MaintainenancePractice)
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '0.25 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
                     let CRAFT = this.getCraftValue(data);
                     let LEVEL = this.getEmployeeLevelValue(data);
                     obj['Craft']= CRAFT;
@@ -505,12 +532,12 @@ export class CostBenefitAnalysisComponent {
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
 
                     obj = {};
-                    obj['CentrifugalPumpMssId'] = "FMEA";
-                    obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                    obj['Checked'] = true;
-                    obj['Hours'] = '0.5 hrs';
-                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice;
-                    data = this.FMEATaskList.find(r => r.MaintenanceTask === this.CBAReportDetails.MaintainenancePractice)
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '0.5 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
                     CRAFT = this.getCraftValue(data);
                     LEVEL = this.getEmployeeLevelValue(data);
                     obj['Craft']= CRAFT;
@@ -526,12 +553,12 @@ export class CostBenefitAnalysisComponent {
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
 
                     obj = {};
-                    obj['CentrifugalPumpMssId'] = "FMEA";
-                    obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                    obj['Checked'] = true;
-                    obj['Hours'] = '1 hr';
-                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring';
-                    var data = this.FMEATaskList.find(r => r.MaintenanceTask === 'Vibration Monitoring')
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '1 hr';  
+                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring' ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  'Vibration Monitoring')
                     CRAFT = this.getCraftValue(data);
                     LEVEL = this.getEmployeeLevelValue(data);
                     obj['Craft']= CRAFT;
@@ -545,16 +572,16 @@ export class CostBenefitAnalysisComponent {
                     TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
-
-                } else if (this.CBAReportDetails.MaintainenancePractice === 'PM') {
+                    
+                }else if(this.CBAReportDetails.MaintainenancePractice === 'PM'){
                     PM.forEach(element => {
                         let obj = {};
-                        obj['CentrifugalPumpMssId'] = "FMEA";
-                        obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                        obj['Checked'] = true;
-                        obj['Hours'] = element.HR;
-                        obj['MSSMaintenanceTask'] = element.MT;
-                        var data = this.FMEATaskList.find(r => r.MaintenanceTask === element.MT)
+                        obj['CentrifugalPumpMssId']="FMEA";
+                        obj['MSSIntervalSelectionCriteria']= "FMEA";
+                        obj['Checked']= true;
+                        obj['Hours']=  element.HR;  
+                        obj['MSSMaintenanceTask'] = element.MT ;
+                        var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  element.MT)
                         let CRAFT = this.getCraftValue(data);
                         let LEVEL = this.getEmployeeLevelValue(data);
                         obj['Craft']= CRAFT;
@@ -570,12 +597,12 @@ export class CostBenefitAnalysisComponent {
                         this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
                     });
                     let obj = {};
-                    obj['CentrifugalPumpMssId'] = "FMEA";
-                    obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                    obj['Checked'] = true;
-                    obj['Hours'] = '1 hr';
-                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring';
-                    var data = this.FMEATaskList.find(r => r.MaintenanceTask === 'Vibration Monitoring')
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '1 hr';  
+                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring' ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  'Vibration Monitoring')
                     let CRAFT = this.getCraftValue(data);
                     let LEVEL = this.getEmployeeLevelValue(data);
                     obj['Craft']= CRAFT;
@@ -590,15 +617,15 @@ export class CostBenefitAnalysisComponent {
                     vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
 
-                } else if (this.CBAReportDetails.MaintainenancePractice === "Breakdown Maintenance") {
+                }else if(this.CBAReportDetails.MaintainenancePractice === "Breakdown Maintenance"){
                     BD.forEach(element => {
                         let obj = {};
-                        obj['CentrifugalPumpMssId'] = "FMEA";
-                        obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                        obj['Checked'] = true;
-                        obj['Hours'] = element.HR;
-                        obj['MSSMaintenanceTask'] = element.MT;
-                        var data = this.FMEATaskList.find(r => r.MaintenanceTask === element.MT)
+                        obj['CentrifugalPumpMssId']="FMEA";
+                        obj['MSSIntervalSelectionCriteria']= "FMEA";
+                        obj['Checked']= true;
+                        obj['Hours']=  element.HR;  
+                        obj['MSSMaintenanceTask'] = element.MT ;
+                        var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  element.MT)
                         let CRAFT = this.getCraftValue(data);
                         let LEVEL = this.getEmployeeLevelValue(data);
                         obj['Craft']= CRAFT;
@@ -613,14 +640,14 @@ export class CostBenefitAnalysisComponent {
                         vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                         this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
                     });
-                } else if (this.CBAReportDetails.MaintainenancePractice === "TBM") {
+                }else if(this.CBAReportDetails.MaintainenancePractice === "TBM"){
                     let obj = {};
-                    obj['CentrifugalPumpMssId'] = "FMEA";
-                    obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                    obj['Checked'] = true;
-                    obj['Hours'] = '2 hrs';
-                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice;
-                    var data = this.FMEATaskList.find(r => r.MaintenanceTask === this.CBAReportDetails.MaintainenancePractice)
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '2 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
                     let CRAFT = this.getCraftValue(data);
                     let LEVEL = this.getEmployeeLevelValue(data);
                     obj['Craft']= CRAFT;
@@ -634,14 +661,14 @@ export class CostBenefitAnalysisComponent {
                     TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
-                } else if (this.CBAReportDetails.MaintainenancePractice === "CBM") {
+                }else if(this.CBAReportDetails.MaintainenancePractice === "CBM"){ 
                     let obj = {};
-                    obj['CentrifugalPumpMssId'] = "FMEA";
-                    obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                    obj['Checked'] = true;
-                    obj['Hours'] = '0.25 hrs';
-                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice;
-                    var data = this.FMEATaskList.find(r => r.MaintenanceTask === this.CBAReportDetails.MaintainenancePractice)
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '0.25 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
                     let CRAFT = this.getCraftValue(data);
                     let LEVEL = this.getEmployeeLevelValue(data);
                     obj['Craft']= CRAFT;
@@ -655,14 +682,14 @@ export class CostBenefitAnalysisComponent {
                     TotalAnnualPOC = TotalAnnualPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
-                } else if (this.CBAReportDetails.MaintainenancePractice === "OBM") {
+                }else if(this.CBAReportDetails.MaintainenancePractice === "OBM"){  
                     let obj = {};
-                    obj['CentrifugalPumpMssId'] = "FMEA";
-                    obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                    obj['Checked'] = true;
-                    obj['Hours'] = '0.5 hrs';
-                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice;
-                    var data = this.FMEATaskList.find(r => r.MaintenanceTask === this.CBAReportDetails.MaintainenancePractice)
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '0.5 hrs';  
+                    obj['MSSMaintenanceTask'] = this.CBAReportDetails.MaintainenancePractice ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  this.CBAReportDetails.MaintainenancePractice)
                     let CRAFT = this.getCraftValue(data);
                     let LEVEL = this.getEmployeeLevelValue(data);
                     obj['Craft']= CRAFT;
@@ -678,12 +705,12 @@ export class CostBenefitAnalysisComponent {
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
 
                     obj = {};
-                    obj['CentrifugalPumpMssId'] = "FMEA";
-                    obj['MSSIntervalSelectionCriteria'] = "FMEA";
-                    obj['Checked'] = true;
-                    obj['Hours'] = '1 hr';
-                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring';
-                    var data = this.FMEATaskList.find(r => r.MaintenanceTask === 'Vibration Monitoring')
+                    obj['CentrifugalPumpMssId']="FMEA";
+                    obj['MSSIntervalSelectionCriteria']= "FMEA";
+                    obj['Checked']= true;
+                    obj['Hours']=  '1 hr';  
+                    obj['MSSMaintenanceTask'] = 'Vibration Monitoring' ;
+                    var data = this.FMEATaskList.find(r=>r.MaintenanceTask ===  'Vibration Monitoring')
                     CRAFT = this.getCraftValue(data);
                     LEVEL = this.getEmployeeLevelValue(data);
                     obj['Craft']= CRAFT;
@@ -698,7 +725,7 @@ export class CostBenefitAnalysisComponent {
                     vendorPOC = vendorPOC + parseFloat(data.POC) + parseFloat(data.MaterialCost);
                     this.CBAReportDetails.CentrifugalPumpMssModel.push(obj)
                 }
-
+                
             }
                 this.GoodEngineeringTaskList.forEach(element => {
                     let CRAFT = this.getCraftValue(element);
@@ -832,7 +859,7 @@ export class CostBenefitAnalysisComponent {
                 localStorage.removeItem('CBAOBJ');
                 localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
         }
-
+        
     }
 
     Save(){
@@ -869,31 +896,30 @@ export class CostBenefitAnalysisComponent {
         this.CBAOBJ.EconomicRiskWithOutDPMCR = WithOutDPMCR.CriticalityRating;
         this.CBAOBJ.VendorETBC = this.VendorETBF;
         this.CBAOBJ.OverallETBC = this.MSSETBF;
-
-        var WD: number = await this.getValue(WithDPMCR.CriticalityRating);
-        var WOD: number = await this.getValue(WithOutDPMCR.CriticalityRating);
-
+        
+        var WD : number = await this.getValue(WithDPMCR.CriticalityRating);
+        var WOD : number = await this.getValue(WithOutDPMCR.CriticalityRating);
+        
         this.CBAOBJ.EconomicRiskWithDPMCRValue = WD;
         this.CBAOBJ.EconomicRiskWithOutDPMCRValue = WOD;
-        this.CBAOBJ.FullObject = JSON.stringify(this.CBAReportDetails);
         localStorage.removeItem('CBAOBJ');
         localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
     }
-
-    public async getValue(r: string) {
-        if (r === "N") {
+    
+    public async getValue(r : string){
+        if(r === "N"){
             return await 1;
-        } else if (r === "L") {
+        } else if(r === "L"){
             return await 2;
-        } else if (r === "M") {
+        } else if(r === "M"){
             return await 3;
-        } else if (r === "MH") {
+        } else if(r === "MH"){
             return await 4;
-        } else if (r === "H") {
+        } else if(r === "H"){
             return await 5;
-        } else if (r === "E") {
+        } else if(r === "E"){
             return await 6;
-        } else {
+        }else{
             return await 0;
         }
     }
@@ -940,7 +966,7 @@ export class CostBenefitAnalysisComponent {
         var fileName = reportName;
         link.download = fileName;
         link.click();
-    };
+      };
 
     public PrintCBAReport() {
         this.CD.detectChanges();
@@ -970,28 +996,28 @@ export class CostBenefitAnalysisComponent {
     }
     private GetPSRClientContractorData() {
         this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords')
-            .subscribe((res: any) => {
-                this.PSRClientContractorData = res;
-            });
-    }
+          .subscribe((res: any) => {
+            this.PSRClientContractorData = res;
+          });
+      }
 
-    getCraftValue(d) {
-        var skillData = this.SkillLibraryAllrecords.find(r => r.SKillLibraryId === d.Craft);
-        if (skillData !== undefined) {
-            var craft = this.PSRClientContractorData.find(r => r.PSRClientContractorId === skillData.Craft);
+    getCraftValue(d){
+        var skillData = this.SkillLibraryAllrecords.find(r=>r.SKillLibraryId === d.Craft);
+        if(skillData !== undefined){
+            var craft = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === skillData.Craft);
             return craft.CraftSF;
-        } else {
+        }else{
             return 'NA';
         }
     }
 
-    getEmployeeLevelValue(d) {
-        if (d.Craft !== 0) {
-            var skillData = this.SkillLibraryAllrecords.find(r => r.SKillLibraryId === d.Craft);
+    getEmployeeLevelValue(d){
+        if(d.Craft !== 0){
+            var skillData = this.SkillLibraryAllrecords.find(r=>r.SKillLibraryId === d.Craft);
             return skillData.Level;
-        } else {
+        }else{
             return 0;
         }
-
-    }
+        
+      }
 }

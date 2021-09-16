@@ -451,7 +451,7 @@ export class HomeComponent implements OnInit {
     this.UserData()
   }
 
-  UserData() {
+ public async UserData() {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
     }
@@ -500,51 +500,61 @@ export class HomeComponent implements OnInit {
   
     this.MenuItems = [
       this.user.Dashboard === 1 || this.user.UserType === 0 || this.user.UserType === 1  ? {
+        id : 1,
         label: 'Dashboard',
         url: '#/Home/Dashboard',
         icon: 'pi pi-home',
-      } : '', 
+      } : 0, 
       {
+        id : 2,
         label: 'DPM-Education',
         url: '#/Home/Education',
         icon: 'pi pi-book',
       },
       this.user.UserType === 0 || this.user.UserType === 1 ?
       {
+        id : 58,
         label: 'Admin',
         icon: 'pi pi-user',
         items: [
               {
+                id : 3,
                 label: 'Designation',
                 url: '#/Home/Designation'
               },
               {
+                id : 4,
                 label: 'Staff',
                 url: '#/Home/Staff'
               }
          ]
-      } : '',
+      } : 0,
       this.user.UserType === 0 || this.user.UserType === 1 ||this.user.RCA === 1 ?
       {
+        id : 57,
         label: 'Failure Mode Library',
         icon: 'pi pi-bookmark',
         items: [
           {
+            id : 5,
             label: 'RCA of critical failure',
             url: '#/Home/Prescriptive/RCA'
           },
         ]
-      }:'',
+      }:0,
       {
+        id : 56,
         label: 'Customer database',
         icon: 'pi pi-users',
         items: [
           this.user.UserType === 0 || this.user.UserType === 1 ||this.user.TrainConfiguration === 1 ?
           {
+            id : 6,
             label: 'Configuration',
             url: '#/Home/Compressor/ScrewConfiguration'
-          }:'',
+          }:0,
           {
+            id : 55,
             label: 'Data collection',
             items: [
               // {
@@ -590,20 +600,25 @@ export class HomeComponent implements OnInit {
               //   ]
               // },
               {
+                id : 54,
                 label: 'Moderate data',
                 items: [
                   {
+                    id : 53,
                     label: 'Digital data',
                     items: [
                       {
+                        id : 7,
                         label:'Sensor Data Upload',
                         url: '#/Home/Compressor/SCModerateDataCollection'
                       },
                       {
+                        id : 8,
                         label:'Field Data Upload',
                         url: '#/Home/Compressor/SCModerateFieldDataCollection'
                       },
                       {
+                        id : 9,
                         label: 'Pump Data Upload',
                         url: '#/Home/CentrifugalPump'
                       }
@@ -618,44 +633,54 @@ export class HomeComponent implements OnInit {
                 ]
               },
               {
+                id : 10,
                 label:'Failure History',
                 url: '#/Home/FailureHistory'
               },
             ]
           },
           {
+            id : 52,
             label: 'Forecast',
             items: [
               this.user.UserType === 0 || this.user.UserType === 1 ||this.user.ScrewTrain === 1 || this.user.ScrewPrediction === 1?
               {
+                id : 51,
                 label: 'Big data',
                 items: [
                   {
+                    id : 50,
                     label: 'Application / Machine Learning',
                     items: [
                       {
+                        id : 49,
                         label: 'Screw Compressor',
                         items: [
                           this.user.UserType === 0 || this.user.UserType === 1 ||this.user.ScrewTrain === 1 ?
                           {
+                            id : 11,
                             label: 'Train',
                             url: '#/Home/Compressor/ScrewTrain'
-                          }:'',
+                          }:0,
                           this.user.UserType === 0 || this.user.UserType === 1 ||this.user.ScrewPrediction === 1 ?
                           {
+                            id : 12,
                             label: 'Prediction',
                             url: '#/Home/Compressor/ScrewPrediction'
-                          }:''
+                          }:0
                         ]
                       },
                       {
+                        id : 48,
                         label: 'Centrifugal Pump',
                         items: [
                           {
+                            id : 13,
                             label: 'Train',
                             url: '#/Home/CentrifugalPumpTrain'
                           },
                           {
+                            id : 14,
                             label: 'Prediction',
                             url: '#/Home/CentrifugalPumpPrediction'
                           }
@@ -664,7 +689,7 @@ export class HomeComponent implements OnInit {
                     ]
                   }
                 ]
-              } : '',
+              } : 0,
               // {
               //   label: 'Moderate data',
               //   items: [
@@ -679,43 +704,53 @@ export class HomeComponent implements OnInit {
       },
       
       {
+        id : 47,
         label: 'Criticality Assesment',
         icon: 'pi pi-book',
         items: [
           {
+            id : 46,
             label: 'Critical Asset',
             items: [ 
               {
+                id : 15,
                 label:'RCM',
                 url: '#/Home/Prescriptive/ADD/CA'
               },
               {
+                id : 16,
                 label: 'CBA',
                 url: '#/Home/CostBenefitAnalysis'
               }
             ]
           },
           {
+            id : 45,
             label: 'Semi Critical Asset',
             items: [ 
               {
+                id : 17,
                 label:'FMEA',
                 url: '#/Home/Prescriptive/ADD/SCA'
               },
               {
+                id : 18,
                 label:'CBA',
                 url: '#/Home/CostBenefitAnalysis'
               },
             ]
           },
           {
+            id : 44,
             label: 'Normal Criticality',
             items: [ 
               {
+                id : 19,
                 label:'Weibull Analysis',
                 url: '#/Home/WeibullAnalysis'
               },
               {
+                id : 20,
                 label:'CBA',
                 url: '#/Home/CostBenefitAnalysis'
               },
@@ -725,55 +760,67 @@ export class HomeComponent implements OnInit {
       },
       this.user.UserType === 0 || this.user.UserType === 1 ||this.user.RCM === 1 ||this.user.FMEA === 1 || this.user.RCMConfiguration ||this.user.CCL === 1 ||this.user.SkillLibrary === 1 ||this.user.UPD === 1  ?
       {
+        id : 43,
         label: 'Strategic Analysis',
         icon: 'pi pi-chart-line',
         items: [
           {
+            id : 42,
             label: 'Develop maintenance strategy',
             items: [
               {
+                id : 41,
                 label: 'RCM (Relaibility Centered Maintenance)',
                 items: [
                   this.user.UserType === 0 || this.user.UserType === 1 || this.user.RCMConfiguration ?
                   {
+                    id : 21,
                     label: 'Configuration',
                     url: '#/Home/Prescriptive/Configuration'
-                  }:'',
+                  }:0,
                   this.user.UserType === 0 || this.user.UserType === 1 ||this.user.RCM === 1 ||this.user.FMEA === 1 ?
                   {
+                    id : 22,
                     label: 'FMEA Add',
                     url: '#/Home/Prescriptive/ADD'
-                  }:'',
+                  }:0,
                   this.user.UserType === 0 || this.user.UserType === 1 ||this.user.RCM === 1 ?
                   {
+                    id : 23,
                     label: 'FCA Add',
                     url: '#/Home/Prescriptive/FCAAdd'
-                  }:'',
+                  }:0,
                   this.user.UserType === 0 || this.user.UserType === 1 ||this.user.RCM === 1 ?
                   {
+                    id : 24,
                     label: 'MSS Add',
                     url: '#/Home/Prescriptive/MSSAdd'
-                  } :'',
+                  } :0,
                   this.user.UserType === 0 || this.user.UserType === 1 ||this.user.CCL === 1 ?
                   {
+                    id : 25,
                     label: "Add CRAFT's",
                     url: '#/Home/Prescriptive/CCL'
-                  }:'',
+                  }:0,
                   this.user.UserType === 0 || this.user.UserType === 1 ||this.user.SkillLibrary === 1 ?
                   {
+                    id : 26,
                     label: 'Skill Library',
                     url: '#/Home/Prescriptive/SkillLibrary'
-                  }:'',
+                  }:0,
                   this.user.UserType === 0 || this.user.UserType === 1 ||this.user.UPD === 1 ?
                   {
+                    id : 27,
                     label: 'User Production Details',
                     url: '#/Home/Prescriptive/UPD'
-                  }:'',
+                  }:0,
                   {
+                    id : 28,
                     label:'Input Data Management',
                     url : '#/Home/Prescriptive/InputDataManagement'
                   },
                   {
+                    id : 29,
                     label: 'Display',
                     url: '#/Home/Prescriptive/Display'
                   }
@@ -791,39 +838,46 @@ export class HomeComponent implements OnInit {
             ]
           }
         ]
-      }:'',
+      }:0,
       this.user.UserType === 0 || this.user.UserType === 1 ||this.user.CBA === 1 || this.user.AssesmentReport ?
       {
+        id : 40,
         label: 'Resource Optimization',
         icon: 'pi pi-sitemap',
         items: [
           {
+            id : 39,
             label: 'APM (Assets Performance Management) Platform',
             items: [
               this.user.UserType === 0 || this.user.UserType === 1 ||this.user.CBA === 1 ?
               {
+                id : 38,
                 label: 'Cost Benefit Analysis',
                 items: [
                   {
+                    id : 30,
                     label: 'CBA Report',
                     url: '#/Home/CostBenefitAnalysis'
                   },
                   {
+                    id : 31,
                     label: 'Constraint Management',
                     url: '#/Home/Constraint'
                   },
                   {
+                    id : 32,
                     label: 'Alert Management',
                     url: '#/Home/Alert'
                   },
                 ]
                 
-              }:'',
+              }:0,
               this.user.UserType === 0 || this.user.UserType === 1 || this.user.AssesmentReport ?
               {
+                id : 33,
                 label: 'Assesment Report',
                 url: '#/Home/Report'
-              }:'',
+              }:0,
               // {
               //   label: 'Optimum Spares Analysis'
               // }
@@ -850,28 +904,37 @@ export class HomeComponent implements OnInit {
           //   ]
           // }
         ]
-      }:'',
+      }:0,
       this.user.UserType === 0 || this.user.UserType === 1 ||this.user.RCM === 1 ||this.user.FMEA === 1 ?
       {
+        id : 37,
         label: 'Prescriptive Maintenance',
         icon: 'pi pi-sliders-v',
         items: [
           {
+            id : 34,
             label: 'Prescriptive Recommendation',
             url: '#/Home/Prescriptive/List'
           },
           {
+            id : 35,
             label: 'Summary',
             url: '#/Home/Prescription'
           },
         ]
-      }:'',
+      }:0,
       {
+        id : 36,
         label: 'Recycle Bin',
         icon: 'pi pi-trash',
         url: '#/Home/RecycleBin'
       },
     ];
+    let a: any = this.MenuItems;
+    let d : any = await this.RemoveBlankSpacesFromMenuItem(a)
+    let e : any = await this.RemoveBlankSpacesFromMenuItem(d)
+    this.MenuItems = [];
+    this.MenuItems =e;
   }
 
 
@@ -910,4 +973,25 @@ export class HomeComponent implements OnInit {
         }
       );
   }
+
+
+  private async RemoveBlankSpacesFromMenuItem(r:any){
+    if(r.length > 0){
+       r.forEach(element => {
+         if(element.items !== undefined){
+          this.RemoveBlankSpacesFromMenuItem(element.items)
+          if(element.item === []){
+            var ii = r.findIndex(a => a.id == element.id);
+             r.splice(ii,1);
+          }
+         }
+        if(element === 0){
+          var i = r.findIndex(a => a == element);
+          r.splice(i,1);
+        } 
+       });
+    }
+    return r;
+  }
+
 }
