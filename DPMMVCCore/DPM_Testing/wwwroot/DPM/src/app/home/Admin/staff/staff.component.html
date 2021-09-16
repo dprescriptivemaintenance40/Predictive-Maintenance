@@ -5,20 +5,35 @@
       <input formControlName="UserName" type="text" class="form-control" id="Username" aria-describedby="Username" placeholder="Enter Username">
     </div>
     <div class="form-group">
-        <label for="Firstname">Firstname</label>
-        <input formControlName="FirstName" type="text" class="form-control" id="Firstname" aria-describedby="Firstname" placeholder="Enter Firstname">
-      </div>
+        <label for="Firstname">First Name</label>
+        <input formControlName="FirstName" type="text" class="form-control" id="FirstName" aria-describedby="FirstName" placeholder="Enter First Name">
+        <span class="text-danger" *ngIf="staffForm.controls['FirstName'].dirty" [hidden]="!(staffForm.hasError('required', 'FirstName'))">
+            <i class="pi pi-info-circle"></i>&nbsp;First name is required 
+        </span>
+    </div>
       <div class="form-group">
-        <label for="Lastname">Lastname</label>
-        <input formControlName="LastName" type="text" class="form-control" id="Lastname" aria-describedby="Lastname" placeholder="Enter Lastname">
-      </div>
+        <label for="Lastname">Last Name</label>
+        <input formControlName="LastName" type="text" class="form-control" id="Lastname" aria-describedby="Lastname" placeholder="Enter Last Name">
+        <span class="text-danger" *ngIf="staffForm.controls['LastName'].dirty" [hidden]="!(staffForm.hasError('required', 'LastName'))">
+            <i class="pi pi-info-circle"></i>&nbsp;Last name is required 
+        </span>
+    </div>
     <div class="form-group">
         <label for="Email">Email address</label>
         <input formControlName="Email" type="email" class="form-control" id="Email" aria-describedby="Email" placeholder="Enter Email">
+        <span class="text-danger" *ngIf="staffForm.controls['Email'].dirty" [hidden]="!(staffForm.hasError('required', 'Email'))">
+            <i class="pi pi-info-circle"></i>&nbsp;Email is required 
+        </span>
+        <span class="text-danger" *ngIf="staffForm.controls['Email'].dirty" [hidden]="!(staffForm.hasError('pattern', 'Email'))">
+            <i class="pi pi-info-circle"></i>&nbsp;Email format is not correct
+        </span>
     </div>
     <div class="form-group">
         <label for="Phone">Phone Number</label>
         <input formControlName="PhoneNumber" type="number" class="form-control" id="Phone" aria-describedby="Phone" placeholder="Enter phone number">
+        <span class="text-danger" *ngIf="staffForm.controls['PhoneNumber'].dirty" [hidden]="!(staffForm.hasError('required', 'PhoneNumber'))">
+            <i class="pi pi-info-circle"></i>&nbsp;Phone number is required 
+        </span>
     </div>
     <div class="form-group">
         <label for="DesignationName">Select Designation</label>
@@ -30,6 +45,10 @@
     <div class="form-group">
       <label for="Password">Password</label>
       <input formControlName="Password" type="password" class="form-control" id="Password" placeholder="Enter Password">
+      <span class="text-danger" *ngIf="staffForm.controls['Password'].dirty"
+      [hidden]="!(staffForm.hasError('required', 'Password'))">
+      <i class="pi pi-info-circle"></i>&nbsp;Password is required.
+  </span>
     </div>
     <div class="form-group">
         <label>Enable</label>

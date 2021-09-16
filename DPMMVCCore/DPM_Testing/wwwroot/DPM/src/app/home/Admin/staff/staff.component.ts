@@ -53,8 +53,8 @@ export class StaffComponent implements OnInit {
       FirstName : ['', Validators.required],
       LastName : ['', Validators.required],
       Company : [this.UserDetails.Company],
-      Email : ['', Validators.required],
-      PhoneNumber : ['', Validators.required],
+      Email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      PhoneNumber: ['', [Validators.required, Validators.pattern(("^((\\+91-?)|0)?[0-9]{10}$"))]],
       DesignationId : [0, Validators.required],
       Password : ['', Validators.required],
       UserType :[2],
@@ -90,6 +90,14 @@ export class StaffComponent implements OnInit {
 
   }
   public recordSubmit(){
+    var checkIsValid = true;
+    if (!this.staffForm.valid) {
+      for (var b in this.staffForm.controls) {
+        this.staffForm.controls[b].markAsDirty();
+        this.staffForm.controls[b].updateValueAndValidity();
+        checkIsValid = false;
+      }
+    }
     this.staffObj.UserName = this.staffForm.value.UserName;
     this.staffObj.FirstName = this.staffForm.value.FirstName;
     this.staffObj.LastName = this.staffForm.value.LastName;
@@ -111,7 +119,6 @@ export class StaffComponent implements OnInit {
             this.InitStaffForm();
             this.messageService.add({ severity: 'success', summary: 'success', detail:'Staff Added' });
             this.getStaff();
-
         }, (err: any) => {
           this.messageService.add({ severity: 'warn', summary: 'warn', detail: err.error })
         })
