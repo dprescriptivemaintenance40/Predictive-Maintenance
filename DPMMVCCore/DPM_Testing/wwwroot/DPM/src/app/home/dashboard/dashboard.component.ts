@@ -426,7 +426,6 @@ export class DashboardComponent {
     this.MitigatingActionshow=false;
   }
 
-  public onlymssmodel: any = []
   FullCBAObject() {
     // this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
     // this.myObj = JSON.parse(this.fullCBAobject);
