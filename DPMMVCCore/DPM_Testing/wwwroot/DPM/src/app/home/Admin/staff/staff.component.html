@@ -31,7 +31,15 @@
       <label for="Password">Password</label>
       <input formControlName="Password" type="password" class="form-control" id="Password" placeholder="Enter Password">
     </div>
-    <button (click)="recordSubmit()" type="submit" class="btn btn-primary">Submit</button>
+    <div class="form-group">
+        <label>Enable</label>
+      <label class="switch">
+          <input formControlName="Enable" type="checkbox" checked>
+          <span class="slider round"></span>
+      </label>
+    </div>
+    <button (click)="onCancel()" type="submit" class="btn btn-primary">Cancel</button>
+    <button (click)="recordSubmit()" type="submit" class="btn btn-primary">{{staffObj.UserId === '' ?'Submit':'Update'}}</button>
   </form>
   <br />
 <br />
@@ -46,6 +54,7 @@
                 <col style="width:15em;">
                 <col style="width:8em;">
                 <col style="width:8em;">
+                <col style="width:8em;">
                 <col style="width:12em;">
             </colgroup>
         </ng-template>
@@ -58,6 +67,7 @@
                 <th>Password</th>
                 <th>Email</th>
                 <th>PhoneNumber</th>
+                <th>Enable</th>
                 <th>Action</th>
             </tr>
         </ng-template>
@@ -70,6 +80,7 @@
                 <td>{{staffList.Password}}</td>
                 <td>{{staffList.Email}}</td>
                 <td>{{staffList.PhoneNumber}}</td>
+                <td>{{staffList.Enable === 1?'Yes':'No'}}</td>
                 <td>
                     <button pButton title="Edit" icon="pi pi-pencil" (click)="onEdit(staffList)" class="p-button-rounded p-button-success p-button-text"></button>
                     <button pButton title="Delete" icon="pi pi-trash" (click)="onDelete(staffList)" class="p-button-rounded p-button-danger p-button-text"></button>

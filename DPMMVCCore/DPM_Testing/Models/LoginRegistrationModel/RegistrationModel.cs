@@ -15,5 +15,6 @@ namespace DPM_Testing.Models
         public int UserType { get; set; } // 1 => Company Admin & 0 => Trial
         public string ImageUrl { get; set; }
         public int DesignationId { get; set; } // 0 => Admin & other than 0 is DesignationAccessModel PK.
+        public int Enable { get; set; } // 0 => Disable & 1 =>Enable
     }
 }

@@ -12,4 +12,5 @@ export class RegistrationModel {
     public DesignationId : number=0;
     public CreatedBy : string ="";
     public ModifiedBy : string ="";
+    public Enable : number = 0;
 }

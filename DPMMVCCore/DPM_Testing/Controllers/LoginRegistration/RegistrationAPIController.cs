@@ -65,7 +65,7 @@ namespace DPM_Testing.Controllers
             {
                 var user = await this.context.RegisterUsers.FirstOrDefaultAsync(a => a.UserName == model.UserName);                
                 if (user != null)
-                {
+                {  
                     var testing = EncryptDecryptPassword.Encrypt(model.Password, user.UserId);
                     var password = EncryptDecryptPassword.Decrypt(user.Password, user.UserId);
                     if (password == model.Password)
@@ -82,7 +82,50 @@ namespace DPM_Testing.Controllers
                         var tokenHandler = new JwtSecurityTokenHandler();
                         var securityToken = tokenHandler.CreateToken(tokenDescriptor);
                         var SecurityToken = tokenHandler.WriteToken(securityToken);
-                        return Ok(new { SecurityToken, user });
+                        if (user.DesignationId != 0)
+                        {
+                            var user1 = await (from staff in this.context.RegisterUsers
+                                               join designation in this.context.DesignationAccessModels
+                                               on staff.DesignationId equals designation.DAId
+                                               where staff.UserName == model.UserName
+                                               select new
+                                               {
+                                                   UserId = staff.UserId,
+                                                   Enable = staff.Enable,
+                                                   Password = staff.Password,
+                                                   UserName = staff.UserName,
+                                                   CreatedBy = staff.CreatedBy,
+                                                   CreatedDate = staff.CreatedDate,
+                                                   FirstName = staff.FirstName,
+                                                   LastName = staff.LastName,
+                                                   Company = staff.Company,
+                                                   Email = staff.Email,
+                                                   PhoneNumber = staff.PhoneNumber,
+                                                   UserType = staff.UserType,
+                                                   ImageUrl = staff.ImageUrl,
+                                                   DesignationId = staff.DesignationId,
+                                                   DesignationName = designation.DesignationName,
+                                                   Dashborad = designation.Dashborad,
+                                                   TrainConfiguration = designation.TrainConfiguration,
+                                                   ScrewTrain = designation.ScrewTrain,
+                                                   ScrewPrediction = designation.ScrewPrediction,
+                                                   FMEA = designation.FMEA,
+                                                   RCM = designation.RCM,
+                                                   RCMConfiguration = designation.RCMConfiguration,
+                                                   RCA = designation.RCA,
+                                                   CBA = designation.CBA,
+                                                   AssesmentReport = designation.AssesmentReport,
+                                                   SkillLibrary = designation.SkillLibrary,
+                                                   UPD = designation.UPD,
+                                                   CCL = designation.CCL,
+                                                   RecycleBin = designation.RecycleBin,
+                                               }).FirstOrDefaultAsync();
+                            return Ok(new { SecurityToken, user=user1 });
+                        }
+                        else
+                        {
+                            return Ok(new { SecurityToken, user });
+                        }
                     }
                     else
                     {
@@ -113,6 +156,7 @@ namespace DPM_Testing.Controllers
                                                                    select new 
                                                                    {
                                                                        UserId = staff.UserId,
+                                                                       Enable = staff.Enable,
                                                                        Password = EncryptDecryptPassword.Decrypt(staff.Password, staff.UserId.ToString()),
                                                                        UserName = staff.UserName,
                                                                        CreatedBy = staff.CreatedBy,
@@ -146,7 +190,7 @@ namespace DPM_Testing.Controllers
             }
             catch (Exception exe)
             {
-                return BadRequest();
+                return BadRequest(exe.Message);
             }
         }
 
@@ -158,11 +202,12 @@ namespace DPM_Testing.Controllers
             {
                 registration.Password = EncryptDecryptPassword.Encrypt(registration.Password, registration.UserId.ToString());
                 this.context.Entry(registration).State = EntityState.Modified;
+                await this.context.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception exe)
             {   
-                return BadRequest();
+                return BadRequest(exe.Message);
             }
         }
     }

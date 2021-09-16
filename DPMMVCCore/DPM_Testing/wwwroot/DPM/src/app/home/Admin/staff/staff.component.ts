@@ -1,4 +1,4 @@
-import { HttpParams } from '@angular/common/http';
+import { HttpParams, HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -22,6 +22,7 @@ export class StaffComponent implements OnInit {
   public notification: any;
   constructor(private commonBLService : CommonBLService,
     public fb: FormBuilder,
+    private http : HttpClient,
     private APINames : AdminConstantAPIs,
     private messageService : MessageService) {
       this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
@@ -57,6 +58,7 @@ export class StaffComponent implements OnInit {
       DesignationId : [0, Validators.required],
       Password : ['', Validators.required],
       UserType :[2],
+      Enable:[false],
     })
   }
 
@@ -82,6 +84,7 @@ export class StaffComponent implements OnInit {
     this.staffForm.get('DesignationId').setValue(a.DesignationId);
     this.staffForm.get('Password').setValue(a.Password);
     this.staffForm.get('UserType').setValue(a.UserType);
+    this.staffForm.get('Enable').setValue(a.Enable == 1 ? true : false);
   }
   public onDelete(r){
 
@@ -99,6 +102,7 @@ export class StaffComponent implements OnInit {
     this.staffObj.DesignationId= this.staffForm.value.DesignationId;
     this.staffObj.CreatedBy = this.UserDetails.UserId;
     this.staffObj.ModifiedBy = this.staffForm.value.ModifiedBy;
+    this.staffObj.Enable = this.staffForm.value.Enable == true ? 1:0;
     if(this.staffObj.UserId === ""){
       this.commonBLService.postWithoutHeaders(this.APINames.RegistrationAPI, this.staffObj)
         .subscribe((res: any) => {
@@ -113,6 +117,7 @@ export class StaffComponent implements OnInit {
         })
     }
     if(this.staffObj.UserId !== ""){ 
+       // this.http.put('api/RegistrationAPI/UpdateStaff',this.staffObj)
       this.commonBLService.PutData(this.APINames.UpdateStaff, this.staffObj)
       .subscribe((res: any) => {
           this.staffForm.reset();
@@ -124,6 +129,12 @@ export class StaffComponent implements OnInit {
         this.messageService.add({ severity: 'warn', summary: 'warn', detail: err.error })
       })
     }
+  }
+
+  onCancel(){
+    this.staffForm.reset();
+    this.staffObj = new RegistrationModel();
+    this.InitStaffForm();
   }
 
 }

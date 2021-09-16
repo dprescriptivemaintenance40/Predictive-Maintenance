@@ -24,6 +24,7 @@ export class UserService {
       Password: registerForm.value.Password,
       UserType : 0,
       DesignationId : 0,
+      Enable : 1,
     };
     const url : string = this.LoginAPIName.RegisterAPI;
    

@@ -106,11 +106,15 @@ export class LoginRegistrationComponent {
       this.service.login(this.loginForm.value)
         .subscribe(
           (res: any) => {
-            localStorage.setItem('token', res.SecurityToken);
-            localStorage.setItem('userObject', JSON.stringify(res.user));
-            var data = JSON.parse(localStorage.getItem('userObject'))
-            this.eventEmitterService.SendDataToHomeComponent(data);
-            this.router.navigateByUrl('Home');
+            if(res.user.Enable === 1){
+              localStorage.setItem('token', res.SecurityToken);
+              localStorage.setItem('userObject', JSON.stringify(res.user));
+              var data = JSON.parse(localStorage.getItem('userObject'))
+              this.eventEmitterService.SendDataToHomeComponent(data);
+              this.router.navigateByUrl('Home');
+            }else{
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please contact admin, your login has disabled' });
+            }
           },
           err => {
             if (err.status == 400)
