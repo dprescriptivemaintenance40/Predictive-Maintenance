@@ -399,7 +399,6 @@ export class DashboardComponent {
     this.GetALLCBA()
     this.GerAllFutuerPredictionRecords()
     this.getFuturePredictionRecords()
-    this.GerAllPredictionRecords();
   }
 
 
@@ -672,11 +671,9 @@ export class DashboardComponent {
       .subscribe(
         (res: any) => {
           this.ScrewPredictionAllData = res;
-          var Dates: any = [];
           if (res.length > 0) {
-            this.futurePredictionList.forEach(element => {
-              this.PredictionDatesList.push(this.datepipe.transform(element.Date, 'dd/MM/YYYY'));
-
+            this.ScrewPredictionAllData.forEach(element => {
+              this.PredictionDatesList.push(this.datepipe.transform(element.InsertedDate, 'dd/MM/YYYY'));
             });
           }
           var Data: any = []
@@ -883,23 +880,63 @@ export class DashboardComponent {
   }
 
   PredictionDates() {
-    if (this.PredictionDate == 'Previous 1 week') {
+    if (this.PredictionDate == 'bydefault') {
       this.doPredictionDisabled = true;
-      var AfterDays = this.PredictionDatesList[0];
+      var fromerDays= this.PredictionDatesList.slice(-1)
+      var torDay= this.PredictionDatesList.slice(-1)
       const params = new HttpParams()
-        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment((this.PredictionDatesList[0]), 'DD/MM/YYYY').format('YYYY-MM-DD'));
+        .set('FromDate', moment(fromerDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+         .set('ToDate', moment(torDay, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url: string = this.screwCompressorAPIName.getPredictiontRecords;
+      this.screwCompressorMethod.getWithParameters(url, params)
+        .subscribe(
+          res => {
+            this.PredictionDataTableList = null;
+            this.PredictionDataTableList = res;  
+            this.PredictionDataTableList.forEach(element => {
+              if (element.Prediction == 'normal') {
+                this.PredictionNormalcount = this.PredictionNormalcount + 1;
+              } else if (element.Prediction == 'incipient') {
+                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+              } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+              }
+            });
+            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
+        )
+
+    } else if (this.PredictionDate == 'Previous 1 week') {
+      this.doPredictionDisabled = true;
+      var fromerDays= this.PredictionDatesList.slice(-1)
+      var torDay= this.PredictionDatesList.slice(-7)
+      const params = new HttpParams()
+        .set('FromDate', moment(fromerDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+         .set('ToDate', moment(torDay, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url: string = this.screwCompressorAPIName.getPredictiontRecords;
       this.screwCompressorMethod.getWithParameters(url, params)
         .subscribe(
           res => {
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            if (this.PredictionDataTableList[0].length > 0) {
-              this.doPredictionDisabled = true;
-            } else {
-              this.doPredictionDisabled = false;
-            }
+            this.PredictionDataTableList.forEach(element => {
+              if (element.Prediction == 'normal') {
+                this.PredictionNormalcount = this.PredictionNormalcount + 1;
+              } else if (element.Prediction == 'incipient') {
+                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+              } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+              }
+            });
+            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
 
@@ -908,21 +945,29 @@ export class DashboardComponent {
         )
 
     } else if (this.PredictionDate == 'Previous 15 Days') {
-
+      var fromerDays= this.PredictionDatesList.slice(-1)
+      var torDay= this.PredictionDatesList.slice(-15)
       const params2 = new HttpParams()
-        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment(this.PredictionDatesList[-14], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      .set('FromDate', moment(fromerDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+      .set('ToDate', moment(torDay, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url2: string = this.screwCompressorAPIName.getPredictiontRecords;
       this.screwCompressorMethod.getWithParameters(url2, params2)
         .subscribe(
           res => {
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            if (this.PredictionDataTableList[0].length > 0) {
-              this.doPredictionDisabled = true;
-            } else {
-              this.doPredictionDisabled = false;
-            }
+            this.PredictionDataTableList.forEach(element => {
+              if (element.Prediction == 'normal') {
+                this.PredictionNormalcount = this.PredictionNormalcount + 1;
+              } else if (element.Prediction == 'incipient') {
+                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+              } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+              }
+            });
+            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Datesr', sticky: true });
 
@@ -931,20 +976,29 @@ export class DashboardComponent {
         )
 
     } else if (this.PredictionDate == 'Previous 1 Month') {
+      var fromerDays= this.PredictionDatesList.slice(-1)
+      var torDay= this.PredictionDatesList.slice(-30)
       const params3 = new HttpParams()
-        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment(this.PredictionDatesList[-30], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      .set('FromDate', moment(fromerDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+      .set('ToDate', moment(torDay, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url3: string = this.screwCompressorAPIName.getPredictiontRecords;
       this.screwCompressorMethod.getWithParameters(url3, params3)
         .subscribe(
           res => {
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            if (this.PredictionDataTableList[0].length > 0) {
-              this.doPredictionDisabled = true;
-            } else {
-              this.doPredictionDisabled = false;
-            }
+            this.PredictionDataTableList.forEach(element => {
+              if (element.Prediction == 'normal') {
+                this.PredictionNormalcount = this.PredictionNormalcount + 1;
+              } else if (element.Prediction == 'incipient') {
+                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+              } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+              }
+            });
+            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
 
@@ -953,22 +1007,29 @@ export class DashboardComponent {
         )
 
     } else if (this.PredictionDate == 'Previous 3 Month') {
-      this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
+      var fromerDays= this.PredictionDatesList.slice(-1)
+      var torDay= this.PredictionDatesList.slice(-90)
       const params4 = new HttpParams()
-        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment(this.PredictionDatesList[-89], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      .set('FromDate', moment(fromerDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+      .set('ToDate', moment(torDay, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url4: string = this.screwCompressorAPIName.getPredictiontRecords;
       this.screwCompressorMethod.getWithParameters(url4, params4)
         .subscribe(
           res => {
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            if (this.PredictionDataTableList[0].length > 0) {
-              this.doPredictionDisabled = true;
-            } else {
-              this.doPredictionDisabled = false;
-            }
-            this.commonLoadingDirective.showLoading(false, " ");
+            this.PredictionDataTableList.forEach(element => {
+              if (element.Prediction == 'normal') {
+                this.PredictionNormalcount = this.PredictionNormalcount + 1;
+              } else if (element.Prediction == 'incipient') {
+                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+              } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+              }
+            });
+            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
           }
@@ -976,22 +1037,29 @@ export class DashboardComponent {
 
     }
     else if (this.PredictionDate == 'Previous 1 Year') {
-      this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
+      var fromerDays= this.PredictionDatesList.slice(-1)
+      var torDay= this.PredictionDatesList.slice(-365)
       const params4 = new HttpParams()
-        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment(this.PredictionDatesList[-364], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      .set('FromDate', moment(fromerDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+      .set('ToDate', moment(torDay, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url4: string = this.screwCompressorAPIName.getPredictiontRecords;
       this.screwCompressorMethod.getWithParameters(url4, params4)
         .subscribe(
           res => {
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            if (this.PredictionDataTableList[0].length > 0) {
-              this.doPredictionDisabled = true;
-            } else {
-              this.doPredictionDisabled = false;
-            }
-            this.commonLoadingDirective.showLoading(false, " ");
+            this.PredictionDataTableList.forEach(element => {
+              if (element.Prediction == 'normal') {
+                this.PredictionNormalcount = this.PredictionNormalcount + 1;
+              } else if (element.Prediction == 'incipient') {
+                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+              } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+              }
+            });
+            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
           }
@@ -1198,9 +1266,7 @@ export class DashboardComponent {
     //  this.ComboChart();
   }
 
-  PredictionstatusChange(){
 
-  }
   ForcaststatusChange(){
     
   }

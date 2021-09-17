@@ -244,8 +244,8 @@ namespace DPM_Testing.Controllers
 
                 List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData
                                                                  .Where(a => a.UserId == userId
-                                                                  && (a.InsertedDate >= predictionFromDate
-                                                                  && a.InsertedDate <= predictionToDate))
+                                                                  && (a.InsertedDate <=  predictionFromDate
+                                                                  && a.InsertedDate >= predictionToDate))
                                                                  .ToListAsync();
                 var predictionData = screwCompressorPredictions.ToList();
      
