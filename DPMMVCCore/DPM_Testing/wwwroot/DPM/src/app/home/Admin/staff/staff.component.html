@@ -97,11 +97,10 @@
                 <td>{{staffList.FirstName}}</td>
                 <td>{{staffList.LastName}}</td>
                 <td>
-                    <span *ngIf="isShown">
-                    {{staffList.Password}}
-                    </span>
+                    {{isShown?staffList.Password:'********'}}
                     <a (click)="toggleShow()"><i
-                        class="pi pi-eye"></i> </a>
+                        class="{{isShown === false? 'pi pi-eye-slash' : 'pi pi-eye'}}"></i>
+                    </a>
                 </td>
                 <td>{{staffList.Email}}</td>
                 <td>{{staffList.PhoneNumber}}</td>

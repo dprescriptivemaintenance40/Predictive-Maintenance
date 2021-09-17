@@ -18,6 +18,9 @@ export class LandingPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // var a : any = [];
+    //       a= document.getElementById("overlay")
+    //       a.style.display = 'block'
       if(this.user.UserType === 0){
         var todaysDate= moment();
         var TrialEndDate = moment(this.user.CreatedDate).add(7,'days');
