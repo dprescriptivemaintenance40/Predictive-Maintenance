@@ -221,8 +221,6 @@ export class DashboardComponent {
   public CriticalityRating: string = "";
   public MaintenanceStrategyList: any = [];
   public SavedPCRRecordsList: any = [];
-  public SkillLibraryAllrecords: any = [];
-  public PSRClientContractorData: any = [];
   public UserProductionCost: number = 0;
 
   public Skill_risk_Graph: boolean = false;
@@ -313,6 +311,26 @@ export class DashboardComponent {
   public ConstraintTaskList:any=[]
   public EconomicRiskWithOutDPMCR: string = "";
   public EconomicRiskWithDPMConstraintCR: string = "";
+  public  tagnumbers:any =[]
+  public  tag:any =[]
+  public combinationList:any = []
+  public dashboardshow:string = ""
+  public ExecutorShow:boolean = false
+  public PrescriptiveShow:boolean = false
+  public mergerecords: any = [];
+  public PTagNumberList = [];
+  public tagnumbershow: string = ""
+  public Degradepercentage:any=[]
+  public Incipientpercentage:any=[]
+  public Normalpercentage:any=[]
+  public selctedtagnymbers: string = "";
+  
+  public forcastPnormal: number = 0;
+  public forcastFPincipient: number = 0;
+  public forcastFPdegrade: number = 0;
+  public forcastFPbad: number = 0;
+  public forcastcounter: number = 0;
+
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -342,8 +360,6 @@ export class DashboardComponent {
     this.date = moment().add(1, 'days').format('YYYY-MM-DD');
     this.GetReportRecords()
     this.userModel = JSON.parse(localStorage.getItem('userObject'));
-    this.GetPSRClientContractorData();
-    this.getUserSkillRecords();
     this.getPrescriptiveRecords()
     this.getUserDetails()
     this.FullCBAObject()
@@ -398,9 +414,6 @@ export class DashboardComponent {
     this.GetALLCBA()
     this.GerAllFutuerPredictionRecords()
   }
-  public dashboardshow:string = ""
-  public ExecutorShow:boolean = false
-  public PrescriptiveShow:boolean = false
 
 
   Dashboardshowcriteria(){
@@ -478,7 +491,6 @@ export class DashboardComponent {
       });
   }
 
-  public mergerecords: any = [];
   getcombinerecords() {
     this.http.get('api/ScrewCompressorFuturePredictionAPI/MergepredictionAndForcast')
       .subscribe((res: any) => {
@@ -538,8 +550,7 @@ export class DashboardComponent {
           this.getAllFilterData = res
         })
   }
-  public PTagNumberList = [];
-  public tagnumbershow: string = ""
+
   GerAllPredictionRecords() {
     this.PredictionDataNormalCount = null;
     this.PredictionDataIncipientCount = null;
@@ -671,12 +682,13 @@ export class DashboardComponent {
           Incipientpercentage = (this.Incipientcount / this.ScrewPredictionAllData.length) * 100
           Normalpercentage = (this.Normalcount / this.ScrewPredictionAllData.length) * 100
 
-          // this.PredictionAllRecordDonught();
+          
           // this.PredictionAllRecordBarcharts();
            this.PredictionAllRecordPie();
           this.GenerateReport()
           // this.PredictionWithTagNumber()
           this.PredictionWithTagNumber1()
+          // this.PredictionAllRecordDonught();
           this.PredictionWithActionPieChart()
           this.IndicationGraphSSRB()
           this.IndicationGraphRD()
@@ -697,10 +709,10 @@ export class DashboardComponent {
     },
       []);
   }
-  public selctedtagnymbers: string = "";
+
   onPredictionChangeYear() {
-    //  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString());
+    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); 
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -723,14 +735,14 @@ export class DashboardComponent {
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber1()
-    // this.PredictionWithTagNumber()
+    // this.PredictionAllRecordDonught()
     this.PredictionWithActionPieChart()
   }
 
   PredictFModeType() {
-      // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
+    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString()); //for tag numbers
-     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (`${moment(val.InsertedDate).format('YYYY')}-${val.TagNumber}`) === this.PredictionselectedYear.toString());
+    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (`${moment(val.InsertedDate).format('YYYY')}-${val.TagNumber}`) === this.PredictionselectedYear.toString());
     this.combinationList=[]
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
@@ -747,12 +759,11 @@ export class DashboardComponent {
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
-    // this.PredictionAllRecordBarcharts()
-    // this.PredictionAllRecordDonught()
-  //  this.PredictionAllRecordPie()
+    // this.PredictionAllRecordBarcharts() 
+   //this.PredictionAllRecordPie()
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
-    // this.PredictionWithTagNumber()
+    // this.PredictionAllRecordDonught()
      this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
   }
@@ -995,7 +1006,6 @@ export class DashboardComponent {
         console.log(err.err);
       });
   }
-
 
   DynamicCBA(res) {
     this.ComponentCriticalityFactor = res.ComponentCriticalityFactor
@@ -1650,152 +1660,6 @@ export class DashboardComponent {
   //   });
   // }
 
-  // PredictionAllRecordDonught() {
-  //   this.changeDetectorRef.detectChanges();
-  //   this.ScrewPredictionAllData.sort()
-
-  //   var LabelDatess: any = [];
-  //   this.Predictyearlist.forEach(element => {
-  //     LabelDatess = LabelDatess.filter(function (element) {
-  //       return element !== undefined;
-  //     });
-  //     LabelDatess.push(element.Predictyearname)
-  //     LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-  //   });
-
-  //   for (var i = 0; i < this.Predictyearlist.length; ++i) {
-  //     var FPnormal = 0
-  //     var FPincipient = 0
-  //     var FPdegrade = 0
-  //     var FPbad = 0
-  //     var counter = 0
-  //     this.ScrewPredictionAllData.forEach(value => {
-  //       var a = moment(value.InsertedDate).format('YYYY')
-  //       if (a == this.Predictyearlist[i].Predictyearname) {
-  //         if (value.Prediction == 'normal') {
-  //           FPnormal = FPnormal + 1
-  //         } else if (value.Prediction == 'incipient') {
-  //           FPincipient = FPincipient + 1
-  //         } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
-  //           FPdegrade = FPdegrade + 1
-  //         } else {
-  //           FPbad = FPbad + 1
-  //         }
-  //         counter = counter + 1
-  //       }
-
-  //     });
-  //     var fperc_Incipient
-  //     var fperc_Normal
-  //     var fperc_Degrade
-  //     var fperc_Bad
-  //     FPnormal = ((FPnormal / counter) * 100)
-  //     FPincipient = ((FPincipient / counter) * 100)
-  //     FPdegrade = ((FPdegrade / counter) * 100)
-  //     FPbad = ((FPbad / counter) * 100)
-
-  //     fperc_Incipient = FPnormal.toFixed()
-  //     fperc_Normal = FPincipient.toFixed()
-  //     fperc_Degrade = FPdegrade.toFixed()
-  //     fperc_Bad = FPbad.toFixed()
-
-  //     this.FPFinalNormal.push(fperc_Normal)
-  //     this.FPFinalIncipient.push(fperc_Incipient)
-  //     this.FPFinaldDegrade.push(fperc_Degrade)
-  //     this.FPFinalBad.push(fperc_Bad)
-
-  //   }
-
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("PredictioncanvasClass", {
-  //     type: "bar",
-  //     data: {
-  //       labels: LabelDatess,
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           label: "Normal",
-  //           data: this.FPFinalNormal,
-  //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
-  //           fill: true,
-
-  //         },
-  //         {
-  //           label: "Incipient",
-  //           data: this.FPFinalIncipient,
-  //           borderWidth: 1,
-  //           borderColor: "#ffb801",
-  //           backgroundColor: '#ffb801',
-  //           fill: true,
-
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: this.FPFinaldDegrade,
-  //           borderWidth: 1,
-  //           borderColor: "#fe4c61",
-  //           backgroundColor: '#fe4c61',
-  //           fill: true,
-
-  //         },
-  //         {
-  //           label: "Bad",
-  //           data: this.FPFinalBad,
-  //           borderWidth: 1,
-  //           borderColor: "blue",
-  //           backgroundColor: 'blue',
-  //           fill: true,
-  //         },
-
-  //       ],
-  //     },
-  //     options: {
-  //       scales: {
-  //         xAxes: [{
-  //           gridLines: {
-  //             display: false
-  //           },
-  //         }],
-  //         yAxes: [
-  //           {
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'In_Percentage'
-  //             },
-  //             ticks: {
-  //               beginAtZero: true,
-  //               gridLines: {
-  //                 display: false
-  //               },
-  //             }
-  //           }
-  //         ]
-  //       },
-  //       "animation": {
-  //         "duration": 1,
-  //         "onComplete": function () {
-  //           var chartInstance = this.chart,
-  //             ctx = chartInstance.ctx;
-  //           this.data.datasets.forEach(function (dataset, i) {
-  //             var meta = chartInstance.controller.getDatasetMeta(i);
-  //             meta.data.forEach(function (bar, index) {
-  //               var data = dataset.data[index];
-  //               if (data > 0) {
-  //                 ctx.fillText(data, bar._model.x, bar._model.y - 5);
-  //               }
-  //             });
-  //           });
-  //         }
-  //       },
-  //     }
-
-  //   });
-  // }
- public Degradepercentage:any=[]
- public Incipientpercentage:any=[]
- public Normalpercentage:any=[]
   PredictionAllRecordPie() {
     var a: any = [];
     this.PredictionNormalcount = 0,
@@ -2233,11 +2097,6 @@ export class DashboardComponent {
   //   });
   // }
 
-  public forcastPnormal: number = 0;
-  public forcastFPincipient: number = 0;
-  public forcastFPdegrade: number = 0;
-  public forcastFPbad: number = 0;
-  public forcastcounter: number = 0;
   FutuerdDonughtchart() {
     this.changeDetectorRef.detectChanges();
     this.FutuerPredictionAllData.sort()
@@ -3190,186 +3049,6 @@ export class DashboardComponent {
     });
   }
 
-  getUserSkillRecords() {
-    this.commonBLervice.getWithoutParameters('/SkillLibraryAPI/GetAllConfigurationRecords').subscribe(
-      (res: any) => {
-        this.SkillLibraryAllrecords = res;
-        this.PSRClientContractorData
-        for (var i = 0; i < this.SkillLibraryAllrecords.length; i++) {
-          for (var j = 0; j < this.PSRClientContractorData.length; j++) {
-            this.SkillLibraryAllrecords.forEach(element => {
-              if (this.PSRClientContractorData[j].PSRClientContractorId == this.SkillLibraryAllrecords[i].Craft) {
-                element.CraftSF = this.PSRClientContractorData[j].CraftSF
-              }
-            });
-          }
-        }
-
-      }, err => { console.log(err.error) }
-    );
-  }
-
-  GetPSRClientContractorData() {
-    this.http.get('/api/PSRClientContractorAPI/GetAllConfigurationRecords')
-      .subscribe((res1: any) => {
-        this.PSRClientContractorData = res1;
-
-      }, err => { console.log(err.error) }
-      );
-  }
-  public  tagnumbers:any =[]
-  public  tag:any =[]
-
-  // PredictionWithTagNumber() {
-  //   var a: any = [];
-  //   this.PredictionNormalcount = 0,
-  //     this.PredictionIncipientcount = 0,
-  //     this.PredictionDegradecount = 0;
-  //   let tagnumberlist = []
- 
-  //   const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
-  //   this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
-  //   this.PTagNumberList =   this.PTagNumberList.filter(r => r.TagNumber !== null)
-  
-  //   this.PTagNumberList.forEach(element=>{
-  //     this.tagnumbers.push(element.TagNumber) 
-  //   })
-
-  //   this.ScrewPredictionAllData.forEach(element => {
-  //     if (this.fmtype != "") {
-  //       if (this.fmtype == "SSRB") {
-  //         a.push(element.SSRB)
-  //       } else if (this.fmtype == "CF") {
-  //         a.push(element.CF)
-  //       } if (this.fmtype == "RD") {
-  //         a.push(element.RD)
-  //       }
-  //     } else {
-  //       a.push(element.Prediction)
-  //     }
-  //   });
-  //   var Degradepercentage
-  //   var Incipientpercentage
-  //   var Normalpercentage
-  //   var Badpercentage
-  //   a.forEach(element => {
-  //     if (element == 'normal') {
-  //       this.PredictionNormalcount = this.PredictionNormalcount + 1;
-  //     } else if (element == 'incipient') {
-  //       this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-  //     } else if (element == 'degrade' || element == 'degarde') {
-  //       this.PredictionDegradecount = this.PredictionDegradecount + 1;
-  //     } else if (element == 'bad') {
-  //       this.Predictionbadcount = this.Predictionbadcount + 1
-  //     }
-  //   });
-
-    
-  //   Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
-  //   Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
-  //   Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
-  //   Badpercentage = ((this.Predictionbadcount / a.length) * 100).toFixed(2);
-
-  //   this.predictionDegradeMessage = Degradepercentage
-  //   this.predictionIncipientMessage = Incipientpercentage
-  //   this.predictionNormalMessage = Normalpercentage
-
-
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("PredictionbarWithTage", {
-  //     type: "bar",
-  //     data: {
-  //       labels: this.tagnumbers,
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           label: "Normal",
-  //           data: [Normalpercentage],
-  //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
-  //           fill: true,
-
-  //         },
-  //         {
-  //           label: "Incipient",
-  //           data: [Incipientpercentage],
-  //           borderWidth: 1,
-  //           borderColor: "#ffb801",
-  //           backgroundColor: '#ffb801',
-  //           fill: true,
-
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: [Degradepercentage],
-  //           borderWidth: 1,
-  //           borderColor: "#fe4c61",
-  //           backgroundColor: '#fe4c61',
-  //           fill: true,
-
-  //         },
-  //         {
-  //           label: "Bad",
-  //           data: Badpercentage,
-  //           borderWidth: 1,
-  //           borderColor: "blue",
-  //           backgroundColor: 'blue',
-  //           fill: true,
-  //         },
-
-  //       ],
-  //     },
-  //     options: {
-  //       // events: [], 
-  //       tooltips: {
-  //         mode: 'index',
-  //       },
-  //       scales: {
-  //         xAxes: [{
-  //           stacked: true,
-  //           barPercentage: 0.2,
-  //           scaleLabel: {
-  //             display: true,
-  //             labelString: 'Tag Numbers'
-  //           },
-  //           gridLines: {
-  //             display: false
-  //           },
-  //         }],
-  //         yAxes: [{
-  //           stacked: true,
-  //           scaleLabel: {
-  //             display: true,
-  //             labelString: 'Percentage '
-  //           },
-  //           ticks: {
-  //           },
-  //           gridLines: {
-  //             display: false
-  //           },
-  //         }],
-  //         "animation": {
-  //           "duration": 1,
-  //           "onComplete": function () {
-  //             var chartInstance = this.chart,
-  //               ctx = chartInstance.ctx;
-  //             this.data.datasets.forEach(function (dataset, i) {
-  //               var meta = chartInstance.controller.getDatasetMeta(i);
-  //               meta.data.forEach(function (bar, index) {
-  //                 var data = dataset.data[index];
-  //                 if (data > 0) {
-  //                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
-  //                 }
-  //               });
-  //             });
-  //           }
-  //         },
-  //       }
-  //     }
-  //   });
-  // }
-  public combinationList:any = []
   PredictionWithTagNumber1() {
     this.changeDetectorRef.detectChanges();
     this.combinationList=[];
@@ -4083,93 +3762,6 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  // fakePredictionWithTagNumber(){
-  //   this.chart = new Chart("FakePredictionbarWithTage", {
-  //     type: "bar",
-  //     data: {
-  //       labels: ["K100-2020", "K101-2020", "K102-2020","K103-2020","K104-2020","K105-2020","K106-2020","K107-2020","K108-2020","K109-2020",],
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           label: "Normal",
-  //           data: [50,55,56,57,60,63,56,69,15,25],
-  //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
-  //           fill: true,
-
-  //         },
-  //         {
-  //           label: "Incipient",
-  //           data: [15,20,23,28,31,34,39,4,77,25],
-  //           borderWidth: 1,
-  //           borderColor: "#ffb801",
-  //           backgroundColor: '#ffb801',
-  //           fill: true,
-
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: [7,9,11,12,8,7,12,0,4,17],
-  //           borderWidth: 1,
-  //           borderColor: "#fe4c61",
-  //           backgroundColor: '#fe4c61',
-  //           fill: true,
-
-  //         },
-
-  //       ],
-  //     },
-  //     options: {
-  //       tooltips: {
-  //         mode: 'index',
-  //       },
-  //       scales: {
-  //         xAxes: [{
-  //           stacked: true,
-  //           barPercentage: 0.2,
-  //           scaleLabel: {
-  //             display: true,
-  //             labelString: 'Tag Numbers & Years'
-  //           },
-  //           gridLines: {
-  //             display: false
-  //           },
-  //         }],
-  //         yAxes: [{
-  //           stacked: true,
-  //           scaleLabel: {
-  //             display: true,
-  //             labelString: 'Percentage '
-  //           },
-  //           ticks: {
-  //           },
-  //           gridLines: {
-  //             display: false
-  //           },
-  //         }],
-  //         "animation": {
-  //           "duration": 1,
-  //           "onComplete": function () {
-  //             var chartInstance = this.chart,
-  //               ctx = chartInstance.ctx;
-  //             this.data.datasets.forEach(function (dataset, i) {
-  //               var meta = chartInstance.controller.getDatasetMeta(i);
-  //               meta.data.forEach(function (bar, index) {
-  //                 var data = dataset.data[index];
-  //                 if (data > 0) {
-  //                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
-  //                 }
-  //               });
-  //             });
-  //           }
-  //         },
-  //       }
-  //     }
-  //   });
-  // }
-
-
    GetALLCBA(){
     const params = new HttpParams()
     .set('UserId',this.userModel.UserId)
@@ -4370,5 +3962,152 @@ ConvertToCSV(objArray) {
   }
   return str;
 }
+
+//  PredictionAllRecordDonught() {
+//     this.changeDetectorRef.detectChanges();
+//     this.ScrewPredictionAllData.sort()
+
+//     var LabelDatess: any = [];
+//     this.Pyearlist.forEach(element => {
+//       LabelDatess = LabelDatess.filter(function (element) {
+//         return element !== undefined;
+//       });
+//       LabelDatess.push(element.Predictyearname)
+//       LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+//     });
+
+//     for (var i = 0; i < this.Pyearlist.length; ++i) {
+//       var FPnormal = 0
+//       var FPincipient = 0
+//       var FPdegrade = 0
+//       var FPbad = 0
+//       var counter = 0
+//       this.ScrewPredictionAllData.forEach(value => {
+//         var a = moment(value.InsertedDate).format('YYYY')
+//         if (a == this.Pyearlist[i].Predictyearname) {
+//           if (value.Prediction == 'normal') {
+//             FPnormal = FPnormal + 1
+//           } else if (value.Prediction == 'incipient') {
+//             FPincipient = FPincipient + 1
+//           } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+//             FPdegrade = FPdegrade + 1
+//           } else {
+//             FPbad = FPbad + 1
+//           }
+//           counter = counter + 1
+//         }
+
+//       });
+//       var fperc_Incipient
+//       var fperc_Normal
+//       var fperc_Degrade
+//       var fperc_Bad
+//       FPnormal = ((FPnormal / counter) * 100)
+//       FPincipient = ((FPincipient / counter) * 100)
+//       FPdegrade = ((FPdegrade / counter) * 100)
+//       FPbad = ((FPbad / counter) * 100)
+
+//       fperc_Incipient = FPnormal.toFixed()
+//       fperc_Normal = FPincipient.toFixed()
+//       fperc_Degrade = FPdegrade.toFixed()
+//       fperc_Bad = FPbad.toFixed()
+
+//       this.FPFinalNormal.push(fperc_Normal)
+//       this.FPFinalIncipient.push(fperc_Incipient)
+//       this.FPFinaldDegrade.push(fperc_Degrade)
+//       this.FPFinalBad.push(fperc_Bad)
+
+//     }
+
+//     this.changeDetectorRef.detectChanges();
+//     this.chart = new Chart("PredictioncanvasClass", {
+//       type: "bar",
+//       data: {
+//         labels: LabelDatess,
+//         fill: true,
+//         datasets: [
+//           {
+//             label: "Normal",
+//             data: this.FPFinalNormal,
+//             borderWidth: 1,
+//             borderColor: "#008000",
+//             backgroundColor: '#008000',
+//             fill: true,
+
+//           },
+//           {
+//             label: "Incipient",
+//             data: this.FPFinalIncipient,
+//             borderWidth: 1,
+//             borderColor: "#ffb801",
+//             backgroundColor: '#ffb801',
+//             fill: true,
+
+//           },
+//           {
+//             label: "Degrade",
+//             data: this.FPFinaldDegrade,
+//             borderWidth: 1,
+//             borderColor: "#fe4c61",
+//             backgroundColor: '#fe4c61',
+//             fill: true,
+
+//           },
+//           {
+//             label: "Bad",
+//             data: this.FPFinalBad,
+//             borderWidth: 1,
+//             borderColor: "blue",
+//             backgroundColor: 'blue',
+//             fill: true,
+//           },
+
+//         ],
+//       },
+//       options: {
+//         events: [],
+//         scales: {
+//           xAxes: [{
+//             stacked: true,
+//             gridLines: {
+//               display: false
+//             },
+//           }],
+//           yAxes: [
+//             {
+//               stacked: true,
+//               scaleLabel: {
+//                 display: true,
+//                 labelString: 'In_Percentage'
+//               },
+//               ticks: {
+//                 beginAtZero: true,
+//                 gridLines: {
+//                   display: false
+//                 },
+//               }
+//             }
+//           ]
+//         },
+//         "animation": {
+//           "duration": 1,
+//           "onComplete": function () {
+//             var chartInstance = this.chart,
+//               ctx = chartInstance.ctx;
+//             this.data.datasets.forEach(function (dataset, i) {
+//               var meta = chartInstance.controller.getDatasetMeta(i);
+//               meta.data.forEach(function (bar, index) {
+//                 var data = dataset.data[index];
+//                 if (data > 0) {
+//                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
+//                 }
+//               });
+//             });
+//           }
+//         },
+//       }
+
+//     });
+//   }
 }
 
