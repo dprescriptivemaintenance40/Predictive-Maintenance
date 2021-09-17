@@ -77,6 +77,14 @@ export class CostBenefitAnalysisComponent {
         // ]
     }
 
+    public getCheckResult(m : any){
+        if(m === true || m === "true"){
+            return true;
+        }else if(m === false || m === "false"){
+            false;
+        }
+    }
+
     GetRiskMatrixLibraryRecords(){
         this.http.get('dist/DPM/assets/RiskMatrixLibrary.xlsx', {responseType: 'blob'}).subscribe(
             res=>{
@@ -359,6 +367,7 @@ export class CostBenefitAnalysisComponent {
             this.CBAOBJ.CBATaskModel = this.CBAReportDetails.CentrifugalPumpMssModel;
             localStorage.removeItem('CBAOBJ');
             localStorage.setItem('CBAOBJ', JSON.stringify(this.CBAOBJ));
+            this.getMEI();
     }
 
     onlyNumbers(event) {

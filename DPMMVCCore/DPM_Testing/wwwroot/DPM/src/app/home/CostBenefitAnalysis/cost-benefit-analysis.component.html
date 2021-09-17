@@ -262,7 +262,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [(ngModel)]="mss.Checked"/>
+                                            <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [checked]="getCheckResult(mss.Checked)"/>
                                         </td>
                                     </tr>
                                 </tbody>

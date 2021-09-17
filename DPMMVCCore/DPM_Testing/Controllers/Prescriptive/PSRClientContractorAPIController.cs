@@ -240,8 +240,7 @@ namespace DPM_Testing.Controllers
                                                                        && r.EquipmentType == CBAModel.EquipmentType && r.MachineType == CBAModel.MachineType).ToListAsync();
                     if(CheckAlreadySaved.Count == 0)
                     {
-                        DateTime dt = DateTime.Now;
-                        CBAModel.CommisionDate = dt;
+                        CBAModel.CommisionDate = DateTime.Now;
                         _context.CBAModels.Add(CBAModel);
                         await this._context.SaveChangesAsync();
                         return Ok();
@@ -263,12 +262,31 @@ namespace DPM_Testing.Controllers
                     {
                         this._context.CBATaskModels.UpdateRange(update);
                     }
+                    List<CBATaskModel> savedTaskList = new List<CBATaskModel>();
+                    savedTaskList = await this._context.CBATaskModels.Where(a => a.CBAId == update[0].CBAId).ToListAsync();
+                    if (cBAModel.CBATaskModel != savedTaskList)
+                    {
+                        if (add.Count == 0)
+                        {
+                            foreach (var item in savedTaskList)
+                            {
+                                if(item.CentrifugalPumpMssId == "CONSTRAINT")
+                                {
+                                    _context.CBATaskModels.Remove(item);
+                                }
+                            }
+                        }
+                    }
                     if (add.Count > 0)
                     {
+                        foreach (var item in add)
+                        {
+                            item.CBAId = CBAModel.CBAId;
+                        }
                         this._context.CBATaskModels.AddRange(add);
                     }
-                   await this._context.SaveChangesAsync();
-                return Ok();
+                    await this._context.SaveChangesAsync();
+                    return Ok();
                 }
                 
             }
