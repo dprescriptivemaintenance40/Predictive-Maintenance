@@ -55,6 +55,36 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
             return long.Parse(dt.Date.ToString("yyyyMMdd"));
         }
 
+
+        [HttpGet("{id}")]
+        [Route("ForcastPredictionselection")]
+        public async Task<IActionResult> GetForcastPredictionselection(string FromDate, string ToDate)
+        {
+
+            try
+            {
+
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                DateTime d = Convert.ToDateTime(FromDate);
+                DateTime futureFromDate = d.Date;
+                DateTime d1 = Convert.ToDateTime(ToDate);
+                DateTime futureToDate = d1.Date;
+
+                List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels
+                                                                 .Where(a => a.UserId == userId
+                                                                  && (a.Date >= futureFromDate
+                                                                  && a.Date <= futureToDate))
+                                                                 .ToListAsync();
+                //var forcastData = screwCompressorForecastModels.ToList();
+                var forcastData = screwCompressorForecastModels.Select(d => new { d.Date, d.TD1, }).ToList();
+                return Ok(forcastData);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
+
         [HttpGet]
         [Route("GetFutuerPredictionRecordsInCSVFormat")]
         public async Task<IActionResult> GetFutuerPredictionRecordsInCSVFormat(string Date)
@@ -389,6 +419,33 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
         }
 
 
+        [HttpGet]
+        [Route("GetForcastRecordsInCSVFormat")]
+        public async Task<IActionResult> GetForcastRecordsInCSVFormat()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+
+            try
+            {
+                List<ScrewCompressorForecastModel> screwCompressorForecastModels = await _context.ScrewCompressorForecastModels.Where(a => a.UserId == userId).OrderBy(a => a.Date).ToListAsync();
+
+
+                for (int i = 0; i < screwCompressorForecastModels.Count; i++)
+                {
+                    long dt = DateToValues(screwCompressorForecastModels[i].Date);
+                    screwCompressorForecastModels[i].FDate = dt;
+                }
+                var newList = screwCompressorForecastModels.Select(d => new { d.Date, d.TD1, }).ToList();
+
+                return Ok(newList);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+
+        }
+
 
         [HttpGet]
         [Route("GetForecast")]
@@ -425,29 +482,6 @@ namespace DPM.Controllers.Compressors.ScrewCompressor
                 return Ok(exe.Message);
             }
         }
-
-
-        //[HttpGet]
-        //[Route("MergepredictionAndForcast")]
-        //public  IActionResult MergepredictionAndForcast()
-        //{
-        //    string userId = User.Claims.First(c => c.Type == "UserID").Value;
-        //    var q = (from pd in _context.ScrewCompressurePredictionData
-        //            where pd.UserId == userId
-        //             select new
-        //             {
-
-        //                 InsertedDate= pd.InsertedDate,
-        //                 FTD1 = _context.ScrewCompressorForecastModels.Where(obj=>obj.UserId == pd.UserId && obj.TD1 != null).Select(s=>s.TD1).FirstOrDefault(),
-        //                 TD1 = pd.TD1
-                          
-        //             }).ToList();
-         
-
-        //    return Ok(q);
-
-        //}
-
 
     }
 }

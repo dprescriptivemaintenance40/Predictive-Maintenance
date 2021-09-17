@@ -14,7 +14,7 @@ namespace DPM.Models.PumpModel
         public DateTime Date { get; set; }
         [NotMapped]
         public long FDate { get; set; }
-        [NotMapped]
-        public decimal FTD1 { get; set; }
+        //[NotMapped]
+        //public decimal FTD1 { get; set; }
     }
 }

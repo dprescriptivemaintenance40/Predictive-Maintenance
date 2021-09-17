@@ -558,7 +558,6 @@ public Predictionbadcount: number = 0;
   }
 
   FuturePredictionDates() {
-
     if (this.futurePredictionDate == 'After One Day') {
       this.dofuturePredictionDisabled = true;
       this.commonLoadingDirective.showLoading(true, "Fetching Records...");

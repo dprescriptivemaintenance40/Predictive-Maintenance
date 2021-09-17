@@ -9,7 +9,7 @@ import * as moment from "moment";
 import { CommonLoadingDirective } from "src/app/shared/Loading/common-loading.directive";
 import Dygraph from 'dygraphs'
 import { ActivatedRoute, Router } from "@angular/router";
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { SCConstantsAPI } from "../Compressor/ScrewCompressor/shared/ScrewCompressorAPI.service";
 import { ProfileConstantAPI } from "../profile/profileAPI.service";
 import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
@@ -19,7 +19,7 @@ import { ConfigService } from "src/app/shared/config.service";
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, DatePipe]
 })
 export class DashboardComponent {
   @ViewChild('graph')
@@ -331,9 +331,21 @@ export class DashboardComponent {
   public forcastFPbad: number = 0;
   public forcastcounter: number = 0;
 
+  public Predictionstatus: string = ""
+  public Forcaststatus: string = ""
+  public assetselection:boolean=false;
+  public dofuturePredictionDisabled: boolean = true;
+  public futurePredictionList: any = [];
+  public futurePredictionDatesList: any = [];
+  public SelectedDateFromList: any = [];
+  public futurePredictionDate: any = [];
+  public futurePredictionDataTableList: any = [];
+  public futurePredictionDatesToShow: any = ["After One Day", "After a week", "After 15 Days", "After 30 Days"];
+
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
+    public datepipe: DatePipe,
     private messageService: MessageService,
     private dashboardBLService: CommonBLService,
     private dashboardContantAPI: DashboardConstantAPI,
@@ -345,7 +357,6 @@ export class DashboardComponent {
     private commonBLervice: CommonBLService,
     private PSRAPIs: PrescriptiveContantAPI,
     private configService: ConfigService,
-    private location: Location,
     private route: ActivatedRoute,
 
 
@@ -409,10 +420,9 @@ export class DashboardComponent {
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
     this.dygraph()
-    this.ComboDates()
-    this.getcombinerecords()
     this.GetALLCBA()
     this.GerAllFutuerPredictionRecords()
+    this.getFuturePredictionRecords()
   }
 
 
@@ -433,6 +443,7 @@ export class DashboardComponent {
      this.CBICharts()
      this.FakeRiskMetigateactions()
      this.RiskProfile()
+     this.ComboDates()
      this.dygraphForJson()
 
   }
@@ -448,6 +459,115 @@ export class DashboardComponent {
   RiskTable(){
     this.showcbi=true
     this.MitigatingActionshow=false;
+  }
+
+ 
+  getFuturePredictionRecords() {
+    var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords;
+    this.screwCompressorMethod.getWithoutParameters(url)
+      .subscribe(
+        (res: any) => {
+          this.futurePredictionList = res;
+          var Dates: any = [];
+          if (res.length > 0) {
+            this.futurePredictionList.forEach(element => {
+              this.futurePredictionDatesList.push(this.datepipe.transform(element.Date, 'dd/MM/YYYY'));
+
+            });
+          }
+          var abc = this.futurePredictionDatesList[14];
+          var pqr = moment(abc, 'dd MM YYYY').add(5, 'days')
+          console.log(pqr);
+        }
+      )
+  }
+
+  FuturePredictionDates() {
+    if (this.futurePredictionDate == 'After One Day') {
+      this.dofuturePredictionDisabled = true;
+      var AfterDays = this.futurePredictionDatesList[0];
+      const params = new HttpParams()
+        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url: string = this.screwCompressorAPIName.getForcastRecords;
+      this.screwCompressorMethod.getWithParameters(url, params)
+        .subscribe(
+          res => {
+            this.futurePredictionDataTableList = null;
+            this.futurePredictionDataTableList = res;
+            if (this.futurePredictionDataTableList[0].length > 0) {
+              this.dofuturePredictionDisabled = true;
+            } else {
+              this.dofuturePredictionDisabled = false;
+            }
+          },
+        )
+        this.dygraphForJson()
+    } else if (this.futurePredictionDate == 'After a week') {
+
+      const params2 = new HttpParams()
+        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.futurePredictionDatesList[6], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url2: string = this.screwCompressorAPIName.getForcastRecords;
+      this.screwCompressorMethod.getWithParameters(url2, params2)
+        .subscribe(
+          res => {
+            this.futurePredictionDataTableList = null;
+            this.futurePredictionDataTableList = res;
+            if (this.futurePredictionDataTableList[0].length > 0) {
+              this.dofuturePredictionDisabled = true;
+            } else {
+              this.dofuturePredictionDisabled = false;
+            }
+          },
+        )
+        this.dygraphForJson()
+    } else if (this.futurePredictionDate == 'After 15 Days') {
+      const params3 = new HttpParams()
+        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.futurePredictionDatesList[14], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url3: string = this.screwCompressorAPIName.getForcastRecords;
+      this.screwCompressorMethod.getWithParameters(url3, params3)
+        .subscribe(
+          res => {
+            this.futurePredictionDataTableList = null;
+            this.futurePredictionDataTableList = res;
+            if (this.futurePredictionDataTableList[0].length > 0) {
+              this.dofuturePredictionDisabled = true;
+            } else {
+              this.dofuturePredictionDisabled = false;
+            }
+          }
+        )
+
+    } else if (this.futurePredictionDate == 'After 30 Days') {
+      this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
+      const params4 = new HttpParams()
+        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.futurePredictionDatesList[this.futurePredictionDatesList.length - 1], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url4: string = this.screwCompressorAPIName.getForcastRecords;
+      this.screwCompressorMethod.getWithParameters(url4, params4)
+        .subscribe(
+          res => {
+            this.futurePredictionDataTableList = null;
+            this.futurePredictionDataTableList = res;
+            if (this.futurePredictionDataTableList[0].length > 0) {
+              this.dofuturePredictionDisabled = true;
+            } else {
+              this.dofuturePredictionDisabled = false;
+            }
+            this.commonLoadingDirective.showLoading(false, " ");
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'Something went wrong please try again later', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
+        )
+    }
+    else {
+      this.futurePredictionDataTableList = [];
+
+    }
   }
 
   FullCBAObject() {
@@ -491,12 +611,7 @@ export class DashboardComponent {
       });
   }
 
-  getcombinerecords() {
-    this.http.get('api/ScrewCompressorFuturePredictionAPI/MergepredictionAndForcast')
-      .subscribe((res: any) => {
-        this.mergerecords = res;
-      });
-  }
+
 
   RouteToTrain() {
     this.router.navigateByUrl('/Home/Compressor/ScrewTrain');
@@ -511,15 +626,18 @@ export class DashboardComponent {
   }
 
   ComboDates() {
-    if (this.date == "1Week") {
+     if (this.date == "1Day") {
+      this.date = moment().add(1, 'days').format('YYYY-MM-DD');
+      this.dygraphForJson()
+    }else if (this.date == "1Week") {
       this.date = moment().add(7, 'days').format('YYYY-MM-DD');
-      this.dygraph()
+      this.dygraphForJson()
     } else if (this.date == "15days") {
       this.date = moment().add(15, 'days').format('YYYY-MM-DD');
-      this.dygraph()
+      this.dygraphForJson()
     } else if (this.date == "1Month") {
       this.date = moment().add(30, 'days').format('YYYY-MM-DD');
-      this.dygraph()
+      this.dygraphForJson()
     }
 
   }
@@ -963,7 +1081,13 @@ export class DashboardComponent {
     // this.ClassificationOfAllRecordDonught()
     //  this.ComboChart();
   }
- public assetselection:boolean=false;
+
+  PredictionstatusChange(){
+
+  }
+  ForcaststatusChange(){
+    
+  }
  assetSelection(){
    this.assetselection= true;
  }
@@ -1996,108 +2120,6 @@ export class DashboardComponent {
     // this.Futuerpiechart()
   }
 
-  // FutuerlineChart() {
-  //   this.changeDetectorRef.detectChanges();
-  //   let FutuerdateForFilter = [];
-  //   this.FutuerPredictionDataNormalCount = []
-  //   this.FutuerPredictionDataIncipientCount = []
-  //   this.FutuerPredictonDataDegradeCount = []
-  //   for (var i = 0; i < this.FutuerPredictionAllData.length; i++) {
-  //     if (!this.isDateInArray(new Date(this.FutuerPredictionAllData[i].PredictedDate), FutuerdateForFilter)) {
-  //       FutuerdateForFilter.push(new Date(this.FutuerPredictionAllData[i].PredictedDate));
-  //     }
-  //   }
-  //   let FutuerdateForFilter1 = [];
-  //   FutuerdateForFilter.forEach((value) => {
-  //     var Date = moment(value).format('YYYY-MM-DD');
-  //     FutuerdateForFilter1.push(Date);
-  //     FutuerdateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-  //   });
-
-  //   for (var i = 0; i < FutuerdateForFilter1.length; i++) {
-  //     var a = [];
-  //     this.FutuerPredictionAllData.forEach(element => {
-  //       if (moment(element.PredictedDate).format('YYYY-MM-DD') == FutuerdateForFilter1[i]) {
-  //         if (this.fmtype != "") {
-  //           if (this.fmtype == "SSRB") {
-  //             a.push(element.SSRB)
-  //           } else if (this.fmtype == "CF") {
-  //             a.push(element.CF)
-  //           } if (this.fmtype == "RD") {
-  //             a.push(element.RD)
-  //           }
-  //         } else {
-  //           a.push(element.Prediction)
-  //         }
-  //       }
-  //     });
-  //     var normal = 0
-  //     var incipient = 0
-  //     var degrade = 0
-  //     var bad = 0
-
-  //     a.forEach((value) => {
-  //       if (value == 'normal') {
-  //         normal = normal + 1
-  //       } else if (value == 'incipient') {
-  //         incipient = incipient + 1
-  //       } else if (value == 'degarde' || value == 'degrade') {
-  //         degrade = degrade + 1
-  //       } else {
-  //         bad = bad + 1
-  //       }
-  //     });
-  //     this.FutuerPredictionDataNormalCount.push(normal)
-  //     this.FutuerPredictionDataIncipientCount.push(incipient)
-  //     this.FutuerPredictonDataDegradeCount.push(degrade)
-  //     this.FutuerPredictionDataBadCount.push(bad)
-  //   }
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("BarChart", {
-  //     type: 'bar',
-  //     data: {
-  //       labels: FutuerdateForFilter1,
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           label: "Normal",
-  //           data: this.FutuerPredictionDataNormalCount,
-  //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
-  //         }, {
-  //           label: "Incipent",
-  //           data: this.FutuerPredictionDataIncipientCount,
-  //           borderWidth: 1,
-  //           borderColor: "#ffb801",
-  //           backgroundColor: '#ffb801',
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: this.FutuerPredictonDataDegradeCount,
-  //           borderWidth: 1,
-  //           borderColor: " #fe4c61",
-  //           backgroundColor: '#fe4c61',
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       events: [],
-  //       scales: {
-  //         xAxes: [{
-  //           stacked: true,
-  //         }],
-  //         yAxes: [{
-  //           stacked: true,
-  //           ticks: {
-  //           }
-  //         }]
-  //       }
-  //     }
-
-  //   });
-  // }
-
   FutuerdDonughtchart() {
     this.changeDetectorRef.detectChanges();
     this.FutuerPredictionAllData.sort()
@@ -2469,7 +2491,6 @@ export class DashboardComponent {
   //   //     })}
   //   // )
   // }
-
 
   dygraph() {
     this.chart = new Dygraph(
@@ -3788,6 +3809,7 @@ export class DashboardComponent {
       this.MEIWithDPMWithConstraint =this.allCBAdata[i].MEIWithDPMConstraint
       this.MEIWithoutDPM = this.allCBAdata[i].MEIWithoutDPM
      }
+   
      this.Ecoriskvalue()
      this.allCBAdata .forEach((element) => {
          var a:number = element.LevelCount
@@ -3901,44 +3923,105 @@ export class DashboardComponent {
         return await 0;
     }
 }
-
+ public predictions:any=[];
+ public forcasts:any=[];
 dygraphForJson() {
-  this.changeDetectorRef.detectChanges();
-  this.prediction.forEach(element=>{
-    this.forcast.forEach(val=>{
-       if(element.Date == val.FDate){
-        element.Date
-        element.TD1
-        element.FTD1 = val.fTD1
-        }
-        if(element.FTD1==0){
-          element.FTD1=''
-        }
-    })
-  })
-  this.csvData = this.ConvertToCSV(this.prediction);
-  this.chart = new Dygraph(
-    document.getElementById('my-first-chart'),
-    this.csvData,
-    {
-      //  visibility: [true, true, true,],
-      colors: ['green', 'blue',],
-      showRangeSelector: true,
-      valueRange: [120],
-      series: {
-        'TD1': {
-          strokePattern: null,
-          drawPoints: true,
-          pointSize: 1,
-        },
-        'FTD1': {
-          strokePattern: Dygraph.DASHED_LINE,
-          strokeWidth: 2.6,
-          drawPoints: true,
-          pointSize: 3.5,
-        },
-      }
-    })
+
+
+  //   this.predictions.forEach(element=>{
+  //     this.forcasts.forEach(val=>{
+  //        if(element.InsertedDate == val.Date){
+  //         element.Date
+  //         element.TD1
+  //         element.FTD1 = val.fTD1
+  //         }
+  //         if(element.FTD1==0){
+  //           element.FTD1=''
+  //         }
+  //     })
+  //   })
+ 
+  // this.changeDetectorRef.detectChanges(); 
+  // this.prediction.forEach(element=>{
+  //   this.forcast.forEach(val=>{
+  //      if(element.Date == val.FDate){
+  //       element.Date
+  //       element.TD1
+  //       element.FTD1 = val.fTD1
+  //       }
+  //       if(element.FTD1==0){
+  //         element.FTD1=''
+  //       }
+  //   })
+  // })
+  // this.csvData = this.ConvertToCSV(this.predictions);
+  // this.chart = new Dygraph(
+  //   document.getElementById('my-first-chart'),
+  //   this.csvData,
+  //   {
+  //     //  visibility: [true, true, true,],
+  //     colors: ['green', 'blue',],
+  //     showRangeSelector: true,
+  //     valueRange: [120],
+  //     series: {
+  //       'TD1': {
+  //         strokePattern: null,
+  //         drawPoints: true,
+  //         pointSize: 1,
+  //       },
+  //       'FTD1': {
+  //         strokePattern: Dygraph.DASHED_LINE,
+  //         strokeWidth: 2.6,
+  //         drawPoints: true,
+  //         pointSize: 3.5,
+  //       },
+  //     }
+  //   })
+
+    this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+      this.predictions = res;
+      this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetForcastRecordsInCSVFormat").subscribe((res: any) => {
+        this.forcasts = res
+        this.predictions.forEach(element=>{
+          this.forcasts.forEach(val=>{
+             if(element.InsertedDate == val.Date){
+              element.InsertedDate
+              element.TD1
+              element.FTD1 = val.TD1
+              }
+              if(element.FTD1==0){
+                element.FTD1=''
+              }
+          })
+        })
+        this.csvData = this.ConvertToCSV(this.predictions);
+        this.chart = new Dygraph(
+         document.getElementById("my-first-chart"),this.csvData,
+         {
+           colors: ['green', 'blue',],
+           showRangeSelector: true,
+           valueRange: [120],
+           series: {
+             'TD1': {
+               strokePattern: null,
+               drawPoints: true,
+               pointSize: 1,
+             },
+             'FTD1': {
+               strokePattern: Dygraph.DASHED_LINE,
+               strokeWidth: 2.6,
+               drawPoints: true,
+               pointSize: 3.5,
+             },
+           }
+         },
+         )
+     })}
+ )
+
+
+
+
 }
 ConvertToCSV(objArray) {
   var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
@@ -4109,5 +4192,85 @@ ConvertToCSV(objArray) {
 
 //     });
 //   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// dygraph2() {
+//     this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+//          var prediction = res;
+//           var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
+//       this.screwCompressorMethod.getWithoutParameters(url)
+//         .subscribe(
+//           (res: any) => {
+//             var futureData = res
+//            prediction.forEach(element => {
+//           });
+//            this.csvData = this.ConvertToCSV(prediction);
+//            this.chart = new Dygraph(
+//             document.getElementById("graph"),this.csvData,
+//             {
+//               colors: ['green','green', 'green',],
+//               visibility: [true, true, false,],
+//               showRangeSelector: true,
+//               fillGraph:true,
+//               fillAlpha: 0.1,
+//               connectSeparatedPoints: false,
+//               drawPoints: true,
+//               strokeWidth: 1.5,
+//               stepPlot: false,
+//               errorbar: true,
+//               drawXGrid: true,
+//               valueRange: [150,250],
+//               includeZero: false,
+//               drawAxesAtZero: false,
+//               series: {
+//                 'TD1': {
+//                   strokePattern: null,
+//                   drawPoints: true,
+//                   pointSize: 2,
+//                 },
+//                 'FTD1': {
+//                   strokePattern: Dygraph.DASHED_LINE,
+//                   strokeWidth: 2.6,
+//                   drawPoints: true,
+//                   pointSize: 3.5
+//                 },
+//               },
+//             },
+//             )
+//         })}
+//     )
+//   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 

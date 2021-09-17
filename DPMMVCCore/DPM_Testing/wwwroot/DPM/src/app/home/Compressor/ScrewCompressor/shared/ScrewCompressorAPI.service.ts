@@ -24,6 +24,7 @@ export class SCConstantsAPI{
   public ChangeInConfiguration : string = '/ScrewCompressureAPI/ConfigurationChange';
   public getPredictedListByDate : string = '/ScrewCompressureAPI/GetPredictionByDate';
   public GetAllRecords: string = '/ScrewCompressorTrainChartAPI/GetAllRecords'
+  public getForcastRecords : string = '/ScrewCompressorFuturePredictionAPI/ForcastPredictionselection';
 
   //#region  Dashboard ScrewCompressureAPI
 

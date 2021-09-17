@@ -49,7 +49,7 @@
                                 {{ ClassDegradepercentageForMessage.length > ClassIncipientpercentageForMessage.length ? 'The Graph Shows Machine goes on Breakdown stage' :
                                 ClassDegradepercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph Shows Machine is Under worst Condition,Need to do
                                 Maintenance' :
-                                ClassIncipientpercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph shows Machine needs 
+                                ClassIncipientpercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph shows Machine needs
                                 Maintenance' :
                                 ClassNormalpercentageForMessage.length > ClassIncipientpercentageForMessage.length ? 'The Graph shows Machine Work at good condition' :'The Graph shows Machine needs Maintenance'
                              }}
@@ -112,7 +112,7 @@
         </div>
     </div>
 </div>
-</div> --> 
+</div> -->
 
 <!-- <div class="card bg-transparent border-0 mt-4" *ngIf="PredictionShow" id="Predictionnavigate">
     <div class="d-flex justify-content-between align-items-center">
@@ -173,11 +173,11 @@
 
                             <marquee width="100%" direction="left" height="100px">
                                 <label style="font-size:14;color:black"><i class="lnr lnr-warning  mr-2"></i>
-            
+
                                  {{ predictionDegradeMessage.length > predictionIncipientMessage.length ? ' The Graph Shows Machine goes on Breakdown stage' :
                                  predictionDegradeMessage.length > predictionNormalMessage.length ? ' The Graph Shows Machine is Under worst Condition,Need to do
                                  Maintenance' :
-                                 predictionIncipientMessage.length > predictionNormalMessage.length ? ' The Graph shows Machine needs 
+                                 predictionIncipientMessage.length > predictionNormalMessage.length ? ' The Graph shows Machine needs
                                  Maintenance' :
                                  predictionNormalMessage.length > predictionIncipientMessage.length ? 'The Graph shows Machine Work at good condition' :'The Graph shows Machine needs Maintenance'
                               }}
@@ -192,12 +192,12 @@
                             <canvas style="width: 70px;height: 50px" id="PredictioncanvasClass"></canvas><br>
                         </div>
                     </div>
-    
+
                 </div>
             </div>
         </div>
     </div><br>
-    
+
     <div class="d-block mt-4">
         <div class="bg-white rounded p-3 br-3 mb-4">
             <div class="row">
@@ -332,15 +332,6 @@
             <h5><b>Combination Of Prediction & Future Prediction</b></h5>
         </div>
     </div>
-    <!-- <div class="row">
-        <div class="col-md-2">
-            <select [(ngModel)]="date" class="form-select" (change)="ComboDates()" class="form-control">
-                <option value="">Choose..</option>
-                <option value="1Week" selected>After 1 Week</option>
-                <option value="15days" selected>After 15 Days</option>
-                <option value="1Month" selected>After 1 Month</option>
-            </select>
-        </div> -->
     <div class="flex-row d-flex justify-content-between align-items-center col-md-10">
         <div class="col-sm"></div>
         <div class="col-sm">
@@ -363,6 +354,23 @@
 </div><br><br>
 
 <div *ngIf="ExecutorShow">
+    <!-- <div class="col-md-2">
+        <select [(ngModel)]="date" class="form-select" (change)="ComboDates()" class="form-control">
+            <option value="">Choose..</option>
+            <option value="1Day" selected>After 1 Day</option>
+            <option value="1Week" selected>After 1 Week</option>
+            <option value="15days" selected>After 15 Days</option>
+            <option value="1Month" selected>After 1 Month</option>
+        </select>
+    </div> -->
+
+    <div class="form-group col-sm-3">
+        <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
+            [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
+            <option value="">Select date</option>
+            <option *ngFor="let item of futurePredictionDatesToShow" [value]="item">{{item}}</option>
+        </select>
+    </div>
     <div class="bg-white p-3 rounded mt-4">
         <div class="row d-flex flex-column justify-content-between align-items-center">
             <div class="col-md-12">
@@ -387,7 +395,7 @@
                 <div class="graph w-100" id="my-first-chart"></div>
             </div>
         </div>
-    
+
     </div><br><br>
     <div class="col-md-4">
         <div class="d-block mt-4">
@@ -463,10 +471,10 @@
             </div>
         </div>
     </div><br>
-    
+
     <div class="card-body task-body">
         <div class="col-sm-12 p-0">
-            <h5>Tasks</h5>                       
+            <h5>Tasks</h5>
             <div class="table-responsive-sm bg-white p-2 mb-4">
                 <table class="table">
                     <thead>
@@ -498,7 +506,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="h-100 bg-white p-3">
-                    <h5>Risks</h5>  
+                    <h5>Risks</h5>
                     <h1 (click)="RiskTableback()"></h1>
                     <div class="row">
                         <div class="col-sm-6">
@@ -517,17 +525,17 @@
             </div>
             <div class="col-md-6" *ngIf="MitigatingActionshow">
                 <div class="bg-white p-3">
-                    <h5>Mitigating Actions</h5> 
+                    <h5>Mitigating Actions</h5>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div *ngFor="let obj of centrifugalmssmodelFilter;"> 
+                            <div *ngFor="let obj of centrifugalmssmodelFilter;">
                                 <div class="card" style="width: 30rem;"><br>
                                 <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">{{obj.MSSIntervalSelectionCriteria}} </strong><br>
                                 <div  *ngFor="let row of obj.centrifugalmssmodel;">
                                             <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Maintenance Task : {{row.MSSMaintenanceTask}} </strong><br>
-                                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br>         
+                                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br>
                                 </div>
-                            </div> <br>   
+                            </div> <br>
                             </div>
                         </div>
                     </div>
@@ -535,14 +543,14 @@
             </div>
         </div>
     </div><br>
-    
+
     <div>
         <div class="card" style="width:70rem;">
             <canvas id="profile_risk"></canvas>
         </div>
     </div><br>
-    
-    
+
+
     <div *ngIf="showcbi" id="CBAnavigate">
         <div class="bg-transparent mt-4">
             <div class="d-flex justify-content-between align-items-center">
@@ -584,10 +592,10 @@
             </div>
         </div> <br><br>
     </div>
-    
+
 </div>
 
-<div *ngIf="PrescriptiveShow"> 
+<div *ngIf="PrescriptiveShow">
     <div class="col d-flex justify-content-center">
     <div class="card" style="width: 30rem;">
         <div class="col-sm">
@@ -621,7 +629,7 @@
     <div *ngIf="assetselection">
     <div class="card-body task-body">
         <div class="col-sm-12 p-0">
-            <h5>Asset Functional Description </h5>                       
+            <h5>Asset Functional Description </h5>
             <div class="table-responsive-sm bg-white p-2 mb-4">
                 <table class="table">
                     <thead>
@@ -665,7 +673,28 @@
 
     <div class="card-body task-body">
         <div class="col-sm-12 p-0">
-            <h5>Health status</h5>                       
+            <h5>Health status</h5>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <select [(ngModel)]="Predictionstatus" class="form-select" (change)="PredictionstatusChange()" class="form-control">
+                    <option value="">Prediction..</option>
+                    <option value="1Week" selected>Previous 1 Week</option>
+                    <option value="1Month" selected>Previous 1 Month</option>
+                    <option value="3Month" selected>Previous 3 Month</option>
+                    <option value="1year" selected>Previous 1 Year</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select [(ngModel)]="Forcaststatus" class="form-select" (change)="ForcaststatusChange()" class="form-control">
+                    <option value="">Forcast..</option>
+                    <option value="1Week" selected>After 1 Week</option>
+                    <option value="1Month" selected>After 1 Month</option>
+                    <option value="3Month" selected>After 3 Month</option>
+                </select>
+            </div>
+        </div><br>
             <div class="table-responsive-sm bg-white p-2 mb-4">
                 <table class="table">
                     <thead>
@@ -690,7 +719,7 @@
                         <td>{{Normalpercentage}}</td>
                         <td>{{forcastFinalNormal}}</td>
 
-                        
+
                         </tr>
                         <tr>
                             <td>I- Incipient</td>
@@ -716,7 +745,7 @@
 
     <div class="card-body task-body">
         <div class="col-sm-12 p-0">
-            <h5>Alert management indicator</h5>                       
+            <h5>Alert management indicator</h5>
             <div class="table-responsive-sm bg-white p-2 mb-4">
                 <table class="table">
                     <thead>
@@ -753,7 +782,7 @@
                             <td>{{RecommendationAlertMessage}}</td>
                             <td>- </td>
                             <td>-</td>
-      
+
                         </tr>
                     </tbody>
                 </table>
@@ -763,7 +792,7 @@
 
     <div class="card-body task-body">
         <div class="col-sm-12 p-0">
-            <h5>PONC/ETBF</h5>                       
+            <h5>PONC/ETBF</h5>
             <div class="table-responsive-sm bg-white p-2 mb-4">
                 <table class="table">
                     <thead>
@@ -783,7 +812,7 @@
                             <td> {{obj.VendorETBC}}</td>
                             <td>{{obj.MEIWithoutDPM}} </td>
                             <td>{{obj.ResidualRiskWithOutDPM}}</td>
-                            <td>{{obj.EconomicRiskWithOutDPM}}</td> 
+                            <td>{{obj.EconomicRiskWithOutDPM}}</td>
                         </tr>
                         <tr *ngFor="let obj of allCBAdata;">
                             <td> DPM w/o mitigating constraints </td>
@@ -791,7 +820,7 @@
                             <td> {{obj.VendorETBC}}</td>
                             <td>{{obj.MEIWithDPM}} </td>
                             <td>{{obj.ResidualRiskWithDPM}}</td>
-                            <td>{{obj.EconomicRiskWithDPM}}</td> 
+                            <td>{{obj.EconomicRiskWithDPM}}</td>
                         </tr>
                         <tr *ngFor="let obj of allCBAdata;">
                             <td> DPM with constraint mitigation </td>
@@ -799,9 +828,10 @@
                             <td> {{obj.VendorETBC}}</td>
                             <td>{{obj.MEIWithDPMConstraint}} </td>
                             <td>{{obj.ResidualRiskWithConstraintDPMCR}}</td>
-                            <td>{{obj.EconomicRiskWithDPMConstraintCR}}</td>
+                            <td>-</td>
+                            <!-- {{obj.EconomicRiskWithDPMConstraintCR}} -->
                         </tr>
-                   
+
                     </tbody>
                 </table>
             </div>
@@ -810,7 +840,7 @@
 
     <div class="card-body task-body">
         <div class="col-sm-12 p-0">
-            <h5>Recommended Maintenance Prescription</h5>                       
+            <h5>Recommended Maintenance Prescription</h5>
             <div class="table-responsive-sm bg-white p-2 mb-4">
                 <table class="table">
                     <thead>
@@ -826,7 +856,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
+
                         <tr *ngFor="let obj of centrifugalmssmodel;">
                             <td> Good engineering practices </td>
                             <td >{{obj.MSSMaintenanceTask}} </td>
@@ -836,7 +866,7 @@
                             <td>{{obj.Craft}} </td>
                             <td>{{obj.Hours}} </td>
                             <td>{{obj.Level}} </td>
-                           
+
                         </tr>
                         <tr *ngFor="let obj of MSSTaskList;">
                             <td>RCM recommendation</td>
@@ -874,7 +904,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="h-100 bg-white p-3">
-                <h5>Risks</h5>  
+                <h5>Risks</h5>
                 <div class="row">
                     <div class="col-sm-6" *ngFor="let obj of fakeriskandMetigateActions">
                         <div class="card"><br>
@@ -892,17 +922,17 @@
         </div>
         <div class="col-md-6" *ngIf="MitigatingActionshow">
             <div class="bg-white p-3">
-                <h5>Mitigating Actions</h5> 
+                <h5>Mitigating Actions</h5>
                 <div class="row">
                     <div class="col-sm-6">
-                        <div *ngFor="let obj of centrifugalmssmodelFilter;"> 
+                        <div *ngFor="let obj of centrifugalmssmodelFilter;">
                             <div class="card" style="width: 30rem;"><br>
                             <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">{{obj.MSSIntervalSelectionCriteria}} </strong><br>
                             <div  *ngFor="let row of obj.centrifugalmssmodel;">
                                         <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Maintenance Task : {{row.MSSMaintenanceTask}} </strong><br>
-                                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br>         
+                                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br>
                             </div>
-                        </div> <br>   
+                        </div> <br>
                         </div>
                     </div>
                 </div>
