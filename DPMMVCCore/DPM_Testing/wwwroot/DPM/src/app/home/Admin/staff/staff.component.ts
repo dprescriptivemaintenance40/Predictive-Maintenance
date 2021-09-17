@@ -105,7 +105,7 @@ export class StaffComponent implements OnInit {
     }
     if (checkIsValid) {
       if (this.staffForm.value.Password.length >= 8) {
-            this.messageService.add({ severity: 'info', summary: 'info', detail: 'Enter correct Password' });   
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'correct Password' });   
       }
     } else {
       this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Please fill all mandatory fields' });
