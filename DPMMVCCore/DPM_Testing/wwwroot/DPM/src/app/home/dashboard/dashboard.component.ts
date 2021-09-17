@@ -713,7 +713,8 @@ export class DashboardComponent {
   onPredictionChangeYear() {
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); 
      this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString());
-    this.PredictionDegradecount = 0
+     this.combinationList=[];
+     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
     this.Predictionbadcount = 0
@@ -3072,6 +3073,7 @@ export class DashboardComponent {
       });
       LabelDatess.push(element.Predictyearname)
       LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+      this.Pyearlist.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     });
     this.Pyearlist.forEach(element => {
       this.Predictyearlist.forEach(value => {
@@ -3081,7 +3083,7 @@ export class DashboardComponent {
       this.combinationList.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     })
    
-    for (var i = 0; i < this.combinationList.length; ++i) {
+    for (var i = 0; i < this.Pyearlist.length; ++i) {
       var FPnormal = 0
       var FPincipient = 0
       var FPdegrade = 0
@@ -3117,9 +3119,7 @@ export class DashboardComponent {
       this.FPFinalIncipient.push(fperc_Incipient)
       this.FPFinaldDegrade.push(fperc_Degrade)
       this.FPFinalBad.push(fperc_Bad)
-
     }
-
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionbarWithYear", {
       type: "bar",
@@ -3881,7 +3881,7 @@ export class DashboardComponent {
     for (var i = 0; i < this.allCBAdata.length; i++) {
       this.ResidualRiskWithDPM = this.allCBAdata[i].ResidualRiskWithDPM
       this.ResidualRiskWithOutDPM = this.allCBAdata[i].ResidualRiskWithOutDPM
-      this.ResidualRiskWithConstraintDPMCR = this.allCBAdata[i].EconomicRiskWithDPMConstraintCR
+      this.ResidualRiskWithConstraintDPMCR = this.allCBAdata[i].ResidualRiskWithConstraintDPMCR
     }
   }
   public async getValue(r: string) {
