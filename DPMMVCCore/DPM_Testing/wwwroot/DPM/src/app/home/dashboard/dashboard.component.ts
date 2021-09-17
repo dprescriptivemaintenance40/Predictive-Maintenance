@@ -332,15 +332,20 @@ export class DashboardComponent {
   public forcastcounter: number = 0;
 
   public Predictionstatus: string = ""
+  public PredictionDatesList: any = [];
   public Forcaststatus: string = ""
   public assetselection:boolean=false;
   public dofuturePredictionDisabled: boolean = true;
+  public doPredictionDisabled: boolean = true;
   public futurePredictionList: any = [];
   public futurePredictionDatesList: any = [];
   public SelectedDateFromList: any = [];
   public futurePredictionDate: any = [];
+  public PredictionDate: any = [];
+  public PredictionDataTableList: any = [];
   public futurePredictionDataTableList: any = [];
-  public futurePredictionDatesToShow: any = ["After One Day", "After a week", "After 15 Days", "After 30 Days"];
+  public futurePredictionDatesToShow: any = ["After One Day", "After a week", "After 15 Days", "After 30 Days",];
+  public PredictionDatesToShow: any = ["Previous 1 week", "Previous 15 Days", "Previous 1 Month","Previous 3 Month","Previous 1 Year"];
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -381,41 +386,12 @@ export class DashboardComponent {
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'MH', 'FinancialRisk': 2000, 'TagNumber': 'K103' },
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'M', 'FinancialRisk': 2029, 'TagNumber': 'K104' },
   ]
-    this.prediction = [
-      { 'Date': '2020-08-08', 'TD1': 180.17,'FTD1':0},
-      { 'Date': '2020-08-09', 'TD1': 181.17,'FTD1':0},
-      { 'Date': '2020-08-10', 'TD1': 183.17,'FTD1':0},
-      { 'Date': '2020-08-11', 'TD1': 187.17,'FTD1':0},
-      { 'Date': '2020-08-12', 'TD1': 188.17,'FTD1':0},
-      { 'Date': '2020-08-13', 'TD1': 186.17,'FTD1':0},
-      { 'Date': '2020-08-14', 'TD1': 185.17,'FTD1':0},
-      { 'Date': '2020-08-15', 'TD1': 188.17,'FTD1':0},
-      { 'Date': '2020-08-16', 'TD1': 189.17,'FTD1':0},
-      { 'Date': '2020-08-17', 'TD1': 193.17,'FTD1':0},
-      { 'Date': '2020-08-18', 'TD1': 193.17,'FTD1':0},
-      { 'Date': '2020-08-19', 'TD1': 194.17,'FTD1':0},
-      { 'Date': '2020-08-20', 'TD1': 195.17,'FTD1':0},
-      { 'Date': '2020-08-21', 'TD1': 192.17,'FTD1':0},
-      { 'Date': '2020-08-22', 'TD1': 195.17,'FTD1':0},
-      { 'Date': '2020-08-23', 'TD1': 197.17,'FTD1':0},
-      { 'Date': '2020-08-24', 'TD1': 191.17,'FTD1':0},
-      { 'Date': '2020-08-25', 'TD1': 193.17,'FTD1':0},
-    ]
-    this.forcast = [
-      { 'FDate': '2020-08-19', 'fTD1': 194.17,},
-      { 'FDate': '2020-08-20', 'fTD1': 192.37,},
-      { 'FDate': '2020-08-21', 'fTD1': 197.37,},
-      { 'FDate': '2020-08-22', 'fTD1': 199.37,},
-      { 'FDate': '2020-08-23', 'fTD1': 199.37,},
-      { 'FDate': '2020-08-24', 'fTD1': 198.37,},
-      { 'FDate': '2020-08-25', 'fTD1': 199.37,},
-    ]
   }
 
   ngOnInit() {
     // this.fakePredictionWithTagNumber()
        // this.GerAllPredictionRecords();
-    this.showReport()
+    // this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
@@ -423,6 +399,7 @@ export class DashboardComponent {
     this.GetALLCBA()
     this.GerAllFutuerPredictionRecords()
     this.getFuturePredictionRecords()
+    this.GerAllPredictionRecords();
   }
 
 
@@ -500,7 +477,11 @@ export class DashboardComponent {
             } else {
               this.dofuturePredictionDisabled = false;
             }
-          },
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
         )
         this.dygraphForJson()
     } else if (this.futurePredictionDate == 'After a week') {
@@ -519,7 +500,11 @@ export class DashboardComponent {
             } else {
               this.dofuturePredictionDisabled = false;
             }
-          },
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Datesr', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
         )
         this.dygraphForJson()
     } else if (this.futurePredictionDate == 'After 15 Days') {
@@ -537,9 +522,13 @@ export class DashboardComponent {
             } else {
               this.dofuturePredictionDisabled = false;
             }
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
           }
         )
-
+        this.dygraphForJson()
     } else if (this.futurePredictionDate == 'After 30 Days') {
       this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
       const params4 = new HttpParams()
@@ -558,11 +547,10 @@ export class DashboardComponent {
             }
             this.commonLoadingDirective.showLoading(false, " ");
           }, err => {
-            this.messageService.add({ severity: 'warn', detail: 'Something went wrong please try again later', sticky: true });
-
-            this.commonLoadingDirective.showLoading(false, " ");
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
           }
         )
+        this.dygraphForJson()
     }
     else {
       this.futurePredictionDataTableList = [];
@@ -651,9 +639,9 @@ export class DashboardComponent {
     return false;
   }
 
-  showReport() {
-    let embedUrl = 'https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D';
-  }
+  // showReport() {
+  //   let embedUrl = 'https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D';
+  // }
 
   GetFilterRecords() {
     const params = new HttpParams()
@@ -682,8 +670,15 @@ export class DashboardComponent {
 
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.PredictionDataList)
       .subscribe(
-        res => {
+        (res: any) => {
           this.ScrewPredictionAllData = res;
+          var Dates: any = [];
+          if (res.length > 0) {
+            this.futurePredictionList.forEach(element => {
+              this.PredictionDatesList.push(this.datepipe.transform(element.Date, 'dd/MM/YYYY'));
+
+            });
+          }
           var Data: any = []
           Data = res;
           Data.sort((a, b) => (moment(a.InsertedDate) > moment(b.InsertedDate) ? 1 : -1));
@@ -887,6 +882,127 @@ export class DashboardComponent {
     this.PredictionWithActionPieChart()
   }
 
+  PredictionDates() {
+    if (this.PredictionDate == 'Previous 1 week') {
+      this.doPredictionDisabled = true;
+      var AfterDays = this.PredictionDatesList[0];
+      const params = new HttpParams()
+        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment((this.PredictionDatesList[0]), 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url: string = this.screwCompressorAPIName.getPredictiontRecords;
+      this.screwCompressorMethod.getWithParameters(url, params)
+        .subscribe(
+          res => {
+            this.PredictionDataTableList = null;
+            this.PredictionDataTableList = res;
+            if (this.PredictionDataTableList[0].length > 0) {
+              this.doPredictionDisabled = true;
+            } else {
+              this.doPredictionDisabled = false;
+            }
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
+        )
+
+    } else if (this.PredictionDate == 'Previous 15 Days') {
+
+      const params2 = new HttpParams()
+        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.PredictionDatesList[-14], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url2: string = this.screwCompressorAPIName.getPredictiontRecords;
+      this.screwCompressorMethod.getWithParameters(url2, params2)
+        .subscribe(
+          res => {
+            this.PredictionDataTableList = null;
+            this.PredictionDataTableList = res;
+            if (this.PredictionDataTableList[0].length > 0) {
+              this.doPredictionDisabled = true;
+            } else {
+              this.doPredictionDisabled = false;
+            }
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Datesr', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
+        )
+
+    } else if (this.PredictionDate == 'Previous 1 Month') {
+      const params3 = new HttpParams()
+        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.PredictionDatesList[-30], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url3: string = this.screwCompressorAPIName.getPredictiontRecords;
+      this.screwCompressorMethod.getWithParameters(url3, params3)
+        .subscribe(
+          res => {
+            this.PredictionDataTableList = null;
+            this.PredictionDataTableList = res;
+            if (this.PredictionDataTableList[0].length > 0) {
+              this.doPredictionDisabled = true;
+            } else {
+              this.doPredictionDisabled = false;
+            }
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+
+            this.commonLoadingDirective.showLoading(false, " ");
+          }
+        )
+
+    } else if (this.PredictionDate == 'Previous 3 Month') {
+      this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
+      const params4 = new HttpParams()
+        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.PredictionDatesList[-89], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url4: string = this.screwCompressorAPIName.getPredictiontRecords;
+      this.screwCompressorMethod.getWithParameters(url4, params4)
+        .subscribe(
+          res => {
+            this.PredictionDataTableList = null;
+            this.PredictionDataTableList = res;
+            if (this.PredictionDataTableList[0].length > 0) {
+              this.doPredictionDisabled = true;
+            } else {
+              this.doPredictionDisabled = false;
+            }
+            this.commonLoadingDirective.showLoading(false, " ");
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+          }
+        )
+
+    }
+    else if (this.PredictionDate == 'Previous 1 Year') {
+      this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
+      const params4 = new HttpParams()
+        .set('FromDate', moment(this.PredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(this.PredictionDatesList[-364], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      var url4: string = this.screwCompressorAPIName.getPredictiontRecords;
+      this.screwCompressorMethod.getWithParameters(url4, params4)
+        .subscribe(
+          res => {
+            this.PredictionDataTableList = null;
+            this.PredictionDataTableList = res;
+            if (this.PredictionDataTableList[0].length > 0) {
+              this.doPredictionDisabled = true;
+            } else {
+              this.doPredictionDisabled = false;
+            }
+            this.commonLoadingDirective.showLoading(false, " ");
+          }, err => {
+            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+          }
+        )
+
+    }
+    else {
+      this.PredictionDataTableList = [];
+
+    }
+  }
   GetAllRecords() {
     this.TrainDataNormalCount = null;
     this.TrainDataIncipientCount = null;
@@ -1804,9 +1920,6 @@ export class DashboardComponent {
       }
 
     });
- 
- 
-
     a.forEach(element => {
       if (element == 'normal') {
         this.PredictionNormalcount = this.PredictionNormalcount + 1;
@@ -1871,7 +1984,152 @@ export class DashboardComponent {
     });
 
   }
+//  PredictionAllRecordDonught() {
+//     this.changeDetectorRef.detectChanges();
+//     this.ScrewPredictionAllData.sort()
 
+//     var LabelDatess: any = [];
+//     this.Pyearlist.forEach(element => {
+//       LabelDatess = LabelDatess.filter(function (element) {
+//         return element !== undefined;
+//       });
+//       LabelDatess.push(element.Predictyearname)
+//       LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+//     });
+
+//     for (var i = 0; i < this.Pyearlist.length; ++i) {
+//       var FPnormal = 0
+//       var FPincipient = 0
+//       var FPdegrade = 0
+//       var FPbad = 0
+//       var counter = 0
+//       this.ScrewPredictionAllData.forEach(value => {
+//         var a = moment(value.InsertedDate).format('YYYY')
+//         if (a == this.Pyearlist[i].Predictyearname) {
+//           if (value.Prediction == 'normal') {
+//             FPnormal = FPnormal + 1
+//           } else if (value.Prediction == 'incipient') {
+//             FPincipient = FPincipient + 1
+//           } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+//             FPdegrade = FPdegrade + 1
+//           } else {
+//             FPbad = FPbad + 1
+//           }
+//           counter = counter + 1
+//         }
+
+//       });
+//       var fperc_Incipient
+//       var fperc_Normal
+//       var fperc_Degrade
+//       var fperc_Bad
+//       FPnormal = ((FPnormal / counter) * 100)
+//       FPincipient = ((FPincipient / counter) * 100)
+//       FPdegrade = ((FPdegrade / counter) * 100)
+//       FPbad = ((FPbad / counter) * 100)
+
+//       fperc_Incipient = FPnormal.toFixed()
+//       fperc_Normal = FPincipient.toFixed()
+//       fperc_Degrade = FPdegrade.toFixed()
+//       fperc_Bad = FPbad.toFixed()
+
+//       this.FPFinalNormal.push(fperc_Normal)
+//       this.FPFinalIncipient.push(fperc_Incipient)
+//       this.FPFinaldDegrade.push(fperc_Degrade)
+//       this.FPFinalBad.push(fperc_Bad)
+
+//     }
+
+//     this.changeDetectorRef.detectChanges();
+//     this.chart = new Chart("PredictioncanvasClass", {
+//       type: "bar",
+//       data: {
+//         labels: LabelDatess,
+//         fill: true,
+//         datasets: [
+//           {
+//             label: "Normal",
+//             data: this.FPFinalNormal,
+//             borderWidth: 1,
+//             borderColor: "#008000",
+//             backgroundColor: '#008000',
+//             fill: true,
+
+//           },
+//           {
+//             label: "Incipient",
+//             data: this.FPFinalIncipient,
+//             borderWidth: 1,
+//             borderColor: "#ffb801",
+//             backgroundColor: '#ffb801',
+//             fill: true,
+
+//           },
+//           {
+//             label: "Degrade",
+//             data: this.FPFinaldDegrade,
+//             borderWidth: 1,
+//             borderColor: "#fe4c61",
+//             backgroundColor: '#fe4c61',
+//             fill: true,
+
+//           },
+//           {
+//             label: "Bad",
+//             data: this.FPFinalBad,
+//             borderWidth: 1,
+//             borderColor: "blue",
+//             backgroundColor: 'blue',
+//             fill: true,
+//           },
+
+//         ],
+//       },
+//       options: {
+//         events: [],
+//         scales: {
+//           xAxes: [{
+//             stacked: true,
+//             gridLines: {
+//               display: false
+//             },
+//           }],
+//           yAxes: [
+//             {
+//               stacked: true,
+//               scaleLabel: {
+//                 display: true,
+//                 labelString: 'In_Percentage'
+//               },
+//               ticks: {
+//                 beginAtZero: true,
+//                 gridLines: {
+//                   display: false
+//                 },
+//               }
+//             }
+//           ]
+//         },
+//         "animation": {
+//           "duration": 1,
+//           "onComplete": function () {
+//             var chartInstance = this.chart,
+//               ctx = chartInstance.ctx;
+//             this.data.datasets.forEach(function (dataset, i) {
+//               var meta = chartInstance.controller.getDatasetMeta(i);
+//               meta.data.forEach(function (bar, index) {
+//                 var data = dataset.data[index];
+//                 if (data > 0) {
+//                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
+//                 }
+//               });
+//             });
+//           }
+//         },
+//       }
+
+//     });
+//   }
   // PredictionAllRecordBarcharts() {
   //   this.changeDetectorRef.detectChanges();
   //   if (this.state.PredictionNavigate == 1) {
@@ -2288,7 +2546,6 @@ export class DashboardComponent {
 
   PredictionOnClick() {
     this.changeDetectorRef.detectChanges();
-    // this.GerAllPredictionRecords();
     this.FuterPredictionShow = false;
     this.PredictionShow = true;
     this.FutuerselectedYear = ""
@@ -2494,15 +2751,10 @@ export class DashboardComponent {
 
   dygraph() {
     this.chart = new Dygraph(
-      // document.getElementById("graph"),"dist/DPM/assets/newDygraphForSensordata.csv",
-      // document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
-      // document.getElementById("graph"), "dist/DPM/assets/addforcastandprediction.csv",
-      //  document.getElementById("graph"), "dist/DPM/assets/sensor200dataforDydraph.csv",
       document.getElementById("graph"), "dist/DPM/assets/dygraph2018-19.csv",
       {
         visibility: [true, true, true,],
         colors: ['green', 'blue',],
-        // showLabelsOnHighlight: false,
         showRangeSelector: true,
         valueRange: [120],
         series: {
@@ -2645,9 +2897,7 @@ export class DashboardComponent {
 
   GetReportRecords() {
     const url: string = this.screwCompressorAPIName.getTrainList
-    // this.screwCompressorMethod.getWithoutParameters(url)
     this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
-      // this.http.get<any>("api/ScrewCompressureAPI")
       .subscribe(res => {
         this.classificationDetails = res;
         this.commonLoadingDirective.showLoading(false, '');
@@ -2672,7 +2922,6 @@ export class DashboardComponent {
 
     const url2: string = this.screwCompressorAPIName.getPredictedList;
     this.screwCompressorMethod.getWithoutParameters(url2)
-      //  this.http.get<any>('api/ScrewCompressureAPI/GetPrediction', this.headers)
       .subscribe(res => {
         this.screwWithPredictionDetails = res;
         if (this.screwWithPredictionDetails.length == 0) {
@@ -3372,9 +3621,6 @@ export class DashboardComponent {
               } else {
                   ctx.fillText(data, bar._model.x-25, bar._model.y+4);
               }
-                // if (data > 0) {
-                //    ctx.fillText(data, bar._model.x, bar._model.y + 4);
-                // }
               });
             });
           }
@@ -3570,9 +3816,6 @@ export class DashboardComponent {
               var meta = chartInstance.controller.getDatasetMeta(i);
               meta.data.forEach(function (bar, index) {
                 var data = dataset.data[index];
-                // if (data > 0) {
-                //   ctx.fillText(data, bar._model.x + 25 , bar._model.y + 5);
-                // }
                 if(i==0){
                   ctx.fillText(data, 50, bar._model.y+4);
               } else {
@@ -3926,58 +4169,6 @@ export class DashboardComponent {
  public predictions:any=[];
  public forcasts:any=[];
 dygraphForJson() {
-
-
-  //   this.predictions.forEach(element=>{
-  //     this.forcasts.forEach(val=>{
-  //        if(element.InsertedDate == val.Date){
-  //         element.Date
-  //         element.TD1
-  //         element.FTD1 = val.fTD1
-  //         }
-  //         if(element.FTD1==0){
-  //           element.FTD1=''
-  //         }
-  //     })
-  //   })
- 
-  // this.changeDetectorRef.detectChanges(); 
-  // this.prediction.forEach(element=>{
-  //   this.forcast.forEach(val=>{
-  //      if(element.Date == val.FDate){
-  //       element.Date
-  //       element.TD1
-  //       element.FTD1 = val.fTD1
-  //       }
-  //       if(element.FTD1==0){
-  //         element.FTD1=''
-  //       }
-  //   })
-  // })
-  // this.csvData = this.ConvertToCSV(this.predictions);
-  // this.chart = new Dygraph(
-  //   document.getElementById('my-first-chart'),
-  //   this.csvData,
-  //   {
-  //     //  visibility: [true, true, true,],
-  //     colors: ['green', 'blue',],
-  //     showRangeSelector: true,
-  //     valueRange: [120],
-  //     series: {
-  //       'TD1': {
-  //         strokePattern: null,
-  //         drawPoints: true,
-  //         pointSize: 1,
-  //       },
-  //       'FTD1': {
-  //         strokePattern: Dygraph.DASHED_LINE,
-  //         strokeWidth: 2.6,
-  //         drawPoints: true,
-  //         pointSize: 3.5,
-  //       },
-  //     }
-  //   })
-
     this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
       this.predictions = res;
       this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetForcastRecordsInCSVFormat").subscribe((res: any) => {
@@ -4045,231 +4236,6 @@ ConvertToCSV(objArray) {
   }
   return str;
 }
-
-//  PredictionAllRecordDonught() {
-//     this.changeDetectorRef.detectChanges();
-//     this.ScrewPredictionAllData.sort()
-
-//     var LabelDatess: any = [];
-//     this.Pyearlist.forEach(element => {
-//       LabelDatess = LabelDatess.filter(function (element) {
-//         return element !== undefined;
-//       });
-//       LabelDatess.push(element.Predictyearname)
-//       LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-//     });
-
-//     for (var i = 0; i < this.Pyearlist.length; ++i) {
-//       var FPnormal = 0
-//       var FPincipient = 0
-//       var FPdegrade = 0
-//       var FPbad = 0
-//       var counter = 0
-//       this.ScrewPredictionAllData.forEach(value => {
-//         var a = moment(value.InsertedDate).format('YYYY')
-//         if (a == this.Pyearlist[i].Predictyearname) {
-//           if (value.Prediction == 'normal') {
-//             FPnormal = FPnormal + 1
-//           } else if (value.Prediction == 'incipient') {
-//             FPincipient = FPincipient + 1
-//           } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
-//             FPdegrade = FPdegrade + 1
-//           } else {
-//             FPbad = FPbad + 1
-//           }
-//           counter = counter + 1
-//         }
-
-//       });
-//       var fperc_Incipient
-//       var fperc_Normal
-//       var fperc_Degrade
-//       var fperc_Bad
-//       FPnormal = ((FPnormal / counter) * 100)
-//       FPincipient = ((FPincipient / counter) * 100)
-//       FPdegrade = ((FPdegrade / counter) * 100)
-//       FPbad = ((FPbad / counter) * 100)
-
-//       fperc_Incipient = FPnormal.toFixed()
-//       fperc_Normal = FPincipient.toFixed()
-//       fperc_Degrade = FPdegrade.toFixed()
-//       fperc_Bad = FPbad.toFixed()
-
-//       this.FPFinalNormal.push(fperc_Normal)
-//       this.FPFinalIncipient.push(fperc_Incipient)
-//       this.FPFinaldDegrade.push(fperc_Degrade)
-//       this.FPFinalBad.push(fperc_Bad)
-
-//     }
-
-//     this.changeDetectorRef.detectChanges();
-//     this.chart = new Chart("PredictioncanvasClass", {
-//       type: "bar",
-//       data: {
-//         labels: LabelDatess,
-//         fill: true,
-//         datasets: [
-//           {
-//             label: "Normal",
-//             data: this.FPFinalNormal,
-//             borderWidth: 1,
-//             borderColor: "#008000",
-//             backgroundColor: '#008000',
-//             fill: true,
-
-//           },
-//           {
-//             label: "Incipient",
-//             data: this.FPFinalIncipient,
-//             borderWidth: 1,
-//             borderColor: "#ffb801",
-//             backgroundColor: '#ffb801',
-//             fill: true,
-
-//           },
-//           {
-//             label: "Degrade",
-//             data: this.FPFinaldDegrade,
-//             borderWidth: 1,
-//             borderColor: "#fe4c61",
-//             backgroundColor: '#fe4c61',
-//             fill: true,
-
-//           },
-//           {
-//             label: "Bad",
-//             data: this.FPFinalBad,
-//             borderWidth: 1,
-//             borderColor: "blue",
-//             backgroundColor: 'blue',
-//             fill: true,
-//           },
-
-//         ],
-//       },
-//       options: {
-//         events: [],
-//         scales: {
-//           xAxes: [{
-//             stacked: true,
-//             gridLines: {
-//               display: false
-//             },
-//           }],
-//           yAxes: [
-//             {
-//               stacked: true,
-//               scaleLabel: {
-//                 display: true,
-//                 labelString: 'In_Percentage'
-//               },
-//               ticks: {
-//                 beginAtZero: true,
-//                 gridLines: {
-//                   display: false
-//                 },
-//               }
-//             }
-//           ]
-//         },
-//         "animation": {
-//           "duration": 1,
-//           "onComplete": function () {
-//             var chartInstance = this.chart,
-//               ctx = chartInstance.ctx;
-//             this.data.datasets.forEach(function (dataset, i) {
-//               var meta = chartInstance.controller.getDatasetMeta(i);
-//               meta.data.forEach(function (bar, index) {
-//                 var data = dataset.data[index];
-//                 if (data > 0) {
-//                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
-//                 }
-//               });
-//             });
-//           }
-//         },
-//       }
-
-//     });
-//   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// dygraph2() {
-//     this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-//          var prediction = res;
-//           var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
-//       this.screwCompressorMethod.getWithoutParameters(url)
-//         .subscribe(
-//           (res: any) => {
-//             var futureData = res
-//            prediction.forEach(element => {
-//           });
-//            this.csvData = this.ConvertToCSV(prediction);
-//            this.chart = new Dygraph(
-//             document.getElementById("graph"),this.csvData,
-//             {
-//               colors: ['green','green', 'green',],
-//               visibility: [true, true, false,],
-//               showRangeSelector: true,
-//               fillGraph:true,
-//               fillAlpha: 0.1,
-//               connectSeparatedPoints: false,
-//               drawPoints: true,
-//               strokeWidth: 1.5,
-//               stepPlot: false,
-//               errorbar: true,
-//               drawXGrid: true,
-//               valueRange: [150,250],
-//               includeZero: false,
-//               drawAxesAtZero: false,
-//               series: {
-//                 'TD1': {
-//                   strokePattern: null,
-//                   drawPoints: true,
-//                   pointSize: 2,
-//                 },
-//                 'FTD1': {
-//                   strokePattern: Dygraph.DASHED_LINE,
-//                   strokeWidth: 2.6,
-//                   drawPoints: true,
-//                   pointSize: 3.5
-//                 },
-//               },
-//             },
-//             )
-//         })}
-//     )
-//   }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

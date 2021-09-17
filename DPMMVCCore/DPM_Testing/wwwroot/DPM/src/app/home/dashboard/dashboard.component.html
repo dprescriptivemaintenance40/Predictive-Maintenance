@@ -327,6 +327,15 @@
 
 
 <div class="bg-white p-3 rounded mt-4">
+        <!-- <div class="col-md-2">
+        <select [(ngModel)]="date" class="form-select" (change)="ComboDates()" class="form-control">
+            <option value="">Choose..</option>
+            <option value="1Day" selected>After 1 Day</option>
+            <option value="1Week" selected>After 1 Week</option>
+            <option value="15days" selected>After 15 Days</option>
+            <option value="1Month" selected>After 1 Month</option>
+        </select>
+    </div> -->
     <div class="row d-flex flex-column justify-content-between align-items-center">
         <div class="col-md-12">
             <h5><b>Combination Of Prediction & Future Prediction</b></h5>
@@ -354,15 +363,12 @@
 </div><br><br>
 
 <div *ngIf="ExecutorShow">
-    <!-- <div class="col-md-2">
-        <select [(ngModel)]="date" class="form-select" (change)="ComboDates()" class="form-control">
-            <option value="">Choose..</option>
-            <option value="1Day" selected>After 1 Day</option>
-            <option value="1Week" selected>After 1 Week</option>
-            <option value="15days" selected>After 15 Days</option>
-            <option value="1Month" selected>After 1 Month</option>
-        </select>
-    </div> -->
+
+    <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="PredictionDates()"
+    [(ngModel)]="PredictionDate" class="form-control" name="Prediction">
+    <option value="">Select date</option>
+    <option *ngFor="let item of PredictionDatesToShow" [value]="item">{{item}}</option>
+</select>
 
     <div class="form-group col-sm-3">
         <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
@@ -687,12 +693,17 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select [(ngModel)]="Forcaststatus" class="form-select" (change)="ForcaststatusChange()" class="form-control">
+                <!-- <select [(ngModel)]="Forcaststatus" class="form-select" (change)="ForcaststatusChange()" class="form-control">
                     <option value="">Forcast..</option>
                     <option value="1Week" selected>After 1 Week</option>
                     <option value="1Month" selected>After 1 Month</option>
                     <option value="3Month" selected>After 3 Month</option>
-                </select>
+                </select> -->
+                <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="PredictionDates()"
+                [(ngModel)]="PredictionDate" class="form-control" name="Prediction">
+                <option value="">Select date</option>
+                <option *ngFor="let item of PredictionDatesToShow" [value]="item">{{item}}</option>
+            </select>
             </div>
         </div><br>
             <div class="table-responsive-sm bg-white p-2 mb-4">

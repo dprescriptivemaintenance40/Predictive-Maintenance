@@ -26,6 +26,8 @@ export class SCConstantsAPI{
   public GetAllRecords: string = '/ScrewCompressorTrainChartAPI/GetAllRecords'
   public getForcastRecords : string = '/ScrewCompressorFuturePredictionAPI/ForcastPredictionselection';
 
+  
+
   //#region  Dashboard ScrewCompressureAPI
 
   public ScrewTrainPreviousMonthList : string = '/ScrewCompressorTrainChartAPI/ScrewTrainPreviousMonth'
@@ -36,8 +38,9 @@ export class SCConstantsAPI{
     public ScrewPredictionPreviousMonthList : string = '/ScrewCompressorPredictionChartAPI/ScrewPredictionPreviousMonth'
     public ScrewPredictionLastUploadList : string = '/ScrewCompressorPredictionChartAPI/ScrewPredictionLastUpload'
     public ScrewPredictionPreviousWeek : string = '/ScrewCompressorPredictionChartAPI/GetPredictionPreviousWeek'
-
+    public getPredictiontRecords : string = '/ScrewCompressureAPI/Predictionselection';
     public GetScrewCompressorForecastRecords : string = '/ScrewCompressorFuturePredictionAPI/GetForecast'
+  
  //#endregion
 
 

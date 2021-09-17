@@ -228,6 +228,34 @@ namespace DPM_Testing.Controllers
             }
 
         }
+        [HttpGet("{id}")]
+        [Route("Predictionselection")]
+        public async Task<IActionResult> GetForcastPredictionselection(string FromDate, string ToDate)
+        {
+
+            try
+            {
+
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                DateTime d = Convert.ToDateTime(FromDate);
+                DateTime predictionFromDate = d.Date;
+                DateTime d1 = Convert.ToDateTime(ToDate);
+                DateTime predictionToDate = d1.Date;
+
+                List<ScrewCompressorPredictionModel> screwCompressorPredictions = await _context.ScrewCompressurePredictionData
+                                                                 .Where(a => a.UserId == userId
+                                                                  && (a.InsertedDate >= predictionFromDate
+                                                                  && a.InsertedDate <= predictionToDate))
+                                                                 .ToListAsync();
+                var predictionData = screwCompressorPredictions.ToList();
+     
+                return Ok(predictionData);
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
         [HttpGet]
         [Route("GetPredictionRecordsInCSVFormat")]
         public async Task<IActionResult> GetPredictionRecordsInCSVFormat()
@@ -515,8 +543,8 @@ namespace DPM_Testing.Controllers
             }
         }
 
+   
 
-      
 
     }
 }
