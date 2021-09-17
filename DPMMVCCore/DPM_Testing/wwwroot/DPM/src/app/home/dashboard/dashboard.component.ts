@@ -301,6 +301,18 @@ export class DashboardComponent {
   public fakeriskandMetigateActions: any = [];
   public prediction: any = [];
   public forcast: any = [];
+  public allCBAdata:any=[]
+  public CBAOBJ : any ={};
+  public CBAdataForRisk:any=[]
+  public CompleteStatus: number = 0
+  public Ongoingstatus: number = 0
+  public Overduestatus: number = 0
+  public LevelCount:any=[]
+  public notifications = null
+  public MSSTaskList:any=[]
+  public ConstraintTaskList:any=[]
+  public EconomicRiskWithOutDPMCR: string = "";
+  public EconomicRiskWithDPMConstraintCR: string = "";
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -625,7 +637,7 @@ export class DashboardComponent {
             this.PTagNumberList.push(Predictyeardata);
           })
           this.Predictyearlist = this.PTagNumberList.reduce((m, o) => {
-            var found = m.find(s => s.PredictTagId === o.PredictyTagnumber);
+            var found = m.find(s => s.PredictyTagnumber === o.PredictyTagnumber);
             if (found) {
             } else {
               m.push(o);
@@ -663,7 +675,7 @@ export class DashboardComponent {
           // this.PredictionAllRecordBarcharts();
            this.PredictionAllRecordPie();
           this.GenerateReport()
-          this.PredictionWithTagNumber()
+          // this.PredictionWithTagNumber()
           this.PredictionWithTagNumber1()
           this.PredictionWithActionPieChart()
           this.IndicationGraphSSRB()
@@ -685,9 +697,10 @@ export class DashboardComponent {
     },
       []);
   }
-
+  public selctedtagnymbers: string = "";
   onPredictionChangeYear() {
-     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
+    //  this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
+    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString());
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -710,13 +723,15 @@ export class DashboardComponent {
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber1()
-    this.PredictionWithTagNumber()
+    // this.PredictionWithTagNumber()
     this.PredictionWithActionPieChart()
   }
 
   PredictFModeType() {
-      // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString());
+      // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
+    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString()); //for tag numbers
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (`${moment(val.InsertedDate).format('YYYY')}-${val.TagNumber}`) === this.PredictionselectedYear.toString());
+    this.combinationList=[]
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -737,7 +752,7 @@ export class DashboardComponent {
   //  this.PredictionAllRecordPie()
     this.PredictiongraphShow = true;
     this.PredictiongraphShow1 = true;
-    this.PredictionWithTagNumber()
+    // this.PredictionWithTagNumber()
      this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
   }
@@ -3205,158 +3220,159 @@ export class DashboardComponent {
   public  tagnumbers:any =[]
   public  tag:any =[]
 
-  PredictionWithTagNumber() {
-    var a: any = [];
-    this.PredictionNormalcount = 0,
-      this.PredictionIncipientcount = 0,
-      this.PredictionDegradecount = 0;
-    let tagnumberlist = []
+  // PredictionWithTagNumber() {
+  //   var a: any = [];
+  //   this.PredictionNormalcount = 0,
+  //     this.PredictionIncipientcount = 0,
+  //     this.PredictionDegradecount = 0;
+  //   let tagnumberlist = []
  
-    const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
-    this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
-    this.PTagNumberList =   this.PTagNumberList.filter(r => r.TagNumber !== null)
+  //   const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
+  //   this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
+  //   this.PTagNumberList =   this.PTagNumberList.filter(r => r.TagNumber !== null)
   
-    this.PTagNumberList.forEach(element=>{
-      this.tagnumbers.push(element.TagNumber) 
-    })
+  //   this.PTagNumberList.forEach(element=>{
+  //     this.tagnumbers.push(element.TagNumber) 
+  //   })
 
-    this.ScrewPredictionAllData.forEach(element => {
-      if (this.fmtype != "") {
-        if (this.fmtype == "SSRB") {
-          a.push(element.SSRB)
-        } else if (this.fmtype == "CF") {
-          a.push(element.CF)
-        } if (this.fmtype == "RD") {
-          a.push(element.RD)
-        }
-      } else {
-        a.push(element.Prediction)
-      }
-    });
-    var Degradepercentage
-    var Incipientpercentage
-    var Normalpercentage
-    var Badpercentage
-    a.forEach(element => {
-      if (element == 'normal') {
-        this.PredictionNormalcount = this.PredictionNormalcount + 1;
-      } else if (element == 'incipient') {
-        this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-      } else if (element == 'degrade' || element == 'degarde') {
-        this.PredictionDegradecount = this.PredictionDegradecount + 1;
-      } else if (element == 'bad') {
-        this.Predictionbadcount = this.Predictionbadcount + 1
-      }
-    });
+  //   this.ScrewPredictionAllData.forEach(element => {
+  //     if (this.fmtype != "") {
+  //       if (this.fmtype == "SSRB") {
+  //         a.push(element.SSRB)
+  //       } else if (this.fmtype == "CF") {
+  //         a.push(element.CF)
+  //       } if (this.fmtype == "RD") {
+  //         a.push(element.RD)
+  //       }
+  //     } else {
+  //       a.push(element.Prediction)
+  //     }
+  //   });
+  //   var Degradepercentage
+  //   var Incipientpercentage
+  //   var Normalpercentage
+  //   var Badpercentage
+  //   a.forEach(element => {
+  //     if (element == 'normal') {
+  //       this.PredictionNormalcount = this.PredictionNormalcount + 1;
+  //     } else if (element == 'incipient') {
+  //       this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+  //     } else if (element == 'degrade' || element == 'degarde') {
+  //       this.PredictionDegradecount = this.PredictionDegradecount + 1;
+  //     } else if (element == 'bad') {
+  //       this.Predictionbadcount = this.Predictionbadcount + 1
+  //     }
+  //   });
 
     
-    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
-    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
-    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
-    Badpercentage = ((this.Predictionbadcount / a.length) * 100).toFixed(2);
+  //   Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
+  //   Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
+  //   Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+  //   Badpercentage = ((this.Predictionbadcount / a.length) * 100).toFixed(2);
 
-    this.predictionDegradeMessage = Degradepercentage
-    this.predictionIncipientMessage = Incipientpercentage
-    this.predictionNormalMessage = Normalpercentage
+  //   this.predictionDegradeMessage = Degradepercentage
+  //   this.predictionIncipientMessage = Incipientpercentage
+  //   this.predictionNormalMessage = Normalpercentage
 
 
-    this.changeDetectorRef.detectChanges();
-    this.chart = new Chart("PredictionbarWithTage", {
-      type: "bar",
-      data: {
-        labels: this.tagnumbers,
-        fill: true,
-        datasets: [
-          {
-            label: "Normal",
-            data: [Normalpercentage],
-            borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
-            fill: true,
+  //   this.changeDetectorRef.detectChanges();
+  //   this.chart = new Chart("PredictionbarWithTage", {
+  //     type: "bar",
+  //     data: {
+  //       labels: this.tagnumbers,
+  //       fill: true,
+  //       datasets: [
+  //         {
+  //           label: "Normal",
+  //           data: [Normalpercentage],
+  //           borderWidth: 1,
+  //           borderColor: "#008000",
+  //           backgroundColor: '#008000',
+  //           fill: true,
 
-          },
-          {
-            label: "Incipient",
-            data: [Incipientpercentage],
-            borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
-            fill: true,
+  //         },
+  //         {
+  //           label: "Incipient",
+  //           data: [Incipientpercentage],
+  //           borderWidth: 1,
+  //           borderColor: "#ffb801",
+  //           backgroundColor: '#ffb801',
+  //           fill: true,
 
-          },
-          {
-            label: "Degrade",
-            data: [Degradepercentage],
-            borderWidth: 1,
-            borderColor: "#fe4c61",
-            backgroundColor: '#fe4c61',
-            fill: true,
+  //         },
+  //         {
+  //           label: "Degrade",
+  //           data: [Degradepercentage],
+  //           borderWidth: 1,
+  //           borderColor: "#fe4c61",
+  //           backgroundColor: '#fe4c61',
+  //           fill: true,
 
-          },
-          {
-            label: "Bad",
-            data: Badpercentage,
-            borderWidth: 1,
-            borderColor: "blue",
-            backgroundColor: 'blue',
-            fill: true,
-          },
+  //         },
+  //         {
+  //           label: "Bad",
+  //           data: Badpercentage,
+  //           borderWidth: 1,
+  //           borderColor: "blue",
+  //           backgroundColor: 'blue',
+  //           fill: true,
+  //         },
 
-        ],
-      },
-      options: {
-        // events: [], 
-        tooltips: {
-          mode: 'index',
-        },
-        scales: {
-          xAxes: [{
-            stacked: true,
-            barPercentage: 0.2,
-            scaleLabel: {
-              display: true,
-              labelString: 'Tag Numbers'
-            },
-            gridLines: {
-              display: false
-            },
-          }],
-          yAxes: [{
-            stacked: true,
-            scaleLabel: {
-              display: true,
-              labelString: 'Percentage '
-            },
-            ticks: {
-            },
-            gridLines: {
-              display: false
-            },
-          }],
-          "animation": {
-            "duration": 1,
-            "onComplete": function () {
-              var chartInstance = this.chart,
-                ctx = chartInstance.ctx;
-              this.data.datasets.forEach(function (dataset, i) {
-                var meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function (bar, index) {
-                  var data = dataset.data[index];
-                  if (data > 0) {
-                    ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                  }
-                });
-              });
-            }
-          },
-        }
-      }
-    });
-  }
+  //       ],
+  //     },
+  //     options: {
+  //       // events: [], 
+  //       tooltips: {
+  //         mode: 'index',
+  //       },
+  //       scales: {
+  //         xAxes: [{
+  //           stacked: true,
+  //           barPercentage: 0.2,
+  //           scaleLabel: {
+  //             display: true,
+  //             labelString: 'Tag Numbers'
+  //           },
+  //           gridLines: {
+  //             display: false
+  //           },
+  //         }],
+  //         yAxes: [{
+  //           stacked: true,
+  //           scaleLabel: {
+  //             display: true,
+  //             labelString: 'Percentage '
+  //           },
+  //           ticks: {
+  //           },
+  //           gridLines: {
+  //             display: false
+  //           },
+  //         }],
+  //         "animation": {
+  //           "duration": 1,
+  //           "onComplete": function () {
+  //             var chartInstance = this.chart,
+  //               ctx = chartInstance.ctx;
+  //             this.data.datasets.forEach(function (dataset, i) {
+  //               var meta = chartInstance.controller.getDatasetMeta(i);
+  //               meta.data.forEach(function (bar, index) {
+  //                 var data = dataset.data[index];
+  //                 if (data > 0) {
+  //                   ctx.fillText(data, bar._model.x, bar._model.y - 5);
+  //                 }
+  //               });
+  //             });
+  //           }
+  //         },
+  //       }
+  //     }
+  //   });
+  // }
   public combinationList:any = []
   PredictionWithTagNumber1() {
     this.changeDetectorRef.detectChanges();
+    this.combinationList=[];
     this.FPFinalNormal=[];
     this.FPFinalIncipient=[];
     this.FPFinaldDegrade=[];
@@ -3504,8 +3520,9 @@ export class DashboardComponent {
           }
         },
       }
-
+     
     });
+
   }
 
   PredictionWithActionPieChart() {
@@ -4153,19 +4170,6 @@ export class DashboardComponent {
   // }
 
 
-
-  public allCBAdata:any=[]
-  public CBAOBJ : any ={};
-  public CBAdataForRisk:any=[]
-  public CompleteStatus: number = 0
-  public Ongoingstatus: number = 0
-  public Overduestatus: number = 0
-  public LevelCount:any=[]
-  public notifications = null
-  public MSSTaskList:any=[]
-  public ConstraintTaskList:any=[]
-  public EconomicRiskWithOutDPMCR: string = "";
-  public EconomicRiskWithDPMConstraintCR: string = "";
    GetALLCBA(){
     const params = new HttpParams()
     .set('UserId',this.userModel.UserId)

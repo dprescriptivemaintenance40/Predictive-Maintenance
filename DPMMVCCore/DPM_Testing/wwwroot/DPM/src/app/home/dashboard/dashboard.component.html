@@ -391,47 +391,46 @@
     </div><br><br>
     <div class="col-md-4">
         <div class="d-block mt-4">
-            <!-- <div class="bg-white rounded p-3 br-3 mb-4">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="">
-                            <select [(ngModel)]="fmtype" class="form-select" (change)="PredictFModeType()" class="form-control">
-                                <option value="" selected>Select Failure Mode</option>
-                                <option value="SSRB" selected>Second stage rotar breakdown</option>
-                                <option value="CF" selected>Cooler Failure</option>
-                                <option value="RD">Rotar Damage</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="">
-                            <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
-                                (ngModelChange)="PredictFModeType()" class="form-control">
-                                <option value="">Select Tag Number</option>
-                                <ng-container *ngFor="let year of Predictyearlist">
-                                    <option [value]="year.PredictyTagnumber" name="PredictionselectedYear">
-                                        {{year.PredictyTagnumber}}</option>
-                                </ng-container>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="">
-                            <select name="combinationList" [(ngModel)]="combinationList"
-                                (ngModelChange)="PredictFModeType()" class="form-control">
-                                <option value="">Select Year</option>
-                                <ng-container *ngFor="let years of combinationList">
-                                    <option [value]="years" name="combinationList">
-                                        {{years}}</option>
-                                </ng-container>
-                            </select>
-                        </div>
-                    </div>
+            <div class="row">
+            <div class="col-md-4">
+                <div class="">
+                    <select name="PredictionselectedYear" [(ngModel)]="selctedtagnymbers"
+                        (ngModelChange)="onPredictionChangeYear()" class="form-control">
+                        <option value="">Select Tag Number</option>
+                        <ng-container *ngFor="let tagnumber of Predictyearlist">
+                            <option [value]="tagnumber.PredictyTagnumber" name="PredictionselectedYear">
+                                {{tagnumber.PredictyTagnumber}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="col-md-4">
+                <div class="">
+                    <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
+                        (ngModelChange)="PredictFModeType()" class="form-control">
+                        <option value="">Select Year</option>
+                        <ng-container *ngFor="let year of Pyearlist">
+                            <option [value]="year.Predictyearname" name="PredictionselectedYear">
+                                {{year.Predictyearname}}</option>
+                        </ng-container>
+                    </select>
                 </div>
             </div> -->
+            <div class="col-md-4">
+                <div class="">
+                    <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
+                        (ngModelChange)="PredictFModeType()" class="form-control">
+                        <option value="">Select Year</option>
+                        <ng-container *ngFor="let years of combinationList">
+                            <option [value]="years" name="PredictionselectedYear">
+                                {{years}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
-    
+    </div>
     <div class="card bg-transparent border-0">
         <div class="d-block mt-4">
             <!-- <div class="col-md-12 mt-4">
