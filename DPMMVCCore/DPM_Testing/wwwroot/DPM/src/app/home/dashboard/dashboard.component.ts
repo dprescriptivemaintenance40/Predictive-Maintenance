@@ -399,6 +399,20 @@ export class DashboardComponent {
     this.GetALLCBA()
     this.GerAllFutuerPredictionRecords()
     this.getFuturePredictionRecords()
+    this.getPredictedListRecordsByDate()
+  }
+
+  public screwWithPrediction: any = [];
+  getPredictedListRecordsByDate() {
+    const params = new HttpParams()
+      .set('FromDate', this.FromDate)
+      .set('ToDate', this.ToDate)
+    this.screwCompressorMethod.getWithParameters(this.screwCompressorAPIName.getPredictedListByDate, params)
+      .subscribe(
+        (res: any) => {
+          this.screwWithPrediction = res;
+        }, err => { console.log(err.error) }
+      )
   }
 
 
@@ -448,12 +462,8 @@ export class DashboardComponent {
           if (res.length > 0) {
             this.futurePredictionList.forEach(element => {
               this.futurePredictionDatesList.push(this.datepipe.transform(element.Date, 'dd/MM/YYYY'));
-
             });
           }
-          var abc = this.futurePredictionDatesList[14];
-          var pqr = moment(abc, 'dd MM YYYY').add(5, 'days')
-          console.log(pqr);
         }
       )
   }
@@ -461,101 +471,85 @@ export class DashboardComponent {
   FuturePredictionDates() {
     if (this.futurePredictionDate == 'After One Day') {
       this.dofuturePredictionDisabled = true;
-      var AfterDays = this.futurePredictionDatesList[0];
+      var fromDays = this.futurePredictionDatesList[0];
+      var toDays = this.futurePredictionDatesList[0]
       const params = new HttpParams()
-        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+        .set('FromDate', moment(fromDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(toDays, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url: string = this.screwCompressorAPIName.getForcastRecords;
       this.screwCompressorMethod.getWithParameters(url, params)
         .subscribe(
           res => {
             this.futurePredictionDataTableList = null;
             this.futurePredictionDataTableList = res;
-            if (this.futurePredictionDataTableList[0].length > 0) {
-              this.dofuturePredictionDisabled = true;
-            } else {
-              this.dofuturePredictionDisabled = false;
-            }
+            this.dygraphForJson()
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-
-            this.commonLoadingDirective.showLoading(false, " ");
           }
         )
-        this.dygraphForJson()
     } else if (this.futurePredictionDate == 'After a week') {
-
+      var fromDays = this.futurePredictionDatesList[0];
+      var toDays = this.futurePredictionDatesList[6];
       const params2 = new HttpParams()
-        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment(this.futurePredictionDatesList[6], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      
+        .set('FromDate', moment(fromDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(toDays, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url2: string = this.screwCompressorAPIName.getForcastRecords;
       this.screwCompressorMethod.getWithParameters(url2, params2)
         .subscribe(
           res => {
             this.futurePredictionDataTableList = null;
             this.futurePredictionDataTableList = res;
-            if (this.futurePredictionDataTableList[0].length > 0) {
-              this.dofuturePredictionDisabled = true;
-            } else {
-              this.dofuturePredictionDisabled = false;
-            }
+            this.dygraphForJson()
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Datesr', sticky: true });
-
-            this.commonLoadingDirective.showLoading(false, " ");
           }
         )
-        this.dygraphForJson()
+
     } else if (this.futurePredictionDate == 'After 15 Days') {
+      var fromDays = this.futurePredictionDatesList[0];
+      var toDays = this.futurePredictionDatesList[14]
       const params3 = new HttpParams()
-        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment(this.futurePredictionDatesList[14], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+        .set('FromDate', moment(fromDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(toDays, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url3: string = this.screwCompressorAPIName.getForcastRecords;
       this.screwCompressorMethod.getWithParameters(url3, params3)
         .subscribe(
           res => {
             this.futurePredictionDataTableList = null;
             this.futurePredictionDataTableList = res;
-            if (this.futurePredictionDataTableList[0].length > 0) {
-              this.dofuturePredictionDisabled = true;
-            } else {
-              this.dofuturePredictionDisabled = false;
-            }
+            this.dygraphForJson()
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-
-            this.commonLoadingDirective.showLoading(false, " ");
           }
         )
-        this.dygraphForJson()
+ 
     } else if (this.futurePredictionDate == 'After 30 Days') {
-      this.commonLoadingDirective.showLoading(true, "Fetching Records...  ");
+      var fromDays = this.futurePredictionDatesList[0];
+      var toDays = this.futurePredictionDatesList[29]
       const params4 = new HttpParams()
-        .set('FromDate', moment(this.futurePredictionDatesList[0], 'DD/MM/YYYY').format('YYYY-MM-DD'))
-        .set('ToDate', moment(this.futurePredictionDatesList[this.futurePredictionDatesList.length - 1], 'DD/MM/YYYY').format('YYYY-MM-DD'));
+        .set('FromDate', moment(fromDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('ToDate', moment(toDays, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url4: string = this.screwCompressorAPIName.getForcastRecords;
       this.screwCompressorMethod.getWithParameters(url4, params4)
         .subscribe(
           res => {
             this.futurePredictionDataTableList = null;
             this.futurePredictionDataTableList = res;
-            if (this.futurePredictionDataTableList[0].length > 0) {
-              this.dofuturePredictionDisabled = true;
-            } else {
-              this.dofuturePredictionDisabled = false;
-            }
-            this.commonLoadingDirective.showLoading(false, " ");
+            this.dygraphForJson()
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
           }
         )
-        this.dygraphForJson()
+
     }
     else {
       this.futurePredictionDataTableList = [];
-
     }
   }
+
+
+
 
   FullCBAObject() {
     // this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
@@ -4234,6 +4228,7 @@ export class DashboardComponent {
 }
  public predictions:any=[];
  public forcasts:any=[];
+ public forcastPredictionDatesList:any=[];
 dygraphForJson() {
     this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
       this.predictions = res;

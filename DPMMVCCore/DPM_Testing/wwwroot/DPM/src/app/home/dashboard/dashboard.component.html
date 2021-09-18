@@ -336,6 +336,7 @@
             <option value="1Month" selected>After 1 Month</option>
         </select>
     </div> -->
+
     <div class="row d-flex flex-column justify-content-between align-items-center">
         <div class="col-md-12">
             <h5><b>Combination Of Prediction & Future Prediction</b></h5>
@@ -363,10 +364,24 @@
 </div><br><br>
 
 <div *ngIf="ExecutorShow">
+    <!-- <div class ="row">
+        <div class="col-sm-3">
+            <label>Prediction From  :</label>
+            <input type="date" [(ngModel)]="FromDate" class="form-control" id="FromDate">
+        </div>
+        <div class="col-sm-3">
+            <label>Prediction To  :</label>
+            <input type="date" [(ngModel)]="ToDate" class="form-control" id="ToDate">
+        </div>
+        <div class="col-sm-3">
+            <button type="button" (click)="getPredictedListRecordsByDate()" class="btn btn-primary mt-4">Show</button>
+        </div>
+        <div class="col-sm-3"></div>
+    </div> -->
     <div class="form-group col-sm-3">
         <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
             [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
-            <option value="">Forcast date</option>
+            <option value="">Forcast dates</option>
             <option *ngFor="let item of futurePredictionDatesToShow" [value]="item">{{item}}</option>
         </select>
     </div>
