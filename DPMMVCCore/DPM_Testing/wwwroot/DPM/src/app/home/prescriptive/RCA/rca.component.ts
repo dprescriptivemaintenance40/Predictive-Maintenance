@@ -7,11 +7,9 @@ import { PrescriptiveContantAPI } from "../Shared/prescriptive.constant";
 import { ChangeDetectorRef } from "@angular/core";
 import { HttpParams } from "@angular/common/http";
 import { ConfirmationService } from 'primeng/api';
-import panzoom from 'panzoom';
 import * as moment from 'moment';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { PDFDocument } from 'pdf-lib';
 import domtoimage from 'dom-to-image';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
@@ -113,20 +111,21 @@ export class RCAComponent {
     public RCAUpdateUploadData: any;
     public UpdateRCATypeList: any;
     public UpdateRCATypeSelected: string = "";
-    public RCAQualitativeReport : boolean = false;
-    public RCAQuantitativeReport : boolean = false;
-    public RCAReportType : string = "";
-    public RCAReportTypeList : any = [];
-    public RCAQualitativeFailureModelist : any =[];
+    public RCAQualitativeReport: boolean = false;
+    public RCAQuantitativeReport: boolean = false;
+    public RCAReportType: string = "";
+    public RCAReportTypeList: any = [];
+    public RCAQualitativeFailureModelist: any = [];
+    public LoginDetails: any;
     constructor(private messageService: MessageService,
         public commonLoadingDirective: CommonLoadingDirective,
         private changeDetectorRef: ChangeDetectorRef,
-        private sanitizer: DomSanitizer,
         public router: Router,
         private confirmationService: ConfirmationService,
         private commonBL: CommonBLService,
-        private RCAAPIName: PrescriptiveContantAPI,
-    ) { }
+        private RCAAPIName: PrescriptiveContantAPI,) {
+        this.LoginDetails = JSON.parse(localStorage.getItem('userObject'));
+    }
     ngOnInit() {
         this.addStartup();
         this.getRecordsList();
@@ -180,13 +179,20 @@ export class RCAComponent {
     }
 
     getRecordsList() {
-        this.commonBL.getWithoutParameters(this.RCAAPIName.RCAGetAPI)
+        const params = new HttpParams()
+            .set("userId", this.LoginDetails.UserId)
+            .set("isQuantitive", "false")
+        this.commonBL.getWithParameters(this.RCAAPIName.RCAGetAPI, params)
             .subscribe(
                 (res: any) => {
                     this.RCAListRecords = []
                     this.UpdateTagNumberList = []
                     this.RCAListRecords = res
                     this.RCAListRecords.forEach(element => {
+                        if (element.RCAQuantitiveFailureMode !== 'None') {
+                            let RCAQuantitiveTree = JSON.parse(element.RCAQuantitiveTree);
+                            element.Availability = RCAQuantitiveTree[0].Availability;
+                        }
                         this.UpdateTagNumberList.push(element)
                     });
                 }, err => { console.log(err.error) }
@@ -427,7 +433,7 @@ export class RCAComponent {
             this.ADDRCAForSaveNodeCount = 0;
             await this.TraverseNestedJson(this.files, 'count')
             if (this.ADDRCAMachineType.length > 0 && this.ADDRCAFailureMode.length > 0) {
-                 this.TraverseNestedJson(this.files, 'add')
+                this.TraverseNestedJson(this.files, 'add')
 
             } else {
                 this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Fill all details' })
@@ -438,9 +444,9 @@ export class RCAComponent {
     }
 
     async DeleteRCARecord(p) {
-        if(p.RCAQualitativeTree != 'None'){
+        if (p.RCAQualitativeTree != 'None') {
             var j = JSON.parse(p.RCAQualitativeTree)
-            await this.TraverseNestedJson(j, 'delete')   
+            await this.TraverseNestedJson(j, 'delete')
         }
         const params = new HttpParams()
             .set('id', p.RCAID)
@@ -494,7 +500,7 @@ export class RCAComponent {
                         }
                     }
                     this.UpdateRecordList.push(element)
-                    this.andOrLogicTreeFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode; 
+                    this.andOrLogicTreeFailureMode = this.UpdateRecordList[0].RCAQuantitiveFailureMode;
                     this.ADDRCAFailureMode = element.RCAQualitativeFailureMode;
                     this.ADDRCAMachineType = element.RCAQualitativeEquipment;
                 }
@@ -537,91 +543,91 @@ export class RCAComponent {
     }
 
     UpdateRCA() {
-        if(this.UpdateRCATypeQualititive === true){
+        if (this.UpdateRCATypeQualititive === true) {
             this.UpdateRCADataForSaveAuth[0].label = this.Updatefiles[0].label
             var Data = this.UpdateRCADataForSaveAuth.find(f => f['label'] === '');
-          //  var RCAFILE = this.UpdateRCADataForSaveAuth.find(f => f['RCAFILE'] === '');
+            //  var RCAFILE = this.UpdateRCADataForSaveAuth.find(f => f['RCAFILE'] === '');
             if (Data !== undefined) {
                 this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please fill data to all nodes' });
-    
-            } 
+
+            }
             //else if (RCAFILE !== undefined) {
             //    this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'please add attachment to all nodes' });
-    
+
             //}
-             else if (Data == undefined) {
+            else if (Data == undefined) {
                 this.Updatefiles[0].update = JSON.stringify(this.UpdateRCADataForSaveAuth);
-                if(this.UpdateAttachmentBuffer !== [] || this.UpdateAttachmentBuffer !== undefined){
+                if (this.UpdateAttachmentBuffer !== [] || this.UpdateAttachmentBuffer !== undefined) {
                     this.UpdateAttachmentBuffer.forEach(element => {
                         const params1 = new HttpParams()
-                              .set('fullPath', element[0][0].dbPath)
-                         this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params1)
-                        .subscribe(
-                            res =>{}, err=>{ console.log(err.error)}
-                        ) 
+                            .set('fullPath', element[0][0].dbPath)
+                        this.commonBL.DeleteWithParam(this.RCAAPIName.RCAUpdateAttachment, params1)
+                            .subscribe(
+                                res => { }, err => { console.log(err.error) }
+                            )
                     });
                 }
-          }
+            }
         }
-        
-            var RCAQualitativeTree :string = "";
-            var RCAQuantitiveTree :string = "";
-            var RCAQualitativeEquipment :string = "";
-            var RCAQuantitiveEquipment :string = "";
-            var RCAQualitativeFailureMode :string = "";
-            var RCAQuantitiveFailureMode :string = "";
-            if(this.UpdateRCATypeQualititive === true ){
-                RCAQualitativeTree = JSON.stringify(this.Updatefiles);
-                RCAQuantitiveTree = this.UpdateSelectedLabel.RCAQuantitiveTree;
-                RCAQualitativeEquipment = this.UpdateRecordList[0].RCAQualitativeEquipment;
-                RCAQuantitiveEquipment = this.UpdateSelectedLabel.RCAQuantitiveEquipment;
-                RCAQualitativeFailureMode = this.UpdateRecordList[0].RCAQualitativeFailureMode;
-                RCAQuantitiveFailureMode = this.UpdateSelectedLabel.RCAQuantitiveFailureMode;
-            } else if (this.UpdateRCATypeQuantitive === true) {
-                RCAQualitativeTree = this.UpdateSelectedLabel.RCAQualitativeTree;
-                RCAQuantitiveTree  = JSON.stringify(this.RCAUpdateQuantitivefiles),
+
+        var RCAQualitativeTree: string = "";
+        var RCAQuantitiveTree: string = "";
+        var RCAQualitativeEquipment: string = "";
+        var RCAQuantitiveEquipment: string = "";
+        var RCAQualitativeFailureMode: string = "";
+        var RCAQuantitiveFailureMode: string = "";
+        if (this.UpdateRCATypeQualititive === true) {
+            RCAQualitativeTree = JSON.stringify(this.Updatefiles);
+            RCAQuantitiveTree = this.UpdateSelectedLabel.RCAQuantitiveTree;
+            RCAQualitativeEquipment = this.UpdateRecordList[0].RCAQualitativeEquipment;
+            RCAQuantitiveEquipment = this.UpdateSelectedLabel.RCAQuantitiveEquipment;
+            RCAQualitativeFailureMode = this.UpdateRecordList[0].RCAQualitativeFailureMode;
+            RCAQuantitiveFailureMode = this.UpdateSelectedLabel.RCAQuantitiveFailureMode;
+        } else if (this.UpdateRCATypeQuantitive === true) {
+            RCAQualitativeTree = this.UpdateSelectedLabel.RCAQualitativeTree;
+            RCAQuantitiveTree = JSON.stringify(this.RCAUpdateQuantitivefiles),
                 RCAQualitativeEquipment = this.UpdateSelectedLabel.RCAQualitativeEquipment;
-                RCAQuantitiveEquipment  = this.UpdateRecordList[0].RCAQuantitiveEquipment; 
-                RCAQualitativeFailureMode  = this.UpdateSelectedLabel.RCAQualitativeFailureMode;
-                RCAQuantitiveFailureMode = this.andOrLogicTreeFailureMode;  
-            }
-            let obj = {
-                RCAID: this.UpdateRecordList[0].RCAID,
-                UserId: "",
-                TagNumber: this.UpdateRecordList[0].TagNumber,
-                RCALabel: this.UpdateRecordList[0].RCALabel,
-                RCAQualitativeTree: RCAQualitativeTree,
-                RCAQuantitiveTree: RCAQuantitiveTree,
-                RCAQualitativeEquipment: this.ADDRCAMachineType,
-                RCAQuantitiveEquipment: RCAQuantitiveEquipment,
-                RCAQualitativeFailureMode: this.ADDRCAFailureMode,
-                RCAQuantitiveFailureMode: RCAQuantitiveFailureMode
-            }
-            this.commonBL.PutData(this.RCAAPIName.RCAUpdateAPI, obj)
-                .subscribe(
-                    res => {
-                        this.ADDRCAMachineType = "";
-                        this.ADDRCAFailureMode = "";
-                        this.UpdateTreeshow = false;
-                        this.SelectUpdateBoxEnabled = true;
-                        this.UpdateSelectedLabel = [];
-                        this.Updatefiles = [];
-                        this.RCAUpdateQuantitivefiles = [];
-                        this.UpdateRCATypeQualititive = false;
-                        this.UpdateRCATypeQuantitive = false;
-                        this.UpdateRCADataForSaveAuth = [];
-                        this.UpdateAttachmentBuffer = [];
-                        this.getRecordsList();
-                        this.RCAUpdateItemCount = 1000;
-                        this.UpdateRCATypeSelected = "";
-                    }
-                )
+            RCAQuantitiveEquipment = this.UpdateRecordList[0].RCAQuantitiveEquipment;
+            RCAQualitativeFailureMode = this.UpdateSelectedLabel.RCAQualitativeFailureMode;
+            RCAQuantitiveFailureMode = this.andOrLogicTreeFailureMode;
+        }
+        let obj = {
+            RCAID: this.UpdateRecordList[0].RCAID,
+            UserId: "",
+            TagNumber: this.UpdateRecordList[0].TagNumber,
+            RCALabel: this.UpdateRecordList[0].RCALabel,
+            RCAQualitativeTree: RCAQualitativeTree,
+            RCAQuantitiveTree: RCAQuantitiveTree,
+            RCAQualitativeEquipment: this.ADDRCAMachineType,
+            RCAQuantitiveEquipment: RCAQuantitiveEquipment,
+            RCAQualitativeFailureMode: this.ADDRCAFailureMode,
+            RCAQuantitiveFailureMode: RCAQuantitiveFailureMode
+        }
+        this.commonBL.PutData(this.RCAAPIName.RCAUpdateAPI, obj)
+            .subscribe(
+                res => {
+                    this.ADDRCAMachineType = "";
+                    this.ADDRCAFailureMode = "";
+                    this.UpdateTreeshow = false;
+                    this.SelectUpdateBoxEnabled = true;
+                    this.UpdateSelectedLabel = [];
+                    this.Updatefiles = [];
+                    this.RCAUpdateQuantitivefiles = [];
+                    this.UpdateRCATypeQualititive = false;
+                    this.UpdateRCATypeQuantitive = false;
+                    this.UpdateRCADataForSaveAuth = [];
+                    this.UpdateAttachmentBuffer = [];
+                    this.getRecordsList();
+                    this.RCAUpdateItemCount = 1000;
+                    this.UpdateRCATypeSelected = "";
+                }
+            )
     }
 
     cancelRCAUpdate() {
         this.RCAUpdateItemCount = 1000;
         this.Updatefiles = [];
-        this.RCAUpdateQuantitivefiles =[];
+        this.RCAUpdateQuantitivefiles = [];
         this.RCAUpdateQuantitivefiles = [];
         this.UpdateRCATypeQuantitive = false;
         this.UpdateRCATypeQualititive = false;
@@ -719,12 +725,12 @@ export class RCAComponent {
 
     async TraverseNestedJsonForQuantitative(val: any, fun: string) {
         for (let index = 0; index < val.length; index++) {
-             val[index].disable = true; 
-             if (val[index].children !== undefined && val[index].children.length > 0) { 
+            val[index].disable = true;
+            if (val[index].children !== undefined && val[index].children.length > 0) {
                 var Data: any = val[index].children;
-                for (let index1 = 0; index1 < Data.length; index1++) { 
-                    Data[index1].disable = true; 
-                    if (Data[index1].children !== undefined && Data[index1].children.length > 0) { 
+                for (let index1 = 0; index1 < Data.length; index1++) {
+                    Data[index1].disable = true;
+                    if (Data[index1].children !== undefined && Data[index1].children.length > 0) {
                         var Data2 = Data[index1].children
                         for (let index3 = 0; index3 < Data2.length; index3++) {
                             var d = []
@@ -733,7 +739,7 @@ export class RCAComponent {
                         }
                     }
                 }
-             } 
+            }
         }
     }
 
@@ -778,34 +784,34 @@ export class RCAComponent {
                 this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
                 if (val[index].RCAFILE !== '') {
                     let filess = val[index].RCAFILE
-                    if(filess != undefined){
-                    var FC: number = 1;
-                    for (let FI = 0; FI < filess.length; FI++) {
-                        var prevName = filess[FI][0].target.files[0].name
-                        var ext = this.getFileExtension(prevName);
-                        var newName: string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${val[index].id}_${FC}.${ext}`
-                        var f: any = []
-                        f.push(filess[FI][0]);
-                        f.push(newName);
-                        f.push(filess[FI][2])
-                        f.push(FI)
-                        f.push(val[index])
-                        let ff = f;
-                        var res = await this.ADDRCAUploadAttachment(ff);
-                        var abc: any = [], abc2: any = []
-                        abc.push(res);
-                        abc.push(f[2]);
-                        abc2.push(abc);
-                        var q = f[4].RCAFILE;
-                        q[f[3]] = JSON.stringify(abc2);
-                        val[index].RCAFILE = q;
-                        FC = FC + 1;
+                    if (filess != undefined) {
+                        var FC: number = 1;
+                        for (let FI = 0; FI < filess.length; FI++) {
+                            var prevName = filess[FI][0].target.files[0].name
+                            var ext = this.getFileExtension(prevName);
+                            var newName: string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${val[index].id}_${FC}.${ext}`
+                            var f: any = []
+                            f.push(filess[FI][0]);
+                            f.push(newName);
+                            f.push(filess[FI][2])
+                            f.push(FI)
+                            f.push(val[index])
+                            let ff = f;
+                            var res = await this.ADDRCAUploadAttachment(ff);
+                            var abc: any = [], abc2: any = []
+                            abc.push(res);
+                            abc.push(f[2]);
+                            abc2.push(abc);
+                            var q = f[4].RCAFILE;
+                            q[f[3]] = JSON.stringify(abc2);
+                            val[index].RCAFILE = q;
+                            FC = FC + 1;
+                        }
+                        if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
+                            this.SaveADDRCAFilesToDatabase();
+                        }
+
                     }
-                    if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
-                        this.SaveADDRCAFilesToDatabase();
-                    }
-   
-                }
                 }
                 if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
                     this.SaveADDRCAFilesToDatabase();
@@ -845,33 +851,33 @@ export class RCAComponent {
                         this.ADDRCAForSaveNodeCount = this.ADDRCAForSaveNodeCount + 1;
                         if (Data[index1].RCAFILE !== undefined && Data[index1].RCAFILE !== '') {
                             let filess = Data[index1].RCAFILE
-                            if(filess != undefined){
-                            var FC: number = 1;
-                            for (let FI = 0; FI < filess.length; FI++) {
-                                var prevName = filess[FI][0].target.files[0].name
-                                var ext = this.getFileExtension(prevName);
-                                var newName: string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${Data[index1].id}_${FC}.${ext}`
-                                var fz: any = [];
-                                fz.push(filess[FI][0]);
-                                fz.push(newName);
-                                fz.push(filess[FI][2])
-                                fz.push(FI)
-                                fz.push(Data[index1])
-                                let ff = fz;
-                                var res = await this.ADDRCAUploadAttachment(ff);
-                                var abc: any = [], abc2: any = []
-                                abc.push(res);
-                                abc.push(ff[2]);
-                                abc2.push(abc);
-                                var q = ff[4].RCAFILE;
-                                q[ff[3]] = JSON.stringify(abc2);
-                                Data[index1].RCAFILE = q;
-                                FC = FC + 1;
+                            if (filess != undefined) {
+                                var FC: number = 1;
+                                for (let FI = 0; FI < filess.length; FI++) {
+                                    var prevName = filess[FI][0].target.files[0].name
+                                    var ext = this.getFileExtension(prevName);
+                                    var newName: string = `${this.UserDetails.UserId}_${this.RCALabel}_${this.TagNumber}_${Data[index1].id}_${FC}.${ext}`
+                                    var fz: any = [];
+                                    fz.push(filess[FI][0]);
+                                    fz.push(newName);
+                                    fz.push(filess[FI][2])
+                                    fz.push(FI)
+                                    fz.push(Data[index1])
+                                    let ff = fz;
+                                    var res = await this.ADDRCAUploadAttachment(ff);
+                                    var abc: any = [], abc2: any = []
+                                    abc.push(res);
+                                    abc.push(ff[2]);
+                                    abc2.push(abc);
+                                    var q = ff[4].RCAFILE;
+                                    q[ff[3]] = JSON.stringify(abc2);
+                                    Data[index1].RCAFILE = q;
+                                    FC = FC + 1;
+                                }
+                                if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
+                                    this.SaveADDRCAFilesToDatabase();
+                                }
                             }
-                            if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
-                                this.SaveADDRCAFilesToDatabase();
-                            }
-                        }
                         }
                         if (this.ADDRCANodeCount === this.ADDRCAForSaveNodeCount) {
                             this.SaveADDRCAFilesToDatabase();
@@ -903,45 +909,45 @@ export class RCAComponent {
         this.RCAReportData = p;
         this.RCAReportTypeList = [];
         this.RCAReportType = "";
-        if(p.RCAQualitativeTree !== 'None'){             
+        if (p.RCAQualitativeTree !== 'None') {
             this.RCAReportTypeList.push('Qualitative');
         }
-        if(p.RCAQuantitiveTree !== 'None'){ 
+        if (p.RCAQuantitiveTree !== 'None') {
             this.RCAReportTypeList.push('Quantitative');
         }
         this.RCAReportType = this.RCAReportTypeList[0];
         // else{
         //     this.RCAReportTree = JSON.parse(p.RCAQuantitiveTree);
         // }
-      //  this.TraverseNestedJson(this.RCAReportTree, "disable");
-       // this.RCAQualitativeReport = true
+        //  this.TraverseNestedJson(this.RCAReportTree, "disable");
+        // this.RCAQualitativeReport = true
         this.changeDetectorRef.detectChanges()
         this.RCATypeReport();
 
     }
 
-    RCATypeReport(){
-       if(this.RCAReportType === 'Qualitative'){
-        this.RCAReportTree = [];
-        this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQualitativeTree);
-        this.RCAQualitativeReport = false;
-        this.RCAQuantitativeReport = true;
-       }else{
-        this.RCAReportTree = [];
-        this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQuantitiveTree);
-        this.TraverseNestedJsonForQuantitative(this.RCAReportTree, 'quantitativeDisable');
-        this.RCAQualitativeReport = true;
-        this.RCAQuantitativeReport = false;
-       }
-       this.changeDetectorRef.detectChanges()
+    RCATypeReport() {
+        if (this.RCAReportType === 'Qualitative') {
+            this.RCAReportTree = [];
+            this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQualitativeTree);
+            this.RCAQualitativeReport = false;
+            this.RCAQuantitativeReport = true;
+        } else {
+            this.RCAReportTree = [];
+            this.RCAReportTree = JSON.parse(this.RCAReportData.RCAQuantitiveTree);
+            this.TraverseNestedJsonForQuantitative(this.RCAReportTree, 'quantitativeDisable');
+            this.RCAQualitativeReport = true;
+            this.RCAQuantitativeReport = false;
+        }
+        this.changeDetectorRef.detectChanges()
     }
 
 
 
     RCAReportDownload() {
-        this.imagedivRCA= false;
+        this.imagedivRCA = false;
         this.changeDetectorRef.detectChanges()
-        if ((this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) || (this.RCAInput != "" && this.ActionRecommendation!= "")) {
+        if ((this.RCAReportRecommadtion.length > 0 && this.RCAReportinputs.length > 0) || (this.RCAInput != "" && this.ActionRecommendation != "")) {
             const doc = new jsPDF('p', 'pt', 'a4', true);
             this.RCAReportfileds = true
             this.changeDetectorRef.detectChanges()
@@ -951,11 +957,11 @@ export class RCAComponent {
                 }
             };
             var finalTable;
-            if(this.RCAReportType === 'Qualitative'){
+            if (this.RCAReportType === 'Qualitative') {
                 finalTable = this.pdfTable1.nativeElement;
-               }else{
+            } else {
                 finalTable = this.pdfTable.nativeElement;
-               }
+            }
             doc.fromHTML(finalTable.innerHTML, 15, 15, {
                 'width': 590,
                 'elementHandlers': specialElementHandlers
@@ -963,28 +969,28 @@ export class RCAComponent {
             var imageLink: any
             let imageData = document.getElementById('image1');
             var finalImage;
-            if(this.RCAReportType === 'Qualitative'){
+            if (this.RCAReportType === 'Qualitative') {
                 let imageData = document.getElementById('image1');
                 var pdfdata = html2canvas(imageData).then(canvas => {
-                doc.addPage('a4','mm','p');
-                const imgProps = doc.getImageProperties(canvas);
-                var imgWidth = 292;
-                  var pageHeight = 298;
-                  var imgHeight = imgProps.height * imgWidth / imgProps.width;
-                  var heightLeft = imgHeight;
-                  var position = 0;
-                  doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
-                  heightLeft -= pageHeight;
-                  while (heightLeft >= 2) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(canvas, 'PNG',20, position, imgWidth, imgHeight );
+                    doc.addPage('a4', 'mm', 'p');
+                    const imgProps = doc.getImageProperties(canvas);
+                    var imgWidth = 292;
+                    var pageHeight = 298;
+                    var imgHeight = imgProps.height * imgWidth / imgProps.width;
+                    var heightLeft = imgHeight;
+                    var position = 0;
+                    doc.addImage(canvas, 'PNG', 20, position, imgWidth, imgHeight);
                     heightLeft -= pageHeight;
-                  }
-                doc.save('RCA Report');
-                this.commonLoadingDirective.showLoading(false, 'Downloading....');
-            })
-               }else{
+                    while (heightLeft >= 2) {
+                        position = heightLeft - imgHeight;
+                        doc.addPage();
+                        doc.addImage(canvas, 'PNG', 20, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    doc.save('RCA Report');
+                    this.commonLoadingDirective.showLoading(false, 'Downloading....');
+                })
+            } else {
                 let imageData = document.getElementById('image');
                 domtoimage.toPng(this.image.nativeElement).then(res => {
                     imageLink = res;
@@ -995,17 +1001,17 @@ export class RCAComponent {
                     doc.addImage(imageLink, 'PNG', 20, 200, pdfWidth * 2.5, pdfHeight * 4);
                     doc.save('RCA Report');
                 })
-               }
+            }
             this.RCAReportinputs = ""
             this.RCAReportRecommadtion = ""
             this.RCAReportfileds = false
-            if(this.RCAReportType === 'Qualitative'){
+            if (this.RCAReportType === 'Qualitative') {
                 this.RCAQualitativeReport = false;
                 this.RCAQuantitativeReport = true;
-               }else{
+            } else {
                 this.RCAQualitativeReport = true;
                 this.RCAQuantitativeReport = false;
-               }
+            }
         } else {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please fill the details' })
         }

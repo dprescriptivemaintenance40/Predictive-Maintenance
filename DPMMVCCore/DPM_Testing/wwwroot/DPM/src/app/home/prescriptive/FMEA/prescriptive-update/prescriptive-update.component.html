@@ -60,14 +60,14 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form>                        
+                    <form>
                         <div *ngIf="UpdateFunAndFunFailureName === 'Function'" class="form-group">
                             <label for="recipient-name" class="col-form-label">Function :</label>
-                            <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FluidType"  [ngModelOptions]="{standalone: true}" placeholder="Type Function "></textarea>
+                            <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="FluidType" [ngModelOptions]="{standalone: true}" placeholder="Type Function "></textarea>
                         </div>
                         <div *ngIf="UpdateFunAndFunFailureName ==='Function Failure'" class="form-group">
                             <label for="recipient-name" class="col-form-label">Function failure :</label>
-                            <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="UpdateFunFailure"  [ngModelOptions]="{standalone: true}" placeholder="Type Function "></textarea>
+                            <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="UpdateFunFailure" [ngModelOptions]="{standalone: true}" placeholder="Type Function "></textarea>
                         </div>
                     </form>
                 </div>
@@ -115,7 +115,7 @@
                                     <div class="d-flex justify-content-start align-items-center">
                                         <!-- <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked" label={{func.Description}} class="mt-2 mb-2">
                                         </p-checkbox> -->
-                                        
+
                                         <label>
                                             <input type="checkbox"
                                                    name = "{{i}}"
@@ -160,13 +160,11 @@
                                 <div class="col-md-6">
                                     <div class="row form-group">
                                         <label>Local Effect</label>
-                                        <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects" placeholder="Type Local Effect"
-                                            required>
+                                        <input type="text" class="form-control" [(ngModel)]="failuerModeLocalEffects" placeholder="Type Local Effect" required>
                                     </div>
                                     <div class="row form-group">
                                         <label>System Effect</label>
-                                        <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect"
-                                            required>
+                                        <input type="text" class="form-control" [(ngModel)]="failuerModeSystemEffects" placeholder="Type System Effect" required>
                                     </div>
                                     <div class="row form-group">
                                         <div class="input-group">
@@ -174,8 +172,7 @@
                                                 <span class="input-group-text" id="uploadAttachments"><small>Upload</small></span>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)"
-                                                    class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                                <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
                                                 <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
                                                 <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
                                             </div>
@@ -183,10 +180,9 @@
                                     </div>
                                     <div class="row form-group">
                                         <div class="input-group">
-                                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3"
-                                                placeholder="Add Remark Here"></textarea>
+                                            <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
                                         </div>
-                                    
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -196,31 +192,24 @@
                                                     class="fas fa-info-circle fa-1px"></i> </a>
                                             <p-overlayPanel #panel>
                                                 <div style=" margin-right: 2px;width: 40rem;">
-                                                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to the
-                                                        equipment. More the down time more is the factor, less the down time less is the factor.
+                                                    <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to the equipment. More the down time more is the factor, less the down time less is the factor.
                                                     </li>
-                                    
-                                                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of
-                                                        failure are high then the scrap factor value is taken more and in the case of less chance to scrape
-                                                        the
+
+                                                    <li><b>Scrape Factor</b> : - if the chances to scrap the whole equipment or component in the case of failure are high then the scrap factor value is taken more and in the case of less chance to scrape the
                                                         equipment or component factor value is taken less. </li>
-                                    
-                                                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of injury
-                                                        (both man and machine) are high in the case of equipment failure, more is the value given to the
-                                                        safety
+
+                                                    <li><b>Safety Factor</b> :is represents risk associated in the case of failure. If the chances of injury (both man and machine) are high in the case of equipment failure, more is the value given to the safety
                                                         factor and less the chances of injury, less is the value given to the safety factor.</li>
-                                    
-                                                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment from
-                                                        failure. Minimum no. is given when protection against the failure is easy. Maximum no. is given when
+
+                                                    <li><b>Protection Factor</b> : is a number awarded on the account of ease to protect the equipment from failure. Minimum no. is given when protection against the failure is easy. Maximum no. is given when
                                                         protection against the failure is very difficult.
                                                     </li>
-                                    
-                                                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the no.
-                                                        of failure more is the value given to the factor.
+
+                                                    <li><b>Frequency Factor</b> : It is a number awarded depending on the frequency of failure. More the no. of failure more is the value given to the factor.
                                                     </li>
                                                 </div>
                                             </p-overlayPanel>
-                                            
+
                                         </div>
                                         <div class="row mt-4">
                                             <div class="col-md-6">
@@ -243,9 +232,9 @@
                                                 <span class="badge badge-primary">{{ADDScrapeFactor}}</span>
                                             </div>
                                         </div>
-                                    
+
                                         <br>
-                                    
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label> Safety Factor (Range 1 - 20): </label>
@@ -256,7 +245,7 @@
                                                 <span class="badge badge-primary">{{ADDSafetyFactor}}</span>
                                             </div>
                                         </div>
-                                    
+
                                         <br>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -268,9 +257,9 @@
                                                 <span class="badge badge-primary">{{ADDProtectionFactor}}</span>
                                             </div>
                                         </div>
-                                    
+
                                         <br>
-                                    
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Frequency Factor (Range 1 - 15): {{ADDFrequencyFactor}}</label>
@@ -794,23 +783,21 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                   
+
                     <form>
                         <div class="row">
                             <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1">Failure Mode</label>
-                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureMode"
-                                id="exampleFormControlInput1" disabled><br>
-                            <span type="button" class="text-primary" (click)="UpdateFM()" pTooltip="Update Failure modes"
-                                tooltipPosition="top"><i class="pi pi-pencil"></i>&nbsp;&nbsp;Update Failure Mode</span>
-                        </div>
-                        <div *ngIf="EditFM" class="form-group">
-                            <!-- <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
+                                <div class="form-group">
+                                    <label for="exampleFormControlInput1">Failure Mode</label>
+                                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureMode" id="exampleFormControlInput1" disabled><br>
+                                    <span type="button" class="text-primary" (click)="UpdateFM()" pTooltip="Update Failure modes" tooltipPosition="top"><i class="pi pi-pencil"></i>&nbsp;&nbsp;Update Failure Mode</span>
+                                </div>
+                                <div *ngIf="EditFM" class="form-group">
+                                    <!-- <div *ngFor="let func of failuerMode" class="border" pDraggable="func" (onDragStart)="dragStart1($event,func)" (onDragEnd)="dragEnd1($event)">
                                                         {{func.Description}}
                                                     </div> -->
-                        
-                            <!-- <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
+
+                                    <!-- <div class="drop" pDroppable="func" (onDrop)="drop1($event)">
                                                         <div *ngFor="let c of dropedMode">
                                                             <span>{{c?.Description}}</span>
                                                             <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="FailureModeDropped(c)" pTooltip="Delete" tooltipPosition="top">
@@ -818,15 +805,15 @@
                                                             </a>
                                                         </div>
                                                     </div> -->
-                            <!-- <small class="form-text text-muted">Drag and Drop here, from above List </small> -->
-                            <div style="overflow: auto; height:20rem;">
-                                <table>
-                                    <tr *ngFor="let func of failuerMode; let i=index;">
-                                        <td>
-                                            <!-- <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
+                                    <!-- <small class="form-text text-muted">Drag and Drop here, from above List </small> -->
+                                    <div style="overflow: auto; height:20rem;">
+                                        <table>
+                                            <tr *ngFor="let func of failuerMode; let i=index;">
+                                                <td>
+                                                    <!-- <p-checkbox name="{{i}}" (click)="FailureModeSelected(func, $event)" [binary]="true" [(ngModel)]="func.checked">
                                             </p-checkbox>
                                             <label>{{func.Description}}</label> -->
-                                            <label>
+                                                    <label>
                                                 <input type="checkbox"
                                                        name = "{{i}}"
                                                        (change)="FailureModeSelected(func, $event)"
@@ -835,137 +822,131 @@
                                                         />
                                                        {{func.Description}}
                                             </label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <button type="button" class="btn btn-secondary btn-sm" (click)="CancelFM()">Close</button>
-                            <button type="button" class="btn btn-secondary btn-sm" (click)="SaveFMToTreee()">Save</button>
-                        
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Local Effect</label>
-                            <textarea class="form-control custom-textarea" [ngModelOptions]="{standalone: true}"
-                                [(ngModel)]="UpdateFailureModeLocalEffect" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea2">System Effect</label>
-                            <textarea class="form-control custom-textarea" [ngModelOptions]="{standalone: true}"
-                                [(ngModel)]="UpdateFailureModeSystemEffect" id="exampleFormControlTextarea2" rows="3"></textarea>
-                        </div>
-                        <div style="margin-top: 20px;">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="uploadAttachments"><small>Upload</small></span>
-                                        </div>
-                                        <div class="custom-file">
-                                            <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)"
-                                                class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
-                                            <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
-                                            <label class="custom-file-label" (change)="onFileChange($event)" *ngIf="AttaRemarks != ''"
-                                                for="inputGroupFile01">{{AttaRemarks}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary btn-sm" (click)="CancelFM()">Close</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" (click)="SaveFMToTreee()">Save</button>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Local Effect</label>
+                                    <textarea class="form-control custom-textarea" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeLocalEffect" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea2">System Effect</label>
+                                    <textarea class="form-control custom-textarea" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeSystemEffect" id="exampleFormControlTextarea2" rows="3"></textarea>
+                                </div>
+                                <div style="margin-top: 20px;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="uploadAttachments"><small>Upload</small></span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadAttachmentFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                                    <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
+                                                    <label class="custom-file-label" (change)="onFileChange($event)" *ngIf="AttaRemarks != ''" for="inputGroupFile01">{{AttaRemarks}}
                                                 <label class="custom-file-label" *ngIf="fileUpload != ''"
                                                     for="inputGroupFile01">{{fileUpload}}</label>
-                                            </label>
+                                                    </label>
+                                                </div>
+
+                                            </div>
                                         </div>
-                        
+                                        <div class="col-md-12">
+                                            <div class="input-group mb-3">
+                                                <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="input-group mb-3">
-                                        <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3"
-                                            placeholder="Add Remark Here"></textarea>
-                                    </div>
-                        
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="container">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label> Down Time Factor (Range 1 - 10): </label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditDownTimeFactor" [min]="1" [max]="10">
+                                                </p-slider>
+                                            </div>
+                                            <div class="col-md-1"><span class="badge badge-primary">{{EditDownTimeFactor}}</span></div>
+                                        </div>
+                                        <br>
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label> Scrape Factor (Range 1 - 5): </label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditScrapeFactor" [min]="1" [max]="5">
+                                                </p-slider>
+
+                                            </div>
+                                            <div class="col-md-1"><span class="badge badge-primary">{{EditScrapeFactor}}</span></div>
+                                        </div>
+
+                                        <br>
+
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label> Safety Factor (Range 1 - 20): </label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditSafetyFactor" [min]="1" [max]="20">
+                                                </p-slider>
+
+                                            </div>
+                                            <div class="col-md-1"><span class="badge badge-primary">{{EditSafetyFactor}}</span></div>
+                                        </div>
+
+                                        <br>
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label>Protection Factor (Range 1 - 10): </label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditProtectionFactor" [min]="1" [max]="10">
+                                                </p-slider>
+
+                                            </div>
+                                            <div class="col-md-1"><span class="badge badge-primary">{{EditProtectionFactor}}</span></div>
+                                        </div>
+
+                                        <br>
+
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label>Frequency Factor (Range 1 - 15): </label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditFrequencyFactor" [min]="1" [max]="15">
+                                                </p-slider>
+
+                                            </div>
+                                            <div class="col-md-1"><span class="badge badge-primary">{{EditFrequencyFactor}}</span></div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlInput2">Consequence</label>
+                                    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="UpdateFailureModeConsequence" id="exampleFormControlInput2" disabled><br>
+                                    <span type="button" class="text-primary" (click)="ReplaceConsequence()"><i class="pi pi-pencil"></i>&nbsp;&nbsp;Update Consequence</span>
+                                </div>
+                            </div>
+
                         </div>
-                        </div>
-                        <div class="col-md-6">
-<div class="form-group">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-               <label> Down Time Factor (Range 1 - 10): </label>
-            </div>
-            <div class="col-md-5">
-                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditDownTimeFactor" [min]="1" [max]="10">
-                </p-slider>               
-            </div>
-            <div class="col-md-1"><span class="badge badge-primary">{{EditDownTimeFactor}}</span></div>
-        </div>
-        <br>
-    <div class="row align-items-center">
-            <div class="col-md-6">
-               <label> Scrape Factor (Range 1 - 5): </label>
-            </div>
-            <div class="col-md-5">
-                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditScrapeFactor" [min]="1" [max]="5">
-                </p-slider>
-               
-            </div>
-            <div class="col-md-1"><span class="badge badge-primary">{{EditScrapeFactor}}</span></div>
-        </div>
-
-        <br>
-
-        <div class="row align-items-center">
-            <div class="col-md-6">
-               <label> Safety Factor (Range 1 - 20): </label>
-            </div>
-            <div class="col-md-5">
-                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditSafetyFactor" [min]="1" [max]="20">
-                </p-slider>
-               
-            </div>
-            <div class="col-md-1"><span class="badge badge-primary">{{EditSafetyFactor}}</span></div>
-        </div>
-
-        <br>
-        <div class="row align-items-center">
-            <div class="col-md-6">
-               <label>Protection Factor (Range 1 - 10): </label>
-            </div>
-            <div class="col-md-5">
-                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditProtectionFactor" [min]="1" [max]="10">
-                </p-slider>
-               
-            </div>
-            <div class="col-md-1"><span class="badge badge-primary">{{EditProtectionFactor}}</span></div>
-        </div>
-
-        <br>
-
-        <div class="row align-items-center">
-            <div class="col-md-6">
-               <label>Frequency Factor (Range 1 - 15): </label>
-            </div>
-            <div class="col-md-5">
-                <p-slider [ngModelOptions]="{standalone: true}" [(ngModel)]="EditFrequencyFactor" [min]="1" [max]="15">
-                </p-slider>
-               
-            </div>
-            <div class="col-md-1"><span class="badge badge-primary">{{EditFrequencyFactor}}</span></div>
-        </div>
-        <br>
-    </div>
-</div>
-<div class="form-group">
-    <label for="exampleFormControlInput2">Consequence</label>
-    <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-        [(ngModel)]="UpdateFailureModeConsequence" id="exampleFormControlInput2" disabled><br>
-    <span type="button" class="text-primary" (click)="ReplaceConsequence()"><i class="pi pi-pencil"></i>&nbsp;&nbsp;Update Consequence</span>
-</div>
-                        </div>
-                            
-                        </div>
-                        
 
 
-                        
+
+
 
                     </form>
                 </div>
@@ -2395,7 +2376,7 @@
             </div>
             <div class="row" style="padding: 15px;">
                 <div class="col-md-3">
-                        <label>Do you want new alpha and beta values using weibull or you can directly change alpha and beta values from the above</label> 
+                    <label>Do you want new alpha and beta values using weibull or you can directly change alpha and beta values from the above</label>
                 </div>
                 <div class="col-sm">
                     Yes
@@ -2444,8 +2425,7 @@
 
 <!-- Update MSS MOdal -->
 <!-- Modal -->
-<div class="modal fade" id="Updatemss" tabindex="-1" role="dialog" aria-labelledby="Updatemss"
-    aria-hidden="true">
+<div class="modal fade" id="Updatemss" tabindex="-1" role="dialog" aria-labelledby="Updatemss" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -2455,22 +2435,21 @@
                 </button>
             </div>
             <div class="modal-body">
-            <div class="card dpm-card" *ngIf="UpdateMSSImageFlag" id="Consequence">
-                <p-card>
-                    <ng-template pTemplate="subtitle">
-                        <div class="mb-4">
-                            <div class="card-body alert-dpmprimary">
-                                <a class="cell-icon-button cdk-close" style="float:right;color: black;"
-                                    (click)="CloseMSSUpdateView()" pTooltip="Close" tooltipPosition="top">
-                                    <i class="far fa-times-circle "></i>
-                                </a>
-                                <img class="img-fluid" src="{{UpdateMSSImagePath}}" alt="">
+                <div class="card dpm-card" *ngIf="UpdateMSSImageFlag" id="Consequence">
+                    <p-card>
+                        <ng-template pTemplate="subtitle">
+                            <div class="mb-4">
+                                <div class="card-body alert-dpmprimary">
+                                    <a class="cell-icon-button cdk-close" style="float:right;color: black;" (click)="CloseMSSUpdateView()" pTooltip="Close" tooltipPosition="top">
+                                        <i class="far fa-times-circle "></i>
+                                    </a>
+                                    <img class="img-fluid" src="{{UpdateMSSImagePath}}" alt="">
+                                </div>
                             </div>
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate="content">
-                        <div class="row">
-                            <!-- <div class="col" *ngFor="let a of UpdateMSSImageValues" ><br>
+                        </ng-template>
+                        <ng-template pTemplate="content">
+                            <div class="row">
+                                <!-- <div class="col" *ngFor="let a of UpdateMSSImageValues" ><br>
                             <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
                                 <input type="checkbox"[(ngModel)]="UpdatedMSSStartegy" value="{{a}}" name="name1" />&nbsp;
                                 <label> {{a}}</label>
@@ -2478,138 +2457,126 @@
                         </div> -->
                                 <div class="col">
                                     <div class=" bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateOCM"
-                                            value="{{UpdateMSSConsequence}}-OCM (On Condition Maintainenance Task)"
-                                            name="name1" />&nbsp;
+                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateOCM" value="{{UpdateMSSConsequence}}-OCM (On Condition Maintainenance Task)" name="name1" />&nbsp;
                                         <label> {{UpdateMSSConsequence}}-OCM</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class=" bg-white rounded" style="width: 10rem;">
-                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateSO"
-                                            value="{{UpdateMSSConsequence}}-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateSO" value="{{UpdateMSSConsequence}}-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
                                         <label> {{UpdateMSSConsequence}}-SO</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class=" bg-white rounded" style="width: 10rem;">
-                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateSR"
-                                            value="{{UpdateMSSConsequence}}-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateSR" value="{{UpdateMSSConsequence}}-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
                                         <label> {{UpdateMSSConsequence}}-SR</label>
                                     </div>
                                 </div>
                                 <div class="col" *ngIf="UpdateMSSConsequence == 'A' || UpdateMSSConsequence == 'E'"><br>
                                     <div class=" bg-white rounded" style="width: 10rem;">
-                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateFFT"
-                                            value="{{UpdateMSSConsequence}}-FFT (Failure Finding Task)" name="name1" />&nbsp;
+                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateFFT" value="{{UpdateMSSConsequence}}-FFT (Failure Finding Task)" name="name1" />&nbsp;
                                         <label> {{UpdateMSSConsequence}}-FFT</label>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class=" bg-white rounded" style="width: 10rem;">
-                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateRED"
-                                            value="{{UpdateMSSConsequence}}-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateRED" value="{{UpdateMSSConsequence}}-RED (Redsigned Mandatory)" name="name1" />&nbsp;
                                         <label> {{UpdateMSSConsequence}}-RED</label>
                                     </div>
                                 </div>
                                 <div class="col" *ngIf="UpdateMSSConsequence != 'B'"><br>
                                     <div class=" bg-white rounded" style="width: 10rem;">
-                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateOFM"
-                                            value="{{UpdateMSSConsequence}}-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                                        <input type="checkbox" (change)="UpdateStrategySelect()" [(ngModel)]="UpdateOFM" value="{{UpdateMSSConsequence}}-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
                                         <label> {{UpdateMSSConsequence}}-OFM</label>
                                     </div>
                                 </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col">
-                                <label>MSS Interval Selection Criteria</label>
-                                <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="UpdateMSSIntervalSelectionCriteria"
-                                    placeholder="Type MSS Interval Selection Criteria" required></textarea>
                             </div>
-                            
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12">
-                                <label>Do you have Availability percentage? </label>
-                            </div>
-                            <div class="col-md-12 d-flex align-items-center">
-                                <div class="mr-2">
-                               
-                                <input type="radio" (change)="UpdateMSSAvailabilityYN()" [(ngModel)]="UpdateMSSAvailabilityY"
-                                        value="Yes" name="UpdateMSSAvailabilityYNCheck" />Yes
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label>MSS Interval Selection Criteria</label>
+                                    <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="UpdateMSSIntervalSelectionCriteria" placeholder="Type MSS Interval Selection Criteria" required></textarea>
                                 </div>
-                                <div>
-                                   
-                                    <input type="radio" (change)="UpdateMSSAvailabilityYN()" [(ngModel)]="UpdateMSSAvailabilityY" value="No"
-                                        name="UpdateMSSAvailabilityYNCheck" />No
+
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <label>Do you have Availability percentage? </label>
+                                </div>
+                                <div class="col-md-12 d-flex align-items-center">
+                                    <div class="mr-2">
+
+                                        <input type="radio" (change)="UpdateMSSAvailabilityYN()" [(ngModel)]="UpdateMSSAvailabilityY" value="Yes" name="UpdateMSSAvailabilityYNCheck" />Yes
+                                    </div>
+                                    <div>
+
+                                        <input type="radio" (change)="UpdateMSSAvailabilityYN()" [(ngModel)]="UpdateMSSAvailabilityY" value="No" name="UpdateMSSAvailabilityYNCheck" />No
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div *ngIf="UpdateMSSDirectAvailability" class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label *ngIf="RCASelectedRecord"> Your availability % from RCA ( can be edit availability. If want! ) </label> <label *ngIf="!RCASelectedRecord"><b> What is your accepted Availability % : </b></label> &nbsp;&nbsp;
+                                        <input type="number" class="custom-form-control" [(ngModel)]="UpdateMSSAvailabilityCheck" placeholder="Availability percentage">
+                                    </div>
+                                    <!-- <span *ngIf="RCASelectedRecord">or</span>
+                                    <div class="mb-3" *ngIf="RCASelectedRecord">
+                                        <label><b> Your availability % from RCA : </b></label> &nbsp;&nbsp; {{RCASelectedRecord?.Availability}}
+                                    </div> -->
                                 </div>
                             </div>
-                           
-                        </div>
-                        <div *ngIf="UpdateMSSDirectAvailability" class="row mt-3" >
-                            <div class="col-md-12">
-                            <div class="mb-3">
-                                <label><b> What is your accepted Availability % : </b></label> &ensp;
-                                <input type="number" class="custom-form-control" [(ngModel)]="UpdateMSSAvailabilityCheck"
-                                    placeholder="Availability percentage">
-                            </div>
-                            </div>
-                        </div>
-                        <div *ngIf="UpdateMSSIndirectAvailability" class="row mt-3">
-                            <div class="col-md-12">
-                                <label><b>How long do you run your plant before taking stoppage? </b></label>
-                            <div class="mb-3 d-flex w-50">
-                               
-                                <select [(ngModel)]="UpdateMSSstoppageDays" class="form-select" class="form-control mr-2"
-                                    placeholder="Plant Stoppage Days">
+                            <div *ngIf="UpdateMSSIndirectAvailability" class="row mt-3">
+                                <div class="col-md-12">
+                                    <label><b>How long do you run your plant before taking stoppage? </b></label>
+                                    <div class="mb-3 d-flex w-50">
+
+                                        <select [(ngModel)]="UpdateMSSstoppageDays" class="form-select" class="form-control mr-2" placeholder="Plant Stoppage Days">
             
                                     <option value="Days" selected> Days</option>
                                     <option value="Week" selected> Week</option>
                                     <option value="Month" selected>Month</option>
                                     <option value="Year" selected>Year</option>
                                 </select>
-                                <input type="number" [(ngModel)]="UpdateMSSstoppageDaysValue" name="stoppage Days Value"
-                                    class="form-control">
+                                        <input type="number" [(ngModel)]="UpdateMSSstoppageDaysValue" name="stoppage Days Value" class="form-control">
+                                    </div>
+                                </div>
                             </div>
-                            </div>
-                        </div>
-            
-                        <div *ngIf="UpdateMSSIndirectAvailability" class="row mt-3">
-                            <div class="mb-3 col-md-12">
-                                <label><b> How long is your stoppage? </b></label>
-                                <div class="d-flex w-50">
-                                <select [(ngModel)]="UpdateMSSstoppageDaysTime" class="form-select" class="form-control mr-2"
-                                    placeholder="Plant Stoppage Days">
+
+                            <div *ngIf="UpdateMSSIndirectAvailability" class="row mt-3">
+                                <div class="mb-3 col-md-12">
+                                    <label><b> How long is your stoppage? </b></label>
+                                    <div class="d-flex w-50">
+                                        <select [(ngModel)]="UpdateMSSstoppageDaysTime" class="form-select" class="form-control mr-2" placeholder="Plant Stoppage Days">
             
                                     <option value="Days" selected> Days</option>
                                     <option value="Week" selected> Week</option>
                                     <option value="Month" selected>Month</option>
                                     <option value="Year" selected>Year</option>
                                 </select>
-                                <input type="number" [(ngModel)]="UpdateMSSstoppageDaysTimeValue" name="stoppage Duration "
-                                    class="form-control">
+                                        <input type="number" [(ngModel)]="UpdateMSSstoppageDaysTimeValue" name="stoppage Duration " class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-            
-                        <div class="row mt-3">
-                            <div class="col w-50">
-                                <label>Previous MSS Availability % </label>
-                                <input type="number" [(ngModel)]="UpdateMSSAvailability" name="availability" class="form-control w-50" id="availability"
-                                    disabled>
+
+                            <div class="row mt-3">
+                                <div class="col w-50">
+                                    <label>Previous MSS Availability % </label>
+                                    <input type="number" [(ngModel)]="UpdateMSSAvailability" name="availability" class="form-control w-50" id="availability" disabled>
+                                </div>
+
                             </div>
-                            
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate="footer">
-                        <a class="btn btn-white" style="border:none"> </a>
-                        <!-- <button class="btn btn-dark" style="float:left;" (click)="UpdateMSSClose()">Close</button> -->
-                        <button class="btn btn-primary btn-sm" style="float:right;" (click)="UpdateMSSToTree()">Update MSS</button>
-                    </ng-template>
-                </p-card>
+                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <a class="btn btn-white" style="border:none"> </a>
+                            <!-- <button class="btn btn-dark" style="float:left;" (click)="UpdateMSSClose()">Close</button> -->
+                            <button class="btn btn-primary btn-sm" style="float:right;" (click)="UpdateMSSToTree()">Update MSS</button>
+                        </ng-template>
+                    </p-card>
+                </div>
             </div>
-            </div>
-            
+
         </div>
     </div>
 </div>

@@ -1,5 +1,4 @@
 <style>
-   
     .disableddiv {
         pointer-events: none;
         cursor: default;
@@ -341,7 +340,7 @@
         <p-card>
             <ng-template pTemplate="subtitle">
                 <div class="input-group mb-3">
-                    <label><b >1. What is your accepted Availability % : </b></label> &ensp;
+                    <label *ngIf="RCASelectedRecord"> Your availability % from RCA ( can be edit availability. If want! ) </label> <label *ngIf="!RCASelectedRecord"><b>1. What is your accepted Availability % : </b></label> &ensp;
                     <input type="number" class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability percentage">
                 </div>
             </ng-template>

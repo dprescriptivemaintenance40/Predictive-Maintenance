@@ -325,36 +325,39 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
-  public UpdateFinalFCACondition : any = [] 
-  public UpdateFinalFCAInterval : number = 0; 
-  public UpdateFinalFCAFFIInterval : number = 0;
-  public UpdateFinalSafeUsefulLife : number = 0; 
-  public UpdateSafeLife : number = 0; 
-  public UpdateUsefulLife : number = 0; 
-  public UpdateFCAConditionsFINAL : any = []
-  public UpdateFCAIntervalsFINAL : any = []
-  public UpdateFCACommentFINAL : any = []
-  public UpdateWebalYN : string =""
-  public UpdateMSSConsequence : string =""
-  public UpdateMSSImagePath : string = ""
-  public UpdateMSSImageFlag : boolean = false
-  public UpdateMSSImageValues : any = []
-  public UpdateMSSTaskObj : any = []
-  public UpdatedMSSStartegy : string = ""
-  private UpdateMSSTreeLabel : number = 0
-  private UpdateMSSAvailability : number = 0
-  public UpdateMSSAvailabilityY : string = ""
-  public UpdateMSSstoppageDaysValue : number = 0
-  public UpdateMSSstoppageDays : string = ""
-  public UpdateMSSstoppageDaysTimeValue : number = 0
-  public UpdateMSSstoppageDaysTime : string = ""
-  public UpdateMSSAvailabilityCheck : number = 0
-  public UpdateMSSDirectAvailability : boolean = false
-  public UpdateMSSIndirectAvailability : boolean = false
-  public ADDMSSFinalAvailability : any = [];
-  public UpdateFunAndFunFailureName : string = "";
-  public UpdateFunFailure : string = "";
-  public presObj : CentrifugalPumpPrescriptiveModels = new CentrifugalPumpPrescriptiveModels();
+  public UpdateFinalFCACondition: any = []
+  public UpdateFinalFCAInterval: number = 0;
+  public UpdateFinalFCAFFIInterval: number = 0;
+  public UpdateFinalSafeUsefulLife: number = 0;
+  public UpdateSafeLife: number = 0;
+  public UpdateUsefulLife: number = 0;
+  public UpdateFCAConditionsFINAL: any = []
+  public UpdateFCAIntervalsFINAL: any = []
+  public UpdateFCACommentFINAL: any = []
+  public UpdateWebalYN: string = ""
+  public UpdateMSSConsequence: string = ""
+  public UpdateMSSImagePath: string = ""
+  public UpdateMSSImageFlag: boolean = false
+  public UpdateMSSImageValues: any = []
+  public UpdateMSSTaskObj: any = []
+  public UpdatedMSSStartegy: string = ""
+  private UpdateMSSTreeLabel: number = 0
+  private UpdateMSSAvailability: number = 0
+  public UpdateMSSAvailabilityY: string = ""
+  public UpdateMSSstoppageDaysValue: number = 0
+  public UpdateMSSstoppageDays: string = ""
+  public UpdateMSSstoppageDaysTimeValue: number = 0
+  public UpdateMSSstoppageDaysTime: string = ""
+  public UpdateMSSAvailabilityCheck: number = 0
+  public UpdateMSSDirectAvailability: boolean = false
+  public UpdateMSSIndirectAvailability: boolean = false
+  public ADDMSSFinalAvailability: any = [];
+  public UpdateFunAndFunFailureName: string = "";
+  public UpdateFunFailure: string = "";
+  public presObj: CentrifugalPumpPrescriptiveModels = new CentrifugalPumpPrescriptiveModels();
+  public LoginDetails: any;
+  public RCAListRecords: any = [];
+  public RCASelectedRecord: any;
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -366,8 +369,10 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     private changeDetectorRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
     private prescriptiveBLService: CommonBLService,
-    private prescriptiveContantAPI: PrescriptiveContantAPI) {
-    this.title.setTitle('Prescriptive Update | Dynamic Prescriptive Maintenence')
+    private prescriptiveContantAPI: PrescriptiveContantAPI,) {
+    this.title.setTitle('Prescriptive Update | Dynamic Prescriptive Maintenence');
+    this.LoginDetails = JSON.parse(localStorage.getItem('userObject'));
+    this.getRecordsList();
   }
 
   private isNewEntity: boolean = false;
@@ -423,7 +428,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     console.log(p.label)
     this.UpdateModal = true;
     if (p.label == 'Function') {
-      this.UpdateFunAndFunFailureName="Function";
+      this.UpdateFunAndFunFailureName = "Function";
       this.FluidType = this.CPPrescriptiveUpdateData.FunctionFluidType;
       this.UpdateFunFailure = this.CPPrescriptiveUpdateData.FunctionFailure;
       this.RatedHead = this.CPPrescriptiveUpdateData.FunctionRatedHead
@@ -791,7 +796,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   SaveFunction() {
     this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FluidType
     this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.UpdateFunFailure;
-    let FunctionTree: string = this.FluidType ;
+    let FunctionTree: string = this.FluidType;
     this.data1[0].data.name = FunctionTree
     this.data2[0].data.name = FunctionTree
     this.data1[0].children[0].data.name = this.UpdateFunFailure
@@ -1532,9 +1537,8 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
       .set('MachineType', this.MachineType)
       .set('EquipmentType', this.EquipmentType)
     var url: string = this.prescriptiveContantAPI.FMEADropdownData;
-    this.prescriptiveBLService.getWithParameters(url, params).subscribe(
-      //  this.http.get('api/PrescriptiveLookupMasterAPI/GetRecords', { params }).subscribe(
-      res => {
+    this.prescriptiveBLService.getWithParameters(url, params)
+      .subscribe(res => {
         console.log(res)
         this.dropDownData = res;
         let functionModeData = [];
@@ -3279,8 +3283,9 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         // this.UpdateMSSAvailability = d.MSSAvailability
         this.UpdateMSSIntervalSelectionCriteria = UpdateData.CentrifugalPumpMssModel[0].MSSIntervalSelectionCriteria
       }
-    })
-
+    });
+    const failureMode = this.data1[0].children[0].children[0].children.find(a => a.label === p.label).data.name;
+    this.RCASelectedRecord = this.RCAListRecords.find(a => a.RCAQuantitiveFailureMode.toLowerCase().includes(failureMode.toLowerCase()));
     this.changeDetectorRef.detectChanges()
     this.UpdateMSSImageFlag = true
     const element = document.querySelector("#Consequence")
@@ -3289,12 +3294,32 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   UpdateMSSAvailabilityYN() {
     if (this.UpdateMSSAvailabilityY == "Yes") {
-      this.UpdateMSSIndirectAvailability = false
-      this.UpdateMSSDirectAvailability = true
+      this.UpdateMSSIndirectAvailability = false;
+      this.UpdateMSSDirectAvailability = true;
+      this.UpdateMSSAvailabilityCheck = this.RCASelectedRecord.Availability;
     } else {
-      this.UpdateMSSIndirectAvailability = true
-      this.UpdateMSSDirectAvailability = false
+      this.UpdateMSSIndirectAvailability = true;
+      this.UpdateMSSDirectAvailability = false;
     }
+  }
+
+  getRecordsList() {
+    const params = new HttpParams()
+      .set("userId", this.LoginDetails.UserId)
+      .set("isQuantitive", "true")
+    this.RCAListRecords = [];
+    this.prescriptiveBLService.getWithParameters(this.prescriptiveContantAPI.RCAGetAPI, params)
+      .subscribe((res: any) => {
+        this.RCAListRecords = res
+        this.RCAListRecords.forEach(element => {
+          if (element.RCAQuantitiveFailureMode !== 'None') {
+            let RCAQuantitiveTree = JSON.parse(element.RCAQuantitiveTree);
+            element.Availability = RCAQuantitiveTree[0].Availability;
+          }
+        });
+      }, err => {
+        console.log(err.error)
+      });
   }
 
 
@@ -4618,7 +4643,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       });
       for (let i = 0; i < this.failuerMode.length; i++) {
-      this.failuerMode[i].checked = false;
+        this.failuerMode[i].checked = false;
       }
       this.failuerMode[index1].checked = true;
     }

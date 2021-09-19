@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -77,6 +77,9 @@ export class MSSAddComponent implements OnInit {
   public StrategyTemp: any = [];
   public CentrifugalPumpPrescriptiveModels = new CentrifugalPumpPrescriptiveModels();
   public FMObj: CentrifugalPumpPrescriptiveFailureMode = new CentrifugalPumpPrescriptiveFailureMode();
+  public LoginDetails: any;
+  public RCAListRecords: any = [];
+  public RCASelectedRecord: any;
   constructor(private messageService: MessageService,
     public title: Title,
     public router: Router,
@@ -84,7 +87,10 @@ export class MSSAddComponent implements OnInit {
     private http: HttpClient,
     private changeDetectorRef: ChangeDetectorRef,
     private prescriptiveBLService: CommonBLService,
-    private prescriptiveContantAPI: PrescriptiveContantAPI) { }
+    private prescriptiveContantAPI: PrescriptiveContantAPI) { 
+      this.LoginDetails = JSON.parse(localStorage.getItem('userObject'));
+      this.getRecordsList();
+    }
 
   ngOnInit() {
     this.title.setTitle('MSS | Dynamic Prescriptive Maintenence');
@@ -677,6 +683,7 @@ export class MSSAddComponent implements OnInit {
         this.expectedAvailability = true
         this.AvailabilityPlantStoppage = false
         this.AvailabilityPlantStoppageTime = false
+        this.AvailabilityCheck = this.RCASelectedRecord.Availability;
       } else if (this.AvailabilityY == 'No') {
         this.FinalAvailability = []
         this.stoppageDays = ""
@@ -756,5 +763,24 @@ export class MSSAddComponent implements OnInit {
     } else {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stoppage Duration is missing" })
     }
+  }
+
+  getRecordsList() {
+    const params = new HttpParams()
+      .set("userId", this.LoginDetails.UserId)
+      .set("isQuantitive", "true")
+    this.RCAListRecords = [];
+    this.prescriptiveBLService.getWithParameters(this.prescriptiveContantAPI.RCAGetAPI, params)
+      .subscribe((res: any) => {
+        this.RCAListRecords = res
+        this.RCAListRecords.forEach(element => {
+          if (element.RCAQuantitiveFailureMode !== 'None') {
+            let RCAQuantitiveTree = JSON.parse(element.RCAQuantitiveTree);
+            element.Availability = RCAQuantitiveTree[0].Availability;
+          }
+        });
+      }, err => {
+        console.log(err.error)
+      });
   }
 }

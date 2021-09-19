@@ -33,6 +33,7 @@
                                         <col style="width:9em;">
                                         <col style="width:14em;">
                                         <col style="width:9em;">
+                                        <col style="width:9em;">
                                         <col style="width:15em;">
                                         <col style="width:15em;">
                                         <col style="width:9em;">
@@ -44,8 +45,9 @@
                                         <th>RCA Label</th>
                                         <th>RCA code</th>
                                         <th>Tag No.</th>
-                                        <th> Qualitative Failure Mode</th>
-                                        <th> Quantitative Failure Mode</th>
+                                        <th>Availability</th>
+                                        <th>Qualitative Failure Mode</th>
+                                        <th>Quantitative Failure Mode</th>
                                         <th>Action</th>
                                     </tr>
                                 </ng-template>
@@ -55,6 +57,7 @@
                                         <td>{{p.RCALabel}}</td>
                                         <td>{{p.RCACode}}</td>
                                         <td>{{p.TagNumber}}</td>
+                                        <td>{{p.Availability}}</td>
                                         <td>{{p.RCAQualitativeFailureMode}}</td>
                                         <td>{{p.RCAQuantitiveFailureMode}}</td>
                                         <td>
@@ -88,13 +91,13 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                    <div class="d-flex flex-column">
-                        <label class="d-block">Tag Number</label>
-                        <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number" class="form-control">
-                    </div>
+                        <div class="d-flex flex-column">
+                            <label class="d-block">Tag Number</label>
+                            <input type="text" [(ngModel)]="TagNumber" placeholder="Enter Tag Number" class="form-control">
+                        </div>
                     </div>
                     <div class="col-md-3">
-                    <button class="btn btn-primary mt-4" (click)="TagNumberSelect()">Done</button>
+                        <button class="btn btn-primary mt-4" (click)="TagNumberSelect()">Done</button>
                     </div>
                 </div>
             </div>
@@ -116,7 +119,7 @@
 
             <div *ngIf="RCATypeQualititive === true" style="overflow: auto;">
                 <div class="classname" id="scene" #scene>
-                    <p-card >
+                    <p-card>
                         <button (click)="ClearRCAQualitiveTree()" class="badge badge-outline-secondary border-0" pTooltip="Clear Qualititive tree data" tooltipPosition="top"><small><i class="pi pi-times mr-1"></i></small>clear</button>
                         <p-tree [value]="files" layout="horizontal" selectionMode="single" [(selection)]="selectedFile" (addTreeRow)="addTreeRow($event)" (rCAAttachment)="rCAAttachment($event)" (uploadRCAAttachment)="uploadRCAAttachment($event)" (deleteTreeRow)="deleteTreeRow($event)">
                         </p-tree><br><br>
@@ -142,8 +145,8 @@
                 <div class="row mt-3">
                     <div class="col-md-3">
                         <div class="d-flex flex-column">
-                        <label style=" margin-right: 12px;">Label</label>
-                        <select class="form-select" (change)="UpdateLabeselect()" [(ngModel)]="UpdateSelectedLabel" class="form-control">
+                            <label style=" margin-right: 12px;">Label</label>
+                            <select class="form-select" (change)="UpdateLabeselect()" [(ngModel)]="UpdateSelectedLabel" class="form-control">
                             <option value="">Choose..</option>
                             <option *ngFor="let EL of UpdateTagNumberList" [ngValue]="EL">{{EL.RCALabel}}</option>
                         </select>
@@ -161,15 +164,15 @@
                     <div class="col-md-3">
                         <button class="btn btn-primary mt-4" (click)="UpdateTagNumberSelect()">Done</button>
                     </div>
-                </div>                
+                </div>
             </div>
             <div [hidden]="!UpdateTreeshow" style="overflow: auto;">
                 <div class="alert alert-dpmprimary w-100">
                     <div class="row">
                         <div class="col-md-3" *ngIf="UpdateRCATypeQualititive">
                             <div class="d-flex flex-column">
-                            <label>Asset</label>
-                            <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
+                                <label>Asset</label>
+                                <select [(ngModel)]="ADDRCAMachineType" class="form-select" class="form-control">
                                 <option value="" disabled>Choose..</option>
                                 <option value="Screw Compressor" selected>Screw Compressor</option>
                             </select>
@@ -351,8 +354,8 @@
             <div class="modal-body" style="overflow: auto; height: 80em;padding-left: 50;">
                 <div class="row">
                     <div class="col-md-12">
-                    <div *ngIf="!RCAQualitativeReport || !RCAQuantitativeReport" class=" alert alert-dpmprimary d-flex align-items-center justify-content-between">
-                       
+                        <div *ngIf="!RCAQualitativeReport || !RCAQuantitativeReport" class=" alert alert-dpmprimary d-flex align-items-center justify-content-between">
+
                             <label style="margin-right: 12px;">Select report type</label>
                             <select (change)="RCATypeReport()" [(ngModel)]="RCAReportType" class="form-select" class="form-control w-25">
                                 <option value="">Choose..</option>
@@ -360,8 +363,8 @@
                             </select>
                         </div>
                     </div>
-                    </div> 
-                    <div *ngIf="RCAQualitativeReport">
+                </div>
+                <div *ngIf="RCAQualitativeReport">
                     <div id="pdfTable" #pdfTable>
                         <div class="text-center" *ngIf="imagedivRCA">
                             <div class="image-container text-center">
@@ -374,9 +377,9 @@
                             </div>
                         </div>
                         <div class="text-center" style="text-align:center">
-                           <h5>Root Cause Analysis (RCA) based on Quantitative Approach</h5>
+                            <h5>Root Cause Analysis (RCA) based on Quantitative Approach</h5>
                         </div>
-                        
+
                         <div>
                             <label><u><b>Summary</b></u></label>
                         </div>
@@ -465,85 +468,79 @@
                             </p-organizationChart>
                         </div>
                     </div>
-                    </div>
+                </div>
                 <div style="overflow: auto;" *ngIf="RCAQuantitativeReport">
                     <div id="pdfTable1" #pdfTable1 style="margin: 20px;height: 100%;width: 100%;">
                         <div class="text-center" style="text-align:center">
                             <h4><b>Root Cause Analysis (RCA)  Qualitative approach</b></h4>
                         </div>
-                        <div class="sidebar-brand-icon col-sm-2 m-auto" *ngIf="imagedivRCA" >
-                            <div class="image-container" >
-                                <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png"  alt="">
+                        <div class="sidebar-brand-icon col-sm-2 m-auto" *ngIf="imagedivRCA">
+                            <div class="image-container">
+                                <img width="100%" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                             </div>
                         </div>
                         <div class="sidebar-brand-icon col-sm-2 m-auto" *ngIf="!imagedivRCA" id="pdfTable1" #pdfTable1>
-                            <div class="image-container" >
+                            <div class="image-container">
                                 <img style="width:30px;height:25px" src="dist/DPM/assets/img/DPM_LOGO.png" alt="">
                             </div>
                         </div>
                         <div class="page">
                             <h5><b>Summary </b></h5>
                             <p>
-                                This report is based on the results of a qualitative approach for investigation and analysis of failure causes. 
-                                The Root Cause Analysis (RCA) method used is Fault Tree  technique analysis. An initial effect is taken as the top event of a tree and all concerns are branched out of it.  
+                                This report is based on the results of a qualitative approach for investigation and analysis of failure causes. The Root Cause Analysis (RCA) method used is Fault Tree technique analysis. An initial effect is taken as the top event of a tree and all concerns
+                                are branched out of it.
                             </p>
                             <p>
-                                The tree diagram is a graphic display of 5 Whys method. 
-                                It displays the layers of cause looking in detail for the root of the failure.  
+                                The tree diagram is a graphic display of 5 Whys method. It displays the layers of cause looking in detail for the root of the failure.
                             </p>
                             <p>
-                                The results of the analysis integrated into an assessment process and providing a set of consistent conclusions 
+                                The results of the analysis integrated into an assessment process and providing a set of consistent conclusions
                             </p>
                             <p>
-                                A brief introduction of the system data and considerations are briefly described. 
-                                RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments conducted. 
+                                A brief introduction of the system data and considerations are briefly described. RCA inputs outlines the current actions the team had to proceed. Past and present data are considered. Site visits attended and discussions with all relevant departments
+                                conducted.
                             </p>
                             <p>
-                                Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.  
+                                Proposal for actions and recommendations are established. Company should review the existing procedures and proceed with improvement wherever is required.
                             </p>
-                
+
                             <h5><b>Introduction</b></h5>
                             <p>
-                                RCA analysis completed on  {{RCAReportDate}} for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
-                                RCA finalized by using the current data and considering the failure history of the asset
+                                RCA analysis completed on {{RCAReportDate}} for {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. RCA finalized by using the current data and considering the failure history of the asset
                             </p>
                             <p>
-                                An understanding of the system to be analyzed was essential prior to the development of the RCA. 
-                                The initial step was to collect the data and identify whether adequate information was sufficient to proceed with a reliable and accurate analysis.  
+                                An understanding of the system to be analyzed was essential prior to the development of the RCA. The initial step was to collect the data and identify whether adequate information was sufficient to proceed with a reliable and accurate analysis.
                             </p>
                             <h5><b> RCA inputs </b></h5>
-                            <textarea *ngIf="!RCAReportfileds" class="custom-textarea1 form-control"[(ngModel)]="RCAInput"
-                                placeholder="RCA inputs * " > {{RCAInput}} </textarea>
+                            <textarea *ngIf="!RCAReportfileds" class="custom-textarea1 form-control" [(ngModel)]="RCAInput" placeholder="RCA inputs * "> {{RCAInput}} </textarea>
                             <h5><b>Actions and recommendations </b></h5>
-                
-                            <textarea *ngIf="!RCAReportfileds" class="custom-textarea1 form-control" [(ngModel)]="ActionRecommendation"
-                                placeholder="Actions and recommendations  * "> {{ActionRecommendation}}</textarea>
+
+                            <textarea *ngIf="!RCAReportfileds" class="custom-textarea1 form-control" [(ngModel)]="ActionRecommendation" placeholder="Actions and recommendations  * "> {{ActionRecommendation}}</textarea>
                             <h5><b>Conclusion </b></h5>
                             <p>
-                                The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}.
-                                and propose technical solutions to prevent similar failures in future
+                                The objective of the task was to analyze the current condition of {{RCAReportData.RCAEquipment}} with Tag No {{RCAReportData.TagNumber}}. and propose technical solutions to prevent similar failures in future
                             </p>
                             <ul>
                                 <li>
-                                    The reliability methodology was based on Fault Tree analysis. 
+                                    The reliability methodology was based on Fault Tree analysis.
                                 </li>
                                 <li>
-                                    The root causes were well defined, analyzed and documented. 
+                                    The root causes were well defined, analyzed and documented.
                                 </li>
                                 <li>
-                                    The recommended actions should be considered along with recommendation to formulate a corrective future action plan that can eliminate the failures and increase reliability of the asset.  
+                                    The recommended actions should be considered along with recommendation to formulate a corrective future action plan that can eliminate the failures and increase reliability of the asset.
                                 </li>
                             </ul>
                             <label><u><b>Annexures</b></u></label>
-    
+
                         </div>
-                        </div>
-                        <div  style="page-break-before: always;"></div>
-                        <div id="image1" #image1 >
-                            <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
-                            <!-- <p-organizationChart [value]="RCAReportTree">
+                    </div>
+                    <div style="page-break-before: always;"></div>
+                    <div id="image1" #image1>
+                        <p-tree [value]="RCAReportTree" layout="horizontal"></p-tree>
+                        <!-- <p-organizationChart [value]="RCAReportTree">
                             </p-organizationChart> -->
-                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" *ngIf="RCAQuantitativeReport || RCAQualitativeReport" (click)="RCAReportDownload()" class="btn btn-primary">Download</button>
@@ -578,5 +575,4 @@
             </div>
         </div>
     </div>
- </div>
-
+</div>

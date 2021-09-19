@@ -28,14 +28,23 @@ namespace DPM.Controllers.Prescriptive.RCA
         // GET: api/<RCAAPIController>
         [HttpGet]
         [Route("GetAllRCARecords")]
-        public async Task<IActionResult> GetAllRecords()
+        public async Task<IActionResult> GetAllRecords(string userId, bool isQuantitive)
         {
             try
             {
-                string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                List<RCAModel> rcaList = await _context.rCAModels.Where(a => a.UserId == userId)
-                                                               .OrderBy(a => a.RCAID)
-                                                               .ToListAsync();
+                List<RCAModel> rcaList = new List<RCAModel>();
+                if (isQuantitive)
+                {
+                    rcaList = await _context.rCAModels.Where(a => a.UserId == userId && a.RCAQuantitiveFailureMode != "None")
+                                                             .OrderBy(a => a.RCAID)
+                                                             .ToListAsync();
+                }
+                else
+                {
+                    rcaList = await _context.rCAModels.Where(a => a.UserId == userId)
+                                                              .OrderBy(a => a.RCAID)
+                                                              .ToListAsync();
+                }               
                 return Ok(rcaList);
             }
             catch (Exception exe)
