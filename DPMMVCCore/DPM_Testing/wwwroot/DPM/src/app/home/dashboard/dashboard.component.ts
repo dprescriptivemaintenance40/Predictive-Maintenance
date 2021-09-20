@@ -848,6 +848,30 @@ export class DashboardComponent {
     this.IndicationGraphCF()
   }
 
+  onPredictionChangeYear1() {
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && this.PredictionDate=="bydefault"
+     ||this.PredictionDate=="Previous 1 week" || this.PredictionDate=="Previous 15 Days" || this.PredictionDate=="Previous 1 Month" || this.PredictionDate=="Previous 3 Month" || this.PredictionDate=="Previous 1 Year");
+     this.combinationList=[];
+     this.PredictionDegradecount = 0
+    this.PredictionIncipientcount = 0
+    this.PredictionNormalcount = 0
+    this.Predictionbadcount = 0
+
+    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
+        this.PredictionDegradecount = this.PredictionDegradecount + 1
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
+        this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
+        this.PredictionNormalcount = this.PredictionNormalcount + 1
+      } else
+        this.Predictionbadcount = this.Predictionbadcount + 1
+    }
+
+     this.PredictionDates()
+
+  }
+
   PredictFModeType() {
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString()); //for tag numbers
@@ -920,7 +944,10 @@ export class DashboardComponent {
             this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;  
+            for (var i = 0; i < this.unique.length; ++i) {
             this.PredictionDataTableList.forEach(element => {
+              var a = `${moment(element.InsertedDate).format('YYYY')}-${element.TagNumber}`
+              if (a == this.unique[i]) {
               if (element.Prediction == 'normal') {
                 this.PredictionNormalcount = this.PredictionNormalcount + 1;
               } else if (element.Prediction == 'incipient') {
@@ -928,10 +955,12 @@ export class DashboardComponent {
               } else if (element.Prediction == 'degrade' || element == 'degarde') {
                 this.PredictionDegradecount = this.PredictionDegradecount + 1;
               }
+            }
             });
             this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
             this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
             this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+          }
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
 
@@ -954,8 +983,11 @@ export class DashboardComponent {
             this.PredictionIncipientcount=0
             this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
-            this.PredictionDataTableList = res;
+            this.PredictionDataTableList = res;  
+            for (var i = 0; i < this.unique.length; ++i) {
             this.PredictionDataTableList.forEach(element => {
+              var a = `${moment(element.InsertedDate).format('YYYY')}-${element.TagNumber}`
+              if (a == this.unique[i]) {
               if (element.Prediction == 'normal') {
                 this.PredictionNormalcount = this.PredictionNormalcount + 1;
               } else if (element.Prediction == 'incipient') {
@@ -963,17 +995,19 @@ export class DashboardComponent {
               } else if (element.Prediction == 'degrade' || element == 'degarde') {
                 this.PredictionDegradecount = this.PredictionDegradecount + 1;
               }
+            }
             });
             this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
             this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
             this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+          }
           }, err => {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
 
             this.commonLoadingDirective.showLoading(false, " ");
           }
         )
-
+        
     } else if (this.PredictionDate == 'Previous 15 Days') {
       var fromerDays= this.PredictionDatesList.slice(-1)
       var torDay= this.PredictionDatesList.slice(-15)
@@ -989,24 +1023,29 @@ export class DashboardComponent {
             this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            this.PredictionDataTableList.forEach(element => {
-              if (element.Prediction == 'normal') {
-                this.PredictionNormalcount = this.PredictionNormalcount + 1;
-              } else if (element.Prediction == 'incipient') {
-                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-              } else if (element.Prediction == 'degrade' || element == 'degarde') {
-                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+            for (var i = 0; i < this.unique.length; ++i) {
+              this.PredictionDataTableList.forEach(element => {
+                var a = `${moment(element.InsertedDate).format('YYYY')}-${element.TagNumber}`
+                if (a == this.unique[i]) {
+                if (element.Prediction == 'normal') {
+                  this.PredictionNormalcount = this.PredictionNormalcount + 1;
+                } else if (element.Prediction == 'incipient') {
+                  this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+                } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                  this.PredictionDegradecount = this.PredictionDegradecount + 1;
+                }
               }
-            });
-            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-          }, err => {
-            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Datesr', sticky: true });
-
-            this.commonLoadingDirective.showLoading(false, " ");
-          }
-        )
+              });
+              this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+              this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+              this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            }
+            }, err => {
+              this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+  
+              this.commonLoadingDirective.showLoading(false, " ");
+            }
+          )
 
     } else if (this.PredictionDate == 'Previous 1 Month') {
       var fromerDays= this.PredictionDatesList.slice(-1)
@@ -1023,24 +1062,29 @@ export class DashboardComponent {
             this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            this.PredictionDataTableList.forEach(element => {
-              if (element.Prediction == 'normal') {
-                this.PredictionNormalcount = this.PredictionNormalcount + 1;
-              } else if (element.Prediction == 'incipient') {
-                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-              } else if (element.Prediction == 'degrade' || element == 'degarde') {
-                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+            for (var i = 0; i < this.unique.length; ++i) {
+              this.PredictionDataTableList.forEach(element => {
+                var a = `${moment(element.InsertedDate).format('YYYY')}-${element.TagNumber}`
+                if (a == this.unique[i]) {
+                if (element.Prediction == 'normal') {
+                  this.PredictionNormalcount = this.PredictionNormalcount + 1;
+                } else if (element.Prediction == 'incipient') {
+                  this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+                } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                  this.PredictionDegradecount = this.PredictionDegradecount + 1;
+                }
               }
-            });
-            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-          }, err => {
-            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-
-            this.commonLoadingDirective.showLoading(false, " ");
-          }
-        )
+              });
+              this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+              this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+              this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            }
+            }, err => {
+              this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+  
+              this.commonLoadingDirective.showLoading(false, " ");
+            }
+          )
 
     } else if (this.PredictionDate == 'Previous 3 Month') {
       var fromerDays= this.PredictionDatesList.slice(-1)
@@ -1057,22 +1101,29 @@ export class DashboardComponent {
             this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            this.PredictionDataTableList.forEach(element => {
-              if (element.Prediction == 'normal') {
-                this.PredictionNormalcount = this.PredictionNormalcount + 1;
-              } else if (element.Prediction == 'incipient') {
-                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-              } else if (element.Prediction == 'degrade' || element == 'degarde') {
-                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+            for (var i = 0; i < this.unique.length; ++i) {
+              this.PredictionDataTableList.forEach(element => {
+                var a = `${moment(element.InsertedDate).format('YYYY')}-${element.TagNumber}`
+                if (a == this.unique[i]) {
+                if (element.Prediction == 'normal') {
+                  this.PredictionNormalcount = this.PredictionNormalcount + 1;
+                } else if (element.Prediction == 'incipient') {
+                  this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+                } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                  this.PredictionDegradecount = this.PredictionDegradecount + 1;
+                }
               }
-            });
-            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-          }, err => {
-            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-          }
-        )
+              });
+              this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+              this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+              this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            }
+            }, err => {
+              this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+  
+              this.commonLoadingDirective.showLoading(false, " ");
+            }
+          )
 
     }
     else if (this.PredictionDate == 'Previous 1 Year') {
@@ -1090,22 +1141,29 @@ export class DashboardComponent {
             this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
-            this.PredictionDataTableList.forEach(element => {
-              if (element.Prediction == 'normal') {
-                this.PredictionNormalcount = this.PredictionNormalcount + 1;
-              } else if (element.Prediction == 'incipient') {
-                this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
-              } else if (element.Prediction == 'degrade' || element == 'degarde') {
-                this.PredictionDegradecount = this.PredictionDegradecount + 1;
+            for (var i = 0; i < this.unique.length; ++i) {
+              this.PredictionDataTableList.forEach(element => {
+                var a = `${moment(element.InsertedDate).format('YYYY')}-${element.TagNumber}`
+                if (a == this.unique[i]) {
+                if (element.Prediction == 'normal') {
+                  this.PredictionNormalcount = this.PredictionNormalcount + 1;
+                } else if (element.Prediction == 'incipient') {
+                  this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
+                } else if (element.Prediction == 'degrade' || element == 'degarde') {
+                  this.PredictionDegradecount = this.PredictionDegradecount + 1;
+                }
               }
-            });
-            this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-            this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-            this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
-          }, err => {
-            this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-          }
-        )
+              });
+              this.Degradepercentage = ((this.PredictionDegradecount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+              this.Incipientpercentage = ((this.PredictionIncipientcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+              this.Normalpercentage = ((this.PredictionNormalcount /  this.PredictionDataTableList.length) * 100).toFixed(2);
+            }
+            }, err => {
+              this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
+  
+              this.commonLoadingDirective.showLoading(false, " ");
+            }
+          )
 
     }
     else {

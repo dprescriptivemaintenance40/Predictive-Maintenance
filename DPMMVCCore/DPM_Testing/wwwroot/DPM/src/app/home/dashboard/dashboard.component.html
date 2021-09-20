@@ -694,7 +694,16 @@
             <h5>Health status</h5>
         <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <select name="PredictionselectedYear" [(ngModel)]="selctedtagnymbers"
+                (ngModelChange)="onPredictionChangeYear1()" class="form-control">
+                <option value="">Select Tag Number</option>
+                <ng-container *ngFor="let tagnumber of Predictyearlist">
+                    <option [value]="tagnumber.PredictyTagnumber" name="PredictionselectedYear">
+                        {{tagnumber.PredictyTagnumber}}</option>
+                </ng-container>
+            </select>
+            </div>
             <div class="col-md-2">
                 <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="PredictionDates()"
                 [(ngModel)]="PredictionDate" class="form-control" name="Prediction">
