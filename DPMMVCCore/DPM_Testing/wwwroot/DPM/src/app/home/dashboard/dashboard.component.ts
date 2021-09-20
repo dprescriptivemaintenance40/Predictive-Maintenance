@@ -3610,6 +3610,8 @@ export class DashboardComponent {
         scales: {
           xAxes: [{
               stacked: true,
+              barThickness: 120,  
+              maxBarThickness: 118 ,
             gridLines: {
               display: false
             },
