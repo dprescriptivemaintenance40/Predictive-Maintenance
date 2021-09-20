@@ -915,6 +915,9 @@ export class DashboardComponent {
       this.screwCompressorMethod.getWithParameters(url, params)
         .subscribe(
           res => {
+            this.PredictionNormalcount=0
+            this.PredictionIncipientcount=0
+            this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;  
             this.PredictionDataTableList.forEach(element => {
@@ -947,6 +950,9 @@ export class DashboardComponent {
       this.screwCompressorMethod.getWithParameters(url, params)
         .subscribe(
           res => {
+            this.PredictionNormalcount=0
+            this.PredictionIncipientcount=0
+            this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
             this.PredictionDataTableList.forEach(element => {
@@ -978,6 +984,9 @@ export class DashboardComponent {
       this.screwCompressorMethod.getWithParameters(url2, params2)
         .subscribe(
           res => {
+            this.PredictionNormalcount=0
+            this.PredictionIncipientcount=0
+            this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
             this.PredictionDataTableList.forEach(element => {
@@ -1009,6 +1018,9 @@ export class DashboardComponent {
       this.screwCompressorMethod.getWithParameters(url3, params3)
         .subscribe(
           res => {
+            this.PredictionNormalcount=0
+            this.PredictionIncipientcount=0
+            this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
             this.PredictionDataTableList.forEach(element => {
@@ -1040,6 +1052,9 @@ export class DashboardComponent {
       this.screwCompressorMethod.getWithParameters(url4, params4)
         .subscribe(
           res => {
+            this.PredictionNormalcount=0
+            this.PredictionIncipientcount=0
+            this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
             this.PredictionDataTableList.forEach(element => {
@@ -1070,6 +1085,9 @@ export class DashboardComponent {
       this.screwCompressorMethod.getWithParameters(url4, params4)
         .subscribe(
           res => {
+            this.PredictionNormalcount=0
+            this.PredictionIncipientcount=0
+            this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
             this.PredictionDataTableList = res;
             this.PredictionDataTableList.forEach(element => {
