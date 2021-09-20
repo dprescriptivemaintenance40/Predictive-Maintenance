@@ -816,7 +816,8 @@ export class DashboardComponent {
 
   onPredictionChangeYear() {
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); 
-     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString());
+     //this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString());
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
      this.combinationList=[];
      this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
@@ -3423,6 +3424,7 @@ export class DashboardComponent {
       y = s+ '-' + t
      datetagnumberlist.push(y)
      this.unique = [...new Set(datetagnumberlist)]; 
+     this.unique.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     })
     for (var i = 0; i < this.unique.length; ++i) {
       var FPnormal = 0
@@ -3446,6 +3448,7 @@ export class DashboardComponent {
         }
 
       });
+ 
       var fperc_Incipient
       var fperc_Normal
       var fperc_Degrade
