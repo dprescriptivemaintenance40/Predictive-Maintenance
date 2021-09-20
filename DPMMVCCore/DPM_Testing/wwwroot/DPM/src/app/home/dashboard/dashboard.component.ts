@@ -845,9 +845,10 @@ export class DashboardComponent {
   }
 
   PredictFModeType() {
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
+    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString()); //for tag numbers
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (`${moment(val.InsertedDate).format('YYYY')}-${val.TagNumber}`) === this.PredictionselectedYear.toString());
+    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
     this.combinationList=[]
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
@@ -3379,7 +3380,7 @@ export class DashboardComponent {
       }
     });
   }
-
+  public unique:any=[]
   PredictionWithTagNumber1() {
     this.changeDetectorRef.detectChanges();
     this.combinationList=[];
@@ -3412,8 +3413,18 @@ export class DashboardComponent {
       this.combinationList.push(combo)
       this.combinationList.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     })
-   
-    for (var i = 0; i < this.Pyearlist.length; ++i) {
+    var s:any=[]
+  var t:any=[]
+  var y:any=[]
+  let datetagnumberlist=[]
+    this.ScrewPredictionAllData.forEach(value => {
+      s = moment(value.InsertedDate).format('YYYY')
+      t= value.TagNumber
+      y = s+ '-' + t
+     datetagnumberlist.push(y)
+     this.unique = [...new Set(datetagnumberlist)]; 
+    })
+    for (var i = 0; i < this.unique.length; ++i) {
       var FPnormal = 0
       var FPincipient = 0
       var FPdegrade = 0
@@ -3421,7 +3432,7 @@ export class DashboardComponent {
       var counter = 0
       this.ScrewPredictionAllData.forEach(value => {
         var a = `${moment(value.InsertedDate).format('YYYY')}-${value.TagNumber}`
-        if (a == this.combinationList[i]) {
+        if (a == this.unique[i]) {
           if (value.Prediction == 'normal') {
             FPnormal = FPnormal + 1
           } else if (value.Prediction == 'incipient') {
@@ -3454,7 +3465,7 @@ export class DashboardComponent {
     this.chart = new Chart("PredictionbarWithYear", {
       type: "bar",
       data: {
-        labels: this.combinationList,
+        labels: this.unique,
         fill: true,
         datasets: [
           {
