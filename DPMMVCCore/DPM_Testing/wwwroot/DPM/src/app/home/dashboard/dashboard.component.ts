@@ -843,6 +843,9 @@ export class DashboardComponent {
     this.PredictionWithTagNumber1()
     // this.PredictionAllRecordDonught()
     this.PredictionWithActionPieChart()
+    this.IndicationGraphSSRB()
+    this.IndicationGraphRD()
+    this.IndicationGraphCF()
   }
 
   PredictFModeType() {
@@ -873,6 +876,31 @@ export class DashboardComponent {
     // this.PredictionAllRecordDonught()
      this.PredictionWithTagNumber1()
     this.PredictionWithActionPieChart()
+  }
+
+  PredictFModeType1() {
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
+
+    this.PredictionDegradecount = 0
+    this.PredictionIncipientcount = 0
+    this.PredictionNormalcount = 0
+    this.Predictionbadcount = 0
+
+    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
+        this.PredictionDegradecount = this.PredictionDegradecount + 1
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
+        this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
+        this.PredictionNormalcount = this.PredictionNormalcount + 1
+      } else
+        this.Predictionbadcount = this.Predictionbadcount + 1
+    }
+
+
+    this.IndicationGraphSSRB()
+    this.IndicationGraphRD()
+    this.IndicationGraphCF()
   }
 
   PredictionDates() {
@@ -3625,8 +3653,10 @@ export class DashboardComponent {
     var Degradepercentage
     var Incipientpercentage
     var Normalpercentage
-
+    for (var i = 0; i < this.Pyearlist.length; ++i) {
     this.ScrewPredictionAllData.forEach(element => {
+      var b = moment(element.InsertedDate).format('YYYY')
+               if (b == this.Pyearlist[i].Predictyearname) {
       if (element.SSRB == 'normal') {
         this.PredictionNormalcount = this.PredictionNormalcount + 1;
       } else if (element.SSRB == 'incipient') {
@@ -3634,7 +3664,7 @@ export class DashboardComponent {
       } else if (element.SSRB == 'degrade' || element == 'degarde') {
         this.PredictionDegradecount = this.PredictionDegradecount + 1;
       }
-    
+   }
     });
     Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
     Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
@@ -3643,6 +3673,7 @@ export class DashboardComponent {
     this.predictionDegradeMessage = Degradepercentage
     this.predictionIncipientMessage = Incipientpercentage
     this.predictionNormalMessage = Normalpercentage
+  }
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("indication_barSSRB", {
       type: "horizontalBar",
@@ -3663,6 +3694,7 @@ export class DashboardComponent {
         }]
       },
       options: {
+         events: [],
         legend: {
           display: false
         },
@@ -3765,6 +3797,7 @@ export class DashboardComponent {
         }]
       },
       options: {
+        events: [],
         legend: {
           display: false
         },
@@ -3865,6 +3898,7 @@ export class DashboardComponent {
         }]
       },
       options: {
+        events: [],
         legend: {
           display: false
         },
