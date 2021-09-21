@@ -428,14 +428,15 @@
             </div>
             <div class="col-md-4">
                 <div class="">
-                    <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
+                    <!-- <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear1"
                         (ngModelChange)="PredictFModeType()" class="form-control">
                         <option value="">Select Year</option>
                         <ng-container *ngFor="let year of Pyearlist">
                             <option [value]="year.Predictyearname" name="PredictionselectedYear">
                                 {{year.Predictyearname}}</option>
                         </ng-container>
-                    </select>
+                    </select> --> 
+                   <p-multiSelect defaultLabel="Select Year"[options]="Pyearlist" [(ngModel)]="PredictionselectedYear1" (ngModelChange)="PredictFModeType()" optionLabel="Predictyearname" optionValue="Predictyearname"></p-multiSelect> 
                 </div>
             </div>
             <div class="col-md-4">
@@ -454,6 +455,14 @@
                     </div>
                     </div>
                 </div><br>
+                <div class="d-block mt-4">
+                    <div class="col-md-12 mt-4">
+                        <div class="bg-white rounded  px-5 py-3  br-3" >
+                            <strong>Asset Condition Status</strong><br>
+                            <canvas id="FakePredictionbarWithTage"></canvas>
+                        </div>
+                        </div>
+                    </div><br>
         <div class="row mt-4">
             <div class="col-md-6">
                 <div class="card bg-white p-3 border-0 ">
@@ -467,9 +476,9 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-sm">
-                        <div class="card bg-white p-3 border-0 ">
+                        <div class="card bg-white p-3 border-0 " *ngFor="let obj of allCBAdata;">
                             <strong>Alert Acknowledgement</strong><br>
-                            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number :{{tag}}</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
+                            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number :{{obj.TagNumber}}</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
                             <canvas id="PredictionAlertsPiechart"> </canvas>
                         </div>
                     </div>
@@ -483,11 +492,11 @@
             <h5>Tasks</h5>
             <div class="row">
                 <div class="col-sm-3">
-                    <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear" (ngModelChange)="PredictFModeType1()"
+                    <select name="task" [(ngModel)]="task" (ngModelChange)="PredictFModeType1()"
                         class="form-control">
                         <option value="">Select Year</option>
                         <ng-container *ngFor="let year of Pyearlist">
-                            <option [value]="year.Predictyearname" name="PredictionselectedYear">
+                            <option [value]="year.Predictyearname" name="task">
                                 {{year.Predictyearname}}</option>
                         </ng-container>
                     </select>
@@ -597,7 +606,7 @@
     <div *ngIf="showcbi" id="CBAnavigate">
         <div class="bg-transparent mt-4">
             <div class="d-flex justify-content-between align-items-center">
-                <h5><b> Cost Benifit Risk Analysis</b> </h5>
+                <h5><b> Cost Benefit Risk Analysis</b> </h5>
                 <button class="btn btn-outline-dark btn-sm" (click)="RouteToCostBenifit()" data-toggle="tooltip"
                     data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
             </div>

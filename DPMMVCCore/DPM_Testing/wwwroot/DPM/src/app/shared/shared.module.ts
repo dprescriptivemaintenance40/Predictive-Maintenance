@@ -29,6 +29,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import {TreeTableModule} from 'primeng/treetable';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
+import {MultiSelectModule} from 'primeng/multiselect';
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [
@@ -88,6 +89,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
         TreeTableModule,
         CheckboxModule,
         CalendarModule,
+        MultiSelectModule,
         InputNumberModule]
 })
 export class SharedModule {

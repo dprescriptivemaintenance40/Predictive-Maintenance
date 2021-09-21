@@ -87,6 +87,7 @@ export class DashboardComponent {
 
   public selectedYear: string = "";
   public PredictionselectedYear: string = "";
+  public PredictionselectedYear1: any = [];
   public PselectedYear: string = "";
   public fmtype: string = "";
   public predictionfmtype: string = "";
@@ -234,6 +235,7 @@ export class DashboardComponent {
   public showcbi: boolean = false;
 
   public CBI_etbf: number = 0;
+  public totalPONC:number=0
   public ETBFWithConstraint: number = 0;
   public MEIWithDPMWithConstraint: number = 0;
   public MEIWithDPMWithoutConstraint: number = 0;
@@ -435,6 +437,7 @@ export class DashboardComponent {
      this.RiskProfile()
      this.ComboDates()
      this.dygraphForJson()
+     this.fakePredictionWithTagNumber()
 
   }
   }
@@ -871,13 +874,20 @@ export class DashboardComponent {
      this.PredictionDates()
 
   }
-
+public pname:any=[]
+public multiselectarray:any=[]
   PredictFModeType() {
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString()); //for tag numbers
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (`${moment(val.InsertedDate).format('YYYY')}-${val.TagNumber}`) === this.PredictionselectedYear.toString());
-    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
-    this.combinationList=[]
+
+    this.PredictionselectedYear1.forEach(val => {
+      this.pname = val.Predictyearname 
+     })
+ 
+     this.ScrewPredictionAllData= this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && moment(val.InsertedDate).format('YYYY') === this.pname);
+      this.multiselectarray.push(this.ScrewPredictionAllData)
+
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -893,17 +903,12 @@ export class DashboardComponent {
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
-    // this.PredictionAllRecordBarcharts() 
-   //this.PredictionAllRecordPie()
-    this.PredictiongraphShow = true;
-    this.PredictiongraphShow1 = true;
-    // this.PredictionAllRecordDonught()
+    //  this.PredictionWithTagNumber2()
      this.PredictionWithTagNumber1()
-    this.PredictionWithActionPieChart()
   }
-
+ public task :string = ""
   PredictFModeType1() {
-     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString()); //for only years
 
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
@@ -1366,10 +1371,6 @@ export class DashboardComponent {
     //  this.ComboChart();
   }
 
-
-  ForcaststatusChange(){
-    
-  }
  assetSelection(){
    this.assetselection= true;
  }
@@ -1458,9 +1459,6 @@ export class DashboardComponent {
       row.ConsequenceCategory = row.Consequence.split(' ')[0];
     });
 
-    // this.CostRisk = true;
-    //  this.gaugechartwithDPM()
-    //  this.gaugechartwithoutDPM()
     this.CBICharts()
     this.ALLGraphCBA()
   }
@@ -2700,23 +2698,6 @@ export class DashboardComponent {
   //   });
   // }
 
-  FutuerPredictionClick() {
-    this.changeDetectorRef.detectChanges();
-    this.GerAllFutuerPredictionRecords();
-    this.FuterPredictionShow = true;
-    this.PredictionShow = false;
-    this.PredictionselectedYear = ""
-    this.fmtype = ""
-
-  }
-
-  PredictionOnClick() {
-    this.changeDetectorRef.detectChanges();
-    this.FuterPredictionShow = false;
-    this.PredictionShow = true;
-    this.FutuerselectedYear = ""
-    this.fmtype = ""
-  }
 
   // dygraph() {
   //   this.chart = new Dygraph(
@@ -3537,10 +3518,9 @@ export class DashboardComponent {
       }
     });
   }
-  public unique:any=[]
+  public unique:any
   PredictionWithTagNumber1() {
     this.changeDetectorRef.detectChanges();
-    this.combinationList=[];
     this.FPFinalNormal=[];
     this.FPFinalIncipient=[];
     this.FPFinaldDegrade=[];
@@ -3550,26 +3530,26 @@ export class DashboardComponent {
     this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
     this.PTagNumberList = this.PTagNumberList.filter(r => r.TagNumber !== null)
   
-    this.PTagNumberList.forEach(element=>{
-      this.tagnumbers.push(element.TagNumber) 
-    })
-    var LabelDatess: any = [];
-    var combo: any = [];
-    this.Pyearlist.forEach(element => {
-      LabelDatess = LabelDatess.filter(function (element) {
-        return element !== undefined;
-      });
-      LabelDatess.push(element.Predictyearname)
-      LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-      this.Pyearlist.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    });
-    this.Pyearlist.forEach(element => {
-      this.Predictyearlist.forEach(value => {
-        combo= `${element.Predictyearname}-${value.PredictyTagnumber}`
-      });
-      this.combinationList.push(combo)
-      this.combinationList.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    })
+    // this.PTagNumberList.forEach(element=>{
+    //   this.tagnumbers.push(element.TagNumber) 
+    // })
+    // var LabelDatess: any = [];
+    // var combo: any = [];
+    // this.Pyearlist.forEach(element => {
+    //   LabelDatess = LabelDatess.filter(function (element) {
+    //     return element !== undefined;
+    //   });
+    //   LabelDatess.push(element.Predictyearname)
+    //   LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    //   this.Pyearlist.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    // });
+    // this.Pyearlist.forEach(element => {
+    //   this.Predictyearlist.forEach(value => {
+    //     combo= `${element.Predictyearname}-${value.PredictyTagnumber}`
+    //   });
+    //   this.combinationList.push(combo)
+    //   this.combinationList.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    // })
     var s:any=[]
   var t:any=[]
   var y:any=[]
@@ -3706,6 +3686,8 @@ export class DashboardComponent {
 
   }
 
+ 
+
   PredictionWithActionPieChart() {
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionActionPiechart", {
@@ -3747,10 +3729,10 @@ export class DashboardComponent {
                 if (i == 3) {
                   ctx.fillStyle = '#444';
                 }
-                if (i > 0) {
+                // if (i > 0) {
                   var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
                   ctx.fillText(percent, model.x + x, model.y + y + 15);
-                }
+                // }
 
               }
             });
@@ -3851,7 +3833,7 @@ export class DashboardComponent {
             this.data.datasets.forEach(function (dataset, i) {
               var meta = chartInstance.controller.getDatasetMeta(i);
               meta.data.forEach(function (bar, index) {
-                var data = dataset.data[index];
+                var data = String((dataset.data[index])) + "%";
                 if(i==0){
                   ctx.fillText(data, 50, bar._model.y+4);
               } else {
@@ -3952,7 +3934,7 @@ export class DashboardComponent {
             this.data.datasets.forEach(function (dataset, i) {
               var meta = chartInstance.controller.getDatasetMeta(i);
               meta.data.forEach(function (bar, index) {
-                var data = dataset.data[index];
+                var data = String((dataset.data[index])) + "%";
                 if(i==0){
                   ctx.fillText(data, 50, bar._model.y+4);
               } else {
@@ -4053,7 +4035,7 @@ export class DashboardComponent {
             this.data.datasets.forEach(function (dataset, i) {
               var meta = chartInstance.controller.getDatasetMeta(i);
               meta.data.forEach(function (bar, index) {
-                var data = dataset.data[index];
+                var data = String((dataset.data[index])) + "%";
                 if(i==0){
                   ctx.fillText(data, 50, bar._model.y+4);
               } else {
@@ -4078,7 +4060,15 @@ export class DashboardComponent {
       var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
       var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
       var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
-    this.chart = new Chart("profile_risk", {
+   
+      var yLabels = {
+          100 : 'Low',
+          300 : 'Normal',
+          500 : 'Medium ',
+          700 : 'Medium-High',
+          900 : 'High',
+      }
+      this.chart = new Chart("profile_risk", {
       type: "bar",
       data: {
         labels: ["Risk"],
@@ -4106,7 +4096,7 @@ export class DashboardComponent {
             backgroundColor: "#36486b",
             borderColor: "#36486b",
             borderWidth: 1,
-            data: [800,]
+            data: [740,]
           },
         ]
       },
@@ -4116,20 +4106,33 @@ export class DashboardComponent {
             display: true,
             text: 'Risk Analysis'
         },
-        backgroundRules: [{
-            backgroundColor: "#adebad", 
-            yAxisSegement: 100
-        }, {
-          backgroundColor: "#ffffb3",
+        backgroundRules: [
+          {
+            yAxisID: 'B',
+            backgroundColor: "#008000",
+            yAxisSegement: 50
+          },
+          {
+            yAxisID: 'B',
+            backgroundColor: "#d9ffb3",
+            yAxisSegement: 300
+          },
+          {
+            yAxisID: 'B',
+            backgroundColor: "#ffffb3",
             yAxisSegement: 500
-        },  {
-          backgroundColor: "#ffc2b3",
-          yAxisSegement: 700
-        },
-        { 
-          backgroundColor: "#ff4d4d",
-            yAxisSegement: 1000
-        }],
+          }, {
+            yAxisID: 'B',
+            backgroundColor: "#ffc2b3",
+            yAxisSegement: 700
+          },
+          {
+            yAxisID: 'B',
+            backgroundColor: "#ff4d4d",
+            yAxisSegement: 900
+          }
+
+      ],
         scales: {
           yAxes: [
             {
@@ -4142,8 +4145,21 @@ export class DashboardComponent {
               ticks: {
                 beginAtZero: 0
               }
+            },
+            {
+              id: 'B',
+              type: 'linear',
+              position: 'right',
+              ticks: {
+                beginAtZero: true,
+                max:1000,
+                callback: function(value,) {
+                    return yLabels[value];
+                }
             }
+            },
           ],
+          
           xAxes: [{
             barPercentage: 0.4
         }]
@@ -4475,7 +4491,91 @@ ConvertToCSV(objArray) {
   }
   return str;
 }
+fakePredictionWithTagNumber(){
+  this.chart = new Chart("FakePredictionbarWithTage", {
+    type: "bar",
+    data: {
+      labels: ["K100-2016", "K100-2017", "K100-2018","K100-2019","K100-2020","K100-2020","K101-2018","K101-2019","K101-2020","K102-2020",],
+      fill: true,
+      datasets: [
+        {
+          label: "Normal",
+          data: [50,55,56,57,60,63,56,69,15,25],
+          borderWidth: 1,
+          borderColor: "#008000",
+          backgroundColor: '#008000',
+          fill: true,
 
+        },
+        {
+          label: "Incipient",
+          data: [15,20,23,28,31,34,39,4,77,25],
+          borderWidth: 1,
+          borderColor: "#ffb801",
+          backgroundColor: '#ffb801',
+          fill: true,
+
+        },
+        {
+          label: "Degrade",
+          data: [7,9,11,12,8,7,12,0,4,17],
+          borderWidth: 1,
+          borderColor: "#fe4c61",
+          backgroundColor: '#fe4c61',
+          fill: true,
+
+        },
+
+      ],
+    },
+    options: {
+      tooltips: {
+        mode: 'index',
+      },
+      scales: {
+        xAxes: [{
+          stacked: true,
+          barPercentage: 0.2,
+          scaleLabel: {
+            display: true,
+            labelString: 'Tag Numbers & Years'
+          },
+          gridLines: {
+            display: false
+          },
+        }],
+        yAxes: [{
+          stacked: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Percentage '
+          },
+          ticks: {
+          },
+          gridLines: {
+            display: false
+          },
+        }],
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                }
+              });
+            });
+          }
+        },
+      }
+    }
+  });
+}
 
 }
 
