@@ -3283,6 +3283,7 @@ export class DashboardComponent {
   //   });
 
   // }
+
   MEIGraph() {
     this.changeDetectorRef.detectChanges();
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
@@ -3356,6 +3357,57 @@ export class DashboardComponent {
     });
 
   }
+
+  // MEIGraph() {
+  //   this.changeDetectorRef.detectChanges();
+  //   var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
+  //   var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
+  //   var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
+  //   var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
+
+  //   var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
+  //   var meicostwithDPM = ((meiCostDPMWithoutConstraint / meitotal) * 100).toFixed(2)
+  //   var meicostwithConstraint = ((meiCostWithDPMConstraint / meitotal) * 100).toFixed(2)
+
+  //   var value1:any = meicostwithoutDPM, value2:any= meicostwithDPM,value3:any= meicostwithConstraint;
+  //   this.chart = new Chart("mei_risk", {
+  //     type: "doughnut",
+  //     data: {
+  //       labels: ["Without DPM","With DPM","With Constraint"],
+  //       datasets: [
+  //         {
+  //           data: [value1, 0, 100 - value1],
+  //           backgroundColor: [
+  //               "#d72631",
+  //               "#00CCFF",
+  //               "#DCDCDC"
+  //           ]
+  //         },
+  //         {
+  //             data: [0, value2, 100 - value2],
+  //               backgroundColor: [
+  //                   "#039fbe",
+  //                   "#00CCFF",
+  //                   "#DCDCDC"
+  //               ]
+  //         },
+  //         {
+  //           data: [value3, 100 - value3,],
+  //           backgroundColor: [
+  //               "#5c3c92",
+  //               "#DCDCDC"
+  //           ]
+  //         },
+  //       ]
+  //     },
+  //     options: {
+  //       circumference: 1 * Math.PI,
+  //       rotation: 1 * Math.PI,
+  //       cutoutPercentage: 58
+  //     },
+  //   });
+
+  // }
 
   ALLGraphCBA() {
     var eonomicriskwithoutDPM: number = +(this.EconomicRiskWithOutDPM)
