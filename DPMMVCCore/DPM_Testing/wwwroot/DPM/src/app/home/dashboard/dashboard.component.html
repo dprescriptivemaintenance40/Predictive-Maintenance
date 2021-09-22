@@ -455,14 +455,6 @@
                     </div>
                     </div>
                 </div><br>
-                <div class="d-block mt-4">
-                    <div class="col-md-12 mt-4">
-                        <div class="bg-white rounded  px-5 py-3  br-3" >
-                            <strong>Asset Condition Status</strong><br>
-                            <canvas id="FakePredictionbarWithTage"></canvas>
-                        </div>
-                        </div>
-                    </div><br>
         <div class="row mt-4">
             <div class="col-md-6">
                 <div class="card bg-white p-3 border-0 ">
@@ -485,6 +477,14 @@
                 </div>
             </div>
         </div>
+        <div class="d-block mt-4">
+            <div class="col-md-12 mt-4">
+                <div class="bg-white rounded  px-5 py-3  br-3" >
+                    <strong>Asset Condition Status</strong><br>
+                    <canvas id="FakePredictionbarWithTage"></canvas>
+                </div>
+                </div>
+            </div>
     </div><br>
 
     <div class="card-body task-body">
@@ -492,7 +492,7 @@
             <h5>Tasks</h5>
             <div class="row">
                 <div class="col-sm-3">
-                    <select name="task" [(ngModel)]="task" (ngModelChange)="PredictFModeType1()"
+                    <select name="task" [(ngModel)]="task" (ngModelChange)="PredictTask()"
                         class="form-control">
                         <option value="">Select Year</option>
                         <ng-container *ngFor="let year of Pyearlist">

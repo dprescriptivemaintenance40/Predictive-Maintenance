@@ -876,62 +876,59 @@ export class DashboardComponent {
   }
 public pname:any=[]
 public multiselectarray:any=[]
+public result:any
   PredictFModeType() {
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString()); //for tag numbers
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (`${moment(val.InsertedDate).format('YYYY')}-${val.TagNumber}`) === this.PredictionselectedYear.toString());
-
     this.PredictionselectedYear1.forEach(val => {
       this.pname = val.Predictyearname 
      })
  
      this.ScrewPredictionAllData= this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && moment(val.InsertedDate).format('YYYY') === this.pname);
-      this.multiselectarray.push(this.ScrewPredictionAllData)
-
+     this.multiselectarray.push(this.ScrewPredictionAllData)
+      this.result = this.multiselectarray.reduce((r, e) => (r.push(...e), r), [])
+ 
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
     this.Predictionbadcount = 0
 
-    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
+    for (var i = 0; i < this.result.length; i++) {
+      if (`${this.result[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
         this.PredictionDegradecount = this.PredictionDegradecount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
+      } else if (`${this.result[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
         this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
+      } else if (`${this.result[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
         this.PredictionNormalcount = this.PredictionNormalcount + 1
       } else
         this.Predictionbadcount = this.Predictionbadcount + 1
     }
-    //  this.PredictionWithTagNumber2()
-     this.PredictionWithTagNumber1()
+      this.PredictionWithTagNumber2()
   }
  public task :string = ""
-  PredictFModeType1() {
-     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString()); //for only years
+  PredictTask() {
+   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString()); 
 
-    this.PredictionDegradecount = 0
-    this.PredictionIncipientcount = 0
-    this.PredictionNormalcount = 0
-    this.Predictionbadcount = 0
+   this.PredictionDegradecount = 0
+   this.PredictionIncipientcount = 0
+   this.PredictionNormalcount = 0
+   this.Predictionbadcount = 0
 
-    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
-        this.PredictionDegradecount = this.PredictionDegradecount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
-        this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
-        this.PredictionNormalcount = this.PredictionNormalcount + 1
-      } else
-        this.Predictionbadcount = this.Predictionbadcount + 1
-    }
-
-
-    this.IndicationGraphSSRB()
-    this.IndicationGraphRD()
-    this.IndicationGraphCF()
-  }
-
+   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+     if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
+       this.PredictionDegradecount = this.PredictionDegradecount + 1
+     } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
+       this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+     } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
+       this.PredictionNormalcount = this.PredictionNormalcount + 1
+     } else
+       this.Predictionbadcount = this.Predictionbadcount + 1
+   }
+   this.IndicationGraphSSRB()
+   this.IndicationGraphRD()
+   this.IndicationGraphCF()
+ }
   PredictionDates() {
     if (this.PredictionDate == 'bydefault') {
       this.doPredictionDisabled = true;
@@ -3686,7 +3683,148 @@ public multiselectarray:any=[]
 
   }
 
+  PredictionWithTagNumber2() {
+    this.changeDetectorRef.detectChanges();
+    this.FPFinalNormal=[];
+    this.FPFinalIncipient=[];
+    this.FPFinaldDegrade=[];
+    this.changeDetectorRef.detectChanges();
+   
+    var s:any=[]
+  var t:any=[]
+  var y:any=[]
+  let datetagnumberlist=[]
+    this.result.forEach(value => {
+      s = moment(value.InsertedDate).format('YYYY')
+      t= value.TagNumber
+      y = s+ '-' + t
+     datetagnumberlist.push(y)
+     this.unique = [...new Set(datetagnumberlist)]; 
+     this.unique.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
+    })
+    for (var i = 0; i < this.unique.length; ++i) {
+      var FPnormal = 0
+      var FPincipient = 0
+      var FPdegrade = 0
+      var FPbad = 0
+      var counter = 0
+      this.result.forEach(value => {
+        var a = `${moment(value.InsertedDate).format('YYYY')}-${value.TagNumber}`
+        if (a == this.unique[i]) {
+          if (value.Prediction == 'normal') {
+            FPnormal = FPnormal + 1
+          } else if (value.Prediction == 'incipient') {
+            FPincipient = FPincipient + 1
+          } else if (value.Prediction == 'degarde' || value.Prediction == 'degrade') {
+            FPdegrade = FPdegrade + 1
+          } else {
+            FPbad = FPbad + 1
+          }
+          counter = counter + 1
+        }
+
+      });
  
+      var fperc_Incipient
+      var fperc_Normal
+      var fperc_Degrade
+      var fperc_Bad
+
+      fperc_Incipient =  ((FPincipient / counter) * 100).toFixed()
+      fperc_Normal =  ((FPnormal / counter) * 100).toFixed()
+      fperc_Degrade =  ((FPdegrade / counter) * 100).toFixed()
+      fperc_Bad =  ((FPbad / counter) * 100).toFixed()
+
+      this.FPFinalNormal.push(fperc_Normal)
+      this.FPFinalIncipient.push(fperc_Incipient)
+      this.FPFinaldDegrade.push(fperc_Degrade)
+      this.FPFinalBad.push(fperc_Bad)
+    }
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("PredictionbarWithYear", {
+      type: "bar",
+      data: {
+        labels: this.unique,
+        fill: true,
+        datasets: [
+          {
+            label: "Normal",
+            data: this.FPFinalNormal,
+            borderWidth: 1,
+            borderColor: "#008000",
+            backgroundColor: '#008000',
+            fill: true,
+
+          },
+          {
+            label: "Incipient",
+            data: this.FPFinalIncipient,
+            borderWidth: 1,
+            borderColor: "#ffb801",
+            backgroundColor: '#ffb801',
+            fill: true,
+
+          },
+          {
+            label: "Degrade",
+            data: this.FPFinaldDegrade,
+            borderWidth: 1,
+            borderColor: "#fe4c61",
+            backgroundColor: '#fe4c61',
+            fill: true,
+
+          },
+
+        ],
+      },
+      options: {
+        events: [],
+        scales: {
+          xAxes: [{
+              stacked: true,
+              barThickness: 120,  
+              maxBarThickness: 118 ,
+            gridLines: {
+              display: false
+            },
+          }],
+          yAxes: [
+            {
+               stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true,
+                gridLines: {
+                  display: false
+                },
+              }
+            }
+          ]
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                }
+              });
+            });
+          }
+        },
+      }
+     
+    });
+
+  }
 
   PredictionWithActionPieChart() {
     this.changeDetectorRef.detectChanges();
@@ -4075,27 +4213,28 @@ public multiselectarray:any=[]
         datasets: [
           {
             label: "With DPM",
-            backgroundColor: "#618685",
-            borderColor: "#618685",
+            backgroundColor: "#cf1578",
+            borderColor: "#cf1578",
             data:[resdualtWithoutDPM]
           },
           {
             label: "Without DPM",
-            backgroundColor: "#36486b",
-            borderColor: "#36486b",
+            backgroundColor: "#ff6e40",
+            borderColor: "#ff6e40",
             data: [residualcostwithDPM]
           },
           {
             label: "With Constraint",
-            backgroundColor: "#006699",
-            borderColor: "#006699",
+            backgroundColor: "#039fbe",
+            borderColor: "#039fbe",
             data: [residualwithConstraint]
           },
           {
             label: "Miigated",
+            type: 'bubble',
             backgroundColor: "#36486b",
             borderColor: "#36486b",
-            borderWidth: 1,
+            borderWidth: 6,
             data: [740,]
           },
         ]
@@ -4120,7 +4259,8 @@ public multiselectarray:any=[]
           {
             yAxisID: 'B',
             backgroundColor: "#ffffb3",
-            yAxisSegement: 500
+            yAxisSegement: 500,
+            
           }, {
             yAxisID: 'B',
             backgroundColor: "#ffc2b3",
@@ -4143,14 +4283,20 @@ public multiselectarray:any=[]
                 labelString: 'Risk Rank'
               },
               ticks: {
-                beginAtZero: 0
+                beginAtZero: 0,
+                gridLines: {
+                  display: false
+                },
               }
             },
             {
               id: 'B',
-              type: 'linear',
+               type: 'linear',
               position: 'right',
               ticks: {
+                gridLines: {
+                  display: false
+                },
                 beginAtZero: true,
                 max:1000,
                 callback: function(value,) {
@@ -4161,7 +4307,10 @@ public multiselectarray:any=[]
           ],
           
           xAxes: [{
-            barPercentage: 0.4
+            barPercentage: 0.4,
+            gridLines: {
+              display: false
+            },
         }]
         },
       },
