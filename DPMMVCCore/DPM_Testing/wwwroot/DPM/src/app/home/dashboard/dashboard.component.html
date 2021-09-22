@@ -12,8 +12,8 @@
   50% {
     opacity: 0;
   }
-
 }
+
 
 </style>
 <p-toast position="top-right"></p-toast>
@@ -327,16 +327,6 @@
 
 
 <div class="bg-white p-3 rounded mt-4">
-        <!-- <div class="col-md-2">
-        <select [(ngModel)]="date" class="form-select" (change)="ComboDates()" class="form-control">
-            <option value="">Choose..</option>
-            <option value="1Day" selected>After 1 Day</option>
-            <option value="1Week" selected>After 1 Week</option>
-            <option value="15days" selected>After 15 Days</option>
-            <option value="1Month" selected>After 1 Month</option>
-        </select>
-    </div> -->
-
     <div class="row d-flex flex-column justify-content-between align-items-center">
         <div class="col-md-12">
             <h5><b>Combination Of Prediction & Future Prediction</b></h5>
@@ -364,20 +354,7 @@
 </div><br><br>
 
 <div *ngIf="ExecutorShow">
-    <!-- <div class ="row">
-        <div class="col-sm-3">
-            <label>Prediction From  :</label>
-            <input type="date" [(ngModel)]="FromDate" class="form-control" id="FromDate">
-        </div>
-        <div class="col-sm-3">
-            <label>Prediction To  :</label>
-            <input type="date" [(ngModel)]="ToDate" class="form-control" id="ToDate">
-        </div>
-        <div class="col-sm-3">
-            <button type="button" (click)="getPredictedListRecordsByDate()" class="btn btn-primary mt-4">Show</button>
-        </div>
-        <div class="col-sm-3"></div>
-    </div> -->
+
     <div class="form-group col-sm-3">
         <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
             [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
@@ -428,14 +405,6 @@
             </div>
             <div class="col-md-4">
                 <div class="">
-                    <!-- <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear1"
-                        (ngModelChange)="PredictFModeType()" class="form-control">
-                        <option value="">Select Year</option>
-                        <ng-container *ngFor="let year of Pyearlist">
-                            <option [value]="year.Predictyearname" name="PredictionselectedYear">
-                                {{year.Predictyearname}}</option>
-                        </ng-container>
-                    </select> --> 
                    <p-multiSelect defaultLabel="Select Year"[options]="Pyearlist" [(ngModel)]="PredictionselectedYear1" (ngModelChange)="PredictFModeType()" optionLabel="Predictyearname" optionValue="Predictyearname"></p-multiSelect> 
                 </div>
             </div>
@@ -477,14 +446,6 @@
                 </div>
             </div>
         </div>
-        <div class="d-block mt-4">
-            <div class="col-md-12 mt-4">
-                <div class="bg-white rounded  px-5 py-3  br-3" >
-                    <strong>Asset Condition Status</strong><br>
-                    <canvas id="FakePredictionbarWithTage"></canvas>
-                </div>
-                </div>
-            </div>
     </div><br>
 
     <div class="card-body task-body">
@@ -534,7 +495,9 @@
             <div class="col-md-5">
                 <div class="h-100 bg-white p-3">
                     <h5>Risks</h5>
-                    <h1 (click)="RiskTableback()"></h1>
+                     <a class="blink_me" (click) ="riskclick()"><strong style="font-size: 12px;"><span
+                        style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+                </strong></a>  
                     <div class="row">
                         <div class="col-sm-6">
                             <div *ngFor="let obj of allCBAdata;">
@@ -553,6 +516,11 @@
             <div class="col-md-7" *ngIf="MitigatingActionshow">
                 <div class="bg-white p-3">
                     <h5>Mitigating Actions</h5>
+                    <a class="blink_me" (click) ="mittigatioclick()">
+                        <strong style="font-size: 12px;"><span
+                        style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+                    </strong>
+            </a>
                     <div class="row">
                         <div class="col-sm-6">
                             <tbody>
@@ -592,17 +560,77 @@
                         </div>
                     </div>
                 </div>
+            </div >
+     
             </div>
-            </div>
-            </div><br>
-
+     </div><br>
     <div>
         <div class="card" style="width:70rem;">
+            <a class="blink_me" (click) ="riskanalysclick()"><strong style="font-size: 12px;"><span
+                style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+        </strong></a>
             <canvas id="profile_risk"></canvas>
         </div>
     </div><br>
+ 
 
-
+        <div class="shadow p-3 mb-5 bg-white" style="margin-left:45rem;width:30rem; position:sticky;top:0;" *ngIf="helpboxshow">
+            <div class="card-header"> 
+                 <strong style="color:#2B65EC;font-size: 20px">Steps</strong>  
+                <div>
+                    <p-steps [model]="items" [(activeIndex)]="activeIndex"></p-steps>
+                </div> 
+            </div>
+          
+            <div class="card-body">
+                   <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem" id="pid">
+                    <strong style="color:#2B65EC;font-size: 20px">Asset strategy library</strong>
+                    </div>
+                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                        <h5>
+                            APM has a catalog of 600 common equipment categories, 37,000 failure modes, and 3400 actions to get started
+                            right away
+                        </h5>
+                    </div>
+                    <div *ngIf="riskhelp" id="riskhelpid">
+                        <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
+                            <strong style="color:#2B65EC;font-size: 20px">Risk</strong>
+                        </div><br>
+                        <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                            <h5>
+                                The Reliability Analyst can review the risks to understand why assets might fail.
+                            </h5>
+                        </div>
+                    </div><br>
+                    <div *ngIf="mittigationhelp" id="mittigationhelp">
+                        <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
+                            <strong style="color:#2B65EC;font-size: 20px">Mitigating Actions</strong>
+                        </div>
+                        <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                            <h5>
+                                Each of the risks has different mitigation actions that have been recommended by various experts.
+                            </h5>
+                        </div>
+                    </div>
+                    <div *ngIf="riskanalysishelp" id="riskanalysishelp">
+                        <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
+                            <strong style="color:#2B65EC;font-size: 20px">Risk Analysis</strong>
+                        </div>
+                        <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                            <h5>
+                                The Reliability Analyst can do a What-If Analysis to see the impact of a mitigation in the strategy.
+                            </h5>
+                        </div>
+                    </div>
+            </div>
+           
+            <div class="card-footer">
+                <a (click) ="Previous()" class="btn btn-primary">Previous step</a>
+                <a *ngIf="gotit" style="float: right" (click) ="helpbox()" class="btn btn-primary">Got It</a>
+            </div>
+          </div>
+        
+ 
     <div *ngIf="showcbi" id="CBAnavigate">
         <div class="bg-transparent mt-4">
             <div class="d-flex justify-content-between align-items-center">
@@ -642,9 +670,17 @@
                     <canvas id="mei_risk"></canvas>
                 </div>
             </div>
-        </div> <br><br>
+        </div> <br>  
     </div>
-
+ 
+    <div class="d-block mt-4">
+        <div class="col-md-12 mt-4">
+            <div class="bg-white rounded  px-5 py-3  br-3" >
+                <strong>Asset Condition Status</strong><br>
+                <canvas id="FakePredictionbarWithTage"></canvas>
+            </div>
+            </div>
+     </div>
 </div>
 
 <div *ngIf="PrescriptiveShow">
@@ -677,6 +713,7 @@
             </div>
         </div>
     </div>
+    
    </div><br>
     <div *ngIf="assetselection">
     <div class="card-body task-body">
@@ -729,7 +766,7 @@
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-2">
-                <select name="PredictionselectedYear" [(ngModel)]="selctedtagnymbers"
+                <select name="PredictionselectedYear" [(ngModel)]="forststuspredictionyearlist"
                 (ngModelChange)="onPredictionChangeYear1()" class="form-control">
                 <option value="">Select Tag Number</option>
                 <ng-container *ngFor="let tagnumber of Predictyearlist">
@@ -996,4 +1033,3 @@
         </div>
     </div>
 </div><br> -->
-

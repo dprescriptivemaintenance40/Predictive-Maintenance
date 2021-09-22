@@ -15,6 +15,7 @@ import { ProfileConstantAPI } from "../profile/profileAPI.service";
 import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
 import { element, } from "protractor";
 import { ConfigService } from "src/app/shared/config.service";
+import { MenuItem } from 'primeng/api';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -344,11 +345,23 @@ export class DashboardComponent {
   public SelectedDateFromList: any = [];
   public futurePredictionDate: any = [];
   public PredictionDate: any = [];
+  public predictions:any=[];
+  public forcasts:any=[];
+  public forcastPredictionDatesList:any=[];
   public PredictionDataTableList: any = [];
   public futurePredictionDataTableList: any = [];
   public futurePredictionDatesToShow: any = ["After One Day", "After a week", "After 15 Days", "After 30 Days",];
   public PredictionDatesToShow: any = ["Previous 1 week", "Previous 15 Days", "Previous 1 Month","Previous 3 Month","Previous 1 Year"];
-
+  public activeIndex: number;
+  public riskhelp: boolean = false;
+  public mittigationhelp: boolean = false;
+  public riskanalysishelp: boolean = false;
+  public helpboxshow:boolean = true;
+  public gotit:boolean =false
+  public pname:any=[]
+  public multiselectarray:any=[]
+  public result:any
+  public task :string = ""
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -389,7 +402,7 @@ export class DashboardComponent {
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'M', 'FinancialRisk': 2029, 'TagNumber': 'K104' },
   ]
   }
-
+  public items: MenuItem[];
   ngOnInit() {
     // this.fakePredictionWithTagNumber()
        // this.GerAllPredictionRecords();
@@ -398,10 +411,33 @@ export class DashboardComponent {
     this.MachineEquipmentSelect();
     this.getAllRecordsbyTag();
     this.dygraph()
-    this.GetALLCBA()
+    // this.GetALLCBA()
     this.GerAllFutuerPredictionRecords()
     this.getFuturePredictionRecords()
     this.getPredictedListRecordsByDate()
+    this.items = [{
+      expanded: true,
+      command: (event: any) => {
+        this.activeIndex = 0;
+      }
+    },
+    {
+      command: (event: any) => {
+        this.activeIndex = 1;
+
+      }
+    },
+    {
+      command: (event: any) => {
+        this.activeIndex = 2;
+      }
+    },
+    {
+      command: (event: any) => {
+        this.activeIndex = 3;
+      }
+    },
+    ];
   }
 
   public screwWithPrediction: any = [];
@@ -421,6 +457,7 @@ export class DashboardComponent {
   Dashboardshowcriteria(){
    if(this.dashboardshow=="Prescription"){
     this.PrescriptiveShow=true;
+    this.assetselection= true;
     this.GerAllPredictionRecords();
     this.ExecutorShow=false;
    }else if(this.dashboardshow=="Management"){
@@ -551,9 +588,6 @@ export class DashboardComponent {
     }
   }
 
-
-
-
   FullCBAObject() {
     // this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
     // this.myObj = JSON.parse(this.fullCBAobject);
@@ -590,12 +624,10 @@ export class DashboardComponent {
         this.MachineType = this.PrescriptiveRecordsList[0].MachineType
         this.EquipmentType = this.PrescriptiveRecordsList[0].EquipmentType
         this.SelectedTagNumber = this.PrescriptiveRecordsList[0].TagNumber
-
         this.getRecordsByEqui()
       });
+      this.GetALLCBA()
   }
-
-
 
   RouteToTrain() {
     this.router.navigateByUrl('/Home/Compressor/ScrewTrain');
@@ -851,8 +883,9 @@ export class DashboardComponent {
     this.IndicationGraphCF()
   }
 
+  public forststuspredictionyearlist:string= ""
   onPredictionChangeYear1() {
-     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && this.PredictionDate=="bydefault"
+     this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.forststuspredictionyearlist.toString() && this.PredictionDate=="bydefault"
      ||this.PredictionDate=="Previous 1 week" || this.PredictionDate=="Previous 15 Days" || this.PredictionDate=="Previous 1 Month" || this.PredictionDate=="Previous 3 Month" || this.PredictionDate=="Previous 1 Year");
      this.combinationList=[];
      this.PredictionDegradecount = 0
@@ -874,9 +907,7 @@ export class DashboardComponent {
      this.PredictionDates()
 
   }
-public pname:any=[]
-public multiselectarray:any=[]
-public result:any
+
   PredictFModeType() {
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); //for only years
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString()); //for tag numbers
@@ -906,7 +937,7 @@ public result:any
     }
       this.PredictionWithTagNumber2()
   }
- public task :string = ""
+
   PredictTask() {
    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString()); 
 
@@ -1368,9 +1399,9 @@ public result:any
     //  this.ComboChart();
   }
 
- assetSelection(){
-   this.assetselection= true;
- }
+//  assetSelection(){
+//    this.assetselection= true;
+//  }
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
       this.EquipmentList = []
@@ -3929,6 +3960,7 @@ public result:any
       type: "horizontalBar",
       data: {
         labels: [],
+        indexLabelPlacement:"inside",
         datasets: [{
           data: [Normalpercentage],
           backgroundColor: "#008000",
@@ -3962,18 +3994,18 @@ public result:any
           }],
         },
         "animation": {
-          "duration": 1,
+          // "duration": 1,
           "onComplete": function () {
             var chartInstance = this.chart,
               ctx = chartInstance.ctx;
               ctx.textAlign = 'center';
-              ctx.textBaseline = 'bottom';
+              ctx.textBaseline = 'center';
             this.data.datasets.forEach(function (dataset, i) {
               var meta = chartInstance.controller.getDatasetMeta(i);
               meta.data.forEach(function (bar, index) {
                 var data = String((dataset.data[index])) + "%";
                 if(i==0){
-                  ctx.fillText(data, 50, bar._model.y+4);
+                   ctx.fillText(data, 50, bar._model.y+4);
               } else {
                   ctx.fillText(data, bar._model.x-25, bar._model.y+4);
               }
@@ -4232,9 +4264,10 @@ public result:any
           {
             label: "Miigated",
             type: 'bubble',
-            backgroundColor: "#36486b",
-            borderColor: "#36486b",
+            backgroundColor: "white",
+            borderColor: "white",
             borderWidth: 6,
+            // data: [this.ResidualRiskWithConstraintDPMCR,]
             data: [740,]
           },
         ]
@@ -4569,9 +4602,7 @@ public result:any
         return await 0;
     }
 }
- public predictions:any=[];
- public forcasts:any=[];
- public forcastPredictionDatesList:any=[];
+
 dygraphForJson() {
     this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
       this.predictions = res;
@@ -4613,9 +4644,6 @@ dygraphForJson() {
          )
      })}
  )
-
-
-
 
 }
 ConvertToCSV(objArray) {
@@ -4726,5 +4754,51 @@ fakePredictionWithTagNumber(){
   });
 }
 
+riskclick(){
+  this.activeIndex=1;
+  this.riskhelp= true 
+  this.gotit=true
+  this.helpboxshow=true
+  var elmnt = document.getElementById("pid");
+  elmnt.scrollIntoView();
+ 
+}
+mittigatioclick(){
+  this.activeIndex=2;
+  this.riskhelp= true
+  this.gotit=true
+  this.helpboxshow=true
+  this.mittigationhelp= true
+   var elmnt = document.getElementById("riskhelpid");
+   elmnt.scrollIntoView();
+}
+riskanalysclick(){
+  this.activeIndex=3;
+  this.riskhelp= true
+  this.gotit=true
+  this.mittigationhelp= true
+  this.riskanalysishelp= true
+  this.helpboxshow=true
+  var elmnt = document.getElementById("mittigationhelp");
+  elmnt.scrollIntoView();
+}
+Previous(){
+  if(this.activeIndex==3){
+    this.riskanalysishelp= false
+    this.mittigationhelp= true
+    this.riskhelp= true
+    this.activeIndex=2;
+  } else if(this.activeIndex==2){
+    this.mittigationhelp= false
+    this.riskhelp= true
+    this.activeIndex=1;
+  } else if(this.activeIndex==1){
+    this.riskhelp= false
+    this.activeIndex=0;
+  }
+}
+helpbox(){
+  this.helpboxshow= false
+}
 }
 
