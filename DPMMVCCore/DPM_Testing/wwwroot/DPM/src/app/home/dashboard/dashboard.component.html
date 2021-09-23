@@ -429,8 +429,8 @@
                 <div class="card bg-white p-3 border-0 ">
                     <strong>Recommendation Status</strong>
                     <div *ngFor="let obj of allCBAdata;">
-                        <strong style="text-align: left;color:black;font-size: 12px">Recommendation Status For:{{obj.MachineType}}, {{obj.EquipmentType}}, {{obj.TagNumber}}</strong><br>
-                    <canvas id="PredictionActionPiechart"></canvas><br><br>
+                        <strong style="text-align: left;color:black;font-size: 12px">Recommendation Status For:{{obj.MachineType}}, {{obj.EquipmentType}},{{selctedtagnymbers}}</strong><br>    
+                        <canvas id="PredictionActionPiechart"></canvas><br><br>
                     </div>
                 </div>
             </div>
@@ -440,7 +440,7 @@
                         <div class="card bg-white p-3 border-0 " *ngFor="let obj of allCBAdata;">
                             <strong>Alert Acknowledgement</strong><br>
                             <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number :{{obj.TagNumber}}</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
-                            <canvas id="PredictionAlertsPiechart"> </canvas>
+                            <!-- <canvas id="PredictionAlertsPiechart"> </canvas> -->
                         </div>
                     </div>
                 </div>
@@ -452,6 +452,16 @@
         <div class="col-sm-12 p-0">
             <h5>Tasks</h5>
             <div class="row">
+                <div class="col-sm-3">
+                    <select name="selctedtasktagno" [(ngModel)]="selctedtasktagno"
+                    (ngModelChange)="PredictTask()" class="form-control">
+                    <option value="">Select Tag Number</option>
+                    <ng-container *ngFor="let tagnumber of Predictyearlist">
+                        <option [value]="tagnumber.PredictyTagnumber" name="selctedtasktagno">
+                            {{tagnumber.PredictyTagnumber}}</option>
+                    </ng-container>
+                </select>
+                </div>
                 <div class="col-sm-3">
                     <select name="task" [(ngModel)]="task" (ngModelChange)="PredictTask()"
                         class="form-control">
@@ -479,7 +489,8 @@
                             </span></td>
                             <td class="left strong">{{mode.FMname}}</td>
                             <td>
-                                <div>
+                                <div style="width: 55rem;">
+                                  
                                     <canvas id="{{mode.chartID}}" height="12"></canvas>
                                 </div>
                           </td>

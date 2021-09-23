@@ -362,6 +362,8 @@ export class DashboardComponent {
   public multiselectarray:any=[]
   public result:any
   public task :string = ""
+  public selctedtasktagno:string = ""
+  public forststuspredictionyearlist:string= ""
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -409,9 +411,8 @@ export class DashboardComponent {
     // this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
-    this.getAllRecordsbyTag();
     this.dygraph()
-    // this.GetALLCBA()
+    //  this.GetALLCBA()
     this.GerAllFutuerPredictionRecords()
     this.getFuturePredictionRecords()
     this.getPredictedListRecordsByDate()
@@ -620,13 +621,18 @@ export class DashboardComponent {
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
       .subscribe((res: any) => {
+        res.forEach(element => {
+          this.TagList.push(element.TagNumber)
+        });
+        this.PrescriptiveRecordsList = [];
         this.PrescriptiveRecordsList = res;
         this.MachineType = this.PrescriptiveRecordsList[0].MachineType
         this.EquipmentType = this.PrescriptiveRecordsList[0].EquipmentType
         this.SelectedTagNumber = this.PrescriptiveRecordsList[0].TagNumber
         this.getRecordsByEqui()
+        this.GetALLCBA()
       });
-      this.GetALLCBA()
+
   }
 
   RouteToTrain() {
@@ -684,7 +690,7 @@ export class DashboardComponent {
           this.getAllFilterData = res
         })
   }
-
+  public predictreccomandation:any=[]
   GerAllPredictionRecords() {
     this.PredictionDataNormalCount = null;
     this.PredictionDataIncipientCount = null;
@@ -695,11 +701,12 @@ export class DashboardComponent {
     var PredictionincipientValuation: number = 0;
     var PredictiondegradeCount: any = [];
     var PredictiondegradeValuation: number = 0;
-
+    
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.PredictionDataList)
       .subscribe(
         (res: any) => {
           this.ScrewPredictionAllData = res;
+          this.predictreccomandation =this.ScrewPredictionAllData
           if (res.length > 0) {
             this.ScrewPredictionAllData.forEach(element => {
               this.PredictionDatesList.push(this.datepipe.transform(element.InsertedDate, 'dd/MM/YYYY'));
@@ -735,6 +742,7 @@ export class DashboardComponent {
               break;
             }
           }
+        
           this.PredictionFilteredData = res;
           this.ScrewPredictionAllData.forEach(element => {
             this.Prediction.push(element.Prediction);
@@ -850,40 +858,28 @@ export class DashboardComponent {
   }
 
   onPredictionChangeYear() {
-    // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString()); 
-     //this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString());
+   
      this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
-     this.combinationList=[];
-     this.PredictionDegradecount = 0
-    this.PredictionIncipientcount = 0
-    this.PredictionNormalcount = 0
-    this.Predictionbadcount = 0
-
-    for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-      if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
-        this.PredictionDegradecount = this.PredictionDegradecount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
-        this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-      } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
-        this.PredictionNormalcount = this.PredictionNormalcount + 1
-      } else
-        this.Predictionbadcount = this.Predictionbadcount + 1
+     this.CompleteStatus=0
+     this.Ongoingstatus=0
+     this.Overduestatus=0
+     this.centrifugalmssmodel.forEach((element) => {
+      if(this.CBATagnumber === this.selctedtagnymbers.toString()){
+      if (element.Progress === 1) {
+        this.CompleteStatus = this.CompleteStatus + 1
+      } else if (element.Progress === 2) {
+        this.Ongoingstatus = this.Ongoingstatus + 1
+      }
+      else if (element.Progress === 3) {
+        this.Overduestatus = this.Overduestatus + 1
+      }
     }
+    })
 
-    // this.PredictionAllRecordBarcharts()
-    // this.PredictionAllRecordDonught()
-    //  this.PredictionAllRecordPie()
-    this.PredictiongraphShow = true;
-    this.PredictiongraphShow1 = true;
     this.PredictionWithTagNumber1()
-    // this.PredictionAllRecordDonught()
-    this.PredictionWithActionPieChart()
-    this.IndicationGraphSSRB()
-    this.IndicationGraphRD()
-    this.IndicationGraphCF()
+    this.PredictionWithActionPieChart()    
   }
 
-  public forststuspredictionyearlist:string= ""
   onPredictionChangeYear1() {
      this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.forststuspredictionyearlist.toString() && this.PredictionDate=="bydefault"
      ||this.PredictionDate=="Previous 1 week" || this.PredictionDate=="Previous 15 Days" || this.PredictionDate=="Previous 1 Month" || this.PredictionDate=="Previous 3 Month" || this.PredictionDate=="Previous 1 Year");
@@ -938,24 +934,32 @@ export class DashboardComponent {
       this.PredictionWithTagNumber2()
   }
 
+  public PredictionDegradeTascount: number = 0;
+  public PredictionNormalTaskcount: number = 0;
+  public PredictionIncipientTaskcount: number = 0;
+  public PredictionbadTaskcount: number = 0;
   PredictTask() {
-   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString()); 
+   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString() && (val.TagNumber) === this.selctedtasktagno.toString()); 
 
    this.PredictionDegradecount = 0
    this.PredictionIncipientcount = 0
    this.PredictionNormalcount = 0
    this.Predictionbadcount = 0
-
-   for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
-     if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "degarde") {
-       this.PredictionDegradecount = this.PredictionDegradecount + 1
-     } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "incipient") {
-       this.PredictionIncipientcount = this.PredictionIncipientcount + 1
-     } else if (`${this.ScrewPredictionAllData[i]}.${this.fmtype == "SSRB" || this.fmtype == "CF" || this.fmtype == "RD"}` == "normal") {
-       this.PredictionNormalcount = this.PredictionNormalcount + 1
-     } else
-       this.Predictionbadcount = this.Predictionbadcount + 1
-   }
+     var counter = 0
+  for (var i = 0; i < this.ScrewPredictionAllData.length; i++) {
+    if(this.ScrewPredictionAllData[i].SSRB=="degarde" || this.ScrewPredictionAllData[i].CF=="degarde" ||this.ScrewPredictionAllData[i].RD=="degarde")
+   {
+      this.PredictionDegradecount = this.PredictionDegradecount + 1
+    } else if(this.ScrewPredictionAllData[i].SSRB=="incipient" || this.ScrewPredictionAllData[i].CF=="incipient" ||this.ScrewPredictionAllData[i].RD=="incipient") {
+      this.PredictionIncipientcount = this.PredictionIncipientcount + 1
+    } else if(this.ScrewPredictionAllData[i].SSRB=="normal" || this.ScrewPredictionAllData[i].CF=="normal" ||this.ScrewPredictionAllData[i].RD=="normal") {
+      this.PredictionNormalcount = this.PredictionNormalcount + 1
+    } else{
+      this.Predictionbadcount = this.Predictionbadcount + 1
+    }
+    counter = counter + 1 
+  }
+ 
    this.IndicationGraphSSRB()
    this.IndicationGraphRD()
    this.IndicationGraphCF()
@@ -1399,9 +1403,9 @@ export class DashboardComponent {
     //  this.ComboChart();
   }
 
-//  assetSelection(){
-//    this.assetselection= true;
-//  }
+ assetSelection(){
+   this.assetselection= true;
+ }
   MachineEquipmentSelect() {
     if (this.MachineType == "Pump") {
       this.EquipmentList = []
@@ -1417,16 +1421,6 @@ export class DashboardComponent {
     list.forEach(element => {
       this.TagList.push(element.TagNumber)
     });
-  }
-  getAllRecordsbyTag() {
-    this.http.get('api/PrescriptiveAPI/GetTagNumber')
-      .subscribe((res: any) => {
-        res.forEach(element => {
-          this.TagList.push(element.TagNumber)
-        });
-        this.PrescriptiveRecordsList = []
-        this.PrescriptiveRecordsList = res;
-      });
   }
 
   CBAWithId(CFPPrescriptiveId) {
@@ -3367,57 +3361,6 @@ export class DashboardComponent {
 
   }
 
-  // MEIGraph() {
-  //   this.changeDetectorRef.detectChanges();
-  //   var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
-  //   var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
-  //   var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
-  //   var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
-
-  //   var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
-  //   var meicostwithDPM = ((meiCostDPMWithoutConstraint / meitotal) * 100).toFixed(2)
-  //   var meicostwithConstraint = ((meiCostWithDPMConstraint / meitotal) * 100).toFixed(2)
-
-  //   var value1:any = meicostwithoutDPM, value2:any= meicostwithDPM,value3:any= meicostwithConstraint;
-  //   this.chart = new Chart("mei_risk", {
-  //     type: "doughnut",
-  //     data: {
-  //       labels: ["Without DPM","With DPM","With Constraint"],
-  //       datasets: [
-  //         {
-  //           data: [value1, 0, 100 - value1],
-  //           backgroundColor: [
-  //               "#d72631",
-  //               "#00CCFF",
-  //               "#DCDCDC"
-  //           ]
-  //         },
-  //         {
-  //             data: [0, value2, 100 - value2],
-  //               backgroundColor: [
-  //                   "#039fbe",
-  //                   "#00CCFF",
-  //                   "#DCDCDC"
-  //               ]
-  //         },
-  //         {
-  //           data: [value3, 100 - value3,],
-  //           backgroundColor: [
-  //               "#5c3c92",
-  //               "#DCDCDC"
-  //           ]
-  //         },
-  //       ]
-  //     },
-  //     options: {
-  //       circumference: 1 * Math.PI,
-  //       rotation: 1 * Math.PI,
-  //       cutoutPercentage: 58
-  //     },
-  //   });
-
-  // }
-
   ALLGraphCBA() {
     var eonomicriskwithoutDPM: number = +(this.EconomicRiskWithOutDPM)
     var eonomicriskwithDPM: number = +(this.EconomicRiskWithDPM)
@@ -3858,6 +3801,7 @@ export class DashboardComponent {
   }
 
   PredictionWithActionPieChart() {
+
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionActionPiechart", {
       type: 'pie',
@@ -3934,6 +3878,7 @@ export class DashboardComponent {
     var Degradepercentage
     var Incipientpercentage
     var Normalpercentage
+    var counter = 0
     for (var i = 0; i < this.Pyearlist.length; ++i) {
     this.ScrewPredictionAllData.forEach(element => {
       var b = moment(element.InsertedDate).format('YYYY')
@@ -3944,12 +3889,15 @@ export class DashboardComponent {
         this.PredictionIncipientcount = this.PredictionIncipientcount + 1;
       } else if (element.SSRB == 'degrade' || element == 'degarde') {
         this.PredictionDegradecount = this.PredictionDegradecount + 1;
+      }else{
+        this.Predictionbadcount = this.Predictionbadcount + 1;
       }
+      counter = counter + 1
    }
     });
-    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
-    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
-    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+    Degradepercentage = ((this.PredictionDegradecount /counter) * 100).toFixed();
+    Incipientpercentage = ((this.PredictionIncipientcount /counter) * 100).toFixed();
+    Normalpercentage = ((this.PredictionNormalcount /counter) * 100).toFixed();
 
     this.predictionDegradeMessage = Degradepercentage
     this.predictionIncipientMessage = Incipientpercentage
@@ -3960,19 +3908,18 @@ export class DashboardComponent {
       type: "horizontalBar",
       data: {
         labels: [],
-        indexLabelPlacement:"inside",
         datasets: [{
           data: [Normalpercentage],
           backgroundColor: "#008000",
           hoverBackgroundColor: "#008000"
         }, {
           data: [Incipientpercentage],
-          backgroundColor: "yellow",
-          hoverBackgroundColor: "yellow"
+          backgroundColor: "#ffb801",
+          hoverBackgroundColor: "#ffb801"
         }, {
           data: [Degradepercentage],
-          backgroundColor: "red",
-          hoverBackgroundColor: "red"
+          backgroundColor: "#fe4c61",
+          hoverBackgroundColor: "#fe4c61"
         }]
       },
       options: {
@@ -3993,26 +3940,30 @@ export class DashboardComponent {
             stacked: true
           }],
         },
-        "animation": {
-          // "duration": 1,
-          "onComplete": function () {
-            var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
+        animation: {
+          duration: 1,
+            onComplete: function() {
+              let chartInstance = this.chart,
+                  ctx = chartInstance.ctx;
               ctx.textAlign = 'center';
-              ctx.textBaseline = 'center';
-            this.data.datasets.forEach(function (dataset, i) {
-              var meta = chartInstance.controller.getDatasetMeta(i);
-              meta.data.forEach(function (bar, index) {
-                var data = String((dataset.data[index])) + "%";
-                if(i==0){
-                   ctx.fillText(data, 50, bar._model.y+4);
-              } else {
-                  ctx.fillText(data, bar._model.x-25, bar._model.y+4);
-              }
+              ctx.textBaseline = 'bottom';
+
+              this.data.datasets.forEach(function(dataset, i){
+                let meta = chartInstance.controller.getDatasetMeta(i);
+                meta.data.forEach(function(bar, index) {
+                  var data = String((dataset.data[index])) + "%";
+                  ctx.fillStyle = 'white';
+                  if (i == 0) {
+                    ctx.fillText(data, 50, bar._model.y + 4);
+                  } else {
+                    ctx.fillStyle = 'white';
+                    ctx.fillText(data, bar._model.x-25, bar._model.y+8);
+                  }
+                 
+                });
               });
-            });
-          }
-        },
+            }
+        }
       },
 
     });
@@ -4052,9 +4003,9 @@ export class DashboardComponent {
       }
     
     });
-    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
-    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
-    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed();
+    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed();
+    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed();
 
     this.predictionDegradeMessage = Degradepercentage
     this.predictionIncipientMessage = Incipientpercentage
@@ -4070,12 +4021,13 @@ export class DashboardComponent {
           hoverBackgroundColor: "#008000"
         }, {
           data: [Incipientpercentage],
-          backgroundColor: "yellow",
-          hoverBackgroundColor: "yellow"
+          backgroundColor: "#ffb801",
+          hoverBackgroundColor: "#ffb801"
         }, {
           data: [Degradepercentage],
-          backgroundColor: "red",
-          hoverBackgroundColor: "red"
+          backgroundColor: "#fe4c61",
+          hoverBackgroundColor: "#fe4c61"
+          
         }]
       },
       options: {
@@ -4096,24 +4048,28 @@ export class DashboardComponent {
             stacked: true
           }],
         },
-        "animation": {
-          "duration": 1,
-          "onComplete": function () {
-            var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
-            this.data.datasets.forEach(function (dataset, i) {
-              var meta = chartInstance.controller.getDatasetMeta(i);
-              meta.data.forEach(function (bar, index) {
-                var data = String((dataset.data[index])) + "%";
-                if(i==0){
-                  ctx.fillText(data, 50, bar._model.y+4);
-              } else {
-                  ctx.fillText(data, bar._model.x-25, bar._model.y+4);
-              }
+        animation: {
+          duration: 1,
+            onComplete: function() {
+              let chartInstance = this.chart,
+                  ctx = chartInstance.ctx;
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+
+              this.data.datasets.forEach(function(dataset, i){
+                let meta = chartInstance.controller.getDatasetMeta(i);
+                meta.data.forEach(function(bar, index) {
+                  var data = String((dataset.data[index])) + "%";
+                  ctx.fillStyle = 'white';
+                  if (i == 0) {
+                    ctx.fillText(data, 50, bar._model.y + 4);
+                  } else {
+                    ctx.fillText(data, bar._model.x-25, bar._model.y+4);
+                  }
+                });
               });
-            });
-          }
-        },
+            }
+        }
       },
 
     });
@@ -4153,9 +4109,9 @@ export class DashboardComponent {
       }
     
     });
-    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed(2);
-    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed(2);
-    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed(2);
+    Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed();
+    Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed();
+    Normalpercentage = ((this.PredictionNormalcount / a.length) * 100).toFixed();
 
     this.predictionDegradeMessage = Degradepercentage
     this.predictionIncipientMessage = Incipientpercentage
@@ -4171,12 +4127,12 @@ export class DashboardComponent {
           hoverBackgroundColor: "#008000"
         }, {
           data: [Incipientpercentage],
-          backgroundColor: "yellow",
-          hoverBackgroundColor: "yellow"
+          backgroundColor: "#ffb801",
+          hoverBackgroundColor: "#ffb801"
         }, {
           data: [Degradepercentage],
-          backgroundColor: "red",
-          hoverBackgroundColor: "red"
+          backgroundColor: "#fe4c61",
+          hoverBackgroundColor: "#fe4c61"
         }]
       },
       options: {
@@ -4197,24 +4153,30 @@ export class DashboardComponent {
             stacked: true
           }],
         },
-        "animation": {
-          "duration": 1,
-          "onComplete": function () {
-            var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
-            this.data.datasets.forEach(function (dataset, i) {
-              var meta = chartInstance.controller.getDatasetMeta(i);
-              meta.data.forEach(function (bar, index) {
-                var data = String((dataset.data[index])) + "%";
-                if(i==0){
-                  ctx.fillText(data, 50, bar._model.y+4);
-              } else {
-                  ctx.fillText(data, bar._model.x-25, bar._model.y+4);
-              }
+        animation: {
+          duration: 1,
+            onComplete: function() {
+              let chartInstance = this.chart,
+                  ctx = chartInstance.ctx;
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+
+              this.data.datasets.forEach(function(dataset, i){
+                let meta = chartInstance.controller.getDatasetMeta(i);
+                meta.data.forEach(function(bar, index) {
+                  var data = String((dataset.data[index])) + "%";
+                  ctx.fillStyle = 'white';
+                  if (i == 0) {
+                    ctx.fillText(data, 50, bar._model.y + 4);
+                  } else {
+                 
+                    ctx.fillText(data, bar._model.x-25, bar._model.y+4);
+                  }
+                 
+                });
               });
-            });
-          }
-        },
+            }
+        }
       },
 
     });
@@ -4461,7 +4423,7 @@ export class DashboardComponent {
     });
     this.changeDetectorRef.detectChanges();
   }
-
+public CBATagnumber:any=[]
    GetALLCBA(){
     const params = new HttpParams()
     .set('UserId',this.userModel.UserId)
@@ -4472,6 +4434,7 @@ export class DashboardComponent {
       this.CBAdataForRisk = this.allCBAdata
      for (var i = 0; i < this.allCBAdata.length; i++) {
       this.centrifugalmssmodel=  this.allCBAdata[i].CBATaskModel
+      this.CBATagnumber= this.allCBAdata[i].TagNumber
       this.CBI_etbf = this.allCBAdata[i].ETBF;
       this.OverallETBC = this.allCBAdata[i].OverallETBC;
       this.TotalAnnualPOC = this.allCBAdata[i].TotalAnnualPOC;
@@ -4516,16 +4479,17 @@ export class DashboardComponent {
         this.GDECount = this.GDECount + 1
         this.notification = { class: 'text-warning', };
       }
-      if(element.Progress === 1){
-        this.CompleteStatus = this.CompleteStatus+1
-      }else if(element.Progress === 2){
-        this.Ongoingstatus = this.Ongoingstatus+1
-      }
-      else if(element.Progress === 3){
-        this.Overduestatus = this.Overduestatus+1
-      }
+        if (element.Progress === 1) {
+          this.CompleteStatus = this.CompleteStatus + 1
+        } else if (element.Progress === 2) {
+          this.Ongoingstatus = this.Ongoingstatus + 1
+        }
+        else if (element.Progress === 3) {
+          this.Overduestatus = this.Overduestatus + 1
+        }
     }
     )
+
     this.centrifugalmssmodel .forEach(element => {
       if(element.CentrifugalPumpMssId=="MSS"){
         let obj ={}
