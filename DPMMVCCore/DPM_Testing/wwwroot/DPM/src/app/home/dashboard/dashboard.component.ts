@@ -364,6 +364,13 @@ export class DashboardComponent {
   public task :string = ""
   public selctedtasktagno:string = ""
   public forststuspredictionyearlist:string= ""
+  public Assetperformance: any;
+  
+  public screwWithPrediction: any = [];
+  public AssetTagNumber:string=""
+  public AssetEquipmentType:string=""
+  public items: MenuItem[];
+
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -391,8 +398,9 @@ export class DashboardComponent {
       this.CBAWithId(this.CFPPrescriptiveId)
     }
     this.date = moment().add(1, 'days').format('YYYY-MM-DD');
-    this.GetReportRecords()
+    // this.GetReportRecords()
     this.userModel = JSON.parse(localStorage.getItem('userObject'));
+    this.Assetperformance=JSON.parse(localStorage.getItem('predictionAssetPerformance'));
     this.getPrescriptiveRecords()
     this.getUserDetails()
     this.FullCBAObject()
@@ -404,7 +412,7 @@ export class DashboardComponent {
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'M', 'FinancialRisk': 2029, 'TagNumber': 'K104' },
   ]
   }
-  public items: MenuItem[];
+
   ngOnInit() {
     // this.fakePredictionWithTagNumber()
        // this.GerAllPredictionRecords();
@@ -413,8 +421,6 @@ export class DashboardComponent {
     this.MachineEquipmentSelect();
     this.dygraph()
     //  this.GetALLCBA()
-    this.GerAllFutuerPredictionRecords()
-    this.getFuturePredictionRecords()
     this.getPredictedListRecordsByDate()
     this.items = [{
       expanded: true,
@@ -441,7 +447,6 @@ export class DashboardComponent {
     ];
   }
 
-  public screwWithPrediction: any = [];
   getPredictedListRecordsByDate() {
     const params = new HttpParams()
       .set('FromDate', this.FromDate)
@@ -453,13 +458,19 @@ export class DashboardComponent {
         }, err => { console.log(err.error) }
       )
   }
-
+//  assetperformanceobj(){
+//   this.DAB = this.Assetperformance.DAB
+//   this.AssetTagNumber = this.Assetperformance.TagNumber
+//   this.AssetEquipmentType = this.Assetperformance.EquipmentType
+//   this.finalPerformanceNumber = this.Assetperformance.finalPerformanceNumber
+//  }
 
   Dashboardshowcriteria(){
    if(this.dashboardshow=="Prescription"){
     this.PrescriptiveShow=true;
     this.assetselection= true;
     this.GerAllPredictionRecords();
+    this.GerAllFutuerPredictionRecords()
     this.ExecutorShow=false;
    }else if(this.dashboardshow=="Management"){
     this.ExecutorShow=false;
@@ -473,10 +484,11 @@ export class DashboardComponent {
      this.CBICharts()
      this.FakeRiskMetigateactions()
      this.RiskProfile()
+     this. ALLGraphCBA()
      this.ComboDates()
      this.dygraphForJson()
      this.fakePredictionWithTagNumber()
-
+      // this.assetperformanceobj()
   }
   }
   getUserDetails() {
@@ -492,7 +504,6 @@ export class DashboardComponent {
     this.MitigatingActionshow=false;
   }
 
- 
   getFuturePredictionRecords() {
     var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords;
     this.screwCompressorMethod.getWithoutParameters(url)
@@ -588,6 +599,7 @@ export class DashboardComponent {
       this.futurePredictionDataTableList = [];
     }
   }
+
 
   FullCBAObject() {
     // this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
@@ -832,7 +844,7 @@ export class DashboardComponent {
           
           // this.PredictionAllRecordBarcharts();
            this.PredictionAllRecordPie();
-          this.GenerateReport()
+          // this.GenerateReport()
           // this.PredictionWithTagNumber()
           this.PredictionWithTagNumber1()
           // this.PredictionAllRecordDonught();
@@ -1318,7 +1330,7 @@ export class DashboardComponent {
           // this.AllRecordBarcharts();
           // this.ClassificationOfAllRecordDonught();
           // this.ClassificationOfAllpolarchart()
-          this.GenerateReport()
+          // this.GenerateReport()
         }, error => {
           console.log(error.error)
         }
@@ -1481,8 +1493,8 @@ export class DashboardComponent {
       row.ConsequenceCategory = row.Consequence.split(' ')[0];
     });
 
-    this.CBICharts()
-    this.ALLGraphCBA()
+    // this.CBICharts()
+    // this.ALLGraphCBA()
   }
 
   getRecordsByEqui() {
@@ -2942,167 +2954,167 @@ export class DashboardComponent {
       })
   }
 
-  public GenerateReport() {
-    var countKey = Object.keys(this.classificationDetails).length;
-    this.totalCount = countKey
-    var uniqueNames = [];
-    var uniqueObj = [];
+  // public GenerateReport() {
+  //   var countKey = Object.keys(this.classificationDetails).length;
+  //   this.totalCount = countKey
+  //   var uniqueNames = [];
+  //   var uniqueObj = [];
 
-    for (var i = 0; i < this.classificationDetails.length; i++) {
+  //   for (var i = 0; i < this.classificationDetails.length; i++) {
 
-      if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
-        uniqueObj.push(this.classificationDetails[i])
-        uniqueNames.push(this.classificationDetails[i].Classification);
-      }
+  //     if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
+  //       uniqueObj.push(this.classificationDetails[i])
+  //       uniqueNames.push(this.classificationDetails[i].Classification);
+  //     }
 
-    }
+  //   }
 
-    var result: any = [];
+  //   var result: any = [];
 
-    if (this.classificationDetails != 0) {
+  //   if (this.classificationDetails != 0) {
 
-      this.classificationDetails.forEach(function (o) {
-        Object.keys(o).forEach(function (k) {
-          result[k] = result[k] || {};
-          result[k][o[k]] = (result[k][o[k]] || 0) + 1;
-        });
-      });
-      this.incipient = result.Classification.incipient;
-      if (this.incipient == undefined) {
-        this.incipient = 0;
-      }
-      this.degrade = result.Classification.degrade;
-      if (this.degrade == undefined) {
-        this.degrade = 0;
-      }
-      this.normal = result.Classification.normal;
-      if (this.normal == undefined) {
-        this.normal = 0;
-      }
-      this.normalpercentage = this.normal / this.totalCount * 100
-      this.incipientPerentage = this.incipient / this.totalCount * 100
-      this.degradePercentage = this.degrade / this.totalCount * 100
+  //     this.classificationDetails.forEach(function (o) {
+  //       Object.keys(o).forEach(function (k) {
+  //         result[k] = result[k] || {};
+  //         result[k][o[k]] = (result[k][o[k]] || 0) + 1;
+  //       });
+  //     });
+  //     this.incipient = result.Classification.incipient;
+  //     if (this.incipient == undefined) {
+  //       this.incipient = 0;
+  //     }
+  //     this.degrade = result.Classification.degrade;
+  //     if (this.degrade == undefined) {
+  //       this.degrade = 0;
+  //     }
+  //     this.normal = result.Classification.normal;
+  //     if (this.normal == undefined) {
+  //       this.normal = 0;
+  //     }
+  //     this.normalpercentage = this.normal / this.totalCount * 100
+  //     this.incipientPerentage = this.incipient / this.totalCount * 100
+  //     this.degradePercentage = this.degrade / this.totalCount * 100
 
-      var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
+  //     var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
 
-      if (ACCCalculation == NaN) {
-        ACCCalculation = 0;
-      }
+  //     if (ACCCalculation == NaN) {
+  //       ACCCalculation = 0;
+  //     }
 
-      this.finalACCCalculation = parseFloat(ACCCalculation);
-    }
-    var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
-    this.AFPtotalCount = AFPcountKey
-
-
-    var AFPuniqueNames = [];
-    var AFPuniqueObj = [];
-
-    for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
-
-      if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
-        AFPuniqueObj.push(this.screwWithPredictionDetails[i])
-        AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
-      }
-
-    }
-    var result: any = [];
-
-    if (this.screwWithPredictionDetails.length != 0) {
-      this.screwWithPredictionDetails.forEach(function (o) {
-        Object.keys(o).forEach(function (k) {
-          result[k] = result[k] || {};
-          result[k][o[k]] = (result[k][o[k]] || 0) + 1;
-        });
-      });
-
-      this.AFPincipient = result.Prediction.incipient;
-      if (this.AFPincipient == undefined) {
-        this.AFPincipient = 0;
-      }
-      this.AFPdegrade = result.Prediction.degrade;
-      if (this.AFPdegrade == undefined) {
-        this.AFPdegrade = 0;
-      }
-      this.AFPnormal = result.Prediction.normal;
-      if (this.AFPnormal == undefined) {
-        this.AFPnormal = 0;
-      }
-      this.FinalAFPnormal = (this.AFPnormal + this.normal);
-      this.FinalAFPincipient = (this.AFPincipient + this.incipient);
-      this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
-
-      this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
-
-      this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
-
-      this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
-
-      this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
-
-      var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
-
-      this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
-    }
-    var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
-
-    var HSECES: any = [(0 * 1) + (1 * 10)]
-
-    var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
+  //     this.finalACCCalculation = parseFloat(ACCCalculation);
+  //   }
+  //   var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
+  //   this.AFPtotalCount = AFPcountKey
 
 
-    this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
-      parseFloat(LMH) + parseFloat(HSECES)
-      + parseFloat(CRIT)];
+  //   var AFPuniqueNames = [];
+  //   var AFPuniqueObj = [];
 
-    this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
+  //   for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
 
-    if (this.PerformanceNumber > 10) {
-      this.DAB = "Yes"
-    } else {
-      this.DAB = "No"
-    }
-  }
+  //     if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
+  //       AFPuniqueObj.push(this.screwWithPredictionDetails[i])
+  //       AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
+  //     }
 
-  GetReportRecords() {
-    const url: string = this.screwCompressorAPIName.getTrainList
-    this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
-      .subscribe(res => {
-        this.classificationDetails = res;
-        this.commonLoadingDirective.showLoading(false, '');
-      },
-        error => {
-          console.log(error);
-        }
-      );
-    this.commonLoadingDirective.showLoading(false, '');
-    const url11 = this.profileAPIName.ProfileAPI
-    this.screwCompressorMethod.getWithoutParameters(url11)
-      .subscribe(
-        res => {
-          this.user = res;
-          this.commonLoadingDirective.showLoading(false, '');
-        },
-        err => {
-          this.commonLoadingDirective.showLoading(false, '');
-          console.log(err);
-        },
-      );
+  //   }
+  //   var result: any = [];
 
-    const url2: string = this.screwCompressorAPIName.getPredictedList;
-    this.screwCompressorMethod.getWithoutParameters(url2)
-      .subscribe(res => {
-        this.screwWithPredictionDetails = res;
-        if (this.screwWithPredictionDetails.length == 0) {
-          this.commonLoadingDirective.showLoading(false, '');
-        } else {
-          this.commonLoadingDirective.showLoading(false, '');
-        }
-      }, err => {
-        this.commonLoadingDirective.showLoading(false, '');
-        console.log(err.error);
-      });
-  }
+  //   if (this.screwWithPredictionDetails.length != 0) {
+  //     this.screwWithPredictionDetails.forEach(function (o) {
+  //       Object.keys(o).forEach(function (k) {
+  //         result[k] = result[k] || {};
+  //         result[k][o[k]] = (result[k][o[k]] || 0) + 1;
+  //       });
+  //     });
+
+  //     this.AFPincipient = result.Prediction.incipient;
+  //     if (this.AFPincipient == undefined) {
+  //       this.AFPincipient = 0;
+  //     }
+  //     this.AFPdegrade = result.Prediction.degrade;
+  //     if (this.AFPdegrade == undefined) {
+  //       this.AFPdegrade = 0;
+  //     }
+  //     this.AFPnormal = result.Prediction.normal;
+  //     if (this.AFPnormal == undefined) {
+  //       this.AFPnormal = 0;
+  //     }
+  //     this.FinalAFPnormal = (this.AFPnormal + this.normal);
+  //     this.FinalAFPincipient = (this.AFPincipient + this.incipient);
+  //     this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
+
+  //     this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
+
+  //     this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
+
+  //     this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
+
+  //     this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
+
+  //     var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
+
+  //     this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
+  //   }
+  //   var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
+
+  //   var HSECES: any = [(0 * 1) + (1 * 10)]
+
+  //   var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
+
+
+  //   this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
+  //     parseFloat(LMH) + parseFloat(HSECES)
+  //     + parseFloat(CRIT)];
+
+  //   this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
+
+  //   if (this.PerformanceNumber > 10) {
+  //     this.DAB = "Yes"
+  //   } else {
+  //     this.DAB = "No"
+  //   }
+  // }
+
+  // GetReportRecords() {
+  //   const url: string = this.screwCompressorAPIName.getTrainList
+  //   this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
+  //     .subscribe(res => {
+  //       this.classificationDetails = res;
+  //       this.commonLoadingDirective.showLoading(false, '');
+  //     },
+  //       error => {
+  //         console.log(error);
+  //       }
+  //     );
+  //   this.commonLoadingDirective.showLoading(false, '');
+  //   const url11 = this.profileAPIName.ProfileAPI
+  //   this.screwCompressorMethod.getWithoutParameters(url11)
+  //     .subscribe(
+  //       res => {
+  //         this.user = res;
+  //         this.commonLoadingDirective.showLoading(false, '');
+  //       },
+  //       err => {
+  //         this.commonLoadingDirective.showLoading(false, '');
+  //         console.log(err);
+  //       },
+  //     );
+
+  //   const url2: string = this.screwCompressorAPIName.getPredictedList;
+  //   this.screwCompressorMethod.getWithoutParameters(url2)
+  //     .subscribe(res => {
+  //       this.screwWithPredictionDetails = res;
+  //       if (this.screwWithPredictionDetails.length == 0) {
+  //         this.commonLoadingDirective.showLoading(false, '');
+  //       } else {
+  //         this.commonLoadingDirective.showLoading(false, '');
+  //       }
+  //     }, err => {
+  //       this.commonLoadingDirective.showLoading(false, '');
+  //       console.log(err.error);
+  //     });
+  // }
 
   CBICharts() {
     this.changeDetectorRef.detectChanges();
@@ -3954,7 +3966,8 @@ export class DashboardComponent {
                   var data = String((dataset.data[index])) + "%";
                   ctx.fillStyle = 'white';
                   if (i == 0) {
-                    ctx.fillText(data, 50, bar._model.y + 4);
+                    // ctx.fillText(data, 50, bar._model.y + 4);
+                    ctx.fillText(data,75, bar._model.y + 4);
                   } else {
                     ctx.fillStyle = 'white';
                     ctx.fillText(data, bar._model.x-25, bar._model.y+8);
@@ -4192,7 +4205,11 @@ export class DashboardComponent {
       var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
       var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
       var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
-   
+        
+      if(this.ResidualRiskWithConstraintDPMCR== 1||this.ResidualRiskWithConstraintDPMCR== 2||this.ResidualRiskWithConstraintDPMCR== 3
+        ||this.ResidualRiskWithConstraintDPMCR== 4||this.ResidualRiskWithConstraintDPMCR== 5 ||this.ResidualRiskWithConstraintDPMCR== 6){
+       var mittigated= 740
+      }
       var yLabels = {
           100 : 'Low',
           300 : 'Normal',
@@ -4229,8 +4246,7 @@ export class DashboardComponent {
             backgroundColor: "white",
             borderColor: "white",
             borderWidth: 6,
-            // data: [this.ResidualRiskWithConstraintDPMCR,]
-            data: [740,]
+             data: [mittigated],
           },
         ]
       },
@@ -4244,7 +4260,7 @@ export class DashboardComponent {
           {
             yAxisID: 'B',
             backgroundColor: "#008000",
-            yAxisSegement: 50
+            yAxisSegement: 100
           },
           {
             yAxisID: 'B',
@@ -4264,7 +4280,7 @@ export class DashboardComponent {
           {
             yAxisID: 'B',
             backgroundColor: "#ff4d4d",
-            yAxisSegement: 900
+            yAxisSegement: 800
           }
 
       ],
@@ -4330,6 +4346,7 @@ export class DashboardComponent {
     }]
     });
   }
+
 
   FakeRiskMetigateactions(){
     this.changeDetectorRef.detectChanges();  
@@ -4430,7 +4447,7 @@ public CBATagnumber:any=[]
     this.http.get('api/PSRClientContractorAPI/GetSavedCBA', {params})
    .subscribe((res: any) => {
      this.allCBAdata = res;
-     this.FakeRiskMetigateactions()
+    //  this.FakeRiskMetigateactions()
       this.CBAdataForRisk = this.allCBAdata
      for (var i = 0; i < this.allCBAdata.length; i++) {
       this.centrifugalmssmodel=  this.allCBAdata[i].CBATaskModel

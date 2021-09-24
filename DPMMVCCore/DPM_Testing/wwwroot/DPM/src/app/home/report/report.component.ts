@@ -68,9 +68,8 @@ export class ReportComponent {
   public screwWithPredictionDetails: any = [];
   public UserDetails:string =""
   public Firstname:string =""
-  public Lastname:string =""
-  
-  
+  public Lastname:string ="" 
+  public predictionAssetPerformance : any ={};
   public TagList : any = [];
   headers = {
     headers: new HttpHeaders({
@@ -351,8 +350,17 @@ export class ReportComponent {
 
 
       // ******************************End of OUTPUT REPORT*******************************
-
+      this.predictionAssetPerformance.DAB = this.DAB;
+      this.predictionAssetPerformance.TagNumber = this.TagNumber;
+      this.predictionAssetPerformance.EquipmentType = this.EquipmentType;
+      this.predictionAssetPerformance.finalPerformanceNumber = this.finalPerformanceNumber;
+      this.predictionAssetPerformance.AFPnormalpercentage = this.AFPnormalpercentage;
+      this.predictionAssetPerformance.AFPincipientPerentage = this.AFPincipientPerentage;
+      this.predictionAssetPerformance.AFPdegradePercentage = this.AFPdegradePercentage;
+      localStorage.setItem('predictionAssetPerformance', JSON.stringify(this.predictionAssetPerformance));
     }
+  
+  
   }
 
 
