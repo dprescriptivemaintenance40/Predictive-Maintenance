@@ -1,216 +1,89 @@
-<!-- <div class="card" style="margin: 15px;">
-    <iframe width="1140" height="561.25"
-        src="https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D"
-        frameborder="0" allowFullScreen="true"></iframe>
-</div> -->
-<style>
-    .blink_me {
-  animation: blinker 1s linear infinite;
-}
+    <!-- <div class="card" style="margin: 15px;">
+        <iframe width="1140" height="561.25"
+            src="https://app.powerbi.com/reportEmbed?reportId=8229f0b7-523d-46d9-9a54-b53438061991&autoAuth=true&ctid=606acdf9-2783-4b1f-9afc-a0919c38927d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLWUtcHJpbWFyeS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D"
+            frameborder="0" allowFullScreen="true"></iframe>
+    </div> -->
+    <style>
+        .p-steps .p-steps-item:before{
+            top: 70%;
+        }
+        .blink_me {
+    animation: blinker 1s linear infinite;
+    }
 
-@keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}
+    @keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+    }
 
 
-</style>
-<p-toast position="top-right"></p-toast>
-<div class="card" style="width: 30rem;">
-    <div>
-        <select [(ngModel)]="dashboardshow" class="form-select" (change)="Dashboardshowcriteria()" class="form-control">
-            <option value="">Choose.</option>
-            <option value="Prescription" selected>Prescription</option>
-            <option value="Management" selected>Management</option>
-            <option value="Executor" selected>Executor</option>
-        </select>
-    </div><br>
-</div>
-<!-- <div class="card bg-transparent border-0" id="Trainnavigate">
-    <div class="d-flex justify-content-between align-items-center">
-        <h5><b> Screw Compressor-Trained Classification Data - Tag Number :K100</b> </h5>
-        <button type="button" (click)="showBasicDialog()" class="btn btn-primary btn-sm mr-2"
-        data-bs-toggle="tooltip" data-bs-placement="top" title="Image">P&ID</button>
-
-        <button style="float: right" class="btn btn-primary btn-sm" (click)="RouteToTrain()" data-toggle="tooltip"
-            data-placement="top" title="Go to Train"><i class="fas fa-table"></i></button>
-    </div><br>
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-sm">
-                    <div class="card bg-white p-3 border-0 ">
-                        <strong> Overall Classification Chart</strong>
-                        <strong> All Failure Modes All Years (In Percentage)</strong>
-                        <canvas id="canvasClass"></canvas> <br>
-                        <marquee width="100%" direction="left" height="100px">
-                            <label style="font-size:12;color:black"><i class="lnr lnr-warning  mr-2"></i>
-                                {{ ClassDegradepercentageForMessage.length > ClassIncipientpercentageForMessage.length ? 'The Graph Shows Machine goes on Breakdown stage' :
-                                ClassDegradepercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph Shows Machine is Under worst Condition,Need to do
-                                Maintenance' :
-                                ClassIncipientpercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph shows Machine needs
-                                Maintenance' :
-                                ClassNormalpercentageForMessage.length > ClassIncipientpercentageForMessage.length ? 'The Graph shows Machine Work at good condition' :'The Graph shows Machine needs Maintenance'
-                             }}
-
-                            </label>
-                        </marquee>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card bg-white p-3 border-0 ">
-                <strong> Overall Classification Chart</strong>
-                <strong> All Failure Modes Based On Years (In Percentage)</strong>
-                <canvas id="polarArea"></canvas><br><br>
-            </div>
-        </div>
-    </div><br>
-    <br><br>
-    <div class="bg-white rounded p-3 br-3">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="">
-                    <!-- <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FModeType()" class="form-control">
-                        <option value="">Select Failure Mode</option> Type
-                        <ng-container *ngFor="let mode of FMList">
-                            <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
-                        </ng-container>
-                    </select> -->
-                    <!-- <select [(ngModel)]="fmtype" class="form-select" (change)="FModeType()" class="form-control">
-                        <option value="" selected>Select Failure Mode</option>
-                        <option value="SSRB" selected>Second stage rotar breakdown</option>
-                        <option value="RD">Rotar Damage</option>
-                        <option value="CF" selected>Cooler Failure</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="">
-                    <select name="selectedYear" [(ngModel)]="selectedYear" (ngModelChange)="onChangeYear()"
-                        class="form-control">
-                        <option value="">Select Year</option>
-                        <ng-container *ngFor="let year of yearlist">
-                            <option [value]="year.yearname" name="selectedYear">{{year.yearname}}</option>
-                        </ng-container>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                    <h6>{{ ScrewCompressorAllData.length === 0 ? 'Selected year has no data present' : ''}}</h6>
-            </div>
+    </style>
+    <p-toast position="top-right"></p-toast>
+    <div class="bg-white p-3">
+        <div  style="width: 20rem;">
+            <h5>Please select a Dashboard !</h5>
+            <select [(ngModel)]="dashboardshow" class="form-select" (change)="Dashboardshowcriteria()" class="form-control">
+                <option value="">Choose.</option>
+                <option value="Prescription" selected>Prescription</option>
+                <option value="Management" selected>Management</option>
+                <option value="Executor" selected>Executor</option>
+            </select>
         </div>
     </div>
-    <div class="row mt-4">
-    <div class="col-md-12 mt-4">
-        <div class="card bg-white p-3 border-0 ">
-            <strong> Overall Classification Chart</strong>
-            <strong> Based On Selected Failure Modes & Selected Years</strong>
-            <canvas id="canvas1" style="height: 350px">{{ chart }}</canvas>
-        </div>
-    </div>
-</div>
-</div> -->
+    <!-- <div class="card bg-transparent border-0" id="Trainnavigate">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5><b> Screw Compressor-Trained Classification Data - Tag Number :K100</b> </h5>
+            <button type="button" (click)="showBasicDialog()" class="btn btn-primary btn-sm mr-2"
+            data-bs-toggle="tooltip" data-bs-placement="top" title="Image">P&ID</button>
 
-<!-- <div class="card bg-transparent border-0 mt-4" *ngIf="PredictionShow" id="Predictionnavigate">
-    <div class="d-flex justify-content-between align-items-center">
-        <h5><b> Prediction data</b> </h5>
-        <div>
-            <button class="btn btn-outline-dark btn-sm" (click)="RouteToPredict()" data-toggle="tooltip"
-                data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
-            <button class="btn btn-primary btn-sm ml-2" id="Predictionnavigate" (click)="FutuerPredictionClick()">Future
-                Forcast</button>
-        </div>
-    </div>
-    <div class="row">
-
-        <div class="col-sm">
-            <div class="bg-white h-100 p-3">
-                <div class="d-flex flex-column text-left">
-
-                    <h1 style="color:black;font-size: 14px"><i class="pi pi-star-o mr-1 text-warning"></i>Risk ranking :
-                        M </h1>
-
-
-                    <h1 style="color:black;font-size: 14px"><i class="pi pi-star-o mr-1 text-warning"></i>HSECES : Yes
-                    </h1>
-
-
-                    <h1 style="color:black;font-size: 14px"><i class="pi pi-star-o mr-1 text-warning"></i>CRIT : II</h1>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-sm">
-            <div class="bg-white h-100 p-3">
-                <div class="bg-white h-100">
-                    <strong style="text-align: left;color:black;font-size: 12px">Performance Number </strong>
-                    <h1 style="text-align: left;color:black;font-size: 24px">{{finalPerformanceNumber | number:'1.0-2'}}
-                    </h1>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm">
-            <div class="bg-white h-100">
-                <div class="bg-white h-100 p-3">
-                    <strong style="text-align: left;color:black;font-size: 12px">DPM Analysis Beneficial </strong>
-                    <h1 style="text-align: left;color:black;font-size: 14px" class="">{{DAB}}</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="d-block mt-4">
-        <div class="row">
-            <div>
+            <button style="float: right" class="btn btn-primary btn-sm" (click)="RouteToTrain()" data-toggle="tooltip"
+                data-placement="top" title="Go to Train"><i class="fas fa-table"></i></button>
+        </div><br>
+        <div class="row mt-4">
+            <div class="col-md-6">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="bg-white rounded px-5 py-3 br-3">
-                            <strong> Overall Prediction Chart</strong><br>
+                    <div class="col-sm">
+                        <div class="card bg-white p-3 border-0 ">
+                            <strong> Overall Classification Chart</strong>
                             <strong> All Failure Modes All Years (In Percentage)</strong>
-                            <canvas id="PredictionPie"></canvas><br>
-
+                            <canvas id="canvasClass"></canvas> <br>
                             <marquee width="100%" direction="left" height="100px">
-                                <label style="font-size:14;color:black"><i class="lnr lnr-warning  mr-2"></i>
+                                <label style="font-size:12;color:black"><i class="lnr lnr-warning  mr-2"></i>
+                                    {{ ClassDegradepercentageForMessage.length > ClassIncipientpercentageForMessage.length ? 'The Graph Shows Machine goes on Breakdown stage' :
+                                    ClassDegradepercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph Shows Machine is Under worst Condition,Need to do
+                                    Maintenance' :
+                                    ClassIncipientpercentageForMessage.length > ClassNormalpercentageForMessage.length ? 'The Graph shows Machine needs
+                                    Maintenance' :
+                                    ClassNormalpercentageForMessage.length > ClassIncipientpercentageForMessage.length ? 'The Graph shows Machine Work at good condition' :'The Graph shows Machine needs Maintenance'
+                                }}
 
-                                 {{ predictionDegradeMessage.length > predictionIncipientMessage.length ? ' The Graph Shows Machine goes on Breakdown stage' :
-                                 predictionDegradeMessage.length > predictionNormalMessage.length ? ' The Graph Shows Machine is Under worst Condition,Need to do
-                                 Maintenance' :
-                                 predictionIncipientMessage.length > predictionNormalMessage.length ? ' The Graph shows Machine needs
-                                 Maintenance' :
-                                 predictionNormalMessage.length > predictionIncipientMessage.length ? 'The Graph shows Machine Work at good condition' :'The Graph shows Machine needs Maintenance'
-                              }}
                                 </label>
                             </marquee>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="bg-white rounded  px-5 py-3  br-3">
-                            <strong> Overall Prediction Chart</strong><br>
-                            <strong> All Failure Modes Based On Years</strong>
-                            <canvas style="width: 70px;height: 50px" id="PredictioncanvasClass"></canvas><br>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </div>
-    </div><br>
-
-    <div class="d-block mt-4">
-        <div class="bg-white rounded p-3 br-3 mb-4">
+            <div class="col-md-6">
+                <div class="card bg-white p-3 border-0 ">
+                    <strong> Overall Classification Chart</strong>
+                    <strong> All Failure Modes Based On Years (In Percentage)</strong>
+                    <canvas id="polarArea"></canvas><br><br>
+                </div>
+            </div>
+        </div><br>
+        <br><br>
+        <div class="bg-white rounded p-3 br-3">
             <div class="row">
                 <div class="col-md-2">
                     <div class="">
-                        <!-- <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="PredictFModeType()"
-                            class="form-control">
-                            <option value="">Select Failuer Mode</option> Type
+                        <!-- <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="FModeType()" class="form-control">
+                            <option value="">Select Failure Mode</option> Type
                             <ng-container *ngFor="let mode of FMList">
                                 <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
                             </ng-container>
                         </select> -->
-                        <!-- <select [(ngModel)]="fmtype" class="form-select" (change)="PredictFModeType()" class="form-control">
+                        <!-- <select [(ngModel)]="fmtype" class="form-select" (change)="FModeType()" class="form-control">
                             <option value="" selected>Select Failure Mode</option>
                             <option value="SSRB" selected>Second stage rotar breakdown</option>
                             <option value="RD">Rotar Damage</option>
@@ -220,148 +93,242 @@
                 </div>
                 <div class="col-md-2">
                     <div class="">
-                        <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
-                            (ngModelChange)="PredictFModeType()" class="form-control">
+                        <select name="selectedYear" [(ngModel)]="selectedYear" (ngModelChange)="onChangeYear()"
+                            class="form-control">
                             <option value="">Select Year</option>
-                            <ng-container *ngFor="let year of PTagNumberList">
-                                <option [value]="year.PredictyTagnumber" name="PredictionselectedYear">
-                                    {{year.PredictyTagnumber}}</option>
+                            <ng-container *ngFor="let year of yearlist">
+                                <option [value]="year.yearname" name="selectedYear">{{year.yearname}}</option>
                             </ng-container>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <h6>{{ ScrewPredictionAllData.length === 0 ? 'Selected year has no data present' : ''}}</h6>
+                        <h6>{{ ScrewCompressorAllData.length === 0 ? 'Selected year has no data present' : ''}}</h6>
+                </div>
             </div>
+        </div>
+        <div class="row mt-4">
+        <div class="col-md-12 mt-4">
+            <div class="card bg-white p-3 border-0 ">
+                <strong> Overall Classification Chart</strong>
+                <strong> Based On Selected Failure Modes & Selected Years</strong>
+                <canvas id="canvas1" style="height: 350px">{{ chart }}</canvas>
             </div>
         </div>
     </div>
-    <div class="d-block mt-4">
-    <div class="col-md-12 mt-4">
-        <div class="bg-white rounded  px-5 py-3  br-3" >
-            <strong> Overall Prediction Chart</strong><br>
-            <strong> Based On Selected Failure Modes & Selected Years</strong>
-            <canvas id="Predictionbarline" #Predictionbarline></canvas>
-        </div>
-        </div>
-    </div>
-</div>  -->
+    </div> -->
 
-<!-- <div class="d-block mt-4" *ngIf="FuterPredictionShow">
-    <div class="d-flex justify-content-between align-items-center">
-        <h5><b> Future Prediction data</b> </h5>
-        <div>
-            <button class="btn btn-outline-dark btn-sm mr-2" (click)="RouteToPredict()" data-toggle="tooltip"
-                data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
-            <button class="btn btn-primary btn-sm" (click)="PredictionOnClick()"> Prediction</button>
+    <!-- <div class="card bg-transparent border-0 mt-4" *ngIf="PredictionShow" id="Predictionnavigate">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5><b> Prediction data</b> </h5>
+            <div>
+                <button class="btn btn-outline-dark btn-sm" (click)="RouteToPredict()" data-toggle="tooltip"
+                    data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
+                <button class="btn btn-primary btn-sm ml-2" id="Predictionnavigate" (click)="FutuerPredictionClick()">Future
+                    Forcast</button>
+            </div>
         </div>
-    </div>
-
-    <div class="d-block mt-4">
         <div class="row">
-            <div class="col-md-5">
-                <div class="h-100 bg-white p-3">
-                    <strong> Overall Forcast Chart</strong><br>
-                    <strong> All Failure Modes All Years</strong>
-                    <canvas id="FutuerPredictionPie"></canvas>
+
+            <div class="col-sm">
+                <div class="bg-white h-100 p-3">
+                    <div class="d-flex flex-column text-left">
+
+                        <h1 style="color:black;font-size: 14px"><i class="pi pi-star-o mr-1 text-warning"></i>Risk ranking :
+                            M </h1>
+
+
+                        <h1 style="color:black;font-size: 14px"><i class="pi pi-star-o mr-1 text-warning"></i>HSECES : Yes
+                        </h1>
+
+
+                        <h1 style="color:black;font-size: 14px"><i class="pi pi-star-o mr-1 text-warning"></i>CRIT : II</h1>
+
+                    </div>
                 </div>
             </div>
-            <div class="col-md-7">
-                <div class="bg-white p-3">
-                    <strong> Overall Forcast Chart</strong><br>
-                    <strong> All Failure Modes Based On Years</strong>
-                    <canvas id="donughtChart"></canvas>
+            <div class="col-sm">
+                <div class="bg-white h-100 p-3">
+                    <div class="bg-white h-100">
+                        <strong style="text-align: left;color:black;font-size: 12px">Performance Number </strong>
+                        <h1 style="text-align: left;color:black;font-size: 24px">{{finalPerformanceNumber | number:'1.0-2'}}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="bg-white h-100">
+                    <div class="bg-white h-100 p-3">
+                        <strong style="text-align: left;color:black;font-size: 12px">DPM Analysis Beneficial </strong>
+                        <h1 style="text-align: left;color:black;font-size: 14px" class="">{{DAB}}</h1>
+                    </div>
                 </div>
             </div>
         </div>
-    </div><br>
-    <div class="bg-white p-3 mt-4">
-        <div class="d-block">
+        <div class="d-block mt-4">
             <div class="row">
-                <div class="col-md-2">
-                    <div class="">
-                        <select [(ngModel)]="fmtype" class="form-select" (change)="FutuerDates()" class="form-control">
-                            <option value="" selected>Select Failure Mode</option>
-                            <option value="SSRB" selected>Second stage rotar breakdown</option>
-                            <option value="CF" selected>Cooler Failure</option>
-                            <option value="RD">Rotar Damage</option>
-                        </select>
+                <div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="bg-white rounded px-5 py-3 br-3">
+                                <strong> Overall Prediction Chart</strong><br>
+                                <strong> All Failure Modes All Years (In Percentage)</strong>
+                                <canvas id="PredictionPie"></canvas><br>
+
+                                <marquee width="100%" direction="left" height="100px">
+                                    <label style="font-size:14;color:black"><i class="lnr lnr-warning  mr-2"></i>
+
+                                    {{ predictionDegradeMessage.length > predictionIncipientMessage.length ? ' The Graph Shows Machine goes on Breakdown stage' :
+                                    predictionDegradeMessage.length > predictionNormalMessage.length ? ' The Graph Shows Machine is Under worst Condition,Need to do
+                                    Maintenance' :
+                                    predictionIncipientMessage.length > predictionNormalMessage.length ? ' The Graph shows Machine needs
+                                    Maintenance' :
+                                    predictionNormalMessage.length > predictionIncipientMessage.length ? 'The Graph shows Machine Work at good condition' :'The Graph shows Machine needs Maintenance'
+                                }}
+                                    </label>
+                                </marquee>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-white rounded  px-5 py-3  br-3">
+                                <strong> Overall Prediction Chart</strong><br>
+                                <strong> All Failure Modes Based On Years</strong>
+                                <canvas style="width: 70px;height: 50px" id="PredictioncanvasClass"></canvas><br>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="">
-                        <select name="FutuerselectedYear" [(ngModel)]="FutuerselectedYear"
-                            (ngModelChange)="FutuerDates()" class="form-control">
-                            <option value="">Select Year</option>
-                            <ng-container *ngFor="let year of FuterPredictyearlist">
-                                <option [value]="year.FutuerPredictyearname" name="FutuerselectedYear">
-                                    {{year.FutuerPredictyearname}}</option>
-                            </ng-container>
-                        </select>
+            </div>
+        </div><br>
+
+        <div class="d-block mt-4">
+            <div class="bg-white rounded p-3 br-3 mb-4">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="">
+                            <!-- <select name="fmtype" [(ngModel)]="fmtype" (ngModelChange)="PredictFModeType()"
+                                class="form-control">
+                                <option value="">Select Failuer Mode</option> Type
+                                <ng-container *ngFor="let mode of FMList">
+                                    <option [value]="mode.FMname" name="fmtype">{{mode.FMname}}</option>
+                                </ng-container>
+                            </select> -->
+                            <!-- <select [(ngModel)]="fmtype" class="form-select" (change)="PredictFModeType()" class="form-control">
+                                <option value="" selected>Select Failure Mode</option>
+                                <option value="SSRB" selected>Second stage rotar breakdown</option>
+                                <option value="RD">Rotar Damage</option>
+                                <option value="CF" selected>Cooler Failure</option>
+                            </select>
+                        </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="">
+                            <select name="PredictionselectedYear" [(ngModel)]="PredictionselectedYear"
+                                (ngModelChange)="PredictFModeType()" class="form-control">
+                                <option value="">Select Year</option>
+                                <ng-container *ngFor="let year of PTagNumberList">
+                                    <option [value]="year.PredictyTagnumber" name="PredictionselectedYear">
+                                        {{year.PredictyTagnumber}}</option>
+                                </ng-container>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <h6>{{ ScrewPredictionAllData.length === 0 ? 'Selected year has no data present' : ''}}</h6>
                 </div>
-                <div class="col-md-3">
-                    <h6>{{ FutuerPredictionAllData.length === 0 ? 'Selected year has no data present' : ''}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="d-block mt-4">
+        <div class="col-md-12 mt-4">
+            <div class="bg-white rounded  px-5 py-3  br-3" >
+                <strong> Overall Prediction Chart</strong><br>
+                <strong> Based On Selected Failure Modes & Selected Years</strong>
+                <canvas id="Predictionbarline" #Predictionbarline></canvas>
             </div>
             </div>
         </div>
-    </div>
-    <div class="d-block mt-4">
-    <div class="col-md-12 mt-4">
-        <div class="h-100 bg-white p-3">
-            <strong> Overall Forcast Chart</strong><br>
-            <strong> Based On Selected Failure Modes & Selected Years</strong>
-            <canvas id="BarChart"></canvas>
+    </div>  -->
+
+    <!-- <div class="d-block mt-4" *ngIf="FuterPredictionShow">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5><b> Future Prediction data</b> </h5>
+            <div>
+                <button class="btn btn-outline-dark btn-sm mr-2" (click)="RouteToPredict()" data-toggle="tooltip"
+                    data-placement="top" title="Go to Prediction"><i class="fas fa-table "></i></button>
+                <button class="btn btn-primary btn-sm" (click)="PredictionOnClick()"> Prediction</button>
+            </div>
+        </div>
+
+        <div class="d-block mt-4">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="h-100 bg-white p-3">
+                        <strong> Overall Forcast Chart</strong><br>
+                        <strong> All Failure Modes All Years</strong>
+                        <canvas id="FutuerPredictionPie"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="bg-white p-3">
+                        <strong> Overall Forcast Chart</strong><br>
+                        <strong> All Failure Modes Based On Years</strong>
+                        <canvas id="donughtChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+        <div class="bg-white p-3 mt-4">
+            <div class="d-block">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="">
+                            <select [(ngModel)]="fmtype" class="form-select" (change)="FutuerDates()" class="form-control">
+                                <option value="" selected>Select Failure Mode</option>
+                                <option value="SSRB" selected>Second stage rotar breakdown</option>
+                                <option value="CF" selected>Cooler Failure</option>
+                                <option value="RD">Rotar Damage</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="">
+                            <select name="FutuerselectedYear" [(ngModel)]="FutuerselectedYear"
+                                (ngModelChange)="FutuerDates()" class="form-control">
+                                <option value="">Select Year</option>
+                                <ng-container *ngFor="let year of FuterPredictyearlist">
+                                    <option [value]="year.FutuerPredictyearname" name="FutuerselectedYear">
+                                        {{year.FutuerPredictyearname}}</option>
+                                </ng-container>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <h6>{{ FutuerPredictionAllData.length === 0 ? 'Selected year has no data present' : ''}}</h6>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-block mt-4">
+        <div class="col-md-12 mt-4">
+            <div class="h-100 bg-white p-3">
+                <strong> Overall Forcast Chart</strong><br>
+                <strong> Based On Selected Failure Modes & Selected Years</strong>
+                <canvas id="BarChart"></canvas>
+            </div>
         </div>
     </div>
-</div>
-</div> -->
+    </div> -->
 
-<p-dialog header="Image" [(visible)]="displayBasic" [style]="{width: '90vw'}" [baseZIndex]="10000">
-    <div class="card-body">
-        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/NEW_PNID_Image.png" alt="">
-    </div>
-</p-dialog>
-<br>
-
-
-
-<div class="bg-white p-3 rounded mt-4">
-    <div class="row d-flex flex-column justify-content-between align-items-center">
-        <div class="col-md-12">
-            <h5><b>Combination Of Prediction & Future Prediction</b></h5>
+    <p-dialog header="Image" [(visible)]="displayBasic" [style]="{width: '90vw'}" [baseZIndex]="10000">
+        <div class="card-body">
+            <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/NEW_PNID_Image.png" alt="">
         </div>
-    </div>
-    <div class="flex-row d-flex justify-content-between align-items-center col-md-10">
-        <div class="col-sm"></div>
-        <div class="col-sm">
-            <strong style="font-size: 12px;"><span
-                    style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Solid
-                line show Actual data </strong><br>
-        </div>
-        <div class="col-sm">
-            <strong style="font-size: 12px;"><span
-                    style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Dotted
-                line show Forecast data </strong><br>
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="graph w-100" id="graph"></div>
-        </div>
-    </div>
+    </p-dialog>
 
-</div><br><br>
 
-<div *ngIf="ExecutorShow">
 
-    <div class="form-group col-sm-3">
-        <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
-            [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
-            <option value="">Forcast dates</option>
-            <option *ngFor="let item of futurePredictionDatesToShow" [value]="item">{{item}}</option>
-        </select>
-    </div>
     <div class="bg-white p-3 rounded mt-4">
         <div class="row d-flex flex-column justify-content-between align-items-center">
             <div class="col-md-12">
@@ -370,12 +337,12 @@
         </div>
         <div class="flex-row d-flex justify-content-between align-items-center col-md-10">
             <div class="col-sm"></div>
-            <div class="col-sm">
+            <div class="col-sm d-flex align-items-center">
                 <strong style="font-size: 12px;"><span
                         style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Solid
                     line show Actual data </strong><br>
             </div>
-            <div class="col-sm">
+            <div class="col-sm d-flex align-items-center">
                 <strong style="font-size: 12px;"><span
                         style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Dotted
                     line show Forecast data </strong><br>
@@ -383,665 +350,720 @@
         </div>
         <div class="row mt-4">
             <div class="col-md-12">
-                <div class="graph w-100" id="my-first-chart"></div>
+                <div class="graph w-100" id="graph"></div>
             </div>
         </div>
 
-    </div><br><br>
-    <div class="col-md-4">
-        
-        <div class="d-block mt-4">
-            <div class="row">
-            <div class="col-md-4">
-                <div class="">
-                    <select name="PredictionselectedYear" [(ngModel)]="selctedtagnymbers"
-                        (ngModelChange)="onPredictionChangeYear()" class="form-control">
-                        <option value="">Select Tag Number</option>
-                        <ng-container *ngFor="let tagnumber of Predictyearlist">
-                            <option [value]="tagnumber.PredictyTagnumber" name="PredictionselectedYear">
-                                {{tagnumber.PredictyTagnumber}}</option>
-                        </ng-container>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="">
-                   <p-multiSelect defaultLabel="Select Year"[options]="Pyearlist" [(ngModel)]="PredictionselectedYear1" (ngModelChange)="PredictFModeType()" optionLabel="Predictyearname" optionValue="Predictyearname"></p-multiSelect> 
-                </div>
-            </div>
-            <div class="col-md-4">
-                <h6>{{ ScrewPredictionAllData.length === 0 ? 'Selected year has no data present' : ''}}</h6>
-           </div>
-        </div>
-    </div>
     </div>
 
-    <div class="card bg-transparent border-0">
-            <div class="d-block mt-4">
-                <div class="col-md-12 mt-4">
-                    <div class="bg-white rounded  px-5 py-3  br-3" >
-                        <strong>Asset Condition Status</strong><br>
-                        <canvas id="PredictionbarWithYear"></canvas>
+    <div *ngIf="ExecutorShow">
+
+        <div class="form-group col-sm-3">
+            <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
+                [(ngModel)]="futurePredictionDate" class="form-control" name="FuturePrediction">
+                <option value="">Forcast dates</option>
+                <option *ngFor="let item of futurePredictionDatesToShow" [value]="item">{{item}}</option>
+            </select>
+        </div>
+        <div class="bg-white p-3 rounded mt-4">
+            <div class="row d-flex flex-column justify-content-between align-items-center">
+                <div class="col-md-12">
+                    <h5><b>Combination Of Prediction & Future Prediction</b></h5>
+                </div>
+            </div>
+            <div class="flex-row d-flex justify-content-between align-items-center col-md-10">
+                <div class="col-sm"></div>
+                <div class="col-sm">
+                    <strong style="font-size: 12px;"><span
+                            style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Solid
+                        line show Actual data </strong><br>
+                </div>
+                <div class="col-sm">
+                    <strong style="font-size: 12px;"><span
+                            style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>Dotted
+                        line show Forecast data </strong><br>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="graph w-100" id="my-first-chart"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row bg-white p-3 mt-4">
+        <div class="col-md-12">
+            
+            <div class="d-block">
+                <div class="row">
+                <div class="col-md-4">
+                    <div class="w-100">
+                        <select name="PredictionselectedYear" [(ngModel)]="selctedtagnymbers"
+                            (ngModelChange)="onPredictionChangeYear()" class="form-control">
+                            <option value="">Select Tag Number</option>
+                            <ng-container *ngFor="let tagnumber of Predictyearlist">
+                                <option [value]="tagnumber.PredictyTagnumber" name="PredictionselectedYear">
+                                    {{tagnumber.PredictyTagnumber}}</option>
+                            </ng-container>
+                        </select>
                     </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="w-100">
+                    <p-multiSelect defaultLabel="Select Year"[options]="Pyearlist" [(ngModel)]="PredictionselectedYear1" (ngModelChange)="PredictFModeType()" optionLabel="Predictyearname" optionValue="Predictyearname"></p-multiSelect> 
                     </div>
-                </div><br>
+                </div>
+                <div class="col-md-4">
+                    <h6>{{ ScrewPredictionAllData.length === 0 ? 'Selected year has no data present' : ''}}</h6>
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
         <div class="row mt-4">
             <div class="col-md-6">
-                <div class="card bg-white p-3 border-0 ">
-                    <strong>Recommendation Status</strong>
-                    <div *ngFor="let obj of allCBAdata;">
-                        <strong style="text-align: left;color:black;font-size: 12px">Recommendation Status For:{{obj.MachineType}}, {{obj.EquipmentType}},{{selctedtagnymbers}}</strong><br>    
-                        <canvas id="PredictionActionPiechart"></canvas><br><br>
-                    </div>
+                <div class="bg-white rounded p-3">
+                    <h5 class="mb-5"><strong>Asset Condition Status</strong></h5>
+                    <canvas id="PredictionbarWithYear"></canvas>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="card bg-white p-3 border-0 " *ngFor="let obj of allCBAdata;">
-                            <strong>Alert Acknowledgement</strong><br>
-                            <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number :{{obj.TagNumber}}</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
-                            <!-- <canvas id="PredictionAlertsPiechart"> </canvas> -->
+                <div class="card bg-white p-3 border-0 ">
+                    <h5><strong>Recommendation Status</strong></h5>
+                    <div *ngFor="let obj of allCBAdata;">
+                        <span class="alert alert-info mb-3"><strong style="text-align: left;color:black;font-size: 12px">Recommendation Status For:{{obj.MachineType}},
+                            {{obj.EquipmentType}},{{selctedtagnymbers}}</strong></span>
+                        <canvas id="PredictionActionPiechart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-transparent border-0">
+            <div class="row mt-4">            
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="card bg-white p-3 border-0 " *ngFor="let obj of allCBAdata;">
+                                <h5><strong>Alert Acknowledgement</strong></h5>
+                                <label class="mb-0 alert alert-info d-flex justify-content-between"><span><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number :{{obj.TagNumber}}</span> <a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click
+                                    Here</a></label>
+                                <!-- <canvas id="PredictionAlertsPiechart"> </canvas> -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div><br>
 
-    <div class="card-body task-body">
-        <div class="col-sm-12 p-0">
-            <h5>Tasks</h5>
+        <div class="row">
+            <div class="col-md-7 h-100">
+                <div class="card-body task-body bg-white h-100">
+                    <div class="col-sm-12 p-0 h-100">
+                        <h5><strong>Tasks</strong></h5>
+                        <div class="row mb-5">
+                            <div class="col-sm-3">
+                                <select name="selctedtasktagno" [(ngModel)]="selctedtasktagno" (ngModelChange)="PredictTask()"
+                                    class="form-control">
+                                    <option value="">Select Tag Number</option>
+                                    <ng-container *ngFor="let tagnumber of Predictyearlist">
+                                        <option [value]="tagnumber.PredictyTagnumber" name="selctedtasktagno">
+                                            {{tagnumber.PredictyTagnumber}}</option>
+                                    </ng-container>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select name="task" [(ngModel)]="task" (ngModelChange)="PredictTask()" class="form-control">
+                                    <option value="">Select Year</option>
+                                    <ng-container *ngFor="let year of Pyearlist">
+                                        <option [value]="year.Predictyearname" name="task">
+                                            {{year.Predictyearname}}</option>
+                                    </ng-container>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2 mn-2" *ngFor="let mode of FMList">
+                            <div class="col-md-1"><span *ngIf="notification">
+                                <i class="fas fa-exclamation-circle {{notification.class}}"></i>
+                            </span></div>
+                            <div class="col-md-4">{{mode.FMname}}</div>
+                            <div class="col-md-7"><canvas id="{{mode.chartID}}" height="30"></canvas></div>
+                        </div>
+                        <!-- <div class="table table-sm mt-4 bg-white p-2 mb-4">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Task </th>
+                                        <th>Indicators</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let mode of FMList">
+                                        <td><span *ngIf="notification">
+                                                <i class="fas fa-exclamation-circle {{notification.class}}"></i>
+                                            </span></td>
+                                        <td class="left strong">{{mode.FMname}}</td>
+                                        <td>
+                                            <div style="width: 55rem;">
+                
+                                                <canvas id="{{mode.chartID}}" height="12"></canvas>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 mt-3">
+                <div class="h-100 bg-white p-3">
+                    <div class="d-flex">
+                        <h5 class="mb-2">Risks</h5>
+                        <a class="pulse-green ml-2" (click)="riskclick()"><strong style="font-size: 12px;">
+                            </strong></a>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div *ngFor="let obj of allCBAdata;">
+                                <strong class="d-flex justify-content-between my-3"><span>Risk :</span><span>{{obj.MachineType}},
+                                    {{obj.EquipmentType}}, {{obj.TagNumber}}</span> </strong>
+                                <strong class="d-flex justify-content-between my-3"><span>Failure Mode</span><span>{{obj.FailureMode}}</span> </strong>
+                                <strong class="d-flex justify-content-between my-3"><span>Strategy Mitigated Risk Rank :</span>
+                                    <span>{{obj.EconomicRiskWithDPMCR}}</span> </strong>
+                                <strong class="d-flex justify-content-between my-3"> <span>Strategy Mitigated Financial Risk :</span>
+                                    <span>{{obj.EconomicRiskWithDPM}}</span> </strong><br>
+                                <div class="mt-2">
+                                    <canvas id="{{obj.rankgraphId}}" height="20"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-block mt-4">
+            <div class="row">            
+                <div class="col-md-712" *ngIf="MitigatingActionshow">
+                    <div class="bg-white p-3">
+                        <div class="d-flex px-3">
+                        <h5 class="mb-3">Mitigating Actions</h5>
+                        <a class="pulse-green ml-2" (click) ="mittigatioclick()">
+                            <strong style="font-size: 12px;">
+                        </strong>
+                        </a>
+                        </div>
+                        <div class="row mt-0 p-3">
+                            <div class="col-sm-12">
+                                <tbody>
+                                    <div class="row">
+                                    <div *ngFor="let obj of centrifugalmssmodelFilter;" class="col-md-6">
+                                            <span class="alert alert-primary w-100 d-inline-block"><i class="pi pi-info-circle mr-2"></i>{{obj.MSSIntervalSelectionCriteria}}
+                                            </span><br>
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Maintenance Task</th>
+                                                        <th scope="col">Interval</th>
+                                                        <th scope="col">Craft</th>
+                                                        <th scope="col">Level</th>
+                                                        <th scope="col">Hours</th>
+                                                        <th scope="col">Annual POC</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Maintenance Task : {{row.MSSMaintenanceTask}} </strong><br>
+                                                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br> -->
+                                                    <tr *ngFor="let row of obj.centrifugalmssmodel;">
+                                                        <td scope="row">{{row.MSSMaintenanceTask}} </td>
+                                                        <td>{{row.MSSMaintenanceInterval}}</td>
+                                                        <td>{{row.Craft}}</td>
+                                                        <td>{{row.Level}}</td>
+                                                        <td>{{row.Hours}}</td>
+                                                        <td>{{row.AnnualPOC}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </tbody>
+                            </div>
+                        </div>
+                    </div>
+                </div >
+        
+            </div>
+        </div>
+        <div>
+        <div class="row mt-4">
+            <div class="col-md-8 h-100">                
+                <div class="bg-white p-3 h-100">
+                    <h5><strong>Risk Analysis</strong></h5>
+                    <a class="pulse-green" (click)="riskanalysclick()"><strong style="font-size: 12px;">
+                        </strong></a>
+                    <canvas id="profile_risk"></canvas>
+                </div>
+            </div>
+            <div class="col-md-4">
+    <div class="bg-white p-3 bg-white fixed-card h-100" style="" *ngIf="helpboxshow">
+        <h5><strong>Steps</strong></h5>
+        <div class="">
+            <div>
+                <p-steps [model]="items" [(activeIndex)]="activeIndex"></p-steps>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="shadow p-3 mb-3 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem" id="pid">
+                <strong style="color:#333;font-size: 14px">Asset strategy library</strong>
+            </div>
+            <div class="shadow p-3 mb-3 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                <p>
+                    APM has a catalog of 600 common equipment categories, 37,000 failure modes, and 3400 actions to get
+                    started
+                    right away
+                </p>
+            </div>
+            <div *ngIf="riskhelp" id="riskhelpid">
+                <div class="shadow p-3 mb-3 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
+                    <strong style="color:#333;font-size: 14px">Risk</strong>
+                </div><br>
+                <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                    <h5>
+                        The Reliability Analyst can review the risks to understand why assets might fail.
+                    </h5>
+                </div>
+            </div><br>
+            <div *ngIf="mittigationhelp" id="mittigationhelp">
+                <div class="shadow p-3 mb-3 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
+                    <strong style="color:#333;font-size: 14px">Mitigating Actions</strong>
+                </div>
+                <div class="shadow p-3 mb-3 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                    <h5>
+                        Each of the risks has different mitigation actions that have been recommended by various experts.
+                    </h5>
+                </div>
+            </div>
+            <div *ngIf="riskanalysishelp" id="riskanalysishelp">
+                <div class="shadow p-3 mb-3 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
+                    <strong style="color:#333;font-size: 14px">Risk Analysis</strong>
+                </div>
+                <div class="shadow p-3 mb-3 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                    <h5>
+                        The Reliability Analyst can do a What-If Analysis to see the impact of a mitigation in the strategy.
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <a (click)="Previous()" class="btn btn-primary">Previous step</a>
+            <a *ngIf="gotit" style="float: right" (click)="helpbox()" class="btn btn-primary">Got It</a>
+        </div>
+    </div>
+            </div>
+        </div>        
+    </div>
+    
+
+        
+            
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div *ngIf="showcbi" id="CBAnavigate">
+                        <div class="bg-white p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-3"><b> Cost Benefit Risk Analysis</b> </h5>
+                                <button class="btn btn-outline-dark btn-sm" (click)="RouteToCostBenifit()" data-toggle="tooltip"
+                                    data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
+                            </div>
+                            <div class="col-md-4 pl-0 mb-4">
+                                <select [(ngModel)]="CBIGraphs" class="form-select" (change)="CBICharts()" class="form-control">
+                                    <option value="">All Graph.</option>
+                                    <option value="Ecomomic_Risk" selected>Ecomomic Risk Graph</option>
+                                    <!-- <option value="Residual_Risk" selected>Residual Risk Graph</option> -->
+                                    <option value="MEI" selected>MEI</option>
+                                </select>
+                            </div>
+                            <div *ngIf="allCBI">
+                                <div class="card">
+                                    <canvas id="allGraphCBI"></canvas>
+                                </div>
+                            </div>
+                            <div *ngIf="ecomomic_risk_Graph">
+                                <div class="card">
+                                    <strong>Ecomomic Risk Graph</strong>
+                                    <canvas id="ecomomic_risk"></canvas>
+                                </div>
+                            </div>
+                            <!-- <div *ngIf="residual_risk_Graph">
+                                    <div class="card" style="width:50rem;margin-left: 10rem;">
+                                        <strong>Residual Risk Graph</strong>
+                                        <canvas id="residual_risk"></canvas>
+                                    </div>
+                                </div><br> -->
+                            <div *ngIf="MEI_risk_Graph">
+                                <div class="card" style="width:50rem;margin-left: 10rem;">
+                                    <strong>MEI Graph</strong>
+                                    <canvas id="mei_risk"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                        <div class="d-block h-100">
+                            <div class="col-md-12 h-100">
+                                <div class="bg-white rounded p-3 h-100">
+                                    <h5 class="mb-5"><strong>Asset Condition Status</strong></h5>
+                                    <canvas id="FakePredictionbarWithTage"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </div>
+
+    <div *ngIf="PrescriptiveShow">
+        <div class="row bg-white p-3">
+            <div class="col-sm">
+                <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
+                <option value="">Choose Machine Type</option>
+                <option value="Compressor" selected>Compressor</option>
+                <option value="Pump" selected>Pump</option>
+            </select>
+            </div>
+            <div class="col-sm">
+                <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
+                <option value="">Choose Equipment Type</option>
+                <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
+            </select>
+            </div>
+            <div class="col-sm">
+                <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                <option value="">Choose Tag Number</option>
+                <option *ngFor="let TL of TagList" [ngValue]="TL">{{TL}}</option>
+            </select>
+            </div>
+            <div class="col-sm-1">
+                <div class="row">
+                    <div class="col-sm">
+                        <a class="btn btn-primary" (click)="assetSelection()">Done</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+        <div *ngIf="assetselection">
+        <div class="card-body task-body bg-white">
+            <div class="col-sm-12 p-0">
+                <h5>Asset Functional Description </h5>
+                <div class="table-responsive-sm bg-white p-2 mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Reliability data</th>
+                                <th>Asset criticality</th>
+                                <th>Date of commissioning</th>
+                                <th> Date of Last major repair </th>
+                                <th> MTBF </th>
+                                <th>MTTR </th>
+                                <th> Availability required</th>
+                                <th> Mission life</th>
+                                <th> Expected Reliability</th>
+                                <th> Reliability  data (contd.)</th>
+                                <th>RAV </th>
+                                <th> Major maintenance cost</th>
+                                <th>Data quality </th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let obj of allCBAdata;">
+                            <tr>
+                            <td> 0.999500</td>
+                            <td> {{obj.EconomicRiskWithDPMCR}}</td>
+                            <td>06/11/2016</td>
+                            <td>30/03/2017 </td>
+                            <td>2.833213 </td>
+                            <td> 1.037433</td>
+                            <td>40 </td>
+                            <td>Mission life </td>
+                            <td>60</td>
+                            <td>3.608018</td>
+                            <td>RAV</td>
+                            <td>25$</td>
+                            <td>Good</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><br>
+
+        <div class="card-body task-body bg-white">
+            <div class="col-sm-12 p-0">
+                <h5>Health status</h5>
             <div class="row">
-                <div class="col-sm-3">
-                    <select name="selctedtasktagno" [(ngModel)]="selctedtasktagno"
-                    (ngModelChange)="PredictTask()" class="form-control">
+                <div class="col-md-2">
+                    <select name="PredictionselectedYear" [(ngModel)]="forststuspredictionyearlist"
+                    (ngModelChange)="onPredictionChangeYear1()" class="form-control">
                     <option value="">Select Tag Number</option>
                     <ng-container *ngFor="let tagnumber of Predictyearlist">
-                        <option [value]="tagnumber.PredictyTagnumber" name="selctedtasktagno">
+                        <option [value]="tagnumber.PredictyTagnumber" name="PredictionselectedYear">
                             {{tagnumber.PredictyTagnumber}}</option>
                     </ng-container>
                 </select>
                 </div>
-                <div class="col-sm-3">
-                    <select name="task" [(ngModel)]="task" (ngModelChange)="PredictTask()"
-                        class="form-control">
-                        <option value="">Select Year</option>
-                        <ng-container *ngFor="let year of Pyearlist">
-                            <option [value]="year.Predictyearname" name="task">
-                                {{year.Predictyearname}}</option>
-                        </ng-container>
+                <div class="col-md-2">
+                    <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="PredictionDates()"
+                    [(ngModel)]="PredictionDate" class="form-control" name="Prediction">
+                    <option value="">Prediction</option>
+                    <option *ngFor="let item of PredictionDatesToShow" [value]="item">{{item}}</option>
+                </select>
+                </div>
+                <div class="col-md-2">
+                    <select [(ngModel)]="Forcaststatus" class="form-select" (change)="ForcaststatusChange()" class="form-control">
+                        <option value="">Forcast..</option>
+                        <option value="1Week" selected>After 1 Week</option>
+                        <option value="1Month" selected>After 1 Month</option>
+                        <option value="3Month" selected>After 3 Month</option>
                     </select>
                 </div>
+            </div><br>
+                <div class="table-responsive-sm bg-white p-2 mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Health status</th>
+                                <th rowspan="2">Current </th>
+                                <th>Forecast</th>
+                            </tr>
+                            <tr>
+                                <th>1W</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td> N- Normal</td>
+                            <td>{{Normalpercentage}}</td>
+                            <td>{{forcastFinalNormal}}</td>
+
+
+                            </tr>
+                            <tr>
+                                <td>I- Incipient</td>
+                                <td>{{Incipientpercentage}}</td>
+                                <td>{{forcastFinalIncipient}}</td>
+
+                            </tr>
+                            <tr>
+                                <td> D- Degraded </td>
+                                <td>{{Degradepercentage}}</td>
+                                <td>{{forcastFinaldDegrade}}</td>
+                            </tr>
+                            <tr>
+                                <td> Upper/ Lower confidence level</td>
+                                <td>50</td>
+                                <td>50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="table-responsive-sm bg-white p-2 mb-4">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Status</th>
-                            <th>Task </th>
-                            <th>Indicators</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr  *ngFor="let mode of FMList">
-                            <td><span *ngIf="notification">
-                                <i class="fas fa-exclamation-circle {{notification.class}}"></i>
-                            </span></td>
-                            <td class="left strong">{{mode.FMname}}</td>
-                            <td>
-                                <div style="width: 55rem;">
-                                  
-                                    <canvas id="{{mode.chartID}}" height="12"></canvas>
-                                </div>
-                          </td>
-                        </tr>
-                    </tbody>
-                </table>
+        </div><br>
+
+        <div class="card-body task-body bg-white">
+            <div class="col-sm-12 p-0">
+                <h5>Alert management indicator</h5>
+                <div class="table-responsive-sm bg-white p-2 mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Alert management indicator </th>
+                                <th>Competency</th>
+                                <th>Spares </th>
+                                <th> Special Tools</th>
+                                <th> Resources </th>
+                                <th> LOPA </th>
+                                <th> RCA recommendation</th>
+                                <th> KPI </th>
+                                <th>Task execution delay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GREEN / AMBER / RED</td>
+                                <td><span *ngIf="notifications">
+                                    <i class="fas fa-exclamation-circle {{notifications.class}}"></i>
+                                </span></td>
+                                <td> <strong style="font-size: 12px;"><span class="pulse-green"
+                                            style=""></span>
+                                    </strong></td>
+                                <td> <strong style="font-size: 12px;"><span class="pulse-green"
+                                            style=""></span>
+                                    </strong></td>
+                                <td> <strong style="font-size: 12px;"><span class="pulse-green"
+                                            style=""></span>
+                                    </strong></td>
+                                <td> <strong style="font-size: 12px;"><span class="pulse-green"
+                                            style=""></span>
+                                    </strong></td>
+                                <td>{{RecommendationAlertMessage}}</td>
+                                <td>- </td>
+                                <td>-</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div><br>
+
+        <div class="card-body task-body bg-white">
+            <div class="col-sm-12 p-0">
+                <h5>PONC/ETBF</h5>
+                <div class="table-responsive-sm bg-white p-2 mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Maintenance strategy </th>
+                                <th>POC</th>
+                                <th>ETBC </th>
+                                <th>MEI</th>
+                                <th>RISK</th>
+                                <th>ECONOMIC RISK </th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr *ngFor="let obj of allCBAdata;">
+                                <td> Current </td>
+                                <td> - </td>
+                                <td> {{obj.VendorETBC}}</td>
+                                <td>{{obj.MEIWithoutDPM}} </td>
+                                <td>{{obj.ResidualRiskWithOutDPM}}</td>
+                                <td>{{obj.EconomicRiskWithOutDPM}}</td>
+                            </tr>
+                            <tr *ngFor="let obj of allCBAdata;">
+                                <td> DPM w/o mitigating constraints </td>
+                                <td> - </td>
+                                <td> {{obj.VendorETBC}}</td>
+                                <td>{{obj.MEIWithDPM}} </td>
+                                <td>{{obj.ResidualRiskWithDPM}}</td>
+                                <td>{{obj.EconomicRiskWithDPM}}</td>
+                            </tr>
+                            <tr *ngFor="let obj of allCBAdata;">
+                                <td> DPM with constraint mitigation </td>
+                                <td> - </td>
+                                <td> {{obj.VendorETBC}}</td>
+                                <td>{{obj.MEIWithDPMConstraint}} </td>
+                                <td>{{obj.ResidualRiskWithConstraintDPMCR}}</td>
+                                <td>-</td>
+                                <!-- {{obj.EconomicRiskWithDPMConstraintCR}} -->
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><br>
+
+        <div class="card-body task-body bg-white">
+            <div class="col-sm-12 p-0">
+                <h5>Recommended Maintenance Prescription</h5>
+                <div class="table-responsive-sm bg-white p-2 mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Reference of Task List </th>
+                                <th>Task description</th>
+                                <th>Frequency </th>
+                                <th>Due date </th>
+                                <th>Remarks</th>
+                                <th>Crafts </th>
+                                <th>Man-hour </th>
+                                <th>Competency level </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let obj of centrifugalmssmodel;">
+                                <td> Good engineering practices </td>
+                                <td >{{obj.MSSMaintenanceTask}} </td>
+                                <td>{{obj.MSSMaintenanceInterval}} </td>
+                                <td></td>
+                                <td> -</td>
+                                <td>{{obj.Craft}} </td>
+                                <td>{{obj.Hours}} </td>
+                                <td>{{obj.Level}} </td>
+
+                            </tr>
+                            <tr *ngFor="let obj of MSSTaskList;">
+                                <td>RCM recommendation</td>
+                                <td >{{obj.MSSMaintenanceTask}} </td>
+                                <td>{{obj.MSSMaintenanceInterval}} </td>
+                                <td></td>
+                                <td> -</td>
+                                <td>{{obj.Craft}} </td>
+                                <td>{{obj.Hours}} </td>
+                                <td>{{obj.Level}} </td>
+                            </tr>
+                            <tr *ngFor="let obj of ConstraintTaskList;">
+                                <td>Constraint management recommendationn</td>
+                                <td >{{obj.MSSMaintenanceTask}} </td>
+                                <td>{{obj.MSSMaintenanceInterval}} </td>
+                                <td></td>
+                                <td> -</td>
+                                <td>{{obj.Craft}} </td>
+                                <td>{{obj.Hours}} </td>
+                                <td>{{obj.Level}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><br>
         </div>
     </div>
-    <br>
-    <div class="d-block mt-4">
+
+    <!-- <div class="bg-white rounded  px-5 py-3  br-3" >
+        <canvas id="FakePredictionbarWithTage"></canvas>
+    </div> -->
+
+    <!-- <div class="d-block mt-4">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="h-100 bg-white p-3">
                     <h5>Risks</h5>
-                     <a class="blink_me" (click) ="riskclick()"><strong style="font-size: 12px;"><span
-                        style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
-                </strong></a>  
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div *ngFor="let obj of allCBAdata;">
-                            <strong style="text-align: left;color:black;font-size: 12px">Risk :{{obj.MachineType}}, {{obj.EquipmentType}}, {{obj.TagNumber}} </strong><br>
-                            <strong style="text-align: left;color:black;font-size: 12px">{{obj.FailureMode}} </strong><br>
-                            <strong style="text-align: left;color:black;font-size: 12px">Strategy Mitigated Risk Rank : {{obj.EconomicRiskWithDPMCR}}  </strong><br>
-                            <strong style="text-align: left;color:black;font-size: 12px"> Strategy Mitigated Financial Risk  : {{obj.EconomicRiskWithDPM}} </strong><br>
+                        <div class="col-sm-6" *ngFor="let obj of fakeriskandMetigateActions">
+                            <div class="card"><br>
+                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 10px;">Tag Number:{{obj.TagNumber}} </strong><br>
+                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 10px;">{{obj.FunctionMode}} </strong><br>
+                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 10px;">Strategy Mitigated Risk Rank : {{obj.RiskRank}}  </strong><br>
+                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 10px;"> Strategy Mitigated Financial Risk  : {{obj.FinancialRisk}} </strong><br>
                             <div>
                                 <canvas id="{{obj.rankgraphId}}" height="20"></canvas>
                             </div>
-                        </div>
-                        </div>
+                        </div><br>
+                    </div>
                     </div>
                 </div>
-            </div><br>
-            <div class="col-md-7" *ngIf="MitigatingActionshow">
+            </div>
+            <div class="col-md-6" *ngIf="MitigatingActionshow">
                 <div class="bg-white p-3">
                     <h5>Mitigating Actions</h5>
-                    <a class="blink_me" (click) ="mittigatioclick()">
-                        <strong style="font-size: 12px;"><span
-                        style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
-                    </strong>
-            </a>
                     <div class="row">
                         <div class="col-sm-6">
-                            <tbody>
-                                <div *ngFor="let obj of centrifugalmssmodelFilter;">
-                                    <div style="width: 43rem;"><br>
-                                        <strong
-                                            style="text-align: left;color:black;font-size: 16px;margin-left: 20px">{{obj.MSSIntervalSelectionCriteria}}
-                                        </strong><br>
-                                        <table class="table table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Maintenance Task</th>
-                                                    <th scope="col">Interval</th>
-                                                    <th scope="col">Craft</th>
-                                                    <th scope="col">Level</th>
-                                                    <th scope="col">Hours</th>
-                                                    <th scope="col">Annual POC</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Maintenance Task : {{row.MSSMaintenanceTask}} </strong><br>
-                                                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br> -->
-                                                <tr *ngFor="let row of obj.centrifugalmssmodel;">
-                                                    <th scope="row">{{row.MSSMaintenanceTask}} </th>
-                                                    <td>{{row.MSSMaintenanceInterval}}</td>
-                                                    <td>{{row.Craft}}</td>
-                                                    <td>{{row.Level}}</td>
-                                                    <td>{{row.Hours}}</td>
-                                                    <td>{{row.AnnualPOC}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <br>
-                                    </div>
-                                </div><br>
-                            </tbody>
-                        </div>
-                    </div>
-                </div>
-            </div >
-     
-            </div>
-     </div><br>
-    <div>
-        <div class="card" style="width:70rem;">
-            <a class="blink_me" (click) ="riskanalysclick()"><strong style="font-size: 12px;"><span
-                style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
-        </strong></a>
-            <canvas id="profile_risk"></canvas>
-        </div>
-    </div><br>
- 
-
-        <div class="shadow p-3 mb-5 bg-white" style="margin-left:45rem;width:30rem; position:sticky;top:0;" *ngIf="helpboxshow">
-            <div class="card-header"> 
-                 <strong style="color:#2B65EC;font-size: 20px">Steps</strong>  
-                <div>
-                    <p-steps [model]="items" [(activeIndex)]="activeIndex"></p-steps>
-                </div> 
-            </div>
-          
-            <div class="card-body">
-                   <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem" id="pid">
-                    <strong style="color:#2B65EC;font-size: 20px">Asset strategy library</strong>
-                    </div>
-                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                        <h5>
-                            APM has a catalog of 600 common equipment categories, 37,000 failure modes, and 3400 actions to get started
-                            right away
-                        </h5>
-                    </div>
-                    <div *ngIf="riskhelp" id="riskhelpid">
-                        <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
-                            <strong style="color:#2B65EC;font-size: 20px">Risk</strong>
-                        </div><br>
-                        <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                            <h5>
-                                The Reliability Analyst can review the risks to understand why assets might fail.
-                            </h5>
-                        </div>
-                    </div><br>
-                    <div *ngIf="mittigationhelp" id="mittigationhelp">
-                        <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
-                            <strong style="color:#2B65EC;font-size: 20px">Mitigating Actions</strong>
-                        </div>
-                        <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                            <h5>
-                                Each of the risks has different mitigation actions that have been recommended by various experts.
-                            </h5>
-                        </div>
-                    </div>
-                    <div *ngIf="riskanalysishelp" id="riskanalysishelp">
-                        <div class="shadow p-3 mb-5 bg-white" style="border-radius: 15px 50px 30px;padding:10px; width:10rem">
-                            <strong style="color:#2B65EC;font-size: 20px">Risk Analysis</strong>
-                        </div>
-                        <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                            <h5>
-                                The Reliability Analyst can do a What-If Analysis to see the impact of a mitigation in the strategy.
-                            </h5>
-                        </div>
-                    </div>
-            </div>
-           
-            <div class="card-footer">
-                <a (click) ="Previous()" class="btn btn-primary">Previous step</a>
-                <a *ngIf="gotit" style="float: right" (click) ="helpbox()" class="btn btn-primary">Got It</a>
-            </div>
-          </div>
-        
- 
-    <div *ngIf="showcbi" id="CBAnavigate">
-        <div class="bg-transparent mt-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5><b> Cost Benefit Risk Analysis</b> </h5>
-                <button class="btn btn-outline-dark btn-sm" (click)="RouteToCostBenifit()" data-toggle="tooltip"
-                    data-placement="top" title="Go to Cost Benifit"><i class="fas fa-table "></i></button>
-            </div>
-            <br><br>
-            <div class="col-md-4">
-                <select [(ngModel)]="CBIGraphs" class="form-select" (change)="CBICharts()" class="form-control">
-                    <option value="">All Graph.</option>
-                    <option value="Ecomomic_Risk" selected>Ecomomic Risk Graph</option>
-                    <!-- <option value="Residual_Risk" selected>Residual Risk Graph</option> -->
-                    <option value="MEI" selected>MEI</option>
-                </select>
-            </div><br>
-            <div *ngIf="allCBI">
-                <div class="card" style="width:70rem;">
-                    <canvas id="allGraphCBI"></canvas>
-                </div>
-            </div><br>
-            <div *ngIf="ecomomic_risk_Graph">
-                <div class="card" style="width:50rem;margin-left: 10rem;">
-                    <strong>Ecomomic Risk Graph</strong>
-                    <canvas id="ecomomic_risk"></canvas>
-                </div>
-            </div><br>
-            <!-- <div *ngIf="residual_risk_Graph">
-                <div class="card" style="width:50rem;margin-left: 10rem;">
-                    <strong>Residual Risk Graph</strong>
-                    <canvas id="residual_risk"></canvas>
-                </div>
-            </div><br> -->
-            <div *ngIf="MEI_risk_Graph">
-                <div class="card" style="width:50rem;margin-left: 10rem;">
-                    <strong>MEI Graph</strong>
-                    <canvas id="mei_risk"></canvas>
-                </div>
-            </div>
-        </div> <br>  
-    </div>
- 
-    <div class="d-block mt-4">
-        <div class="col-md-12 mt-4">
-            <div class="bg-white rounded  px-5 py-3  br-3" >
-                <strong>Asset Condition Status</strong><br>
-                <canvas id="FakePredictionbarWithTage"></canvas>
-            </div>
-            </div>
-     </div>
-</div>
-
-<div *ngIf="PrescriptiveShow">
-    <div class="col d-flex justify-content-center">
-    <div class="card" style="width: 30rem;">
-        <div class="col-sm">
-            <select [(ngModel)]="MachineType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
-            <option value="">Choose Machine Type</option>
-            <option value="Compressor" selected>Compressor</option>
-            <option value="Pump" selected>Pump</option>
-        </select>
-        </div>
-        <div class="col-sm">
-            <select [(ngModel)]="EquipmentType" class="form-select" (change)="MachineEquipmentSelect()" class="form-control">
-            <option value="">Choose Equipment Type</option>
-            <option *ngFor="let EL of EquipmentList" [ngValue]="EL">{{EL}}</option>
-        </select>
-        </div>
-        <div class="col-sm">
-            <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
-             <option value="">Choose Tag Number</option>
-             <option *ngFor="let TL of TagList" [ngValue]="TL">{{TL}}</option>
-        </select>
-        </div>
-        <div class="col-sm-1">
-            <div class="row">
-                <div class="col-sm">
-                    <a class="btn btn-primary" (click)="assetSelection()">Done</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-   </div><br>
-    <div *ngIf="assetselection">
-    <div class="card-body task-body">
-        <div class="col-sm-12 p-0">
-            <h5>Asset Functional Description </h5>
-            <div class="table-responsive-sm bg-white p-2 mb-4">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Reliability data</th>
-                            <th>Asset criticality</th>
-                            <th>Date of commissioning</th>
-                            <th> Date of Last major repair </th>
-                            <th> MTBF </th>
-                            <th>MTTR </th>
-                            <th> Availability required</th>
-                            <th> Mission life</th>
-                            <th> Expected Reliability</th>
-                            <th> Reliability  data (contd.)</th>
-                            <th>RAV </th>
-                            <th> Major maintenance cost</th>
-                            <th>Data quality </th>
-                        </tr>
-                    </thead>
-                    <tbody *ngFor="let obj of allCBAdata;">
-                        <tr>
-                        <td> 0.999500</td>
-                        <td> {{obj.EconomicRiskWithDPMCR}}</td>
-                        <td>06/11/2016</td>
-                        <td>30/03/2017 </td>
-                        <td>2.833213 </td>
-                        <td> 1.037433</td>
-                        <td>40 </td>
-                        <td>Mission life </td>
-                        <td>60</td>
-                        <td>3.608018</td>
-                        <td>RAV</td>
-                        <td>25$</td>
-                        <td>Good</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div><br>
-
-    <div class="card-body task-body">
-        <div class="col-sm-12 p-0">
-            <h5>Health status</h5>
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-2">
-                <select name="PredictionselectedYear" [(ngModel)]="forststuspredictionyearlist"
-                (ngModelChange)="onPredictionChangeYear1()" class="form-control">
-                <option value="">Select Tag Number</option>
-                <ng-container *ngFor="let tagnumber of Predictyearlist">
-                    <option [value]="tagnumber.PredictyTagnumber" name="PredictionselectedYear">
-                        {{tagnumber.PredictyTagnumber}}</option>
-                </ng-container>
-            </select>
-            </div>
-            <div class="col-md-2">
-                <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="PredictionDates()"
-                [(ngModel)]="PredictionDate" class="form-control" name="Prediction">
-                <option value="">Prediction</option>
-                <option *ngFor="let item of PredictionDatesToShow" [value]="item">{{item}}</option>
-            </select>
-            </div>
-            <div class="col-md-2">
-                <select [(ngModel)]="Forcaststatus" class="form-select" (change)="ForcaststatusChange()" class="form-control">
-                    <option value="">Forcast..</option>
-                    <option value="1Week" selected>After 1 Week</option>
-                    <option value="1Month" selected>After 1 Month</option>
-                    <option value="3Month" selected>After 3 Month</option>
-                </select>
-            </div>
-        </div><br>
-            <div class="table-responsive-sm bg-white p-2 mb-4">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Health status</th>
-                            <th>Current </th>
-                            <th>Forecast</th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th>1W</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td> N- Normal</td>
-                        <td>{{Normalpercentage}}</td>
-                        <td>{{forcastFinalNormal}}</td>
-
-
-                        </tr>
-                        <tr>
-                            <td>I- Incipient</td>
-                            <td>{{Incipientpercentage}}</td>
-                            <td>{{forcastFinalIncipient}}</td>
-
-                        </tr>
-                        <tr>
-                            <td> D- Degraded </td>
-                            <td>{{Degradepercentage}}</td>
-                            <td>{{forcastFinaldDegrade}}</td>
-                        </tr>
-                        <tr>
-                            <td> Upper/ Lower confidence level</td>
-                            <td>50</td>
-                            <td>50</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div><br>
-
-    <div class="card-body task-body">
-        <div class="col-sm-12 p-0">
-            <h5>Alert management indicator</h5>
-            <div class="table-responsive-sm bg-white p-2 mb-4">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Alert management indicator </th>
-                            <th>Competency</th>
-                            <th>Spares </th>
-                            <th> Special Tools</th>
-                            <th> Resources </th>
-                            <th> LOPA </th>
-                            <th> RCA recommendation</th>
-                            <th> KPI </th>
-                            <th>Task execution delay</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>GREEN / AMBER / RED</td>
-                            <td><span *ngIf="notifications">
-                                <i class="fas fa-exclamation-circle {{notifications.class}}"></i>
-                            </span></td>
-                            <td> <strong style="font-size: 12px;"><span
-                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
-                                </strong></td>
-                            <td> <strong style="font-size: 12px;"><span
-                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
-                                </strong></td>
-                            <td> <strong style="font-size: 12px;"><span
-                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
-                                </strong></td>
-                            <td> <strong style="font-size: 12px;"><span
-                                        style="background-color: green;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
-                                </strong></td>
-                            <td>{{RecommendationAlertMessage}}</td>
-                            <td>- </td>
-                            <td>-</td>
-
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div><br>
-
-    <div class="card-body task-body">
-        <div class="col-sm-12 p-0">
-            <h5>PONC/ETBF</h5>
-            <div class="table-responsive-sm bg-white p-2 mb-4">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Maintenance strategy </th>
-                            <th>POC</th>
-                            <th>ETBC </th>
-                            <th>MEI</th>
-                            <th>RISK</th>
-                            <th>ECONOMIC RISK </th>
-                        </tr>
-                    </thead>
-                    <tbody >
-                        <tr *ngFor="let obj of allCBAdata;">
-                            <td> Current </td>
-                            <td> - </td>
-                            <td> {{obj.VendorETBC}}</td>
-                            <td>{{obj.MEIWithoutDPM}} </td>
-                            <td>{{obj.ResidualRiskWithOutDPM}}</td>
-                            <td>{{obj.EconomicRiskWithOutDPM}}</td>
-                        </tr>
-                        <tr *ngFor="let obj of allCBAdata;">
-                            <td> DPM w/o mitigating constraints </td>
-                            <td> - </td>
-                            <td> {{obj.VendorETBC}}</td>
-                            <td>{{obj.MEIWithDPM}} </td>
-                            <td>{{obj.ResidualRiskWithDPM}}</td>
-                            <td>{{obj.EconomicRiskWithDPM}}</td>
-                        </tr>
-                        <tr *ngFor="let obj of allCBAdata;">
-                            <td> DPM with constraint mitigation </td>
-                            <td> - </td>
-                            <td> {{obj.VendorETBC}}</td>
-                            <td>{{obj.MEIWithDPMConstraint}} </td>
-                            <td>{{obj.ResidualRiskWithConstraintDPMCR}}</td>
-                            <td>-</td>
-                            <!-- {{obj.EconomicRiskWithDPMConstraintCR}} -->
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div><br>
-
-    <div class="card-body task-body">
-        <div class="col-sm-12 p-0">
-            <h5>Recommended Maintenance Prescription</h5>
-            <div class="table-responsive-sm bg-white p-2 mb-4">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Reference of Task List </th>
-                            <th>Task description</th>
-                            <th>Frequency </th>
-                            <th>Due date </th>
-                            <th>Remarks</th>
-                            <th>Crafts </th>
-                            <th>Man-hour </th>
-                            <th>Competency level </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr *ngFor="let obj of centrifugalmssmodel;">
-                            <td> Good engineering practices </td>
-                            <td >{{obj.MSSMaintenanceTask}} </td>
-                            <td>{{obj.MSSMaintenanceInterval}} </td>
-                            <td></td>
-                            <td> -</td>
-                            <td>{{obj.Craft}} </td>
-                            <td>{{obj.Hours}} </td>
-                            <td>{{obj.Level}} </td>
-
-                        </tr>
-                        <tr *ngFor="let obj of MSSTaskList;">
-                            <td>RCM recommendation</td>
-                            <td >{{obj.MSSMaintenanceTask}} </td>
-                            <td>{{obj.MSSMaintenanceInterval}} </td>
-                            <td></td>
-                            <td> -</td>
-                            <td>{{obj.Craft}} </td>
-                            <td>{{obj.Hours}} </td>
-                            <td>{{obj.Level}} </td>
-                        </tr>
-                        <tr *ngFor="let obj of ConstraintTaskList;">
-                            <td>Constraint management recommendationn</td>
-                            <td >{{obj.MSSMaintenanceTask}} </td>
-                            <td>{{obj.MSSMaintenanceInterval}} </td>
-                            <td></td>
-                            <td> -</td>
-                            <td>{{obj.Craft}} </td>
-                            <td>{{obj.Hours}} </td>
-                            <td>{{obj.Level}} </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div><br>
-    </div>
-</div>
-
-<!-- <div class="bg-white rounded  px-5 py-3  br-3" >
-    <canvas id="FakePredictionbarWithTage"></canvas>
-</div> -->
-
-<!-- <div class="d-block mt-4">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="h-100 bg-white p-3">
-                <h5>Risks</h5>
-                <div class="row">
-                    <div class="col-sm-6" *ngFor="let obj of fakeriskandMetigateActions">
-                        <div class="card"><br>
-                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 10px;">Tag Number:{{obj.TagNumber}} </strong><br>
-                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 10px;">{{obj.FunctionMode}} </strong><br>
-                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 10px;">Strategy Mitigated Risk Rank : {{obj.RiskRank}}  </strong><br>
-                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 10px;"> Strategy Mitigated Financial Risk  : {{obj.FinancialRisk}} </strong><br>
-                        <div>
-                            <canvas id="{{obj.rankgraphId}}" height="20"></canvas>
-                        </div>
-                    </div><br>
-                 </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6" *ngIf="MitigatingActionshow">
-            <div class="bg-white p-3">
-                <h5>Mitigating Actions</h5>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div *ngFor="let obj of centrifugalmssmodelFilter;">
-                            <div class="card" style="width: 30rem;"><br>
-                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">{{obj.MSSIntervalSelectionCriteria}} </strong><br>
-                            <div  *ngFor="let row of obj.centrifugalmssmodel;">
-                                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Maintenance Task : {{row.MSSMaintenanceTask}} </strong><br>
-                                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br>
+                            <div *ngFor="let obj of centrifugalmssmodelFilter;">
+                                <div class="card" style="width: 30rem;"><br>
+                                <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">{{obj.MSSIntervalSelectionCriteria}} </strong><br>
+                                <div  *ngFor="let row of obj.centrifugalmssmodel;">
+                                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Maintenance Task : {{row.MSSMaintenanceTask}} </strong><br>
+                                            <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br>
+                                </div>
+                            </div> <br>
                             </div>
-                        </div> <br>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div><br> -->
+    </div><br> -->
