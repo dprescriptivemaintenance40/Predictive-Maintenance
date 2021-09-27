@@ -502,7 +502,7 @@
         </div>
     </div>
     <br>
-    <div class="d-block mt-4">
+    <!-- <div class="d-block mt-4">
         <div class="row">
             <div class="col-md-5">
                 <div class="h-100 bg-white p-3">
@@ -532,7 +532,7 @@
                         <strong style="font-size: 12px;"><span
                         style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
                     </strong>
-            </a>
+                    </a>
                     <div class="row">
                         <div class="col-sm-6">
                             <tbody>
@@ -553,8 +553,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Maintenance Task : {{row.MSSMaintenanceTask}} </strong><br>
-                                                        <strong style="text-align: left;color:black;font-size: 12px;margin-left: 20px">Interval : {{row.MSSMaintenanceInterval}}, Craft : {{row.Craft}}, Level : {{row.Level}}, Hours : {{row.Hours}}, Annual POC : {{row.AnnualPOC}}</strong> <br><br> -->
                                                 <tr *ngFor="let row of obj.centrifugalmssmodel;">
                                                     <th scope="row">{{row.MSSMaintenanceTask}} </th>
                                                     <td>{{row.MSSMaintenanceInterval}}</td>
@@ -575,13 +573,127 @@
             </div >
      
             </div>
-     </div><br>
+     </div> -->
+     <div *ngIf="AssociatedFailuerMode">
+     <div class="card-body task-body">
+        <div class="col-sm-12 p-0">
+            <h5>Associated Failure Modes </h5>
+            <div class="table-responsive-sm bg-white p-2 mb-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Failure Mode</th> 
+                            <th>Tag Number</th> 
+                            <th>Equipment type</th>
+                            <th>Machine type</th>
+                            <th> ETBF </th>
+                             <th>CR </th>
+                            <th>PONC</th>
+                            <th>Total Annual PONC</th>
+                            <th> ETBC</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr *ngFor="let obj of allCBAdata">
+                        <td>
+                            <div class="dpm-radio d-inline-block">
+                                <p-radioButton name="con" (onClick)="RadioValueselection()"></p-radioButton>
+                            </div> 
+                        </td>
+                        <td>{{obj.FailureMode}}</td>
+                        <td>{{obj.TagNumber}}</td>
+                        <td>{{obj.EquipmentType}}</td>
+                        <td>{{obj.MachineType}}</td>
+                        <td>{{obj.ETBF}}</td>
+                        <td>{{obj.EconomicRiskWithDPMCR}}</td>
+                        <td>{{obj.TotalPONC}}</td>
+                        <td>{{obj.TotalAnnualPOC}}</td>
+                        <td>{{obj.OverallETBC}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br> 
+    <div *ngIf="radioshowmittigation">
+        <div class="bg-white p-3">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="h-100 bg-white p-3">
+                        <h5>Risks</h5>
+                        <a class="blink_me" *ngIf="blinkriskclick" (click) ="riskclick()"><strong style="font-size: 12px;"><span
+                            style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+                    </strong></a> 
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div *ngFor="let obj of allCBAdata;">
+                                <strong style="text-align: left;color:black;font-size: 12px">{{obj.FailureMode}} </strong><br>
+                                <strong style="text-align: left;color:black;font-size: 12px">Strategy Mitigated Risk Rank : {{obj.EconomicRiskWithDPMCR}}  </strong><br>
+                                <strong style="text-align: left;color:black;font-size: 12px"> Strategy Mitigated Financial Risk  : {{obj.EconomicRiskWithDPM}} </strong><br><br>
+                                <div class="card" style="width:30rem">
+                                    <strong>Critical Asset condition without DPM</strong>
+                                    <canvas id="{{obj.rankgraphId}}" height="20"></canvas><br>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="col-sm-7">
+                    <h5>Mitigating Actions</h5>
+                    <a class="blink_me" *ngIf="blinkmittigationclick" (click) ="mittigatioclick()">
+                        <strong style="font-size: 12px;"><span
+                        style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
+                    </strong>
+                    </a>
+                    <tbody>
+                        <div *ngFor="let obj of centrifugalmssmodelFilter;">
+                            <div style="width: 43rem;"><br>
+                                <strong
+                                    style="text-align: left;color:black;font-size: 16px;margin-left: 20px">{{obj.MSSIntervalSelectionCriteria}}
+                                </strong><br>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Maintenance Task</th>
+                                            <th scope="col">Interval</th>
+                                            <th scope="col">Craft</th>
+                                            <th scope="col">Level</th>
+                                            <th scope="col">Hours</th>
+                                            <th scope="col">Annual POC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of obj.centrifugalmssmodel;">
+                                            <th scope="row">{{row.MSSMaintenanceTask}} </th>
+                                            <td>{{row.MSSMaintenanceInterval}}</td>
+                                            <td>{{row.Craft}}</td>
+                                            <td>{{row.Level}}</td>
+                                            <td>{{row.Hours}}</td>
+                                            <td>{{row.AnnualPOC}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                            </div>
+                        </div><br>
+                    </tbody>
+                </div>
+            </div>
+        </div>
+    </div><br>
+    
     <div>
         <div class="card" style="width:70rem;">
             <a class="blink_me" (click) ="riskanalysclick()"><strong style="font-size: 12px;"><span
                 style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
         </strong></a>
+        <div *ngIf="profile_riskshow">
             <canvas id="profile_risk"></canvas>
+        </div>
         </div>
     </div><br>
  
@@ -1045,3 +1157,4 @@
         </div>
     </div>
 </div><br> -->
+

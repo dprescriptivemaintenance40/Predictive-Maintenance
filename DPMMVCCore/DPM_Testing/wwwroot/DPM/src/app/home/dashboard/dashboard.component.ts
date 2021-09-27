@@ -371,6 +371,11 @@ export class DashboardComponent {
   public AssetEquipmentType:string=""
   public items: MenuItem[];
 
+  public RadioValue : string = '';
+  public radioshowmittigation:boolean=false;
+  public profile_riskshow:boolean=false;
+  public AssociatedFailuerMode:boolean=false;
+
   constructor(private title: Title,
     private http: HttpClient,
     public router: Router,
@@ -469,14 +474,17 @@ export class DashboardComponent {
    if(this.dashboardshow=="Prescription"){
     this.PrescriptiveShow=true;
     this.assetselection= true;
+    this.AssociatedFailuerMode= false
     this.GerAllPredictionRecords();
     this.GerAllFutuerPredictionRecords()
     this.ExecutorShow=false;
    }else if(this.dashboardshow=="Management"){
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
+    this.AssociatedFailuerMode= false
   }else if(this.dashboardshow=="Executor"){
      this.ExecutorShow=true;
+     this.AssociatedFailuerMode=true;
      this.allCBI= true
      this.showcbi=true;
      this.PrescriptiveShow=false;
@@ -3129,13 +3137,6 @@ export class DashboardComponent {
       this.allCBI = false
       this.EcomomicRiskGraph()
     } 
-    // else if (this.CBIGraphs == "Residual_Risk") {
-    //   this.residual_risk_Graph = true
-    //   this.MEI_risk_Graph = false
-    //   this.ecomomic_risk_Graph = false
-    //   this.allCBI = false
-    //   this.ResidualRiskGraph()
-    // } 
     else if (this.CBIGraphs == "MEI") {
       this.MEI_risk_Graph = true
       this.ecomomic_risk_Graph = false
@@ -3960,21 +3961,20 @@ export class DashboardComponent {
               ctx.textAlign = 'center';
               ctx.textBaseline = 'bottom';
 
-              this.data.datasets.forEach(function(dataset, i){
-                let meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function(bar, index) {
+              Chart.helpers.each(this.data.datasets.forEach(function(dataset, i) {
+                var meta = chartInstance.controller.getDatasetMeta(i);
+                Chart.helpers.each(meta.data.forEach(function(bar, index) {
                   var data = String((dataset.data[index])) + "%";
                   ctx.fillStyle = 'white';
-                  if (i == 0) {
-                    // ctx.fillText(data, 50, bar._model.y + 4);
-                    ctx.fillText(data,75, bar._model.y + 4);
-                  } else {
-                    ctx.fillStyle = 'white';
-                    ctx.fillText(data, bar._model.x-25, bar._model.y+8);
-                  }
-                 
-                });
-              });
+                   var barWidth = bar._model.x - bar._model.base;
+                   var centerX = bar._model.base + barWidth / 2;
+                   if (i == 0) {
+                      ctx.fillText(data, centerX, bar._model.y + 4);
+                   } else {
+                      ctx.fillText(data, centerX, bar._model.y + 4);
+                   }
+                }), this);
+             }), this);
             }
         }
       },
@@ -4069,18 +4069,32 @@ export class DashboardComponent {
               ctx.textAlign = 'center';
               ctx.textBaseline = 'bottom';
 
-              this.data.datasets.forEach(function(dataset, i){
-                let meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function(bar, index) {
+              // this.data.datasets.forEach(function(dataset, i){
+              //   let meta = chartInstance.controller.getDatasetMeta(i);
+              //   meta.data.forEach(function(bar, index) {
+              //     var data = String((dataset.data[index])) + "%";
+              //     ctx.fillStyle = 'white';
+              //     if (i == 0) {
+              //       ctx.fillText(data, 50, bar._model.y + 4);
+              //     } else {
+              //       ctx.fillText(data, bar._model.x-25, bar._model.y+4);
+              //     }
+              //   });
+              // });
+              Chart.helpers.each(this.data.datasets.forEach(function(dataset, i) {
+                var meta = chartInstance.controller.getDatasetMeta(i);
+                Chart.helpers.each(meta.data.forEach(function(bar, index) {
                   var data = String((dataset.data[index])) + "%";
                   ctx.fillStyle = 'white';
-                  if (i == 0) {
-                    ctx.fillText(data, 50, bar._model.y + 4);
-                  } else {
-                    ctx.fillText(data, bar._model.x-25, bar._model.y+4);
-                  }
-                });
-              });
+                   var barWidth = bar._model.x - bar._model.base;
+                   var centerX = bar._model.base + barWidth / 2;
+                   if (i == 0) {
+                      ctx.fillText(data, centerX, bar._model.y + 4);
+                   } else {
+                      ctx.fillText(data, centerX, bar._model.y + 4);
+                   }
+                }), this);
+             }), this);
             }
         }
       },
@@ -4174,20 +4188,20 @@ export class DashboardComponent {
               ctx.textAlign = 'center';
               ctx.textBaseline = 'bottom';
 
-              this.data.datasets.forEach(function(dataset, i){
-                let meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function(bar, index) {
+              Chart.helpers.each(this.data.datasets.forEach(function(dataset, i) {
+                var meta = chartInstance.controller.getDatasetMeta(i);
+                Chart.helpers.each(meta.data.forEach(function(bar, index) {
                   var data = String((dataset.data[index])) + "%";
                   ctx.fillStyle = 'white';
-                  if (i == 0) {
-                    ctx.fillText(data, 50, bar._model.y + 4);
-                  } else {
-                 
-                    ctx.fillText(data, bar._model.x-25, bar._model.y+4);
-                  }
-                 
-                });
-              });
+                   var barWidth = bar._model.x - bar._model.base;
+                   var centerX = bar._model.base + barWidth / 2;
+                   if (i == 0) {
+                      ctx.fillText(data, centerX, bar._model.y + 4);
+                   } else {
+                      ctx.fillText(data, centerX, bar._model.y + 4);
+                   }
+                }), this);
+             }), this);
             }
         }
       },
@@ -4347,7 +4361,6 @@ export class DashboardComponent {
     });
   }
 
-
   FakeRiskMetigateactions(){
     this.changeDetectorRef.detectChanges();  
   this.allCBAdata.forEach((r,index) =>{
@@ -4440,7 +4453,10 @@ export class DashboardComponent {
     });
     this.changeDetectorRef.detectChanges();
   }
+
 public CBATagnumber:any=[]
+public CBAId:number = 0
+public CBATaskId:number = 0
    GetALLCBA(){
     const params = new HttpParams()
     .set('UserId',this.userModel.UserId)
@@ -4450,6 +4466,7 @@ public CBATagnumber:any=[]
     //  this.FakeRiskMetigateactions()
       this.CBAdataForRisk = this.allCBAdata
      for (var i = 0; i < this.allCBAdata.length; i++) {
+       this.CBAId = this.allCBAdata[i].CBAId
       this.centrifugalmssmodel=  this.allCBAdata[i].CBATaskModel
       this.CBATagnumber= this.allCBAdata[i].TagNumber
       this.CBI_etbf = this.allCBAdata[i].ETBF;
@@ -4483,6 +4500,7 @@ public CBATagnumber:any=[]
      })
   
     this.centrifugalmssmodel.forEach((element) => {
+      this.CBATaskId= element.CBAId
       this.AnnualPOC = element.AnnualPOC
       this.MSSIntervalSelectionCriteria = element.MSSIntervalSelectionCriteria
       this.MSSMaintenanceInterval = element.MSSMaintenanceInterval
@@ -4507,7 +4525,7 @@ public CBATagnumber:any=[]
     }
     )
 
-    this.centrifugalmssmodel .forEach(element => {
+    this.centrifugalmssmodel.forEach(element => {
       if(element.CentrifugalPumpMssId=="MSS"){
         let obj ={}
         obj['AnnualPOC'] = element.AnnualPOC
@@ -4551,6 +4569,22 @@ public CBATagnumber:any=[]
    });
 
   }
+ public blinkriskclick:boolean = false;
+ public blinkmittigationclick:boolean = false;
+  RadioValueselection(){
+   if(this.CBATaskId == this.CBAId){
+      this.radioshowmittigation= true;
+      this.blinkriskclick= true
+      this.blinkmittigationclick= true
+      this.profile_riskshow= true;
+      this.RiskProfile()
+      this.FakeRiskMetigateactions()
+   }else{
+    this.radioshowmittigation= false;
+    this.profile_riskshow= false;
+   }
+  }
+
   public async Ecoriskvalue(){
     var WD: number = await this.getValue(this.EconomicRiskWithDPMCR);
     var WOD: number = await this.getValue(this.EconomicRiskWithOutDPMCR);
@@ -4781,5 +4815,6 @@ Previous(){
 helpbox(){
   this.helpboxshow= false
 }
+
 }
 
