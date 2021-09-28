@@ -16,14 +16,11 @@ namespace DPM_Testing.Controllers
     {
         private readonly DPMDal _context;
         private readonly IEmailSender _emailSender;
-        private readonly IConfiguration configuration;
 
-        public ContactUsAPIController(IEmailSender emailSender, DPMDal context,
-            IConfiguration configuration)
+        public ContactUsAPIController(IEmailSender emailSender, DPMDal context)
         {
             _context = context;
             _emailSender = emailSender;
-            this.configuration = configuration;
         }
 
         [HttpPost]
@@ -32,14 +29,14 @@ namespace DPM_Testing.Controllers
         {
             try
             {
-                contactUs.To = "dprescripti@gmail.com";
+                contactUs.To = contactUs.Email;
                 var subject = contactUs.Subject;
                 var body = " From : " + contactUs.Email + "   " + " Message: " + contactUs.Comment;
                 var message = new Message(new string[] { contactUs.To }, subject, body, null);
                 await _emailSender.SendEmailAsync(message);
                 _context.contactUs.Add(contactUs);
                 _context.SaveChanges();
-                return Ok("Message Sent");
+                return Ok("Message Sent Successfully");
             }
             catch (Exception exe)
             {
