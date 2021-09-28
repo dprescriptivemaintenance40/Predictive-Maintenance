@@ -1769,7 +1769,7 @@ export class DashboardComponent {
   //       labels: ["Normal", "Incipient", "Degrade", "Bad"],
   //       datasets: [
   //         {
-  //           backgroundColor: ["#008000", "#ffb801", "#fe4c61", "blue"],
+  //           backgroundColor: ["#20c997", "#fa8b0c", "#ff3a7a", "blue"],
   //           data: [precetagenornal, precetageincipient, precetagedegrade, precetagebad],
   //         }
   //       ]
@@ -1895,24 +1895,24 @@ export class DashboardComponent {
   //           label: "Normal",
   //           data: this.SCFinalNormal,
   //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
+  //           borderColor: "#20c997",
+  //           backgroundColor: '#20c997',
   //           fill: true,
   //         },
   //         {
   //           label: "Incipient",
   //           data: this.SCFinalIncipient,
   //           borderWidth: 1,
-  //           borderColor: "#ffb801",
-  //           backgroundColor: '#ffb801',
+  //           borderColor: "#fa8b0c",
+  //           backgroundColor: '#fa8b0c',
   //           fill: true,
   //         },
   //         {
   //           label: "Degrade",
   //           data: this.SCFinaldDegrade,
   //           borderWidth: 1,
-  //           borderColor: "#fe4c61",
-  //           backgroundColor: '#fe4c61',
+  //           borderColor: "#ff3a7a",
+  //           backgroundColor: '#ff3a7a',
   //           fill: true,
   //         },
   //         {
@@ -2035,18 +2035,18 @@ export class DashboardComponent {
   //           label: "Incipent",
   //           data: this.TrainDataIncipientCount,
   //           borderWidth: 1,
-  //           backgroundColor: "#ffb801",
+  //           backgroundColor: "#fa8b0c",
   //         }, {
   //           label: "Normal",
   //           data: this.TrainDataNormalCount,
   //           borderWidth: 1,
-  //           backgroundColor: "#008000",
+  //           backgroundColor: "#20c997",
   //         },
   //         {
   //           label: "Degrade",
   //           data: this.TrainDataDegradeCount,
   //           borderWidth: 2,
-  //           backgroundColor: "#fe4c61",
+  //           backgroundColor: "#ff3a7a",
   //         },
   //         {
   //           label: "Bad",
@@ -2148,7 +2148,7 @@ export class DashboardComponent {
         fill: true,
         datasets: [
           {
-            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
+            backgroundColor: ["#20c997", "#fa8b0c", "#ff3a7a"],
             data: [this.Normalpercentage, this.Incipientpercentage, this.Degradepercentage]
           }
         ]
@@ -2257,8 +2257,8 @@ export class DashboardComponent {
 //             label: "Normal",
 //             data: this.FPFinalNormal,
 //             borderWidth: 1,
-//             borderColor: "#008000",
-//             backgroundColor: '#008000',
+//             borderColor: "#20c997",
+//             backgroundColor: '#20c997',
 //             fill: true,
 
 //           },
@@ -2266,8 +2266,8 @@ export class DashboardComponent {
 //             label: "Incipient",
 //             data: this.FPFinalIncipient,
 //             borderWidth: 1,
-//             borderColor: "#ffb801",
-//             backgroundColor: '#ffb801',
+//             borderColor: "#fa8b0c",
+//             backgroundColor: '#fa8b0c',
 //             fill: true,
 
 //           },
@@ -2275,8 +2275,8 @@ export class DashboardComponent {
 //             label: "Degrade",
 //             data: this.FPFinaldDegrade,
 //             borderWidth: 1,
-//             borderColor: "#fe4c61",
-//             backgroundColor: '#fe4c61',
+//             borderColor: "#ff3a7a",
+//             backgroundColor: '#ff3a7a',
 //             fill: true,
 
 //           },
@@ -2408,23 +2408,23 @@ export class DashboardComponent {
   //           label: "Normal",
   //           data: this.PredictionDataNormalCount,
   //           borderWidth: 1,
-  //           borderColor: "#008000",
-  //           backgroundColor: '#008000',
+  //           borderColor: "#20c997",
+  //           backgroundColor: '#20c997',
   //           fill: true,
   //         }, {
   //           label: "Incipent",
   //           data: this.PredictionDataIncipientCount,
   //           borderWidth: 1,
-  //           borderColor: "#ffb801",
-  //           backgroundColor: '#ffb801',
+  //           borderColor: "#fa8b0c",
+  //           backgroundColor: '#fa8b0c',
   //           fill: true,
   //         },
   //         {
   //           label: "Degrade",
   //           data: this.PredictonDataDegradeCount,
   //           borderWidth: 1,
-  //           borderColor: " #fe4c61",
-  //           backgroundColor: '#fe4c61',
+  //           borderColor: " #ff3a7a",
+  //           backgroundColor: '#ff3a7a',
   //           fill: true,
   //         }
   //       ]
@@ -2644,24 +2644,24 @@ export class DashboardComponent {
             label: "Normal",
             data: this.forcastFinalNormal,
             borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
+            borderColor: "#20c997",
+            backgroundColor: '#20c997',
             fill: true,
           },
           {
             label: "Incipient",
             data: this.forcastFinalIncipient,
             borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
+            borderColor: "#fa8b0c",
+            backgroundColor: '#fa8b0c',
             fill: true,
           },
           {
             label: "Degrade",
             data: this.forcastFinaldDegrade,
             borderWidth: 1,
-            borderColor: "#fe4c61",
-            backgroundColor: '#fe4c61',
+            borderColor: "#ff3a7a",
+            backgroundColor: '#ff3a7a',
             fill: true,
           },
        
@@ -2729,7 +2729,7 @@ export class DashboardComponent {
   //       labels: ["Normal", "Incipient", "Degrade"],
   //       datasets: [
   //         {
-  //           backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
+  //           backgroundColor: ["#20c997", "#fa8b0c", "#ff3a7a"],
   //           data: [FPClassNormalpercentage, FPClassIncipientpercentage, FPClassDegradepercentage]
   //         }
   //       ]
@@ -2856,7 +2856,7 @@ export class DashboardComponent {
   //   //        this.chart = new Dygraph(
   //   //         document.getElementById("graph"),this.csvData,
   //   //         {
-  //   //           // colors: ['green','green', 'gray', '#ffb801','red','#ffb801','red'],
+  //   //           // colors: ['green','green', 'gray', '#fa8b0c','red','#fa8b0c','red'],
   //   //           colors: ['green','green', 'green',],
   //   //           // visibility: [true, true, false, true,true,true,true,],
   //   //           visibility: [true, true, false,],
@@ -2895,7 +2895,7 @@ export class DashboardComponent {
   //   //             //   highlightCircleSize: 3
   //   //             // },
   //   //             // 'falarm': {
-  //   //             //   color: ['#ffb801'],
+  //   //             //   color: ['#fa8b0c'],
   //   //             //   strokePattern: Dygraph.DASHED_LINE1,
   //   //             //   strokeWidth: 1.6,
   //   //             //   drawPoints: true,
@@ -2923,7 +2923,7 @@ export class DashboardComponent {
   //   //         // this.chart = new Dygraph(
   //   //         //   document.getElementById("graph1"),this.csvData,
   //   //         //   {
-  //   //         //     colors: ['green', '#58508d', 'gray', '#ffb801','red','#ffb801','red',],
+  //   //         //     colors: ['green', '#58508d', 'gray', '#fa8b0c','red','#fa8b0c','red',],
   //   //         //     showRangeSelector: true,
   //   //         //     connectSeparatedPoints: true,
   //   //         //     fillGraph: true,
@@ -3197,6 +3197,8 @@ export class DashboardComponent {
           yAxes: [
             {
               scaleLabel: {
+                 barThickness: 10,  
+              maxBarThickness: 10 ,
                 display: true,
                 labelString: 'In_Percentage'
               },
@@ -3464,6 +3466,8 @@ export class DashboardComponent {
             {
               scaleLabel: {
                 display: true,
+                 barThickness: 30,  
+              maxBarThickness: 30 ,
                 // labelString: 'In_Percentage'
               },
               ticks: {
@@ -3475,7 +3479,9 @@ export class DashboardComponent {
             {
               scaleLabel: {
                 display: true,
-                 labelString: 'In_Percentage'
+                labelString: 'In_Percentage',
+                 barThickness: 30,  
+              maxBarThickness: 30 ,
               },
               ticks: {
                 beginAtZero: true
@@ -3595,8 +3601,8 @@ export class DashboardComponent {
             label: "Normal",
             data: this.FPFinalNormal,
             borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
+            borderColor: "#20c997",
+            backgroundColor: '#20c997',
             fill: true,
 
           },
@@ -3604,8 +3610,8 @@ export class DashboardComponent {
             label: "Incipient",
             data: this.FPFinalIncipient,
             borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
+            borderColor: "#fa8b0c",
+            backgroundColor: '#fa8b0c',
             fill: true,
 
           },
@@ -3613,8 +3619,8 @@ export class DashboardComponent {
             label: "Degrade",
             data: this.FPFinaldDegrade,
             borderWidth: 1,
-            borderColor: "#fe4c61",
-            backgroundColor: '#fe4c61',
+            borderColor: "#ff3a7a",
+            backgroundColor: '#ff3a7a',
             fill: true,
 
           },
@@ -3626,8 +3632,8 @@ export class DashboardComponent {
         scales: {
           xAxes: [{
               stacked: true,
-              barThickness: 120,  
-              maxBarThickness: 118 ,
+              barThickness: 30,  
+              maxBarThickness: 30 ,
             gridLines: {
               display: false
             },
@@ -3738,8 +3744,8 @@ export class DashboardComponent {
             label: "Normal",
             data: this.FPFinalNormal,
             borderWidth: 1,
-            borderColor: "#008000",
-            backgroundColor: '#008000',
+            borderColor: "#20c997",
+            backgroundColor: '#20c997',
             fill: true,
 
           },
@@ -3747,8 +3753,8 @@ export class DashboardComponent {
             label: "Incipient",
             data: this.FPFinalIncipient,
             borderWidth: 1,
-            borderColor: "#ffb801",
-            backgroundColor: '#ffb801',
+            borderColor: "#fa8b0c",
+            backgroundColor: '#fa8b0c',
             fill: true,
 
           },
@@ -3756,8 +3762,8 @@ export class DashboardComponent {
             label: "Degrade",
             data: this.FPFinaldDegrade,
             borderWidth: 1,
-            borderColor: "#fe4c61",
-            backgroundColor: '#fe4c61',
+            borderColor: "#ff3a7a",
+            backgroundColor: '#ff3a7a',
             fill: true,
 
           },
@@ -3817,13 +3823,13 @@ export class DashboardComponent {
 
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionActionPiechart", {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: ["Complete", "Ongoing", "Overdue"],
         fill: true,
         datasets: [
           {
-            backgroundColor: ["#008000", "#ffb801", "#fe4c61"],
+            backgroundColor: ["#20c997", "#fa8b0c", "#ff3a7a"],
             data: [this.CompleteStatus, this.Ongoingstatus, this.Overduestatus]
           }
         ]
@@ -3923,16 +3929,16 @@ export class DashboardComponent {
         labels: [],
         datasets: [{
           data: [Normalpercentage],
-          backgroundColor: "#008000",
-          hoverBackgroundColor: "#008000"
+          backgroundColor: "#20c997",
+          hoverBackgroundColor: "#20c997"
         }, {
           data: [Incipientpercentage],
-          backgroundColor: "#ffb801",
-          hoverBackgroundColor: "#ffb801"
+          backgroundColor: "#fa8b0c",
+          hoverBackgroundColor: "#fa8b0c"
         }, {
           data: [Degradepercentage],
-          backgroundColor: "#fe4c61",
-          hoverBackgroundColor: "#fe4c61"
+          backgroundColor: "#ff3a7a",
+          hoverBackgroundColor: "#ff3a7a"
         }]
       },
       options: {
@@ -4030,16 +4036,16 @@ export class DashboardComponent {
         labels: [],
         datasets: [{
           data: [Normalpercentage],
-          backgroundColor: "#008000",
-          hoverBackgroundColor: "#008000"
+          backgroundColor: "#20c997",
+          hoverBackgroundColor: "#20c997"
         }, {
           data: [Incipientpercentage],
-          backgroundColor: "#ffb801",
-          hoverBackgroundColor: "#ffb801"
+          backgroundColor: "#fa8b0c",
+          hoverBackgroundColor: "#fa8b0c"
         }, {
           data: [Degradepercentage],
-          backgroundColor: "#fe4c61",
-          hoverBackgroundColor: "#fe4c61"
+          backgroundColor: "#ff3a7a",
+          hoverBackgroundColor: "#ff3a7a"
           
         }]
       },
@@ -4150,16 +4156,16 @@ export class DashboardComponent {
         labels: [],
         datasets: [{
           data: [Normalpercentage],
-          backgroundColor: "#008000",
-          hoverBackgroundColor: "#008000"
+          backgroundColor: "#20c997",
+          hoverBackgroundColor: "#20c997"
         }, {
           data: [Incipientpercentage],
-          backgroundColor: "#ffb801",
-          hoverBackgroundColor: "#ffb801"
+          backgroundColor: "#fa8b0c",
+          hoverBackgroundColor: "#fa8b0c"
         }, {
           data: [Degradepercentage],
-          backgroundColor: "#fe4c61",
-          hoverBackgroundColor: "#fe4c61"
+          backgroundColor: "#ff3a7a",
+          hoverBackgroundColor: "#ff3a7a"
         }]
       },
       options: {
@@ -4273,7 +4279,7 @@ export class DashboardComponent {
         backgroundRules: [
           {
             yAxisID: 'B',
-            backgroundColor: "#008000",
+            backgroundColor: "#d0f0c0",
             yAxisSegement: 100
           },
           {
@@ -4293,7 +4299,7 @@ export class DashboardComponent {
           },
           {
             yAxisID: 'B',
-            backgroundColor: "#ff4d4d",
+            backgroundColor: "#F19CBB",
             yAxisSegement: 800
           }
 
@@ -4694,8 +4700,8 @@ fakePredictionWithTagNumber(){
           label: "Normal",
           data: [50,55,56,57,60,63,56,69,15,25],
           borderWidth: 1,
-          borderColor: "#008000",
-          backgroundColor: '#008000',
+          borderColor: "#20c997",
+          backgroundColor: '#20c997',
           fill: true,
 
         },
@@ -4703,8 +4709,8 @@ fakePredictionWithTagNumber(){
           label: "Incipient",
           data: [15,20,23,28,31,34,39,4,77,25],
           borderWidth: 1,
-          borderColor: "#ffb801",
-          backgroundColor: '#ffb801',
+          borderColor: "#fa8b0c",
+          backgroundColor: '#fa8b0c',
           fill: true,
 
         },
@@ -4712,8 +4718,8 @@ fakePredictionWithTagNumber(){
           label: "Degrade",
           data: [7,9,11,12,8,7,12,0,4,17],
           borderWidth: 1,
-          borderColor: "#fe4c61",
-          backgroundColor: '#fe4c61',
+          borderColor: "#ff3a7a",
+          backgroundColor: '#ff3a7a',
           fill: true,
 
         },
