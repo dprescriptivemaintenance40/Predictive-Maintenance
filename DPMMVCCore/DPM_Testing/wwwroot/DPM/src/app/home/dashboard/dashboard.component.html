@@ -598,7 +598,7 @@
                         <tr *ngFor="let obj of allCBAdata">
                         <td>
                             <div class="dpm-radio d-inline-block">
-                                <p-radioButton name="con" (onClick)="RadioValueselection()"></p-radioButton>
+                                <p-radioButton class="blink_me" style="background-color: blue;" name="con" (onClick)="RadioValueselection()"></p-radioButton>
                             </div> 
                         </td>
                         <td>{{obj.FailureMode}}</td>
@@ -622,11 +622,13 @@
         <div class="bg-white p-3">
             <div class="row">
                 <div class="col-md-5">
-                    <div class="h-100 bg-white p-3">
+                    <div class="h-100 bg-white p-3" >
                         <h5>Risks</h5>
-                        <a class="blink_me" *ngIf="blinkriskclick" (click) ="riskclick()"><strong style="font-size: 12px;"><span
+                        <a class="blink_me" *ngIf="blinkriskclick" (click) ="riskclick()">
+                            <strong style="font-size: 12px;"><span
                             style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>
-                    </strong></a> 
+                            </strong>
+                        </a> 
                         <div class="row">
                             <div class="col-sm-6">
                                 <div *ngFor="let obj of allCBAdata;">
@@ -686,7 +688,7 @@
         </div>
     </div><br>
     
-    <div>
+    <div *ngIf="blinkprofilerisk">
         <div class="card" style="width:70rem;">
             <a class="blink_me" (click) ="riskanalysclick()"><strong style="font-size: 12px;"><span
                 style="background-color: blue;font-size: 12px;height: 15px; width: 15px; display: inline-block; border-radius: 100%; margin-right: 5px;"></span>

@@ -4571,17 +4571,20 @@ public CBATaskId:number = 0
   }
  public blinkriskclick:boolean = false;
  public blinkmittigationclick:boolean = false;
+ public blinkprofilerisk: boolean =false;
   RadioValueselection(){
    if(this.CBATaskId == this.CBAId){
       this.radioshowmittigation= true;
       this.blinkriskclick= true
       this.blinkmittigationclick= true
       this.profile_riskshow= true;
+      this.blinkprofilerisk=true
       this.RiskProfile()
       this.FakeRiskMetigateactions()
    }else{
     this.radioshowmittigation= false;
     this.profile_riskshow= false;
+    this.blinkprofilerisk=false
    }
   }
 
