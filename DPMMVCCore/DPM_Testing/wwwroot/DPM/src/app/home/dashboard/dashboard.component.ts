@@ -4270,6 +4270,7 @@ export class DashboardComponent {
             display: true,
             text: 'Risk Analysis'
         },
+
         backgroundRules: [
           {
             yAxisID: 'B',
@@ -4330,7 +4331,6 @@ export class DashboardComponent {
             }
             },
           ],
-          
           xAxes: [{
             barPercentage: 0.4,
             gridLines: {
@@ -4356,7 +4356,7 @@ export class DashboardComponent {
                     i++;
                 }
             }
-        }
+        },
     }]
     });
   }

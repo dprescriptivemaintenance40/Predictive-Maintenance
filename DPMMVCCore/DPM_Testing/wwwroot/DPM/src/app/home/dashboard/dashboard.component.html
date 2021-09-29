@@ -491,7 +491,6 @@
                             <td class="left strong">{{mode.FMname}}</td>
                             <td>
                                 <div style="width: 55rem;">
-                                  
                                     <canvas id="{{mode.chartID}}" height="12"></canvas>
                                 </div>
                           </td>
@@ -589,8 +588,8 @@
                             <th>Machine type</th>
                             <th> ETBF </th>
                              <th>CR </th>
-                            <th>PONC</th>
-                            <th>Total Annual PONC</th>
+                            <th>Total PONC</th>
+                            <th>Total Annual POC</th>
                             <th> ETBC</th>
                         </tr>
                     </thead>
@@ -598,7 +597,7 @@
                         <tr *ngFor="let obj of allCBAdata">
                         <td>
                             <div class="dpm-radio d-inline-block">
-                                <p-radioButton class="blink_me" style="background-color: blue;" name="con" (onClick)="RadioValueselection()"></p-radioButton>
+                                <p-radioButton class="blink_me"  name="con" (onClick)="RadioValueselection()"></p-radioButton>
                             </div> 
                         </td>
                         <td>{{obj.FailureMode}}</td>
