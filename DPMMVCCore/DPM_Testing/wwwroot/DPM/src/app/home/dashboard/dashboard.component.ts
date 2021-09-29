@@ -3395,7 +3395,14 @@ export class DashboardComponent {
 
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
     var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
-    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
+    var meiCostWithDPMConstraint: number 
+    if(this.EconomicRiskWithConstraintDPM >0){
+       meiCostWithDPMConstraint = this.MEIWithDPMWithConstraint
+    }else{
+      meiCostWithDPMConstraint=0
+    }
+   
+   
     var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
 
     var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
@@ -3814,7 +3821,6 @@ export class DashboardComponent {
   }
 
   PredictionWithActionPieChart() {
-
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionActionPiechart", {
       type: 'pie',
@@ -4213,13 +4219,19 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
       var residualcostWithoutDPM: number = + (this.ResidualRiskWithDPM)
       var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithOutDPM)
-      var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
+      var residualCostWithDPMConstraint: number
+      if(this.EconomicRiskWithConstraintDPM >0){
+         residualCostWithDPMConstraint =  this.ResidualRiskWithConstraintDPMCR
+      }else{
+        residualCostWithDPMConstraint =0
+      }
+     
       var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
   
       var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
       var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
       var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
-        
+       
       if(this.ResidualRiskWithConstraintDPMCR== 1||this.ResidualRiskWithConstraintDPMCR== 2||this.ResidualRiskWithConstraintDPMCR== 3
         ||this.ResidualRiskWithConstraintDPMCR== 4||this.ResidualRiskWithConstraintDPMCR== 5 ||this.ResidualRiskWithConstraintDPMCR== 6){
        var mittigated= 740
