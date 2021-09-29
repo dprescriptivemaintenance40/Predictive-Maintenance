@@ -1588,9 +1588,42 @@ table.p-organizationchart-table {
   width: 100%;
 }
 .fixed-card {
-  // position: fixed;
-  // bottom: -45px;
-  // right: 0;
-  // width: 450px;
-  // z-index: 999;
+  position: fixed;
+  bottom: 0px;
+  right: 0;
+  width: 350px;
+  z-index: 999;
+  .p-steps .p-steps-item:before {
+    top: 38px !important;
+  }
+}
+.step-question {
+  border-radius: 7px;
+  padding: 10px;
+  width: auto;
+  display: inline-block;
+  box-shadow: none !important;
+  background-color: #2196f3 !important;
+  padding: 10px 15px !important;
+  color: #fff !important;
+  margin: 5px auto;
+  strong {
+    color: #fff !important;
+  }
+}
+.step-answer {
+  border-radius: 7px;
+  padding: 10px;
+  width: auto;
+  display: inline-block;
+  box-shadow: none !important;
+  background-color: #d6ecfd !important;
+  padding: 10px 15px !important;
+  color: #333 !important;
+  margin: 5px auto;
+  p {
+    color: #333 !important;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
 }
