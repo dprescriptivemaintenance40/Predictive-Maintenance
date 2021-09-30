@@ -4250,14 +4250,14 @@ export class DashboardComponent {
         datasets: [
           {
             label: "With DPM",
-            backgroundColor: "#cf1578",
-            borderColor: "#cf1578",
+            backgroundColor: "#ffb801",
+            borderColor: "#ffb801",
             data:[resdualtWithoutDPM]
           },
           {
             label: "Without DPM",
-            backgroundColor: "#ff6e40",
-            borderColor: "#ff6e40",
+            backgroundColor: "#fe4c61",
+            borderColor: "#fe4c61",
             data: [residualcostwithDPM]
           },
           {
