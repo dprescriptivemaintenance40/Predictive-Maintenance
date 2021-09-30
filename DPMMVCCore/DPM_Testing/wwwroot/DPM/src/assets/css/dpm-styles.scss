@@ -1593,6 +1593,9 @@ table.p-organizationchart-table {
   right: 0;
   width: 350px;
   z-index: 999;
+  max-height: 500px;
+  overflow: auto;
+  border-top: 10px solid #fff;
   .p-steps .p-steps-item:before {
     top: 38px !important;
   }

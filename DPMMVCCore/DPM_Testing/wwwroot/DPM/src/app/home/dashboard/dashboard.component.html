@@ -423,35 +423,46 @@
         </div>
     </div>
     <div class="row mt-4">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="bg-white rounded p-3 h-100">
                 <h5 class="mb-5"><strong>Asset Condition Status</strong></h5>
                 <canvas id="PredictionbarWithYear"></canvas>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card bg-white p-3 border-0 ">
+        <div class="col-md-4">
+            <div class="card bg-white p-3 border-0 h-100">
                 <h5><strong>Recommendation Status</strong></h5>
                 <div *ngFor="let obj of allCBAdata;">
                     <span class="alert alert-info mb-3"><strong
                             style="text-align: left;color:black;font-size: 12px">Recommendation Status
                             For:{{obj.MachineType}},
                             {{obj.EquipmentType}},{{selctedtagnymbers}}</strong></span>
-                    <canvas id="PredictionActionPiechart"></canvas>
+                    <canvas id="PredictionActionPiechart" height="300"></canvas>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card bg-transparent border-0">
-        <div class="row mt-4">
-            
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-12 h-100">
-            <div class="card-body task-body bg-white h-100">
-                <div class="col-sm-12 p-0 h-100">
+    <div class="row mt-4">
+        <div class="col-md-12 mb-4">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card bg-white p-3 border-0 " *ngFor="let obj of allCBAdata;">
+                        <h5><strong>Alert Acknowledgement</strong></h5>
+                        <label class="mb-0 alert alert-danger d-flex justify-content-between"><span><i
+                                    class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number
+                                :{{obj.TagNumber}}</span> <a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger"
+                                href="#/Home/Prescriptive/RCA" target="_blank">Click
+                                Here</a></label>
+                        <!-- <canvas id="PredictionAlertsPiechart"> </canvas> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8 h-100">
+            <div class="card-body task-body mt-0 bg-white h-100">               
+                <div class="p-0 h-100">
                     <h5><strong>Tasks</strong></h5>
                     <div class="row mb-5">
                         <div class="col-sm-3">
@@ -508,18 +519,32 @@
                         </div> -->
                 </div>
             </div>
-        </div>
-        <div class="col-md-12 mt-4">
-            <div class="row">
-                <div class="col-sm">
-                    <div class="card bg-white p-3 border-0 " *ngFor="let obj of allCBAdata;">
-                        <h5><strong>Alert Acknowledgement</strong></h5>
-                        <label class="mb-0 alert alert-danger d-flex justify-content-between"><span><i
-                                    class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}, Tag Number
-                                :{{obj.TagNumber}}</span> <a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger"
-                                href="#/Home/Prescriptive/RCA" target="_blank">Click
-                                Here</a></label>
-                        <!-- <canvas id="PredictionAlertsPiechart"> </canvas> -->
+        </div>   
+        <div class="col-md-4">
+            <div class="h-100 bg-primary p-3">
+                <div class="d-flex">
+                    <h5 class="mb-2">Risks</h5>
+                    <a class="pulse-green ml-2" (click)="riskclick()"><strong style="font-size: 12px;">
+                        </strong></a>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div *ngFor="let obj of allCBAdata;">
+                            <strong class="d-flex justify-content-between my-3"><span>Risk
+                                    :</span><span>{{obj.MachineType}},
+                                    {{obj.EquipmentType}}, {{obj.TagNumber}}</span> </strong>
+                            <strong class="d-flex justify-content-between my-3"><span>Failure
+                                    Mode</span><span>{{obj.FailureMode}}</span> </strong>
+                            <strong class="d-flex justify-content-between my-3"><span>Strategy Mitigated Risk Rank
+                                    :</span>
+                                <span>{{obj.EconomicRiskWithDPMCR}}</span> </strong>
+                            <strong class="d-flex justify-content-between my-3"> <span>Strategy Mitigated Financial Risk
+                                    :</span>
+                                <span>{{obj.EconomicRiskWithDPM}}</span> </strong><br>
+                            <div class="mt-2">
+                                <canvas id="{{obj.rankgraphId}}" height="20"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -579,8 +604,8 @@
         </div>
     </div>
     <div>
-        <div class="row mt-4">
-            <div class="col-md-8 h-100">
+        <div class="row mt-4">            
+            <div class="col-md-12 h-100">
                 <div class="bg-white p-3 h-100">
                     <div class="d-flex">
                     <h5><strong>Risk Analysis</strong></h5>
@@ -590,35 +615,7 @@
                     <canvas id="profile_risk"></canvas>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="h-100 bg-white p-3">
-                    <div class="d-flex">
-                        <h5 class="mb-2">Risks</h5>
-                        <a class="pulse-green ml-2" (click)="riskclick()"><strong style="font-size: 12px;">
-                            </strong></a>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div *ngFor="let obj of allCBAdata;">
-                                <strong class="d-flex justify-content-between my-3"><span>Risk
-                                        :</span><span>{{obj.MachineType}},
-                                        {{obj.EquipmentType}}, {{obj.TagNumber}}</span> </strong>
-                                <strong class="d-flex justify-content-between my-3"><span>Failure
-                                        Mode</span><span>{{obj.FailureMode}}</span> </strong>
-                                <strong class="d-flex justify-content-between my-3"><span>Strategy Mitigated Risk Rank
-                                        :</span>
-                                    <span>{{obj.EconomicRiskWithDPMCR}}</span> </strong>
-                                <strong class="d-flex justify-content-between my-3"> <span>Strategy Mitigated Financial Risk
-                                        :</span>
-                                    <span>{{obj.EconomicRiskWithDPM}}</span> </strong><br>
-                                <div class="mt-2">
-                                    <canvas id="{{obj.rankgraphId}}" height="20"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <!-- <div class="col-md-5">
                 <div class="bg-white p-3 bg-white fixed-card h-100" style="" *ngIf="helpboxshow">
                     <h5><strong>Steps</strong></h5>
@@ -795,7 +792,7 @@ step-question    <div class="shadow p-3 mb-3 bg-white" style="">
         </div>
         <div class="col-md-6 pl-0">
             <div class="d-block h-100">
-                <div class="col-md-12 h-100">
+                <div class=" h-100">
                     <div class="bg-white rounded p-3 h-100">
                         <h5 class="mb-5"><strong>Asset Condition Status</strong></h5>
                         <canvas id="FakePredictionbarWithTage"></canvas>
