@@ -424,7 +424,7 @@ export class DashboardComponent {
     // this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
-    this.dygraph()
+    // this.dygraph()
     //  this.GetALLCBA()
     this.getPredictedListRecordsByDate()
     this.items = [{
@@ -2938,29 +2938,29 @@ export class DashboardComponent {
   //   // )
   // }
 
-  dygraph() {
-    this.chart = new Dygraph(
-      document.getElementById("graph"), "dist/DPM/assets/dygraph2018-19.csv",
-      {
-        visibility: [true, true, true,],
-        colors: ['green', 'blue',],
-        showRangeSelector: true,
-        valueRange: [120],
-        series: {
-          'TD1': {
-            strokePattern: null,
-            drawPoints: true,
-            pointSize: 1,
-          },
-          'FTD1': {
-            strokePattern: Dygraph.DASHED_LINE,
-            strokeWidth: 2.6,
-            drawPoints: true,
-            pointSize: 3.5,
-          },
-        }
-      })
-  }
+  // dygraph() {
+  //   this.chart = new Dygraph(
+  //     document.getElementById("graph"), "dist/DPM/assets/dygraph2018-19.csv",
+  //     {
+  //       visibility: [true, true, true,],
+  //       colors: ['green', 'blue',],
+  //       showRangeSelector: true,
+  //       valueRange: [120],
+  //       series: {
+  //         'TD1': {
+  //           strokePattern: null,
+  //           drawPoints: true,
+  //           pointSize: 1,
+  //         },
+  //         'FTD1': {
+  //           strokePattern: Dygraph.DASHED_LINE,
+  //           strokeWidth: 2.6,
+  //           drawPoints: true,
+  //           pointSize: 3.5,
+  //         },
+  //       }
+  //     })
+  // }
 
   // public GenerateReport() {
   //   var countKey = Object.keys(this.classificationDetails).length;
@@ -3397,7 +3397,14 @@ export class DashboardComponent {
 
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
     var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
-    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
+    var meiCostWithDPMConstraint: number 
+    if(this.EconomicRiskWithConstraintDPM >0){
+       meiCostWithDPMConstraint = this.MEIWithDPMWithConstraint
+    }else{
+      meiCostWithDPMConstraint=0
+    }
+   
+   
     var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
 
     var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
@@ -3820,7 +3827,6 @@ export class DashboardComponent {
   }
 
   PredictionWithActionPieChart() {
-
     this.changeDetectorRef.detectChanges();
     this.chart = new Chart("PredictionActionPiechart", {
       type: 'doughnut',
@@ -4219,13 +4225,19 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
       var residualcostWithoutDPM: number = + (this.ResidualRiskWithDPM)
       var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithOutDPM)
-      var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
+      var residualCostWithDPMConstraint: number
+      if(this.EconomicRiskWithConstraintDPM >0){
+         residualCostWithDPMConstraint =  this.ResidualRiskWithConstraintDPMCR
+      }else{
+        residualCostWithDPMConstraint =0
+      }
+     
       var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
   
       var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
       var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
       var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
-        
+       
       if(this.ResidualRiskWithConstraintDPMCR== 1||this.ResidualRiskWithConstraintDPMCR== 2||this.ResidualRiskWithConstraintDPMCR== 3
         ||this.ResidualRiskWithConstraintDPMCR== 4||this.ResidualRiskWithConstraintDPMCR== 5 ||this.ResidualRiskWithConstraintDPMCR== 6){
        var mittigated= 740
@@ -4244,14 +4256,14 @@ export class DashboardComponent {
         datasets: [
           {
             label: "With DPM",
-            backgroundColor: "#cf1578",
-            borderColor: "#cf1578",
+            backgroundColor: "#ffb801",
+            borderColor: "#ffb801",
             data:[resdualtWithoutDPM]
           },
           {
             label: "Without DPM",
-            backgroundColor: "#ff6e40",
-            borderColor: "#ff6e40",
+            backgroundColor: "#fe4c61",
+            borderColor: "#fe4c61",
             data: [residualcostwithDPM]
           },
           {
@@ -4276,6 +4288,7 @@ export class DashboardComponent {
             display: true,
             text: 'Risk Analysis'
         },
+
         backgroundRules: [
           {
             yAxisID: 'B',
@@ -4299,7 +4312,7 @@ export class DashboardComponent {
           },
           {
             yAxisID: 'B',
-            backgroundColor: "#F19CBB",
+            backgroundColor: "#D10000",
             yAxisSegement: 800
           }
 
@@ -4336,7 +4349,6 @@ export class DashboardComponent {
             }
             },
           ],
-          
           xAxes: [{
             barPercentage: 0.4,
             gridLines: {
@@ -4362,7 +4374,7 @@ export class DashboardComponent {
                     i++;
                 }
             }
-        }
+        },
     }]
     });
   }
@@ -4577,17 +4589,20 @@ public CBATaskId:number = 0
   }
  public blinkriskclick:boolean = false;
  public blinkmittigationclick:boolean = false;
+ public blinkprofilerisk: boolean =false;
   RadioValueselection(){
    if(this.CBATaskId == this.CBAId){
       this.radioshowmittigation= true;
       this.blinkriskclick= true
       this.blinkmittigationclick= true
       this.profile_riskshow= true;
+      this.blinkprofilerisk=true
       this.RiskProfile()
       this.FakeRiskMetigateactions()
    }else{
     this.radioshowmittigation= false;
     this.profile_riskshow= false;
+    this.blinkprofilerisk=false
    }
   }
 
