@@ -4306,7 +4306,7 @@ export class DashboardComponent {
           },
           {
             yAxisID: 'B',
-            backgroundColor: "#ff4d4d",
+            backgroundColor: "#D10000",
             yAxisSegement: 800
           }
 
