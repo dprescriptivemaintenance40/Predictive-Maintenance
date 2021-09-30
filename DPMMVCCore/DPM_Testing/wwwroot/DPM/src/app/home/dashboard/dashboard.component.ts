@@ -13,7 +13,6 @@ import { DatePipe, Location } from '@angular/common';
 import { SCConstantsAPI } from "../Compressor/ScrewCompressor/shared/ScrewCompressorAPI.service";
 import { ProfileConstantAPI } from "../profile/profileAPI.service";
 import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.constant";
-import { element, } from "protractor";
 import { ConfigService } from "src/app/shared/config.service";
 import { MenuItem } from 'primeng/api';
 @Component({
@@ -424,7 +423,7 @@ export class DashboardComponent {
     // this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
-    // this.dygraph()
+    this.dygraph()
     //  this.GetALLCBA()
     this.getPredictedListRecordsByDate()
     this.items = [{
@@ -2938,29 +2937,37 @@ export class DashboardComponent {
   //   // )
   // }
 
-  // dygraph() {
-  //   this.chart = new Dygraph(
-  //     document.getElementById("graph"), "dist/DPM/assets/dygraph2018-19.csv",
-  //     {
-  //       visibility: [true, true, true,],
-  //       colors: ['green', 'blue',],
-  //       showRangeSelector: true,
-  //       valueRange: [120],
-  //       series: {
-  //         'TD1': {
-  //           strokePattern: null,
-  //           drawPoints: true,
-  //           pointSize: 1,
-  //         },
-  //         'FTD1': {
-  //           strokePattern: Dygraph.DASHED_LINE,
-  //           strokeWidth: 2.6,
-  //           drawPoints: true,
-  //           pointSize: 3.5,
-  //         },
-  //       }
-  //     })
-  // }
+  
+  dygraph() {
+    this.chart = new Dygraph(
+      document.getElementById("graph"),"dist/DPM/assets/dygraph_cencor200data.csv",
+      {
+        axis : {
+          x : {
+            valueFormatter: Dygraph.dateString_,
+            valueParser: function(x) { return 1000*parseInt(x); },
+            ticker: Dygraph.dateTicker                
+          }
+        },
+        visibility: [true, true, true,],
+        colors: ['green', 'blue',],
+        showRangeSelector: true,
+        valueRange: [120],
+        series: {
+          'TD1': {
+            strokePattern: null,
+            drawPoints: true,
+            pointSize: 2,
+          },
+          'FTD1': {
+            strokePattern: Dygraph.DASHED_LINE,
+            strokeWidth: 2.6,
+            drawPoints: true,
+            pointSize: 2.5,
+          },
+        }
+      })
+  }
 
   // public GenerateReport() {
   //   var countKey = Object.keys(this.classificationDetails).length;
