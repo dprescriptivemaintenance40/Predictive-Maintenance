@@ -424,7 +424,7 @@ export class DashboardComponent {
     // this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
-    // this.dygraph()
+     this.dygraph()
     //  this.GetALLCBA()
     this.getPredictedListRecordsByDate()
     this.items = [{
@@ -2938,29 +2938,29 @@ export class DashboardComponent {
   //   // )
   // }
 
-  // dygraph() {
-  //   this.chart = new Dygraph(
-  //     document.getElementById("graph"), "dist/DPM/assets/dygraph2018-19.csv",
-  //     {
-  //       visibility: [true, true, true,],
-  //       colors: ['green', 'blue',],
-  //       showRangeSelector: true,
-  //       valueRange: [120],
-  //       series: {
-  //         'TD1': {
-  //           strokePattern: null,
-  //           drawPoints: true,
-  //           pointSize: 1,
-  //         },
-  //         'FTD1': {
-  //           strokePattern: Dygraph.DASHED_LINE,
-  //           strokeWidth: 2.6,
-  //           drawPoints: true,
-  //           pointSize: 3.5,
-  //         },
-  //       }
-  //     })
-  // }
+  dygraph() {
+    this.chart = new Dygraph(
+      document.getElementById("graph"),"dist/DPM/assets/dygraph145records.csv",
+      {
+        visibility: [true, true, true,],
+        colors: ['green', 'blue',],
+        showRangeSelector: true,
+        valueRange: [160],
+        series: {
+          'TD1': {
+            strokePattern: null,
+            drawPoints: true,
+            pointSize: 1,
+          },
+          'FTD1': {
+            strokePattern: Dygraph.DASHED_LINE,
+            strokeWidth: 2.6,
+            drawPoints: true,
+            pointSize: 2.5,
+          },
+        }
+      })
+  }
 
   // public GenerateReport() {
   //   var countKey = Object.keys(this.classificationDetails).length;
