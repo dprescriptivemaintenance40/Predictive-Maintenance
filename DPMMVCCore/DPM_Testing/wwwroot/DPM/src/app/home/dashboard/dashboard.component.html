@@ -455,7 +455,6 @@ table tbody tr:nth-of-type(odd) td {
                     Number :<span class="badge badge-danger">{{obj.TagNumber}}</span></label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger"
                     href="#/Home/Prescriptive/RCA" target="_blank">Click
                     Here</a>
-                <!-- <canvas id="PredictionAlertsPiechart"> </canvas> -->
             </div>
         </div>
     </div>
@@ -608,7 +607,7 @@ table tbody tr:nth-of-type(odd) td {
                             <tr *ngFor="let obj of allCBAdata">
                                 <td>
                                     <div class="dpm-radio d-inline-block">
-                                        <p-radioButton class="pulse-green" style="height: 20px; width: 20px;" name="con" (onClick)="RadioValueselection()">
+                                        <p-radioButton class="pulse-green" name="con" (onClick)="RadioValueselection()">
                                         </p-radioButton>
                                     </div>
                                 </td>
@@ -779,15 +778,15 @@ table tbody tr:nth-of-type(odd) td {
 
         <div class="card-footer">
             <a (click)="Previous()" class="btn btn-primary btn-sm">Previous step</a>
-            <a *ngIf="gotit" style="float: right" (click)="helpbox()" class="btn btn-danger btn-sm">Got It</a>
+            <a  style="float: right" (click)="helpbox()" class="btn btn-danger btn-sm">Got It</a>
         </div>
     </div>
 </div>
 
-
-    <div class="row mt-4">
+<div *ngIf="showcbi" id="CBAnavigate">
+    <div class="row mt-4" >
         <div class="col-md-6">
-            <div *ngIf="showcbi" id="CBAnavigate">
+            <div>
                 <div class="bg-white p-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-3"><b> Cost Benefit Risk Analysis</b> </h5>
