@@ -3306,6 +3306,7 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
     var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
+    
     var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
     var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
 
