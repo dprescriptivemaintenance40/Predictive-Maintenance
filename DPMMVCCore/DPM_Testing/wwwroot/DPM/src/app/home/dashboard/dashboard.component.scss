@@ -13,6 +13,17 @@
     width: 2000px;
   }
 
+  .pulse-green1 {
+    background-color: rgb(31, 221, 177);
+    font-size: 12px;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    border-radius: 100%;
+    margin-right: 7px;
+    box-shadow: 0 0 0 rgba(44, 204, 185, 0.4);
+    animation: pulse 2s infinite;
+  }
 
 
 
