@@ -3306,8 +3306,12 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
     var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
-    
-    var meiCostWithDPMConstraint: number = + (this.MEIWithDPMWithConstraint)
+    var meiCostWithDPMConstraint: number 
+    if(this.EconomicRiskWithConstraintDPM >0){
+       meiCostWithDPMConstraint = this.MEIWithDPMWithConstraint
+    }else{
+      meiCostWithDPMConstraint=0
+    }
     var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
 
     var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
