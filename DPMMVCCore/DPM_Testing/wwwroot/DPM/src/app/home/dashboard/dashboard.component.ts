@@ -4645,23 +4645,34 @@ public CBATaskId:number = 0
 }
 
 dygraphForJson() {
-    this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-      this.predictions = res;
-      this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetForcastRecordsInCSVFormat").subscribe((res: any) => {
-        this.forcasts = res
-        this.predictions.forEach(element=>{
-          this.forcasts.forEach(val=>{
-             if(element.InsertedDate == val.Date){
-              element.InsertedDate
-              element.TD1
-              element.FTD1 = val.TD1
-              }
-              if(element.FTD1==0){
-                element.FTD1=''
-              }
-          })
+  this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
+    this.predictions = res;
+    this.http.get("/api/ScrewCompressorFuturePredictionAPI/GetForcastRecordsInCSVFormat").subscribe((res: any) => {
+      this.forcasts = res
+      this.predictions.forEach(element => {
+        this.forcasts.forEach(val => {
+          if (element.InsertedDate == val.Date) {
+            element.InsertedDate
+            element.TD1
+            element.FTD1 = val.TD1
+          }
+          if (element.FTD1 == 0) {
+            element.FTD1 = ''
+          }
         })
-        this.csvData = this.ConvertToCSV(this.predictions);
+      });
+
+      const result = this.forcasts.filter(f =>
+        !this.predictions.some(d => d.InsertedDate == f.Date)
+      );
+      result.forEach(element => {
+        element.InsertedDate
+        element.FTD1 = element.TD1
+        element.TD1 = ''
+        // this.predictions.push(element.FTD1);
+      });
+         this.mergedarray = this.predictions.concat(result);
+        this.csvData = this.ConvertToCSV(this.mergedarray);
         this.chart = new Dygraph(
          document.getElementById("my-first-chart"),this.csvData,
          {
