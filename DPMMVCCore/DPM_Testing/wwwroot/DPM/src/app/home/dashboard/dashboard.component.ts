@@ -2937,18 +2937,10 @@ export class DashboardComponent {
   //   // )
   // }
 
-  
   dygraph() {
     this.chart = new Dygraph(
       document.getElementById("graph"),"dist/DPM/assets/dygraph_cencor200data.csv",
       {
-        axis : {
-          x : {
-            valueFormatter: Dygraph.dateString_,
-            valueParser: function(x) { return 1000*parseInt(x); },
-            ticker: Dygraph.dateTicker                
-          }
-        },
         visibility: [true, true, true,],
         colors: ['green', 'blue',],
         showRangeSelector: true,
