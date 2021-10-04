@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace DPM_Testing.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ContactUsAPIController : ControllerBase
@@ -29,14 +28,14 @@ namespace DPM_Testing.Controllers
         {
             try
             {
-                contactUs.To = contactUs.Email;
+                contactUs.To = "info@dpmaianalytics.com";
                 var subject = contactUs.Subject;
                 var body = " From : " + contactUs.Email + "   " + " Message: " + contactUs.Comment;
                 var message = new Message(new string[] { contactUs.To }, subject, body, null);
                 await _emailSender.SendEmailAsync(message);
-                _context.contactUs.Add(contactUs);
-                _context.SaveChanges();
-                return Ok("Message Sent Successfully");
+                //_context.contactUs.Add(contactUs);
+                //_context.SaveChanges();
+                return Ok();
             }
             catch (Exception exe)
             {

@@ -34,6 +34,8 @@ namespace DPM_Testing
 
             //    services.AddDefaultIdentity<RegisterUser>().AddEntityFrameworkStores<DPMDal>();
 
+            services.AddCors();
+
             services.AddIdentity<RegisterUser, IdentityRole>(opt =>
             {
                 opt.Password.RequiredLength = 7;
@@ -123,6 +125,13 @@ namespace DPM_Testing
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(builder =>
+            {
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            });
             app.UseAuthentication();
             if (env.IsDevelopment())
             {
@@ -139,7 +148,7 @@ namespace DPM_Testing
             app.UseStaticFiles();
             app.UseAuthorization();
 
-            app.UseCors("MyAllowSpecificOrigins");
+            //app.UseCors("MyAllowSpecificOrigins");
             app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoints =>

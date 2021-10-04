@@ -500,7 +500,8 @@ export class HomeComponent implements OnInit {
       Email: email.Email,
       Subject: email.Subject
     }).subscribe((res: any) => {
-      this.messageService.add({ severity: 'success', detail: res });
+      this.messageService.add({ severity: 'success', detail: 'Message sent successfully' });
+      this.FormData.reset();
       this.commonLoadingDirective.showLoading(false, "");
     }, err => {
       this.messageService.add({ severity: 'error', detail: 'Something went Wrong !!!' });
