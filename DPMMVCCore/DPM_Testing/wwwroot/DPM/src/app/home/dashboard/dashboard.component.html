@@ -340,7 +340,7 @@ table tbody tr:nth-of-type(odd) td {
     </div>
 </p-dialog>
 
-<div class="bg-white p-3 rounded mt-4">
+<!-- <div class="bg-white p-3 rounded mt-4">
     <div class="row bg-white p-3 mt-3 w-100">
         <div class="form-group col-sm-4 mb-0">
             <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="FuturePredictionDates()"
@@ -375,7 +375,7 @@ table tbody tr:nth-of-type(odd) td {
     </div>
 
 </div>
-<br><br>
+<br><br> -->
 
 <div *ngIf="ExecutorShow">
      <div class="row bg-white p-3 mt-3 w-100">
@@ -714,21 +714,6 @@ table tbody tr:nth-of-type(odd) td {
         </div>
     </div><br>
 
-    <div *ngIf="blinkprofilerisk">
-        <div class="bg-white p-3" >
-            <div class="d-flex">
-                <h5>Risk Analysis</h5>
-                <a class="blink_me" (click)="riskanalysclick()">
-                    <strong style="font-size: 12px;"><span class="pulse-green"></span>
-                    </strong>
-                </a>
-            </div>
-            <div *ngIf="profile_riskshow">
-                <canvas id="profile_risk"></canvas>
-            </div>
-        </div>
-    </div><br>
-
 
 <div class="rounded bg-white shadow col-md-4 fixed-card">
     <div class="" style="" *ngIf="helpboxshow">
@@ -794,6 +779,24 @@ table tbody tr:nth-of-type(odd) td {
 
 <div *ngIf="showcbi" id="CBAnavigate">
     <div class="row mt-4" >
+        <div class="col-md-6 pl-0" *ngIf="blinkprofilerisk">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="d-flex">
+                            <h5>Risk Analysis</h5>
+                            <a class="blink_me" (click)="riskanalysclick()">
+                                <strong style="font-size: 12px;"><span class="pulse-green"></span>
+                                </strong>
+                            </a>
+                        </div>
+                        <div *ngIf="profile_riskshow">
+                            <canvas id="profile_risk" style="width: 100%;height: 22rem;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6">
             <div>
                 <div class="bg-white p-3">
@@ -830,18 +833,19 @@ table tbody tr:nth-of-type(odd) td {
                 </div>
             </div>
         </div>
-        <div class="col-md-6 pl-0">
-            <div class="d-block h-100">
-                <div class=" h-100">
-                    <div class="bg-white rounded p-3 h-100">
-                        <h5 class="mb-5"><strong>Asset Condition Status</strong></h5>
-                        <canvas id="FakePredictionbarWithTage"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
+<br>
+   <div >
+        <div class="bg-white p-3" >
+            <div class="d-flex">
+                <h5 class="mb-5"><strong>Asset Condition Status</strong></h5>
+            </div>
+            <div>
+                <canvas id="FakePredictionbarWithTage"></canvas>
+            </div>
+        </div>
+    </div><br>
 
 <div *ngIf="PrescriptiveShow">
         <div class="bg-white p-3 mt-3 row d-flex flex-row">

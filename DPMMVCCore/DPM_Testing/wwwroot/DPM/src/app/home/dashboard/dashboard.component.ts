@@ -424,7 +424,7 @@ export class DashboardComponent {
     // this.showReport()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
-     this.dygraph()
+    //  this.dygraph()
     //  this.GetALLCBA()
     this.getPredictedListRecordsByDate()
     this.items = [{
@@ -486,17 +486,18 @@ export class DashboardComponent {
      this.ExecutorShow=true;
      this.AssociatedFailuerMode=true;
      this.allCBI= true
-     this.showcbi=true;
+    //  this.showcbi=true;
      this.PrescriptiveShow=false;
      this.GerAllPredictionRecords();
-     this.CBICharts()
+    //  this.CBICharts()
      this.FakeRiskMetigateactions()
      this.RiskProfile()
-     this. ALLGraphCBA()
+    //  this. ALLGraphCBA()
      this.ComboDates()
      this.dygraphForJson()
      this.fakePredictionWithTagNumber()
       // this.assetperformanceobj()
+      // this.getFuturePredictionRecords()
   }
   }
   getUserDetails() {
@@ -552,7 +553,7 @@ export class DashboardComponent {
       var toDays = this.futurePredictionDatesList[6];
       const params2 = new HttpParams()
       
-        .set('FromDate', moment(fromDays, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+        .set('FromDate', moment(fromDays, 'DD/MM/YYYY').format())
         .set('ToDate', moment(toDays, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url2: string = this.screwCompressorAPIName.getForcastRecords;
       this.screwCompressorMethod.getWithParameters(url2, params2)
@@ -2938,29 +2939,29 @@ export class DashboardComponent {
   //   // )
   // }
 
-  dygraph() {
-    this.chart = new Dygraph(
-      document.getElementById("graph"),"dist/DPM/assets/dygraph145records.csv",
-      {
-        visibility: [true, true, true,],
-        colors: ['green', 'blue',],
-        showRangeSelector: true,
-        valueRange: [160],
-        series: {
-          'TD1': {
-            strokePattern: null,
-            drawPoints: true,
-            pointSize: 1,
-          },
-          'FTD1': {
-            strokePattern: Dygraph.DASHED_LINE,
-            strokeWidth: 2.6,
-            drawPoints: true,
-            pointSize: 2.5,
-          },
-        }
-      })
-  }
+  // dygraph() {
+  //   this.chart = new Dygraph(
+  //     document.getElementById("graph"),"dist/DPM/assets/dygraph145records.csv",
+  //     {
+  //       visibility: [true, true, true,],
+  //       colors: ['green', 'blue',],
+  //       showRangeSelector: true,
+  //       valueRange: [160],
+  //       series: {
+  //         'TD1': {
+  //           strokePattern: null,
+  //           drawPoints: true,
+  //           pointSize: 1,
+  //         },
+  //         'FTD1': {
+  //           strokePattern: Dygraph.DASHED_LINE,
+  //           strokeWidth: 2.6,
+  //           drawPoints: true,
+  //           pointSize: 2.5,
+  //         },
+  //       }
+  //     })
+  // }
 
   // public GenerateReport() {
   //   var countKey = Object.keys(this.classificationDetails).length;
@@ -4328,7 +4329,7 @@ export class DashboardComponent {
               scaleLabel: {
                 display: true,
                 min: 1, 
-                max: 13000, 
+                max: 750, 
                 labelString: 'Risk Rank'
               },
               ticks: {
@@ -4347,7 +4348,7 @@ export class DashboardComponent {
                   display: false
                 },
                 beginAtZero: true,
-                max:1000,
+                 max:1000,
                 callback: function(value,) {
                     return yLabels[value];
                 }
@@ -4601,13 +4602,16 @@ public CBATaskId:number = 0
       this.blinkriskclick= true
       this.blinkmittigationclick= true
       this.profile_riskshow= true;
-      this.blinkprofilerisk=true
+      this.blinkprofilerisk=true;
+      this.showcbi=true;
       this.RiskProfile()
+      this. ALLGraphCBA()
       this.FakeRiskMetigateactions()
    }else{
     this.radioshowmittigation= false;
     this.profile_riskshow= false;
-    this.blinkprofilerisk=false
+    this.blinkprofilerisk=false;
+    this.showcbi=false;
    }
   }
 
