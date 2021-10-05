@@ -1149,6 +1149,34 @@ table tbody tr:nth-of-type(odd) td {
     </div>
 </div>
 
+<div *ngIf="ManagmentShow">
+            <div class="row mt-4" >
+                <div class="col-md-6 pl-0">
+                    <div class="d-block h-100">
+                        <div class=" h-100">
+                            <div class="bg-white rounded p-3 h-100">
+                                <div class="col-md-3">
+                                    <select name="selectprescriptiveno" [(ngModel)]="selectprescriptiveno"
+                                        (ngModelChange)="prescriptivetagselect()" class="form-control">
+                                        <option value="">Select Tag Number</option>
+                                        <ng-container *ngFor="let tagnumber of prescriptivetagnumberlistdata">
+                                            <option [value]="tagnumber.prescriptiveTagnumber" name="selectprescriptiveno">
+                                                {{tagnumber.prescriptiveTagnumber}}</option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                                <div class="d-flex">
+                                    <h5>% OF EQUIPMENT WITH CRITICALITY ASSESSMENT</h5>
+                                </div>
+                                <div>
+                                    <canvas id="criticalityAssesmentgraph"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+</div>
 <!-- <div class="bg-white rounded  px-5 py-3  br-3" >
     <canvas id="FakePredictionbarWithTage"></canvas>
 </div> -->

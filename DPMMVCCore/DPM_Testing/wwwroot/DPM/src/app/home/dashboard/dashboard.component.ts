@@ -320,6 +320,7 @@ export class DashboardComponent {
   public dashboardshow:string = ""
   public ExecutorShow:boolean = false
   public PrescriptiveShow:boolean = false
+  public ManagmentShow:boolean = false
   public mergerecords: any = [];
   public PTagNumberList = [];
   public tagnumbershow: string = ""
@@ -419,9 +420,7 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
-    // this.fakePredictionWithTagNumber()
-       // this.GerAllPredictionRecords();
-    // this.showReport()
+    this.getprescriptive()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
     //  this.dygraph()
@@ -475,10 +474,13 @@ export class DashboardComponent {
     this.PrescriptiveShow=true;
     this.assetselection= true;
     this.AssociatedFailuerMode= false
+    this.ManagmentShow=false
     this.GerAllPredictionRecords();
     this.GerAllFutuerPredictionRecords()
     this.ExecutorShow=false;
    }else if(this.dashboardshow=="Management"){
+    this.ManagmentShow=true
+    this.criticalityAssesment()
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
     this.AssociatedFailuerMode= false
@@ -487,6 +489,7 @@ export class DashboardComponent {
      this.AssociatedFailuerMode=true;
      this.allCBI= true
     //  this.showcbi=true;
+    this.ManagmentShow=false
      this.PrescriptiveShow=false;
      this.GerAllPredictionRecords();
     //  this.CBICharts()
@@ -879,7 +882,6 @@ export class DashboardComponent {
   }
 
   onPredictionChangeYear() {
-   
      this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && moment(val.InsertedDate).format('YYYY') === this.PredictionselectedYear.toString());
      this.CompleteStatus=0
      this.Ongoingstatus=0
@@ -4855,6 +4857,115 @@ Previous(){
 }
 helpbox(){
   this.helpboxshow= false
+}
+criticalityAssesment() {
+  this.changeDetectorRef.detectChanges();
+  new Chart('criticalityAssesmentgraph', {
+    type: 'doughnut',
+    plugins: [
+      {
+        afterDraw: (chart) => {
+          var needleValue = chart.chart.config.data.datasets[0].needleValue;
+          var dataTotal = chart.chart.config.data.datasets[0].data.reduce(
+            (a, b) => a + b
+          );
+          var angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
+          var ctx = chart.chart.ctx;
+          var cw = chart.chart.canvas.offsetWidth;
+          var ch = chart.chart.canvas.offsetHeight;
+          var cx = cw / 2;
+          var cy = ch - 6;
+          ctx.translate(cx, cy);
+          ctx.rotate(angle);
+          ctx.beginPath();
+          ctx.moveTo(0, -3);
+          ctx.lineTo(ch - 20, 0);
+          ctx.lineTo(0, 3);
+          ctx.fillStyle = 'rgb(0, 0, 0)';
+          ctx.fill();
+          ctx.rotate(-angle);
+          ctx.translate(-cx, -cy);
+          ctx.beginPath();
+          ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+          ctx.fill();
+        },
+      },
+    ],
+    data: {
+      labels: [],
+      datasets: [
+        {
+          data: [ 1, this.semiCriticalasset, this.Criticalasset],
+          needleValue: 27,
+          backgroundColor: ['green', 'yellow', 'red'],
+        },
+      ],
+    },
+    options: {
+      events: [],
+      layout: {
+        padding: {
+          bottom: 3,
+        },
+      },
+      rotation: -Math.PI,
+      cutoutPercentage: 30,
+      circumference: Math.PI,
+      legend: {
+        position: 'left',
+      },
+    },
+  });
+}
+public criticalityasset:any=[]
+public PrescagNumberList:any=[]
+public prescriptivetagnumberlistdata:any=[]
+public prescriptivefilterlistdata:any=[]
+public selectprescriptiveno:string=""
+public semiCriticalasset:number=0
+public Criticalasset:number=0
+public normalasset:number=0
+getprescriptive(){
+this.http.get("/api/PrescriptiveAPI/").subscribe((res: any) => {
+this.criticalityasset = res
+this.criticalityasset.forEach(val=>{
+  if(val.Type=="CA"){
+     this.Criticalasset = 3
+  }else if(val.Type=="SCA"){
+    this.semiCriticalasset = 2
+  }else  if(val.Type=="NA"){
+    this.normalasset = 1
+  }
+  this.criticalityAssesment()
+  let prescriptivetagnumbers = { PrescriptiveTagId: 0, prescriptiveTagnumber: '' };
+  prescriptivetagnumbers.prescriptiveTagnumber = val.TagNumber
+            this.PrescagNumberList.push(prescriptivetagnumbers)
+})
+this.prescriptivetagnumberlistdata = this.PrescagNumberList.reduce((m, o) => {
+  var found = m.find(s => s.prescriptiveTagnumber === o.prescriptiveTagnumber);
+  if (found) {
+  } else {
+    m.push(o);
+  }
+  return m;
+}, []);
+})
+}
+prescriptivetagselect(){
+  this.prescriptivefilterlistdata = this.criticalityasset.filter(val => (val.TagNumber) === this.selectprescriptiveno.toString()); 
+  this.semiCriticalasset = 0
+  this.Criticalasset = 0
+  this.normalasset = 0
+  this.prescriptivefilterlistdata.forEach(val=>{
+    if(val.Type=="CA"){
+       this.Criticalasset = 3
+    }else  if(val.Type=="SCA"){
+      this.semiCriticalasset  = 2
+    }else  if(val.Type=="NA"){
+      this.normalasset = 1
+    }
+  })
+  this.criticalityAssesment()
 }
 
 }
