@@ -333,12 +333,12 @@ table tbody tr:nth-of-type(odd) td {
 </div>
 </div> -->
 
-<p-dialog header="Image" [(visible)]="displayBasic" [style]="{width: '90vw'}" [baseZIndex]="10000">
+<!-- <p-dialog header="Image" [(visible)]="displayBasic" [style]="{width: '90vw'}" [baseZIndex]="10000">
     <div class="card-body">
         <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/NEW_PNID_Image.png"
             alt="">
     </div>
-</p-dialog>
+</p-dialog> -->
 
 <!-- <div class="bg-white p-3 rounded mt-4">
     <div class="row bg-white p-3 mt-3 w-100">
@@ -1154,22 +1154,42 @@ table tbody tr:nth-of-type(odd) td {
                 <div class="col-md-4 pl-0">
                     <div class="d-block h-100">
                         <div class=" h-100">
-                            <div class="col-md-3">
-                                <select name="selectprescriptiveno" [(ngModel)]="selectprescriptiveno"
-                                    (ngModelChange)="prescriptivetagselect()" class="form-control">
-                                    <option value="">Select Tag Number</option>
-                                    <ng-container *ngFor="let tagnumber of prescriptivetagnumberlistdata">
-                                        <option [value]="tagnumber.prescriptiveTagnumber" name="selectprescriptiveno">
-                                            {{tagnumber.prescriptiveTagnumber}}</option>
-                                    </ng-container>
-                                </select>
-                            </div>
                             <div class="bg-white rounded p-3 h-100">
+                                <div class="col-md-4">
+                                    <select name="selectprescriptiveno" [(ngModel)]="selectprescriptiveno"
+                                        (ngModelChange)="prescriptivetagselect()" class="form-control">
+                                        <option value="">Select Tag Number</option>
+                                        <ng-container *ngFor="let tagnumber of prescriptivetagnumberlistdata">
+                                            <option [value]="tagnumber.prescriptiveTagnumber" name="selectprescriptiveno">
+                                                {{tagnumber.prescriptiveTagnumber}}</option>
+                                        </ng-container>
+                                    </select>
+                                </div>
                                 <div class="d-flex">
                                     <strong>% OF EQUIPMENT WITH CRITICALITY ASSESSMENT</strong>
                                 </div>
                                 <div>
                                     <canvas id="criticalityAssesmentgraph"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 pl-0">
+                    <div class="d-block h-100">
+                        <div class=" h-100">
+                            <div class="bg-white rounded p-3 h-100">
+                                <div class="col-md-3">
+                                </div>
+                                <div class="d-flex">
+                                    <strong>MITIGATED HEAT RISK MAP</strong>
+                                    <a class="blink_me" (click)="showBasicDialog()"  data-bs-toggle="tooltip" data-bs-placement="top" title="Image">
+                                        <strong style="font-size: 12px;"><span class="pulse-green"></span>
+                                        </strong>
+                                    </a>
+                                </div>
+                                <div>
+                                    <canvas id="Mittigatedheatriskmap"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -1191,24 +1211,56 @@ table tbody tr:nth-of-type(odd) td {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 pl-0">
-                    <div class="d-block h-100">
-                        <div class=" h-100">
-                            <div class="bg-white rounded p-3 h-100">
-                                <div class="col-md-3">
+                </div>
+                <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpshow" >
+                    <a style="float: right"  (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i class="fas fa-comment-dots"></i></a>
+                </div>
+                <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpboxshow" >
+                    <div class="" >
+                        <strong style="color: blue">Steps</strong>
+                        <div class="card-body">
+                            <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                                <strong>
+                                    Predix Asset Performance Management connects the complex data sets found across dozens of departments,
+                                     systems, and hundreds of thousands of assets,
+                                      displaying the information that is key to the health of your assets, and critical to your business.
+                                </strong>
+                            </div>
+                            <div>
+                                <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                                    <strong>
+                                        Instead of spending hours each day consolidating information from hundreds of points, 
+                                        APM provides a comprehensive overview in a single digital cockpit.
+                                    </strong>
                                 </div>
-                                <div class="d-flex">
-                                    <strong>MITIGATED HEAT RISK MAP</strong>
-                                </div>
-                                <div>
-                                    <canvas id="mittigatedriskmap"></canvas>
+                            </div><br>
+                            <div>
+                                <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                                    <strong>
+                                        Using 6 configurable modules, 
+                                        the APM personalized dashboard visualizes overall asset performance management at a plant.
+                                    </strong>
                                 </div>
                             </div>
                         </div>
+                        <a style="float: right" (click)="Managmenthelpbox()" class="btn btn-danger btn-sm">Got It</a>
+                        <!-- <div class="card-footer">
+                            <a style="float: right" (click)="Managmenthelpbox()" class="btn btn-danger btn-sm">Got It</a>
+                        </div> -->
                     </div>
                 </div>
-            </div>
 </div>
+<p-dialog header="Graph" [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
+    <div class="card-body">
+        <div style="text-align: center">
+        <strong>Mitigated Risk Heat Map</strong>
+        </div><br>
+        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MitigatedRisk_Heat_Map.JPG"
+            alt="">
+    </div>
+</p-dialog>
+
+
 <!-- <div class="bg-white rounded  px-5 py-3  br-3" >
     <canvas id="FakePredictionbarWithTage"></canvas>
 </div> -->

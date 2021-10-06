@@ -376,6 +376,7 @@ export class DashboardComponent {
   public radioshowmittigation:boolean=false;
   public profile_riskshow:boolean=false;
   public AssociatedFailuerMode:boolean=false;
+   public Managmenthelpboxshow:boolean=true;
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -481,6 +482,7 @@ export class DashboardComponent {
    }else if(this.dashboardshow=="Management"){
     this.ManagmentShow=true
     this.criticalityAssesment()
+    this.mittigatedheatriskmap()
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
     this.AssociatedFailuerMode= false
@@ -4972,5 +4974,87 @@ prescriptivetagselect(){
   this.criticalityAssesment()
 }
 
+mittigatedheatriskmap() {
+  this.chart = new Chart('Mittigatedheatriskmap', {
+    type: 'bar',
+    data: {
+      labels: [1, 10, 100, 1000],
+      fill: true,
+      datasets: [
+        {
+          data: [5, 10, 15, 20, 25],
+          borderWidth: 1,
+          borderColor: '#90ee90',
+          backgroundColor: '#90ee90',
+          fill: true,
+        },
+        {
+          data: [10, 8, 20, 25, 30],
+          borderWidth: 1,
+          borderColor: 'green',
+          backgroundColor: 'green',
+          fill: true,
+        },
+        {
+          data: [15, 20, 25, 30, 35],
+          borderWidth: 1,
+          borderColor: 'yellow',
+          backgroundColor: 'yellow',
+          fill: true,
+        },
+        {
+          data: [20, 13, 15, 19, 40],
+          borderWidth: 1,
+          borderColor: 'orange',
+          backgroundColor: 'orange',
+          fill: true,
+        },
+        {
+          data: [25, 12, 35, 30, 25],
+          borderWidth: 1,
+          borderColor: 'red',
+          backgroundColor: 'red',
+          fill: true,
+        },
+      ],
+    },
+    options: {
+      legend: { display: false },
+      animation: {
+        animateScale: true,
+      },
+      scales: {
+        xAxes: [
+          {
+            gridLines: {
+              display: false,
+            },
+            barPercentage: 1.0,
+            categoryPercentage: 0.8,
+          },
+        ],
+        yAxes: [
+          {
+            gridLines: {
+              display: false,
+            },
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+      tooltips: {},
+    },
+  });
+}
+public Managmenthelpshow:boolean = false;
+Managmenthelpbox(){
+  this.Managmenthelpboxshow= false 
+  this.Managmenthelpshow= true 
+}
+alwaysshowbox(){
+  this.Managmenthelpboxshow= true  
+}
 }
 
