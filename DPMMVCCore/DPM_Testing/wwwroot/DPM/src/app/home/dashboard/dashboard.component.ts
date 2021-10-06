@@ -4869,7 +4869,7 @@ criticalityAssesment() {
           var dataTotal = chart.chart.config.data.datasets[0].data.reduce(
             (a, b) => a + b
           );
-          var angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
+          var angle = Math.PI + (1.5 / dataTotal) * needleValue * Math.PI;
           var ctx = chart.chart.ctx;
           var cw = chart.chart.canvas.offsetWidth;
           var ch = chart.chart.canvas.offsetHeight;
@@ -4892,11 +4892,11 @@ criticalityAssesment() {
       },
     ],
     data: {
-      labels: [],
+      labels: ['Normal','Semi-crtitical','critical'],
       datasets: [
         {
           data: [ 1, this.semiCriticalasset, this.Criticalasset],
-          needleValue: 27,
+          needleValue: 1.9,
           backgroundColor: ['green', 'yellow', 'red'],
         },
       ],
@@ -4908,11 +4908,15 @@ criticalityAssesment() {
           bottom: 3,
         },
       },
+      
       rotation: -Math.PI,
       cutoutPercentage: 30,
       circumference: Math.PI,
       legend: {
-        position: 'left',
+        display: true,
+        labels: {
+          usePointStyle: true,
+        }
       },
     },
   });
