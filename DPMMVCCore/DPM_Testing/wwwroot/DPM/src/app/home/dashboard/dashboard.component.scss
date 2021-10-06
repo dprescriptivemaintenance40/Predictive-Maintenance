@@ -24,7 +24,22 @@
     box-shadow: 0 0 0 rgba(44, 204, 185, 0.4);
     animation: pulse 2s infinite;
   }
+  @keyframes example {
+    from {background-color: white;}
+    to {
+       transform:translateY(-110px)
+    }
+}
 
-
-
- 
+div.scrollable-content{
+  overflow:auto;
+  display:block;
+}
+div.scrollable-content  div{
+    animation-name: example;
+    animation-duration: 15s;
+}
+div.scrollable-content :hover div{
+    animation-name: example2;
+    animation-duration: 15s;
+}
