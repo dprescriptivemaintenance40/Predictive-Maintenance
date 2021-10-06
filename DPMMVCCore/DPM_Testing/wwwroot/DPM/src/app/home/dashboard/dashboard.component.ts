@@ -483,6 +483,7 @@ export class DashboardComponent {
     this.ManagmentShow=true
     this.criticalityAssesment()
     this.mittigatedheatriskmap()
+    this.Avabilitysites()
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
     this.AssociatedFailuerMode= false
@@ -5046,6 +5047,82 @@ mittigatedheatriskmap() {
       },
       tooltips: {},
     },
+  });
+}
+
+Avabilitysites() {
+  this.chart = new Chart('avabilitysites', {
+    type: 'line',
+    data: {
+      labels: ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul'],
+      datasets: [
+        {
+          label: "India",
+          data: [95, 97, 91, 86, 95,95,84,81,91,78,87,93],
+          borderColor: '#0099CC',
+          backgroundColor: '#0099CC',
+          lineTension: 0,
+          fill: false,
+        },
+        {
+          label: "Dubai",
+          data: [92.1, 93, 87, 92, 94,90,89,89,91,79,86,92],
+          borderColor: '#66FF66',
+          backgroundColor: '#66FF66',
+          fill: false,
+          lineTension: 0
+        },
+        {
+          label: "Thailand",
+          data: [95,89,93,94,83,96,95,90,84,80,85,91],
+          borderColor: '#FFFF66',
+          backgroundColor: '#FFFF66',
+          fill: false,
+          lineTension: 0
+        },
+        {
+          label: "Korea",
+          data: [95,88.2,88,88,89,96,85,91,81,84,90],
+          borderColor: '#ff4d4d',
+          backgroundColor: '#ff4d4d',
+          fill: false,
+          lineTension: 0
+        },
+      ],
+    },
+    options: {
+      lineTension: 0,
+      fill: false,
+      elements: {
+        point:{
+            radius: 0
+        }
+    },
+      legend: {
+        display: true,
+        labels: {
+          usePointStyle: true,
+        }
+      },
+      scales: {
+        xAxes: [
+          {
+            gridLines: {
+              display: false,
+            },
+          },
+        ],
+        yAxes: [{
+   
+          ticks: {
+            beginAtZero: true,
+            min:70,
+            max:100,
+            stepsize:5
+          }
+        }]
+      }
+    }
   });
 }
 public Managmenthelpshow:boolean = false;
