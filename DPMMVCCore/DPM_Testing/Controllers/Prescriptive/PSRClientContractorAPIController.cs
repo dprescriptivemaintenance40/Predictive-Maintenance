@@ -237,10 +237,16 @@ namespace DPM_Testing.Controllers
                 {
                     List<CBAModel> CheckAlreadySaved = new List<CBAModel>();
                     CheckAlreadySaved = await _context.CBAModels.Where(r=>r.TagNumber == CBAModel.TagNumber && r.FailureMode == CBAModel.FailureMode 
-                                                                       && r.EquipmentType == CBAModel.EquipmentType && r.MachineType == CBAModel.MachineType).ToListAsync();
+                                                                       && r.EquipmentType == CBAModel.EquipmentType && r.MachineType == CBAModel.MachineType
+                                                                       && r.UserId ==CBAModel.UserId).ToListAsync();
                     if(CheckAlreadySaved.Count == 0)
                     {
-                        CBAModel.CommisionDate = DateTime.Now;
+                        DateTime dt = DateTime.Now;
+                        CBAModel.CommisionDate = dt;
+                        if(CBAModel.CarryoutTask == "null")
+                        {
+                            CBAModel.CarryoutTask = null;
+                        }
                         _context.CBAModels.Add(CBAModel);
                         await this._context.SaveChangesAsync();
                         return Ok();
@@ -252,8 +258,15 @@ namespace DPM_Testing.Controllers
                 }
                 else
                 {
+                    
                     CBAModel cBAModel = new CBAModel();
+                    CBAModel check = new CBAModel();
+                    check = await _context.CBAModels.FirstOrDefaultAsync(r => r.CBAId == CBAModel.CBAId);
                     cBAModel.CBATaskModel = CBAModel.CBATaskModel;
+                    if (CBAModel.CarryoutTask == "null")
+                    {
+                        CBAModel.CarryoutTask = null;
+                    }
                     CBAModel.CBATaskModel = null;
                     _context.Entry(CBAModel).State = EntityState.Modified;
                     var add = cBAModel.CBATaskModel.Where(a => a.CBATaskId == 0).ToList();
@@ -262,31 +275,27 @@ namespace DPM_Testing.Controllers
                     {
                         this._context.CBATaskModels.UpdateRange(update);
                     }
-                    List<CBATaskModel> savedTaskList = new List<CBATaskModel>();
-                    savedTaskList = await this._context.CBATaskModels.Where(a => a.CBAId == update[0].CBAId).ToListAsync();
-                    if (cBAModel.CBATaskModel != savedTaskList)
-                    {
-                        if (add.Count == 0)
-                        {
-                            foreach (var item in savedTaskList)
-                            {
-                                if(item.CentrifugalPumpMssId == "CONSTRAINT")
-                                {
-                                    _context.CBATaskModels.Remove(item);
-                                }
-                            }
-                        }
-                    }
                     if (add.Count > 0)
                     {
-                        foreach (var item in add)
-                        {
-                            item.CBAId = CBAModel.CBAId;
-                        }
                         this._context.CBATaskModels.AddRange(add);
                     }
                     await this._context.SaveChangesAsync();
-                    return Ok();
+                    if (CBAModel.CarryoutTask != check.CarryoutTask)
+                    {
+                        CBAModel sendData = new CBAModel();
+                        sendData = await _context.CBAModels.Where(r => r.CBAId == CBAModel.CBAId)
+                                                           .Include(a => a.CBATaskModel)
+                                                           .FirstOrDefaultAsync();
+                        if(CBAModel.CarryoutTask == "Yes")
+                        {
+                            return Ok(new { data= sendData, status = 1, description="CBA task carry out status changed from No to Yes."});
+                        }
+                        else if (CBAModel.CarryoutTask == "No")
+                        {
+                            return Ok(new { data = sendData, status = 2, description = "CBA task carry out status changed from Yes to No." });
+                        }
+                    }
+                return Ok();
                 }
                 
             }

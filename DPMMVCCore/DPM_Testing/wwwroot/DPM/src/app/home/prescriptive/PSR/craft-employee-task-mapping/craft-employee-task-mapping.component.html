@@ -1,0 +1,161 @@
+<p-toast position="top-right"></p-toast>
+<p-tabView>
+    <p-tabPanel header="Overview">
+        <div class="dpm-card p-3">
+            <div class="row">
+                <div class=" col-md-12 card-title d-flex justify-content-between align-items-center mb-0">
+                    <h3>Craft Employee Overview</h3>
+                </div>
+            </div>
+            <div class="table-responsive">           
+                <div class="row m-0">
+                    <div class="col-sm p-2 bg-primary">Craft</div>
+                    <div class="col-sm p-2 bg-primary">Check Oil Level TopUp</div>
+                    <div class="col-sm p-2 bg-primary">Vibration Check</div>
+                    <div class="col-sm p-2 bg-primary">Schedule Replacement</div> 
+                    <div class="col-sm p-2 bg-primary">Replace On Condition</div> 
+                    <div class="col-sm p-2 bg-primary">Schedule Oil Change</div>
+                    <div class="col-sm p-2 bg-primary">Support to Mech Task</div>
+                    <div class="col-sm-2 p-2 bg-primary">Task</div>
+                    <div class="col-sm p-2 bg-primary">Criticality</div>
+                </div>
+                <div class="row m-0 mt-2">
+                    <div class="col-md-12 p-0">
+                        <div *ngFor="let r of CraftEmployeeMappingList; let i=index;">
+                            <div class="row mb-3">
+                                <div class="col-md">{{r.Craft}}</div>
+                                <div class="col-md"> </div>
+                                <div class="col-md"> </div>
+                                <div class="col-md"> </div>
+                                <div class="col-md"> </div>                    
+                                <div class="col-md"> </div>
+                                <div class="col-md-2"> </div>
+                                <div class="col-md"> </div>
+                           
+                            </div>
+                            <div *ngIf="r.CraftEmployeeTaskChild.length !== 0">
+                                <div *ngFor="let a of r.CraftEmployeeTaskChild" class="row md-3">
+                                    <div class="col-md">
+                                        <div class="col-sm"></div>
+                                        <div class="col-sm">
+                                            {{a.EmployeeId}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md">{{a.CheckOilLevelTopUp  === 0?'-' : a.CheckOilLevelTopUp +' '+'%'}}</div>
+                                    <div class="col-md">{{a.VibrationCheck      === 0?'-' : a.VibrationCheck     +' '+'%'}}</div>
+                                    <div class="col-md">{{a.ScheduleReplacement === 0?'-' : a.ScheduleReplacement+' '+'%'}}</div>
+                                    <div class="col-md">{{a.ReplaceOnCondition  === 0?'-' : a.ReplaceOnCondition +' '+'%'}}</div>                    
+                                    <div class="col-md">{{a.ScheduleOilChange   === 0?'-' : a.ScheduleOilChange  +' '+'%'}}</div>
+                                    <div class="col-md">{{a.SupportToMechTask   === 0?'-' : a.SupportToMechTask  +' '+'%'}}</div>
+                                    <div class="col-md-2">
+                                        <label class="badge badge-primary">2</label>
+                                    </div>
+                                    <div class="col-md">{{(a.CriticalityRating === '' || a.CriticalityRating === null ) ?'-' : a.CriticalityRating }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</p-tabPanel>
+    <p-tabPanel header="Mapping">
+        <div class="dpm-card p-3">
+            <div class="row">
+                <div class=" col-md-12 card-title d-flex justify-content-between align-items-center mb-0">
+                    <h3>Craft Employee Mapping</h3>
+                    <span *ngIf="notification" class="elementToFadeInAndOut">
+                        <i class="fas fa-check-circle {{notification.class}}"></i>
+                        {{notification.message}}
+                    </span>
+                    <button class="btn btn-primary btn-sm" (click)="craftEmployeeMappingForm()">
+                        <i class="fa fa-plus"></i> New Record
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive">           
+                <div class="row m-0">
+                    <div class="col-sm-1 p-2 bg-primary">Craft</div>
+                    <div class="col-sm-2 p-2 bg-primary">Check Oil Level TopUp</div>
+                    <div class="col-sm-2 p-2 bg-primary">Vibration Check</div>
+                    <div class="col-sm-2 p-2 bg-primary">Schedule Replacement</div> 
+                    <div class="col-sm-2 p-2 bg-primary">Replace On Condition</div> 
+                    <div class="col-sm-2 p-2 bg-primary">Schedule Oil Change</div>
+                    <div class="col-sm-1 p-2 bg-primary"></div>
+                </div>
+                <div class="row m-0 mt-2">
+                    <div class="col-md-12 p-0">
+                        <form [formGroup]="fg" *ngFor="let fg of craftEmployeeMappingForms.controls ; let i=index;">
+                            <div class="row mb-3">
+                                <div class="col-md-2">
+                                    <select class="form-control" data-toggle="tooltip" (change)="setCraftId(fg,fg.get('CraftId').value)" data-placement="right" formControlName="CraftId">
+                                        <option value=0>Choose..</option>
+                                        <option *ngFor="let r of PSRClientContractorData" [ngValue]="r.PSRClientContractorId">{{r.CraftSF}}</option>
+                                    </select>
+                                    <button class="btn btn-primary btn-sm" (click)="addChildToCEMForm(fg)">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+    
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-1"></div>                    
+                                <div class="col-md-1"></div>
+        
+                                <div class="col-md-2">
+                                    <button (click)="recordSubmit(fg)" type="submit" class="btn btn-sm"
+                                            [ngClass]="(fg.get('CETId').value==0)?'btn btn-sm':'btn-outline-dark'"><i
+                                            class="far fa-save"></i>
+                                        {{fg.get('CETId').value==0?'Submit':'Update'}}
+                                    </button>
+                                    <button class="btn btn-light ml-1" (click)="onDelete(fg.get('CETId').value,i)">
+                                        <i class="far fa-trash-alt fa-lg text-danger"></i>
+                                    </button>
+                                </div>
+                           
+                            </div>
+                            <div *ngIf="fg.get('CraftEmployeeTaskChild').value.length !== 0">
+                                <div *ngFor="let r of fg.get('CraftEmployeeTaskChild').value; let a= index;" class="row md-3">
+                                    <div class="col-md-1">
+                                        <select style="width: 7em;" class="form-control" [(ngModel)]="r.EmployeeId" [ngModelOptions]="{standalone: true}">
+                                            <option value=''>Choose..</option>
+                                            <option *ngFor="let r of EmployeeList" [ngValue]="r.name">{{r.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control" [(ngModel)]="r.CheckOilLevelTopUp" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control" [(ngModel)]="r.VibrationCheck" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control" [(ngModel)]="r.ScheduleReplacement" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="number" class="form-control" [(ngModel)]="r.ReplaceOnCondition" [ngModelOptions]="{standalone: true}">
+                                    </div>                    
+                                    <div class="col-md-1">
+                                        <input type="number" class="form-control" [(ngModel)]="r.ScheduleOilChange" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button *ngIf="r.CETId !== 0" (click)="childRecordSubmit(r)" class="btn btn-sm"
+                                                [ngClass]="(r.CETChildId==0)?'btn btn-sm':'btn-outline-dark'"><i
+                                                class="far fa-save"></i>
+                                            {{r.CETChildId ==0?'Submit':'Update'}}
+                                        </button>
+                                        <button class="btn btn-light ml-1" (click)="onChildDelete(r.CETChildId,i, a)">
+                                            <i class="far fa-trash-alt fa-lg text-danger"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+</p-tabView>
+    

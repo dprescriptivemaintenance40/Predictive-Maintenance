@@ -34,6 +34,7 @@ namespace DPM.Models.Prescriptive.PSR
         public double OverallETBC { get; set; }
         public double ResidualRiskWithMaintenance { get; set; }
         public double VendorPOC { get; set; }
+        public string CarryoutTask { get; set; }
         public List<CBATaskModel> CBATaskModel { get; set; }
     }
 

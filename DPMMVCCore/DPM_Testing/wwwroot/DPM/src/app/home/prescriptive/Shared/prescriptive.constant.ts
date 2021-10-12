@@ -33,6 +33,7 @@ export class PrescriptiveContantAPI {
     public UpdateMSSToTree: string = '/PrescriptiveAPI/PrescriptiveUpdateSingleFMMSSUpdate';
     public SaveFunction: string = '/PrescriptiveAPI/FunctionUpdate';
 
+    public UpdateTypeAndWork : string ='/PrescriptiveAPI/UpdateCarryoutTaskAndType';
     //#endregion
 
 
@@ -45,7 +46,6 @@ export class PrescriptiveContantAPI {
     public RCAUpdateAttachment: string = '/PrescriptiveAPI/UpdateFileUpload'
     public RCAUpdateAPI: string = '/RCAAPI/RCAUpdate'
     public RCAOnlyTreeSaveAPI: string = '/RCAAPI/RCATreeUpdate';
-
     //#endregion
 
     //#region PCR 
@@ -61,6 +61,17 @@ export class PrescriptiveContantAPI {
     public UserProductionDetailAPI = '/UserProductionAPI';
     public GetUserProductionDetail = '/UserProductionAPI/GetAllConfigurationRecords';
 
+    //#endregion
+
+    //#region 
+
+    public CEMWholeRecordSave = '/CraftEmployeeTaskMappingAPI/PostParent';
+    public CEMChildSave = '/CraftEmployeeTaskMappingAPI/PostChild';
+    public CEMGetAllRecords = '/CraftEmployeeTaskMappingAPI/GetAllRecords';
+    public CEMWholeRecordDelete = '/CraftEmployeeTaskMappingAPI/DeleteParent';
+    public CEMChildDelete = '/CraftEmployeeTaskMappingAPI/DeleteChild';
+    public CEMUpdateParent = '/CraftEmployeeTaskMappingAPI/UpdateParent';
+    public CEMUpdateChild = '/CraftEmployeeTaskMappingAPI/UpdateChild';
     //#endregion
 
 }

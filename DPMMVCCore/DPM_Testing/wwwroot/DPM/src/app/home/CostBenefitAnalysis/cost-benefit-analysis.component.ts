@@ -873,7 +873,13 @@ export class CostBenefitAnalysisComponent {
 
     Save(){
         this.http.post('/api/PSRClientContractorAPI/PostCBATask', this.CBAOBJ)
-          .subscribe((res: any) => { },
+          .subscribe((res: any) => { 
+              if(res.status == undefined && res.status == 1){
+                // status code 1 : CBA carryout task changed from No to Yes
+              }else if(res.status == undefined && res.status == 2){
+                  // status code 1 : CBA carryout task changed from Yes to No
+              }
+          },
            err => {
             this.messageService.add({ severity: 'warn', summary: 'warn', detail: err.error })   
         });
@@ -1029,4 +1035,13 @@ export class CostBenefitAnalysisComponent {
         }
         
       }
+
+    public getCarryOutTaskValue(r){
+        if(r === null || r === ''){
+        return null;
+        }else{
+        return r;
+        }
+    }
+
 }

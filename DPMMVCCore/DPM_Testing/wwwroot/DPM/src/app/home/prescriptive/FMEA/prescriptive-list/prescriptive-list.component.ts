@@ -54,7 +54,17 @@ export class PrescriptiveListComponent implements OnInit {
     this.getPrescriptiveRecords();
   }
 
-
+  public UpdateTypeandCriticality(r){
+      const params = new HttpParams()
+            .set('id', r.CFPPrescriptiveId)
+            .set('type', r.Type)
+      this.commonBLService.getWithParameters(this.prescriptiveContantAPI.UpdateTypeAndWork, params)
+      .subscribe(
+       async (res : any) =>{
+          this.getPrescriptiveRecords();
+        }, err=>{console.log(err.error)}
+      )
+  }
 
   getPrescriptiveRecords() {
     var url: string = this.prescriptiveContantAPI.FMEATagCheck

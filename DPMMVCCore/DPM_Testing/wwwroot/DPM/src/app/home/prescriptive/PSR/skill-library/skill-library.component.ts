@@ -34,7 +34,11 @@ export class SkillLibraryComponent implements OnInit {
     {'id': 4 , 'name': 'EMP4'},
     {'id': 5 , 'name': 'EMP5'},
     {'id': 6 , 'name': 'EMP6'},
-  ]
+    {'id': 7 , 'name': 'EMP7'},
+    {'id': 8 , 'name': 'EMP8'},
+    {'id': 9 , 'name': 'EMP9'},
+    {'id': 10, 'name': 'EMP10'},
+  ];
   public MaintenanceTasks: any = [
     { Name: "Function Check", Strategy: "A-FFT, E-FFT" },
     { Name: "Carry out talks based on on-condition maintenance recommendation", Strategy: "OCM, B-OFM" },
@@ -61,6 +65,7 @@ export class SkillLibraryComponent implements OnInit {
   public craftModalData : any = [];
   public SavedPCRRecordsList : any = [];
   public SelectedCraftToEdit : any = [];
+  public craftEmployeeMappingList : any = [];
   constructor(private http: HttpClient,
     public fb: FormBuilder,
     private commonBLervice: CommonBLService,
@@ -76,20 +81,39 @@ export class SkillLibraryComponent implements OnInit {
       );
     });
     this.userModel = JSON.parse(localStorage.getItem('userObject'));
+    this.GetPSRClientContractorData();
+    this.GetCEMappingRecords();
   }
 
   ngOnInit(): void {
     // this.getPrescriptiveRecords();
     // this.MachineEquipmentSelect();
     this.GetMssStartegyList();
-    this.GetPSRClientContractorData();
     this.getUserSkillRecords();
   //  this.GetSkillMappedData();
   }
 
+  GetCEMappingRecords(){
+    const params = new HttpParams()
+          .set('userId', this.userModel.UserId)
+    this.commonBLervice.getWithParameters(this.PSRAPIs.CEMGetAllRecords, params).subscribe(
+      res => {
+        this.craftEmployeeMappingList = [];
+        this.craftEmployeeMappingList = res;
+      }, err=>{console.log(err.error)}
+      )
+    }
+
   GetMssStartegyList(){
     this.commonBLervice.getWithoutParameters(this.PSRAPIs.MSSStrategyGetAllRecords).subscribe( 
-      res => {
+      (res : any) => {
+        res.forEach(element => {
+          if(element.Strategy === 'GEP' || element.Strategy === 'CONSTRAINT' || element.Strategy === 'FMEA'){
+            element.TYPE = element.Strategy
+          }else{
+            element.TYPE = "MSS";
+          }
+        });
         this.MaintenanceStrategyList = res;
       }
     )
@@ -205,13 +229,85 @@ export class SkillLibraryComponent implements OnInit {
       });
   }
 
-  public getHourlyRate(r : any){
-    var Data = this.MaintenanceStrategyList.find(a=>a.MSSStrategyModelId == r.value.Task);
-    var craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === r.value.Craft);
-    if(Data !== undefined && craft !== undefined){
-      if(Data.Strategy === 'GEP' || Data.Strategy === 'NEW' || Data.Strategy === 'FMEA' ){
-         r.value.HourlyRate = craft.ClientHourlyRate;
+  public getLevelOfEmployee(fg : any){
+    let emp = [
+      {'id': 1 , 'name': 'EMP1'},
+      {'id': 2 , 'name': 'EMP2'},
+      {'id': 3 , 'name': 'EMP3'},
+      {'id': 4 , 'name': 'EMP4'},
+      {'id': 5 , 'name': 'EMP5'},
+      {'id': 6 , 'name': 'EMP6'},
+      {'id': 7 , 'name': 'EMP7'},
+      {'id': 8 , 'name': 'EMP8'},
+      {'id': 9 , 'name': 'EMP9'},
+      {'id': 10, 'name': 'EMP10'},
+    ]
+     var empName = emp.find(r=>r.id ==fg.value.EmpId).name;
+     let craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === fg.value.Craft);
+     let d = this.craftEmployeeMappingList.find(p=>p.Craft === craft.CraftSF);
+      if(d !== undefined){
+        if(d.CraftEmployeeTaskChild.length > 0){
+            d.CraftEmployeeTaskChild.forEach(element => {
+              let splitData : any = element.EmployeeId.split(/(\d+)/);
+              let e = emp.find(c=>c.id === parseFloat(splitData[1])) ;
+              fg.value.EMPList.push(e);
+               if(element.EmployeeId === empName){
+                  if(element.CheckOilLevelTopUp !== null && element.CheckOilLevelTopUp !== 0){
+                    fg.value.Level = element.CheckOilLevelTopUp;
+                  }else if(element.VibrationCheck !== null && element.VibrationCheck !== 0){
+                    fg.value.Level = element.VibrationCheck;
+                  }else if(element.ScheduleReplacement !== null && element.ScheduleReplacement !== 0){
+                    fg.value.Level = element.ScheduleReplacement;
+                  }else if(element.ReplaceOnCondition !== null && element.ReplaceOnCondition !== 0){
+                    fg.value.Level = element.ReplaceOnCondition;
+                  }else if(element.ScheduleOilChange !== null && element.ScheduleOilChange !== 0){
+                    fg.value.Level = element.ScheduleOilChange;
+                  }
+               }
+            });
+        }
       }
+  }
+
+  public getHourlyRate(r : any){
+    this.EmployeeList = [
+      {'id': 1 , 'name': 'EMP1'},
+      {'id': 2 , 'name': 'EMP2'},
+      {'id': 3 , 'name': 'EMP3'},
+      {'id': 4 , 'name': 'EMP4'},
+      {'id': 5 , 'name': 'EMP5'},
+      {'id': 6 , 'name': 'EMP6'},
+      {'id': 7 , 'name': 'EMP7'},
+      {'id': 8 , 'name': 'EMP8'},
+      {'id': 9 , 'name': 'EMP9'},
+      {'id': 10, 'name': 'EMP10'},
+    ];
+    let Data = this.MaintenanceStrategyList.find(a=>a.MSSStrategyModelId == r.value.Task);
+    let craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === r.value.Craft);
+    if(Data !== undefined && craft !== undefined){
+      if(Data.Strategy === 'GEP' || Data.Strategy === 'CONSTRAINT' || Data.Strategy === 'FMEA'){
+         r.value.HourlyRate = craft.ClientHourlyRate;
+      }else{
+        // for MSS
+        r.value.HourlyRate = craft.ClientHourlyRate;
+      }
+    }
+
+    let d = this.craftEmployeeMappingList.find(p=>p.Craft === craft.CraftSF);
+    if(d !== undefined){
+      if(d.CraftEmployeeTaskChild.length > 0){
+        let empList = [];
+        let OldEmpList = this.EmployeeList;
+        d.CraftEmployeeTaskChild.forEach(element => {
+          let splitData : any = element.EmployeeId.split(/(\d+)/);
+          let e = OldEmpList.find(c=>c.id === parseFloat(splitData[1])) ;
+          empList.push(e);
+        });
+        this.EmployeeList = [];
+        r.value.EMPList = empList;
+      }
+    }else{
+      this.EmployeeList = [];
     }
   }
 
@@ -309,6 +405,7 @@ export class SkillLibraryComponent implements OnInit {
             obj['Strategy']= MSSData.Strategy;
             obj['Craft']= 0;
             obj['HourlyRate']= 0;
+            obj['TYPE']= MSSData.TYPE;
             obj['TaskDuration']= 0 ;
             obj['MaterialCost']= 0 ;
             obj['POC']= 0 ;
@@ -318,6 +415,9 @@ export class SkillLibraryComponent implements OnInit {
         }else{
           if(MaintenanceTask.length > res.length){
             res.forEach(element => {
+              if(element.Strategy !== 'GEP' && element.Strategy !== 'CONSTRAINT' && element.Strategy !=='FMEA'){
+                element.TYPE = 'MSS';
+              }
               this.PSRModel.push(element);
             }); 
             const addedMTinDB = [...new Set(res.map(item => item.MaintenanceTaskId))];
@@ -333,6 +433,7 @@ export class SkillLibraryComponent implements OnInit {
             obj['MaintenanceTask']= MSSData.MaintenanceTask;
             obj['Strategy']= MSSData.Strategy;
             obj['Craft']= 0;
+            obj['TYPE']= MSSData.TYPE;
             obj['HourlyRate']= 0;
             obj['TaskDuration']= 0 ;
             obj['MaterialCost']= 0 ;
@@ -340,7 +441,6 @@ export class SkillLibraryComponent implements OnInit {
             obj['POC']= 0 ;
             this.PSRModel.push(obj);
            });
-
           }else if(MaintenanceTask.length === res.length){
             res.forEach(element => {
               if(element.Strategy !== 'GEP' && element.Strategy !== 'CONSTRAINT' && element.Strategy !=='FMEA'){
@@ -350,9 +450,9 @@ export class SkillLibraryComponent implements OnInit {
               }              
               this.PSRModel.push(element);
             });
-            this.getFilteredPSRModel();
           }
         }
+        this.getFilteredPSRModel();
         this.showPSR = true;
       }, err =>{ console.log(err.error)}
     )
@@ -372,7 +472,20 @@ export class SkillLibraryComponent implements OnInit {
       Task: [0, Validators.required],
       Level: [0, Validators.required],
       HourlyRate: [0, Validators.required],
+      EMPList :[[]]
     }));
+    this.EmployeeList = [
+      {'id': 1 , 'name': 'EMP1'},
+      {'id': 2 , 'name': 'EMP2'},
+      {'id': 3 , 'name': 'EMP3'},
+      {'id': 4 , 'name': 'EMP4'},
+      {'id': 5 , 'name': 'EMP5'},
+      {'id': 6 , 'name': 'EMP6'},
+      {'id': 7 , 'name': 'EMP7'},
+      {'id': 8 , 'name': 'EMP8'},
+      {'id': 9 , 'name': 'EMP9'},
+      {'id': 10, 'name': 'EMP10'},
+    ];
   }
 
   recordSubmit(fg: FormGroup) {
@@ -381,6 +494,7 @@ export class SkillLibraryComponent implements OnInit {
         (res: any) => {
           fg.patchValue({ SKillLibraryId: res.SKillLibraryId });
           this.showNotification('insert');
+          this.GetSavedPSRRecords();
         });
     }else{
       this.commonBLervice.PutData('/SkillLibraryAPI', fg.value).subscribe(
@@ -451,6 +565,32 @@ export class SkillLibraryComponent implements OnInit {
           this.skillLibraryForm();
         else { 
           (res as []).forEach((SKillLibraryModel: any) => { 
+            let emp = [
+              {'id': 1 , 'name': 'EMP1'},
+              {'id': 2 , 'name': 'EMP2'},
+              {'id': 3 , 'name': 'EMP3'},
+              {'id': 4 , 'name': 'EMP4'},
+              {'id': 5 , 'name': 'EMP5'},
+              {'id': 6 , 'name': 'EMP6'},
+              {'id': 7 , 'name': 'EMP7'},
+              {'id': 8 , 'name': 'EMP8'},
+              {'id': 9 , 'name': 'EMP9'},
+              {'id': 10, 'name': 'EMP10'},
+            ]
+            
+            let empList = [];
+            var empName = emp.find(r=>r.id ==SKillLibraryModel.EmpId).name;
+               let craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === SKillLibraryModel.Craft);
+               let d = this.craftEmployeeMappingList.find(p=>p.Craft === craft.CraftSF);
+                if(d !== undefined){
+                  if(d.CraftEmployeeTaskChild.length > 0){
+                    d.CraftEmployeeTaskChild.forEach(element => {
+                      let splitData : any = element.EmployeeId.split(/(\d+)/);
+                      let e = emp.find(c=>c.id === parseFloat(splitData[1])) ;
+                      empList.push(e);
+                    });
+                  }
+                }
             this.skillLibraryForms.push(this.fb.group({
               SKillLibraryId: [SKillLibraryModel.SKillLibraryId],
               Craft: [SKillLibraryModel.Craft, Validators.required],
@@ -458,6 +598,7 @@ export class SkillLibraryComponent implements OnInit {
               Task: [SKillLibraryModel.Task, Validators.required],
               Level: [SKillLibraryModel.Level, Validators.required],
               HourlyRate: [SKillLibraryModel.HourlyRate, Validators.required],
+              EMPList:[empList]
             }));
           });
 
@@ -468,6 +609,18 @@ export class SkillLibraryComponent implements OnInit {
   }
 
   AddCraft(v){
+    let tempEmpList = [
+      {'id': 1 , 'name': 'EMP1'},
+      {'id': 2 , 'name': 'EMP2'},
+      {'id': 3 , 'name': 'EMP3'},
+      {'id': 4 , 'name': 'EMP4'},
+      {'id': 5 , 'name': 'EMP5'},
+      {'id': 6 , 'name': 'EMP6'},
+      {'id': 7 , 'name': 'EMP7'},
+      {'id': 8 , 'name': 'EMP8'},
+      {'id': 9 , 'name': 'EMP9'},
+      {'id': 10, 'name': 'EMP10'},
+    ]
     this.SelectedCraftToEdit = v;
     if(v.TYPE !== 'MSS'){
       if(v.TaskDuration !== 0){
@@ -479,7 +632,7 @@ export class SkillLibraryComponent implements OnInit {
          this.craftModalData = [];
          data.forEach(element => {
            var cf = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === element.Craft);
-           var em = this.EmployeeList.find(r=>r.id === element.EmpId);
+           var em = tempEmpList.find(r=>r.id === element.EmpId);
            let obj = {}
            obj['SKillLibraryId']=element.SKillLibraryId
            obj['Craft'] = cf.CraftSF
@@ -494,7 +647,7 @@ export class SkillLibraryComponent implements OnInit {
          this.craftModalData = [];
          data.forEach(element => {
            var cf = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === element.Craft);
-           var em = this.EmployeeList.find(r=>r.id === element.EmpId);
+           var em = tempEmpList.find(r=>r.id === element.EmpId);
            let obj = {}
            obj['SKillLibraryId']=element.SKillLibraryId
            if(element.SKillLibraryId === this.SelectedCraftToEdit.Craft){
@@ -505,6 +658,7 @@ export class SkillLibraryComponent implements OnInit {
              obj['Selected'] = false;
            }        
            obj['Employee'] = em.name
+           obj['EmployeeId'] = em.id;
            obj['Level'] = element.Level
            obj['HR'] = element.HourlyRate;
            this.craftModalData.push(obj);
@@ -588,6 +742,18 @@ export class SkillLibraryComponent implements OnInit {
   public ADDMSSCraftTask : any = [];
 
   AddCraftForMSS(v){
+    let tempEmpList = [
+      {'id': 1 , 'name': 'EMP1'},
+      {'id': 2 , 'name': 'EMP2'},
+      {'id': 3 , 'name': 'EMP3'},
+      {'id': 4 , 'name': 'EMP4'},
+      {'id': 5 , 'name': 'EMP5'},
+      {'id': 6 , 'name': 'EMP6'},
+      {'id': 7 , 'name': 'EMP7'},
+      {'id': 8 , 'name': 'EMP8'},
+      {'id': 9 , 'name': 'EMP9'},
+      {'id': 10, 'name': 'EMP10'},
+    ]
     this.ADDMSSCraftTask = v;
     if(v.TaskDuration !== 0){
       this.generateTaskDuration(v);
@@ -596,7 +762,7 @@ export class SkillLibraryComponent implements OnInit {
       this.craftModalData = [];
       data.forEach(element => {
         var cf = this.PSRClientContractorData.find(r=>r.PSRClientContractorId === element.Craft);
-        var em = this.EmployeeList.find(r=>r.id === element.EmpId);
+        var em = tempEmpList.find(r=>r.id === element.EmpId);
         let obj = {}
         obj['SKillLibraryId']=element.SKillLibraryId
         if(element.SKillLibraryId === v.Craft){
@@ -606,7 +772,8 @@ export class SkillLibraryComponent implements OnInit {
           obj['Craft'] = cf.CraftSF
           obj['Selected'] = false;
         }        
-        obj['Employee'] = em.name
+        obj['Employee'] = em.name;
+        obj['EmployeeId'] = em.id;
         obj['Level'] = element.Level
         obj['HR'] = element.HourlyRate;
         this.craftModalData.push(obj);

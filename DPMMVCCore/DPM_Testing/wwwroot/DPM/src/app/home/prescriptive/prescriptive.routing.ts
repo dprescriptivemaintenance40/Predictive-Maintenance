@@ -12,6 +12,7 @@ import { PrescriptiveUpdateComponent } from "./FMEA/prescriptive-update/prescrip
 import { MSSAddComponent } from "./MSS/mss-add/mss-add.component";
 import { PrescriptiveComponent } from "./prescriptive.component";
 import { ClientContractorLibraryComponent } from "./PSR/client-contractor-library/client-contractor-library.component";
+import { CraftEmployeeTaskMappingComponent } from "./PSR/craft-employee-task-mapping/craft-employee-task-mapping.component";
 import { InputDataManagementComponent } from "./PSR/input-data-management/input-data-management.component";
 import { MSRComponent } from "./PSR/msr/msr.component";
 import { MssStrategyComponent } from "./PSR/mss-strategy/mss-strategy.component";
@@ -41,6 +42,7 @@ import { RCAComponent } from "./RCA/rca.component";
                 { path: 'SkillLibrary', component: SkillLibraryComponent},
                 { path: 'PSR', component: MSRComponent},
                 { path: 'UPD', component: UserProductionDetailsComponent},
+                { path: 'CEM', component: CraftEmployeeTaskMappingComponent},
                 { path: 'InputDataManagement', component: InputDataManagementComponent}
             ]
         }

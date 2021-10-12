@@ -7,6 +7,7 @@ using DPM.Models.PumpModel;
 using DPM.Models.RecycleBinModel;
 using DPM.Models.Prescriptive.RCA;
 using DPM.Models.Prescriptive.PSR;
+using DPM.Models;
 
 namespace DPM_ServerSide.DAL
 {
@@ -46,6 +47,9 @@ namespace DPM_ServerSide.DAL
         public DbSet<ScrewCompressorForecastModel> ScrewCompressorForecastModels { get; set; }
         public DbSet<CBAModel> CBAModels { get; set; }
         public DbSet<CBATaskModel> CBATaskModels { get; set; }
+        public DbSet<CraftEmployeeTaskChild> CraftEmployeeTaskChilds { get; set; }
+        public DbSet<CraftEmployeeTaskMappingModel> CraftEmployeeTaskMappingModels { get; set; }
+        public DbSet<EmployeeTaskListModel> EmployeeTaskListModels { get; set; }
         public DbSet<DesignationAccessModel> DesignationAccessModels { get; set; }
         public DbSet<AdvanceAccessModel> AdvanceAccessModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -103,6 +107,17 @@ namespace DPM_ServerSide.DAL
                         .HasForeignKey(a => a.CBAId);
             modelBuilder.Entity<DesignationAccessModel>().ToTable("DesignationAccessModelTable");
             modelBuilder.Entity<AdvanceAccessModel>().ToTable("AdvanceAccessModelTable");
+            modelBuilder.Entity<EmployeeTaskListModel>().ToTable("CraftEmployeeTaskListModelTable");
+            modelBuilder.Entity<CraftEmployeeTaskMappingModel>().ToTable("CraftEmployeeTaskMappingModelTable");
+            modelBuilder.Entity<CraftEmployeeTaskChild>().ToTable("CraftEmployeeTaskChildTable");
+            modelBuilder.Entity<CraftEmployeeTaskChild>()
+                        .HasOne(p => p.CraftEmployeeTaskMappingModel)
+                        .WithMany(b => b.CraftEmployeeTaskChild)
+                        .HasForeignKey(a => a.CETId);
+            modelBuilder.Entity<EmployeeTaskListModel>()
+                        .HasOne(p => p.CraftEmployeeTaskChild)
+                        .WithMany(b => b.EmployeeTaskListModels)
+                        .HasForeignKey(a => a.CETChildId);
         }
 
     }

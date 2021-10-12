@@ -1667,5 +1667,24 @@ namespace DPM.Controllers.Prescriptive
             }
 
         }
+
+        [HttpGet]
+        [Route("UpdateCarryoutTaskAndType")]
+        public async Task<IActionResult> UpdateTypeAndCarryoutTask(int id, string type, string carryoutTask)
+        {
+            try
+            {
+                var record = await _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == id).FirstOrDefaultAsync();
+                record.Type = type;
+                _context.Entry(record).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return Ok(record);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
     }
 }

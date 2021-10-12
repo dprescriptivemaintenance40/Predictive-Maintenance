@@ -65,7 +65,18 @@
                     <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
                         <div class="prescriptive-card p-3">
                             <!-- <td (click)="FailureModeTable(p)">{{rowIndex + 1}}</td> -->
-                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.MachineType}}</small><span class="d-block font-weight-normal h5 mt-2">{{p.EquipmentType}}<span (click)="FailureModeTable(p)" class="badge badge-info ml-2"><small><i
+                            <h1 class="font-weight-normal h6"><small>{{p.MachineType}}</small>
+                                <small>
+                                    <select [(ngModel)]="p.Type">
+                                        <option value="CA">Critical Asset</option>
+                                        <option value="SCA">Semi Critical Asset</option>
+                                        <option value="NA">Normal Asset</option>
+                                    </select>
+                                </small>
+                                <small>
+                                    <a (click)="UpdateTypeandCriticality(p)" title="Update" class="link-primary mr-1"><i class="pi pi-pencil mr-2"></i>Update</a>
+                                </small>
+                                <span  (click)="FailureModeTable(p)" class="d-block font-weight-normal h5 mt-2">{{p.EquipmentType}}<span (click)="FailureModeTable(p)" class="badge badge-info ml-2"><small><i
                                         class="pi pi-tag mr-1"></i></small>Tag No.{{p.TagNumber}}</span>
                                 <span (click)="FailureModeTable(p)" class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-chart-line"></i></small> Critical Factor: {{p.ComponentCriticalityFactor}}</span>
                                 <span (click)="FailureModeTable(p)" class="badge badge-warning"><i

@@ -12,6 +12,7 @@ namespace DPM.Models.Prescriptive.PSR
         public int PSRId { get; set; }
         public string UserId { get; set; }
         public string EmployeeName { get; set; }
+        public string EmployeeId { get; set; }
         public string MaintenanceTask { get; set; }
         public int MaintenanceTaskId { get; set; }
         public string Strategy { get; set; }
@@ -36,6 +37,7 @@ namespace DPM.Models.Prescriptive.PSR
         public double TaskDuration { get; set; }
         public double MaterialCost { get; set; }
         public double POC { get; set; }
+        public string EmployeeId { get; set; }
         public SkillPSRMappingModel SkillPSRMappingModel { get; set; }
     }
 }

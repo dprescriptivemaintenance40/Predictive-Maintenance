@@ -1,1 +1,31 @@
-<p>constarint-management works!</p>
+<p-tabView (onChange)="ManPower($event)">
+    <p-tabPanel index=1 header="Man power N.A.">
+    </p-tabPanel>
+    <p-tabPanel index=2 header="Competancy not adequate">
+    </p-tabPanel>
+    <p-tabPanel index=3 header="Spear parts N.A.">
+    </p-tabPanel>
+    <p-tabPanel header="Logistic Support">
+    </p-tabPanel>
+    <p-tabPanel header="Special tools N.A.">
+    </p-tabPanel>
+    <p-tabPanel header="Heavy equipment N.A.">
+    </p-tabPanel>
+    <p-tabPanel header="No redundancy or not enough redundancy / Standby N.A.">
+    </p-tabPanel>
+    <p-tabPanel header="Budget N.A.">
+    </p-tabPanel>
+</p-tabView>
+
+
+<p-dialog header="Man power" [(visible)]="manPower" [style]="{width: '70em'}" class="dpm-card mt-4">
+    <div class="row" *ngFor="let r of SavedPCRRecordsList; let a = index;">
+        <label *ngIf="r.message !==''"># {{r.message}}</label>
+    </div>
+</p-dialog>
+
+<p-dialog header="Competancy not Adequate" [(visible)]="competancyAdequate" [style]="{width: '70em'}" class="dpm-card mt-4">
+    <div class="row" *ngFor="let r of competancyAdequateMSGList; let i = index;">
+        <label>{{i+1}} {{r}}</label>
+    </div>
+</p-dialog>

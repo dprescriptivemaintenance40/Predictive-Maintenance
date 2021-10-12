@@ -149,9 +149,9 @@
                             </select>
                         </td>
                         <td style="width: 150px;"class="border-0">
-                            <select class="form-control" data-toggle="tooltip" data-placement="right" formControlName="EmpId" style="height: 35px;">
+                            <select class="form-control" data-toggle="tooltip" (change)="getLevelOfEmployee(fg)" data-placement="right" formControlName="EmpId" style="height: 35px;">
                                 <option value=0>Choose..</option>
-                                <option *ngFor="let r of EmployeeList" [ngValue]="r.id">{{r.name}}</option>
+                                <option *ngFor="let r of fg.value.EMPList" [ngValue]="r.id">{{r.name}}</option>
                             </select>
                         </td>
                         <td style="width: 150px;" class="border-0">
@@ -160,7 +160,7 @@
                                 <option *ngFor="let r of MaintenanceStrategyList" [ngValue]="r.MSSStrategyModelId">{{r.MaintenanceTask}}</option>
                             </select>
                         </td>
-                        <td style="width: 150px;" class="border-0"><input type="number" class="form-control" formControlName="Level" style="height: 35px;"></td>
+                        <td style="width: 150px;" class="border-0"><input type="number" class="form-control" formControlName="Level" [(ngModel)]="fg.value.Level" style="height: 35px;"></td>
                         <td style="width: 150px;" class="border-0"><input type="number" class="form-control" formControlName="HourlyRate" [(ngModel)]="fg.value.HourlyRate" style="height: 35px;"></td>
                         <td class="border-0">
                             <button type="submit" class="btn btn-sm" [disabled]="fg.invalid"
@@ -307,13 +307,13 @@
                     <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0">
                         <label>{{FilteredPSRModel.Craft !== 0 ? getCraftValue(FilteredPSRModel) : 'Not added'}}</label>
                     </td>
-                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length > 0">
+                    <td *ngIf="(FilteredPSRModel.SkillPSRMappingMSS !==  null && FilteredPSRModel.SkillPSRMappingMSS.length > 0)">
                         <label *ngFor="let a of FilteredPSRModel.SkillPSRMappingMSS"> {{a.CraftOriginalId !== 0 ? getCraftForMSSSelection(a) : 'Not added'}}, &nbsp;</label>
                     </td>
                     <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0">
                         <label>{{FilteredPSRModel.EmployeeName !== '' ? FilteredPSRModel.EmployeeName : 'Not added'}}</label>
                     </td>
-                    <td *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length > 0">
+                    <td *ngIf="(FilteredPSRModel.SkillPSRMappingMSS !==  null && FilteredPSRModel.SkillPSRMappingMSS.length > 0)">
                         <label *ngFor="let a of FilteredPSRModel.SkillPSRMappingMSS">{{a.EmployeeName !== '' ? a.EmployeeName : 'Not added'}}, &nbsp;</label>
                     </td>
                     <td *ngIf="FilteredPSRModel.TYPE !== 'MSS'">
@@ -322,7 +322,7 @@
                     </td>
                     <td *ngIf="FilteredPSRModel.TYPE == 'MSS'">
                         <p-button *ngIf="FilteredPSRModel.SkillPSRMappingMSS ===  null || FilteredPSRModel.SkillPSRMappingMSS.length == 0"  icon="pi pi-plus" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
-                        <p-button *ngIf="FilteredPSRModel.SkillPSRMappingMSS.length >0" icon="pi pi-pencil" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
+                        <p-button *ngIf="(FilteredPSRModel.SkillPSRMappingMSS !==  null && FilteredPSRModel.SkillPSRMappingMSS.length >0)" icon="pi pi-pencil" (click)="AddCraft(FilteredPSRModel)" styleClass="p-button-text"></p-button>
                     </td>
                     <td *ngIf="SelectedType !== 'MSS'">
                         <input [disabled]="FilteredPSRModel.TYPE == 'MSS'" type="number" [(ngModel)]="FilteredPSRModel.TaskDuration" (change)="generateTaskDuration(FilteredPSRModel)" class="form-control" style="height: 35px;">

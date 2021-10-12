@@ -184,6 +184,14 @@
                                         <span><i class="pi pi-info-circle"></i>{{prescriptiveRecords.FunctionFailure}}</span>
                                     </div>
                                     <small> <button (click)="OpenMEI()" class="badge badge-primary"> Click here to calculate MEI</button></small>
+                                    <small *ngIf="AlreadySaved === 'Y'"><label>Do the task</label></small>
+                                    <small *ngIf="AlreadySaved === 'Y'">
+                                        <select class="form-control" [(ngModel)]="CBAOBJ.CarryoutTask" (change)="getCarryOutTaskValue(CBAOBJ.CarryoutTask)">
+                                            <option value=null>Choose</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </small>
                                 </div>
                             </div>
                             <div class="row mb-2">
