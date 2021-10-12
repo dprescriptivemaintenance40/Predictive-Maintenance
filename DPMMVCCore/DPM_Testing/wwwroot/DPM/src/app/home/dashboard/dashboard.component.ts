@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, QueryList, ViewChild, ViewChildren } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { MessageService } from 'primeng/api';
 import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
@@ -16,6 +16,21 @@ import { PrescriptiveContantAPI } from "../prescriptive/Shared/prescriptive.cons
 import { element, } from "protractor";
 import { ConfigService } from "src/app/shared/config.service";
 import { MenuItem } from 'primeng/api';
+import * as XLSX from 'xlsx';
+
+const baseConfig: Chart.ChartConfiguration = {
+  type: 'line',
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    legend: { display: false },
+    scales: {
+      xAxes: [{ display: false }],
+      yAxes: [{ display: false }],
+    },
+  },
+};
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -26,6 +41,10 @@ export class DashboardComponent {
   @ViewChild('graph')
   graphdiv: ElementRef;
   chart: any;
+  @ViewChildren('pr_chart', { read: ElementRef })
+  chartElementRefs: QueryList<ElementRef>;
+  charts: Chart[] = [];
+
   public FromDate: string = "";
   public FailuerModeType: string = ""
   public ToDate: string = "";
@@ -260,7 +279,7 @@ export class DashboardComponent {
   public EconomicRiskWithDPMCR: string = "";
   displayModal: boolean;
   displayBasic: boolean;
-
+  displayBasic1: boolean;
   public SelectTagNumbers: string = "";
   public PredictiongraphShow: boolean = true;
   public PredictiongraphShow1: boolean = true;
@@ -421,6 +440,7 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
+    this.GetLNGPlantRegisterEXCELRecords()
     this.getprescriptive()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
@@ -481,9 +501,9 @@ export class DashboardComponent {
     this.ExecutorShow=false;
    }else if(this.dashboardshow=="Management"){
     this.ManagmentShow=true
-    this.criticalityAssesment()
+    this.criticalityAssesment1()
     this.mittigatedheatriskmap()
-    this.Avabilitysites()
+    // this.Avabilitysites()
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
     this.AssociatedFailuerMode= false
@@ -644,6 +664,13 @@ export class DashboardComponent {
   showBasicDialog() {
     this.displayBasic = true;
   }
+
+  showBasicDialog1() {
+    this.displayBasic1 = true;
+     this.bargraph()
+  }
+
+
 
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -1341,10 +1368,6 @@ export class DashboardComponent {
           ClassIncipientpercentage = ((this.Incipientcount / this.ScrewCompressorAllData.length) * 100).toFixed(2);
           ClassNormalpercentage = ((this.Normalcount / this.ScrewCompressorAllData.length) * 100).toFixed(2);
 
-          // this.AllRecordBarcharts();
-          // this.ClassificationOfAllRecordDonught();
-          // this.ClassificationOfAllpolarchart()
-          // this.GenerateReport()
         }, error => {
           console.log(error.error)
         }
@@ -1708,410 +1731,6 @@ export class DashboardComponent {
       },
     });
   }
-
-  // ClassificationOfAllRecordDonught() {
-  //   var a: any = [];
-  //   this.Normalcount = 0,
-  //     this.Incipientcount = 0,
-  //     this.Degradecount = 0;
-  //   this.ScrewCompressorAllData.forEach(element => {
-  //     if (this.fmtype != "") {
-  //       if (this.fmtype == "SSRB") {
-  //         a.push(element.SSRB)
-  //       } else if (this.fmtype == "CF") {
-  //         a.push(element.CF)
-  //       } if (this.fmtype == "RD") {
-  //         a.push(element.RD)
-  //       }
-  //     } else {
-  //       a.push(element.Classification)
-  //     }
-
-  //   });
-
-  //   var precetagedegrade
-  //   var precetageincipient
-  //   var precetagenornal
-  //   var precetagebad
-  //   for (var i = 0; i < this.yearlist.length; ++i) {
-  //     var SCcounter = 0
-  //     this.ScrewCompressorAllData.forEach(value => {
-  //       var a = moment(value.InsertedDate).format('YYYY')
-  //       if (a == this.yearlist[i].yearname) {
-  //         if (value.Classification == 'normal') {
-  //           this.Normalcount = this.Normalcount + 1
-  //         } else if (value.Classification == 'incipient') {
-  //           this.Incipientcount = this.Incipientcount + 1
-  //         } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
-  //           this.Degradecount = this.Degradecount + 1
-  //         } else {
-  //           this.badcount = this.badcount + 1
-  //         }
-  //         SCcounter = SCcounter + 1
-  //       }
-
-  //     });
-  //     this.ClassDegradepercentage = (this.Degradecount / this.ScrewCompressorAllData.length) * 100
-  //     this.ClassIncipientpercentage = (this.Incipientcount / this.ScrewCompressorAllData.length) * 100
-  //     this.ClassNormalpercentage = (this.Normalcount / this.ScrewCompressorAllData.length) * 100
-  //     this.Classbadpercentage = (this.badcount / this.ScrewCompressorAllData.length) * 100
-
-  //     this.ClassDegradepercentageForMessage = this.ClassDegradepercentage
-  //     this.ClassIncipientpercentageForMessage = this.ClassIncipientpercentage
-  //     this.ClassNormalpercentageForMessage = this.ClassNormalpercentage
-  //     this.ClassbadpercentageForMessage = this.Classbadpercentage
-
-  //     precetagedegrade = this.ClassDegradepercentage.toFixed()
-  //     precetageincipient = this.ClassIncipientpercentage.toFixed()
-  //     precetagenornal = this.ClassNormalpercentage.toFixed()
-  //     precetagebad = this.Classbadpercentage.toFixed()
-  //   }
-
-
-
-  //   this.chart = new Chart('canvasClass', {
-  //     type: 'doughnut',
-  //     data: {
-  //       labels: ["Normal", "Incipient", "Degrade", "Bad"],
-  //       datasets: [
-  //         {
-  //           backgroundColor: ["#20c997", "#fa8b0c", "#ff3a7a", "blue"],
-  //           data: [precetagenornal, precetageincipient, precetagedegrade, precetagebad],
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       // events: [],
-  //       animation: {
-  //         duration: 500,
-  //         easing: "easeOutQuart",
-  //         onComplete: function () {
-  //           var ctx = this.chart.ctx;
-  //           ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
-  //           ctx.textAlign = 'center';
-  //           ctx.textBaseline = 'bottom';
-
-  //           this.data.datasets.forEach(function (dataset) {
-  //             for (var i = 0; i < dataset.data.length; i++) {
-  //               var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
-  //                 total = dataset._meta[Object.keys(dataset._meta)[0]].total,
-  //                 mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
-  //                 start_angle = model.startAngle,
-  //                 end_angle = model.endAngle,
-  //                 mid_angle = start_angle + (end_angle - start_angle) / 2;
-
-  //               var x = mid_radius * Math.cos(mid_angle);
-  //               var y = mid_radius * Math.sin(mid_angle);
-
-  //               ctx.fillStyle = '#fff';
-  //               if (i == 3) {
-  //                 ctx.fillStyle = '#444';
-  //               }
-  //               var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
-  //               ctx.fillText(percent, model.x + x, model.y + y + 15);
-  //             }
-  //           });
-  //         }
-  //       }
-  //     }
-  //   });
-
-  // }
-
-  // ClassificationOfAllpolarchart() {
-  //   this.changeDetectorRef.detectChanges();
-  //   this.ScrewCompressorAllData.sort()
-  //   var LabelDates: any = [];
-  //   this.yearlist.forEach(element => {
-  //     LabelDates.push(element.yearname)
-  //     LabelDates.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-  //   });
-
-  //   var a: any = [];
-  //   this.Normalcount = 0,
-  //     this.Incipientcount = 0,
-  //     this.Degradecount = 0;
-  //   this.ScrewCompressorAllData.forEach(element => {
-  //     if (this.fmtype != "") {
-  //       if (this.fmtype == "SSRB") {
-  //         a.push(element.SSRB)
-  //       } else if (this.fmtype == "CF") {
-  //         a.push(element.CF)
-  //       } if (this.fmtype == "RD") {
-  //         a.push(element.RD)
-  //       }
-  //     } else {
-  //       a.push(element.Classification)
-  //     }
-
-  //   });
-
-  //   for (var i = 0; i < this.yearlist.length; ++i) {
-  //     var SCFPnormal = 0
-  //     var SCFPincipient = 0
-  //     var SCFPdegrade = 0
-  //     var SCFPbad = 0
-  //     var SCcounter = 0
-
-  //     this.ScrewCompressorAllData.forEach(value => {
-  //       var a = moment(value.InsertedDate).format('YYYY')
-  //       if (a == this.yearlist[i].yearname) {
-  //         if (value.Classification == 'normal') {
-  //           SCFPnormal = SCFPnormal + 1
-  //         } else if (value.Classification == 'incipient') {
-  //           SCFPincipient = SCFPincipient + 1
-  //         } else if (value.Classification == 'degarde' || value.Classification == 'degrade') {
-  //           SCFPdegrade = SCFPdegrade + 1
-  //         } else {
-  //           SCFPbad = SCFPbad + 1
-  //         }
-  //         SCcounter = SCcounter + 1
-  //       }
-
-  //     });
-  //     var precetagedegrade
-  //     var precetageincipient
-  //     var precetagenornal
-  //     var precetagebad
-
-  //     SCFPnormal = ((SCFPnormal / SCcounter) * 100)
-  //     SCFPincipient = ((SCFPincipient / SCcounter) * 100)
-  //     SCFPdegrade = ((SCFPdegrade / SCcounter) * 100)
-  //     SCFPbad = ((SCFPbad / SCcounter) * 100)
-
-  //     precetagedegrade = SCFPdegrade.toFixed()
-  //     precetageincipient = SCFPincipient.toFixed()
-  //     precetagenornal = SCFPnormal.toFixed()
-  //     precetagebad = SCFPbad.toFixed()
-
-  //     this.SCFinalNormal.push(precetagenornal)
-  //     this.SCFinalIncipient.push(precetageincipient)
-  //     this.SCFinaldDegrade.push(precetagedegrade)
-  //     this.SCFinalBad.push(precetagebad)
-  //   }
-
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("polarArea", {
-  //     type: "bar",
-  //     data: {
-  //       labels: LabelDates,
-  //       fill: true,
-  //       datasets: [
-  //         {
-  //           label: "Normal",
-  //           data: this.SCFinalNormal,
-  //           borderWidth: 1,
-  //           borderColor: "#20c997",
-  //           backgroundColor: '#20c997',
-  //           fill: true,
-  //         },
-  //         {
-  //           label: "Incipient",
-  //           data: this.SCFinalIncipient,
-  //           borderWidth: 1,
-  //           borderColor: "#fa8b0c",
-  //           backgroundColor: '#fa8b0c',
-  //           fill: true,
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: this.SCFinaldDegrade,
-  //           borderWidth: 1,
-  //           borderColor: "#ff3a7a",
-  //           backgroundColor: '#ff3a7a',
-  //           fill: true,
-  //         },
-  //         {
-  //           label: "Bad",
-  //           data: this.SCFinalBad,
-  //           borderWidth: 1,
-  //           borderColor: "blue",
-  //           backgroundColor: 'blue',
-  //           fill: true,
-  //         },
-
-  //       ],
-  //     },
-  //     options: {
-  //       scales: {
-  //         xAxes: [{
-  //           scaleLabel: {
-  //             display: true,
-  //             labelString: 'Years'
-  //           },
-  //           gridLines: {
-  //             display: false,
-  //             labelString: 'Years'
-  //           },
-  //         }],
-  //         yAxes: [
-  //           {
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Percentage'
-  //             },
-  //             ticks: {
-  //               beginAtZero: true
-  //             },
-  //             gridLines: {
-  //               display: false
-  //             },
-  //           }
-  //         ]
-  //       },
-  //       "animation": {
-  //         "duration": 1,
-  //         "onComplete": function () {
-  //           var chartInstance = this.chart,
-  //             ctx = chartInstance.ctx;
-  //           this.data.datasets.forEach(function (dataset, i) {
-  //             var meta = chartInstance.controller.getDatasetMeta(i);
-  //             meta.data.forEach(function (bar, index) {
-  //               var data = dataset.data[index];
-  //               if (data > 0) {
-  //                 ctx.fillText(data, bar._model.x, bar._model.y - 5);
-  //               }
-  //             });
-  //           });
-  //         }
-  //       },
-  //     }
-  //   });
-  // }
-
-  // AllRecordBarcharts() {
-  //   this.changeDetectorRef.detectChanges();
-  //   if (this.state.TrainnNavigate == 2) {
-  //     var elmnt = document.getElementById("Trainnavigate");
-  //     elmnt.scrollIntoView();
-  //   }
-  //   let dateForFilter = [];
-  //   this.TrainDataIncipientCount = []
-  //   this.TrainDataNormalCount = []
-  //   this.TrainDataDegradeCount = []
-  //   for (var i = 0; i < this.ScrewCompressorAllData.length; i++) {
-  //     if (!this.isDateInArray(new Date(this.ScrewCompressorAllData[i].InsertedDate), dateForFilter)) {
-  //       dateForFilter.push(new Date(this.ScrewCompressorAllData[i].InsertedDate));
-  //     }
-  //   }
-  //   let dateForFilter1 = [];
-  //   dateForFilter.forEach((value) => {
-  //     var Date = moment(value).format('YYYY-MM-DD');
-  //     dateForFilter1.push(Date);
-  //     dateForFilter1.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-  //   });
-  //   var SCcounter = 0
-  //   for (var i = 0; i < dateForFilter1.length; i++) {
-  //     var a = [];
-  //     this.ScrewCompressorAllData.forEach(element => {
-  //       if (moment(element.InsertedDate).format('YYYY-MM-DD') == dateForFilter1[i]) {
-  //         a.push(element.Classification)
-  //       }
-  //       SCcounter = SCcounter + 1
-  //     });
-  //     var normal = 0
-  //     var incipient = 0
-  //     var degrade = 0
-  //     var bad = 0
-  //     a.forEach((value) => {
-  //       if (value == 'normal') {
-  //         normal = normal + 1
-  //       } else if (value == 'incipient') {
-  //         incipient = incipient + 1
-  //       } else if (value == 'degarde' || value == 'degrade') {
-  //         degrade = degrade + 1
-  //       } else {
-  //         bad = bad + 1
-  //       }
-  //     });
-
-  //     this.TrainDataIncipientCount.push(incipient)
-  //     this.TrainDataNormalCount.push(normal)
-  //     this.TrainDataDegradeCount.push(degrade)
-  //     this.TrainDataBadCount.push(bad)
-
-  //   }
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart("canvas1", {
-  //     type: "bar",
-  //     data: {
-  //       labels: dateForFilter1,
-  //       datasets: [
-  //         {
-  //           label: "Incipent",
-  //           data: this.TrainDataIncipientCount,
-  //           borderWidth: 1,
-  //           backgroundColor: "#fa8b0c",
-  //         }, {
-  //           label: "Normal",
-  //           data: this.TrainDataNormalCount,
-  //           borderWidth: 1,
-  //           backgroundColor: "#20c997",
-  //         },
-  //         {
-  //           label: "Degrade",
-  //           data: this.TrainDataDegradeCount,
-  //           borderWidth: 2,
-  //           backgroundColor: "#ff3a7a",
-  //         },
-  //         {
-  //           label: "Bad",
-  //           data: this.TrainDataBadCount,
-  //           borderWidth: 1,
-  //           backgroundColor: "blue",
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       events: [],
-  //       scales: {
-  //         xAxes: [{
-  //           scaleLabel: {
-  //             display: true,
-  //             labelString: 'Days'
-  //           },
-  //           gridLines: {
-  //             display: false,
-  //           },
-  //           stacked: true,
-  //         }],
-  //         yAxes: [
-  //           {
-  //             scaleLabel: {
-  //               stacked: true,
-  //               display: true,
-  //               labelString: 'Recoreded Data In Numbers'
-  //             },
-  //             ticks: {
-  //               beginAtZero: true,
-  //               max: 12,
-  //             },
-  //             gridLines: {
-  //               display: false
-  //             },
-  //           }
-  //         ]
-  //       },
-  //       // "animation": {
-  //       //   "duration": 1,
-  //       //   "onComplete": function () {
-  //       //     var chartInstance = this.chart,
-  //       //       ctx = chartInstance.ctx;
-  //       //     this.data.datasets.forEach(function (dataset, i) {
-  //       //       var meta = chartInstance.controller.getDatasetMeta(i);
-  //       //       meta.data.forEach(function (bar, index) {
-  //       //         var data = dataset.data[index];
-  //       //         if (data > 0) {
-  //       //           ctx.fillText(data, bar._model.x, bar._model.y - 5);
-  //       //        }
-  //       //       });
-  //       //     });
-  //       //   }
-  //       // },
-  //     }
-
-  //   });
-  // }
 
   PredictionAllRecordPie() {
     var a: any = [];
@@ -2968,168 +2587,7 @@ export class DashboardComponent {
   //     })
   // }
 
-  // public GenerateReport() {
-  //   var countKey = Object.keys(this.classificationDetails).length;
-  //   this.totalCount = countKey
-  //   var uniqueNames = [];
-  //   var uniqueObj = [];
-
-  //   for (var i = 0; i < this.classificationDetails.length; i++) {
-
-  //     if (uniqueNames.indexOf(this.classificationDetails[i].Classification) === -1) {
-  //       uniqueObj.push(this.classificationDetails[i])
-  //       uniqueNames.push(this.classificationDetails[i].Classification);
-  //     }
-
-  //   }
-
-  //   var result: any = [];
-
-  //   if (this.classificationDetails != 0) {
-
-  //     this.classificationDetails.forEach(function (o) {
-  //       Object.keys(o).forEach(function (k) {
-  //         result[k] = result[k] || {};
-  //         result[k][o[k]] = (result[k][o[k]] || 0) + 1;
-  //       });
-  //     });
-  //     this.incipient = result.Classification.incipient;
-  //     if (this.incipient == undefined) {
-  //       this.incipient = 0;
-  //     }
-  //     this.degrade = result.Classification.degrade;
-  //     if (this.degrade == undefined) {
-  //       this.degrade = 0;
-  //     }
-  //     this.normal = result.Classification.normal;
-  //     if (this.normal == undefined) {
-  //       this.normal = 0;
-  //     }
-  //     this.normalpercentage = this.normal / this.totalCount * 100
-  //     this.incipientPerentage = this.incipient / this.totalCount * 100
-  //     this.degradePercentage = this.degrade / this.totalCount * 100
-
-  //     var ACCCalculation: any = [((this.normalpercentage / 100) * 1) + ((this.incipientPerentage / 100) * 5) + ((this.degradePercentage / 100) * 10)];
-
-  //     if (ACCCalculation == NaN) {
-  //       ACCCalculation = 0;
-  //     }
-
-  //     this.finalACCCalculation = parseFloat(ACCCalculation);
-  //   }
-  //   var AFPcountKey = Object.keys(this.screwWithPredictionDetails).length;
-  //   this.AFPtotalCount = AFPcountKey
-
-
-  //   var AFPuniqueNames = [];
-  //   var AFPuniqueObj = [];
-
-  //   for (var i = 0; i < this.screwWithPredictionDetails.length; i++) {
-
-  //     if (AFPuniqueNames.indexOf(this.screwWithPredictionDetails[i].Classification) === -1) {
-  //       AFPuniqueObj.push(this.screwWithPredictionDetails[i])
-  //       AFPuniqueNames.push(this.screwWithPredictionDetails[i].Classification);
-  //     }
-
-  //   }
-  //   var result: any = [];
-
-  //   if (this.screwWithPredictionDetails.length != 0) {
-  //     this.screwWithPredictionDetails.forEach(function (o) {
-  //       Object.keys(o).forEach(function (k) {
-  //         result[k] = result[k] || {};
-  //         result[k][o[k]] = (result[k][o[k]] || 0) + 1;
-  //       });
-  //     });
-
-  //     this.AFPincipient = result.Prediction.incipient;
-  //     if (this.AFPincipient == undefined) {
-  //       this.AFPincipient = 0;
-  //     }
-  //     this.AFPdegrade = result.Prediction.degrade;
-  //     if (this.AFPdegrade == undefined) {
-  //       this.AFPdegrade = 0;
-  //     }
-  //     this.AFPnormal = result.Prediction.normal;
-  //     if (this.AFPnormal == undefined) {
-  //       this.AFPnormal = 0;
-  //     }
-  //     this.FinalAFPnormal = (this.AFPnormal + this.normal);
-  //     this.FinalAFPincipient = (this.AFPincipient + this.incipient);
-  //     this.FinalAFPdegrade = (this.AFPdegrade + this.degrade);
-
-  //     this.FinalAFPTotalCount = this.totalCount + this.AFPtotalCount
-
-  //     this.AFPnormalpercentage = (this.FinalAFPnormal / this.FinalAFPTotalCount * 100)
-
-  //     this.AFPincipientPerentage = (this.FinalAFPincipient / this.FinalAFPTotalCount * 100)
-
-  //     this.AFPdegradePercentage = (this.FinalAFPdegrade / this.FinalAFPTotalCount * 100)
-
-  //     var AFCCalcuation: any = [((this.AFPnormalpercentage / 100) * 1) + ((this.AFPincipientPerentage / 100) * 5) + ((this.AFPdegradePercentage / 100) * 10)];
-
-  //     this.FinalAFCCalcuation = parseFloat(AFCCalcuation);
-  //   }
-  //   var LMH: any = [(0 * 1) + (1 * 5) + (0 * 10)]
-
-  //   var HSECES: any = [(0 * 1) + (1 * 10)]
-
-  //   var CRIT: any = [(0 * 10) + (1 * 5) + (0 * 1)]
-
-
-  //   this.PerformanceNumber = [this.finalACCCalculation + this.FinalAFCCalcuation +
-  //     parseFloat(LMH) + parseFloat(HSECES)
-  //     + parseFloat(CRIT)];
-
-  //   this.finalPerformanceNumber = parseFloat(this.PerformanceNumber);
-
-  //   if (this.PerformanceNumber > 10) {
-  //     this.DAB = "Yes"
-  //   } else {
-  //     this.DAB = "No"
-  //   }
-  // }
-
-  // GetReportRecords() {
-  //   const url: string = this.screwCompressorAPIName.getTrainList
-  //   this.screwCompressorMethod.getWithoutParameters(this.screwCompressorAPIName.GetAllRecords)
-  //     .subscribe(res => {
-  //       this.classificationDetails = res;
-  //       this.commonLoadingDirective.showLoading(false, '');
-  //     },
-  //       error => {
-  //         console.log(error);
-  //       }
-  //     );
-  //   this.commonLoadingDirective.showLoading(false, '');
-  //   const url11 = this.profileAPIName.ProfileAPI
-  //   this.screwCompressorMethod.getWithoutParameters(url11)
-  //     .subscribe(
-  //       res => {
-  //         this.user = res;
-  //         this.commonLoadingDirective.showLoading(false, '');
-  //       },
-  //       err => {
-  //         this.commonLoadingDirective.showLoading(false, '');
-  //         console.log(err);
-  //       },
-  //     );
-
-  //   const url2: string = this.screwCompressorAPIName.getPredictedList;
-  //   this.screwCompressorMethod.getWithoutParameters(url2)
-  //     .subscribe(res => {
-  //       this.screwWithPredictionDetails = res;
-  //       if (this.screwWithPredictionDetails.length == 0) {
-  //         this.commonLoadingDirective.showLoading(false, '');
-  //       } else {
-  //         this.commonLoadingDirective.showLoading(false, '');
-  //       }
-  //     }, err => {
-  //       this.commonLoadingDirective.showLoading(false, '');
-  //       console.log(err.error);
-  //     });
-  // }
-
+  
   CBICharts() {
     this.changeDetectorRef.detectChanges();
     if (this.state.CBANAV == 3) {
@@ -4898,14 +4356,14 @@ criticalityAssesment() {
       labels: ['Normal','Semi-crtitical','critical'],
       datasets: [
         {
-          data: [ 1, this.semiCriticalasset, this.Criticalasset],
+          data: [ 1, this.semiCriticalassetCount, this.CriticalassetCount],
           needleValue: 1.9,
           backgroundColor: ['green', 'yellow', 'red'],
         },
       ],
     },
     options: {
-      events: [],
+     events: [],
       layout: {
         padding: {
           bottom: 3,
@@ -4932,16 +4390,22 @@ public selectprescriptiveno:string=""
 public semiCriticalasset:number=0
 public Criticalasset:number=0
 public normalasset:number=0
+public semiCriticalassetCount:number=0
+public CriticalassetCount:number=0
+public normalassetCount:number=0
 getprescriptive(){
 this.http.get("/api/PrescriptiveAPI/").subscribe((res: any) => {
 this.criticalityasset = res
 this.criticalityasset.forEach(val=>{
   if(val.Type=="CA"){
      this.Criticalasset = 3
+     this.CriticalassetCount=this.CriticalassetCount+1
   }else if(val.Type=="SCA"){
     this.semiCriticalasset = 2
+    this.semiCriticalassetCount=this.semiCriticalassetCount+1
   }else  if(val.Type=="NA"){
     this.normalasset = 1
+    this.normalassetCount=this.normalassetCount+1
   }
   this.criticalityAssesment()
   let prescriptivetagnumbers = { PrescriptiveTagId: 0, prescriptiveTagnumber: '' };
@@ -4963,14 +4427,20 @@ prescriptivetagselect(){
   this.semiCriticalasset = 0
   this.Criticalasset = 0
   this.normalasset = 0
+  this.semiCriticalassetCount = 0
+  this.CriticalassetCount = 0
+  this.normalassetCount = 0
   this.prescriptivefilterlistdata.forEach(val=>{
     if(val.Type=="CA"){
-       this.Criticalasset = 3
-    }else  if(val.Type=="SCA"){
-      this.semiCriticalasset  = 2
-    }else  if(val.Type=="NA"){
-      this.normalasset = 1
-    }
+      this.Criticalasset = 3
+      this.CriticalassetCount=this.CriticalassetCount+1
+   }else if(val.Type=="SCA"){
+     this.semiCriticalasset = 2
+     this.semiCriticalassetCount=this.semiCriticalassetCount+1
+   }else  if(val.Type=="NA"){
+     this.normalasset = 1
+     this.normalassetCount=this.normalassetCount+1
+   }
   })
   this.criticalityAssesment()
 }
@@ -5050,80 +4520,85 @@ mittigatedheatriskmap() {
   });
 }
 
-Avabilitysites() {
-  this.chart = new Chart('avabilitysites', {
-    type: 'line',
-    data: {
-      labels: ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul'],
-      datasets: [
-        {
-          label: "India",
-          data: [95, 97, 91, 86, 95,95,84,81,91,78,87,93],
-          borderColor: '#0099CC',
-          backgroundColor: '#0099CC',
-          lineTension: 0,
-          fill: false,
-        },
-        {
-          label: "Dubai",
-          data: [92.1, 93, 87, 92, 94,90,89,89,91,79,86,92],
-          borderColor: '#66FF66',
-          backgroundColor: '#66FF66',
-          fill: false,
-          lineTension: 0
-        },
-        {
-          label: "Thailand",
-          data: [95,89,93,94,83,96,95,90,84,80,85,91],
-          borderColor: '#FFFF66',
-          backgroundColor: '#FFFF66',
-          fill: false,
-          lineTension: 0
-        },
-        {
-          label: "Korea",
-          data: [95,88.2,88,88,89,96,85,91,81,84,90],
-          borderColor: '#ff4d4d',
-          backgroundColor: '#ff4d4d',
-          fill: false,
-          lineTension: 0
-        },
-      ],
-    },
-    options: {
-      lineTension: 0,
-      fill: false,
-      elements: {
-        point:{
-            radius: 0
-        }
-    },
-      legend: {
-        display: true,
-        labels: {
-          usePointStyle: true,
-        }
-      },
-      scales: {
-        xAxes: [
-          {
-            gridLines: {
-              display: false,
-            },
-          },
-        ],
-        yAxes: [{
-   
-          ticks: {
-            beginAtZero: true,
-            min:70,
-            max:100,
-            stepsize:5
-          }
-        }]
-      }
-    }
-  });
+// Avabilitysites() {
+//   this.chart = new Chart('avabilitysites', {
+//     type: 'line',
+//     data: {
+//       labels: ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul'],
+//       datasets: [
+//         {
+//           label: "India",
+//           data: [95, 97, 91, 86, 95,95,84,81,91,78,87,93],
+//           borderColor: '#0099CC',
+//           backgroundColor: '#0099CC',
+//           lineTension: 0,
+//           fill: false,
+//         },
+//         {
+//           label: "Dubai",
+//           data: [92.1, 93, 87, 92, 94,90,89,89,91,79,86,92],
+//           borderColor: '#66FF66',
+//           backgroundColor: '#66FF66',
+//           fill: false,
+//           lineTension: 0
+//         },
+//         {
+//           label: "Thailand",
+//           data: [95,89,93,94,83,96,95,90,84,80,85,91],
+//           borderColor: '#FFFF66',
+//           backgroundColor: '#FFFF66',
+//           fill: false,
+//           lineTension: 0
+//         },
+//         {
+//           label: "Korea",
+//           data: [95,88.2,88,88,89,96,85,91,81,84,90],
+//           borderColor: '#ff4d4d',
+//           backgroundColor: '#ff4d4d',
+//           fill: false,
+//           lineTension: 0
+//         },
+//       ],
+//     },
+//     options: {
+//       lineTension: 0,
+//       fill: false,
+//       elements: {
+//         point:{
+//             radius: 0
+//         }
+//     },
+//       legend: {
+//         display: true,
+//         labels: {
+//           usePointStyle: true,
+//         }
+//       },
+//       scales: {
+//         xAxes: [
+//           {
+//             gridLines: {
+//               display: false,
+//             },
+//           },
+//         ],
+//         yAxes: [{
+//           gridLines: {
+//             display: false,
+//           },
+//           ticks: {
+//             beginAtZero: true,
+//             min:70,
+//             max:100,
+//             stepsize:5
+//           }
+//         }]
+//       }
+//     }
+//   });
+// }
+bargraph(){
+  this.changeDetectorRef.detectChanges();
 }
 public Managmenthelpshow:boolean = false;
 Managmenthelpbox(){
@@ -5133,5 +4608,282 @@ Managmenthelpbox(){
 alwaysshowbox(){
   this.Managmenthelpboxshow= true  
 }
+public Fakefromdate:string =""
+public FakeTodate:string =""
+public Faketag:string =""
+fakeTodate(){
+  if(this.Faketag=="K101" && this.Fakefromdate =="2016" && this.FakeTodate =="2020"){
+
+  }
+  
+}
+
+
+GetLNGPlantRegisterEXCELRecords() {
+  this.http.get('dist/DPM/assets/LNG_PlantRegister.xlsx', { responseType: 'blob' }).subscribe(
+      res => {
+          let fileReader = new FileReader();
+          fileReader.readAsArrayBuffer(res);
+          fileReader.onload = async (e) => {
+              var arrayBuffer: any = fileReader.result;
+              var data = new Uint8Array(arrayBuffer);
+              var arr = new Array();
+              for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+              var bstr = arr.join("");
+              var workbook = XLSX.read(bstr, { type: "binary", cellDates: true });
+              var first_sheet_name = workbook.SheetNames[0];
+              var worksheet = workbook.Sheets[first_sheet_name];
+              this.RiskMatrixLibraryRecords = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+              this.GetLNGPlantRegisterRecords()
+          }
+      }, err => { console.log(err.error) }
+  )
+} 
+private NonCriticalCount:any=[]
+private LowCount:any=[]
+private MediumCount:any=[]
+private HighCount:any=[] 
+
+private GraphOriginalCriticality:any=[]
+private GraphNewCriticality:any=[]
+GetLNGPlantRegisterRecords(){ 
+  var NonCriticalCountValiuation:number =0
+  var LowCountValiuation:number =0
+  var MediumCountValiuation:number =0
+  var HighCountValiuation:number =0
+  this.RiskMatrixLibraryRecords.forEach(element=>{
+    if(element.RISK_RANKING_Point_System =="Non Critical"){
+      NonCriticalCountValiuation= NonCriticalCountValiuation+1
+         element.CriticalityinNoForGraph = 0
+    }else  if(element.RISK_RANKING_Point_System =="High"){
+      HighCountValiuation=HighCountValiuation+1
+      element.CriticalityinNoForGraph = 3
+    }else  if(element.RISK_RANKING_Point_System =="Medium"){
+      MediumCountValiuation = MediumCountValiuation+1
+      element.CriticalityinNoForGraph = 2
+    }else  if(element.RISK_RANKING_Point_System =="Low"){
+      LowCountValiuation = LowCountValiuation+1
+      element.CriticalityinNoForGraph = 1
+    }
+  })
+  this.NonCriticalCount.push(NonCriticalCountValiuation)
+   this.LowCount.push(LowCountValiuation)
+   this.MediumCount.push(MediumCountValiuation)
+   this.HighCount.push(HighCountValiuation)
+   this.criticalityAssesment1()
+   this.RiskMatrixLibraryRecords.forEach(element=>{
+      element.CriticalityinNoForGraph
+      this.GraphOriginalCriticality.push(element.CriticalityinNoForGraph)
+   })
+   this.RiskMatrixLibraryRecords.forEach(element=>{
+    if(element.New_Criticality =="Non Critical"){
+         element.NewCriticalityinNoForGraph = 0
+    }else  if(element.New_Criticality =="Very High"){
+      element.NewCriticalityinNoForGraph = 3
+    }else  if(element.New_Criticality =="High"){
+      element.NewCriticalityinNoForGraph = 2
+    }else  if(element.New_Criticalitym =="Low"){
+      element.NewCriticalityinNoForGraph = 1
+    }
+  }
+  )
+  this.RiskMatrixLibraryRecords.forEach(element=>{
+    element.NewCriticalityinNoForGraph
+    this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
+ })
+ console.log(this.GraphNewCriticality)
+}
+criticalityAssesment1() {
+  this.changeDetectorRef.detectChanges();
+  new Chart('criticalityAssesmentgraph1', {
+    type: 'doughnut',
+    plugins: [
+      {
+        afterDraw: (chart) => {
+          var needleValue = chart.chart.config.data.datasets[0].needleValue;
+          var dataTotal = chart.chart.config.data.datasets[0].data.reduce(
+            (a, b) => a - b
+          );
+          var angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
+          var ctx = chart.chart.ctx;
+          var cw = chart.chart.canvas.offsetWidth;
+          var ch = chart.chart.canvas.offsetHeight;
+          var cx = cw / 2;
+          var cy = ch - 6;
+          ctx.translate(cx, cy);
+          ctx.rotate(angle);
+          ctx.beginPath();
+          ctx.moveTo(0, -3);
+          ctx.lineTo(ch - 20, 0);
+          ctx.lineTo(0, 3);
+          ctx.fillStyle = 'rgb(0, 0, 0)';
+          ctx.fill();
+          ctx.rotate(-angle);
+          ctx.translate(-cx, -cy);
+          ctx.beginPath();
+          ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+          ctx.fill();
+        },
+      },
+    ],
+    data: {
+      labels: ['Non-crtitical','Low','Medium','High'],
+      datasets: [
+        {
+          data: [ this.NonCriticalCount,this.LowCount, this.MediumCount, this.HighCount],
+          needleValue: 1000,
+          backgroundColor: ['green', 'yellow','#FF5733', 'red'],
+        },
+      ],
+    },
+    options: {
+     events: [],
+      layout: {
+        padding: {
+          bottom: 3,
+        },
+      },
+      
+      rotation: -Math.PI,
+      cutoutPercentage: 30,
+      circumference: Math.PI,
+      legend: {
+        display: true,
+        labels: {
+          usePointStyle: true,
+        }
+      },
+    },
+  });
+}
+
+  chartData: Chart.ChartData[] = [
+    {
+      labels: [
+        'Aug-1-2021',
+        'Aug-2-2021',
+        'Aug-3-2021',
+        'Aug-4-2021',
+        'Aug-5-2021',
+        'Aug-6-2021',
+        'Aug-7-2021',
+        'Aug-8-2021',
+        'Aug-9-2021',
+        'Aug-10-2021',
+        'Aug-11-2021',
+        'Aug-12-2021',
+        'Aug-13-2021',
+        'Aug-14-2021',
+        'Aug-15-2021',
+        'Aug-16-2021',
+        'Aug-17-2021',
+        'Aug-18-2021',
+        'Aug-19-2021',
+        'Aug-20-2021',
+      ],
+      datasets: [
+        {
+          label: "Original-Criticality",
+          data:  this.GraphOriginalCriticality,
+          borderWidth: 1,
+          borderColor: "blue",
+          backgroundColor: 'blue',
+          fill: false,
+          lineTension: 0,
+        },
+      ],
+    },
+    {
+      labels: [
+        'Sep-1-2021',
+        'Sep-2-2021',
+        'Sep-3-2021',
+        'Sep-4-2021',
+        'Sep-5-2021',
+        'Sep-6-2021',
+        'Sep-7-2021',
+        'Sep-8-2021',
+        'Sep-9-2021',
+        'Sep-10-2021',
+        'Sep-11-2021',
+        'Sep-12-2021',
+        'Sep-13-2021',
+        'Sep-14-2021',
+        'Sep-15-2021',
+        'Sep-16-2021',
+        'Sep-17-2021',
+        'Sep-18-2021',
+        'Sep-19-2021',
+        'Sep-20-2021',
+      ],
+      datasets: [
+        {
+          label: "New-Criticality",
+          data: this.GraphNewCriticality,
+          borderWidth: 2,
+          borderColor: "red",
+          backgroundColor: 'red',
+          fill: false,
+          lineTension: 0,
+        },
+      ],
+    },
+  ];
+  ngAfterViewInit() {
+    this.charts = this.chartElementRefs.map((chartElementRef, index) => {
+      const config = Object.assign({}, baseConfig, {
+        data: this.chartData[index],
+        options: {
+          elements: {
+            point:{
+              radius: 2
+          }
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem) {
+                if (tooltipItem.yLabel == 0) {
+                  return ' Non-Critical';
+                } else if (tooltipItem.yLabel == 1) {
+                  return 'Low';
+                } else if (tooltipItem.yLabel == 2) {
+                  return ' Medium';
+                } else if (tooltipItem.yLabel == 3) {
+                  return ' Critical';
+                }
+              },
+            },
+          },
+          scales: {
+            xAxes: [
+              {
+                scaleLabel: {
+                  display: true,
+                },
+                gridLines: {
+                  display: false,
+                },
+              },
+            ],
+            yAxes: [
+              {
+                scaleLabel: {
+                  display: true,
+                },
+                ticks: {
+                  beginAtZero: true,
+                  stepSize: 1,
+                },
+                gridLines: {
+                  display: false,
+                },
+              },
+            ],
+          },
+        },
+      });
+      return new Chart(chartElementRef.nativeElement, config);
+    });
+  }
 }
 

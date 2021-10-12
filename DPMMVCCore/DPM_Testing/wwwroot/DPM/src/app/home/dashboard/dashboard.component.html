@@ -1150,124 +1150,178 @@ table tbody tr:nth-of-type(odd) td {
 </div>
 
 <div *ngIf="ManagmentShow">
-            <div class="row mt-4" >
-                <div class="col-md-4 pl-0">
-                    <div class="d-block h-100">
-                        <div class=" h-100">
-                            <div class="bg-white rounded p-3 h-100">
-                                <div class="col-md-4">
-                                    <select name="selectprescriptiveno" [(ngModel)]="selectprescriptiveno"
+    <div class="row mt-4">
+        <div class="col-md-4 pl-0">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="col-md-4">
+                            <!-- <select name="selectprescriptiveno" [(ngModel)]="selectprescriptiveno"
                                         (ngModelChange)="prescriptivetagselect()" class="form-control">
                                         <option value="">Select Tag Number</option>
                                         <ng-container *ngFor="let tagnumber of prescriptivetagnumberlistdata">
                                             <option [value]="tagnumber.prescriptiveTagnumber" name="selectprescriptiveno">
                                                 {{tagnumber.prescriptiveTagnumber}}</option>
                                         </ng-container>
-                                    </select>
-                                </div>
-                                <div class="d-flex">
-                                    <strong>% OF EQUIPMENT WITH CRITICALITY ASSESSMENT</strong>
-                                </div>
-                                <div>
-                                    <canvas id="criticalityAssesmentgraph"></canvas>
-                                </div>
-                            </div>
+                                    </select> -->
+                        </div>
+                        <div class="d-flex">
+                            <strong>% OF EQUIPMENT WITH CRITICALITY ASSESSMENT</strong>
+                            <a class="blink_me" (click)="showBasicDialog1()">
+                                <strong style="font-size: 12px;"><span class="pulse-green"></span>
+                                </strong>
+                            </a>
+                        </div>
+                        <div>
+                            <canvas id="criticalityAssesmentgraph1"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 pl-0">
-                    <div class="d-block h-100">
-                        <div class=" h-100">
-                            <div class="bg-white rounded p-3 h-100">
-                                <div class="col-md-3">
-                                </div>
-                                <div class="d-flex">
-                                    <strong>MITIGATED HEAT RISK MAP</strong>
-                                    <a class="blink_me" (click)="showBasicDialog()"  data-bs-toggle="tooltip" data-bs-placement="top" title="Image">
-                                        <strong style="font-size: 12px;"><span class="pulse-green"></span>
-                                        </strong>
-                                    </a>
-                                </div>
-                                <div>
-                                    <canvas id="Mittigatedheatriskmap"></canvas>
-                                </div>
-                            </div>
+            </div>
+        </div>
+        <div class="col-md-4 pl-0">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="d-flex">
+                            <strong>MITIGATED HEAT RISK MAP</strong>
+                            <a class="blink_me" (click)="showBasicDialog()" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Image">
+                                <strong style="font-size: 12px;"><span class="pulse-green"></span>
+                                </strong>
+                            </a>
+                        </div>
+                        <div>
+                            <canvas id="Mittigatedheatriskmap"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 pl-0">
-                    <div class="d-block h-100">
-                        <div class=" h-100">
-                            <div class="bg-white rounded p-3 h-100">
-                                <div class="col-md-3">
-                                </div>
-                                <div class="d-flex">
-                                    <strong>AVAILABILITY (ALL SITES)</strong>
-                                </div>
-                                <div>
-                                    <canvas id="avabilitysites" style="width: 100%;"></canvas>
-                                </div>
-                            </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-4 pl-0">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="d-flex">
+                            <strong>AVAILABILITY (ALL SITES)</strong>
+                        </div>
+                        <div>
+                            <canvas id="avabilitysites" style="width: 100%;"></canvas>
                         </div>
                     </div>
                 </div>
-                </div>
-                <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpshow">
-                    <a style="float: right" (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i
-                            class="fas fa-comment-dots"></i></a>
-                </div>
-                <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpboxshow">
-                            <strong style="color: blue">Steps</strong>
-                            <div class="card-body">
-                                <div class="scrollable-content">
-                             <div>
-                                <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                                    <strong>
-                                        Predix Asset Performance Management connects the complex data sets found across
-                                        dozens of departments,
-                                        systems, and hundreds of thousands of assets,
-                                        displaying the information that is key to the health of your assets, and critical to
-                                        your business.
-                                    </strong>
-                                </div>
-                                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                                        <strong>
-                                            Instead of spending hours each day consolidating information from hundreds of
-                                            points,
-                                            APM provides a comprehensive overview in a single digital cockpit.
-                                        </strong>
-                                    </div>
-                                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                                        <strong>
-                                            Using 6 configurable modules,
-                                            the APM personalized dashboard visualizes overall asset performance management
-                                            at a plant.
-                                        </strong>
-                                    </div>
-                                    <div>
-                                     <a style="float: right" (click)="Managmenthelpbox()" class="btn btn-danger btn-sm">Got It</a>
-                                     </div>
-                            </div>
-                
-                        </div>
+            </div>
+        </div> -->
+    </div>
+    <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpshow">
+        <a style="float: right" (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i
+                class="fas fa-comment-dots"></i></a>
+    </div>
+    <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpboxshow">
+        <strong style="color: blue">Steps</strong>
+        <div class="card-body">
+            <div class="scrollable-content">
+                <div>
+                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                        <strong>
+                            Predix Asset Performance Management connects the complex data sets found across
+                            dozens of departments,
+                            systems, and hundreds of thousands of assets,
+                            displaying the information that is key to the health of your assets, and critical to
+                            your business.
+                        </strong>
                     </div>
-                
+                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                        <strong>
+                            Instead of spending hours each day consolidating information from hundreds of
+                            points,
+                            APM provides a comprehensive overview in a single digital cockpit.
+                        </strong>
+                    </div>
+                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                        <strong>
+                            Using 6 configurable modules,
+                            the APM personalized dashboard visualizes overall asset performance management
+                            at a plant.
+                        </strong>
+                    </div>
+                    <div>
+                        <a style="float: right" (click)="Managmenthelpbox()" class="btn btn-danger btn-sm">Got It</a>
+                    </div>
                 </div>
-                </div>
-<p-dialog header="Graph" [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<p-dialog header="Graph" [(visible)]="displayBasic" [style]="{width: '70vw'}" [baseZIndex]="10000">
     <div class="card-body">
         <div style="text-align: center">
         <strong>Mitigated Risk Heat Map</strong>
         </div><br>
-        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MitigatedRisk_Heat_Map.JPG"
+        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/risk_matrixGraph.JPG"
             alt="">
     </div>
 </p-dialog>
 
 
-<!-- <div class="bg-white rounded  px-5 py-3  br-3" >
-    <canvas id="FakePredictionbarWithTage"></canvas>
-</div> -->
+<p-dialog header="Graph" [(visible)]="displayBasic1" [style]="{width: '70vw'}" [baseZIndex]="10000">
+    <div class="card-body">
+        <div style="text-align: center">
+            <strong>% OF EQUIPMENT WITH CRITICALITY ASSESSMENT</strong>
+        </div><br>
+        <div class="row">
+            <div class="col-sm-4">
+                  <div class="row bg-white p-3 mt-3 w-100">
+                    <div class="form-group col-sm-4 mb-0">
+                        <h5>Tag Number</h5>
+                        <select [(ngModel)]="Faketag" class="form-select" (change)="fakeTodate()" class="form-control">
+                            <option value="">Choose.</option>
+                            <option value="K101" selected>K101</option>
+                        </select>
+                    </div>
+                    </div>
+            </div>
+            <div class="col-sm-4">
+                
+                <div class="row bg-white p-3 mt-3 w-100">
+                    <div class="form-group col-sm-4 mb-0">
+                        <h5>From Date</h5>
+                        <select [(ngModel)]="Fakefromdate" class="form-select" (change)="fakeTodate()" class="form-control">
+                            <option value="">choose.</option>
+                            <option value="2016" selected>2016</option>
+                        </select>
+                    </div>
+                    </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row bg-white p-3 mt-3 w-100">
+                    <div class="form-group col-sm-4 mb-0">
+                        <h5> To Date</h5>
+                        <select [(ngModel)]="FakeTodate" class="form-select" (change)="fakeTodate()" class="form-control">
+                            <option value="">Choose.</option>
+                            <option value="2020" selected>2020</option>
+                        </select>
+                    </div>
+                    </div>
+            </div>
+        </div><br>
+        <!-- <div>
+            <canvas id="criticalityAssesmentBargraph"></canvas>
+        </div> -->
+        <div *ngFor="let data of chartData" class="chart" style="height:22rem;width:45rem;margin-left:10rem;">
+            <canvas #pr_chart></canvas>
+        </div>
+    </div>
+</p-dialog>
+
+
+
 
 <!-- <div class="d-block mt-4">
     <div class="row">
