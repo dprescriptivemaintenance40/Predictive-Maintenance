@@ -511,19 +511,15 @@ export class DashboardComponent {
      this.ExecutorShow=true;
      this.AssociatedFailuerMode=true;
      this.allCBI= true
-    //  this.showcbi=true;
+
     this.ManagmentShow=false
      this.PrescriptiveShow=false;
      this.GerAllPredictionRecords();
-    //  this.CBICharts()
      this.FakeRiskMetigateactions()
      this.RiskProfile()
-    //  this. ALLGraphCBA()
      this.ComboDates()
      this.dygraphForJson()
      this.fakePredictionWithTagNumber()
-      // this.assetperformanceobj()
-      // this.getFuturePredictionRecords()
   }
   }
   getUserDetails() {
@@ -668,6 +664,7 @@ export class DashboardComponent {
   showBasicDialog1() {
     this.displayBasic1 = true;
      this.bargraph()
+     this.fakedataforassetcriteriaselection()
   }
 
 
@@ -4613,7 +4610,7 @@ public FakeTodate:string =""
 public Faketag:string =""
 fakeTodate(){
   if(this.Faketag=="K101" && this.Fakefromdate =="2016" && this.FakeTodate =="2020"){
-
+    this.fakedataforassetcriteriaselection()
   }
   
 }
@@ -4691,7 +4688,7 @@ GetLNGPlantRegisterRecords(){
     element.NewCriticalityinNoForGraph
     this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
  })
- console.log(this.GraphNewCriticality)
+
 }
 criticalityAssesment1() {
   this.changeDetectorRef.detectChanges();
@@ -4753,6 +4750,7 @@ criticalityAssesment1() {
           usePointStyle: true,
         }
       },
+      
     },
   });
 }
@@ -4784,7 +4782,8 @@ criticalityAssesment1() {
       datasets: [
         {
           label: "Original-Criticality",
-          data:  this.GraphOriginalCriticality,
+          //  data:  this.GraphOriginalCriticality,
+           data:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,2,2,2,3,3,3,3,3],
           borderWidth: 1,
           borderColor: "blue",
           backgroundColor: 'blue',
@@ -4819,7 +4818,8 @@ criticalityAssesment1() {
       datasets: [
         {
           label: "New-Criticality",
-          data: this.GraphNewCriticality,
+          // data: this.GraphNewCriticality,
+          data:  this.GraphOriginalCriticality, //use temporary
           borderWidth: 2,
           borderColor: "red",
           backgroundColor: 'red',
@@ -4885,5 +4885,83 @@ criticalityAssesment1() {
       return new Chart(chartElementRef.nativeElement, config);
     });
   }
+fakedataforassetcriteriaselection(){
+  this.changeDetectorRef.detectChanges();
+  this.chart = new Chart('criticalityAssesmentBargraph', {
+    type: "line",
+    data: {
+      // labels: ["969512493", "969512747", "969512813","969512748","969512826","969512831","969512815","969512816","969512495","969512750",],
+      labels: ["969512493","969512747", "969512813","969512748","969512826","969512831"],
+      fill: true,
+      datasets: [
+        {
+          label: "Original-Criticality",
+          data: [0,1,2,1,2,1,3,1,2,3,],
+          borderWidth: 1,
+          borderColor: "blue",
+          backgroundColor: 'blue',
+          fill: false,
+        },
+        {
+          label: "New-Criticality",
+          // data: [0,1,2,2,1,3,3,0,3,2],
+          data: [0,1,2,2,1,1],
+          borderWidth: 2,
+          borderColor: "red",
+          backgroundColor: 'red',
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      // events: [],
+      tooltips: {
+        callbacks: {
+            label: function(tooltipItem) {
+              if(tooltipItem.yLabel == 0){
+                return "Criticality" +" :" + "Non-Critical";
+              }else if(tooltipItem.yLabel == 1){
+                  return "Criticality" +" :" + "Low";
+              }else if(tooltipItem.yLabel == 2){
+                  return "Criticality" +":" + "Medium";
+                //  return "" + Number(tooltipItem.yLabel) + "Medium";
+             }else if(tooltipItem.yLabel == 3){
+              return "Criticality" +":" + "Critical";
+           }
+               
+            }
+        }
+    },
+      scales: {
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Tag_Numbers'
+          },
+          gridLines: {
+            display: false
+          },
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+         
+          },
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1
+          },
+          gridLines: {
+            display: false
+          },
+        }],
+
+      }
+      
+    }
+    
+  });
+}
+
 }
 
