@@ -29,6 +29,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import {TreeTableModule} from 'primeng/treetable';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
+import { RBDChartModule } from "./rbd-org-chart/rbd-org-chart.component";
 
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
@@ -59,7 +60,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
         PanelMenuModule,
         TreeTableModule,
         CheckboxModule,
-        CalendarModule],
+        CalendarModule,
+        RBDChartModule],
     exports: [CommonModule,
         CommonLoadingComponent,
         TableModule,
@@ -89,7 +91,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
         TreeTableModule,
         CheckboxModule,
         CalendarModule,
-        InputNumberModule]
+        InputNumberModule,
+        RBDChartModule]
 })
 export class SharedModule {
 

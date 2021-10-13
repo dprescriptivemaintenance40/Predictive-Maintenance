@@ -36,6 +36,7 @@ namespace DPM.Models
         public int EmployeeTaskListId { get; set; }
         public int CETChildId { get; set; }
         public int MaintenanceTaskId { get; set; }
+        public int Status { get; set; }
         public string Progress { get; set; }
         public CraftEmployeeTaskChild CraftEmployeeTaskChild { get; set; }
     }

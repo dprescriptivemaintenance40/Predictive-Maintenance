@@ -23,6 +23,7 @@ import { ConstarintManagementComponent } from "./CBA_Library/constarint-manageme
 import { AlertManagementComponent } from "./CBA_Library/alert-management/alert-management.component";
 import { DesignatonAccessComponent } from "./Admin/designaton-access/designaton-access.component";
 import { StaffComponent } from "./Admin/staff/staff.component";
+import { RBDComponent } from "./rbd/rbd.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -55,7 +56,8 @@ import { StaffComponent } from "./Admin/staff/staff.component";
                 { path: 'Constraint', component: ConstarintManagementComponent },                 
                 { path: 'Alert', component: AlertManagementComponent }, 
                 { path: 'Designation', component:DesignatonAccessComponent},
-                { path: 'Staff', component: StaffComponent}
+                { path: 'Staff', component: StaffComponent},
+                { path : 'RBD', component: RBDComponent}
             ]
         }
     ])],

@@ -876,8 +876,29 @@ export class CostBenefitAnalysisComponent {
           .subscribe((res: any) => { 
               if(res.status == undefined && res.status == 1){
                 // status code 1 : CBA carryout task changed from No to Yes
+                res.CBATaskModel.forEach(element => {
+                    if(element.CentrifugalPumpMssId !== "MSS"){
+                        let MTId = this.MaintenanceStrategyList.find(r=>r.MaintenanceTask  === element.MSSMaintenanceTask);
+                        let PSRMappingData = this.SavedPCRRecordsList.find(r=>r.MaintenanceTaskId == MTId.MSSStrategyModelId);
+                        if(PSRMappingData.Strategy !== "GEP" || PSRMappingData.Strategy !== "CONSTRAINT" ||PSRMappingData.Strategy !== "FMEA"){
+                            let data = this.SkillLibraryAllrecords.filter(r=>r.Task === MTId.MSSStrategyModelId && r.SKillLibraryId === PSRMappingData.Craft);
+                        }else{
+
+                        }
+                        // data.forEach(e => {
+                        //     if(e.EmpId == element.){
+
+                        //     }
+                        // });
+                    }else{
+
+                    }
+                });
+                const MaintenanceTaskSF = [...new Set(res.CBATaskModel.map(item => item.Task))];
+                
               }else if(res.status == undefined && res.status == 2){
                   // status code 1 : CBA carryout task changed from Yes to No
+                this.MaintenanceStrategyList
               }
           },
            err => {

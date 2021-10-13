@@ -48,7 +48,7 @@
                                     <div class="col-md">{{a.ScheduleOilChange   === 0?'-' : a.ScheduleOilChange  +' '+'%'}}</div>
                                     <div class="col-md">{{a.SupportToMechTask   === 0?'-' : a.SupportToMechTask  +' '+'%'}}</div>
                                     <div class="col-md-2">
-                                        <label class="badge badge-primary">2</label>
+                                        <label class="badge badge-primary" (click)="getEmployeeTaskList(a)">{{a.EmployeeTaskListModels.length}}</label>
                                     </div>
                                     <div class="col-md">{{(a.CriticalityRating === '' || a.CriticalityRating === null ) ?'-' : a.CriticalityRating }}</div>
                                 </div>
@@ -159,3 +159,25 @@
     </p-tabPanel>
 </p-tabView>
     
+
+
+<p-dialog header="Employee task list" [(visible)]="TaskModal" [style]="{width: '50em'}">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col-md-2">Sr. No</th>
+                <th scope="col-md-2">Status</th>
+                <th scope="col">Task</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let r of CEMEmployeeTaskList; let i=index;">
+                <td>{{i+1}}</td>
+                <td>
+                    <i class="fas {{(r.Status === 0|| r.Status === null)? 'fa-times-circle text-warning' : 'fa-check-circle text-success'}}"></i>
+                    {{(r.Status === 0|| r.Status === null)?'Inactive' : 'Active'}}</td>
+                <td>{{getMaintenceTaskName(r)}}</td>
+            </tr>
+        </tbody>
+    </table>
+</p-dialog>

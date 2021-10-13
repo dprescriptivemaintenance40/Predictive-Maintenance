@@ -18,6 +18,8 @@ export class CraftEmployeeTaskMappingComponent implements OnInit {
   private UserDetails: any =[];
   public PSRClientContractorData: any;
   public CraftEmployeeMappingList : any =[];
+  public TaskModal : boolean = false;
+  public CEMEmployeeTaskList : any =[];
   public EmployeeList : any = [
     {'id': 1 , 'name': 'EMP1'},
     {'id': 2 , 'name': 'EMP2'},
@@ -30,6 +32,7 @@ export class CraftEmployeeTaskMappingComponent implements OnInit {
     {'id': 9 , 'name': 'EMP9'},
     {'id': 10, 'name': 'EMP10'},
   ];
+  public MaintenanceStrategyList: any;
   constructor(public fb: FormBuilder,
     private messageService: MessageService,
     private commonBlService : CommonBLService,
@@ -41,6 +44,21 @@ export class CraftEmployeeTaskMappingComponent implements OnInit {
      }
 
   ngOnInit(): void {
+    this.GetMssStartegyList();
+  }
+  private GetMssStartegyList(){
+    this.commonBlService.getWithoutParameters(this.PCRAPI.MSSStrategyGetAllRecords).subscribe( 
+      (res : any) => {
+        res.forEach(element => {
+          if(element.Strategy === 'GEP' || element.Strategy === 'CONSTRAINT' || element.Strategy === 'FMEA'){
+            element.TYPE = element.Strategy
+          }else{
+            element.TYPE = "MSS";
+          }
+        });
+        this.MaintenanceStrategyList = res;
+      }
+    )
   }
 
   craftEmployeeMappingForm() {
@@ -159,6 +177,21 @@ export class CraftEmployeeTaskMappingComponent implements OnInit {
     }else{
       this.messageService.add({ severity: 'warn', summary: 'warn', detail:'Please select craft first !!!' });
     }    
+  }
+
+  public getEmployeeTaskList(r){
+    if(r.EmployeeTaskListModels.length != 0){
+      this.TaskModal = true;
+      this.CEMEmployeeTaskList = r.EmployeeTaskListModels;
+    }    
+  }
+
+  public getMaintenceTaskName(r){
+    if(r.MaintenanceTaskId !== 0){
+      return this.MaintenanceStrategyList.find(a=>a.MSSStrategyModelId  === r.MaintenanceTaskId).MaintenanceTask;
+    }else{
+      return 'Something went wrong !!!'
+    }
   }
 
   public childRecordSubmit(r){

@@ -1,0 +1,98 @@
+<tbody *ngIf="node">
+        <tr>
+            <td [attr.colspan]="colspan">
+                <!-- <p-toast position="top-right"></p-toast> -->
+                <div [class]="node.styleClass" [ngClass]="{'p-organizationchart-node-content': true, 'p-organizationchart-selectable-node': chart.selectionMode && node.selectable !== false,'p-highlight':isSelected()}"
+                    (click)="onNodeClick($event,node)">
+                    <div *ngIf="!chart.getTemplateForNode(node)">
+                        <!-- {{node.label}} -->
+                        <textarea [(ngModel)]="node.label" placeholder="Type Something" class="form-control custom-textarea" name="{{node.label}}"></textarea> <br/>
+                        <label *ngIf="node.gate === true" for="AND">AND Gate</label><input type="radio" id="AND" *ngIf="node.gate" name="{{node.label}}" [(ngModel)]="node.gateType" value="AND">
+                        <label *ngIf="node.gate === true" for="OR">OR Gate</label><input type="radio" id="OR" *ngIf="node.gate"  name="{{node.label}}" [(ngModel)]="node.gateType" value="OR" >
+                        <div *ngIf="node.gate== true">
+                            <a>
+                                <label>L</label>
+                                <input type="text" placeholder="{{node.L}}" disabled="node.gate">
+                            </a>
+                            <a>
+                                <label>M</label>
+                                <input type="text" placeholder="{{node.M}}" disabled="node.gate">
+                            </a>
+                        </div>
+                        <div *ngIf="node.final== true">
+                            <a>
+                                <label>Mtbf</label>
+                                <input type="text" placeholder="{{node.mtbf}}" disabled="node.gate">
+                            </a>
+                            <a>
+                                <label>Availability</label>
+                                <input type="text" placeholder="{{node.availability}}" disabled="node.gate">
+                            </a>
+                        </div>
+                        <div *ngIf="node.gate== false">
+                            <a>
+                                <label>L</label>
+                                <input type="text" (keypress)=AllowNumber($event) [(ngModel)]="node.L" placeholder="{{node.L}}">
+                            </a>
+                            <a>
+                                <label>M</label>
+                                <input type="text" (keypress)=AllowNumber($event) [(ngModel)]="node.M" placeholder="{{node.M}}">
+                            </a>
+                        </div>
+                        <a *ngIf="node.gate" (click)="AddTopBottom(node)" title="Add new node" class="org-add"><i class="pi pi-plus"></i></a>
+                         <div *ngIf="TopBottomEnable" style="
+                         position: relative;
+                         width: 14em;
+                         border: none;
+                         border-radius: 0.3em;
+                         background-color: #fff;
+                         box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 15%);
+                         padding: 10px;">
+                        <a (click)="CloseTopBottomNode()" class="btn-white btn-sm">
+                            <i class="pi pi-times-circle"></i>
+                        </a>&nbsp;&nbsp;<br/>
+
+                        <a (click)="AddTopFinalNode(node)">Top Final</a><br>
+                        <a (click)="AddTopNode(node)">Top</a><br>
+                        <label>Bottom</label>
+                        <ul>
+                            <li (click)="AddBottomNode(node, 'Yes')"><a>Bottom with Gate</a></li>
+                            <li (click)="AddBottomNode(node, 'No')"><a>Bottom without Gate</a></li>
+                        </ul>
+
+                         </div>
+                    </div>
+                    <div *ngIf="chart.getTemplateForNode(node)">
+                        <ng-container *ngTemplateOutlet="chart.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
+                    </div>
+                    <a *ngIf="!leaf" tabindex="0" class="p-node-toggler" (click)="toggleNode($event, node)" (keydown.enter)="toggleNode($event, node)">
+                        <i class="p-node-toggler-icon pi" [ngClass]="{'pi-chevron-down': node.expanded, 'pi-chevron-up': !node.expanded}"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        <tr [ngClass]="!leaf&&node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'">
+            <td [attr.colspan]="colspan">
+                <div class="p-organizationchart-line-down"></div>
+            </td>
+        </tr>
+        <tr [ngClass]="!leaf&&node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'">
+            <ng-container *ngIf="node.children && node.children.length === 1">
+                <td [attr.colspan]="colspan">
+                    <div class="p-organizationchart-line-down"></div>
+                </td>
+            </ng-container>
+            <ng-container *ngIf="node.children && node.children.length > 1">
+                <ng-template ngFor let-child [ngForOf]="node.children" let-first="first" let-last="last">
+                    <td class="p-organizationchart-line-left" [ngClass]="{'p-organizationchart-line-top':!first}">&nbsp;</td>
+                    <td class="p-organizationchart-line-right" [ngClass]="{'p-organizationchart-line-top':!last}">&nbsp;</td>
+                </ng-template>
+            </ng-container>
+        </tr>
+        <tr [ngClass]="!leaf&&node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-nodes" [@childState]="'in'">
+            <td *ngFor="let child of node.children" colspan="2">
+                <table class="p-organizationchart-table" pOrganizationChartNode [node]="child"></table>
+            </td>
+        </tr>
+    </tbody>
+    

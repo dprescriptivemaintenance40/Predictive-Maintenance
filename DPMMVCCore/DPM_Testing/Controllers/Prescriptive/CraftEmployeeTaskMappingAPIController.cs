@@ -30,6 +30,7 @@ namespace DPM_Testing.Controllers
             {
                 var records = await _context.CraftEmployeeTaskMappingModels.Where(a => a.UserId == userId)
                                                                                   .Include(a => a.CraftEmployeeTaskChild)
+                                                                                  .ThenInclude(a=>a.EmployeeTaskListModels)
                                                                                   .OrderBy(a => a.CETId).ToListAsync();
                 return Ok(records);
             }
@@ -107,7 +108,7 @@ namespace DPM_Testing.Controllers
 
         [HttpPost]
         [Route("PostParent")]
-        public async Task<ActionResult<CraftEmployeeTaskMappingModel>> PostAddRuleModel(CraftEmployeeTaskMappingModel craftEmployeeTaskMappingModels)
+        public async Task<ActionResult<CraftEmployeeTaskMappingModel>> Post(CraftEmployeeTaskMappingModel craftEmployeeTaskMappingModels)
         {
             try
             {
@@ -115,6 +116,23 @@ namespace DPM_Testing.Controllers
                 await _context.SaveChangesAsync();
 
                 return CreatedAtAction("GetCraftEmployeeTaskMappingModel", new { id = craftEmployeeTaskMappingModels.CETId }, craftEmployeeTaskMappingModels);
+            }
+            catch (System.Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("PostEmployeeTask")]
+        public async Task<ActionResult<EmployeeTaskListModel>> PostEmployeeTask(EmployeeTaskListModel employeeTaskListModel)
+        {
+            try
+            {
+                _context.EmployeeTaskListModels.Add(employeeTaskListModel);
+                await _context.SaveChangesAsync();
+                return Ok();
             }
             catch (System.Exception exe)
             {

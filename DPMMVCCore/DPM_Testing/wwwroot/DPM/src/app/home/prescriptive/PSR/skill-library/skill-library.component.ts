@@ -252,6 +252,12 @@ export class SkillLibraryComponent implements OnInit {
               let e = emp.find(c=>c.id === parseFloat(splitData[1])) ;
               fg.value.EMPList.push(e);
                if(element.EmployeeId === empName){
+                   fg.patchValue({MTRecord:[]});
+                   let obj = {};
+                   obj['EmployeeTaskListId']=0;
+                   obj['CETChildId']=element.CETChildId;
+                   obj['MaintenanceTaskId']= 0;
+                   fg.patchValue({MTRecord:[obj]});
                   if(element.CheckOilLevelTopUp !== null && element.CheckOilLevelTopUp !== 0){
                     fg.value.Level = element.CheckOilLevelTopUp;
                   }else if(element.VibrationCheck !== null && element.VibrationCheck !== 0){
@@ -285,6 +291,9 @@ export class SkillLibraryComponent implements OnInit {
     let Data = this.MaintenanceStrategyList.find(a=>a.MSSStrategyModelId == r.value.Task);
     let craft = this.PSRClientContractorData.find(a=>a.PSRClientContractorId === r.value.Craft);
     if(Data !== undefined && craft !== undefined){
+       if(r.value.MTRecord.length > 0){
+          r.value.MTRecord[0].MaintenanceTaskId = Data.MSSStrategyModelId;
+       }
       if(Data.Strategy === 'GEP' || Data.Strategy === 'CONSTRAINT' || Data.Strategy === 'FMEA'){
          r.value.HourlyRate = craft.ClientHourlyRate;
       }else{
@@ -472,7 +481,8 @@ export class SkillLibraryComponent implements OnInit {
       Task: [0, Validators.required],
       Level: [0, Validators.required],
       HourlyRate: [0, Validators.required],
-      EMPList :[[]]
+      EMPList :[[]],
+      MTRecord : [[]]
     }));
     this.EmployeeList = [
       {'id': 1 , 'name': 'EMP1'},
@@ -490,12 +500,17 @@ export class SkillLibraryComponent implements OnInit {
 
   recordSubmit(fg: FormGroup) {
     if (fg.value.SKillLibraryId == 0){;
-      this.commonBLervice.postWithoutHeaders('/SkillLibraryAPI', fg.value).subscribe(
-        (res: any) => {
-          fg.patchValue({ SKillLibraryId: res.SKillLibraryId });
-          this.showNotification('insert');
-          this.GetSavedPSRRecords();
-        });
+      this.commonBLervice.postWithoutHeaders('/CraftEmployeeTaskMappingAPI/PostEmployeeTask',fg.get('MTRecord').value[0])
+      .subscribe(
+        res => {
+          this.commonBLervice.postWithoutHeaders('/SkillLibraryAPI', fg.value).subscribe(
+            (res: any) => {
+              fg.patchValue({ SKillLibraryId: res.SKillLibraryId });
+              this.showNotification('insert');
+              this.GetSavedPSRRecords();
+            });
+        }, err=> {console.log(err.error)}
+      )
     }else{
       this.commonBLervice.PutData('/SkillLibraryAPI', fg.value).subscribe(
         (res: any) => {
