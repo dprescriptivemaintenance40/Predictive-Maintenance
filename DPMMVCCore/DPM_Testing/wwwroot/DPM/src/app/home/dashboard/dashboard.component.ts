@@ -4676,7 +4676,11 @@ GetLNGPlantRegisterRecords(){
     obj['Original_Criticality']=element.RISK_RANKING_Point_System
     obj['New_Criticality']= element.New_Criticality
     this.ExelFiledataFocriticality.push(obj)
-
+  })
+  this.ExelFiledataFocriticality.forEach(element=>{
+    if(element.Original_Criticality != element.New_Criticality){
+      this.graphicalshow= true;
+   }
   })
   this.NonCriticalCount.push(NonCriticalCountValiuation)
    this.LowCount.push(LowCountValiuation)
@@ -4713,15 +4717,14 @@ public graphOfChartDatashow: boolean =false
 public criticalityAssetListShow:boolean = true
 public assetback:boolean = false
 GraphicalRepresntationSelectionselection(){
+  this.criticalityAssetListShow = true;
   this.ExelFiledataFocriticality.forEach(element=>{
-    if(element.Original_Criticality == element.New_Criticality){
+    if(element.Original_Criticality != element.New_Criticality){
       this.assetback= true
        this.ngAfterViewInit()
       this.graphOfChartDatashow= true;
       this.fakedataforassetcriteriaselection()
       this.criticalityAssetListShow = false;
-   }else{
-    this.graphicalshow= true;
    }
   })
  }

@@ -1334,7 +1334,7 @@ table tbody tr:nth-of-type(odd) td {
                                 <td>{{obj.New_Criticality}}</td>
                                 <td>
                                     <!-- *ngIf="graphicalshow" -->
-                                    <div class="dpm-radio d-inline-block" >
+                                    <div class="dpm-radio d-inline-block" *ngIf="graphicalshow">
                                         <p-radioButton  class="pulse-green1" name="con" (onClick)="GraphicalRepresntationSelectionselection()">
                                         </p-radioButton>
                                     </div>
@@ -1346,8 +1346,8 @@ table tbody tr:nth-of-type(odd) td {
             </div>
         </div><br>
         <div *ngIf="graphOfChartDatashow">
-        <div *ngFor="let data of chartData" class="chart">
-            <canvas #pr_chart style="height:14rem;width:65rem;"></canvas>
+        <div *ngFor="let data of chartData" class="chart" style="height:12rem;width:65rem;">
+            <canvas #pr_chart  style="height:17rem;width:65rem;"></canvas>
         </div>
         </div>
         <!-- <div *ngIf="graphOfChartDatashow">
