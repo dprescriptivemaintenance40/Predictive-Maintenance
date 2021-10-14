@@ -1179,6 +1179,7 @@ table tbody tr:nth-of-type(odd) td {
                 </div>
             </div>
         </div>
+
         <div class="col-md-4 pl-0">
             <div class="d-block h-100">
                 <div class=" h-100">
@@ -1200,6 +1201,8 @@ table tbody tr:nth-of-type(odd) td {
                 </div>
             </div>
         </div>
+       
+       
         <!-- <div class="col-md-4 pl-0">
             <div class="d-block h-100">
                 <div class=" h-100">
@@ -1270,12 +1273,9 @@ table tbody tr:nth-of-type(odd) td {
 </p-dialog>
 
 
-<p-dialog header="Graph" [(visible)]="displayBasic1" [style]="{width: '70vw'}" [baseZIndex]="10000">
+<p-dialog header="Graph" [(visible)]="displayBasic1" [style]="{width: '90vw'}" [baseZIndex]="10000">
     <div class="card-body">
-        <div style="text-align: center">
-            <strong>% OF EQUIPMENT WITH CRITICALITY ASSESSMENT</strong>
-        </div><br>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-sm-4">
                   <div class="row bg-white p-3 mt-3 w-100">
                     <div class="form-group col-sm-4 mb-0">
@@ -1287,14 +1287,13 @@ table tbody tr:nth-of-type(odd) td {
                     </div>
                     </div>
             </div>
-            <div class="col-sm-4">
-                
+            <div class="col-sm-4"> 
                 <div class="row bg-white p-3 mt-3 w-100">
                     <div class="form-group col-sm-4 mb-0">
                         <h5>From Date</h5>
                         <select [(ngModel)]="Fakefromdate" class="form-select" (change)="fakeTodate()" class="form-control">
                             <option value="">choose.</option>
-                            <option value="2016" selected>2016</option>
+                            <option value="2016" selected>2021</option>
                         </select>
                     </div>
                     </div>
@@ -1305,18 +1304,55 @@ table tbody tr:nth-of-type(odd) td {
                         <h5> To Date</h5>
                         <select [(ngModel)]="FakeTodate" class="form-select" (change)="fakeTodate()" class="form-control">
                             <option value="">Choose.</option>
-                            <option value="2020" selected>2020</option>
+                            <option value="2020" selected>2021</option>
                         </select>
                     </div>
                     </div>
             </div>
-        </div><br>
+        </div><br> -->
         <!-- <div>
             <canvas id="criticalityAssesmentBargraph" style="height:12rem;"></canvas>
         </div> -->
-        <div *ngFor="let data of chartData" class="chart" style="height:24rem;width:45rem;margin-left:10rem;">
-            <canvas #pr_chart></canvas>
+        <div class="bg-white p-3">
+            <div class="col-sm-12 p-0">
+                <h5>CRITICALITY ASSESSMENT LIST</h5>
+                <a *ngIf="assetback"><i class="fas fa-undo" style="color:black" (click)="assetgraphback()"></i></a>
+                <div class="table-responsive-sm bg-white p-2 mb-4" *ngIf="criticalityAssetListShow">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Original Criticality</th>
+                                <th>New Criticality</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let obj of AssetList30;">
+                                <td>{{obj.Asset}}</td>
+                                <td>{{obj.Original_Criticality}}</td>
+                                <td>{{obj.New_Criticality}}</td>
+                                <td>
+                                    <!-- *ngIf="graphicalshow" -->
+                                    <div class="dpm-radio d-inline-block" >
+                                        <p-radioButton  class="pulse-green1" name="con" (onClick)="GraphicalRepresntationSelectionselection()">
+                                        </p-radioButton>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><br>
+        <div *ngIf="graphOfChartDatashow">
+        <div *ngFor="let data of chartData" class="chart">
+            <canvas #pr_chart style="height:14rem;width:65rem;"></canvas>
         </div>
+        </div>
+        <!-- <div *ngIf="graphOfChartDatashow">
+            <canvas id="criticalityAssesmentBargraph" style="height:12rem;"></canvas>
+        </div>  -->
     </div>
 </p-dialog>
 

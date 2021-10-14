@@ -347,7 +347,7 @@ export class DashboardComponent {
   public Incipientpercentage:any=[]
   public Normalpercentage:any=[]
   public selctedtagnymbers: string = "";
-  
+
   public forcastPnormal: number = 0;
   public forcastFPincipient: number = 0;
   public forcastFPdegrade: number = 0;
@@ -385,7 +385,7 @@ export class DashboardComponent {
   public selctedtasktagno:string = ""
   public forststuspredictionyearlist:string= ""
   public Assetperformance: any;
-  
+
   public screwWithPrediction: any = [];
   public AssetTagNumber:string=""
   public AssetEquipmentType:string=""
@@ -437,6 +437,7 @@ export class DashboardComponent {
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'MH', 'FinancialRisk': 2000, 'TagNumber': 'K103' },
       { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'M', 'FinancialRisk': 2029, 'TagNumber': 'K104' },
   ]
+
   }
 
   ngOnInit() {
@@ -574,7 +575,7 @@ export class DashboardComponent {
       var fromDays = this.futurePredictionDatesList[0];
       var toDays = this.futurePredictionDatesList[6];
       const params2 = new HttpParams()
-      
+
         .set('FromDate', moment(fromDays, 'DD/MM/YYYY').format())
         .set('ToDate', moment(toDays, 'DD/MM/YYYY').format('YYYY-MM-DD'));
       var url2: string = this.screwCompressorAPIName.getForcastRecords;
@@ -606,7 +607,7 @@ export class DashboardComponent {
             this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
           }
         )
- 
+
     } else if (this.futurePredictionDate == 'After 30 Days') {
       var fromDays = this.futurePredictionDatesList[0];
       var toDays = this.futurePredictionDatesList[29]
@@ -645,7 +646,7 @@ export class DashboardComponent {
     // this.CPPrescriptiveTagNumber = this.myObj.TagNumber
     // this.FunctionMode = this.myObj.FunctionMode
     // this.Consequence = this.myObj.Consequence
-    
+
     // this.centrifugalmssmodel = this.myObj.CentrifugalPumpMssModel
   }
 
@@ -752,7 +753,7 @@ export class DashboardComponent {
     var PredictionincipientValuation: number = 0;
     var PredictiondegradeCount: any = [];
     var PredictiondegradeValuation: number = 0;
-    
+
     this.dashboardBLService.getWithoutParameters(this.dashboardContantAPI.PredictionDataList)
       .subscribe(
         (res: any) => {
@@ -793,7 +794,7 @@ export class DashboardComponent {
               break;
             }
           }
-        
+
           this.PredictionFilteredData = res;
           this.ScrewPredictionAllData.forEach(element => {
             this.Prediction.push(element.Prediction);
@@ -858,9 +859,9 @@ export class DashboardComponent {
           const ids = this.Predictyearlist.map(o => o.PredictyTagnumber)
           this.Predictyearlist = this.Predictyearlist.filter(({ PredictyTagnumber }, index) => !ids.includes(PredictyTagnumber, index + 1))
           this.Predictyearlist =   this.Predictyearlist.filter(r => r.PredictyTagnumber !== null)
-          
+
           this.Predictyearlist.forEach(element=>{
-            this.tag.push(element.PredictyTagnumber) 
+            this.tag.push(element.PredictyTagnumber)
           })
 
           var Degradepercentage
@@ -880,7 +881,7 @@ export class DashboardComponent {
           Incipientpercentage = (this.Incipientcount / this.ScrewPredictionAllData.length) * 100
           Normalpercentage = (this.Normalcount / this.ScrewPredictionAllData.length) * 100
 
-          
+
           // this.PredictionAllRecordBarcharts();
            this.PredictionAllRecordPie();
           // this.GenerateReport()
@@ -927,7 +928,7 @@ export class DashboardComponent {
     })
 
     this.PredictionWithTagNumber1()
-    this.PredictionWithActionPieChart()    
+    this.PredictionWithActionPieChart()
   }
 
   onPredictionChangeYear1() {
@@ -959,13 +960,13 @@ export class DashboardComponent {
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (val.TagNumber) === this.PredictionselectedYear.toString()); //for tag numbers
     // this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => (`${moment(val.InsertedDate).format('YYYY')}-${val.TagNumber}`) === this.PredictionselectedYear.toString());
     this.PredictionselectedYear1.forEach(val => {
-      this.pname = val.Predictyearname 
+      this.pname = val.Predictyearname
      })
- 
+
      this.ScrewPredictionAllData= this.PredictionFilteredData.filter(val => (val.TagNumber) === this.selctedtagnymbers.toString() && moment(val.InsertedDate).format('YYYY') === this.pname);
      this.multiselectarray.push(this.ScrewPredictionAllData)
       this.result = this.multiselectarray.reduce((r, e) => (r.push(...e), r), [])
- 
+
     this.PredictionDegradecount = 0
     this.PredictionIncipientcount = 0
     this.PredictionNormalcount = 0
@@ -989,7 +990,7 @@ export class DashboardComponent {
   public PredictionIncipientTaskcount: number = 0;
   public PredictionbadTaskcount: number = 0;
   PredictTask() {
-   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString() && (val.TagNumber) === this.selctedtasktagno.toString()); 
+   this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString() && (val.TagNumber) === this.selctedtasktagno.toString());
 
    this.PredictionDegradecount = 0
    this.PredictionIncipientcount = 0
@@ -1007,9 +1008,9 @@ export class DashboardComponent {
     } else{
       this.Predictionbadcount = this.Predictionbadcount + 1
     }
-    counter = counter + 1 
+    counter = counter + 1
   }
- 
+
    this.IndicationGraphSSRB()
    this.IndicationGraphRD()
    this.IndicationGraphCF()
@@ -1030,7 +1031,7 @@ export class DashboardComponent {
             this.PredictionIncipientcount=0
             this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
-            this.PredictionDataTableList = res;  
+            this.PredictionDataTableList = res;
             for (var i = 0; i < this.unique.length; ++i) {
             this.PredictionDataTableList.forEach(element => {
               var a = `${moment(element.InsertedDate).format('YYYY')}-${element.TagNumber}`
@@ -1070,7 +1071,7 @@ export class DashboardComponent {
             this.PredictionIncipientcount=0
             this.PredictionDegradecount=0
             this.PredictionDataTableList = null;
-            this.PredictionDataTableList = res;  
+            this.PredictionDataTableList = res;
             for (var i = 0; i < this.unique.length; ++i) {
             this.PredictionDataTableList.forEach(element => {
               var a = `${moment(element.InsertedDate).format('YYYY')}-${element.TagNumber}`
@@ -1094,7 +1095,7 @@ export class DashboardComponent {
             this.commonLoadingDirective.showLoading(false, " ");
           }
         )
-        
+
     } else if (this.PredictionDate == 'Previous 15 Days') {
       var fromerDays= this.PredictionDatesList.slice(-1)
       var torDay= this.PredictionDatesList.slice(-15)
@@ -1129,7 +1130,7 @@ export class DashboardComponent {
             }
             }, err => {
               this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-  
+
               this.commonLoadingDirective.showLoading(false, " ");
             }
           )
@@ -1168,7 +1169,7 @@ export class DashboardComponent {
             }
             }, err => {
               this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-  
+
               this.commonLoadingDirective.showLoading(false, " ");
             }
           )
@@ -1207,7 +1208,7 @@ export class DashboardComponent {
             }
             }, err => {
               this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-  
+
               this.commonLoadingDirective.showLoading(false, " ");
             }
           )
@@ -1247,7 +1248,7 @@ export class DashboardComponent {
             }
             }, err => {
               this.messageService.add({ severity: 'warn', detail: 'There is no data for this Dates', sticky: true });
-  
+
               this.commonLoadingDirective.showLoading(false, " ");
             }
           )
@@ -2286,7 +2287,7 @@ export class DashboardComponent {
             backgroundColor: '#ff3a7a',
             fill: true,
           },
-       
+
 
         ],
       },
@@ -2584,7 +2585,7 @@ export class DashboardComponent {
   //     })
   // }
 
-  
+
   CBICharts() {
     this.changeDetectorRef.detectChanges();
     if (this.state.CBANAV == 3) {
@@ -2597,7 +2598,7 @@ export class DashboardComponent {
       this.MEI_risk_Graph = false
       this.allCBI = false
       this.EcomomicRiskGraph()
-    } 
+    }
     else if (this.CBIGraphs == "MEI") {
       this.MEI_risk_Graph = true
       this.ecomomic_risk_Graph = false
@@ -2658,7 +2659,7 @@ export class DashboardComponent {
           yAxes: [
             {
               scaleLabel: {
-                 barThickness: 10,  
+                 barThickness: 10,
               maxBarThickness: 10 ,
                 display: true,
                 labelString: 'In_Percentage'
@@ -2767,7 +2768,7 @@ export class DashboardComponent {
     this.changeDetectorRef.detectChanges();
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
     var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
-    var meiCostWithDPMConstraint: number 
+    var meiCostWithDPMConstraint: number
     if(this.EconomicRiskWithConstraintDPM >0){
        meiCostWithDPMConstraint = this.MEIWithDPMWithConstraint
     }else{
@@ -2863,14 +2864,14 @@ export class DashboardComponent {
 
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
     var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
-    var meiCostWithDPMConstraint: number 
+    var meiCostWithDPMConstraint: number
     if(this.EconomicRiskWithConstraintDPM >0){
        meiCostWithDPMConstraint = this.MEIWithDPMWithConstraint
     }else{
       meiCostWithDPMConstraint=0
     }
-   
-   
+
+
     var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
 
     var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
@@ -2939,7 +2940,7 @@ export class DashboardComponent {
             {
               scaleLabel: {
                 display: true,
-                 barThickness: 30,  
+                 barThickness: 30,
               maxBarThickness: 30 ,
                 // labelString: 'In_Percentage'
               },
@@ -2953,7 +2954,7 @@ export class DashboardComponent {
               scaleLabel: {
                 display: true,
                 labelString: 'In_Percentage',
-                 barThickness: 30,  
+                 barThickness: 30,
               maxBarThickness: 30 ,
               },
               ticks: {
@@ -2992,9 +2993,9 @@ export class DashboardComponent {
     const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
     this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
     this.PTagNumberList = this.PTagNumberList.filter(r => r.TagNumber !== null)
-  
+
     // this.PTagNumberList.forEach(element=>{
-    //   this.tagnumbers.push(element.TagNumber) 
+    //   this.tagnumbers.push(element.TagNumber)
     // })
     // var LabelDatess: any = [];
     // var combo: any = [];
@@ -3022,7 +3023,7 @@ export class DashboardComponent {
       t= value.TagNumber
       y = s+ '-' + t
      datetagnumberlist.push(y)
-     this.unique = [...new Set(datetagnumberlist)]; 
+     this.unique = [...new Set(datetagnumberlist)];
      this.unique.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     })
     for (var i = 0; i < this.unique.length; ++i) {
@@ -3047,7 +3048,7 @@ export class DashboardComponent {
         }
 
       });
- 
+
       var fperc_Incipient
       var fperc_Normal
       var fperc_Degrade
@@ -3105,7 +3106,7 @@ export class DashboardComponent {
         scales: {
           xAxes: [{
               stacked: true,
-              barThickness: 30,  
+              barThickness: 30,
               maxBarThickness: 30 ,
             gridLines: {
               display: false
@@ -3144,7 +3145,7 @@ export class DashboardComponent {
           }
         },
       }
-     
+
     });
 
   }
@@ -3155,7 +3156,7 @@ export class DashboardComponent {
     this.FPFinalIncipient=[];
     this.FPFinaldDegrade=[];
     this.changeDetectorRef.detectChanges();
-   
+
     var s:any=[]
   var t:any=[]
   var y:any=[]
@@ -3165,7 +3166,7 @@ export class DashboardComponent {
       t= value.TagNumber
       y = s+ '-' + t
      datetagnumberlist.push(y)
-     this.unique = [...new Set(datetagnumberlist)]; 
+     this.unique = [...new Set(datetagnumberlist)];
      this.unique.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
     })
     for (var i = 0; i < this.unique.length; ++i) {
@@ -3190,7 +3191,7 @@ export class DashboardComponent {
         }
 
       });
- 
+
       var fperc_Incipient
       var fperc_Normal
       var fperc_Degrade
@@ -3248,7 +3249,7 @@ export class DashboardComponent {
         scales: {
           xAxes: [{
               stacked: true,
-              barThickness: 120,  
+              barThickness: 120,
               maxBarThickness: 118 ,
             gridLines: {
               display: false
@@ -3287,7 +3288,7 @@ export class DashboardComponent {
           }
         },
       }
-     
+
     });
 
   }
@@ -3492,7 +3493,7 @@ export class DashboardComponent {
       } else if (element.RD == 'degrade' || element == 'degarde') {
         this.PredictionDegradecount = this.PredictionDegradecount + 1;
       }
-    
+
     });
     Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed();
     Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed();
@@ -3518,7 +3519,7 @@ export class DashboardComponent {
           data: [Degradepercentage],
           backgroundColor: "#ff3a7a",
           hoverBackgroundColor: "#ff3a7a"
-          
+
         }]
       },
       options: {
@@ -3612,7 +3613,7 @@ export class DashboardComponent {
       } else if (element.CF == 'degrade' || element == 'degarde') {
         this.PredictionDegradecount = this.PredictionDegradecount + 1;
       }
-    
+
     });
     Degradepercentage = ((this.PredictionDegradecount / a.length) * 100).toFixed();
     Incipientpercentage = ((this.PredictionIncipientcount / a.length) * 100).toFixed();
@@ -3697,13 +3698,13 @@ export class DashboardComponent {
       }else{
         residualCostWithDPMConstraint =0
       }
-     
+
       var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
-  
+
       var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
       var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
       var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
-       
+
       if(this.ResidualRiskWithConstraintDPMCR== 1||this.ResidualRiskWithConstraintDPMCR== 2||this.ResidualRiskWithConstraintDPMCR== 3
         ||this.ResidualRiskWithConstraintDPMCR== 4||this.ResidualRiskWithConstraintDPMCR== 5 ||this.ResidualRiskWithConstraintDPMCR== 6){
        var mittigated= 740
@@ -3770,7 +3771,7 @@ export class DashboardComponent {
             yAxisID: 'B',
             backgroundColor: "#ffffb3",
             yAxisSegement: 500,
-            
+
           }, {
             yAxisID: 'B',
             backgroundColor: "#ffc2b3",
@@ -3788,8 +3789,8 @@ export class DashboardComponent {
             {
               scaleLabel: {
                 display: true,
-                min: 1, 
-                max: 750, 
+                min: 1,
+                max: 750,
                 labelString: 'Risk Rank'
               },
               ticks: {
@@ -3846,7 +3847,7 @@ export class DashboardComponent {
   }
 
   FakeRiskMetigateactions(){
-    this.changeDetectorRef.detectChanges();  
+    this.changeDetectorRef.detectChanges();
   this.allCBAdata.forEach((r,index) =>{
     if(r.EconomicRiskWithDPMCR ==="N"){
        r.rankgraphId=`risk${index+1}`
@@ -3969,7 +3970,7 @@ public CBATaskId:number = 0
       this.MEIWithDPMWithConstraint =this.allCBAdata[i].MEIWithDPMConstraint
       this.MEIWithoutDPM = this.allCBAdata[i].MEIWithoutDPM
      }
-   
+
      this.Ecoriskvalue()
      this.allCBAdata .forEach((element) => {
          var a:number = element.LevelCount
@@ -3982,7 +3983,7 @@ public CBATaskId:number = 0
           this.notifications = { class: 'text-success', };
          }
      })
-  
+
     this.centrifugalmssmodel.forEach((element) => {
       this.CBATaskId= element.CBAId
       this.AnnualPOC = element.AnnualPOC
@@ -4046,7 +4047,7 @@ public CBATaskId:number = 0
         itm.centrifugalmssmodel.push(res);
        }
      })
-   }); 
+   });
      this.centrifugalmssmodelFilter = newarray;
      const ids = this.centrifugalmssmodel.map(o => o.MSSIntervalSelectionCriteria)
      this.mssmodelFilter= this.centrifugalmssmodel.filter(({MSSIntervalSelectionCriteria}, index) => !ids.includes(MSSIntervalSelectionCriteria, index + 1))
@@ -4272,12 +4273,12 @@ fakePredictionWithTagNumber(){
 
 riskclick(){
   this.activeIndex=1;
-  this.riskhelp= true 
+  this.riskhelp= true
   this.gotit=true
   this.helpboxshow=true
   var elmnt = document.getElementById("pid");
   elmnt.scrollIntoView();
- 
+
 }
 mittigatioclick(){
   this.activeIndex=2;
@@ -4366,7 +4367,7 @@ criticalityAssesment() {
           bottom: 3,
         },
       },
-      
+
       rotation: -Math.PI,
       cutoutPercentage: 30,
       circumference: Math.PI,
@@ -4420,7 +4421,7 @@ this.prescriptivetagnumberlistdata = this.PrescagNumberList.reduce((m, o) => {
 })
 }
 prescriptivetagselect(){
-  this.prescriptivefilterlistdata = this.criticalityasset.filter(val => (val.TagNumber) === this.selectprescriptiveno.toString()); 
+  this.prescriptivefilterlistdata = this.criticalityasset.filter(val => (val.TagNumber) === this.selectprescriptiveno.toString());
   this.semiCriticalasset = 0
   this.Criticalasset = 0
   this.normalasset = 0
@@ -4599,11 +4600,11 @@ bargraph(){
 }
 public Managmenthelpshow:boolean = false;
 Managmenthelpbox(){
-  this.Managmenthelpboxshow= false 
-  this.Managmenthelpshow= true 
+  this.Managmenthelpboxshow= false
+  this.Managmenthelpshow= true
 }
 alwaysshowbox(){
-  this.Managmenthelpboxshow= true  
+  this.Managmenthelpboxshow= true
 }
 public Fakefromdate:string =""
 public FakeTodate:string =""
@@ -4612,7 +4613,7 @@ fakeTodate(){
   if(this.Faketag=="K101" && this.Fakefromdate =="2016" && this.FakeTodate =="2020"){
     this.fakedataforassetcriteriaselection()
   }
-  
+
 }
 
 
@@ -4635,15 +4636,23 @@ GetLNGPlantRegisterEXCELRecords() {
           }
       }, err => { console.log(err.error) }
   )
-} 
+}
 private NonCriticalCount:any=[]
 private LowCount:any=[]
 private MediumCount:any=[]
-private HighCount:any=[] 
+private HighCount:any=[]
 
 private GraphOriginalCriticality:any=[]
 private GraphNewCriticality:any=[]
-GetLNGPlantRegisterRecords(){ 
+
+public GraphOriginalCriticality30:any=[]
+public GraphNewCriticality30:any=[]
+
+public AssetList:any=[]
+public AssetList30:any=[]
+ public ExelFiledataFocriticality:any=[]
+ public AllAssetList:any = []
+GetLNGPlantRegisterRecords(){
   var NonCriticalCountValiuation:number =0
   var LowCountValiuation:number =0
   var MediumCountValiuation:number =0
@@ -4662,6 +4671,12 @@ GetLNGPlantRegisterRecords(){
       LowCountValiuation = LowCountValiuation+1
       element.CriticalityinNoForGraph = 1
     }
+    let obj ={}
+    obj['Asset'] = element.Asset
+    obj['Original_Criticality']=element.RISK_RANKING_Point_System
+    obj['New_Criticality']= element.New_Criticality
+    this.ExelFiledataFocriticality.push(obj)
+
   })
   this.NonCriticalCount.push(NonCriticalCountValiuation)
    this.LowCount.push(LowCountValiuation)
@@ -4687,9 +4702,34 @@ GetLNGPlantRegisterRecords(){
   this.RiskMatrixLibraryRecords.forEach(element=>{
     element.NewCriticalityinNoForGraph
     this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
+    this.AllAssetList.push(element.Asset)
  })
+ this.AssetList30= this.ExelFiledataFocriticality
+ this.AssetList30.splice(140);
 
 }
+public graphicalshow:boolean = false;
+public graphOfChartDatashow: boolean =false
+public criticalityAssetListShow:boolean = true
+public assetback:boolean = false
+GraphicalRepresntationSelectionselection(){
+  this.ExelFiledataFocriticality.forEach(element=>{
+    if(element.Original_Criticality == element.New_Criticality){
+      this.assetback= true
+       this.ngAfterViewInit()
+      this.graphOfChartDatashow= true;
+      this.fakedataforassetcriteriaselection()
+      this.criticalityAssetListShow = false;
+   }else{
+    this.graphicalshow= true;
+   }
+  })
+ }
+ assetgraphback(){
+  this.criticalityAssetListShow= true;
+  this.assetback= false
+  this.graphOfChartDatashow= false
+ }
 criticalityAssesment1() {
   this.changeDetectorRef.detectChanges();
   new Chart('criticalityAssesmentgraph1', {
@@ -4740,7 +4780,6 @@ criticalityAssesment1() {
           bottom: 3,
         },
       },
-      
       rotation: -Math.PI,
       cutoutPercentage: 30,
       circumference: Math.PI,
@@ -4750,76 +4789,52 @@ criticalityAssesment1() {
           usePointStyle: true,
         }
       },
-      
+
     },
   });
+
 }
 
   chartData: Chart.ChartData[] = [
     {
-      labels: [
-        'Aug-1-2021',
-        'Aug-2-2021',
-        'Aug-3-2021',
-        'Aug-4-2021',
-        'Aug-5-2021',
-        'Aug-6-2021',
-        'Aug-7-2021',
-        'Aug-8-2021',
-        'Aug-9-2021',
-        'Aug-10-2021',
-        'Aug-11-2021',
-        'Aug-12-2021',
-        'Aug-13-2021',
-        'Aug-14-2021',
-        'Aug-15-2021',
-        'Aug-16-2021',
-        'Aug-17-2021',
-        'Aug-18-2021',
-        'Aug-19-2021',
-        'Aug-20-2021',
-      ],
+      // labels: [
+      //   'Aug-1-2021',
+      //   'Aug-2-2021',
+      //   'Aug-3-2021',
+      //   'Aug-4-2021',
+      //   'Aug-5-2021',
+      //   'Aug-6-2021',
+      //   'Aug-7-2021',
+      //   'Aug-8-2021',
+      //   'Aug-9-2021',
+      //   'Aug-10-2021',
+      //   'Aug-11-2021',
+      //   'Aug-12-2021',
+      //   'Aug-13-2021',
+      //   'Aug-14-2021',
+      //   'Aug-15-2021',
+      //   'Aug-16-2021',
+      //   'Aug-17-2021',
+      //   'Aug-18-2021',
+      //   'Aug-19-2021',
+      //   'Aug-20-2021',
+      // ],
+      labels: this.AllAssetList,
       datasets: [
         {
           label: "Original-Criticality",
-          //  data:  this.GraphOriginalCriticality,
-           data:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,2,2,2,3,3,3,3,3],
+            data:  this.GraphOriginalCriticality,
+          //  data:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,2,2,2,3,3,3,3,3],
           borderWidth: 1,
           borderColor: "blue",
           backgroundColor: 'blue',
           fill: false,
           lineTension: 0,
         },
-      ],
-    },
-    {
-      labels: [
-        'Sep-1-2021',
-        'Sep-2-2021',
-        'Sep-3-2021',
-        'Sep-4-2021',
-        'Sep-5-2021',
-        'Sep-6-2021',
-        'Sep-7-2021',
-        'Sep-8-2021',
-        'Sep-9-2021',
-        'Sep-10-2021',
-        'Sep-11-2021',
-        'Sep-12-2021',
-        'Sep-13-2021',
-        'Sep-14-2021',
-        'Sep-15-2021',
-        'Sep-16-2021',
-        'Sep-17-2021',
-        'Sep-18-2021',
-        'Sep-19-2021',
-        'Sep-20-2021',
-      ],
-      datasets: [
         {
           label: "New-Criticality",
-          // data: this.GraphNewCriticality,
-          data:  this.GraphOriginalCriticality, //use temporary
+           data: this.GraphNewCriticality,
+          // data:  this.GraphOriginalCriticality, //use temporary
           borderWidth: 2,
           borderColor: "red",
           backgroundColor: 'red',
@@ -4828,8 +4843,50 @@ criticalityAssesment1() {
         },
       ],
     },
+    // {
+    //   labels: [
+    //     'Sep-1-2021',
+    //     'Sep-2-2021',
+    //     'Sep-3-2021',
+    //     'Sep-4-2021',
+    //     'Sep-5-2021',
+    //     'Sep-6-2021',
+    //     'Sep-7-2021',
+    //     'Sep-8-2021',
+    //     'Sep-9-2021',
+    //     'Sep-10-2021',
+    //     'Sep-11-2021',
+    //     'Sep-12-2021',
+    //     'Sep-13-2021',
+    //     'Sep-14-2021',
+    //     'Sep-15-2021',
+    //     'Sep-16-2021',
+    //     'Sep-17-2021',
+    //     'Sep-18-2021',
+    //     'Sep-19-2021',
+    //     'Sep-20-2021',
+    //   ],
+    //   datasets: [
+    //     {
+    //       label: "New-Criticality",
+    //       // data: this.GraphNewCriticality,
+    //       data:  this.GraphOriginalCriticality, //use temporary
+    //       borderWidth: 2,
+    //       borderColor: "red",
+    //       backgroundColor: 'red',
+    //       fill: false,
+    //       lineTension: 0,
+    //     },
+    //   ],
+    // },
   ];
   ngAfterViewInit() {
+    var yLabels = {
+      0 : 'Non-Critical',
+      1 : 'Low',
+      2 : 'Medium ',
+      3 : 'High',
+  }
     this.charts = this.chartElementRefs.map((chartElementRef, index) => {
       const config = Object.assign({}, baseConfig, {
         data: this.chartData[index],
@@ -4854,6 +4911,28 @@ criticalityAssesment1() {
               },
             },
           },
+          backgroundRules: [
+            {
+              yAxisID: 'B',
+              backgroundColor: "#d0f0c0",
+              yAxisSegement: 0,
+            },
+            {
+              yAxisID: 'B',
+              backgroundColor: "#d9ffb3",
+              yAxisSegement: 1
+            },
+            {
+              yAxisID: 'B',
+              backgroundColor: "#ffffb3",
+              yAxisSegement: 2,
+
+            }, {
+              yAxisID: 'B',
+              backgroundColor: "#ffc2b3",
+              yAxisSegement: 3
+            },
+        ],
           scales: {
             xAxes: [
               {
@@ -4869,6 +4948,7 @@ criticalityAssesment1() {
               {
                 scaleLabel: {
                   display: true,
+                  max: 3,
                 },
                 ticks: {
                   beginAtZero: true,
@@ -4877,6 +4957,21 @@ criticalityAssesment1() {
                 gridLines: {
                   display: false,
                 },
+              },
+              {
+                id: 'B',
+                 type: 'linear',
+                position: 'right',
+                ticks: {
+                  gridLines: {
+                    display: false
+                  },
+                  beginAtZero: true,
+                   max:3,
+                  callback: function(value,) {
+                      return yLabels[value];
+                  }
+              }
               },
             ],
           },
@@ -4887,29 +4982,56 @@ criticalityAssesment1() {
   }
 fakedataforassetcriteriaselection(){
   this.changeDetectorRef.detectChanges();
+  this.changeDetectorRef.detectChanges();
+  this.GraphOriginalCriticality.splice(140);
+  this.GraphNewCriticality.splice(140);
+  this.AllAssetList.splice(140);
   this.chart = new Chart('criticalityAssesmentBargraph', {
     type: "line",
     data: {
       // labels: ["969512493", "969512747", "969512813","969512748","969512826","969512831","969512815","969512816","969512495","969512750",],
-      labels: ["969512493","969512747", "969512813","969512748","969512826","969512831"],
-      fill: true,
+      // labels: ["969512493","969512747", "969512813","969512748","969512826","969512831"],
+      // fill: true,
+      // datasets: [
+      //   {
+      //     label: "Original-Criticality",
+      //     data: [0,1,2,1,2,1,3,1,2,3,],
+      //     borderWidth: 1,
+      //     borderColor: "blue",
+      //     backgroundColor: 'blue',
+      //     fill: false,
+      //   },
+      //   {
+      //     label: "New-Criticality",
+      //     // data: [0,1,2,2,1,3,3,0,3,2],
+      //     data: [0,1,2,2,1,1],
+      //     borderWidth: 2,
+      //     borderColor: "red",
+      //     backgroundColor: 'red',
+      //     fill: false,
+      //   },
+      // ],
+      labels: this.AllAssetList,
       datasets: [
         {
           label: "Original-Criticality",
-          data: [0,1,2,1,2,1,3,1,2,3,],
+            data:  this.GraphOriginalCriticality,
+          //  data:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,2,2,2,3,3,3,3,3],
           borderWidth: 1,
           borderColor: "blue",
           backgroundColor: 'blue',
           fill: false,
+          lineTension: 0,
         },
         {
           label: "New-Criticality",
-          // data: [0,1,2,2,1,3,3,0,3,2],
-          data: [0,1,2,2,1,1],
+           data: this.GraphNewCriticality,
+          // data:  this.GraphOriginalCriticality, //use temporary
           borderWidth: 2,
           borderColor: "red",
           backgroundColor: 'red',
           fill: false,
+          lineTension: 0,
         },
       ],
     },
@@ -4928,7 +5050,7 @@ fakedataforassetcriteriaselection(){
              }else if(tooltipItem.yLabel == 3){
               return "Criticality" +":" + "Critical";
            }
-               
+
             }
         }
     },
@@ -4945,7 +5067,7 @@ fakedataforassetcriteriaselection(){
         yAxes: [{
           scaleLabel: {
             display: true,
-         
+
           },
           ticks: {
             beginAtZero: true,
@@ -4957,9 +5079,9 @@ fakedataforassetcriteriaselection(){
         }],
 
       }
-      
+
     }
-    
+
   });
 }
 
