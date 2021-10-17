@@ -1630,3 +1630,34 @@ table.p-organizationchart-table {
     margin-bottom: 0;
   }
 }
+.mask-it {
+  position: relative;
+  .p-dialog.p-component {
+    position: relative;
+    &:before {
+      background-color: #000;
+      position: fixed;
+      top: -100%;
+      left: -100%;
+      content: '';
+      height: 1000%;
+      width: 1000%;
+      z-index: -1;
+      opacity: 0.6;
+    }
+  }
+}
+.table-data {
+  background-color: #e7ecf9 !important;
+  padding: 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  label {
+    width: 250px;
+    margin-right: 15px;
+    span {
+      display: inline-block;
+      margin-left: 7px;
+    }
+  }
+}
