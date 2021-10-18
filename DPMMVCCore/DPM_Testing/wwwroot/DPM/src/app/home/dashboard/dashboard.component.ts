@@ -17,6 +17,7 @@ import { element, } from "protractor";
 import { ConfigService } from "src/app/shared/config.service";
 import { MenuItem } from 'primeng/api';
 import * as XLSX from 'xlsx';
+import * as events from "events";
 
 const baseConfig: Chart.ChartConfiguration = {
   type: 'line',
@@ -41,10 +42,6 @@ export class DashboardComponent {
   @ViewChild('graph')
   graphdiv: ElementRef;
   chart: any;
-  @ViewChildren('pr_chart', { read: ElementRef })
-  chartElementRefs: QueryList<ElementRef>;
-  charts: Chart[] = [];
-
   public FromDate: string = "";
   public FailuerModeType: string = ""
   public ToDate: string = "";
@@ -162,43 +159,6 @@ export class DashboardComponent {
   public AFP: string;
   public RK: any = "L/M/H= M | HSECES= Y | CRIT= II";
   public DAB: any;
-
-  public incipient: number = 0;
-  public degrade: number = 0;
-  public normal: number = 0;
-
-  public AFPincipient: number = 0;
-  public AFPdegrade: number = 0;
-  public AFPnormal: number = 0;
-
-  public FinalAFPincipient: number = 0;
-  public FinalAFPdegrade: number = 0;
-  public FinalAFPnormal: number = 0;
-
-  public totalCount: number = 0;
-  public AFPtotalCount: number = 0;
-  public FinalAFPTotalCount: number = 0;
-
-  public incipientPerentage: number = 0
-  public degradePercentage: number = 0
-  public normalpercentage: number = 0
-  public PerformanceNumber: any = 0
-
-  public AFPincipientPerentage: number = 0
-  public AFPdegradePercentage: number = 0
-  public AFPnormalpercentage: number = 0
-
-  public finalPerformanceNumber: number = 0
-  public finalACCCalculation: number = 0;
-  public FinalAFCCalcuation: number = 0;
-  public screwWithPredictionDetails: any = []
-  public classificationDetails: any = []
-
-  public FinalNormal: any = []
-  public FinalIncipient: any = []
-  public FinaldDegrade: any = []
-  public FinalBad: any = []
-
 
   public FPFinalNormal: any = []
   public FPFinalIncipient: any = []
@@ -396,6 +356,42 @@ export class DashboardComponent {
   public profile_riskshow:boolean=false;
   public AssociatedFailuerMode:boolean=false;
    public Managmenthelpboxshow:boolean=true;
+   public PredictionDegradeTascount: number = 0;
+   public PredictionNormalTaskcount: number = 0;
+   public PredictionIncipientTaskcount: number = 0;
+   public PredictionbadTaskcount: number = 0;
+
+   private NonCriticalCount:any=[]
+private LowCount:any=[]
+private MediumCount:any=[]
+private HighCount:any=[]
+
+private GraphOriginalCriticality:any=[]
+private GraphNewCriticality:any=[]
+
+public GraphOriginalCriticality30:any=[]
+public GraphNewCriticality30:any=[]
+
+public AssetList:any=[]
+public AssetList30:any=[]
+ public ExelFiledataFocriticality:any=[]
+ public AllAssetList:any = []
+ public acount:any=[]
+ public graphicalshow:boolean = false;
+public graphOfChartDatashow: boolean =false
+public criticalityAssetListShow:boolean = true
+public assetback:boolean = false
+public criticalityasset:any=[]
+public PrescagNumberList:any=[]
+public prescriptivetagnumberlistdata:any=[]
+public prescriptivefilterlistdata:any=[]
+public selectprescriptiveno:string=""
+public semiCriticalasset:number=0
+public Criticalasset:number=0
+public normalasset:number=0
+public semiCriticalassetCount:number=0
+public CriticalassetCount:number=0
+public normalassetCount:number=0
 
   constructor(private title: Title,
     private http: HttpClient,
@@ -430,14 +426,6 @@ export class DashboardComponent {
     this.getPrescriptiveRecords()
     this.getUserDetails()
     this.FullCBAObject()
-    this.fakeriskandMetigateActions = [
-      { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'N', 'FinancialRisk': 2029, 'TagNumber': 'K100' },
-      { 'FunctionMode': 'Cooler Failure', 'RiskRank': 'L', 'FinancialRisk': 2035, 'TagNumber': 'K101' },
-      { 'FunctionMode': 'Rotar Damage', 'RiskRank': 'H', 'FinancialRisk': 1029, 'TagNumber': 'K102' },
-      { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'MH', 'FinancialRisk': 2000, 'TagNumber': 'K103' },
-      { 'FunctionMode': 'Second stage rotor breakdown', 'RiskRank': 'M', 'FinancialRisk': 2029, 'TagNumber': 'K104' },
-  ]
-
   }
 
   ngOnInit() {
@@ -445,8 +433,6 @@ export class DashboardComponent {
     this.getprescriptive()
     this.GetAllRecords()
     this.MachineEquipmentSelect();
-    //  this.dygraph()
-    //  this.GetALLCBA()
     this.getPredictedListRecordsByDate()
     this.items = [{
       expanded: true,
@@ -503,6 +489,7 @@ export class DashboardComponent {
    }else if(this.dashboardshow=="Management"){
     this.ManagmentShow=true
     this.criticalityAssesment1()
+    this.NewCriticalityGraph()
     this.mittigatedheatriskmap()
     // this.Avabilitysites()
     this.ExecutorShow=false;
@@ -637,16 +624,6 @@ export class DashboardComponent {
     // this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
     // this.myObj = JSON.parse(this.fullCBAobject);
     // this.ComponentCriticalityFactor = this.myObj.CriticalityFactor
-    // this.DownTimeFactor = this.myObj.DownTimeFactor
-    // this.CFrequencyMaintainenance = this.myObj.FrequencyMaintainenance
-    // this.CConditionMonitoring = this.myObj.ConditionMonitoring
-    // this.ProtectionFactor = this.myObj.ProtectionFactor
-    // this.ComponentRating = this.myObj.Rating
-    // this.CMaintainenancePractice = this.myObj.MaintainenancePractice
-    // this.CPPrescriptiveTagNumber = this.myObj.TagNumber
-    // this.FunctionMode = this.myObj.FunctionMode
-    // this.Consequence = this.myObj.Consequence
-
     // this.centrifugalmssmodel = this.myObj.CentrifugalPumpMssModel
   }
 
@@ -664,7 +641,7 @@ export class DashboardComponent {
 
   showBasicDialog1() {
     this.displayBasic1 = true;
-     this.bargraph()
+     this.bargraph() 
      this.fakedataforassetcriteriaselection()
   }
 
@@ -985,10 +962,7 @@ export class DashboardComponent {
       this.PredictionWithTagNumber2()
   }
 
-  public PredictionDegradeTascount: number = 0;
-  public PredictionNormalTaskcount: number = 0;
-  public PredictionIncipientTaskcount: number = 0;
-  public PredictionbadTaskcount: number = 0;
+
   PredictTask() {
    this.ScrewPredictionAllData = this.PredictionFilteredData.filter(val => moment(val.InsertedDate).format('YYYY') === this.task.toString() && (val.TagNumber) === this.selctedtasktagno.toString());
 
@@ -2310,282 +2284,6 @@ export class DashboardComponent {
 
   }
 
-  // Futuerpiechart() {
-  //   var a: any = [];
-  //   this.FutuerPredictionNormalcount = 0,
-  //     this.FutuerPredictionIncipientcount = 0,
-  //     this.FutuerPredictionDegradecount = 0;
-  //   var FPClassDegradepercentage
-  //   var FPClassIncipientpercentage
-  //   var FPClassNormalpercentage
-  //   this.FutuerPredictionAllData.forEach(element => {
-  //     if (this.fmtype != "") {
-  //       if (this.fmtype == "SSRB") {
-  //         a.push(element.SSRB)
-  //       } else if (this.fmtype == "CF") {
-  //         a.push(element.CF)
-  //       } if (this.fmtype == "RD") {
-  //         a.push(element.RD)
-  //       }
-  //     } else {
-  //       a.push(element.Prediction)
-  //     }
-
-  //   });
-  //   a.forEach(element => {
-  //     if (element == 'normal') {
-  //       this.FutuerPredictionNormalcount = this.FutuerPredictionNormalcount + 1;
-  //     } else if (element == 'incipient') {
-  //       this.FutuerPredictionIncipientcount = this.FutuerPredictionIncipientcount + 1;
-  //     } else if (element == 'degrade' || element == 'degarde') {
-  //       this.FutuerPredictionDegradecount = this.FutuerPredictionDegradecount + 1;
-  //     }
-  //   });
-  //   FPClassDegradepercentage = ((this.FutuerPredictionDegradecount / a.length) * 100).toFixed(2);
-  //   FPClassIncipientpercentage = ((this.FutuerPredictionIncipientcount / a.length) * 100).toFixed(2);
-  //   FPClassNormalpercentage = ((this.FutuerPredictionNormalcount / a.length) * 100).toFixed(2);
-
-  //   this.changeDetectorRef.detectChanges();
-  //   this.chart = new Chart('FutuerPredictionPie', {
-  //     type: 'pie',
-  //     data: {
-  //       labels: ["Normal", "Incipient", "Degrade"],
-  //       datasets: [
-  //         {
-  //           backgroundColor: ["#20c997", "#fa8b0c", "#ff3a7a"],
-  //           data: [FPClassNormalpercentage, FPClassIncipientpercentage, FPClassDegradepercentage]
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       // events: [],
-  //     }
-  //   });
-  // }
-
-
-  // dygraph() {
-  //   this.chart = new Dygraph(
-  //     // document.getElementById("graph"),"dist/DPM/assets/demoFileDygraphs.csv",
-  //     // document.getElementById("graph"),"dist/DPM/assets/Forecast20Record-1.csv",
-  //     // document.getElementById("graph"), "dist/DPM/assets/addforcastandprediction.csv",
-  //     document.getElementById("graph"), "dist/DPM/assets/Dig_67records.csv",
-  //     {
-  //       // visibility: [true, false, false, true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-  //       visibility: [true, true, true, true],
-  //       colors: ['green', 'blue',],
-  //       showLabelsOnHighlight: false,
-  //       showRangeSelector: true,
-  //       valueRange: [100],
-  //       series: {
-  //         'TD1': {
-  //           strokePattern: null,
-  //           drawPoints: true,
-  //           pointSize: 1,
-  //         },
-  //         'FTD1': {
-  //           strokePattern: Dygraph.DASHED_LINE,
-  //           strokeWidth: 2.6,
-  //           drawPoints: true,
-  //           pointSize: 3.5,
-  //         },
-  //       }
-  //     })
-
-  //   // this.http.get("/api/ScrewCompressureAPI/GetPredictionRecordsInCSVFormat").subscribe((res: any) => {
-  //   //      var prediction = res;
-  //   //       var url: string = this.screwCompressorAPIName.GetScrewCompressorForecastRecords
-  //   //   this.screwCompressorMethod.getWithoutParameters(url)
-  //   //     .subscribe(
-  //   //       (res: any) => {
-  //   //         var futureData = res
-
-  //   //       // this.highlight_start = moment(res[0].date).format('YYYY/MM/DD')
-  //   //       // this.highlight_end = moment(this.date).format('YYYY/MM/DD')
-
-  //   //       var result1 : any= futureData.filter(f =>
-  //   //         prediction.some(d => d.Date == f.Date)
-  //   //       );
-
-  //   //        result1.forEach(element => {
-  //   //          var d = prediction.filter(r=>r.Date === element.Date)
-  //   //          element.TD1 = d[0].TD1;
-  //   //           element.Residual = element.FTD1 - d[0].TD1
-  //   //         // element.FFTD1 = d[0].TD1
-  //   //        });
-  //   //        futureData.forEach(element => {
-  //   //          if(element.TD1 == 0){
-  //   //            element.Residual = ''
-  //   //          }
-  //   //        });
-  //   //        prediction.forEach(element => {
-  //   //          element.Residual = 0
-  //   //         element.FFTD1 = 0
-  //   //         for (var i = 0; i < result1.length; i++) {
-  //   //           if (result1[i].Date == element.Date) {
-  //   //           element.FTD1 = result1[i].FTD1
-  //   //           element.TD1 = result1[i].TD1
-  //   //           element.Residual = result1[i].Residual
-  //   //           }
-  //   //         }
-  //   //       });
-
-  //   //        const result = futureData.filter(f =>
-  //   //         !prediction.some(d => d.Date == f.Date)
-  //   //        );
-  //   //        result.forEach(element => {
-  //   //            prediction.push(element);
-  //   //        });
-  //   //       //this.mergedarray = prediction.concat(result);
-  //   //       prediction.forEach(element => {
-  //   //         if(element.Residual === 0){
-  //   //           element.Residual = ''
-  //   //         }
-  //   //         if(element.TD1 === 0){
-  //   //           element.TD1 = ''
-  //   //         }
-  //   //         if(element.FTD1 === 0){
-  //   //           element.FTD1 = ''
-  //   //         }
-  //   //         // if (element.TD1 > 180 && element.TD1 < 210) {
-  //   //         //   element.alarm = element.TD1
-
-  //   //         // } else{
-  //   //         //   element.alarm = ''
-  //   //         // }
-  //   //         //  if (element.TD1 > 210) {
-  //   //         //   element.trigger = element.TD1
-  //   //         // }else{
-  //   //         //   element.trigger = ''
-  //   //         // }
-  //   //         // if(element.FTD1 > 190 && element.FTD1 < 210) {
-  //   //         //   element.falarm = element.FTD1
-  //   //         // }
-  //   //         // else {
-  //   //         //   element.falarm = ''
-  //   //         // }
-  //   //         // if(element.FTD1 > 210) {
-  //   //         //   element.ftrigger = element.FTD1
-  //   //         // }
-  //   //         // else {
-  //   //         //   element.ftrigger = ''
-  //   //         // }
-  //   //        });
-  //   //        this.csvData = this.ConvertToCSV(prediction);
-  //   //       //  this.csvData = this.ConvertToCSV( this.mergedarray);
-  //   //       //  var highlight_start = new Date(this.highlight_start);
-  //   //       //  var highlight_end = new Date(this.highlight_end);
-
-  //   //        this.chart = new Dygraph(
-  //   //         document.getElementById("graph"),this.csvData,
-  //   //         {
-  //   //           // colors: ['green','green', 'gray', '#fa8b0c','red','#fa8b0c','red'],
-  //   //           colors: ['green','green', 'green',],
-  //   //           // visibility: [true, true, false, true,true,true,true,],
-  //   //           visibility: [true, true, false,],
-  //   //           showRangeSelector: true,
-  //   //           fillGraph:true,
-  //   //           fillAlpha: 0.1,
-  //   //           connectSeparatedPoints: false,
-  //   //           drawPoints: true,
-  //   //           strokeWidth: 1.5,
-  //   //           stepPlot: false,
-  //   //           errorbar: true,
-  //   //           drawXGrid: true,
-  //   //           valueRange: [150,250],
-  //   //           includeZero: false,
-  //   //           drawAxesAtZero: false,
-  //   //           series: {
-  //   //             'TD1': {
-  //   //               strokePattern: null,
-  //   //               drawPoints: true,
-  //   //               pointSize: 2,
-  //   //             },
-  //   //             'FTD1': {
-  //   //               strokePattern: Dygraph.DASHED_LINE,
-  //   //               strokeWidth: 2.6,
-  //   //               drawPoints: true,
-  //   //               pointSize: 3.5
-  //   //             },
-  //   //             // 'Residual': {
-  //   //             // },
-  //   //             // 'alarm': {
-  //   //             //   strokeWidth: 2,
-  //   //             // },
-  //   //             // 'trigger': {
-  //   //             //   strokePattern: Dygraph.DOT_DASH_LINE,
-  //   //             //   strokeWidth: 2,
-  //   //             //   highlightCircleSize: 3
-  //   //             // },
-  //   //             // 'falarm': {
-  //   //             //   color: ['#fa8b0c'],
-  //   //             //   strokePattern: Dygraph.DASHED_LINE1,
-  //   //             //   strokeWidth: 1.6,
-  //   //             //   drawPoints: true,
-  //   //             //   pointSize: 2.5
-  //   //             // },
-  //   //             // 'ftrigger': {
-  //   //             //   strokePattern: Dygraph.DASHED_LINE,
-  //   //             //   strokeWidth: 1.0,
-  //   //             //   drawPoints: true,
-  //   //             //   pointSize: 1.5
-  //   //             // },
-  //   //           },
-  //   //           // underlayCallback: function(canvas, area, g) {
-  //   //           //     var bottom_left = g.toDomCoords(highlight_start);
-  //   //           //     var top_right = g.toDomCoords(highlight_end);
-
-  //   //           //     var left = bottom_left[0];
-  //   //           //     var right = top_right[0];
-
-  //   //           //      canvas.fillStyle = "rgba(245, 252, 255)";
-  //   //           //     canvas.fillRect(left, area.y, right - left, area.h);
-  //   //           // }
-  //   //         },
-  //   //         )
-  //   //         // this.chart = new Dygraph(
-  //   //         //   document.getElementById("graph1"),this.csvData,
-  //   //         //   {
-  //   //         //     colors: ['green', '#58508d', 'gray', '#fa8b0c','red','#fa8b0c','red',],
-  //   //         //     showRangeSelector: true,
-  //   //         //     connectSeparatedPoints: true,
-  //   //         //     fillGraph: true,
-  //   //         //     drawPoints: true,
-  //   //         //     strokeWidth: 5,
-  //   //         //     drawXGrid: false,
-  //   //         //     visibility: [false, false, true, false,false,false,false,],
-  //   //         //   },
-  //   //         //   )
-
-  //   //     })}
-  //   // )
-  // }
-
-  // dygraph() {
-  //   this.chart = new Dygraph(
-  //     document.getElementById("graph"),"dist/DPM/assets/dygraph145records.csv",
-  //     {
-  //       visibility: [true, true, true,],
-  //       colors: ['green', 'blue',],
-  //       showRangeSelector: true,
-  //       valueRange: [160],
-  //       series: {
-  //         'TD1': {
-  //           strokePattern: null,
-  //           drawPoints: true,
-  //           pointSize: 1,
-  //         },
-  //         'FTD1': {
-  //           strokePattern: Dygraph.DASHED_LINE,
-  //           strokeWidth: 2.6,
-  //           drawPoints: true,
-  //           pointSize: 2.5,
-  //         },
-  //       }
-  //     })
-  // }
-
-
   CBICharts() {
     this.changeDetectorRef.detectChanges();
     if (this.state.CBANAV == 3) {
@@ -2689,80 +2387,6 @@ export class DashboardComponent {
       }
     });
   }
-
-  // ResidualRiskGraph() {
-  //   this.changeDetectorRef.detectChanges();
-  //   var residualcostWithoutDPM: number = + (this.ResidualRiskWithOutDPM)
-  //   var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithDPM)
-  //   var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
-  //   var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
-
-  //   var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
-  //   var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
-  //   var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
-
-  //   this.chart = new Chart("residual_risk", {
-  //     type: "bar",
-  //     data: {
-  //       labels: ["Residual Risk"],
-  //       datasets: [
-  //         {
-  //           label: "Without DPM",
-  //           backgroundColor: "#d72631",
-  //           borderColor: "#d72631",
-  //           borderWidth: 1,
-  //           data: [resdualtWithoutDPM,]
-  //         },
-  //         {
-  //           label: "With DPM",
-  //           backgroundColor: "#039fbe",
-  //           borderColor: "#039fbe",
-  //           borderWidth: 1,
-  //           data: [residualcostwithDPM,]
-  //         },
-  //         {
-  //           label: "With Constraint",
-  //           backgroundColor: "#5c3c92",
-  //           borderColor: "#5c3c92",
-  //           borderWidth: 1,
-  //           data: [residualwithConstraint]
-  //         },
-  //       ]
-  //     },
-  //     options: {
-  //       scales: {
-  //         yAxes: [
-  //           {
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'In_Percentage'
-  //             },
-  //             ticks: {
-  //               beginAtZero: true
-  //             }
-  //           }
-  //         ]
-  //       },
-  //       "animation": {
-  //         "duration": 1,
-  //         "onComplete": function () {
-  //           var chartInstance = this.chart,
-  //             ctx = chartInstance.ctx;
-  //           this.data.datasets.forEach(function (dataset, i) {
-  //             var meta = chartInstance.controller.getDatasetMeta(i);
-  //             meta.data.forEach(function (bar, index) {
-  //               var data = dataset.data[index];
-  //               if (data > 0) {
-  //                 ctx.fillText(data, bar._model.x, bar._model.y - 5);
-  //               }
-  //             });
-  //           });
-  //         }
-  //       },
-  //     }
-  //   });
-
-  // }
 
   MEIGraph() {
     this.changeDetectorRef.detectChanges();
@@ -2993,27 +2617,6 @@ export class DashboardComponent {
     const ids = this.ScrewPredictionAllData.map(o => o.TagNumber)
     this.PTagNumberList = this.ScrewPredictionAllData.filter(({ TagNumber }, index) => !ids.includes(TagNumber, index + 1))
     this.PTagNumberList = this.PTagNumberList.filter(r => r.TagNumber !== null)
-
-    // this.PTagNumberList.forEach(element=>{
-    //   this.tagnumbers.push(element.TagNumber)
-    // })
-    // var LabelDatess: any = [];
-    // var combo: any = [];
-    // this.Pyearlist.forEach(element => {
-    //   LabelDatess = LabelDatess.filter(function (element) {
-    //     return element !== undefined;
-    //   });
-    //   LabelDatess.push(element.Predictyearname)
-    //   LabelDatess.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    //   this.Pyearlist.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    // });
-    // this.Pyearlist.forEach(element => {
-    //   this.Predictyearlist.forEach(value => {
-    //     combo= `${element.Predictyearname}-${value.PredictyTagnumber}`
-    //   });
-    //   this.combinationList.push(combo)
-    //   this.combinationList.sort((a, b) => a < b ? -1 : a > b ? 1 : 0)
-    // })
     var s:any=[]
   var t:any=[]
   var y:any=[]
@@ -4380,17 +3983,7 @@ criticalityAssesment() {
     },
   });
 }
-public criticalityasset:any=[]
-public PrescagNumberList:any=[]
-public prescriptivetagnumberlistdata:any=[]
-public prescriptivefilterlistdata:any=[]
-public selectprescriptiveno:string=""
-public semiCriticalasset:number=0
-public Criticalasset:number=0
-public normalasset:number=0
-public semiCriticalassetCount:number=0
-public CriticalassetCount:number=0
-public normalassetCount:number=0
+
 getprescriptive(){
 this.http.get("/api/PrescriptiveAPI/").subscribe((res: any) => {
 this.criticalityasset = res
@@ -4518,83 +4111,6 @@ mittigatedheatriskmap() {
   });
 }
 
-// Avabilitysites() {
-//   this.chart = new Chart('avabilitysites', {
-//     type: 'line',
-//     data: {
-//       labels: ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul'],
-//       datasets: [
-//         {
-//           label: "India",
-//           data: [95, 97, 91, 86, 95,95,84,81,91,78,87,93],
-//           borderColor: '#0099CC',
-//           backgroundColor: '#0099CC',
-//           lineTension: 0,
-//           fill: false,
-//         },
-//         {
-//           label: "Dubai",
-//           data: [92.1, 93, 87, 92, 94,90,89,89,91,79,86,92],
-//           borderColor: '#66FF66',
-//           backgroundColor: '#66FF66',
-//           fill: false,
-//           lineTension: 0
-//         },
-//         {
-//           label: "Thailand",
-//           data: [95,89,93,94,83,96,95,90,84,80,85,91],
-//           borderColor: '#FFFF66',
-//           backgroundColor: '#FFFF66',
-//           fill: false,
-//           lineTension: 0
-//         },
-//         {
-//           label: "Korea",
-//           data: [95,88.2,88,88,89,96,85,91,81,84,90],
-//           borderColor: '#ff4d4d',
-//           backgroundColor: '#ff4d4d',
-//           fill: false,
-//           lineTension: 0
-//         },
-//       ],
-//     },
-//     options: {
-//       lineTension: 0,
-//       fill: false,
-//       elements: {
-//         point:{
-//             radius: 0
-//         }
-//     },
-//       legend: {
-//         display: true,
-//         labels: {
-//           usePointStyle: true,
-//         }
-//       },
-//       scales: {
-//         xAxes: [
-//           {
-//             gridLines: {
-//               display: false,
-//             },
-//           },
-//         ],
-//         yAxes: [{
-//           gridLines: {
-//             display: false,
-//           },
-//           ticks: {
-//             beginAtZero: true,
-//             min:70,
-//             max:100,
-//             stepsize:5
-//           }
-//         }]
-//       }
-//     }
-//   });
-// }
 bargraph(){
   this.changeDetectorRef.detectChanges();
 }
@@ -4637,21 +4153,7 @@ GetLNGPlantRegisterEXCELRecords() {
       }, err => { console.log(err.error) }
   )
 }
-private NonCriticalCount:any=[]
-private LowCount:any=[]
-private MediumCount:any=[]
-private HighCount:any=[]
 
-private GraphOriginalCriticality:any=[]
-private GraphNewCriticality:any=[]
-
-public GraphOriginalCriticality30:any=[]
-public GraphNewCriticality30:any=[]
-
-public AssetList:any=[]
-public AssetList30:any=[]
- public ExelFiledataFocriticality:any=[]
- public AllAssetList:any = []
 GetLNGPlantRegisterRecords(){
   var NonCriticalCountValiuation:number =0
   var LowCountValiuation:number =0
@@ -4671,60 +4173,67 @@ GetLNGPlantRegisterRecords(){
       LowCountValiuation = LowCountValiuation+1
       element.CriticalityinNoForGraph = 1
     }
-    let obj ={}
+     let obj ={}
     obj['Asset'] = element.Asset
     obj['Original_Criticality']=element.RISK_RANKING_Point_System
     obj['New_Criticality']= element.New_Criticality
     this.ExelFiledataFocriticality.push(obj)
   })
   this.ExelFiledataFocriticality.forEach(element=>{
-    if(element.Original_Criticality != element.New_Criticality){
+    if(element.New_Criticality != element.Original_Criticality){
+      let obj ={}
+      obj['Asset'] = element.Asset
+      obj['Original_Criticality']=element.Original_Criticality
+      obj['New_Criticality']= element.New_Criticality
+      this.acount.push(obj)
       this.graphicalshow= true;
    }
   })
-  this.NonCriticalCount.push(NonCriticalCountValiuation)
+  this.acount.splice(60)
+   this.NonCriticalCount.push(NonCriticalCountValiuation)
    this.LowCount.push(LowCountValiuation)
    this.MediumCount.push(MediumCountValiuation)
    this.HighCount.push(HighCountValiuation)
    this.criticalityAssesment1()
-   this.RiskMatrixLibraryRecords.forEach(element=>{
-      element.CriticalityinNoForGraph
-      this.GraphOriginalCriticality.push(element.CriticalityinNoForGraph)
-   })
-   this.RiskMatrixLibraryRecords.forEach(element=>{
-    if(element.New_Criticality =="Non Critical"){
-         element.NewCriticalityinNoForGraph = 0
-    }else  if(element.New_Criticality =="Very High"){
+   this.NewCriticalityGraph()
+
+  this.acount.forEach(element => {
+    if (element.New_Criticality == "Non Critical") {
+      element.NewCriticalityinNoForGraph = 0
+    } else if (element.New_Criticality == "Very High") {
       element.NewCriticalityinNoForGraph = 3
-    }else  if(element.New_Criticality =="High"){
+    } else if (element.New_Criticality == "High") {
       element.NewCriticalityinNoForGraph = 2
-    }else  if(element.New_Criticalitym =="Low"){
+    } else if (element.New_Criticality == "Low") {
       element.NewCriticalityinNoForGraph = 1
     }
-  }
-  )
-  this.RiskMatrixLibraryRecords.forEach(element=>{
-    element.NewCriticalityinNoForGraph
     this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
+
     this.AllAssetList.push(element.Asset)
- })
- this.AssetList30= this.ExelFiledataFocriticality
- this.AssetList30.splice(140);
+    if(element.Original_Criticality =="Non Critical"){
+         element.CriticalityinNoForGraph = 0
+    }else  if(element.Original_Criticality =="High"){
+      element.CriticalityinNoForGraph = 3
+    }else  if(element.Original_Criticality =="Medium"){
+      element.CriticalityinNoForGraph = 2
+    }else  if(element.Original_Criticality =="Low"){
+      element.CriticalityinNoForGraph = 1
+    }
+    this.GraphOriginalCriticality.push(element.CriticalityinNoForGraph)
+  })
 
 }
-public graphicalshow:boolean = false;
-public graphOfChartDatashow: boolean =false
-public criticalityAssetListShow:boolean = true
-public assetback:boolean = false
 GraphicalRepresntationSelectionselection(){
   this.criticalityAssetListShow = true;
-  this.ExelFiledataFocriticality.forEach(element=>{
-    if(element.Original_Criticality != element.New_Criticality){
+  this.acount.forEach(element=>{
+    if(element.New_Criticality != element.Original_Criticality){
       this.assetback= true
-       this.ngAfterViewInit()
+      this.graphicalshow=true
+        // this.ngAfterViewInit()
       this.graphOfChartDatashow= true;
       this.fakedataforassetcriteriaselection()
       this.criticalityAssetListShow = false;
+      this.graphicalshow=false
    }
   })
  }
@@ -4732,361 +4241,331 @@ GraphicalRepresntationSelectionselection(){
   this.criticalityAssetListShow= true;
   this.assetback= false
   this.graphOfChartDatashow= false
+  this.graphicalshow=true
  }
-criticalityAssesment1() {
-  this.changeDetectorRef.detectChanges();
-  new Chart('criticalityAssesmentgraph1', {
-    type: 'doughnut',
-    plugins: [
-      {
-        afterDraw: (chart) => {
-          var needleValue = chart.chart.config.data.datasets[0].needleValue;
-          var dataTotal = chart.chart.config.data.datasets[0].data.reduce(
-            (a, b) => a - b
-          );
-          var angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
-          var ctx = chart.chart.ctx;
-          var cw = chart.chart.canvas.offsetWidth;
-          var ch = chart.chart.canvas.offsetHeight;
-          var cx = cw / 2;
-          var cy = ch - 6;
-          ctx.translate(cx, cy);
-          ctx.rotate(angle);
-          ctx.beginPath();
-          ctx.moveTo(0, -3);
-          ctx.lineTo(ch - 20, 0);
-          ctx.lineTo(0, 3);
-          ctx.fillStyle = 'rgb(0, 0, 0)';
-          ctx.fill();
-          ctx.rotate(-angle);
-          ctx.translate(-cx, -cy);
-          ctx.beginPath();
-          ctx.arc(cx, cy, 5, 0, Math.PI * 2);
-          ctx.fill();
-        },
-      },
-    ],
-    data: {
-      labels: ['Non-crtitical','Low','Medium','High'],
-      datasets: [
-        {
-          data: [ this.NonCriticalCount,this.LowCount, this.MediumCount, this.HighCount],
-          needleValue: 1000,
-          backgroundColor: ['green', 'yellow','#FF5733', 'red'],
-        },
-      ],
-    },
-    options: {
-     events: [],
-      layout: {
-        padding: {
-          bottom: 3,
-        },
-      },
-      rotation: -Math.PI,
-      cutoutPercentage: 30,
-      circumference: Math.PI,
-      legend: {
-        display: true,
-        labels: {
-          usePointStyle: true,
-        }
-      },
 
-    },
-  });
-
-}
-
-  chartData: Chart.ChartData[] = [
-    {
-      // labels: [
-      //   'Aug-1-2021',
-      //   'Aug-2-2021',
-      //   'Aug-3-2021',
-      //   'Aug-4-2021',
-      //   'Aug-5-2021',
-      //   'Aug-6-2021',
-      //   'Aug-7-2021',
-      //   'Aug-8-2021',
-      //   'Aug-9-2021',
-      //   'Aug-10-2021',
-      //   'Aug-11-2021',
-      //   'Aug-12-2021',
-      //   'Aug-13-2021',
-      //   'Aug-14-2021',
-      //   'Aug-15-2021',
-      //   'Aug-16-2021',
-      //   'Aug-17-2021',
-      //   'Aug-18-2021',
-      //   'Aug-19-2021',
-      //   'Aug-20-2021',
-      // ],
-      labels: this.AllAssetList,
-      datasets: [
-        {
-          label: "Original-Criticality",
-            data:  this.GraphOriginalCriticality,
-          //  data:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,2,2,2,3,3,3,3,3],
-          borderWidth: 1,
-          borderColor: "blue",
-          backgroundColor: 'blue',
-          fill: false,
-          lineTension: 0,
+    fakedataforassetcriteriaselection(){
+      this.changeDetectorRef.detectChanges();
+      var yLabels = {
+        0 : 'Non-Critical',
+        1 : 'Low',
+        2 : 'Medium ',
+        3 : 'High',
+    }
+      this.chart = new Chart('criticalityAssesmentBargraph', {
+        type: "line",
+        data: {
+          labels: this.AllAssetList,
+          datasets: [
+            {
+              label: "Original-Criticality",
+                data:  this.GraphOriginalCriticality,
+              borderWidth: 1,
+              borderColor: "blue",
+              backgroundColor: 'blue',
+              fill: false,
+              lineTension: 0,
+            },
+            {
+              label: "New-Criticality",
+               data: this.GraphNewCriticality,
+              borderWidth: 2,
+              borderColor: "red",
+              backgroundColor: 'red',
+              fill: false,
+              lineTension: 0,
+            },
+          ],
         },
-        {
-          label: "New-Criticality",
-           data: this.GraphNewCriticality,
-          // data:  this.GraphOriginalCriticality, //use temporary
-          borderWidth: 2,
-          borderColor: "red",
-          backgroundColor: 'red',
-          fill: false,
-          lineTension: 0,
-        },
-      ],
-    },
-    // {
-    //   labels: [
-    //     'Sep-1-2021',
-    //     'Sep-2-2021',
-    //     'Sep-3-2021',
-    //     'Sep-4-2021',
-    //     'Sep-5-2021',
-    //     'Sep-6-2021',
-    //     'Sep-7-2021',
-    //     'Sep-8-2021',
-    //     'Sep-9-2021',
-    //     'Sep-10-2021',
-    //     'Sep-11-2021',
-    //     'Sep-12-2021',
-    //     'Sep-13-2021',
-    //     'Sep-14-2021',
-    //     'Sep-15-2021',
-    //     'Sep-16-2021',
-    //     'Sep-17-2021',
-    //     'Sep-18-2021',
-    //     'Sep-19-2021',
-    //     'Sep-20-2021',
-    //   ],
-    //   datasets: [
-    //     {
-    //       label: "New-Criticality",
-    //       // data: this.GraphNewCriticality,
-    //       data:  this.GraphOriginalCriticality, //use temporary
-    //       borderWidth: 2,
-    //       borderColor: "red",
-    //       backgroundColor: 'red',
-    //       fill: false,
-    //       lineTension: 0,
-    //     },
-    //   ],
-    // },
-  ];
-  ngAfterViewInit() {
-    var yLabels = {
-      0 : 'Non-Critical',
-      1 : 'Low',
-      2 : 'Medium ',
-      3 : 'High',
-  }
-    this.charts = this.chartElementRefs.map((chartElementRef, index) => {
-      const config = Object.assign({}, baseConfig, {
-        data: this.chartData[index],
         options: {
-          elements: {
-            point:{
-              radius: 2
-          }
-          },
+          // events: [],
           tooltips: {
             callbacks: {
-              label: function (tooltipItem) {
-                if (tooltipItem.yLabel == 0) {
-                  return ' Non-Critical';
-                } else if (tooltipItem.yLabel == 1) {
-                  return 'Low';
-                } else if (tooltipItem.yLabel == 2) {
-                  return ' Medium';
-                } else if (tooltipItem.yLabel == 3) {
-                  return ' Critical';
+                label: function(tooltipItem) {
+                  if(tooltipItem.yLabel == 0){
+                    return "Criticality" +" :" + "Non-Critical";
+                  }else if(tooltipItem.yLabel == 1){
+                      return "Criticality" +" :" + "Low";
+                  }else if(tooltipItem.yLabel == 2){
+                      return "Criticality" +":" + "Medium";
+                    //  return "" + Number(tooltipItem.yLabel) + "Medium";
+                 }else if(tooltipItem.yLabel == 3){
+                  return "Criticality" +":" + "Critical";
+               }
+    
                 }
-              },
-            },
+            }
+        },
+        backgroundRules: [
+          {
+            yAxisID: 'B',
+            backgroundColor: "#d0f0c0",
+            yAxisSegement: 0,
           },
-          backgroundRules: [
-            {
-              yAxisID: 'B',
-              backgroundColor: "#d0f0c0",
-              yAxisSegement: 0,
-            },
-            {
-              yAxisID: 'B',
-              backgroundColor: "#d9ffb3",
-              yAxisSegement: 1
-            },
-            {
-              yAxisID: 'B',
-              backgroundColor: "#ffffb3",
-              yAxisSegement: 2,
-
-            }, {
-              yAxisID: 'B',
-              backgroundColor: "#ffc2b3",
-              yAxisSegement: 3
-            },
-        ],
+          {
+            yAxisID: 'B',
+            backgroundColor: "#d9ffb3",
+            yAxisSegement: 1
+          },
+          {
+            yAxisID: 'B',
+            backgroundColor: "#ffffb3",
+            yAxisSegement: 2,
+    
+          }, {
+            yAxisID: 'B',
+            backgroundColor: "#ffc2b3",
+            yAxisSegement: 3
+          },
+      ],
           scales: {
-            xAxes: [
-              {
-                scaleLabel: {
-                  display: true,
-                },
-                gridLines: {
-                  display: false,
-                },
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Tag_Numbers'
               },
-            ],
+              gridLines: {
+                display: false
+              },
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+    
+              },
+              ticks: {
+                beginAtZero: true,
+                stepSize: 1
+              },
+              gridLines: {
+                display: false
+              },
+            },
+               {
+                    id: 'B',
+                     type: 'linear',
+                    position: 'right',
+                    ticks: {
+                      gridLines: {
+                        display: false
+                      },
+                      beginAtZero: true,
+                       max:3,
+                      callback: function(value,) {
+                          return yLabels[value];
+                      }
+                  }
+                  },
+          ],
+    
+          }
+    
+        }
+    
+      });
+    }
+
+    criticalityAssesment1() {
+      this.changeDetectorRef.detectChanges();
+      new Chart('criticalityAssesmentgraph1', {
+        type: 'doughnut',
+        plugins: [
+                {
+                  afterDraw: (chart) => {
+                    var needleValue = chart.chart.config.data.datasets[0].needleValue;
+                    var dataTotal = chart.chart.config.data.datasets[0].data.reduce(
+                      (a, b) => a - b
+                    );
+                    var angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
+                    var ctx = chart.chart.ctx;
+                    var cw = chart.chart.canvas.offsetWidth;
+                    var ch = chart.chart.canvas.offsetHeight;
+                    var cx = cw / 2;
+                    var cy = ch - 6;
+                    ctx.translate(cx, cy);
+                    ctx.rotate(angle);
+                    ctx.beginPath();
+                    ctx.moveTo(0, -3);
+                    ctx.lineTo(ch - 20, 0);
+                    ctx.lineTo(0, 3);
+                    ctx.fillStyle = 'rgb(0, 0, 0)';
+                    ctx.fill();
+                    ctx.rotate(-angle);
+                    ctx.translate(-cx, -cy);
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                  },
+                },
+              ],
+        data: {
+          labels: ['Non-crtitical','Low','Medium','High'],
+          datasets: [
+            {
+              data: [ this.NonCriticalCount,this.LowCount, this.MediumCount, this.HighCount],
+              needleValue: 1000,
+              backgroundColor: ['green', 'yellow','#FF5733', 'red'],
+            },
+          ],
+        },
+        options: {
+          rotation: 1 * Math.PI,
+          cutoutPercentage: 60,
+          circumference: 1 * Math.PI,
+          legend: {
+                    display: true,
+                    labels: {
+                      usePointStyle: true,
+                    }
+                  },
+       
+           events: [],
+          animation: {
+            duration: 500,
+            easing: "easeOutQuart",
+            onComplete: function () {
+              var ctx = this.chart.ctx;
+              ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+  
+              this.data.datasets.forEach(function (dataset) {
+                for (var i = 0; i < dataset.data.length; i++) {
+                  var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                    total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                    mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
+                    start_angle = model.startAngle,
+                    end_angle = model.endAngle,
+                    mid_angle = start_angle + (end_angle - start_angle) / 2;
+  
+                  var x = mid_radius * Math.cos(mid_angle);
+                  var y = mid_radius * Math.sin(mid_angle);
+  
+                  ctx.fillStyle = '#fff';
+                  if (i == 4) {
+                    ctx.fillStyle = '#444';
+                  }
+                  var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
+                  ctx.fillText(percent, model.x + x, model.y + y + 15);
+                }
+              });
+            }
+          }
+        }
+      });
+    
+    }
+    NewCriticalityGraph() {
+      var noncritical:any=[]
+      var Low:any=[]
+      var Medium:any=[]
+      var High:any=[]
+
+      var noncriticalPercentage:any=[]
+      var LowPercentage:any=[]
+      var MediumPercentage:any=[]
+      var HighPercentage:any=[]
+      var LowCountValiuation:number =0
+      var MediumCountValiuation:number =0
+      var HighCountValiuation:number =0
+      var NonCriticalCountValiuation:number =0
+      this.ExelFiledataFocriticality.forEach(element => {
+        if (element.New_Criticality == "Non Critical") {
+          element.CriticalityinNoForGraph = 0
+          NonCriticalCountValiuation = NonCriticalCountValiuation + 1
+        } else if (element.New_Criticality == "very-High") {
+          element.CriticalityinNoForGraph = 3
+          HighCountValiuation = HighCountValiuation + 1
+        } else if (element.New_Criticality == "High") {
+          element.CriticalityinNoForGraph = 2
+          MediumCountValiuation = MediumCountValiuation + 1
+        } else if (element.New_Criticality == "Low") {
+          element.CriticalityinNoForGraph = 1
+          LowCountValiuation = LowCountValiuation + 1
+        }
+      })
+      noncritical.push(NonCriticalCountValiuation)
+      Low.push(LowCountValiuation)
+      High.push(HighCountValiuation)
+      Medium.push(MediumCountValiuation)
+      noncriticalPercentage =((noncritical /this.ExelFiledataFocriticality.length) * 100).toFixed();
+      LowPercentage=((Low /this.ExelFiledataFocriticality.length) * 100).toFixed();
+      MediumPercentage=((High /this.ExelFiledataFocriticality.length) * 100).toFixed();
+      HighPercentage=((Medium /this.ExelFiledataFocriticality.length) * 100).toFixed();
+      this.chart = new Chart("NewCriticalitybarGraph", {
+        type: "bar",
+        data: {
+          labels: ["New Criticality",],
+          datasets: [
+            {
+              label: "Non-Critical",
+              backgroundColor: "green",
+              borderColor: "green",
+              borderWidth: 1,
+              data: [noncriticalPercentage]
+            },
+            {
+              label: "Low",
+              backgroundColor: "yellow",
+              borderColor: "yellow",
+              borderWidth: 1,
+              data: [LowPercentage]
+            },
+            {
+              label: "Medium",
+              backgroundColor: "#FF5733",
+              borderColor: "#FF5733",
+              borderWidth: 1,
+              data: [MediumPercentage]
+            },
+            {
+              label: "High",
+              backgroundColor: "red",
+              borderColor: "red",
+              borderWidth: 1,
+              data: [HighPercentage]
+            },
+          ]
+        },
+        options: {
+          events: [],
+          legend: {
+            display: true,
+            labels: {
+              usePointStyle: true,
+            }
+          },
+          scales: {
             yAxes: [
               {
                 scaleLabel: {
                   display: true,
-                  max: 3,
+                  labelString: 'In_Percentage'
                 },
                 ticks: {
-                  beginAtZero: true,
-                  stepSize: 1,
-                },
-                gridLines: {
-                  display: false,
-                },
-              },
-              {
-                id: 'B',
-                 type: 'linear',
-                position: 'right',
-                ticks: {
-                  gridLines: {
-                    display: false
-                  },
-                  beginAtZero: true,
-                   max:3,
-                  callback: function(value,) {
-                      return yLabels[value];
-                  }
+                  beginAtZero: true
+                }
               }
-              },
-            ],
+            ]
           },
-        },
-      });
-      return new Chart(chartElementRef.nativeElement, config);
-    });
-  }
-fakedataforassetcriteriaselection(){
-  this.changeDetectorRef.detectChanges();
-  this.changeDetectorRef.detectChanges();
-  this.GraphOriginalCriticality.splice(140);
-  this.GraphNewCriticality.splice(140);
-  this.AllAssetList.splice(140);
-  this.chart = new Chart('criticalityAssesmentBargraph', {
-    type: "line",
-    data: {
-      // labels: ["969512493", "969512747", "969512813","969512748","969512826","969512831","969512815","969512816","969512495","969512750",],
-      // labels: ["969512493","969512747", "969512813","969512748","969512826","969512831"],
-      // fill: true,
-      // datasets: [
-      //   {
-      //     label: "Original-Criticality",
-      //     data: [0,1,2,1,2,1,3,1,2,3,],
-      //     borderWidth: 1,
-      //     borderColor: "blue",
-      //     backgroundColor: 'blue',
-      //     fill: false,
-      //   },
-      //   {
-      //     label: "New-Criticality",
-      //     // data: [0,1,2,2,1,3,3,0,3,2],
-      //     data: [0,1,2,2,1,1],
-      //     borderWidth: 2,
-      //     borderColor: "red",
-      //     backgroundColor: 'red',
-      //     fill: false,
-      //   },
-      // ],
-      labels: this.AllAssetList,
-      datasets: [
-        {
-          label: "Original-Criticality",
-            data:  this.GraphOriginalCriticality,
-          //  data:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,2,2,2,3,3,3,3,3],
-          borderWidth: 1,
-          borderColor: "blue",
-          backgroundColor: 'blue',
-          fill: false,
-          lineTension: 0,
-        },
-        {
-          label: "New-Criticality",
-           data: this.GraphNewCriticality,
-          // data:  this.GraphOriginalCriticality, //use temporary
-          borderWidth: 2,
-          borderColor: "red",
-          backgroundColor: 'red',
-          fill: false,
-          lineTension: 0,
-        },
-      ],
-    },
-    options: {
-      // events: [],
-      tooltips: {
-        callbacks: {
-            label: function(tooltipItem) {
-              if(tooltipItem.yLabel == 0){
-                return "Criticality" +" :" + "Non-Critical";
-              }else if(tooltipItem.yLabel == 1){
-                  return "Criticality" +" :" + "Low";
-              }else if(tooltipItem.yLabel == 2){
-                  return "Criticality" +":" + "Medium";
-                //  return "" + Number(tooltipItem.yLabel) + "Medium";
-             }else if(tooltipItem.yLabel == 3){
-              return "Criticality" +":" + "Critical";
-           }
-
+          "animation": {
+            "duration": 1,
+            "onComplete": function () {
+              var chartInstance = this.chart,
+                ctx = chartInstance.ctx;
+              this.data.datasets.forEach(function (dataset, i) {
+                var meta = chartInstance.controller.getDatasetMeta(i);
+                meta.data.forEach(function (bar, index) {
+                  var data = dataset.data[index];
+                  if (data > 0) {
+                    ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                  }
+                });
+              });
             }
+          },
         }
-    },
-      scales: {
-        xAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'Tag_Numbers'
-          },
-          gridLines: {
-            display: false
-          },
-        }],
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-
-          },
-          ticks: {
-            beginAtZero: true,
-            stepSize: 1
-          },
-          gridLines: {
-            display: false
-          },
-        }],
-
-      }
-
+      });
     }
-
-  });
-}
-
 }
 
