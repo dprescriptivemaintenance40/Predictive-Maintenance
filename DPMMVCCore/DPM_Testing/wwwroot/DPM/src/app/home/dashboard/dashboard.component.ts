@@ -641,11 +641,8 @@ public normalassetCount:number=0
 
   showBasicDialog1() {
     this.displayBasic1 = true;
-     this.bargraph() 
      this.fakedataforassetcriteriaselection()
   }
-
-
 
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -858,13 +855,8 @@ public normalassetCount:number=0
           Incipientpercentage = (this.Incipientcount / this.ScrewPredictionAllData.length) * 100
           Normalpercentage = (this.Normalcount / this.ScrewPredictionAllData.length) * 100
 
-
-          // this.PredictionAllRecordBarcharts();
            this.PredictionAllRecordPie();
-          // this.GenerateReport()
-          // this.PredictionWithTagNumber()
           this.PredictionWithTagNumber1()
-          // this.PredictionAllRecordDonught();
           this.PredictionWithActionPieChart()
           this.IndicationGraphSSRB()
           this.IndicationGraphRD()
@@ -2138,9 +2130,7 @@ public normalassetCount:number=0
             } else
               this.FutuerPredictionbadcount = this.FutuerPredictionbadcount + 1
           }
-          // this.FutuerlineChart()
            this.FutuerdDonughtchart()
-          // this.Futuerpiechart()
         }, error => {
           console.log(error.error)
         })
@@ -2477,15 +2467,6 @@ public normalassetCount:number=0
     var economiccostWithDPM = ((eonomicriskwithDPM / total) * 100).toFixed(2)
     var economiccostwithConstraint = ((eonomicriskwithConstraint / total) * 100).toFixed(2)
 
-    // var residualcostWithoutDPM: number = + (this.ResidualRiskWithOutDPM)
-    // var residualCostDPMWithoutConstraint: number = + (this.ResidualRiskWithDPM)
-    // var residualCostWithDPMConstraint: number = + (this.ResidualRiskWithConstraintDPMCR)
-    // var residualtotal = (residualcostWithoutDPM + residualCostDPMWithoutConstraint + residualCostWithDPMConstraint)
-
-    // var resdualtWithoutDPM = ((residualcostWithoutDPM / residualtotal) * 100).toFixed(2)
-    // var residualcostwithDPM = ((residualCostDPMWithoutConstraint / residualtotal) * 100).toFixed(2)
-    // var residualwithConstraint = ((residualCostWithDPMConstraint / residualtotal) * 100).toFixed(2)
-
     var meicostWithoutDPM: number = +  (this.MEIWithoutDPM)
     var meiCostDPMWithoutConstraint: number = + (this.MEIWithDPMWithoutConstraint)
     var meiCostWithDPMConstraint: number
@@ -2494,8 +2475,6 @@ public normalassetCount:number=0
     }else{
       meiCostWithDPMConstraint=0
     }
-
-
     var meitotal: number = + (meicostWithoutDPM + meiCostDPMWithoutConstraint + meiCostWithDPMConstraint)
 
     var meicostwithoutDPM = ((meicostWithoutDPM / meitotal) * 100).toFixed(2)
@@ -2506,32 +2485,6 @@ public normalassetCount:number=0
 
     this.chart = new Chart("allGraphCBI", {
       type: "horizontalBar",
-      // data: {
-      //   labels: ["Economic Risk", "Residual Risk","MEI"],
-      //   datasets: [
-      //     {
-      //       label: "Without DPM",
-      //       backgroundColor: "#d72631",
-      //       borderColor: "#d72631",
-      //       borderWidth: 1,
-      //       data: [economiccostWithoutDPM, resdualtWithoutDPM ,meicostwithoutDPM,]
-      //     },
-      //     {
-      //       label: "With DPM",
-      //       backgroundColor: "#039fbe",
-      //       borderColor: "#039fbe",
-      //       borderWidth: 1,
-      //       data: [economiccostWithDPM, residualcostwithDPM,meicostwithDPM,]
-      //     },
-      //     {
-      //       label: "With Constraint",
-      //       backgroundColor: "#5c3c92",
-      //       borderColor: "#5c3c92",
-      //       borderWidth: 1,
-      //       data: [economiccostwithConstraint, residualwithConstraint, meicostwithConstraint]
-      //     },
-      //   ]
-      // },
       data: {
         labels: ["Economic Risk","MEI"],
         datasets: [
@@ -3150,19 +3103,6 @@ public normalassetCount:number=0
                   ctx = chartInstance.ctx;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'bottom';
-
-              // this.data.datasets.forEach(function(dataset, i){
-              //   let meta = chartInstance.controller.getDatasetMeta(i);
-              //   meta.data.forEach(function(bar, index) {
-              //     var data = String((dataset.data[index])) + "%";
-              //     ctx.fillStyle = 'white';
-              //     if (i == 0) {
-              //       ctx.fillText(data, 50, bar._model.y + 4);
-              //     } else {
-              //       ctx.fillText(data, bar._model.x-25, bar._model.y+4);
-              //     }
-              //   });
-              // });
               Chart.helpers.each(this.data.datasets.forEach(function(dataset, i) {
                 var meta = chartInstance.controller.getDatasetMeta(i);
                 Chart.helpers.each(meta.data.forEach(function(bar, index) {
@@ -3737,9 +3677,8 @@ dygraphForJson() {
         element.InsertedDate
         element.FTD1 = element.TD1
         element.TD1 = ''
-        // this.predictions.push(element.FTD1);
       });
-         this.mergedarray = this.predictions.concat(result);
+        this.mergedarray = this.predictions.concat(result);
         this.csvData = this.ConvertToCSV(this.mergedarray);
         this.chart = new Dygraph(
          document.getElementById("my-first-chart"),this.csvData,
@@ -4111,9 +4050,7 @@ mittigatedheatriskmap() {
   });
 }
 
-bargraph(){
-  this.changeDetectorRef.detectChanges();
-}
+
 public Managmenthelpshow:boolean = false;
 Managmenthelpbox(){
   this.Managmenthelpboxshow= false

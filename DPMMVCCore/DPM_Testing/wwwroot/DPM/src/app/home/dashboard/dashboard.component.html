@@ -36,10 +36,9 @@ table tbody tr:nth-of-type(odd) td {
     <div class="form-group col-sm-4 mb-0">
         <h5>Please select a Dashboard !</h5>
         <select [(ngModel)]="dashboardshow" class="form-select" (change)="Dashboardshowcriteria()" class="form-control">
-            <option value="">Choose.</option>
-            <option value="Prescription" selected>Prescription</option>
-            <option value="Management" selected>Management</option>
             <option value="Executor" selected>Executor</option>
+            <option value="Management" selected>Management</option>
+            <option value="Prescription" selected>Prescription</option>
         </select>
     </div>
 </div>
@@ -319,13 +318,6 @@ table tbody tr:nth-of-type(odd) td {
 
 <div class="rounded bg-white shadow col-md-4 fixed-card">
     <div class="" style="" *ngIf="helpboxshow">
-        <h5 class="my-4"><strong>Steps</strong></h5>
-        <div class="">
-            <div>
-                <p-steps [model]="items" [(activeIndex)]="activeIndex"></p-steps>
-            </div>
-        </div>
-
         <div class="card-body">
             <div class="scrollable-content">
             <div class="step-question" style="" id="pid">
@@ -777,24 +769,6 @@ table tbody tr:nth-of-type(odd) td {
                 </div>
             </div>
         </div>
-        <!-- <div class="col-md-5 pl-0">
-            <div class="d-block h-100">
-                <div class=" h-100">
-                    <div class="bg-white rounded p-3 h-100">
-                        <div class="d-flex">
-                            <strong>EQUIPMENT WITH NEW CRITICALITY ASSESSMENT</strong>
-                            <a class="blink_me" (click)="showBasicDialog1()">
-                                <strong style="font-size: 12px;"><span class="pulse-green"></span>
-                                </strong>
-                            </a>
-                        </div>
-                        <div >
-                            <canvas id="NewCriticalitybarGraph" ></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>  -->
     </div><br>
     <div class="row mt-4">
         <div class="col-md-5 pl-0">
@@ -918,7 +892,7 @@ table tbody tr:nth-of-type(odd) td {
                         <div class="form-group col-sm-4 mb-0">
                             <select [(ngModel)]="Fakefromdate" class="form-select" (change)="fakeTodate()" class="form-control">
                                 <option value="">From Date.</option>
-                                <option value="2016" selected>2016</option>
+                                <option value="2016" selected>Previous Month</option>
                             </select>
                         </div>
                         </div>
@@ -928,7 +902,7 @@ table tbody tr:nth-of-type(odd) td {
                         <div class="form-group col-sm-4 mb-0">
                             <select [(ngModel)]="FakeTodate" class="form-select" (change)="fakeTodate()" class="form-control">
                                 <option value="">To Date.</option>
-                                <option value="2020" selected>2020</option>
+                                <option value="2020" selected>After one month</option>
                             </select>
                         </div>
                         </div>
