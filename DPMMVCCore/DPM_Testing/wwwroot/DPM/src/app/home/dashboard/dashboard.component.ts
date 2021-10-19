@@ -4153,7 +4153,7 @@ GetLNGPlantRegisterEXCELRecords() {
       }, err => { console.log(err.error) }
   )
 }
-
+ public account1:any=[]
 GetLNGPlantRegisterRecords(){
   var NonCriticalCountValiuation:number =0
   var LowCountValiuation:number =0
@@ -4191,7 +4191,8 @@ GetLNGPlantRegisterRecords(){
       this.graphicalshow= true;
    }
   })
-  this.acount.splice(60)
+  // this.account1=this.acount
+   this.acount.splice(60)
    this.NonCriticalCount.push(NonCriticalCountValiuation)
    this.LowCount.push(LowCountValiuation)
    this.MediumCount.push(MediumCountValiuation)
@@ -4248,7 +4249,7 @@ GraphicalRepresntationSelectionselection(){
   this.graphicalshow=true
  }
 
-    fakedataforassetcriteriaselection(){
+ fakedataforassetcriteriaselection(){
       this.changeDetectorRef.detectChanges();
       var yLabels = {
         0 : 'Non-Critical',
