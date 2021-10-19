@@ -4159,18 +4159,20 @@ GetLNGPlantRegisterRecords(){
   var LowCountValiuation:number =0
   var MediumCountValiuation:number =0
   var HighCountValiuation:number =0
-  this.RiskMatrixLibraryRecords.forEach(element=>{
-    if(element.RISK_RANKING_Point_System =="Non Critical"){
-      NonCriticalCountValiuation= NonCriticalCountValiuation+1
-         element.CriticalityinNoForGraph = 0
-    }else  if(element.RISK_RANKING_Point_System =="High"){
-      HighCountValiuation=HighCountValiuation+1
+  this.RiskMatrixLibraryRecords.forEach(element => {
+    if (element.RISK_RANKING_Point_System == "Non Critical") {
+      NonCriticalCountValiuation = NonCriticalCountValiuation + 1
+      element.CriticalityinNoForGraph = 0
+    } else if (element.RISK_RANKING_Point_System == "High") {
+      element.RISK_RANKING_Point_System = "Very High"
+      HighCountValiuation = HighCountValiuation + 1
       element.CriticalityinNoForGraph = 3
-    }else  if(element.RISK_RANKING_Point_System =="Medium"){
-      MediumCountValiuation = MediumCountValiuation+1
+    } else if (element.RISK_RANKING_Point_System == "Medium") {
+      element.RISK_RANKING_Point_System = "High"
+      MediumCountValiuation = MediumCountValiuation + 1
       element.CriticalityinNoForGraph = 2
-    }else  if(element.RISK_RANKING_Point_System =="Low"){
-      LowCountValiuation = LowCountValiuation+1
+    } else if (element.RISK_RANKING_Point_System == "Low") {
+      LowCountValiuation = LowCountValiuation + 1
       element.CriticalityinNoForGraph = 1
     }
      let obj ={}
@@ -4207,35 +4209,37 @@ GetLNGPlantRegisterRecords(){
     } else if (element.New_Criticality == "Low") {
       element.NewCriticalityinNoForGraph = 1
     }
-    this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
 
     this.AllAssetList.push(element.Asset)
     if(element.Original_Criticality =="Non Critical"){
          element.CriticalityinNoForGraph = 0
-    }else  if(element.Original_Criticality =="High"){
+    }else if(element.Original_Criticality =="Very High"){
       element.CriticalityinNoForGraph = 3
-    }else  if(element.Original_Criticality =="Medium"){
+    }else  if(element.Original_Criticality =="High"){
       element.CriticalityinNoForGraph = 2
     }else  if(element.Original_Criticality =="Low"){
       element.CriticalityinNoForGraph = 1
     }
-    this.GraphOriginalCriticality.push(element.CriticalityinNoForGraph)
+    if(element.NewCriticalityinNoForGraph == 0 ||element.NewCriticalityinNoForGraph == 1
+      ||element.NewCriticalityinNoForGraph == 2||element.NewCriticalityinNoForGraph == 3){
+      this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
+    }
+    if(element.CriticalityinNoForGraph == 0 ||element.CriticalityinNoForGraph == 1
+      ||element.CriticalityinNoForGraph == 2||element.CriticalityinNoForGraph == 3){
+        this.GraphOriginalCriticality.push(element.CriticalityinNoForGraph)
+    }
+   
   })
 
 }
 GraphicalRepresntationSelectionselection(){
   this.criticalityAssetListShow = true;
-  this.acount.forEach(element=>{
-    if(element.New_Criticality != element.Original_Criticality){
       this.assetback= true
       this.graphicalshow=true
-        // this.ngAfterViewInit()
       this.graphOfChartDatashow= true;
       this.fakedataforassetcriteriaselection()
       this.criticalityAssetListShow = false;
       this.graphicalshow=false
-   }
-  })
  }
  assetgraphback(){
   this.criticalityAssetListShow= true;
@@ -4471,16 +4475,16 @@ GraphicalRepresntationSelectionselection(){
       var NonCriticalCountValiuation:number =0
       this.ExelFiledataFocriticality.forEach(element => {
         if (element.New_Criticality == "Non Critical") {
-          element.CriticalityinNoForGraph = 0
+          element.NewCriticalityinNoForGraph = 0
           NonCriticalCountValiuation = NonCriticalCountValiuation + 1
-        } else if (element.New_Criticality == "very-High") {
-          element.CriticalityinNoForGraph = 3
+        } else if (element.New_Criticality == "Very High") {
+          element.NewCriticalityinNoForGraph = 3
           HighCountValiuation = HighCountValiuation + 1
         } else if (element.New_Criticality == "High") {
-          element.CriticalityinNoForGraph = 2
+          element.NewCriticalityinNoForGraph = 2
           MediumCountValiuation = MediumCountValiuation + 1
         } else if (element.New_Criticality == "Low") {
-          element.CriticalityinNoForGraph = 1
+          element.NewCriticalityinNoForGraph = 1
           LowCountValiuation = LowCountValiuation + 1
         }
       })
@@ -4490,8 +4494,8 @@ GraphicalRepresntationSelectionselection(){
       Medium.push(MediumCountValiuation)
       noncriticalPercentage =((noncritical /this.ExelFiledataFocriticality.length) * 100).toFixed();
       LowPercentage=((Low /this.ExelFiledataFocriticality.length) * 100).toFixed();
-      MediumPercentage=((High /this.ExelFiledataFocriticality.length) * 100).toFixed();
-      HighPercentage=((Medium /this.ExelFiledataFocriticality.length) * 100).toFixed();
+      MediumPercentage=((Medium /this.ExelFiledataFocriticality.length) * 100).toFixed();
+      HighPercentage=((High /this.ExelFiledataFocriticality.length) * 100).toFixed();
       this.chart = new Chart("NewCriticalitybarGraph", {
         type: "bar",
         data: {
@@ -4566,6 +4570,29 @@ GraphicalRepresntationSelectionselection(){
           },
         }
       });
+    }
+    exportToExcel() {
+      const dataArray = this.acount
+      if (dataArray != 0) {
+        const dataArrayList = dataArray.map(obj => {
+          const {NewCriticalityinNoForGraph, CriticalityinNoForGraph, ...rest } = obj;
+          return rest;
+        })
+  
+        var csvData = this.ConvertToCSV(dataArrayList);
+        var a = document.createElement("a");
+        a.setAttribute('style', 'display:none;');
+        document.body.appendChild(a);
+        var blob = new Blob([csvData], { type: 'text/csv' });
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        var link: string = "Criticality_Assesment" + '.csv';
+        a.download = link.toLocaleLowerCase();
+        a.click();
+      } else {
+        this.messageService.add({ severity: 'warn', detail: 'No Records are Found to Download in Excel', sticky: true });
+      }
+  
     }
 }
 
