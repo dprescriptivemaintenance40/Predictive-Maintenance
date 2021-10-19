@@ -327,6 +327,7 @@ table tbody tr:nth-of-type(odd) td {
         </div>
 
         <div class="card-body">
+            <div class="scrollable-content">
             <div class="step-question" style="" id="pid">
                 <strong style="color:#333;font-size: 14px">Asset strategy library</strong>
             </div>
@@ -377,6 +378,7 @@ table tbody tr:nth-of-type(odd) td {
             <a  style="float: right" (click)="helpbox()" class="btn btn-danger btn-sm">Got It</a>
         </div>
     </div>
+</div>
 </div>
 
 <div *ngIf="showcbi" id="CBAnavigate">
@@ -753,26 +755,32 @@ table tbody tr:nth-of-type(odd) td {
 
 <div *ngIf="ManagmentShow">
     <div class="row mt-4">
-        <div class="col-md-4 pl-0">
+        <div class="col-md-12 pl-0">
             <div class="d-block h-100">
                 <div class=" h-100">
                     <div class="bg-white rounded p-3 h-100">
-                        <div class="d-flex">
-                            <strong>% OF EQUIPMENT WITH CRITICALITY ASSESSMENT</strong>
-                        </div>
-                        <div>
+                        <div class="row mt-4">
+                            <div class="col-md-5 pl-0">
+                                <strong>% OF EQUIPMENT WITH CRITICALITY ASSESSMENT</strong>
                             <canvas id="criticalityAssesmentgraph1"></canvas>
+                            </div>
+                            <div class="col-md-5 pl-0">
+                                <strong>EQUIPMENT WITH NEW CRITICALITY ASSESSMENT</strong>
+                                <a class="blink_me" (click)="showBasicDialog1()">
+                                    <strong style="font-size: 12px;"><span class="pulse-green"></span>
+                                    </strong>
+                                </a>
+                                <canvas id="NewCriticalitybarGraph" ></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 pl-0">
+        <!-- <div class="col-md-5 pl-0">
             <div class="d-block h-100">
                 <div class=" h-100">
                     <div class="bg-white rounded p-3 h-100">
-                        <div class="col-md-3">
-                        </div>
                         <div class="d-flex">
                             <strong>EQUIPMENT WITH NEW CRITICALITY ASSESSMENT</strong>
                             <a class="blink_me" (click)="showBasicDialog1()">
@@ -780,24 +788,23 @@ table tbody tr:nth-of-type(odd) td {
                                 </strong>
                             </a>
                         </div>
-                        <div>
+                        <div >
                             <canvas id="NewCriticalitybarGraph" ></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> 
-
-        <div class="col-md-4 pl-0">
+        </div>  -->
+    </div><br>
+    <div class="row mt-4">
+        <div class="col-md-5 pl-0">
             <div class="d-block h-100">
                 <div class=" h-100">
                     <div class="bg-white rounded p-3 h-100">
-                        <div class="col-md-3">
-                        </div>
                         <div class="d-flex">
                             <strong>MITIGATED HEAT RISK MAP</strong>
                             <a class="blink_me" (click)="showBasicDialog()" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Image">
+                                data-bs-placement="top" style="float: right" title="Image">
                                 <strong style="font-size: 12px;"><span class="pulse-green"></span>
                                 </strong>
                             </a>
@@ -862,7 +869,6 @@ table tbody tr:nth-of-type(odd) td {
     </div>
 </p-dialog>
 
-
 <p-dialog header="Graph" [(visible)]="displayBasic1" [style]="{width: '90vw'}" [baseZIndex]="10000">
     <div class="card-body">
         <div class="bg-white p-3">
@@ -896,6 +902,38 @@ table tbody tr:nth-of-type(odd) td {
             </div>
         </div><br>
         <div *ngIf="graphOfChartDatashow">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="row bg-white p-3 mt-3 w-100">
+                        <div class="form-group col-sm-4 mb-0">
+                            <select [(ngModel)]="Faketag" class="form-select" (change)="fakeTodate()" class="form-control">
+                                <option value="">Tag Number.</option>
+                                <option value="K101" selected>K101</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="row bg-white p-3 mt-3 w-100">
+                        <div class="form-group col-sm-4 mb-0">
+                            <select [(ngModel)]="Fakefromdate" class="form-select" (change)="fakeTodate()" class="form-control">
+                                <option value="">From Date.</option>
+                                <option value="2016" selected>2016</option>
+                            </select>
+                        </div>
+                        </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="row bg-white p-3 mt-3 w-100">
+                        <div class="form-group col-sm-4 mb-0">
+                            <select [(ngModel)]="FakeTodate" class="form-select" (change)="fakeTodate()" class="form-control">
+                                <option value="">To Date.</option>
+                                <option value="2020" selected>2020</option>
+                            </select>
+                        </div>
+                        </div>
+                </div>
+            </div><br>
             <canvas id="criticalityAssesmentBargraph" style="height:17rem;width:65rem;"></canvas>
         </div>
     </div>
