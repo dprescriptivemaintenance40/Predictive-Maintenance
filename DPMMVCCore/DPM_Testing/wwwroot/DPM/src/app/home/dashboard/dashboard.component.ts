@@ -4540,7 +4540,7 @@ GraphicalRepresntationSelectionselection(){
               {
                 scaleLabel: {
                   display: true,
-                  labelString: 'In_Percentage'
+                  labelString: ''
                 },
                 ticks: {
                   beginAtZero: true
