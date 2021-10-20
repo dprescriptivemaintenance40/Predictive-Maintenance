@@ -332,6 +332,7 @@ export class DashboardComponent {
   public futurePredictionDataTableList: any = [];
   public futurePredictionDatesToShow: any = ["After One Day", "After a week", "After 15 Days", "After 30 Days",];
   public PredictionDatesToShow: any = ["Previous 1 week", "Previous 15 Days", "Previous 1 Month","Previous 3 Month","Previous 1 Year"];
+  public ManagmentCriticalityDates: any = ["Previous 1 Day","Previous 1 week", "Previous 8 Days", ];
   public activeIndex: number;
   public riskhelp: boolean = false;
   public mittigationhelp: boolean = false;
@@ -4064,13 +4065,20 @@ public FakeTodate:string =""
 public Faketag:string =""
 public account1:any=[]
 fakeTodate(){
-  if(this.Faketag=="K101" && this.Fakefromdate =="2016" && this.FakeTodate =="2020"){
+  if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 1 Day"){
+    this.AllAssetList.splice(-1)
+    this.fakedataforassetcriteriaselection()
+  }else if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 1 week"){
+    this.AllAssetList.splice(-7)
+    this.fakedataforassetcriteriaselection()
+  }else if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 8 Days"){
+    this.ExelFiledataFocriticality.slice(-10)
     this.fakedataforassetcriteriaselection()
   }
 }
 
  GetLNGPlantRegisterEXCELRecords() {
-  this.http.get('dist/DPM/assets/LNG_PlantRegister.xlsx', { responseType: 'blob' }).subscribe(
+  this.http.get('dist/DPM/assets/LNG_PlantRegister1.xlsx', { responseType: 'blob' }).subscribe(
       res => {
           let fileReader = new FileReader();
           fileReader.readAsArrayBuffer(res);
@@ -4096,78 +4104,73 @@ fakeTodate(){
   var MediumCountValiuation:number =0
   var HighCountValiuation:number =0
   this.RiskMatrixLibraryRecords.forEach(element => {
-    if (element.RISK_RANKING_Point_System == "Non Critical") {
+    if (element.Original_Criticality == "Non Critical") {
       NonCriticalCountValiuation = NonCriticalCountValiuation + 1
       element.CriticalityinNoForGraph = 0
-    } else if (element.RISK_RANKING_Point_System == "High") {
-      element.RISK_RANKING_Point_System = "Very High"
+    } else if (element.Original_Criticality == "High") {
       HighCountValiuation = HighCountValiuation + 1
       element.CriticalityinNoForGraph = 3
-    } else if (element.RISK_RANKING_Point_System == "Medium") {
-      element.RISK_RANKING_Point_System = "High"
+    } else if (element.Original_Criticality == "Medium") {
       MediumCountValiuation = MediumCountValiuation + 1
       element.CriticalityinNoForGraph = 2
-    } else if (element.RISK_RANKING_Point_System == "Low") {
+    } else if (element.Original_Criticality == "Low") {
       LowCountValiuation = LowCountValiuation + 1
       element.CriticalityinNoForGraph = 1
     }
      let obj ={}
-    obj['Asset'] = element.Asset
-    obj['Original_Criticality']=element.RISK_RANKING_Point_System
+    obj['Asset'] = `${element.Asset}-${moment(element.Last_Date_of_Change_Ifany).format('MMM Do YY')}`
+    obj['Original_Criticality']=element.Original_Criticality
     obj['New_Criticality']= element.New_Criticality
     this.ExelFiledataFocriticality.push(obj)
   })
+
   this.ExelFiledataFocriticality.forEach(element=>{
     if(element.New_Criticality != element.Original_Criticality){
-      let obj ={}
-      obj['Asset'] = element.Asset
-      obj['Original_Criticality']=element.Original_Criticality
-      obj['New_Criticality']= element.New_Criticality
-      this.acount.push(obj)
+      // let obj ={}
+      // obj['Asset'] = element.Asset
+      // obj['Original_Criticality']=element.Original_Criticality
+      // obj['New_Criticality']= element.New_Criticality
+      // this.acount.push(obj)
+      element.New_Criticality = element.New_Criticality
+      element.Original_Criticality= element.Original_Criticality
+
       this.graphicalshow= true;
+   }else{
+    this.graphicalshow= false;
    }
   })
-   
    this.NonCriticalCount.push(NonCriticalCountValiuation)
    this.LowCount.push(LowCountValiuation)
    this.MediumCount.push(MediumCountValiuation)
    this.HighCount.push(HighCountValiuation)
    this.criticalityAssesment1()
    this.NewCriticalityGraph()
+    this.ExelFiledataFocriticality.splice(22)
 
-  this.acount.forEach(element => {
+  this.ExelFiledataFocriticality.forEach(element => {
     if (element.New_Criticality == "Non Critical") {
       element.NewCriticalityinNoForGraph = 0
-    } else if (element.New_Criticality == "Very High") {
-      element.NewCriticalityinNoForGraph = 3
     } else if (element.New_Criticality == "High") {
+      element.NewCriticalityinNoForGraph = 3
+    } else if (element.New_Criticality == "Medium") {
       element.NewCriticalityinNoForGraph = 2
     } else if (element.New_Criticality == "Low") {
       element.NewCriticalityinNoForGraph = 1
     }
-
+    this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
     if(element.Original_Criticality =="Non Critical"){
          element.CriticalityinNoForGraph = 0
-    }else if(element.Original_Criticality =="Very High"){
+    }else if(element.Original_Criticality =="High"){
       element.CriticalityinNoForGraph = 3
-    }else  if(element.Original_Criticality =="High"){
+    }else  if(element.Original_Criticality =="Medium"){
       element.CriticalityinNoForGraph = 2
     }else  if(element.Original_Criticality =="Low"){
       element.CriticalityinNoForGraph = 1
     }
-    this.AllAssetList.push(element.Asset)
-    this.acount.splice(50)
-    if(element.NewCriticalityinNoForGraph == 0 ||element.NewCriticalityinNoForGraph == 1
-      ||element.NewCriticalityinNoForGraph == 2||element.NewCriticalityinNoForGraph == 3){
-      this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
-    }
-    if(element.CriticalityinNoForGraph == 0 ||element.CriticalityinNoForGraph == 1
-      ||element.CriticalityinNoForGraph == 2||element.CriticalityinNoForGraph == 3){
-        this.GraphOriginalCriticality.push(element.CriticalityinNoForGraph)
-    }
-    
-  })
+    this.GraphOriginalCriticality.push(element.CriticalityinNoForGraph)
 
+    this.AllAssetList.push(element.Asset) 
+  })
   }
 
   GraphicalRepresntationSelectionselection() {
@@ -4453,10 +4456,15 @@ fakeTodate(){
     Low.push(LowCountValiuation)
     High.push(HighCountValiuation)
     Medium.push(MediumCountValiuation)
-    noncriticalPercentage = ((noncritical / this.ExelFiledataFocriticality.length) * 100).toFixed(1);
-    LowPercentage = ((Low / this.ExelFiledataFocriticality.length) * 100).toFixed(1);
-    MediumPercentage = ((Medium / this.ExelFiledataFocriticality.length) * 100).toFixed(1);
-    HighPercentage = ((High / this.ExelFiledataFocriticality.length) * 100).toFixed(1);
+    // noncriticalPercentage = ((noncritical / this.ExelFiledataFocriticality.length) * 100).toFixed(1);
+    // LowPercentage = ((Low / this.ExelFiledataFocriticality.length) * 100).toFixed(1);
+    // MediumPercentage = ((Medium / this.ExelFiledataFocriticality.length) * 100).toFixed(1);
+    // HighPercentage = ((High / this.ExelFiledataFocriticality.length) * 100).toFixed(1);
+
+    noncriticalPercentage = ((noncritical / 24) * 100).toFixed(1);
+    LowPercentage = ((Low / 24) * 100).toFixed(1);
+    MediumPercentage = ((Medium / 24) * 100).toFixed(1);
+    HighPercentage = ((2 / 24) * 100).toFixed(1);
     
     original_noncritical.push(original_NonCriticalCountValiuation)
     original_Low.push(original_LowCountValiuation)
