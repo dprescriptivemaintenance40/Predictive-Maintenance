@@ -4127,7 +4127,7 @@ fakeTodate(){
       this.graphicalshow= true;
    }
   })
-   this.acount.splice(60)
+   
    this.NonCriticalCount.push(NonCriticalCountValiuation)
    this.LowCount.push(LowCountValiuation)
    this.MediumCount.push(MediumCountValiuation)
@@ -4146,7 +4146,6 @@ fakeTodate(){
       element.NewCriticalityinNoForGraph = 1
     }
 
-    this.AllAssetList.push(element.Asset)
     if(element.Original_Criticality =="Non Critical"){
          element.CriticalityinNoForGraph = 0
     }else if(element.Original_Criticality =="Very High"){
@@ -4156,6 +4155,8 @@ fakeTodate(){
     }else  if(element.Original_Criticality =="Low"){
       element.CriticalityinNoForGraph = 1
     }
+    this.AllAssetList.push(element.Asset)
+    this.acount.splice(50)
     if(element.NewCriticalityinNoForGraph == 0 ||element.NewCriticalityinNoForGraph == 1
       ||element.NewCriticalityinNoForGraph == 2||element.NewCriticalityinNoForGraph == 3){
       this.GraphNewCriticality.push(element.NewCriticalityinNoForGraph)
@@ -4164,6 +4165,7 @@ fakeTodate(){
       ||element.CriticalityinNoForGraph == 2||element.CriticalityinNoForGraph == 3){
         this.GraphOriginalCriticality.push(element.CriticalityinNoForGraph)
     }
+    
   })
 
   }
@@ -4310,41 +4312,41 @@ fakeTodate(){
     this.changeDetectorRef.detectChanges();
     new Chart('criticalityAssesmentgraph1', {
       type: 'doughnut',
-      plugins: [
-        {
-          afterDraw: (chart) => {
-            var needleValue = chart.chart.config.data.datasets[0].needleValue;
-            var dataTotal = chart.chart.config.data.datasets[0].data.reduce(
-              (a, b) => a - b
-            );
-            var angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
-            var ctx = chart.chart.ctx;
-            var cw = chart.chart.canvas.offsetWidth;
-            var ch = chart.chart.canvas.offsetHeight;
-            var cx = cw / 2;
-            var cy = ch - 6;
-            ctx.translate(cx, cy);
-            ctx.rotate(angle);
-            ctx.beginPath();
-            ctx.moveTo(0, -3);
-            ctx.lineTo(ch - 20, 0);
-            ctx.lineTo(0, 3);
-            ctx.fillStyle = 'rgb(0, 0, 0)';
-            ctx.fill();
-            ctx.rotate(-angle);
-            ctx.translate(-cx, -cy);
-            ctx.beginPath();
-            ctx.arc(cx, cy, 5, 0, Math.PI * 2);
-            ctx.fill();
-          },
-        },
-      ],
+      // plugins: [
+      //   {
+      //     afterDraw: (chart) => {
+      //       var needleValue = chart.chart.config.data.datasets[0].needleValue;
+      //       var dataTotal = chart.chart.config.data.datasets[0].data.reduce(
+      //         (a, b) => a - b
+      //       );
+      //       var angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
+      //       var ctx = chart.chart.ctx;
+      //       var cw = chart.chart.canvas.offsetWidth;
+      //       var ch = chart.chart.canvas.offsetHeight;
+      //       var cx = cw / 2;
+      //       var cy = ch - 6;
+      //       ctx.translate(cx, cy);
+      //       ctx.rotate(angle);
+      //       ctx.beginPath();
+      //       ctx.moveTo(0, -3);
+      //       ctx.lineTo(ch - 20, 0);
+      //       ctx.lineTo(0, 3);
+      //       ctx.fillStyle = 'rgb(0, 0, 0)';
+      //       ctx.fill();
+      //       ctx.rotate(-angle);
+      //       ctx.translate(-cx, -cy);
+      //       ctx.beginPath();
+      //       ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      //       ctx.fill();
+      //     },
+      //   },
+      // ],
       data: {
         labels: ['Non-crtitical', 'Low', 'Medium', 'High'],
         datasets: [
           {
             data: [this.NonCriticalCount, this.LowCount, this.MediumCount, this.HighCount],
-            needleValue: 1000,
+            // needleValue: 1000,
             backgroundColor: ['green', 'yellow', '#FF5733', 'red'],
           },
         ],
