@@ -41,7 +41,7 @@ const baseConfig: Chart.ChartConfiguration = {
 export class DashboardComponent {
   @ViewChild('graph')
   graphdiv: ElementRef;
-  chart: any;
+  public chart:any;
   public FromDate: string = "";
   public FailuerModeType: string = ""
   public ToDate: string = "";
@@ -435,6 +435,8 @@ public normalassetCount:number=0
     this.GetAllRecords()
     this.MachineEquipmentSelect();
     this.getPredictedListRecordsByDate()
+    this.FromDate1 = moment().format('YYYY-MM-DD');
+    this.ToDate1 = moment().format('YYYY-MM-DD');
     this.items = [{
       expanded: true,
       command: (event: any) => {
@@ -4064,15 +4066,26 @@ public Fakefromdate:string =""
 public FakeTodate:string =""
 public Faketag:string =""
 public account1:any=[]
+public FromDate1: string = ""
+public ToDate1: string = ""
 fakeTodate(){
-  if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 1 Day"){
+  if( this.FakeTodate ==""){
+    this.fakedataforassetcriteriaselection()
+    this.criticalityAssesmentBargraph1show= false;
+  }else if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 1 Day"){
+   this.criticalityAssesmentBargraph1show= true;
     this.AllAssetList.splice(-1)
+    this.fakedataforassetcriteriaselection1()
     this.fakedataforassetcriteriaselection()
-  }else if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 1 week"){
+  }else if(this.FakeTodate =="Previous 1 week"){
+    this.criticalityAssesmentBargraph1show= true;
     this.AllAssetList.splice(-7)
+    // this.fakedataforassetcriteriaselection1()
     this.fakedataforassetcriteriaselection()
-  }else if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 8 Days"){
+  }else if( this.FakeTodate =="Previous 8 Days"){
+    this.criticalityAssesmentBargraph1show= true;
     this.ExelFiledataFocriticality.slice(-10)
+    this.fakedataforassetcriteriaselection1()
     this.fakedataforassetcriteriaselection()
   }
 }
@@ -4126,11 +4139,6 @@ fakeTodate(){
 
   this.ExelFiledataFocriticality.forEach(element=>{
     if(element.New_Criticality != element.Original_Criticality){
-      // let obj ={}
-      // obj['Asset'] = element.Asset
-      // obj['Original_Criticality']=element.Original_Criticality
-      // obj['New_Criticality']= element.New_Criticality
-      // this.acount.push(obj)
       element.New_Criticality = element.New_Criticality
       element.Original_Criticality= element.Original_Criticality
 
@@ -4221,6 +4229,119 @@ fakeTodate(){
             fill: false,
             lineTension: 0,
           },
+        ],
+      },
+      options: {
+        events: ["mousemove", ],
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem) {
+              if (tooltipItem.yLabel == 0) {
+                return "Criticality" + " :" + "Non-Critical";
+              } else if (tooltipItem.yLabel == 1) {
+                return "Criticality" + " :" + "Low";
+              } else if (tooltipItem.yLabel == 2) {
+                return "Criticality" + ":" + "Medium";
+                //  return "" + Number(tooltipItem.yLabel) + "Medium";
+              } else if (tooltipItem.yLabel == 3) {
+                return "Criticality" + ":" + "Critical";
+              }
+
+            }
+          }
+        },
+        backgroundRules: [
+          {
+            yAxisID: 'B',
+            backgroundColor: "#d0f0c0",
+            yAxisSegement: 0,
+          },
+          {
+            yAxisID: 'B',
+            backgroundColor: "#d9ffb3",
+            yAxisSegement: 1
+          },
+          {
+            yAxisID: 'B',
+            backgroundColor: "#ffffb3",
+            yAxisSegement: 2,
+
+          }, {
+            yAxisID: 'B',
+            backgroundColor: "#ffc2b3",
+            yAxisSegement: 3
+          },
+        ],
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Tag_Numbers'
+            },
+            gridLines: {
+              display: false
+            },
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+
+            },
+            ticks: {
+              beginAtZero: true,
+              stepSize: 1
+            },
+            gridLines: {
+              display: false
+            },
+          },
+          {
+            id: 'B',
+            type: 'linear',
+            position: 'right',
+            ticks: {
+              gridLines: {
+                display: false
+              },
+              beginAtZero: true,
+              max: 3,
+              callback: function (value,) {
+                return yLabels[value];
+              }
+            }
+          },
+          ],
+
+        }
+
+      }
+    }); 
+  }
+
+ public criticalityAssesmentBargraph1show= false;
+  fakedataforassetcriteriaselection1() {
+    this.changeDetectorRef.detectChanges();
+    var yLabels = {
+      0: 'Non-Critical',
+      1: 'Low',
+      2: 'Medium ',
+      3: 'High',
+    }
+    this.chart = new Chart('criticalityAssesmentBargraph1', {
+      type: "line",
+      data: {
+        labels: this.AllAssetList,
+        datasets: [
+          {
+            label: "Original-Criticality",
+            data: this.GraphOriginalCriticality,
+            borderWidth: 1,
+            borderColor: "blue",
+            backgroundColor: 'blue',
+            fill: false,
+            lineTension: 0,
+          },
+     
         ],
       },
       options: {
@@ -4484,28 +4605,32 @@ fakeTodate(){
             backgroundColor: "green",
             borderColor: "green",
             borderWidth: 1,
-            data: [original_noncriticalPercentage,noncriticalPercentage]
+            // data: [original_noncriticalPercentage,noncriticalPercentage]
+            data: [20,noncriticalPercentage]
           },
           {
             label: "Low",
             backgroundColor: "yellow",
             borderColor: "yellow",
             borderWidth: 1,
-            data: [original_LowPercentage,LowPercentage]
+            // data: [original_LowPercentage,LowPercentage]
+            data: [29,LowPercentage]
           },
           {
             label: "Medium",
             backgroundColor: "#FF5733",
             borderColor: "#FF5733",
             borderWidth: 1,
-            data: [original_MediumPercentage,MediumPercentage]
+            // data: [original_MediumPercentage,MediumPercentage]
+            data: [17,MediumPercentage]
           },
           {
             label: "High",
             backgroundColor: "red",
             borderColor: "red",
             borderWidth: 1,
-            data: [original_HighPercentage,HighPercentage]
+            // data: [original_HighPercentage,HighPercentage]
+            data: [34,HighPercentage]
           },
         ]
       },

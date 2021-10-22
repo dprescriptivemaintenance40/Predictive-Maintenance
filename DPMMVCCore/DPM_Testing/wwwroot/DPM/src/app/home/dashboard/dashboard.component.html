@@ -890,10 +890,6 @@ table tbody tr:nth-of-type(odd) td {
                 <div class="col-sm-4">
                     <div class="row bg-white p-3 mt-3 w-100">
                         <div class="form-group col-sm-4 mb-0">
-                            <!-- <select [(ngModel)]="Fakefromdate" class="form-select" (change)="fakeTodate()" class="form-control">
-                                <option value="">From Date.</option>
-                                <option value="2016" selected>Previous Month</option>
-                            </select> -->
                             <select class="form-select" [ngModelOptions]="{standalone: true}" (change)="fakeTodate()"
                             [(ngModel)]="FakeTodate" class="form-control" name="FakeTodate">
                             <option value="">Dates</option>
@@ -902,18 +898,16 @@ table tbody tr:nth-of-type(odd) td {
                         </div>
                         </div>
                 </div>
-                <!-- <div class="col-sm-4">
-                    <div class="row bg-white p-3 mt-3 w-100">
-                        <div class="form-group col-sm-4 mb-0">
-                            <select [(ngModel)]="FakeTodate" class="form-select" (change)="fakeTodate()" class="form-control">
-                                <option value="">To Date.</option>
-                                <option value="2020" selected>After one month</option>
-                            </select>
-                        </div>
-                        </div>
-                </div> -->
+          
             </div><br>
+            <div *ngIf="criticalityAssesmentBargraph1show" style="text-align:center">
+                <strong >Graph shows Original Criticality for {{FakeTodate}}</strong>
+                <canvas id="criticalityAssesmentBargraph1" style="height:17rem;width:65rem;"></canvas>
+            </div><br><br><br>
+            <div style="text-align:center">
+            <strong>Graph shows Original Criticality & New Criticality for {{FakeTodate}}</strong>
             <canvas id="criticalityAssesmentBargraph" style="height:17rem;width:65rem;"></canvas>
+            </div>
         </div>
     </div>
 </p-dialog>
