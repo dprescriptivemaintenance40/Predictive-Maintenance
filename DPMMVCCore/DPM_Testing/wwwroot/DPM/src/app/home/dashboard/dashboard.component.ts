@@ -332,7 +332,7 @@ export class DashboardComponent {
   public futurePredictionDataTableList: any = [];
   public futurePredictionDatesToShow: any = ["After One Day", "After a week", "After 15 Days", "After 30 Days",];
   public PredictionDatesToShow: any = ["Previous 1 week", "Previous 15 Days", "Previous 1 Month","Previous 3 Month","Previous 1 Year"];
-  public ManagmentCriticalityDates: any = ["Previous 1 Day","Previous 1 week", "Previous 8 Days", ];
+  public ManagmentCriticalityDates: any = ["Previous 1 Day","Previous 1 week", "Previous 10 Days", ];
   public activeIndex: number;
   public riskhelp: boolean = false;
   public mittigationhelp: boolean = false;
@@ -4072,17 +4072,18 @@ fakeTodate(){
   if( this.FakeTodate ==""){
     this.fakedataforassetcriteriaselection()
     this.criticalityAssesmentBargraph1show= false;
-  }else if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 1 Day"){
-   this.criticalityAssesmentBargraph1show= true;
-    this.AllAssetList.splice(-1)
+  // }else if(this.Faketag=="K101" &&  this.FakeTodate =="Previous 1 Day"){
+  }else if( this.FakeTodate =="Previous 1 Day"){
+    this.criticalityAssesmentBargraph1show= true;
+    this.ExelFiledataFocriticality.slice(-1)
     this.fakedataforassetcriteriaselection1()
     this.fakedataforassetcriteriaselection()
   }else if(this.FakeTodate =="Previous 1 week"){
-    this.criticalityAssesmentBargraph1show= true;
+    // this.criticalityAssesmentBargraph1show= true;
     this.AllAssetList.splice(-7)
     // this.fakedataforassetcriteriaselection1()
     this.fakedataforassetcriteriaselection()
-  }else if( this.FakeTodate =="Previous 8 Days"){
+  }else if( this.FakeTodate =="Previous 10 Days"){
     this.criticalityAssesmentBargraph1show= true;
     this.ExelFiledataFocriticality.slice(-10)
     this.fakedataforassetcriteriaselection1()
