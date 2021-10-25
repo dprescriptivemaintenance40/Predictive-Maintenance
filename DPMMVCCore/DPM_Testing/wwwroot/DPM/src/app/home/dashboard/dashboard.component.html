@@ -770,6 +770,7 @@ table tbody tr:nth-of-type(odd) td {
             </div>
         </div>
     </div><br>
+  
     <div class="row mt-4">
         <div class="col-md-5 pl-0">
             <div class="d-block h-100">
@@ -790,6 +791,27 @@ table tbody tr:nth-of-type(odd) td {
                 </div>
             </div>
         </div>
+  
+        <div class="col-md-5 pl-0">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="d-flex">
+                            <strong>AVAILABILITY (ALL SITES)</strong>
+                            <a class="blink_me" (click)="showBasicDialog2()" data-bs-toggle="tooltip"
+                                data-bs-placement="top" style="float: right" title="Image">
+                                <strong style="font-size: 12px;"><span class="pulse-green"></span>
+                                </strong>
+                            </a>
+                        </div>
+                        <div>
+                            <canvas id="AVAILABILITYSite"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
     </div>
     <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpshow">
         <a style="float: right" (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i
@@ -912,6 +934,48 @@ table tbody tr:nth-of-type(odd) td {
     </div>
 </p-dialog>
 
+<p-dialog header="Graph" [(visible)]="displayBasic2" [style]="{width: '80vw'}" [baseZIndex]="10000">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="row bg-white p-3 mt-3 w-100">
+                <div class="form-group col-sm-4 mb-0">
+                    <select [(ngModel)]="AvailabilitySite" class="form-select" (change)="AvailabilityChange()" class="form-control">
+                        <option value=""></option>
+                        <option value="system1"selected>System-1</option>
+                        <option value="system2"selected>System-2</option>
+                        <option value="system3"selected>System-3</option>
+                        <option value="system4"selected>System-4</option>
+                        <option value="system5"selected>System-5</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div><br>
+    <div style="text-align:center" *ngIf="system">
+        <strong>System</strong>
+        <canvas id="Avalibilitygraph1" style="height:17rem;width:65rem;"></canvas>
+    </div>
+    <div style="text-align:center" *ngIf="system1">
+        <strong>Graph for System1</strong>
+        <canvas id="Avalibilitygraph1" style="height:17rem;width:65rem;"></canvas>
+    </div>
+    <div style="text-align:center" *ngIf="system2">
+        <strong>Graph for System2</strong>
+        <canvas id="Avalibilitygraph2" style="height:17rem;width:65rem;"></canvas>
+    </div>
+    <div style="text-align:center" *ngIf="system3">
+        <strong>Graph for System3</strong>
+        <canvas id="Avalibilitygraph3" style="height:17rem;width:65rem;"></canvas>
+    </div>
+    <div style="text-align:center" *ngIf="system4">
+        <strong>Graph for System4</strong>
+        <canvas id="Avalibilitygraph4" style="height:17rem;width:65rem;"></canvas>
+    </div>
+    <div style="text-align:center" *ngIf="system5">
+        <strong>Graph for System5</strong>
+        <canvas id="Avalibilitygraph5" style="height:17rem;width:65rem;"></canvas>
+    </div>
+</p-dialog>
 
   
 

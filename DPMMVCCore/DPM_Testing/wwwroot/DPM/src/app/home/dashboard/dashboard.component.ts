@@ -240,6 +240,7 @@ export class DashboardComponent {
   displayModal: boolean;
   displayBasic: boolean;
   displayBasic1: boolean;
+  displayBasic2: boolean;
   public SelectTagNumbers: string = "";
   public PredictiongraphShow: boolean = true;
   public PredictiongraphShow1: boolean = true;
@@ -410,7 +411,7 @@ public normalassetCount:number=0
     private PSRAPIs: PrescriptiveContantAPI,
     private configService: ConfigService,
     private route: ActivatedRoute,
-
+ 
 
     public commonLoadingDirective: CommonLoadingDirective,) {
     this.title.setTitle('Dashboard | Dynamic Prescriptive Maintenence');
@@ -494,7 +495,7 @@ public normalassetCount:number=0
     this.criticalityAssesment1()
     this.NewCriticalityGraph()
     this.mittigatedheatriskmap()
-    // this.Avabilitysites()
+   this.Avabilitysites()
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
     this.AssociatedFailuerMode= false
@@ -646,6 +647,8 @@ public normalassetCount:number=0
     this.displayBasic1 = true;
      this.fakedataforassetcriteriaselection()
   }
+
+
 
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -4709,5 +4712,522 @@ fakeTodate(){
     }
 
   }
+
+  Avabilitysites(){
+    this.chart = new Chart("AVAILABILITYSite", {
+      type: "bar",
+      data: {
+        labels: ["System-1","System-2","System-3","System-4","System-5"],
+        datasets: [
+          {
+            label: "lower-Availability",
+            backgroundColor: "#00ff80",
+            borderColor: "#00ff80",
+            borderWidth: 1,
+            data: [0.97,0.98,0.99,1,1.1]
+          },
+          {
+            label: "Highest-Availability",
+            backgroundColor: "green",
+            borderColor: "green",
+            borderWidth: 1,
+            data: [1,2.1,2.9,3,3.1]
+          },
+          {
+            label: "Lower-MTBF",
+            backgroundColor: "#9595CC",
+            borderColor: "#9595CC",
+            borderWidth: 1,
+            data: [2,4,2,6,4]
+          },
+          {
+            label: "Higher-MTBF",
+            backgroundColor: "#000081",
+            borderColor: "#000081",
+            borderWidth: 1,
+            data: [4,6,4,8,6]
+          },
+        ]
+      },
+      options: {
+        events: [],
+        legend: {
+          display: true,
+          labels: {
+            usePointStyle: true,
+            boxWidth: 5,
+          }
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: ''
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        },
+        // "animation": {
+        //   "duration": 1,
+        //   "onComplete": function () {
+        //     var chartInstance = this.chart,
+        //       ctx = chartInstance.ctx;
+        //     this.data.datasets.forEach(function (dataset, i) {
+        //       var meta = chartInstance.controller.getDatasetMeta(i);
+        //       meta.data.forEach(function (bar, index) {
+        //         var data = dataset.data[index];
+        //         if (data > 0) {
+        //           ctx.fillText(data, bar._model.x, bar._model.y - 5);
+        //         }
+        //       });
+        //     });
+        //   }
+        // },
+      }
+    });
+  }
+
+  showBasicDialog2() {
+    this.displayBasic2 = true;
+   this.Avalibilitygraph1Show()
+  }
+  public AvailabilitySite:string="";
+  public AvalibilityChartIds:any=[]
+  public system:boolean=true
+  public system1:boolean=false
+  public system2:boolean=false
+  public system3:boolean=false
+  public system4:boolean=false
+  public system5:boolean=false
+  AvailabilityChange(){
+    if(this.AvailabilitySite==""){
+      this.system = true;
+      this.Avalibilitygraph1Show()
+      this.system1=false
+      this.system2=false
+      this.system3=false
+      this.system4=false
+      this.system5=false
+    }else if(this.AvailabilitySite =="system1"){
+      this.system=false
+      this.system2=false
+      this.system3=false
+      this.system4=false
+      this.system5=false
+      this.system1=true
+      this.Avalibilitygraph1Show()
+    }else if(this.AvailabilitySite =="system2"){
+      this.system2=true
+      this.Avalibilitygraph2Show()
+      this.system1=false
+      this.system=false
+      this.system3=false
+      this.system4=false
+      this.system5=false
+    }else if(this.AvailabilitySite =="system3"){
+      this.system3=true
+      this.Avalibilitygraph3Show()
+      this.system1=false
+      this.system2=false
+      this.system=false
+      this.system4=false
+      this.system5=false
+    }else if(this.AvailabilitySite =="system4"){
+      this.system4=true
+      this.Avalibilitygraph4Show()
+      this.system1=false
+      this.system2=false
+      this.system3=false
+      this.system=false
+      this.system5=false
+    }else if(this.AvailabilitySite =="system5"){
+      this.system5=true
+      this.Avalibilitygraph5Show()
+      this.system1=false
+      this.system2=false
+      this.system3=false
+      this.system4=false
+      this.system=false
+    }
+  }
+  Avalibilitygraph1Show(){
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("Avalibilitygraph1", {
+      type: "bar",
+      data: {
+        labels: ["Jun","Jully","Aug","Sep","Oct"],
+        datasets: [
+          {
+            label: "lower-Availability",
+            backgroundColor: "#00ff80",
+            borderColor: "#00ff80",
+            borderWidth: 1,
+            data: [0.97,0.98,0.99,1,1.1]
+          },
+          {
+            label: "Highest-Availability",
+            backgroundColor: "green",
+            borderColor: "green",
+            borderWidth: 1,
+            data: [1,2.1,2.9,3,3.1]
+          },
+          {
+            label: "Lower-MTBF",
+            backgroundColor: "#9595CC",
+            borderColor: "#9595CC",
+            borderWidth: 1,
+            data: [2,4,2,6,4]
+          },
+          {
+            label: "Higher-MTBF",
+            backgroundColor: "#000081",
+            borderColor: "#000081",
+            borderWidth: 1,
+            data: [4,6,4,8,6]
+          },
+        ]
+      },
+      options: {
+        events: [],
+        legend: {
+          display: true,
+          labels: {
+            usePointStyle: true,
+            boxWidth: 5,
+          }
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: ''
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        },
+      }
+    });
+  }
+
+  Avalibilitygraph2Show(){
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("Avalibilitygraph2", {
+      type: "bar",
+      data: {
+        labels: ["Jun","Jully","Aug","Sep","Oct"],
+        datasets: [
+          {
+            label: "lower-Availability",
+            backgroundColor: "#00ff80",
+            borderColor: "#00ff80",
+            borderWidth: 1,
+            data: [0.99,1,1.1,1.8,2]
+          },
+          {
+            label: "Highest-Availability",
+            backgroundColor: "green",
+            borderColor: "green",
+            borderWidth: 1,
+            data: [1,2,2.9,3,3.1]
+          },
+          {
+            label: "Lower-MTBF",
+            backgroundColor: "#9595CC",
+            borderColor: "#9595CC",
+            borderWidth: 1,
+            data: [2,4,2,6,4]
+          },
+          {
+            label: "Higher-MTBF",
+            backgroundColor: "#000081",
+            borderColor: "#000081",
+            borderWidth: 1,
+            data: [4,6,4,8,6]
+          },
+        ]
+      },
+      options: {
+        events: [],
+        legend: {
+          display: true,
+          labels: {
+            usePointStyle: true,
+            boxWidth: 5,
+          }
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: ''
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        },
+      }
+    });
+  }
+
+  Avalibilitygraph3Show(){
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("Avalibilitygraph3", {
+      type: "bar",
+      data: {
+        labels: ["Jun","Jully","Aug","Sep","Dec"],
+        datasets: [
+          {
+            label: "lower-Availability",
+            backgroundColor: "#00ff80",
+            borderColor: "#00ff80",
+            borderWidth: 1,
+            data: [1.1,2,2.1,2.8,3]
+          },
+          {
+            label: "Highest-Availability",
+            backgroundColor: "green",
+            borderColor: "green",
+            borderWidth: 1,
+            data: [2,4,4.9,5,5.1]
+          },
+          {
+            label: "Lower-MTBF",
+            backgroundColor: "#9595CC",
+            borderColor: "#9595CC",
+            borderWidth: 1,
+            data: [2,4,2,6,4]
+          },
+          {
+            label: "Higher-MTBF",
+            backgroundColor: "#000081",
+            borderColor: "#000081",
+            borderWidth: 1,
+            data: [4,6,4,8,6]
+          },
+        ]
+      },
+      options: {
+        events: [],
+        legend: {
+          display: true,
+          labels: {
+            usePointStyle: true,
+            boxWidth: 5,
+          }
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: ''
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        },
+      }
+    });
+  }
+
+  Avalibilitygraph4Show(){
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("Avalibilitygraph4", {
+      type: "bar",
+      data: {
+        labels: ["Jun","Jully","Aug","Sep","Nov"],
+        datasets: [
+          {
+            label: "lower-Availability",
+            backgroundColor: "#00ff80",
+            borderColor: "#00ff80",
+            borderWidth: 1,
+            data: [0.99,1,1.1,1.8,2]
+          },
+          {
+            label: "Highest-Availability",
+            backgroundColor: "green",
+            borderColor: "green",
+            borderWidth: 1,
+            data: [1,2,2.9,3,3.1]
+          },
+          {
+            label: "Lower-MTBF",
+            backgroundColor: "#9595CC",
+            borderColor: "#9595CC",
+            borderWidth: 1,
+            data: [2,4,2,6,4]
+          },
+          {
+            label: "Higher-MTBF",
+            backgroundColor: "#000081",
+            borderColor: "#000081",
+            borderWidth: 1,
+            data: [4,6,4,8,6]
+          },
+        ]
+      },
+      options: {
+        events: [],
+        legend: {
+          display: true,
+          labels: {
+            usePointStyle: true,
+            boxWidth: 5,
+          }
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: ''
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        },
+      }
+    });
+  }
+
+  Avalibilitygraph5Show(){
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("Avalibilitygraph5", {
+      type: "bar",
+      data: {
+        labels: ["Jun","Jully","Aug","Sep","Oct"],
+        datasets: [
+          {
+            label: "lower-Availability",
+            backgroundColor: "#00ff80",
+            borderColor: "#00ff80",
+            borderWidth: 1,
+            data: [0.99,1,1.1,1.8,2]
+          },
+          {
+            label: "Highest-Availability",
+            backgroundColor: "green",
+            borderColor: "green",
+            borderWidth: 1,
+            data: [1,2,2.9,3,3.1]
+          },
+          {
+            label: "Lower-MTBF",
+            backgroundColor: "#9595CC",
+            borderColor: "#9595CC",
+            borderWidth: 1,
+            data: [2,4,2,6,4]
+          },
+          {
+            label: "Higher-MTBF",
+            backgroundColor: "#000081",
+            borderColor: "#000081",
+            borderWidth: 1,
+            data: [4,6,4,8,6]
+          },
+        ]
+      },
+      options: {
+        events: [],
+        legend: {
+          display: true,
+          labels: {
+            usePointStyle: true,
+            boxWidth: 5,
+          }
+        },
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: ''
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
+        },
+      }
+    });
+  }
+
 }
 
