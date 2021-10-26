@@ -891,33 +891,37 @@ table tbody tr:nth-of-type(odd) td {
         <a style="float: right" (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i
                 class="fas fa-comment-dots"></i></a>
     </div>
-    <div class="rounded bg-white shadow col-md-4 fixed-card" style="padding: 20px" *ngIf="Managmenthelpboxshow">
-        <strong>Steps</strong>
-        <div class="card-body p-0">
-            <div class="scrollable-content-">
+    <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpshow">
+        <a style="float: right" (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i
+                class="fas fa-comment-dots"></i></a>
+    </div>
+    <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpboxshow">
+        <strong style="color: blue">Steps</strong>
+        <div class="card-body">
+            <div class="scrollable-content">
                 <div>
-                    <div class="bg-white ">
-                        <p class="step-answer">
+                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                        <strong>
                             Predix Asset Performance Management connects the complex data sets found across
                             dozens of departments,
                             systems, and hundreds of thousands of assets,
                             displaying the information that is key to the health of your assets, and critical to
                             your business.
-                        </p>
+                        </strong>
                     </div>
-                    <div class="bg-white ">
-                        <p class="step-answer">
+                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                        <strong>
                             Instead of spending hours each day consolidating information from hundreds of
                             points,
                             APM provides a comprehensive overview in a single digital cockpit.
-                        </p>
+                        </strong>
                     </div>
-                    <div class="bg-white">
-                        <p class="step-answer">
+                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
+                        <strong>
                             Using 6 configurable modules,
                             the APM personalized dashboard visualizes overall asset performance management
                             at a plant.
-                        </p>
+                        </strong>
                     </div>
                     <div>
                         <a style="float: right" (click)="Managmenthelpbox()" class="btn btn-danger btn-sm">Got It</a>
