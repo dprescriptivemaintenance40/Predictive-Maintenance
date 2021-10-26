@@ -440,29 +440,6 @@ public normalassetCount:number=0
     this.getPredictedListRecordsByDate()
     this.FromDate1 = moment().format('YYYY-MM-DD');
     this.ToDate1 = moment().format('YYYY-MM-DD');
-    this.items = [{
-      expanded: true,
-      command: (event: any) => {
-        this.activeIndex = 0;
-      }
-    },
-    {
-      command: (event: any) => {
-        this.activeIndex = 1;
-
-      }
-    },
-    {
-      command: (event: any) => {
-        this.activeIndex = 2;
-      }
-    },
-    {
-      command: (event: any) => {
-        this.activeIndex = 3;
-      }
-    },
-    ];
   }
 
   getPredictedListRecordsByDate() {
@@ -499,6 +476,7 @@ public normalassetCount:number=0
     this.mittigatedheatriskmap()
      this.Avabilitysites()
      this.UnplanedMaintainaceCost()
+     this.HIGH_RISK_ASSET()
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
     this.AssociatedFailuerMode= false
@@ -506,7 +484,6 @@ public normalassetCount:number=0
      this.ExecutorShow=true;
      this.AssociatedFailuerMode=true;
      this.allCBI= true
-
     this.ManagmentShow=false
      this.PrescriptiveShow=false;
      this.GerAllPredictionRecords();
@@ -626,7 +603,6 @@ public normalassetCount:number=0
     }
   }
 
-
   FullCBAObject() {
     // this.fullCBAobject = JSON.parse(localStorage.getItem('CBAOBJ')).FullObject;
     // this.myObj = JSON.parse(this.fullCBAobject);
@@ -650,8 +626,6 @@ public normalassetCount:number=0
     this.displayBasic1 = true;
      this.fakedataforassetcriteriaselection()
   }
-
-
 
   getPrescriptiveRecords() {
     this.http.get('api/PrescriptiveAPI/GetTagNumber')
@@ -5327,6 +5301,94 @@ fakeTodate(){
       }
     });
 
+  }
+
+  HIGH_RISK_ASSET(){
+    this.changeDetectorRef.detectChanges();
+    var a:any=[]
+    a= this.AllAssetList.splice(-7)
+    this.chart = new Chart("HIGHRISK_ASSET", {
+      type: "bar",
+      data: {
+        labels: a,
+        fill: true,
+        datasets: [
+          {
+            // label: "Normal",
+            data: [1,2,2.9,3,3.1],
+            borderWidth: 1,
+            borderColor: "#20c997",
+            backgroundColor: '#20c997',
+            fill: true,
+
+          },
+          {
+            // label: "Incipient",
+            data: [2,4,6,4,2],
+            borderWidth: 1,
+            borderColor: "#fa8b0c",
+            backgroundColor: '#fa8b0c',
+            fill: true,
+
+          },
+          {
+            // label: "Degrade",
+            data: [4,6,8,6,4],
+            borderWidth: 1,
+            borderColor: "#ff3a7a",
+            backgroundColor: '#ff3a7a',
+            fill: true,
+
+          },
+
+        ],
+      },
+      options: {
+        events: [],
+        scales: {
+          xAxes: [{
+              stacked: true,
+              barThickness: 30,
+              maxBarThickness: 30 ,
+            gridLines: {
+              display: false
+            },
+          }],
+          yAxes: [
+            {
+               stacked: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'In_Percentage'
+              },
+              ticks: {
+                beginAtZero: true,
+                gridLines: {
+                  display: false
+                },
+              }
+            }
+          ]
+        },
+        "animation": {
+          "duration": 1,
+          "onComplete": function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                if (data > 0) {
+                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                }
+              });
+            });
+          }
+        },
+      }
+
+    });
   }
 }
 
