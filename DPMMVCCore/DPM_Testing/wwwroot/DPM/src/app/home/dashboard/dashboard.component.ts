@@ -5306,7 +5306,7 @@ fakeTodate(){
   HIGH_RISK_ASSET(){
     this.changeDetectorRef.detectChanges();
     var a:any=[]
-    a= this.AllAssetList.splice(-7)
+    a= this.AllAssetList.splice(-5)
     this.chart = new Chart("HIGHRISK_ASSET", {
       type: "bar",
       data: {
@@ -5314,17 +5314,17 @@ fakeTodate(){
         fill: true,
         datasets: [
           {
-            // label: "Normal",
+             label: "",
             data: [1,2,2.9,3,3.1],
             borderWidth: 1,
-            borderColor: "#20c997",
-            backgroundColor: '#20c997',
+            borderColor: "#50C878",
+            backgroundColor: '#50C878',
             fill: true,
 
           },
           {
-            // label: "Incipient",
-            data: [2,4,6,4,2],
+             label: "",
+            data: [4,6,8,6,4],
             borderWidth: 1,
             borderColor: "#fa8b0c",
             backgroundColor: '#fa8b0c',
@@ -5332,11 +5332,11 @@ fakeTodate(){
 
           },
           {
-            // label: "Degrade",
-            data: [4,6,8,6,4],
+             label: "",
+            data:[2,4,2,4,2],
             borderWidth: 1,
-            borderColor: "#ff3a7a",
-            backgroundColor: '#ff3a7a',
+            borderColor: "#82CAFF",
+            backgroundColor: '#82CAFF',
             fill: true,
 
           },
@@ -5370,22 +5370,22 @@ fakeTodate(){
             }
           ]
         },
-        "animation": {
-          "duration": 1,
-          "onComplete": function () {
-            var chartInstance = this.chart,
-              ctx = chartInstance.ctx;
-            this.data.datasets.forEach(function (dataset, i) {
-              var meta = chartInstance.controller.getDatasetMeta(i);
-              meta.data.forEach(function (bar, index) {
-                var data = dataset.data[index];
-                if (data > 0) {
-                  ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                }
-              });
-            });
-          }
-        },
+        // "animation": {
+        //   "duration": 1,
+        //   "onComplete": function () {
+        //     var chartInstance = this.chart,
+        //       ctx = chartInstance.ctx;
+        //     this.data.datasets.forEach(function (dataset, i) {
+        //       var meta = chartInstance.controller.getDatasetMeta(i);
+        //       meta.data.forEach(function (bar, index) {
+        //         var data = dataset.data[index];
+        //         if (data > 0) {
+        //           ctx.fillText(data, bar._model.x, bar._model.y - 5);
+        //         }
+        //       });
+        //     });
+        //   }
+        // },
       }
 
     });
