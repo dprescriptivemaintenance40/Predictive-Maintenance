@@ -32,7 +32,7 @@ table tbody tr:nth-of-type(odd) td {
     }
 </style>
 <p-toast position="top-right"></p-toast>
-<div class="row bg-white p-3 mt-3 w-100">
+<div class="row bg-white p-3 mt-0 w-100">
     <div class="form-group col-sm-4 mb-0">
         <h5>Please select a Dashboard !</h5>
         <select [(ngModel)]="dashboardshow" class="form-select" (change)="Dashboardshowcriteria()" class="form-control">
@@ -477,8 +477,23 @@ table tbody tr:nth-of-type(odd) td {
     <div *ngIf="assetselection">
         <div class="bg-white p-3">
             <div class="col-sm-12 p-0">
-                <h5>Asset Functional Description </h5>
-                <div class="table-responsive-sm bg-white p-2 mb-4">
+                <h5 class="mb-4">Asset Functional Description </h5>
+                <div class="table-data" *ngFor="let obj of allCBAdata;">
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Reliability data:<span class="badge badge-success">0.999500</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Asset criticality:<span class="badge badge-success">{{obj.EconomicRiskWithDPMCR}}</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Date of commissioning:<span class="badge badge-success">06/11/2016</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Date of Last major repair:<span class="badge badge-success">30/03/2017</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;MTBF:<span class="badge badge-success">2.833213</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;MTTR:<span class="badge badge-success">1.037433</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Availability required:<span class="badge badge-success">40</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Mission life:<span class="badge badge-success">Mission life</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Expected Reliability:<span class="badge badge-success">60</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Reliability data (contd.):<span class="badge badge-success">3.608018</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;RAV:<span class="badge badge-success">RAV</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Major maintenance cost:<span class="badge badge-success">25$</span></label>
+                    <label><i class="pi pi-info-circle small font-weight-bolder"></i>&nbsp;&nbsp;Data quality:<span class="badge badge-success">Good</span></label>
+                </div>
+                <!-- <div class="table-responsive-sm bg-white p-2 mb-4">
                     <table class="table">
                         <thead>
                             <tr>
@@ -499,7 +514,7 @@ table tbody tr:nth-of-type(odd) td {
                         </thead>
                         <tbody *ngFor="let obj of allCBAdata;">
                             <tr>
-                                <td> 0.999500</td>
+                                <td>0.999500</td>
                                 <td> {{obj.EconomicRiskWithDPMCR}}</td>
                                 <td>06/11/2016</td>
                                 <td>30/03/2017 </td>
@@ -515,7 +530,7 @@ table tbody tr:nth-of-type(odd) td {
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </div> -->
             </div>
         </div><br>
 
@@ -789,9 +804,28 @@ table tbody tr:nth-of-type(odd) td {
                         </div>
                     </div>
                 </div>
+            </div>            
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-white p-4">
+                    <div class="d-flex mb-4">
+                        <strong>MITIGATED HEAT RISK MAP</strong>
+                        <a class="blink_me" (click)="showBasicDialog()" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Image">
+                            <strong style="font-size: 12px;"><span class="pulse-green"></span>
+                            </strong>
+                        </a>
+                    </div>
+                    <div>
+                        <canvas id="Mittigatedheatriskmap"></canvas>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-6 pl-0">
+        <!-- <div class="col-md-6 pl-0">
             <div class="d-block h-100">
                 <div class=" h-100">
                     <div class="bg-white rounded p-3 h-100">
@@ -809,7 +843,7 @@ table tbody tr:nth-of-type(odd) td {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div><br>
 
@@ -857,33 +891,33 @@ table tbody tr:nth-of-type(odd) td {
         <a style="float: right" (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i
                 class="fas fa-comment-dots"></i></a>
     </div>
-    <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpboxshow">
-        <strong style="color: blue">Steps</strong>
-        <div class="card-body">
-            <div class="scrollable-content">
+    <div class="rounded bg-white shadow col-md-4 fixed-card" style="padding: 20px" *ngIf="Managmenthelpboxshow">
+        <strong>Steps</strong>
+        <div class="card-body p-0">
+            <div class="scrollable-content-">
                 <div>
-                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                        <strong>
+                    <div class="bg-white ">
+                        <p class="step-answer">
                             Predix Asset Performance Management connects the complex data sets found across
                             dozens of departments,
                             systems, and hundreds of thousands of assets,
                             displaying the information that is key to the health of your assets, and critical to
                             your business.
-                        </strong>
+                        </p>
                     </div>
-                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                        <strong>
+                    <div class="bg-white ">
+                        <p class="step-answer">
                             Instead of spending hours each day consolidating information from hundreds of
                             points,
                             APM provides a comprehensive overview in a single digital cockpit.
-                        </strong>
+                        </p>
                     </div>
-                    <div class="shadow p-3 mb-5 bg-white " style="border-radius: 15px 50px 30px; padding:10px;">
-                        <strong>
+                    <div class="bg-white">
+                        <p class="step-answer">
                             Using 6 configurable modules,
                             the APM personalized dashboard visualizes overall asset performance management
                             at a plant.
-                        </strong>
+                        </p>
                     </div>
                     <div>
                         <a style="float: right" (click)="Managmenthelpbox()" class="btn btn-danger btn-sm">Got It</a>
@@ -895,12 +929,10 @@ table tbody tr:nth-of-type(odd) td {
 
     </div>
 </div>
-<p-dialog header="Graph" [(visible)]="displayBasic" [style]="{width: '70vw'}" [baseZIndex]="10000">
+<p-dialog header="Mitigated Risk Heat Map" [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000" class="mask-it">
     <div class="card-body">
-        <div style="text-align: center">
-        <strong>Mitigated Risk Heat Map</strong>
-        </div><br>
-        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/risk_matrixGraph.JPG"
+        
+        <img  class="img-fluid" src="/dist/DPM/assets/risk_matrixGraph.JPG"
             alt="">
     </div>
 </p-dialog>
