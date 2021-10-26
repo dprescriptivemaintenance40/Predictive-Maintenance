@@ -30,6 +30,7 @@ import {TreeTableModule} from 'primeng/treetable';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
 import { RBDChartModule } from "./rbd-org-chart/rbd-org-chart.component";
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
@@ -61,6 +62,7 @@ import { RBDChartModule } from "./rbd-org-chart/rbd-org-chart.component";
         TreeTableModule,
         CheckboxModule,
         CalendarModule,
+        AutoCompleteModule,
         RBDChartModule],
     exports: [CommonModule,
         CommonLoadingComponent,
@@ -92,6 +94,7 @@ import { RBDChartModule } from "./rbd-org-chart/rbd-org-chart.component";
         CheckboxModule,
         CalendarModule,
         InputNumberModule,
+        AutoCompleteModule,
         RBDChartModule]
 })
 export class SharedModule {

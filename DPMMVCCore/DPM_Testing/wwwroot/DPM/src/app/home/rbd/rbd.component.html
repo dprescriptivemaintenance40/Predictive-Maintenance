@@ -1,3 +1,113 @@
-<div class="col-md-12" style="overflow: auto;">
-    <rbd-organizationChart [value]="MainTree"></rbd-organizationChart>
-</div>
+<div class="card dpm-card p-3">
+        <p-tabView>
+            <p-tabPanel header="List" leftIcon="pi pi-align-left">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-11 p-0">
+                        <div class="mb-4 con">
+                            <div class="card-body p-0">
+                                <p-table [scrollable]="true" [style]="{width:'100%'}" [value]="RBDList" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                                    <ng-template pTemplate="colgroup">
+                                        <colgroup>
+                                            <col style="width:5em;">
+                                            <col style="width:9em;">
+                                            <col style="width:9em;">
+                                            <col style="width:14em;">
+                                        </colgroup>
+                                    </ng-template>
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>Sr.No</th>
+                                            <th>Tag Number</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                                        <tr>
+                                            <td>{{rowIndex + 1}}</td>
+                                            <td>{{p.TagNumber}}</td>
+                                            <td>{{p.Date | date:'medium'}}</td>
+                                            <td>
+                                                <a title="View RBD Tree" (click)="ViewSavedRBD(p)" class="link-primary mr-1"><i class="fa fa-eye mr-2" aria-hidden="true"></i></a>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="10">No records to show.</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="ADD" leftIcon="pi pi-align-left">
+                <div class="card dpm-card div-in-middle w-100 p-0" *ngIf="SelectBoxEnabled">
+                    <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Add Label and Tag Number to RBD</div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column">
+                                <label class="d-block">Tag Number</label>
+                                <p-autoComplete placeholder="Enter TagNumber" [(ngModel)]="TagNumber" [showEmptyMessage]="true" [suggestions]="filteredTagNumbers" (completeMethod)="filterTagNumbers($event)" field="name" [dropdown]="true" [minLength]="1"></p-autoComplete>
+                                <!-- <input type="text" [(ngModel)]="rbdModelObj.TagNumber" placeholder="Enter Tag Number" class="form-control"> -->
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                        <div class="d-flex flex-column">
+                            <label class="d-block">label</label>
+                            <input type="text" [(ngModel)]="rbdModelObj.Label" placeholder="Enter Tag Number" class="form-control">
+                        </div>
+                        </div>
+                        <div class="col-md-3">
+                        <button class="btn btn-primary mt-4" (click)="TagNumberSelect()">Done</button>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="SelectBoxEnabled == false">
+                    <a class="btn btn-dark" style="float:left;" (click)="RBDAddBack()" pTooltip="Save data" tooltipPosition="top">Back</a>
+                </div>
+                <div *ngIf="SelectBoxEnabled == false">
+                    <a class="btn btn-dark" style="float:right;" (click)="RBDAddSave()" pTooltip="Save data" tooltipPosition="top">save</a>
+                </div>
+                <div *ngIf="SelectBoxEnabled == false">
+                    <rbd-organizationChart [value]="MainTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Update" leftIcon="pi pi-align-left">
+                <div class="card dpm-card div-in-middle w-100 p-0" *ngIf="SelectUpdateBoxEnabled">
+                    <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Select Tag Number of RBD</div>
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <div class="d-flex flex-column">
+                                <label class="d-block">Tag Number</label>
+                                <p-autoComplete placeholder="Enter TagNumber" [(ngModel)]="TagNumber" [showEmptyMessage]="true" [suggestions]="filteredTagNumbers" (completeMethod)="filterUpdateTagNumbers($event)" field="TagNumber" [dropdown]="true" [minLength]="1"></p-autoComplete>
+                                <!-- <input type="text" [(ngModel)]="rbdModelObj.TagNumber" placeholder="Enter Tag Number" class="form-control"> -->
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                        <button class="btn btn-primary mt-4" (click)="UpdateTagNumberSelect()">Done</button>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="SelectUpdateBoxEnabled == false">
+                    <a class="btn btn-dark" style="float:left;" (click)="RBDUpdateBack()" pTooltip="Save data" tooltipPosition="top">Back</a>
+                </div>
+                <div *ngIf="SelectUpdateBoxEnabled == false">
+                    <a class="btn btn-dark" style="float:right;" pTooltip="Save data" tooltipPosition="top">Update RBD</a>
+                </div>
+                <div *ngIf="SelectUpdateBoxEnabled == false">
+                    <rbd-organizationChart [value]="MainTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
+                </div>
+            </p-tabPanel>
+        </p-tabView>   
+ </div>
+
+<p-dialog header="RBD" [(visible)]="viewRBD" [style]="{width: '150em'}">
+    <div class="col-md-12" style="overflow: auto;" id="ViewRBD">
+        <rbd-organizationChart [value]="ViewSavedTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
+        <button *ngIf="showFullScreen" pButton pRipple type="button" (click)="FullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn" aria-placeholder="Click to view tree"><i class="pi pi-window-maximize"></i></button>
+        <button *ngIf="!showFullScreen" pButton pRipple type="button" (click)="ExitFullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn"><i class="pi pi-window-minimize"></i></button>
+    </div>
+</p-dialog>

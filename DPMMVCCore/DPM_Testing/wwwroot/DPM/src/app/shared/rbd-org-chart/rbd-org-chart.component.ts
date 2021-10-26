@@ -45,7 +45,8 @@ export class OrganizationChartNode implements OnDestroy{
 
 public MainTree : any = [];
 
-chart: OrganizationChart;
+private topid : number= 100;
+public chart: OrganizationChart;
 
 subscription: Subscription;
 public TopBottom : MenuItem[];
@@ -55,7 +56,7 @@ private messageService: MessageService,) {
     this.chart = chart as OrganizationChart;
     this.subscription = this.chart.selectionSource$.subscribe(() =>{
         this.cd.markForCheck();
-    })
+    });
 }
 
 ngOnInit(){
@@ -73,18 +74,73 @@ public AddTopBottom(node){
     this.TopBottomEnable = true;
 }
 
-public CloseTopBottomNode(){
+public CloseTopBottomNode(node){
     this.TopBottomEnable = false;
+    node.K = 0;
+    node.N = 0;
 }
 
+public AddKNLogic(node){
+    if(node.children.length < parseInt(node.N)){
+        let n = parseInt(node.N)-node.children.length
+        for (let i = 0; i < n; i++) {
+            let d2 = new Date();
+            let obj ={
+                label: '',
+                id: d2.getTime(),
+                intialNode : false,
+                gate:false,
+                final:false,
+                L:0.0,
+                M:0.0,
+                K:0,
+                N:0,
+                gateType:'',
+                KNGate: true,
+                expanded: true,
+                children: [
+                ]
+            }
+             node.children.push(obj);
+        }
+    }else{
+        node.children =[];
+        for (let index = 0; index < parseInt(node.N); index++) {
+            let d1 = new Date();
+                let obj ={
+                    label: '',
+                    id: d1.getTime(),
+                    intialNode : false,
+                    gate:false,
+                    final:false,
+                    L:0.0,
+                    M:0.0,
+                    K:0,
+                    N:0,
+                    gateType:'',
+                    KNGate: true,
+                    expanded: true,
+                    children: [
+                    ]
+                }
+                 node.children.push(obj);
+        }
+    }    
+    this.TopBottomEnable = false;
+}
 private AddTopNode(node){
+    let d1 = new Date();
     let obj ={
         label: '',
+        id: d1.getTime(),
         intialNode : false,
         gate:true,
         final:false,
         L:0.0,
         M:0.0,
+        K:0,
+        N:0,
+        KNGate: false,
         gateType:'',
         expanded: true,
         children: [
@@ -94,16 +150,21 @@ private AddTopNode(node){
     this.node = [];
     this.node = obj;
     this.cd.detectChanges();
+    this.TopBottomEnable = false;
 }
 private AddTopFinalNode(node){
+    let d1 = new Date();
     let obj ={
         label: '',
+        id: d1.getTime(),
         intialNode : false,
         gate:true,
+        KNGate: false,
         L:0.0,
         M:0.0,
         mtbf:0,
         availability:0,
+        nonAvailability:0,
         final:true,
         gateType:'',
         expanded: true,
@@ -114,36 +175,45 @@ private AddTopFinalNode(node){
     this.node = [];
     this.node = obj;
     this.cd.detectChanges();
+    this.TopBottomEnable = false;
 }
 private AddBottomNode(node, type){
     if(type === "No"){
         if(node.gateType == ''){
             this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Please select gate first" });
         }else{
-    
+            let d1 = new Date();
             let obj ={
                 label: '',
+                id: d1.getTime(),
                 intialNode : false,
                 gate:false,
                 final:false,
                 L:0.0,
                 M:0.0,
+                K:0,
+                N:0,
+                KNGate: false,
                 gateType:'',
                 expanded: true,
                 children: [
                 ]
             }
              node.children.push(obj);
-             this.TopBottomEnable = false;
         }  
     }else if(type === 'Yes'){
+        let d1 = new Date();
         let obj ={
             label: '',
+            id: d1.getTime(),
             intialNode : false,
             final:false,
             gate:true,
             L:0.0,
             M:0.0,
+            K:0,
+            N:0,
+            KNGate: false,
             gateType:'',
             expanded: true,
             children: [
@@ -153,10 +223,59 @@ private AddBottomNode(node, type){
     }
     
    this.TopBottomEnable = false;
-//    if(this.MainTree[0].children.length >1){
-       
-//    }
 }
+
+public calculateLM(node){
+    if((node.K == 0) && (node.N == 0)){
+        if(this.node.children.length >1){
+            if(this.node.gateType === "AND"){
+                let plusM : number = 0;
+                let multiplyM : number = 1;
+                let plusL : number = 0;
+                let multiplyL : number = 1;
+                this.node.children.forEach(element => {
+                    multiplyM = multiplyM * parseFloat(element.M);
+                    plusM = plusM + parseFloat(element.M);
+                    multiplyL = multiplyL * parseFloat(element.L);
+                });
+                this.node.M = (multiplyM/plusM).toFixed(3);
+                this.node.L = ((multiplyL*plusM)/1000000).toFixed(3)
+            }else if(this.node.gateType === "OR"){
+                 let multiplyLM : number = 0;
+                 let plusLM : number = 0;
+                 let plusL : number = 0;
+                this.node.children.forEach(element => {
+                    multiplyLM = parseFloat(element.L) * parseFloat(element.M);
+                    plusLM = plusLM + multiplyLM;
+                    plusL = plusL + parseFloat(element.L)
+                });
+                this.node.M = (plusLM/plusL).toFixed(3);
+                this.node.L = (plusL).toFixed(3);
+            }
+            if(parseFloat(this.node.mtbf) == 0){
+                this.node.mtbf = (1000000/8760/parseFloat(this.node.L)).toFixed(3);
+                this.node.availability = (parseFloat(this.node.mtbf)/(parseFloat(this.node.mtbf) + (parseFloat(this.node.M)/8760))).toFixed(3);
+                this.node.nonAvailability = (1-this.node.availability).toFixed(3);
+                this.node.mtbf = `${this.node.mtbf} Yrs`
+                this.node.M = `${this.node.M} H`
+            }
+        }
+    }else{
+        let L: number = 0;
+        let M : number = 0;
+        node.children.forEach(element => {
+            L = L + parseFloat(element.L);
+            M = M + parseFloat(element.M);
+        });
+        node.L = L;
+        node.M = M;
+    }
+}
+
+public onDeleteNode(node){
+    this.chart.deleteNode.emit(node);
+}
+
 
 get leaf(): boolean {
     return this.node.leaf == false ? false : !(this.node.children&&this.node.children.length);
@@ -233,6 +352,8 @@ set selection(val:any) {
 @Output() onNodeExpand: EventEmitter<any> = new EventEmitter();
 
 @Output() onNodeCollapse: EventEmitter<any> = new EventEmitter();
+
+@Output() public deleteNode = new EventEmitter<any>();
 
 @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 
