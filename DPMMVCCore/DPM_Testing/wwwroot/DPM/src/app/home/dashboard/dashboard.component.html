@@ -772,27 +772,7 @@ table tbody tr:nth-of-type(odd) td {
     </div><br>
   
     <div class="row mt-4">
-        <div class="col-md-5 pl-0">
-            <div class="d-block h-100">
-                <div class=" h-100">
-                    <div class="bg-white rounded p-3 h-100">
-                        <div class="d-flex">
-                            <strong>MITIGATED HEAT RISK MAP</strong>
-                            <a class="blink_me" (click)="showBasicDialog()" data-bs-toggle="tooltip"
-                                data-bs-placement="top" style="float: right" title="Image">
-                                <strong style="font-size: 12px;"><span class="pulse-green"></span>
-                                </strong>
-                            </a>
-                        </div>
-                        <div>
-                            <canvas id="Mittigatedheatriskmap"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-  
-        <div class="col-md-5 pl-0">
+        <div class="col-md-6 pl-0">
             <div class="d-block h-100">
                 <div class=" h-100">
                     <div class="bg-white rounded p-3 h-100">
@@ -811,7 +791,67 @@ table tbody tr:nth-of-type(odd) td {
                 </div>
             </div>
         </div>
-   
+        <div class="col-md-6 pl-0">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="d-flex">
+                            <strong>MITIGATED HEAT RISK MAP</strong>
+                            <a class="blink_me" (click)="showBasicDialog()" data-bs-toggle="tooltip"
+                                data-bs-placement="top" style="float: right" title="Image">
+                                <strong style="font-size: 12px;"><span class="pulse-green"></span>
+                                </strong>
+                            </a>
+                        </div>
+                        <div>
+                            <canvas id="Mittigatedheatriskmap"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><br>
+
+    <div class="row mt-4">
+        <div class="col-md-6 pl-0">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="d-flex">
+                            <strong>HIGH RISK ASSET</strong>
+                            <a class="blink_me" (click)="showBasicDialogHighRiskAsset()" data-bs-toggle="tooltip"
+                                data-bs-placement="top" style="float: right" title="Image">
+                                <strong style="font-size: 12px;float: right"><span class="pulse-green"></span>
+                                </strong>
+                            </a>
+                        </div>
+                        <div>
+                            <canvas id=""></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 pl-0">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="d-flex" >
+                            <strong>UNPLANNED MAINTENANCE COST ($M) - ANNUAL</strong>
+                            <a class="blink_me" (click)="showBasicDialogUnplannedMaintance()" data-bs-toggle="tooltip"
+                                data-bs-placement="top" style="float: right" title="Image">
+                                <strong style="font-size: 12px;float: right"><span class="pulse-green"></span>
+                                </strong>
+                            </a>
+                        </div>
+                        <div>
+                            <canvas id="unplanedMaintainaceCost"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpshow">
         <a style="float: right" (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i
@@ -977,6 +1017,12 @@ table tbody tr:nth-of-type(odd) td {
     </div>
 </p-dialog>
 
+<p-dialog header="Graph" [(visible)]="displayBasic3" [style]="{width: '80vw'}" [baseZIndex]="10000">
+
+</p-dialog>
+<p-dialog header="Graph" [(visible)]="displayBasic4" [style]="{width: '80vw'}" [baseZIndex]="10000">
+
+</p-dialog>
   
 
 <!-- <div class="d-block mt-4">

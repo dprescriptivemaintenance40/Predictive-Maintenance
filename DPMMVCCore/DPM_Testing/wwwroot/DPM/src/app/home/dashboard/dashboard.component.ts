@@ -241,6 +241,8 @@ export class DashboardComponent {
   displayBasic: boolean;
   displayBasic1: boolean;
   displayBasic2: boolean;
+  displayBasic3: boolean;
+  displayBasic4: boolean;
   public SelectTagNumbers: string = "";
   public PredictiongraphShow: boolean = true;
   public PredictiongraphShow1: boolean = true;
@@ -495,7 +497,8 @@ public normalassetCount:number=0
     this.criticalityAssesment1()
     this.NewCriticalityGraph()
     this.mittigatedheatriskmap()
-   this.Avabilitysites()
+     this.Avabilitysites()
+     this.UnplanedMaintainaceCost()
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
     this.AssociatedFailuerMode= false
@@ -5182,14 +5185,14 @@ fakeTodate(){
             backgroundColor: "#9595CC",
             borderColor: "#9595CC",
             borderWidth: 1,
-            data: [2,4,2,6,4]
+            data: [2,4,6,4,2]
           },
           {
             label: "Higher-MTBF",
             backgroundColor: "#000081",
             borderColor: "#000081",
             borderWidth: 1,
-            data: [4,6,4,8,6]
+            data: [4,6,8,6,4]
           },
         ]
       },
@@ -5228,6 +5231,102 @@ fakeTodate(){
       }
     });
   }
+  showBasicDialogHighRiskAsset(){
+    this.displayBasic3 = true;
+  }
+  showBasicDialogUnplannedMaintance(){
+    this.displayBasic4 = true;
+   
+  }
 
+  UnplanedMaintainaceCost() {
+    this.changeDetectorRef.detectChanges();
+    new Chart('unplanedMaintainaceCost', {
+      type: 'doughnut',
+      // plugins: [
+      //   {
+      //     afterDraw: (chart) => {
+      //       var needleValue = chart.chart.config.data.datasets[0].needleValue;
+      //       var dataTotal = chart.chart.config.data.datasets[0].data.reduce(
+      //         (a, b) => a - b
+      //       );
+      //       var angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
+      //       var ctx = chart.chart.ctx;
+      //       var cw = chart.chart.canvas.offsetWidth;
+      //       var ch = chart.chart.canvas.offsetHeight;
+      //       var cx = cw / 2;
+      //       var cy = ch - 6;
+      //       ctx.translate(cx, cy);
+      //       ctx.rotate(angle);
+      //       ctx.beginPath();
+      //       ctx.moveTo(0, -3);
+      //       ctx.lineTo(ch - 20, 0);
+      //       ctx.lineTo(0, 3);
+      //       ctx.fillStyle = 'rgb(0, 0, 0)';
+      //       ctx.fill();
+      //       ctx.rotate(-angle);
+      //       ctx.translate(-cx, -cy);
+      //       ctx.beginPath();
+      //       ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      //       ctx.fill();
+      //     },
+      //   },
+      // ],
+      data: {
+        labels: ['Non-crtitical', 'Low', 'Medium', 'High'],
+        datasets: [
+          {
+            data: [60, 70, 80, 90],
+             needleValue: 1000,
+            backgroundColor: ['green', 'yellow', '#FF5733', 'red'],
+          },
+        ],
+      },
+      options: {
+        rotation: 1 * Math.PI,
+        cutoutPercentage: 60,
+        circumference: 1 * Math.PI,
+        legend: {
+          display: true,
+          labels: {
+            usePointStyle: true,
+          }
+        },
+        events: [],
+        animation: {
+          duration: 500,
+          easing: "easeOutQuart",
+          onComplete: function () {
+            var ctx = this.chart.ctx;
+            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+
+            this.data.datasets.forEach(function (dataset) {
+              for (var i = 0; i < dataset.data.length; i++) {
+                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                  total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                  mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius) / 2,
+                  start_angle = model.startAngle,
+                  end_angle = model.endAngle,
+                  mid_angle = start_angle + (end_angle - start_angle) / 2;
+
+                var x = mid_radius * Math.cos(mid_angle);
+                var y = mid_radius * Math.sin(mid_angle);
+
+                ctx.fillStyle = 'black';
+                if (i == 4) {
+                  ctx.fillStyle = 'black';
+                }
+                var percent = String(Math.round(dataset.data[i] / total * 100)) + "%";
+                ctx.fillText(percent, model.x + x, model.y + y + 15);
+              }
+            });
+          }
+        }
+      }
+    });
+
+  }
 }
 
