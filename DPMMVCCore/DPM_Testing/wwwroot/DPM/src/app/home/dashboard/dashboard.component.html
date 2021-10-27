@@ -887,6 +887,27 @@ table tbody tr:nth-of-type(odd) td {
             </div>
         </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-md-6 pl-0">
+            <div class="d-block h-100">
+                <div class=" h-100">
+                    <div class="bg-white rounded p-3 h-100">
+                        <div class="d-flex">
+                            <strong>% CRITICAL ASSETS WITHOUT STRATEGIES</strong>
+                            <a class="blink_me" (click)="showBasicDialogWithoutsStratorgy()" data-bs-toggle="tooltip"
+                                data-bs-placement="top" style="float: right" title="Image">
+                                <strong style="font-size: 12px;float: right"><span class="pulse-green"></span>
+                                </strong>
+                            </a>
+                        </div>
+                        <div>
+                            <canvas id="WITHOUT_STRATEGIES"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
     <div class="rounded bg-white shadow col-md-4 fixed-card" *ngIf="Managmenthelpshow">
         <a style="float: right" (click)="alwaysshowbox()" class="btn btn-danger btn-sm"><i
                 class="fas fa-comment-dots"></i></a>

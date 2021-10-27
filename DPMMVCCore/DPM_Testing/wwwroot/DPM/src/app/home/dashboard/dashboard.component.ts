@@ -477,6 +477,7 @@ public normalassetCount:number=0
      this.Avabilitysites()
      this.UnplanedMaintainaceCost()
      this.HIGH_RISK_ASSET()
+     this.showBasicDialogWithoutsStratorgy()
     this.ExecutorShow=false;
     this.PrescriptiveShow=false;
     this.AssociatedFailuerMode= false
@@ -5359,7 +5360,7 @@ fakeTodate(){
                stacked: true,
               scaleLabel: {
                 display: true,
-                labelString: 'In_Percentage'
+                labelString: ''
               },
               ticks: {
                 beginAtZero: true,
@@ -5386,6 +5387,60 @@ fakeTodate(){
         //     });
         //   }
         // },
+      }
+
+    });
+  }
+  showBasicDialogWithoutsStratorgy(){
+    this.changeDetectorRef.detectChanges();
+    this.chart = new Chart("WITHOUT_STRATEGIES", {
+      type: "bubble",
+      data: {
+        labels: [],
+        fill: true,
+        datasets: [
+          {
+             label: "",
+             data: [
+              {x: 20, y: 30, r: 15},
+              {x: 40, y: 10, r: 10},
+              {x: 100, y: 15, r: 10},
+              {x: 50, y: 22, r: 5},
+              {x: 80, y: 26, r: 3},
+              {x: 63, y: 28, r: 10},
+              {x: 71, y: 18, r: 12}
+          ],
+          backgroundColor:"#FF6384",
+          hoverBackgroundColor: "#FF6384",
+
+          },
+        ],
+      },
+      options: {
+       // events: [],
+        scales: {
+          xAxes: [{
+              barThickness: 30,
+              maxBarThickness: 30 ,
+            gridLines: {
+              display: false
+            },
+          }],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: ''
+              },
+              ticks: {
+                beginAtZero: true,
+                gridLines: {
+                  display: false
+                },
+              }
+            }
+          ]
+        },
       }
 
     });
