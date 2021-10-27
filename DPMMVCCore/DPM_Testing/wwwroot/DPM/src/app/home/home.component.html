@@ -6,177 +6,11 @@
 </style>
 <p-toast position="top-right"></p-toast>
 
-<div id="wrapper"  [class.menu-open]="menuOpened">
-    <ul style="background-color: #585570;" class="navbar-nav bg-gradient sidebar sidebar-dark accordion"
-        id="accordionSidebar">       
-        <!-- <hr class="sidebar-divider "> -->
-        <!-- <li class="nav-item active">
-            <a class="nav-link" [routerLink]="['/Home/Dashboard']">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
-        </li> -->
+<div id="wrapper" [class.menu-open]="menuOpened">
+    <ul style="background-color: #585570;" class="navbar-nav bg-gradient sidebar sidebar-dark accordion" id="accordionSidebar">
         <hr class="sidebar-divider ">
 
         <p-panelMenu [model]="MenuItems" [multiple]="false"></p-panelMenu>
-
-        <!-- <hr class="sidebar-divider ">
-        <li class="nav-item active">
-            <a [routerLink]="[ '/Home/Education']" class="nav-link">
-                <i [routerLink]="[ '/Home/Education']" class="fas fa-graduation-cap"></i>
-                <span> DPM-Education</span>
-            </a>
-        </li> -->
-        <!-- <hr class="sidebar-divider">
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-industry"></i>
-                <span>Machinery</span>
-            </a>
-            <div *ngIf="screwCompressor" id="collapseTwo" class="collapse" aria-labelledby="heading12">
-                <li>
-                    <a [routerLink]="['/Home/Compressor/ScrewConfiguration']" class="nav-link collapsed" data-target="#collapseUtilities25" aria-expanded="true">
-                        <span>Configuration</span>
-                    </a>
-                </li>
-            </div>
-            <div *ngIf="screwCompressor" id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
-                <li>
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                        <span>Compressor</span>
-                    </a>
-                </li>
-            </div>
-
-            <div *ngIf="screwCompressorData" id="collapseThree" class="collapse" aria-labelledby="headingThree">
-                <li>
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                        <span> Screw Compressor</span>
-                    </a>
-                </li>
-            </div>
-            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">                   
-                    <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewTrain']">Train</a>
-                    <a class="collapse-item" [routerLink]="['/Home/Compressor/ScrewPrediction']">Predict</a>
-
-                </div>
-            </div>
-
-            <div *ngIf="centrifugalPumpData" id="collapseTwo" class="collapse" aria-labelledby="headingUtilitiesOne">
-                <li>
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilitiesOne" aria-expanded="true" aria-controls="collapseUtilitiesOne">
-                        <span> Pumps</span>
-                    </a>
-                </li>
-            </div>
-
-            <div *ngIf="centrifugalPump" id="collapseUtilitiesOne" class="collapse" aria-labelledby="headingUtilitiesTwo">
-                <li>
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseUtilitiesTwo" aria-expanded="true" aria-controls="collapseUtilitiesTwo">
-                        <span> Centrifugal Pump</span>
-                    </a>
-                    <div id="collapseUtilitiesTwo" class="collapse" aria-labelledby="headingUtilitiesTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" [routerLink]="[ '/Home/CentrifugalPumpTrain']">Train</a>
-                            <a class="collapse-item" [routerLink]="[ '/Home/CentrifugalPumpPrediction']">Prediction</a>
-                            <a class="collapse-item" [routerLink]="[ '/Home/CentrifugalPump']">Upload Pump Data</a>
-                        </div>
-                    </div>
-                </li>
-            </div>
-        </li> -->
-        <!-- <li class="nav-item" *ngIf="staticEquitment">
-            <a class="nav-link collapsed" aria-expanded="true">
-                <i class="fas fa-toolbox"></i>
-                <span> Static Equipment</span>
-            </a>
-        </li> -->
-
-        <!-- <li *ngIf="report" class="nav-item">
-            <a [routerLink]="[ '/Home/Report']" class="nav-link">
-                <i [routerLink]="[ '/Home/Report']"></i>
-                <i class="fas fa-file-pdf"></i>
-                <span>Report</span>
-            </a>
-        </li> -->
-
-        <!-- <li class="nav-item" *ngIf="prescriptive">
-            <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                <i class="fas fa-industry"></i>
-                <span>Prescriptive</span>
-            </a>
-            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight">
-                <li>
-                    <a [routerLink]="['/Home/Prescriptive/List']" class="nav-link collapsed" aria-expanded="true">
-                        <span>Assets List</span>
-                    </a>
-                </li>
-            </div>
-            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight">
-                <li>
-                    <a [routerLink]="['/Home/Prescriptive/Configuration']" class="nav-link collapsed" aria-expanded="true">
-                        <span>Configuration</span>
-                    </a>
-                </li>
-            </div>
-            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight1">
-                <li>
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseEight1" aria-expanded="true" aria-controls="collapseEight1">
-                        <span>RCM</span>
-                    </a>
-                </li>
-            </div>
-            <div style="padding-left: 10px;" id="collapseEight1" class="collapse" aria-labelledby="headingEight">
-                <li>
-                    <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
-                        <span>FMEA</span>
-                    </a>
-                </li>
-            </div>
-
-
-            <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" [routerLink]="['/Home/Prescriptive/ADD']"> ADD</a>
-                    <a class="collapse-item" [routerLink]="['/Home/Prescriptive/Display']"> Display</a>
-                </div>
-            </div>
-            <div style="padding-left: 10px;" id="collapseEight1" class="collapse" aria-labelledby="headingEight">
-                <li>
-                    <a [routerLink]="['/Home/Prescriptive/FCAAdd']" class="nav-link">
-                        <span>FCA</span>
-                    </a>
-                </li>
-            </div>
-
-            <div style="padding-left: 10px;" id="collapseEight1" class="collapse" aria-labelledby="headingEight">
-                <li>
-                    <a [routerLink]="['/Home/Prescriptive/MSSAdd']" class="nav-link">
-                        <span>MSS</span>
-                    </a>
-                </li>
-            </div>
-
-            <div id="collapseSeven" class="collapse" aria-labelledby="headingEight">
-                <li>
-                    <a [routerLink]="['/Home/Prescriptive/RCA']" class="nav-link">
-                        <span>RCA</span>
-                    </a>
-                </li>
-            </div>
-        </li> -->
-        <!-- <li class="nav-item" *ngIf="recycleBin">
-            <a [routerLink]="[ '/Home/RecycleBin']" class="nav-link">
-                <i class="fas fa-trash"></i>
-                <span>Recycle Bin</span>
-            </a>
-        </li> -->
-        <!-- <li class="nav-item">
-            <a [routerLink]="[ '/Home/ANDORLOGIC']" class="nav-link">
-                <i class="fas fa-trash"></i>
-                <span>AND OR Logic Tree</span>
-            </a>
-        </li> -->
 
         <hr class="sidebar-divider">
         <div class="text-center d-none d-md-inline" style="position: relative;z-index: 999;">
@@ -199,14 +33,12 @@
                 </button>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" id="messagesDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="lnr lnr-envelope"></i>
                             <span>Contact Us</span>
-                           
+
                         </a>
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                            aria-labelledby="messagesDropdown">
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                             <h6 class="dropdown-header">
                                 Message Center
                             </h6>
@@ -214,16 +46,13 @@
                                 <form [formGroup]="FormData" (submit)="Send(FormData.value)">
                                     <div class="form-group">
                                         <label for="Email">Email</label>
-                                        <input type="email" class="form-control" name="Email"
-                                            aria-describedby="emailHelp" placeholder="Enter email"
-                                            formControlName="Email" />
+                                        <input type="email" class="form-control" name="Email" aria-describedby="emailHelp" placeholder="Enter email" formControlName="Email" />
                                         <small id="emailHelp" class="form-text text-muted">We'll never share your email
                                             with anyone else.</small>
                                     </div>
                                     <div class="form-group">
                                         <label for="Subject">Subject</label>
-                                        <input type="text" class="form-control" name="Subject" placeholder="Subject"
-                                            formControlName="Subject" />
+                                        <input type="text" class="form-control" name="Subject" placeholder="Subject" formControlName="Subject" />
                                     </div>
                                     <div class="form-group">
                                         <label for="comment">Comment</label>
@@ -239,14 +68,12 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img *ngIf="user.ImageUrl" class="img-profile rounded-circle" [src]="user.ImageUrl">
                             <i *ngIf="!user.ImageUrl" class="lnr lnr-user"></i>
                             <span class="mr-2 d-none d-lg-inline">{{user.UserName}}</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                            aria-labelledby="userDropdown">
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                             <a class="dropdown-item" [routerLink]="[ '/Home/Profile']">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 <a class="collapse-item"></a>
@@ -272,8 +99,7 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

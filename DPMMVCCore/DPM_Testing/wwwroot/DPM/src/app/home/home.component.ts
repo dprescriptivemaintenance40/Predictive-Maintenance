@@ -147,11 +147,11 @@ export class HomeComponent implements OnInit {
                   label: 'Digital data',
                   items: [
                     {
-                      label:'Sensor Data Upload',
+                      label: 'Sensor Data Upload',
                       url: '#/Home/Compressor/SCModerateDataCollection'
                     },
                     {
-                      label:'Field Data Upload',
+                      label: 'Field Data Upload',
                       url: '#/Home/Compressor/SCModerateFieldDataCollection'
                     },
                     {
@@ -169,7 +169,7 @@ export class HomeComponent implements OnInit {
               ]
             },
             {
-              label:'Failure History',
+              label: 'Failure History',
               url: '#/Home/FailureHistory'
             },
           ]
@@ -225,16 +225,16 @@ export class HomeComponent implements OnInit {
         }
       ]
     },
-    
+
     {
       label: 'Criticality Assesment',
       icon: 'pi pi-book',
       items: [
         {
           label: 'Critical Asset',
-          items: [ 
+          items: [
             {
-              label:'RCM',
+              label: 'RCM',
               url: '#/Home/Prescriptive/ADD/CA'
             },
             {
@@ -245,26 +245,26 @@ export class HomeComponent implements OnInit {
         },
         {
           label: 'Semi Critical Asset',
-          items: [ 
+          items: [
             {
-              label:'FMEA',
+              label: 'FMEA',
               url: '#/Home/Prescriptive/ADD/SCA'
             },
             {
-              label:'CBA',
+              label: 'CBA',
               url: '#/Home/CostBenefitAnalysis'
             },
           ]
         },
         {
           label: 'Normal Criticality',
-          items: [ 
+          items: [
             {
-              label:'Weibull Analysis',
+              label: 'Weibull Analysis',
               url: '#/Home/WeibullAnalysis'
             },
             {
-              label:'CBA',
+              label: 'CBA',
               url: '#/Home/CostBenefitAnalysis'
             },
           ]
@@ -310,8 +310,8 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Prescriptive/UPD'
                 },
                 {
-                  label:'Input Data Management',
-                  url : '#/Home/Prescriptive/InputDataManagement'
+                  label: 'Input Data Management',
+                  url: '#/Home/Prescriptive/InputDataManagement'
                 },
                 {
                   label: 'Display',
@@ -355,7 +355,7 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Alert'
                 },
               ]
-              
+
             },
             {
               label: 'Assesment Report',
@@ -493,31 +493,41 @@ export class HomeComponent implements OnInit {
 
   Send(FormData) {
     const email = FormData;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     this.commonLoadingDirective.showLoading(true, "Sending message please wait.");
-    this.http.post('https://formspree.io/f/meqpvnej',
-      { name: email.Subject, replyto: email.email, message: "Sender Email : " + email.Email + "  " + " Message : " + email.Comment },
-      { 'headers': headers }).subscribe(
-        suc => {
-          console.log(suc);
-          this.FormData.reset({
-            'Fullname': '',
-            'Email': '',
-            'Comment': ''
-          });
-          this.messageService.add({ severity: 'success', detail: 'Message Sent Successfully' });
-          this.commonLoadingDirective.showLoading(false, "");
-        },
-        err => {
-          console.log(err);
-          this.FormData.reset({
-            'Fullname': '',
-            'Email': '',
-            'Comment': ''
-          });
-          this.messageService.add({ severity: 'error', detail: 'Something went Wrong !!!' });
-          this.commonLoadingDirective.showLoading(false, "");
-        }
-      );
+    this.http.post('api/ContactUsAPI/ContactUs', {
+      Comment: email.Comment,
+      Email: email.Email,
+      Subject: email.Subject
+    }).subscribe((res: any) => {
+      this.messageService.add({ severity: 'success', detail: 'Message sent successfully' });
+      this.FormData.reset();
+      this.commonLoadingDirective.showLoading(false, "");
+    }, err => {
+      this.messageService.add({ severity: 'error', detail: 'Something went Wrong !!!' });
+      this.commonLoadingDirective.showLoading(false, "");
+    })
+    // this.http.post('https://formspree.io/f/meqpvnej',
+    //   { name: email.Subject, replyto: email.email, message: "Sender Email : " + email.Email + "  " + " Message : " + email.Comment },
+    //   { 'headers': headers })
+    //   .subscribe(suc => {
+    //     console.log(suc);
+    //     this.FormData.reset({
+    //       'Fullname': '',
+    //       'Email': '',
+    //       'Comment': ''
+    //     });
+    //     this.messageService.add({ severity: 'success', detail: 'Message Sent Successfully' });
+    //     this.commonLoadingDirective.showLoading(false, "");
+    //   }, err => {
+    //     console.log(err);
+    //     this.FormData.reset({
+    //       'Fullname': '',
+    //       'Email': '',
+    //       'Comment': ''
+    //     });
+    //     this.messageService.add({ severity: 'error', detail: 'Something went Wrong !!!' });
+    //     this.commonLoadingDirective.showLoading(false, "");
+    //   });
   }
 }
