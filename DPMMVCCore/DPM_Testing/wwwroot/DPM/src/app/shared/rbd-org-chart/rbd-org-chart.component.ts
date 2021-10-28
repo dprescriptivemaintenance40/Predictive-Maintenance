@@ -9,6 +9,7 @@ import { Subject, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuModule } from 'primeng/menu';
+import { CommonBLService } from '../BLDL/common.bl.service';
 
 @Component({
 selector: '[pOrganizationChartNode]',
@@ -51,15 +52,27 @@ public chart: OrganizationChart;
 subscription: Subscription;
 public TopBottom : MenuItem[];
 public TopBottomEnable : boolean = false;
-constructor(@Inject(forwardRef(() => OrganizationChart)) chart, public cd: ChangeDetectorRef,
+private RBDAssetsList : any = [];
+constructor(@Inject(forwardRef(() => OrganizationChart)) chart, 
+public cd: ChangeDetectorRef,
+private commonBLService : CommonBLService,
 private messageService: MessageService,) {
     this.chart = chart as OrganizationChart;
     this.subscription = this.chart.selectionSource$.subscribe(() =>{
         this.cd.markForCheck();
     });
+    this.getAssetsListforRBD();
 }
 
 ngOnInit(){
+}
+
+public getAssetsListforRBD(){
+    this.RBDAssetsList = [];
+    this.commonBLService.getWithoutParameters('/CriticalityAssesmentAPI/GetAllCARecords')
+    .subscribe(
+        res=>{this.RBDAssetsList = res;}, err=>{console.log(err.error)}
+    )
 }
 
 public AllowNumber(event) {

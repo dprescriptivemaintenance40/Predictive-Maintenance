@@ -7,7 +7,17 @@
                     <div *ngIf="!chart.getTemplateForNode(node)">
                         <span [hidden]="(node.intialNode)||(node.KNGate)" class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="onDeleteNode(node)"></span>
                         <!-- {{node.label}} -->
-                        <textarea [(ngModel)]="node.label" placeholder="Type Something" class="form-control custom-textarea" name="{{node.label}}"></textarea> <br/>
+                        <textarea *ngIf="node.gate== true" [(ngModel)]="node.label" placeholder="Type Something" class="form-control custom-textarea" name="{{node.label}}"></textarea> <br/>
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
+                            <small *ngIf="node.label.Location != undefined"><i class="pi pi-paperclip small"></i></small>{{node.label.Location != undefined? 'TagNumber :':''}} &nbsp;{{node.label.Location}} <br/>
+                        </div>
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
+                            <small *ngIf="node.label.OriginalCriticality != undefined"><i class="pi pi-paperclip small"></i></small>{{node.label.OriginalCriticality != undefined? 'Criticality :':''}} &nbsp;{{node.label.OriginalCriticality}} <br/>
+                        </div>
+                        <select style="width: 7em;" *ngIf="node.gate== false" [(ngModel)]="node.label">
+                            <option value="">Select Asset</option>
+                            <option *ngFor="let r of RBDAssetsList" [ngValue]="r">{{r.AssetDescription}}</option>
+                        </select>
                         <label *ngIf="node.gate === true" for="AND">AND Gate</label><input type="radio" id="AND" *ngIf="node.gate" name="{{node.label}}" [(ngModel)]="node.gateType" value="AND">
                         <label *ngIf="node.gate === true" for="OR">OR Gate</label><input type="radio" id="OR" *ngIf="node.gate"  name="{{node.label}}" [(ngModel)]="node.gateType" value="OR" >
                         <label *ngIf="node.gate === true" for="KN">KN</label><input type="radio" id="KN" *ngIf="node.gate"  name="{{node.label}}" [(ngModel)]="node.gateType" value="KN" >

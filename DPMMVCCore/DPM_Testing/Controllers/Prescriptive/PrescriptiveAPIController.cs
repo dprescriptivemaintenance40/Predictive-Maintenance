@@ -559,6 +559,7 @@ namespace DPM.Controllers.Prescriptive
                 DateTime d1 = DateTime.Now;
                 prescriptiveModel.Date = d1.Date;
                 prescriptiveModel.UserId = userId;
+                prescriptiveModel.CriticalityAssesmentId = 14; // CriticalityAssesmentModelTable record with PrimaryKey number 14 is hardcoded for now
                 _context.PrescriptiveModelData.Add(prescriptiveModel);
                 await _context.SaveChangesAsync();
 

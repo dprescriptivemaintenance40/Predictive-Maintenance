@@ -26,5 +26,8 @@ namespace DPM.Models
         public double FRE { get; set; }
         public double Criticality { get; set; }
         public string RiskRanking { get; set; }
+        public string RiskRankingMatrix { get; set; }
+        public string HSECESAsset { get; set; }
+        public string OriginalCriticality { get; set; }
     }
 }
