@@ -52,7 +52,6 @@ namespace DPM_ServerSide.DAL
         public DbSet<EmployeeTaskListModel> EmployeeTaskListModels { get; set; }
         public DbSet<DesignationAccessModel> DesignationAccessModels { get; set; }
         public DbSet<AdvanceAccessModel> AdvanceAccessModels { get; set; }
-        public DbSet<RBDModel> RBDModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -119,7 +118,6 @@ namespace DPM_ServerSide.DAL
                         .HasOne(p => p.CraftEmployeeTaskChild)
                         .WithMany(b => b.EmployeeTaskListModels)
                         .HasForeignKey(a => a.CETChildId);
-            modelBuilder.Entity<RBDModel>().ToTable("RBDTable");
         }
 
     }
