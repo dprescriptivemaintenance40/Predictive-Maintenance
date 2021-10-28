@@ -7,6 +7,7 @@ using DPM.Models.PumpModel;
 using DPM.Models.RecycleBinModel;
 using DPM.Models.Prescriptive.RCA;
 using DPM.Models.Prescriptive.PSR;
+using DPM.Models;
 
 namespace DPM_ServerSide.DAL
 {
@@ -47,6 +48,7 @@ namespace DPM_ServerSide.DAL
         public DbSet<CBAModel> CBAModels { get; set; }
         public DbSet<CBATaskModel> CBATaskModels { get; set; }
         public DbSet<DesignationAccessModel> DesignationAccessModels { get; set; }
+        public DbSet<CriticalityAssesmentModel> CriticalityAssesmentModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ScrewCompressorConfigurationModel>().ToTable("addrulemodel");
@@ -101,6 +103,7 @@ namespace DPM_ServerSide.DAL
                         .WithMany(b => b.CBATaskModel)
                         .HasForeignKey(a => a.CBAId);
             modelBuilder.Entity<DesignationAccessModel>().ToTable("DesignationAccessModelTable");
+            modelBuilder.Entity<CriticalityAssesmentModel>().ToTable("CriticalityAssesmentModelTable");
         }
 
     }

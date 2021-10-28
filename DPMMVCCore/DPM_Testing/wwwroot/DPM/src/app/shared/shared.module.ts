@@ -30,6 +30,7 @@ import {TreeTableModule} from 'primeng/treetable';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {MultiSelectModule} from 'primeng/multiselect';
+import { RBDChartModule } from "./rbd-org-chart/rbd-org-chart.component";
 @NgModule({
     declarations: [CommonLoadingComponent, SafePipe],
     imports: [
@@ -59,6 +60,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
         PanelMenuModule,
         TreeTableModule,
         CheckboxModule,
+        RBDChartModule,
         CalendarModule],
     exports: [CommonModule,
         CommonLoadingComponent,
@@ -90,6 +92,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
         CheckboxModule,
         CalendarModule,
         MultiSelectModule,
+        RBDChartModule,
         InputNumberModule]
 })
 export class SharedModule {
