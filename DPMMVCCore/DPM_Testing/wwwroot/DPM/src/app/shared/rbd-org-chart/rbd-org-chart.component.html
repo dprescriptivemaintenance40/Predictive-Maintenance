@@ -20,6 +20,14 @@
                                 <label>M</label>
                                 <input type="text" [(ngModel)]="node.M" placeholder="{{node.M}}" disabled="node.gate">
                             </a>
+                            <a>
+                                <label>UnAvi</label>
+                                <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled>
+                            </a>
+                            <a>
+                                <label>System UnAvi</label>
+                                <input type="text" [(ngModel)]="node.gateUnAvailability" placeholder="{{node.gateUnAvailability}}" disabled>
+                            </a>
                         </div>
                         <div *ngIf="node.final== true">
                             <a>
@@ -38,11 +46,15 @@
                         <div *ngIf="node.gate== false">
                             <a>
                                 <label>L</label>
-                                <input type="text" (keypress)=AllowNumber($event) [(ngModel)]="node.L" placeholder="{{node.L}}">
+                                <input type="text" (change)="calculateAvailability(node)" (keypress)=AllowNumber($event) [(ngModel)]="node.L" placeholder="{{node.L}}">
                             </a>
                             <a>
                                 <label>M</label>
-                                <input type="text" (keypress)=AllowNumber($event) [(ngModel)]="node.M" placeholder="{{node.M}}">
+                                <input type="text" (change)="calculateAvailability(node)" (keypress)=AllowNumber($event) [(ngModel)]="node.M" placeholder="{{node.M}}">
+                            </a>
+                            <a>
+                                <label>UnAvi</label>
+                                <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled>
                             </a>
                         </div>
                         {{node.gateType === 'KN'? node.K+' '+'Out of '+node.N : ''}}

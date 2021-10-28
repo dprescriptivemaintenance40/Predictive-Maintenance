@@ -95,6 +95,8 @@ public AddKNLogic(node){
                 M:0.0,
                 K:0,
                 N:0,
+                unAvailabilty:0,
+                gateUnAvailability:0,
                 gateType:'',
                 KNGate: true,
                 expanded: true,
@@ -105,26 +107,33 @@ public AddKNLogic(node){
         }
     }else{
         node.children =[];
-        for (let index = 0; index < parseInt(node.N); index++) {
-            let d1 = new Date();
-                let obj ={
-                    label: '',
-                    id: d1.getTime(),
-                    intialNode : false,
-                    gate:false,
-                    final:false,
-                    L:0.0,
-                    M:0.0,
-                    K:0,
-                    N:0,
-                    gateType:'',
-                    KNGate: true,
-                    expanded: true,
-                    children: [
-                    ]
-                }
-                 node.children.push(obj);
-        }
+        if(parseInt(node.N) >= 4 && parseInt(node.K) >= 4){
+            for (let index = 0; index < parseInt(node.N); index++) {
+                let d1 = new Date();
+                    let obj ={
+                        label: '',
+                        id: d1.getTime(),
+                        intialNode : false,
+                        gate:false,
+                        final:false,
+                        L:0.0,
+                        M:0.0,
+                        K:0,
+                        N:0,
+                        unAvailabilty:0,
+                        gateUnAvailability:0,
+                        gateType:'',
+                        KNGate: true,
+                        expanded: true,
+                        children: [
+                        ]
+                    }
+                     node.children.push(obj);
+            }
+        }else{
+            node.N = 0; 
+            node.K = 0; 
+        }        
     }    
     this.TopBottomEnable = false;
 }
@@ -140,6 +149,8 @@ private AddTopNode(node){
         M:0.0,
         K:0,
         N:0,
+        unAvailabilty:0,
+        gateUnAvailability:0,
         KNGate: false,
         gateType:'',
         expanded: true,
@@ -162,6 +173,8 @@ private AddTopFinalNode(node){
         KNGate: false,
         L:0.0,
         M:0.0,
+        unAvailabilty:0,
+        gateUnAvailability:0,
         mtbf:0,
         availability:0,
         nonAvailability:0,
@@ -193,6 +206,8 @@ private AddBottomNode(node, type){
                 M:0.0,
                 K:0,
                 N:0,
+                unAvailabilty:0,
+                gateUnAvailability:0,
                 KNGate: false,
                 gateType:'',
                 expanded: true,
@@ -213,6 +228,8 @@ private AddBottomNode(node, type){
             M:0.0,
             K:0,
             N:0,
+            unAvailabilty:0,
+            gateUnAvailability:0,
             KNGate: false,
             gateType:'',
             expanded: true,
@@ -225,32 +242,42 @@ private AddBottomNode(node, type){
    this.TopBottomEnable = false;
 }
 
-public calculateLM(node){
-    if((node.K == 0) && (node.N == 0)){
+public async calculateLM(node){
+    if((node.K == 0 || node.K == undefined) && (node.N == 0 || node.N == undefined)){
         if(this.node.children.length >1){
             if(this.node.gateType === "AND"){
                 let plusM : number = 0;
                 let multiplyM : number = 1;
                 let plusL : number = 0;
                 let multiplyL : number = 1;
+                let systemUnavailability : number = 1;
                 this.node.children.forEach(element => {
                     multiplyM = multiplyM * parseFloat(element.M);
                     plusM = plusM + parseFloat(element.M);
                     multiplyL = multiplyL * parseFloat(element.L);
+                    systemUnavailability = systemUnavailability * parseFloat(element.unAvailabilty);
                 });
                 this.node.M = (multiplyM/plusM).toFixed(3);
-                this.node.L = ((multiplyL*plusM)/1000000).toFixed(3)
+                this.node.L = ((multiplyL*plusM)/1000000).toFixed(3);
+                node.gateUnAvailability = systemUnavailability;
+                let unavalibility = await this.calculateAvailability(node);
+                node.unAvailabilty = unavalibility;
             }else if(this.node.gateType === "OR"){
                  let multiplyLM : number = 0;
                  let plusLM : number = 0;
                  let plusL : number = 0;
+                 let systemUnavailability : number = 0;
                 this.node.children.forEach(element => {
                     multiplyLM = parseFloat(element.L) * parseFloat(element.M);
                     plusLM = plusLM + multiplyLM;
                     plusL = plusL + parseFloat(element.L)
+                    systemUnavailability = systemUnavailability + parseFloat(element.unAvailabilty);
                 });
                 this.node.M = (plusLM/plusL).toFixed(3);
                 this.node.L = (plusL).toFixed(3);
+                node.gateUnAvailability = systemUnavailability;
+                let unAvalibility = await this.calculateAvailability(node);
+                node.unAvailabilty = unAvalibility;
             }
             if(parseFloat(this.node.mtbf) == 0){
                 this.node.mtbf = (1000000/8760/parseFloat(this.node.L)).toFixed(3);
@@ -261,19 +288,105 @@ public calculateLM(node){
             }
         }
     }else{
-        let L: number = 0;
-        let M : number = 0;
-        node.children.forEach(element => {
-            L = L + parseFloat(element.L);
-            M = M + parseFloat(element.M);
-        });
-        node.L = L;
-        node.M = M;
+        //KN Logic
+        let value : any = await this.KNEquations(node);
+        if(value != false){
+            node.unAvailabilty = value;
+        }
     }
 }
 
 public onDeleteNode(node){
     this.chart.deleteNode.emit(node);
+}
+
+public async calculateAvailability(node){
+        if(node.L == ''){
+            node.L = 0;
+        }else if(node.M == ''){
+            node.M = 0;
+        }
+        let L : number = parseFloat(node.L);
+        let M : number = parseFloat(node.M);
+        let power : number = Math.pow(10, -6);
+        let unAvailabilty : number = L * power* M; // Formula for unavalibility
+        node.unAvailabilty = unAvailabilty;
+        return await unAvailabilty;
+}
+
+private async KNEquations(node){
+    // 1.  1 out of 2	1-(1-R)2
+	// 2.  2 out of 2	R2
+	// 3.  1 out of 3	1-(1-R)3
+	// 4.  2 out of 3	R3 + 3 R2 (1-R)
+	// 5.  3 out of 3	R3
+	// 6.  1 out of 4	1-(1-R)4
+	// 7.  2 out of 4	R4 + 4 R3 (1-R) + 6 R2 (1-R)2
+	// 8.  3 out of 4	R4 + 4 R3 (1-R)
+	// 9.  4 out of 4	R4
+    let type : number, value: any;
+    if(parseInt(node.K) == 1 && parseInt(node.N) == 2){
+        type = 1;
+    }else if(parseInt(node.K) == 2 && parseInt(node.N) == 2){
+        type = 2;
+    }else if(parseInt(node.K) == 1 && parseInt(node.N) == 3){
+        type = 3;
+    }else if(parseInt(node.K) == 2 && parseInt(node.N) == 3){
+        type = 4;
+    }else if(parseInt(node.K) == 3 && parseInt(node.N) == 3){
+        type = 5;
+    }else if(parseInt(node.K) == 1 && parseInt(node.N) == 4){
+        type = 6;
+    }else if(parseInt(node.K) == 2 && parseInt(node.N) == 4){
+        type = 7;
+    }else if(parseInt(node.K) == 3 && parseInt(node.N) == 4){
+        type = 8;
+    }else if(parseInt(node.K) == 4 && parseInt(node.N) == 4){
+        type = 9;
+    }
+    
+    switch (type) {
+        case 1:
+            value = 0;
+            value = (1- Math.pow((1- (parseFloat(node.unAvailabilty))) ,2));
+            break;
+        case 2:
+            value = 0;
+            value = (Math.pow(parseFloat(node.unAvailabilty) ,2))
+            break;
+        case 3:
+            value = 0;
+            value = (1- Math.pow((1- (parseFloat(node.unAvailabilty))) ,3));
+            break;
+        case 4:
+            value = 0;
+            value = (Math.pow(parseFloat(node.unAvailabilty) ,3) + (3*Math.pow(parseFloat(node.unAvailabilty) ,2)*(1-parseFloat(node.unAvailabilty))));
+            break;
+        case 5:
+            value = 0;
+            value = (Math.pow(parseFloat(node.unAvailabilty),3));
+            break;
+        case 6:
+            value = 0;
+            value = (1- Math.pow((1- (parseFloat(node.unAvailabilty))) ,4));
+            break;
+       case 7:
+             value = 0;
+             value = (Math.pow(parseFloat(node.unAvailabilty),4) + (4 * Math.pow(parseFloat(node.unAvailabilty),3)*(1-parseFloat(node.unAvailabilty))) + (6* Math.pow(parseFloat(node.unAvailabilty),2) * Math.pow((1- parseFloat(node.unAvailabilty)),2)));
+             break;
+       case 8:
+            value = 0;
+            value = (Math.pow(parseFloat(node.unAvailabilty),4) + (4 * Math.pow(parseFloat(node.unAvailabilty),3)*(1-parseFloat(node.unAvailabilty))));
+            break;
+        case 9:
+            value = 0;
+            value = (Math.pow(parseFloat(node.unAvailabilty), 4));
+            break;
+        default:
+            value = false;
+            break;
+    }
+    return await value
 }
 
 

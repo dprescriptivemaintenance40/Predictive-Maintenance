@@ -162,6 +162,8 @@ export class RBDComponent implements OnInit {
         L:0.0,
         M:0.0,
         gateType:'',
+        unAvailabilty:0,
+        gateUnAvailability:0,
         KNGate: false,
         expanded: true,
         children: [
@@ -188,6 +190,8 @@ export class RBDComponent implements OnInit {
       M:0.0,
       K:0,
       N:0,
+      unAvailabilty:0,
+      gateUnAvailability:0,
       gateType:'',
       KNGate: false,
       expanded: true,
