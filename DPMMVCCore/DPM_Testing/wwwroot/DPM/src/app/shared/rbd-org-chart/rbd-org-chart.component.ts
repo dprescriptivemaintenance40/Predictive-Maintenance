@@ -272,9 +272,9 @@ public async calculateLM(node){
                 });
                 this.node.M = (multiplyM/plusM).toFixed(3);
                 this.node.L = ((multiplyL*plusM)/1000000).toFixed(3);
-                node.gateUnAvailability = systemUnavailability;
+                node.gateUnAvailability = systemUnavailability.toFixed(5);
                 let unavalibility = await this.calculateAvailability(node);
-                node.unAvailabilty = unavalibility;
+                node.unAvailabilty = unavalibility.toFixed(5);;
             }else if(this.node.gateType === "OR"){
                  let multiplyLM : number = 0;
                  let plusLM : number = 0;
@@ -288,9 +288,9 @@ public async calculateLM(node){
                 });
                 this.node.M = (plusLM/plusL).toFixed(3);
                 this.node.L = (plusL).toFixed(3);
-                node.gateUnAvailability = systemUnavailability;
+                node.gateUnAvailability = systemUnavailability.toFixed(5);;
                 let unAvalibility = await this.calculateAvailability(node);
-                node.unAvailabilty = unAvalibility;
+                node.unAvailabilty = unAvalibility.toFixed(5);;
             }
             if(parseFloat(this.node.mtbf) == 0){
                 this.node.mtbf = (1000000/8760/parseFloat(this.node.L)).toFixed(3);
@@ -302,15 +302,56 @@ public async calculateLM(node){
         }
     }else{
         //KN Logic
-        let value : any = await this.KNEquations(node);
-        if(value != false){
-            node.unAvailabilty = value;
+        let plusM : number = 0;
+        let multiplyM : number = 1;
+        let multiplyL : number = 1;
+        for (let index = 0; index < parseInt(this.node.K); index++) {
+            multiplyM = multiplyM * parseFloat(this.node.children[index].M);
+            plusM = plusM + parseFloat(this.node.children[index].M);
+            multiplyL = multiplyL * parseFloat(this.node.children[index].L);
+            
+        }
+        this.node.M = (multiplyM/plusM).toFixed(3);
+        this.node.L = ((multiplyL*plusM)/1000000).toFixed(3);
+        if(node.children.length > 1){
+            let value : any = await this.KNEquations(node);
+            if(value != false){
+                node.unAvailabilty = value.toFixed(5);
+                node.gateUnAvailability = value.toFixed(5);
+            }
         }
     }
 }
 
 public onDeleteNode(node){
-    this.chart.deleteNode.emit(node);
+  //  this.chart.deleteNode.emit(node);
+  this.containsInNestedObjectDF(this.chart.value, node.id)
+}
+
+private  containsInNestedObjectDF(obj, val) {
+    if (obj === val) {
+        return true;
+    }
+
+    const keys = obj instanceof Object ? Object.keys(obj) : [];
+
+    for (const key of keys) {
+
+        const objval = obj[key];
+
+        const isMatch = this.containsInNestedObjectDF(objval, val);
+
+        if (isMatch) {
+            if (Array.isArray(obj) && obj.length > 0) {
+                const deleteNode = obj.findIndex(a => a.id === val);
+                obj.splice(deleteNode, 1);
+                break;
+            }
+            return true;
+        }
+    }
+
+    return false;
 }
 
 public async calculateAvailability(node){
@@ -323,11 +364,27 @@ public async calculateAvailability(node){
         let M : number = parseFloat(node.M);
         let power : number = Math.pow(10, -6);
         let unAvailabilty : number = L * power* M; // Formula for unavalibility
-        node.unAvailabilty = unAvailabilty;
+        node.unAvailabilty = unAvailabilty.toFixed(5);
         return await unAvailabilty;
 }
 
 private async KNEquations(node){
+    //here a = unavailability
+    let a1: number = 1, a2:number =1, a3:number = 1, a4:number=1;
+    let childCount : number = node.children.length;
+    if(childCount == 2){
+        a1 = parseFloat(node.children[0].unAvailabilty);
+        a2 = parseFloat(node.children[1].unAvailabilty);
+    }else if(childCount == 3){
+        a1 = parseFloat(node.children[0].unAvailabilty);
+        a2 = parseFloat(node.children[1].unAvailabilty);
+        a3 = parseFloat(node.children[2].unAvailabilty);
+    }else if(childCount == 4){
+        a1 = parseFloat(node.children[0].unAvailabilty);
+        a2 = parseFloat(node.children[1].unAvailabilty);
+        a3 = parseFloat(node.children[2].unAvailabilty);
+        a4 = parseFloat(node.children[3].unAvailabilty);
+    }
     // 1.  1 out of 2	1-(1-R)2
 	// 2.  2 out of 2	R2
 	// 3.  1 out of 3	1-(1-R)3
@@ -337,7 +394,7 @@ private async KNEquations(node){
 	// 7.  2 out of 4	R4 + 4 R3 (1-R) + 6 R2 (1-R)2
 	// 8.  3 out of 4	R4 + 4 R3 (1-R)
 	// 9.  4 out of 4	R4
-    let type : number, value: any;
+    let type : number;
     if(parseInt(node.K) == 1 && parseInt(node.N) == 2){
         type = 1;
     }else if(parseInt(node.K) == 2 && parseInt(node.N) == 2){
@@ -357,51 +414,30 @@ private async KNEquations(node){
     }else if(parseInt(node.K) == 4 && parseInt(node.N) == 4){
         type = 9;
     }
-    
+
     switch (type) {
         case 1:
-            value = 0;
-            value = (1- Math.pow((1- (parseFloat(node.unAvailabilty))) ,2));
-            break;
+            return await (1- ((1-a1)*(1-a2)));
         case 2:
-            value = 0;
-            value = (Math.pow(parseFloat(node.unAvailabilty) ,2))
-            break;
+            return await (a1*a2);
         case 3:
-            value = 0;
-            value = (1- Math.pow((1- (parseFloat(node.unAvailabilty))) ,3));
-            break;
+            return await (1- ((1-a1)*(1-a2)*(1-a3)));
         case 4:
-            value = 0;
-            value = (Math.pow(parseFloat(node.unAvailabilty) ,3) + (3*Math.pow(parseFloat(node.unAvailabilty) ,2)*(1-parseFloat(node.unAvailabilty))));
-            break;
+            return await ( (a1*a2*a3) + 3*(a1*a2)*(1-a1) );
         case 5:
-            value = 0;
-            value = (Math.pow(parseFloat(node.unAvailabilty),3));
-            break;
+            return await (a1*a2*a3);
         case 6:
-            value = 0;
-            value = (1- Math.pow((1- (parseFloat(node.unAvailabilty))) ,4));
-            break;
+            return await (1- ( (1-a1)*(1-a2)*(1-a3)*(1-a4) ));
        case 7:
-             value = 0;
-             value = (Math.pow(parseFloat(node.unAvailabilty),4) + (4 * Math.pow(parseFloat(node.unAvailabilty),3)*(1-parseFloat(node.unAvailabilty))) + (6* Math.pow(parseFloat(node.unAvailabilty),2) * Math.pow((1- parseFloat(node.unAvailabilty)),2)));
-             break;
+             return ( (a1*a2*a3*a4) + (4*(a1*a2*a3)*(1-a1)) + (6*(a1*a2)*(1-a1)*(1-a2)) );
        case 8:
-            value = 0;
-            value = (Math.pow(parseFloat(node.unAvailabilty),4) + (4 * Math.pow(parseFloat(node.unAvailabilty),3)*(1-parseFloat(node.unAvailabilty))));
-            break;
+            return await ( (a1*a2*a3*a4) + (4*(a1*a2*a3)*(1-a1)) );
         case 9:
-            value = 0;
-            value = (Math.pow(parseFloat(node.unAvailabilty), 4));
-            break;
+            return await (a1*a2*a3*a4);
         default:
-            value = false;
-            break;
+            return await false;
     }
-    return await value
 }
-
 
 get leaf(): boolean {
     return this.node.leaf == false ? false : !(this.node.children&&this.node.children.length);
@@ -448,7 +484,7 @@ host: {
 })
 export class OrganizationChart implements AfterContentInit {
 
-@Input() value: TreeNode[];
+@Input() value: any[];
 
 @Input() style: any;
 

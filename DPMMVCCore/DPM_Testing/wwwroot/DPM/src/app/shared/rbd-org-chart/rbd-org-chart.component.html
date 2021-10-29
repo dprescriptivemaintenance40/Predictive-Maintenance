@@ -15,7 +15,7 @@
                             <small *ngIf="node.label.OriginalCriticality != undefined"><i class="pi pi-paperclip small"></i></small>{{node.label.OriginalCriticality != undefined? 'Criticality :':''}} &nbsp;{{node.label.OriginalCriticality}} <br/>
                         </div>
                         <select style="width: 7em;" *ngIf="node.gate== false" [(ngModel)]="node.label">
-                            <option value="">Select Asset</option>
+                            <option [ngValue]="">Select Asset</option>
                             <option *ngFor="let r of RBDAssetsList" [ngValue]="r">{{r.AssetDescription}}</option>
                         </select>
                         <label *ngIf="node.gate === true" for="AND">AND Gate</label><input type="radio" id="AND" *ngIf="node.gate" name="{{node.label}}" [(ngModel)]="node.gateType" value="AND">

@@ -1,9 +1,10 @@
 import { HttpParams } from '@angular/common/http';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component,OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { RBDConstantApi } from './rbd-constant-api';
 import { RBDModel } from '../models/rbd.model';
+import * as EventEmitter from 'events';
 
 @Component({
   selector: 'app-rbd',
@@ -11,6 +12,7 @@ import { RBDModel } from '../models/rbd.model';
   styleUrls: ['./rbd.component.scss']
 })
 export class RBDComponent implements OnInit {
+  @Output() public RBDTreeSave : any= new EventEmitter();
    public UserDetails: any;
    public MainTree : any =[];
    public ViewSavedTree : any =[];
@@ -92,18 +94,19 @@ export class RBDComponent implements OnInit {
   }
 
   public RBDAddSave(){
-        this.rbdModelObj.UserId = this.UserDetails.UserId ,
-        this.rbdModelObj.Date = moment(),
-        this.rbdModelObj.TagNumber = this.TagNumber.name;
-        this.rbdModelObj.Tree = JSON.stringify(this.MainTree),
-    this.commonBLService.postWithoutHeaders(this.rbdConstantApi.post,this.rbdModelObj).subscribe(
-      res => {
-        this.getRBDList();
-        this.SelectBoxEnabled =true;
-        this.TagNumber = [];
-        this.rbdModelObj = new RBDModel();
-      }, err => {console.log(err.error)}
-    )
+    //     this.rbdModelObj.UserId = this.UserDetails.UserId ,
+    //     this.rbdModelObj.Date = moment(),
+    //     this.rbdModelObj.TagNumber = this.TagNumber.name;
+    //     this.rbdModelObj.Tree = JSON.stringify(this.MainTree),
+    // this.commonBLService.postWithoutHeaders(this.rbdConstantApi.post,this.rbdModelObj).subscribe(
+    //   res => {
+    //     this.getRBDList();
+    //     this.SelectBoxEnabled =true;
+    //     this.TagNumber = [];
+    //     this.rbdModelObj = new RBDModel();
+    //   }, err => {console.log(err.error)}
+    // )
+    this.RBDTreeSave.emit(true);
   }
 
   public UpdateTagNumberSelect(){

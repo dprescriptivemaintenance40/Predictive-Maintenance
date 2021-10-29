@@ -95,7 +95,7 @@
                     <a class="btn btn-dark" style="float:left;" (click)="RBDUpdateBack()" pTooltip="Save data" tooltipPosition="top">Back</a>
                 </div>
                 <div *ngIf="SelectUpdateBoxEnabled == false">
-                    <a class="btn btn-dark" style="float:right;" pTooltip="Save data" tooltipPosition="top">Update RBD</a>
+                    <a class="btn btn-dark" style="float:right;" pTooltip="Save data" (click)="UpdateRBD()" tooltipPosition="top">Update RBD</a>
                 </div>
                 <div *ngIf="SelectUpdateBoxEnabled == false">
                     <rbd-organizationChart [value]="MainTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
