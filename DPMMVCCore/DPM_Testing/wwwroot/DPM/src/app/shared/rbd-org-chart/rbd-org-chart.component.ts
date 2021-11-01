@@ -325,6 +325,8 @@ public async calculateLM(node){
 
 public onDeleteNode(node){
   //  this.chart.deleteNode.emit(node);
+  this.node
+  this.MainTree
   this.containsInNestedObjectDF(this.chart.value, node.id)
 }
 
@@ -485,6 +487,7 @@ host: {
 export class OrganizationChart implements AfterContentInit {
 
 @Input() value: any[];
+public MainTree : any =[];
 
 @Input() style: any;
 
