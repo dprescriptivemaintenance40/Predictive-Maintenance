@@ -164,10 +164,10 @@ public async calculateLM(node){
                         RepairCost = RepairCost + R;
                     }else{
                         let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
-                        let A = Data.AssetCost;
-                        AssetCost = AssetCost + parseFloat(A);
-                        let R = Data.RepairCost;
-                        RepairCost = RepairCost +parseFloat(R);
+                        A = Data.AssetCost;
+                        AssetCost = AssetCost + A;
+                        R = Data.RepairCost;
+                        RepairCost = RepairCost + R;
                     }
                     plusM = plusM + parseFloat(element.M);
                     multiplyL = multiplyL * parseFloat(element.L);
