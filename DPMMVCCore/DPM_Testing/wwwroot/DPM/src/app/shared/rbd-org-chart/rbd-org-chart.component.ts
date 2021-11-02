@@ -75,14 +75,21 @@ public getAssetsListforRBD(){
     )
 }
 
-public RBDAssetValue(id, type){
+public async RBDAssetValue(id, type){
     var Data =  this.RBDAssetsList.find(r=>r.CAId == parseFloat(id));
     if(type == 'Location'){
-        return Data.Location
+        return await Data.Location
     }
     if(type == 'OriginalCriticality'){
-        return Data.OriginalCriticality
+        return await Data.OriginalCriticality
     }
+    if(type == 'AssetCost'){
+        return await Data.AssetCost
+    }
+    if(type == 'RepairCost'){
+        return await Data.RepairCost
+    }
+    
 }
 
 public AllowNumber(event) {
@@ -104,165 +111,34 @@ public CloseTopBottomNode(node){
 }
 
 public AddKNLogic(node){
-    if(node.children.length < parseInt(node.N)){
-        let n = parseInt(node.N)-node.children.length
-        for (let i = 0; i < n; i++) {
-            let d2 = new Date();
-            let obj ={
-                label: '',
-                id: d2.getTime(),
-                intialNode : false,
-                gate:false,
-                final:false,
-                L:0.0,
-                M:0.0,
-                K:0,
-                N:0,
-                unAvailabilty:0,
-                gateUnAvailability:0,
-                gateType:'',
-                KNGate: true,
-                expanded: true,
-                children: [
-                ]
-            }
-             node.children.push(obj);
-        }
-    }else{
-        node.children =[];
-        if(parseInt(node.N) >= 4 && parseInt(node.K) >= 4){
-            for (let index = 0; index < parseInt(node.N); index++) {
-                let d1 = new Date();
-                    let obj ={
-                        label: '',
-                        id: d1.getTime(),
-                        intialNode : false,
-                        gate:false,
-                        final:false,
-                        L:0.0,
-                        M:0.0,
-                        K:0,
-                        N:0,
-                        unAvailabilty:0,
-                        gateUnAvailability:0,
-                        gateType:'',
-                        KNGate: true,
-                        expanded: true,
-                        children: [
-                        ]
-                    }
-                     node.children.push(obj);
-            }
-        }else{
-            node.N = 0; 
-            node.K = 0; 
-        }        
-    }    
+    let data : any=[];
+    data.node = node;
+    data.type = "AddKNLogic";
+    this.chart.addNode.emit(data);    
     this.TopBottomEnable = false;
 }
 private AddTopNode(node){
-    let d1 = new Date();
-    let obj ={
-        label: '',
-        id: d1.getTime(),
-        intialNode : false,
-        gate:true,
-        final:false,
-        L:0.0,
-        M:0.0,
-        K:0,
-        N:0,
-        unAvailabilty:0,
-        gateUnAvailability:0,
-        KNGate: false,
-        gateType:'',
-        expanded: true,
-        children: [
-        ]
-    }
-    obj.children.push(node);
-    this.node = [];
-    this.node = obj;
+    let data : any=[];
+    data.node = node;
+    data.type = "AddTopNode";
+    this.chart.addNode.emit(data);
     this.cd.detectChanges();
     this.TopBottomEnable = false;
 }
 private AddTopFinalNode(node){
-    let d1 = new Date();
-    let obj ={
-        label: '',
-        id: d1.getTime(),
-        intialNode : false,
-        gate:true,
-        KNGate: false,
-        L:0.0,
-        M:0.0,
-        unAvailabilty:0,
-        gateUnAvailability:0,
-        mtbf:0,
-        availability:0,
-        nonAvailability:0,
-        final:true,
-        gateType:'',
-        expanded: true,
-        children: [
-        ]
-    }
-    obj.children.push(node);
-    this.node = [];
-    this.node = obj;
-    this.cd.detectChanges();
+    let data : any=[];
+    data.node = node;
+    data.type = "AddTopFinalNode";
+    this.chart.addNode.emit(data);
     this.TopBottomEnable = false;
 }
-private AddBottomNode(node, type){
-    if(type === "No"){
-        if(node.gateType == ''){
-            this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Please select gate first" });
-        }else{
-            let d1 = new Date();
-            let obj ={
-                label: '',
-                id: d1.getTime(),
-                intialNode : false,
-                gate:false,
-                final:false,
-                L:0.0,
-                M:0.0,
-                K:0,
-                N:0,
-                unAvailabilty:0,
-                gateUnAvailability:0,
-                KNGate: false,
-                gateType:'',
-                expanded: true,
-                children: [
-                ]
-            }
-             node.children.push(obj);
-        }  
-    }else if(type === 'Yes'){
-        let d1 = new Date();
-        let obj ={
-            label: '',
-            id: d1.getTime(),
-            intialNode : false,
-            final:false,
-            gate:true,
-            L:0.0,
-            M:0.0,
-            K:0,
-            N:0,
-            unAvailabilty:0,
-            gateUnAvailability:0,
-            KNGate: false,
-            gateType:'',
-            expanded: true,
-            children: [
-            ]
-        }
-         node.children.push(obj);
-    }
-    
-   this.TopBottomEnable = false;
+private AddBottomNode(node, YN){
+    let data : any=[];
+    data.node = node;
+    data.YN = YN;
+    data.type = "AddBottomNode";
+    this.chart.addNode.emit(data);
+    this.TopBottomEnable = false;
 }
 
 public async calculateLM(node){
@@ -274,12 +150,20 @@ public async calculateLM(node){
                 let plusL : number = 0;
                 let multiplyL : number = 1;
                 let systemUnavailability : number = 1;
-                this.node.children.forEach(element => {
+                let AssetCost : number = 0;
+                let RepairCost : number = 0;
+                this.node.children.forEach(async element => {
                     multiplyM = multiplyM * parseFloat(element.M);
+                    let A = await this.RBDAssetValue(node.label , 'AssetCost')
+                    AssetCost = AssetCost + A;
+                    let R = await this.RBDAssetValue(node.label , 'RepairCost')
+                    RepairCost = RepairCost + R;
                     plusM = plusM + parseFloat(element.M);
                     multiplyL = multiplyL * parseFloat(element.L);
                     systemUnavailability = systemUnavailability * parseFloat(element.unAvailabilty);
                 });
+                this.node.AssetCost = AssetCost;
+                this.node.RepairCost = RepairCost;
                 this.node.M = (multiplyM/plusM).toFixed(3);
                 this.node.L = ((multiplyL*plusM)/1000000).toFixed(3);
                 node.gateUnAvailability = systemUnavailability.toFixed(5);
@@ -334,36 +218,7 @@ public async calculateLM(node){
 }
 
 public onDeleteNode(node){
-  //  this.chart.deleteNode.emit(node);
-  this.node
-  this.MainTree
-  this.containsInNestedObjectDF(this.chart.value, node.id)
-}
-
-private  containsInNestedObjectDF(obj, val) {
-    if (obj === val) {
-        return true;
-    }
-
-    const keys = obj instanceof Object ? Object.keys(obj) : [];
-
-    for (const key of keys) {
-
-        const objval = obj[key];
-
-        const isMatch = this.containsInNestedObjectDF(objval, val);
-
-        if (isMatch) {
-            if (Array.isArray(obj) && obj.length > 0) {
-                const deleteNode = obj.findIndex(a => a.id === val);
-                obj.splice(deleteNode, 1);
-                break;
-            }
-            return true;
-        }
-    }
-
-    return false;
+     this.chart.deleteNode.emit(node);
 }
 
 public async calculateAvailability(node){
@@ -529,6 +384,8 @@ set selection(val:any) {
 @Output() onNodeCollapse: EventEmitter<any> = new EventEmitter();
 
 @Output() public deleteNode = new EventEmitter<any>();
+
+@Output() public addNode = new EventEmitter<any>();
 
 @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 

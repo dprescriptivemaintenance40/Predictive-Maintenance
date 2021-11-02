@@ -1,7 +1,6 @@
 <tbody *ngIf="node">
         <tr>
             <td [attr.colspan]="colspan">
-                <!-- <p-toast position="top-right"></p-toast> -->
                 <div [class]="node.styleClass" [ngClass]="{'p-organizationchart-node-content': true, 'p-organizationchart-selectable-node': chart.selectionMode && node.selectable !== false,'p-highlight':isSelected()}"
                     (click)="onNodeClick($event,node)">
                     <div *ngIf="!chart.getTemplateForNode(node)">
@@ -13,6 +12,12 @@
                         </div>
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
                             <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Criticality :':''}} &nbsp;{{node.label != '' ? RBDAssetValue(node.label, "OriginalCriticality") :''}} <br/>
+                        </div>
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
+                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Asset Cost :':''}} &nbsp;{{node.label != '' ? RBDAssetValue(node.label, "AssetCost") :''}} <br/>
+                        </div>
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
+                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Repair Cost :':''}} &nbsp;{{node.label != '' ? RBDAssetValue(node.label, "RepairCost") :''}} <br/>
                         </div>
                         <select style="width: 7em;" *ngIf="node.gate== false" [(ngModel)]="node.label">
                             <option [ngValue]="">Select Asset</option>
@@ -65,7 +70,7 @@
                         </div>
                         {{node.gateType === 'KN'? node.K+' '+'Out of '+node.N : ''}}
                         <a *ngIf="node.gate" (click)="AddTopBottom(node)" title="Add new node" class="org-add"><i class="pi pi-plus"></i></a><br/>
-                        <a *ngIf="node.children.length > 1" (click)="calculateLM(node)" title="calculate" class="org-add"><i class="pi pi-check">calculate</i></a>
+                        <a *ngIf="node.children.length >= 1" (click)="calculateLM(node)" title="calculate" class="org-add"><i class="pi pi-check">calculate</i></a>
                          <div *ngIf="TopBottomEnable" style="
                          position: relative;
                          width: 14em;

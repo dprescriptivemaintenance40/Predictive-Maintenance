@@ -66,15 +66,36 @@ namespace DPM_Testing.Controllers
                 return BadRequest(exe.Message);
             }
         }
-        [HttpDelete("{Id}")]
-        public async Task<ActionResult> Delete(int Id)
+
+        [HttpPut]
+        [Route("UpdateCA")]
+        public async Task<ActionResult<CriticalityAssesmentModel>> PutCriticalityAssesmentModel(CriticalityAssesmentModel criticalityAssesmentModel)
         {
-            try { 
-           
-             var RBDObj = await _context.RBDModels.FindAsync(Id);
-            _context.RBDModels.Remove(RBDObj);
+            try
+            {
+                _context.Entry(criticalityAssesmentModel).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-            
+
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpDelete("{Id}")]
+        [Route("DeleteCA")]
+        public async Task<ActionResult> DeleteCriticalityModel(int Id)
+        {
+            try
+            {
+
+                CriticalityAssesmentModel CB = await _context.CriticalityAssesmentModels.FindAsync(Id);
+                _context.CriticalityAssesmentModels.Remove(CB);
+                await _context.SaveChangesAsync();
+
                 return Ok();
 
             }
@@ -83,7 +104,7 @@ namespace DPM_Testing.Controllers
 
                 return BadRequest(exc.Message);
             }
-            
+
         }
 
     }

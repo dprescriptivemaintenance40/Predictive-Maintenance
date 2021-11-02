@@ -29,5 +29,7 @@ namespace DPM.Models
         public string RiskRankingMatrix { get; set; }
         public string HSECESAsset { get; set; }
         public string OriginalCriticality { get; set; }
+        public double AssetCost { get; set; }
+        public double RepairCost { get; set; }
     }
 }

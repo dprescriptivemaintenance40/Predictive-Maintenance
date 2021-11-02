@@ -6,11 +6,13 @@ import { RBDConstantApi } from './rbd-constant-api';
 import { RBDModel } from '../models/rbd.model';
 import * as EventEmitter from 'events';
 import {HttpClient} from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-rbd',
   templateUrl: './rbd.component.html',
-  styleUrls: ['./rbd.component.scss']
+  styleUrls: ['./rbd.component.scss'],
+  providers : [MessageService]
 })
 export class RBDComponent implements OnInit {
   @Output() public RBDTreeSave : any= new EventEmitter();
@@ -30,8 +32,9 @@ export class RBDComponent implements OnInit {
   public viewRBD : boolean = false;
   constructor(private commonBLService : CommonBLService,
     private cd : ChangeDetectorRef,
-    private rbdConstantApi : RBDConstantApi,
-    public httpobj:HttpClient) { }
+    public httpobj:HttpClient,
+    private messageService : MessageService,
+    private rbdConstantApi : RBDConstantApi) { }
     
   ngOnInit() {
   this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
@@ -78,7 +81,7 @@ export class RBDComponent implements OnInit {
         }
       });
       if(!hasData){
-        // this.messageService.showMessage('info', 'No such data found');
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "No such data found" });
       }
       else{
         this.filteredTagNumbers = this.filteredTagNumbers.slice(); 
@@ -100,15 +103,14 @@ export class RBDComponent implements OnInit {
         this.rbdModelObj.Date = moment();
         this.rbdModelObj.TagNumber = this.TagNumber.name;
         this.rbdModelObj.Tree = JSON.stringify(this.MainTree);
-    // this.commonBLService.postWithoutHeaders(this.rbdConstantApi.post,this.rbdModelObj).subscribe(
-    //   res => {
-    //     this.getRBDList();
-    //     this.SelectBoxEnabled =true;
-    //     this.TagNumber = [];
-    //     this.rbdModelObj = new RBDModel();
-    //   }, err => {console.log(err.error)}
-    // )
-   // this.RBDTreeSave.emit(true);
+    this.commonBLService.postWithoutHeaders(this.rbdConstantApi.post,this.rbdModelObj).subscribe(
+      res => {
+        this.getRBDList();
+        this.SelectBoxEnabled =true;
+        this.TagNumber = [];
+        this.rbdModelObj = new RBDModel();
+      }, err => {console.log(err.error)}
+    )
   }
 
   public UpdateTagNumberSelect(){
@@ -138,10 +140,11 @@ export class RBDComponent implements OnInit {
   }
 
   DeleteRBDRecord(p){    
-    this.httpobj.delete("/api/CriticalityAssesmentAPI/"+p.RBDId).subscribe(
+    this.commonBLService.DeleteWithID("/api/RBDAPI",p.RBDId).subscribe(
       (res: any) =>{
-         this.getRBDList();},
-    (err) => console.log(err)
+         this.getRBDList();
+        },
+       err => {console.log(err.error)}
   ); 
 }
   public RBDUpdateBack(){
@@ -187,6 +190,179 @@ export class RBDComponent implements OnInit {
   public DeleteNode(node){
     this.containsInNestedObjectDF(this.MainTree, node.id);
   }
+
+  public AddNode(event){
+       if(event.type === "AddTopNode"){
+         this.AddTopNode(event.node);
+       }else if(event.type === "AddTopFinalNode"){
+        this.AddTopFinalNode(event.node);
+      }else if(event.type === "AddBottomNode"){
+        this.AddBottomNode(event.node, event.YN);
+      }else if(event.type === "AddKNLogic"){
+        this.AddKNLogic(event.node);
+      }
+  }
+
+  public AddKNLogic(node){
+    if(node.children.length < parseInt(node.N)){
+        let n = parseInt(node.N)-node.children.length
+        for (let i = 0; i < n; i++) {
+            let d2 =  Math.floor(Math.random() * 1000000) + 1;
+            let obj ={
+                label: '',
+                id: d2,
+                intialNode : false,
+                gate:false,
+                final:false,
+                L:0.0,
+                M:0.0,
+                K:0,
+                N:0,
+                unAvailabilty:0,
+                gateUnAvailability:0,
+                gateType:'',
+                KNGate: true,
+                expanded: true,
+                children: [
+                ]
+            }
+             node.children.push(obj);
+        }
+    }else{
+        node.children =[];
+        if(parseInt(node.N) >= 4 && parseInt(node.K) >= 4){
+            for (let index = 0; index < parseInt(node.N); index++) {
+                let d1 =  Math.floor(Math.random() * 1000000) + 1;
+                    let obj ={
+                        label: '',
+                        id: d1,
+                        intialNode : false,
+                        gate:false,
+                        final:false,
+                        L:0.0,
+                        M:0.0,
+                        K:0,
+                        N:0,
+                        unAvailabilty:0,
+                        gateUnAvailability:0,
+                        gateType:'',
+                        KNGate: true,
+                        expanded: true,
+                        children: [
+                        ]
+                    }
+                     node.children.push(obj);
+            }
+        }else{
+            node.N = 0; 
+            node.K = 0; 
+        }        
+    }   
+}
+
+  private AddBottomNode(node, YN){
+    if(YN === "No"){
+        if(node.gateType == ''){
+           this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Please select gate first" });
+        }else{
+            let d1 =  Math.floor(Math.random() * 1000000) + 1;
+            let obj ={
+                label: '',
+                id: d1,
+                intialNode : false,
+                gate:false,
+                final:false,
+                L:0.0,
+                M:0.0,
+                K:0,
+                N:0,
+                unAvailabilty:0,
+                gateUnAvailability:0,
+                KNGate: false,
+                gateType:'',
+                expanded: true,
+                children: [
+                ]
+            }
+             node.children.push(obj);
+        }  
+    }else if(YN === 'Yes'){
+        let d1 =  Math.floor(Math.random() * 1000000) + 1;
+        let obj ={
+            label: '',
+            id: d1,
+            intialNode : false,
+            final:false,
+            gate:true,
+            L:0.0,
+            M:0.0,
+            K:0,
+            N:0,
+            unAvailabilty:0,
+            gateUnAvailability:0,
+            KNGate: false,
+            gateType:'',
+            expanded: true,
+            children: [
+            ]
+        }
+         node.children.push(obj);
+    }
+}
+
+
+  private AddTopNode(node){
+    let d1 = Math.floor(Math.random() * 1000000) + 1;
+    let obj ={
+        label: '',
+        id: d1,
+        intialNode : false,
+        gate:true,
+        final:false,
+        L:0.0,
+        M:0.0,
+        K:0,
+        N:0,
+        unAvailabilty:0,
+        gateUnAvailability:0,
+        KNGate: false,
+        gateType:'',
+        expanded: true,
+        children: [
+        ]
+    }
+    obj.children.push(node);
+    this.MainTree = [];
+    this.MainTree.push(obj);
+    this.cd.detectChanges();
+}
+
+private AddTopFinalNode(node){
+  let d1 = Math.floor(Math.random() * 1000000) + 1;
+  let obj ={
+      label: '',
+      id: d1,
+      intialNode : false,
+      gate:true,
+      KNGate: false,
+      L:0.0,
+      M:0.0,
+      unAvailabilty:0,
+      gateUnAvailability:0,
+      mtbf:0,
+      availability:0,
+      nonAvailability:0,
+      final:true,
+      gateType:'',
+      expanded: true,
+      children: [
+      ]
+  }
+  obj.children.push(node);
+  this.MainTree = [];
+  this.MainTree = obj;
+  this.cd.detectChanges();
+}
 
   public RBDAddBack(){
     this.TagNumber = [];
