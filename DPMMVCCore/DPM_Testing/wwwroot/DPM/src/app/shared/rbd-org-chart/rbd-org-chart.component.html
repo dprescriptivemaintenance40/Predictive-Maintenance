@@ -104,12 +104,12 @@
                         <a [hidden]="node.gateType === 'KN'" (click)="AddTopFinalNode(node)" class="btn btn-sm btn-primary mr-2">Top Final</a>
                         <a [hidden]="node.gateType === 'KN'"(click)="AddTopNode(node)" class="btn btn-sm btn-primary mr-2">Top</a>
                         <!-- <label [hidden]="node.gateType === 'KN'">Bottom</label> -->
-                        <ul [hidden]="node.gateType === 'KN'" class="d-flex">
+                        <ul *ngIf="node.gateType !== 'KN'" class="d-flex">
                             <li><a (click)="AddBottomNode(node, 'Yes')" class="btn btn-sm btn-primary mr-2">Bottom with Gate</a></li>
                             <li><a (click)="AddBottomNode(node, 'No')" class="btn btn-sm btn-primary mr-2" >Bottom without Gate</a></li>
                         </ul>
                         </div>
-                        <ul [hidden]="(node.gateType === 'OR')||(node.gateType === 'AND')||(node.gateType === '')"  class="d-flex mt-4">
+                        <ul *ngIf="node.gateType === 'KN'"  class="d-flex mt-4">
                             <li class="mr-2">
                                 <label>K: <input type="text" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event) [(ngModel)]="node.K" placeholder="{{node.K}}" class="form-control"/></label>
                                 
