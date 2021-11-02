@@ -75,6 +75,16 @@ public getAssetsListforRBD(){
     )
 }
 
+public RBDAssetValue(id, type){
+    var Data =  this.RBDAssetsList.find(r=>r.CAId == parseFloat(id));
+    if(type == 'Location'){
+        return Data.Location
+    }
+    if(type == 'OriginalCriticality'){
+        return Data.OriginalCriticality
+    }
+}
+
 public AllowNumber(event) {
     const pattern = /[0-9.]/;
     let inputChar = String.fromCharCode(event.charCode);

@@ -94,10 +94,10 @@ export class RBDComponent implements OnInit {
   }
 
   public RBDAddSave(){
-    //     this.rbdModelObj.UserId = this.UserDetails.UserId ,
-    //     this.rbdModelObj.Date = moment(),
-    //     this.rbdModelObj.TagNumber = this.TagNumber.name;
-    //     this.rbdModelObj.Tree = JSON.stringify(this.MainTree),
+        this.rbdModelObj.UserId = this.UserDetails.UserId ;
+        this.rbdModelObj.Date = moment();
+        this.rbdModelObj.TagNumber = this.TagNumber.name;
+        this.rbdModelObj.Tree = JSON.stringify(this.MainTree);
     // this.commonBLService.postWithoutHeaders(this.rbdConstantApi.post,this.rbdModelObj).subscribe(
     //   res => {
     //     this.getRBDList();
@@ -106,7 +106,7 @@ export class RBDComponent implements OnInit {
     //     this.rbdModelObj = new RBDModel();
     //   }, err => {console.log(err.error)}
     // )
-    this.RBDTreeSave.emit(true);
+   // this.RBDTreeSave.emit(true);
   }
 
   public UpdateTagNumberSelect(){
