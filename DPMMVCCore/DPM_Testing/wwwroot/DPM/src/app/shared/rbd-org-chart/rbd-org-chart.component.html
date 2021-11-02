@@ -8,16 +8,16 @@
                         <!-- {{node.label}} -->
                         <textarea *ngIf="node.gate== true" [(ngModel)]="node.label" placeholder="Type Something" class="form-control custom-textarea" name="{{node.label}}"></textarea> <br/>
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
-                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != '' ? 'TagNumber :':''}} &nbsp;{{node.label != '' ? RBDAssetValue(node.label, "Location") : ''}} <br/>
+                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != '' ? 'TagNumber :':''}} &nbsp;{{node.label != '' ? RBDAssetValueForHTML(node.label, "Location") : ''}} <br/>
                         </div>
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
-                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Criticality :':''}} &nbsp;{{node.label != '' ? RBDAssetValue(node.label, "OriginalCriticality") :''}} <br/>
+                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Criticality :':''}} &nbsp;{{node.label != '' ? RBDAssetValueForHTML(node.label, "OriginalCriticality") :''}} <br/>
                         </div>
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
-                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Asset Cost :':''}} &nbsp;{{node.label != '' ? RBDAssetValue(node.label, "AssetCost") :''}} <br/>
+                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Asset Cost :':''}} &nbsp;{{node.label != '' ? RBDAssetValueForHTML(node.label, "AssetCost") :''}} <br/>
                         </div>
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-center badge badge-sucess mr-1">
-                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Repair Cost :':''}} &nbsp;{{node.label != '' ? RBDAssetValue(node.label, "RepairCost") :''}} <br/>
+                            <small *ngIf="node.label != '' "><i class="pi pi-paperclip small"></i></small>{{node.label != ''? 'Repair Cost :':''}} &nbsp;{{node.label != '' ? RBDAssetValueForHTML(node.label, "RepairCost") :''}} <br/>
                         </div>
                         <select style="width: 7em;" *ngIf="node.gate== false" [(ngModel)]="node.label">
                             <option [ngValue]="">Select Asset</option>
@@ -42,6 +42,14 @@
                             <a>
                                 <label>System UnAvi</label>
                                 <input type="text" [(ngModel)]="node.gateUnAvailability" placeholder="{{node.gateUnAvailability}}" disabled>
+                            </a>
+                            <a *ngIf="node.AssetCost !== undefined">
+                                <label>Asset Cost</label>
+                                <input type="text" [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled>
+                            </a>
+                            <a *ngIf="node.RepairCost !== undefined">
+                                <label>Repair Cost</label>
+                                <input type="text" [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled>
                             </a>
                         </div>
                         <div *ngIf="node.final== true">

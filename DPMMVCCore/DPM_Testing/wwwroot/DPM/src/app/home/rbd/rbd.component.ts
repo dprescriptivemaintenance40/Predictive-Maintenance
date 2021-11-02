@@ -360,7 +360,7 @@ private AddTopFinalNode(node){
   }
   obj.children.push(node);
   this.MainTree = [];
-  this.MainTree = obj;
+  this.MainTree.push(obj);
   this.cd.detectChanges();
 }
 

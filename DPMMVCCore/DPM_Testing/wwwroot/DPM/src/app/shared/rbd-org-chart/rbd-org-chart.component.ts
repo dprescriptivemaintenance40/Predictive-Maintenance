@@ -75,19 +75,19 @@ public getAssetsListforRBD(){
     )
 }
 
-public async RBDAssetValue(id, type){
+public RBDAssetValueForHTML(id, type){
     var Data =  this.RBDAssetsList.find(r=>r.CAId == parseFloat(id));
     if(type == 'Location'){
-        return await Data.Location
+        return Data.Location
     }
     if(type == 'OriginalCriticality'){
-        return await Data.OriginalCriticality
+        return Data.OriginalCriticality
     }
     if(type == 'AssetCost'){
-        return await Data.AssetCost
+        return Data.AssetCost
     }
     if(type == 'RepairCost'){
-        return await Data.RepairCost
+        return Data.RepairCost
     }
     
 }
@@ -152,12 +152,21 @@ public async calculateLM(node){
                 let systemUnavailability : number = 1;
                 let AssetCost : number = 0;
                 let RepairCost : number = 0;
-                this.node.children.forEach(async element => {
+                this.node.children.forEach(async (element) => {
                     multiplyM = multiplyM * parseFloat(element.M);
-                    let A = await this.RBDAssetValue(node.label , 'AssetCost')
-                    AssetCost = AssetCost + A;
-                    let R = await this.RBDAssetValue(node.label , 'RepairCost')
-                    RepairCost = RepairCost + R;
+                    if(element.gate == true){
+                        let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
+                        let A = element.AssetCost;
+                        AssetCost = AssetCost + parseFloat(A);
+                        let R = element.RepairCost;
+                        RepairCost = RepairCost + parseFloat(R);
+                    }else{
+                        let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
+                        let A = Data.AssetCost;
+                        AssetCost = AssetCost + parseFloat(A);
+                        let R = Data.RepairCost;
+                        RepairCost = RepairCost +parseFloat(R);
+                    }
                     plusM = plusM + parseFloat(element.M);
                     multiplyL = multiplyL * parseFloat(element.L);
                     systemUnavailability = systemUnavailability * parseFloat(element.unAvailabilty);
@@ -174,12 +183,28 @@ public async calculateLM(node){
                  let plusLM : number = 0;
                  let plusL : number = 0;
                  let systemUnavailability : number = 0;
-                this.node.children.forEach(element => {
+                 let AssetCost1 : Array<number> = [];
+                let RepairCost1 : Array<number> = [];
+                this.node.children.forEach(async (element) => {
                     multiplyLM = parseFloat(element.L) * parseFloat(element.M);
                     plusLM = plusLM + multiplyLM;
                     plusL = plusL + parseFloat(element.L)
                     systemUnavailability = systemUnavailability + parseFloat(element.unAvailabilty);
+                    if(element.gate == true){
+                        let A = element.AssetCost;
+                        AssetCost1.push(parseFloat(A));
+                        let R = element.RepairCost;
+                        RepairCost1.push(parseFloat(R));
+                    }else{
+                        let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
+                        let A = Data.AssetCost;
+                        AssetCost1.push(parseFloat(A));
+                        let R = Data.RepairCost;
+                        RepairCost1.push(parseFloat(R));
+                    }                    
                 });
+                this.node.AssetCost = Math.max(...AssetCost1);
+                this.node.RepairCost = Math.max(...RepairCost1);
                 this.node.M = (plusLM/plusL).toFixed(3);
                 this.node.L = (plusL).toFixed(3);
                 node.gateUnAvailability = systemUnavailability.toFixed(5);;
