@@ -66,6 +66,25 @@ namespace DPM_Testing.Controllers
                 return BadRequest(exe.Message);
             }
         }
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult> Delete(int Id)
+        {
+            try { 
+           
+             var RBDObj = await _context.RBDModels.FindAsync(Id);
+            _context.RBDModels.Remove(RBDObj);
+                await _context.SaveChangesAsync();
+            
+                return Ok();
+
+            }
+            catch (Exception exc)
+            {
+
+                return BadRequest(exc.Message);
+            }
+            
+        }
 
     }
 }

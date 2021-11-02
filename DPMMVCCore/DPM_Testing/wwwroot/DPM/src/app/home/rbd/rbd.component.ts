@@ -5,6 +5,7 @@ import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { RBDConstantApi } from './rbd-constant-api';
 import { RBDModel } from '../models/rbd.model';
 import * as EventEmitter from 'events';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-rbd',
@@ -29,7 +30,8 @@ export class RBDComponent implements OnInit {
   public viewRBD : boolean = false;
   constructor(private commonBLService : CommonBLService,
     private cd : ChangeDetectorRef,
-    private rbdConstantApi : RBDConstantApi) { }
+    private rbdConstantApi : RBDConstantApi,
+    public httpobj:HttpClient) { }
     
   ngOnInit() {
   this.UserDetails = JSON.parse(localStorage.getItem('userObject'));
@@ -135,6 +137,13 @@ export class RBDComponent implements OnInit {
     )
   }
 
+  DeleteRBDRecord(p){    
+    this.httpobj.delete("/api/CriticalityAssesmentAPI/"+p.RBDId).subscribe(
+      (res: any) =>{
+         this.getRBDList();},
+    (err) => console.log(err)
+  ); 
+}
   public RBDUpdateBack(){
     this.SelectUpdateBoxEnabled = true;
     this.TagNumber = [];

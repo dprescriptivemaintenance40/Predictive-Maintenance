@@ -29,6 +29,8 @@
                                             <td>{{p.Date | date:'medium'}}</td>
                                             <td>
                                                 <a title="View RBD Tree" (click)="ViewSavedRBD(p)" class="link-primary mr-1"><i class="fa fa-eye mr-2" aria-hidden="true"></i></a>
+                                                <a title="Delete {{p.RBDLabel}}" class="badge badge-danger" (click)="DeleteRBDRecord(p)"><i class="pi pi-trash"></i></a>
+                                                
                                             </td>
                                         </tr>
                                     </ng-template>
