@@ -1,3 +1,23 @@
+<div (click)="GetFinalOutput()" style="background: blanchedalmond;
+font-weight: bold;
+font-size: 1.4em;
+padding: 14px;
+position: absolute;
+right: 3em;
+top: 4em;
+z-index: 1000;
+border-radius: 15px;
+cursor:pointer;">Get final output</div>
+<div (click)="Modify()" style="background: blanchedalmond;
+font-weight: bold;
+font-size: 1.4em;
+padding: 14px;
+position: absolute;
+right: 3em;
+top: 1em;
+z-index: 1000;
+border-radius: 15px;
+cursor:pointer;">Modify</div>
 <tbody *ngIf="node">
     <tr>
         <td #container [attr.colspan]="colspan">
@@ -5,7 +25,7 @@
                 <span *ngIf="!chart.getTemplateForNode(node) && !node.BasicEvent && node.Availability" style="color: red;">Availability : {{node.Availability}}%</span>
             </div>
             <div [class]="node.styleClass" [ngClass]="{'p-organizationchart-node-content': true, 'p-organizationchart-selectable-node': chart.selectionMode && node.selectable !== false,'p-highlight':isSelected()}" (click)="onNodeClick($event,node)">
-                <div *ngIf="!node.ANDORLogic">
+                <div *ngIf="!node.ANDORLogic && !node.RBD">
                     <div *ngIf="!chart.getTemplateForNode(node)">{{node.label}}</div>
                     <div *ngIf="chart.getTemplateForNode(node)">
                         <ng-container *ngTemplateOutlet="chart.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
@@ -16,15 +36,14 @@
                     <div *ngIf="!chart.getTemplateForNode(node) && !node.BasicEvent">
                         <div>
                             <textarea [disabled]="node.disable" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control custom-textarea" name="{{node.label}}" id="{{node.label}}"></textarea>
-                            <!-- <input type="text" [(ngModel)]="node.text" placeholder="{{node.label}}" class="form-control" name="{{node.label}}" id="{{node.label}}"> -->
                         </div>
                         <hr>
                         <div class="row d-flex" *ngIf="node.years || node.hours">
                             <div class="col-md-12" class="d-flex flex-row justify-content-between">
-                                 <div class="d-flex flex-row justify-content-center badge badge-danger mr-1">
+                                <div class="d-flex flex-row justify-content-center badge badge-danger mr-1">
                                     <small><i class="pi pi-calendar small"></i></small>&nbsp;{{node.years}} Yrs
                                 </div>
-                                 <div class="d-flex flex-row badge badge-danger">
+                                <div class="d-flex flex-row badge badge-danger">
                                     <small><i class="pi pi-clock small"></i></small>&nbsp;{{node.hours}} Hrs
                                 </div>
                             </div>
@@ -72,7 +91,7 @@
                                 <div class="col-md-12" class="d-flex flex-row justify-content-between">
                                     <div class="d-flex flex-row badge badge-danger mr-1">
                                         <small><i class="pi pi-calendar small"></i></small>&nbsp;{{node.years}} Yrs
-                                    </div> 
+                                    </div>
                                     <div class="d-flex flex-row badge badge-danger">
                                         <small><i class="pi pi-clock small"></i></small>&nbsp;{{node.hours}} Hrs
                                     </div>
@@ -99,13 +118,61 @@
                         </div>
                     </div>
                 </div>
+                <div *ngIf="node.RBD">
+                    <span [hidden]="node.disable" class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="onDeleteNode(node)"></span>
+                    <div *ngIf="!chart.getTemplateForNode(node)">
+                        <div style="flex-direction: row">
+                            <textarea [(ngModel)]="node.label" placeholder="{{node.label}}" class="form-control custom-textarea" name="{{node.label}}" id="{{node.label}}"></textarea>
+                        </div>
+                        <div class="row d-flex flex-row">
+                            <div class="col-md-6 d-flex flex-row">
+                                P&nbsp;=&nbsp;<input type="text" style="display: inline; width: 4em; height: 2em; padding: 2px 2px;" (keypress)=AllowNumber($event) [(ngModel)]="node.P" class="form-control" name="{{node.P}}" id="{{node.P}}">
+                            </div>
+                            <div class="col-md-6 d-flex flex-row">
+                                M&nbsp;=&nbsp;<input type="text" style="display: inline; width: 4em; height: 2em; padding: 2px 2px;" (keypress)=AllowNumber($event) [(ngModel)]="node.M" class="form-control" name="{{node.M}}" id="{{node.M}}">
+                            </div>
+                        </div>
+                        <div class="row d-flex flex-row" *ngIf="node.root">
+                            <div class="col-md-6 d-flex flex-row">
+                                <div class="d-flex flex-row badge badge-danger mr-1">
+                                    MTBF&nbsp;=&nbsp;{{node.MTBF}} Yrs
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex flex-row">
+                                <div class="d-flex flex-row badge badge-danger mr-1">
+                                    AVAILABILITY&nbsp;=&nbsp; {{node.AVAILABILITY}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex flex-row">
+                            <div class="col-md-12 d-flex flex-row">
+                                <select class="form-control">
+                                    <option value="">Select Tag</option>
+                                    <option value="1">Tag 1</option>
+                                    <option value="2">Tag 2</option>
+                                    <option value="3">Tag 3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button *ngIf="node.Event" (click)="CalculateRBD(node)">Calculate</button>
+                    </div>
+                </div>
                 <div *ngIf="node.ANDORLogic && !node.BasicEvent">
-                    <a [hidden]="node.disable"  title="Add new node for AND / OR" class="org-add" (click)="onAddNode(node)"><i class="pi pi-plus"></i></a>
+                    <a [hidden]="node.disable" title="Add new node for AND / OR" class="org-add" (click)="onAddNode(node)"><i class="pi pi-plus"></i></a>
                     <p-menu #menu [popup]="true" [model]="items" [appendTo]="appendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                     <p-menu #submenu [popup]="true" [model]="subItems" [appendTo]="subappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                     <p-menu #basicmenu [popup]="true" [model]="basicItems" [appendTo]="basicappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
                 </div>
-                <a *ngIf="!leaf && !(node.ANDORLogic)" tabindex="0" class="p-node-toggler" (click)="toggleNode($event, node)" (keydown.enter)="toggleNode($event, node)">
+                <div *ngIf="node.RBD">
+                    <span *ngIf="node.HideArrow">
+                        <a [hidden]="node.disable" title="Add new node for AND / OR upwards" class="org-add" (click)="onAddNodeUpwards(node)"><i class="pi pi-arrow-up"></i></a>
+                        <a [hidden]="node.disable" title="Add new node for AND / OR downwards" class="org-add" (click)="onAddNodeDownwards(node)"><i class="pi pi-arrow-down"></i></a>
+                    </span>
+                    <p-menu #menu [popup]="true" [model]="RBDItems" [appendTo]="appendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
+                    <p-menu #submenu [popup]="true" [model]="subRBDItems" [appendTo]="subappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu>
+                    <!-- <p-menu #kofnmenu [popup]="true" [model]="kofnItems" [appendTo]="kofappendTo" [showTransitionOptions]="showTransitionOptions" [hideTransitionOptions]="hideTransitionOptions"></p-menu> -->
+                </div>
+                <a *ngIf="!leaf && !(node.ANDORLogic) && !node.RBD" tabindex="0" class="p-node-toggler" (click)="toggleNode($event, node)" (keydown.enter)="toggleNode($event, node)">
                     <i class="p-node-toggler-icon pi" [ngClass]="{'pi-chevron-down': node.expanded, 'pi-chevron-up': !node.expanded}"></i>
                 </a>
 
@@ -117,8 +184,22 @@
             <td [attr.colspan]="colspan">
                 <div class="p-organizationchart-line-down"></div>
                 <a *ngIf="!leaf && (node.ANDORLogic)" tabindex="0" class="p-node-toggler" (keydown.enter)="toggleNode($event, node)">
-                    <i class="p-node-toggler-icon pi and-image-url" *ngIf="node.ANDIcon" style="margin: -2px 0 -10px 5px;"></i>
-                    <i class="p-node-toggler-icon pi or-image-url" *ngIf="node.ORIcon" style="margin: 0 -13px -17px 0px;"></i>
+                    <i class="p-node-toggler-icon pi and-image-url" pTooltip="AND GATE" tooltipPosition="top" *ngIf="node.ANDIcon" style="margin: -2px 0 -10px 5px;"></i>
+                    <i class="p-node-toggler-icon pi or-image-url" pTooltip="OR GATE" tooltipPosition="top" *ngIf="node.ORIcon" style="margin: 0 -13px -17px 0px;"></i>
+                </a>
+            </td>
+        </tr>
+    </ng-container>
+    <ng-container *ngIf="!leaf && (node.RBD)">
+        <tr [ngClass]="!leaf && node.expanded  ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'">
+            <td [attr.colspan]="colspan">
+                <div class="p-organizationchart-line-down"></div>
+                <a *ngIf="!leaf && (node.RBD)" tabindex="0" class="p-node-toggler" (keydown.enter)="toggleNode($event, node)">
+                    <i class="p-node-toggler-icon pi and-image-url" pTooltip="AND GATE" tooltipPosition="top" *ngIf="node.ANDIcon" style="margin: -2px 0 -10px 5px;"></i>
+                    <i class="p-node-toggler-icon pi or-image-url" pTooltip="OR GATE" tooltipPosition="top" *ngIf="node.ORIcon" style="margin: 0 -13px -17px 0px;"></i>
+                    <i class="p-node-toggler-icon pi kofn-image-url" pTooltip="K OF N" tooltipPosition="top" *ngIf="!node.ORIcon && !node.ANDIcon" style="margin: 0px 0px 0px 0px;">
+                        <span>{{node.KOFN}}</span> 
+                    </i>
                 </a>
             </td>
         </tr>
@@ -147,3 +228,20 @@
         </td>
     </tr>
 </tbody>
+
+<p-dialog [(visible)]="showKOFN" [style]="{width: '12vw'}">
+    <ng-template pTemplate="header">
+        K of N
+    </ng-template>
+    <div class="row d-flex flex-row" style="margin-bottom: 1em;">
+        <div class="col-md-6 d-flex flex-row">
+            N&nbsp;=&nbsp;<input type="text" (keypress)=AllowNumber($event) style="display: inline; width: 4em; height: 2em; padding: 2px 2px;" [(ngModel)]="N" class="form-control">
+        </div>
+        <div class="col-md-6 d-flex flex-row">
+            <button (click)="GenerateKOFN()">Done</button>
+        </div>
+    </div>
+    <span *ngFor="let k of KOFNList; let i=index;" (click)="KOFNEvent(k)" style="font-size: 20px; cursor: pointer;" class="badge badge-pill badge-success">
+        {{k.name}} 
+    </span>
+</p-dialog>

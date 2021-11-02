@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonBLService } from '../BLDL/common.bl.service';
 import * as XLSX from 'xlsx';
 import { TreeNode } from './tree.node';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
     selector: '[pOrganizationChartNode]',
@@ -35,7 +36,7 @@ import { TreeNode } from './tree.node';
 })
 export class OrganizationChartNode implements OnInit, OnDestroy {
 
-    @Input() node: TreeNode;
+    @Input() node: any;
 
     @Input() root: boolean;
 
@@ -47,8 +48,11 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
 
     subscription: Subscription;
     public items: MenuItem[];
+    public RBDItems: MenuItem[];
     public subItems: MenuItem[];
+    public subRBDItems: MenuItem[];
     public basicItems: MenuItem[];
+    public kofnItems: MenuItem[];
     public showTransitionOptions: string = '.12s cubic-bezier(0, 0, 0.2, 1)';
 
     public hideTransitionOptions: string = '.1s linear';
@@ -56,15 +60,22 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
     @ViewChild('menu') menu: Menu;
     @ViewChild('submenu') submenu: Menu;
     @ViewChild('basicmenu') basicmenu: Menu;
+    @ViewChild('kofnmenu') kofnmenu: Menu;
     public appendTo: any;
     public subappendTo: any;
+    public kofappendTo: any;
     public basicappendTo: any;
     public ANDIcon: boolean;
     public ORIcon: boolean;
     public FailureComponents: any[] = [];
     public FailureCause: any[] = [];
     public FailureModeNamesList: any[] = []
-
+    public isupwards: boolean = false;
+    public isdownwards: boolean = false;
+    public K: number = 0;
+    public N: number = 0;
+    public showKOFN: boolean = false;
+    public KOFNList: any = [];
     constructor(@Inject(forwardRef(() => OrganizationChart)) chart,
         public cd: ChangeDetectorRef,
         private commonBLService: CommonBLService) {
@@ -96,6 +107,23 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                 }
             }
         ];
+        this.RBDItems = [
+            {
+                label: 'AND', command: () => {
+                    this.AND();
+                }
+            },
+            {
+                label: 'OR', command: () => {
+                    this.OR();
+                }
+            },
+            {
+                label: 'KN', command: () => {
+                    this.KOFN();
+                }
+            }
+        ];
 
         this.subItems = [
             {
@@ -122,28 +150,113 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
                 }
             }
         ];
+
+        this.subRBDItems = [
+            {
+                label: 'Event', command: () => {
+                    this.Event();
+                }
+            }
+        ];
     }
 
     public AND() {
-        this.ANDIcon = true;
-        this.ORIcon = false;
-        this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
+        if (!this.node.RBD) {
+            this.ANDIcon = true;
+            this.ORIcon = false;
+            this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
+        } else {
+            this.ANDIcon = true;
+            this.ORIcon = false;
+            this.chart.AddNode.emit({ node: this.node, ANDIcon: true, Event: true, up: this.isupwards, down: this.isdownwards });
+            this.cd.detectChanges();
+        }
     }
 
     public OR() {
-        this.ORIcon = true;
+        if (!this.node.RBD) {
+            this.ORIcon = true;
+            this.ANDIcon = false;
+            this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
+            this.cd.detectChanges();
+        } else {
+            this.ORIcon = true;
+            this.ANDIcon = false;
+            this.chart.AddNode.emit({ node: this.node, ORIcon: true, Event: true, up: this.isupwards, down: this.isdownwards });
+            this.cd.detectChanges();
+        }
+    }
+
+    public KOFN() {
+        this.ORIcon = false;
         this.ANDIcon = false;
-        this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
+        this.showKOFN = true;
+    }
+
+    public CalculateRBD(node) {
+        this.Calculate(this.chart.value[0], node);
         this.cd.detectChanges();
     }
 
-    public Event() {
-        if (this.ANDIcon) {
-            this.chart.AddNode.emit({ node: this.node, ANDIcon: true, Event: true });
-        } else if (this.ORIcon) {
-            this.chart.AddNode.emit({ node: this.node, ORIcon: true, Event: true });
+    public Calculate(obj, node) {
+
+        if (obj.id === node.id) {
+            let data = node
         } else {
-            this.chart.AddNode.emit({ node: this.node, BasicEvent: true });
+            let p = 0;
+            let mplus = 0;
+            let mmul = 0;
+            let PMPlus = 0;
+            obj.children.forEach(evnt => {
+                if (evnt.id === node.id) {
+                    evnt.P = node.P;
+                    evnt.M = node.M;
+                }
+                else {
+                    if (evnt.children.length > 1) {
+                        this.Calculate(evnt, node);
+                    }
+                }
+                if (obj.ANDIcon) {
+                    p = p !== 0 ? parseFloat(evnt.P) * p : parseFloat(evnt.P)
+                    mplus = parseFloat(evnt.M) + mplus;
+                    mmul = mmul !== 0 ? parseFloat(evnt.M) * mmul : parseFloat(evnt.M)
+                } else if (obj.ORIcon) {
+                    p = p !== 0 ? parseFloat(evnt.P) + p : parseFloat(evnt.P)
+                    let mp = (parseFloat(evnt.P) * parseFloat(evnt.M));
+                    PMPlus = PMPlus !== 0 ? mp + PMPlus : mp
+                } else if (obj.KOFN) {
+                    p = p !== 0 ? parseFloat(evnt.P) + p : parseFloat(evnt.P)
+                    let mp = (parseFloat(evnt.P) * parseFloat(evnt.M));
+                    PMPlus = PMPlus !== 0 ? mp + PMPlus : mp
+                }
+            });
+            if (obj.ANDIcon) {
+                obj.P = (p * mplus) / 1000000;
+                obj.M = mmul / mplus;
+            } else if (obj.ORIcon) {
+                obj.P = p;
+                obj.M = PMPlus / p;
+            } else if (obj.KOFN) {
+                obj.P = p;
+                obj.M = PMPlus / p;
+            }
+        }
+    }
+
+
+    public Event() {
+
+        if (this.ANDIcon) {
+            this.chart.AddNode.emit({
+                node: this.node, ANDIcon: true, Event: true,
+                up: this.isupwards, down: this.isdownwards
+            });
+        } else if (this.ORIcon) {
+            this.chart.AddNode.emit({
+                node: this.node, ORIcon: true, Event: true,
+                up: this.isupwards, down: this.isdownwards
+            });
         }
     }
 
@@ -171,7 +284,16 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         }
     }
 
-    public onAddNode(node) {
+    public KOFNEvent(k) {
+        this.showKOFN = false;
+        this.node.KOFN = k.name;
+        this.chart.AddNode.emit({
+            node: this.node, KOFN: k.id, Event: true,
+            up: this.isupwards, down: this.isdownwards
+        });
+    }
+
+    public async onAddNode(node) {
         if (node.children.length > 0) {
             this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
         } else {
@@ -183,6 +305,32 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
             this.menu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.appendTo == null });
         }
     }
+
+    public onAddNodeUpwards(node) {
+        this.isdownwards = false;
+        this.isupwards = true;
+        this.menu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.appendTo == null });
+    }
+
+    public onAddNodeDownwards(node) {
+        this.isupwards = false;
+        this.isdownwards = true;
+        if (node.root) {
+            this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
+        } else {
+            if (node.children.length > 0) {
+                this.submenu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.subappendTo == null });
+            } else {
+                if (!!node.ANDIcon) {
+                    delete node.ANDIcon;
+                } else if (!!node.ORIcon) {
+                    delete node.ORIcon;
+                }
+                this.menu.toggle({ currentTarget: this.containerViewChild.nativeElement, relativeAlign: this.appendTo == null });
+            }
+        }
+    }
+
     public async onDeleteNode(node) {
         this.containsInNestedObjectDF(this.chart.value, node.id);
         await this.familyTree(this.chart.value, node.id - 1);
@@ -496,6 +644,43 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
         }
     }
 
+    public async GetFinalOutput() {
+        let MTBF = (1 / this.chart.value[0].P) * 8760;
+        let AVAILABILITY = MTBF / (MTBF + (this.chart.value[0].M / 8760)) * 100;
+        this.chart.value[0].MTBF = MTBF.toFixed(2);
+        this.chart.value[0].AVAILABILITY = AVAILABILITY.toFixed(2);
+        this.chart.value[0].root = true;
+        this.chart.value[0].HideArrow = false;
+        await this.HideArrow(this.chart.value[0], false);
+        let data = this.chart.value;
+        this.chart.value = [];
+        this.chart.value = data;
+    }
+
+    public async HideArrow(value, Hide) {
+        await value.children.forEach(row => {
+            row.HideArrow = Hide;
+            if (row.children.length > 1) {
+                this.HideArrow(row, false);
+            }
+        });
+
+        this.cd.detectChanges();
+    }
+
+    public GenerateKOFN() {
+        this.KOFNList = [];
+        for (let i = 1; i < this.N; i++) {
+            this.KOFNList.push(
+                { id: i, name: `${i}/${this.N}` }
+            );
+        }
+    }
+
+    public async Modify() {
+        this.chart.value[0].HideArrow = true;
+        await this.HideArrow(this.chart.value[0], true);
+    }
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }
@@ -512,7 +697,7 @@ export class OrganizationChartNode implements OnInit, OnDestroy {
 })
 export class OrganizationChart implements AfterContentInit {
 
-    @Input() value: TreeNode[];
+    @Input() value: any[];
 
     @Input() style: any;
 
@@ -655,8 +840,8 @@ export class OrganizationChart implements AfterContentInit {
 }
 
 @NgModule({
-    imports: [CommonModule, MenuModule, AutoCompleteModule, FormsModule],
-    exports: [OrganizationChart, SharedModule, MenuModule, AutoCompleteModule, FormsModule],
+    imports: [CommonModule, MenuModule, AutoCompleteModule, FormsModule, DialogModule],
+    exports: [OrganizationChart, SharedModule, MenuModule, AutoCompleteModule, FormsModule, DialogModule],
     declarations: [OrganizationChart, OrganizationChartNode]
 })
 export class OrganizationChartModule { }

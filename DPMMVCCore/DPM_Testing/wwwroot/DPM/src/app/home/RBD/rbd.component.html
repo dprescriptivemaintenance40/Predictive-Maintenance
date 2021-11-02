@@ -1,0 +1,51 @@
+<style>
+    .list-group {
+        flex-direction: row !important;
+        -ms-flex-direction: row !important;
+    }
+    
+    .list-group-item {
+        border: 0 !important;
+        padding: .45rem 1rem !important;
+    }
+</style>
+
+<p-toast position="top-right"></p-toast>
+<div class="card dpm-card div-in-middle w-100 p-0">
+    <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Generate RBD Series</div>
+    <!-- <div>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let row of SeriesList">
+                <span>
+                {{row.name | uppercase}}
+            </span>
+                <span>
+                <input pTooltip="{{row.name}}" tooltipPosition="top" type="radio" (input)="SelectSeries(row.name)" [ngStyle]="{'background-color':row.color}" 
+                [(ngModel)]="SeriesType" value="{{row.name}}" name="{{row.name}}" id="{{row.name}}"> 
+            </span>
+            </li>
+        </ul>
+        <button pButton pRipple type="button" label="Combine" (click)="CombineParallelSeries()" class="p-button-raised p-button-info"></button>&nbsp;
+        <button pButton pRipple type="button" label="Out Off" (click)="OutOff()" class="p-button-raised p-button-warning"></button>
+    </div>
+    <div *ngIf="ShowOutOff">
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let row of OutOffList">
+                <span>
+                {{row.name | uppercase}}
+                </span>
+                <span>
+                <input pTooltip="{{row.name}}" tooltipPosition="top" type="radio" (input)="SelectOutOff(row.name)" [ngStyle]="{'background-color':row.color}" 
+                [(ngModel)]="OutOffType" value="{{row.name}}" name="{{row.name}}" id="{{row.name}}"> 
+            </span>
+            </li>
+        </ul>
+    </div>
+    <p-tree [value]="rbdDetails" layout="horizontal" selectionMode="single" (addTreeRow)="AddTreeRow($event)" (deleteTreeRow)="DeleteTreeRow($event)">
+    </p-tree> -->
+    <div id="rbd" class="alert alert-dpmprimary w-100">
+        <p-card class="p-overlay-relative">
+            <p-organizationChart [value]="rbdDetails" (AddNode)="onAddNodeTest($event)" (DeleteNode)="onDeleteNode($event)">
+            </p-organizationChart>
+        </p-card>
+    </div>
