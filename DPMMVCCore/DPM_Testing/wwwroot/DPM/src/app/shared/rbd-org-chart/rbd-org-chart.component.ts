@@ -154,12 +154,14 @@ public async calculateLM(node){
                 let RepairCost : number = 0;
                 this.node.children.forEach(async (element) => {
                     multiplyM = multiplyM * parseFloat(element.M);
+                    let A : number=0;
+                    let R : number=0;
                     if(element.gate == true){
                         let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
-                        let A = element.AssetCost;
-                        AssetCost = AssetCost + parseFloat(A);
-                        let R = element.RepairCost;
-                        RepairCost = RepairCost + parseFloat(R);
+                        A = element.AssetCost;
+                        AssetCost = AssetCost + A;
+                        R = element.RepairCost;
+                        RepairCost = RepairCost + R;
                     }else{
                         let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
                         let A = Data.AssetCost;
@@ -190,17 +192,19 @@ public async calculateLM(node){
                     plusLM = plusLM + multiplyLM;
                     plusL = plusL + parseFloat(element.L)
                     systemUnavailability = systemUnavailability + parseFloat(element.unAvailabilty);
+                    let A : number=0;
+                    let R : number=0;
                     if(element.gate == true){
-                        let A = element.AssetCost;
-                        AssetCost1.push(parseFloat(A));
-                        let R = element.RepairCost;
-                        RepairCost1.push(parseFloat(R));
+                        A = element.AssetCost;
+                        AssetCost1.push(A);
+                        R = element.RepairCost;
+                        RepairCost1.push(R);
                     }else{
                         let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
-                        let A = Data.AssetCost;
-                        AssetCost1.push(parseFloat(A));
-                        let R = Data.RepairCost;
-                        RepairCost1.push(parseFloat(R));
+                        A = Data.AssetCost;
+                        AssetCost1.push(A);
+                        R = Data.RepairCost;
+                        RepairCost1.push(R);
                     }                    
                 });
                 this.node.AssetCost = Math.max(...AssetCost1);
