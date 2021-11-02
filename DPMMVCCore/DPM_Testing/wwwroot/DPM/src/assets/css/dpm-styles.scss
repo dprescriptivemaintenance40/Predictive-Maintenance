@@ -1661,3 +1661,132 @@ table.p-organizationchart-table {
     }
   }
 }
+.rbd-action {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  label {
+  }
+  a.btn {
+    border-radius: 0px !important;
+    padding: 8px 20px !important;
+    position: relative;
+    top: 0px;
+    i {
+      font-size: 14px !important;
+    }
+  }
+  .btn-back {
+    background-color: #d9dfee;
+  }
+}
+.rbd-card {
+  label {
+    font-weight: 600;
+    margin-bottom: 0 !important;
+  }
+  .card-span {
+    padding: 0;
+  }
+}
+.rbd-chart {
+  .p-organizationchart-node-content div {
+    padding: 0 !important;
+  }
+  padding: 0.8rem !important;
+  border-radius: 10px;
+  width: 250px !important;
+  input[disabled] {
+    background-color: #e8f0fe !important;
+    width: 41px;
+    border-radius: 5px;
+    border: 1px solid #e8f0fe;
+    box-shadow: none;
+    color: #333;
+    margin-left: 0px;
+    outline: none;
+    text-align: center;
+    font-weight: 700;
+  }
+}
+.gate-action {
+  position: relative;
+  .bg-gate {
+    background: #fff;
+    z-index: 999;
+    box-shadow: 0px 0px 90px #fff;
+    width: 435px !important;
+    top: 40%;
+    border-radius: 10px;
+    position: fixed;
+    left: 50%;
+    padding: 15px !important;
+    padding-left: 25px !important;
+    ul {
+      margin-bottom: 0 !important;
+      list-style: none;
+      padding-left: 0;
+      a {
+        font-size: 13px;
+      }
+      li {
+        list-style: none;
+      }
+    }
+  }
+  &:before {
+    background-color: #d5d5d5;
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+  }
+}
+.rbd-chart div {
+}
+.rbd-chart .card-span label {
+  width: 100%;
+  display: flex !important;
+  font-size: 12px;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.rbd-chart .form-control {
+  height: 23px;
+  background: #fff !important;
+  padding: 1px 7px;
+}
+.card-span {
+  padding: 0 !important;
+  &:div:nth-child(1) {
+    padding: 0 !important;
+  }
+}
+.for-rbd {
+  .form-control {
+    border: none;
+    padding: 0 5px;
+    padding-right: 0;
+    font-size: 13px;
+  }
+  p-autocomplete {
+    span {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      input {
+        padding: 0;
+        font-size: 13px;
+      }
+    }
+    .p-autocomplete-input {
+      background: transparent;
+      border: none;
+    }
+  }
+}

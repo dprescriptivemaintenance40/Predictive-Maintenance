@@ -46,16 +46,16 @@
             <p-tabPanel header="ADD" leftIcon="pi pi-align-left">
                 <div class="card dpm-card div-in-middle w-100 p-0" *ngIf="SelectBoxEnabled">
                     <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Add Label and Tag Number to RBD</div>
-                    <div class="row mt-3">
+                    <div class="row mt-3 for-rbd">
                         <div class="col-md-3">
-                            <div class="d-flex flex-column">
+                            <div class="flex-column">
                                 <label class="d-block">Tag Number</label>
-                                <p-autoComplete placeholder="Enter TagNumber" [(ngModel)]="TagNumber" [showEmptyMessage]="true" [suggestions]="filteredTagNumbers" (completeMethod)="filterTagNumbers($event)" field="name" [dropdown]="true" [minLength]="1"></p-autoComplete>
+                                <p-autoComplete placeholder="Enter TagNumber" [(ngModel)]="TagNumber" [showEmptyMessage]="true" class="form-control" [suggestions]="filteredTagNumbers" (completeMethod)="filterTagNumbers($event)" field="name" [dropdown]="true" [minLength]="1"></p-autoComplete>
                                 <!-- <input type="text" [(ngModel)]="rbdModelObj.TagNumber" placeholder="Enter Tag Number" class="form-control"> -->
                             </div>
                         </div>
                         <div class="col-md-3">
-                        <div class="d-flex flex-column">
+                        <div class=" flex-column">
                             <label class="d-block">label</label>
                             <input type="text" [(ngModel)]="rbdModelObj.Label" placeholder="Enter Tag Number" class="form-control">
                         </div>
@@ -65,12 +65,17 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="SelectBoxEnabled == false">
-                    <a class="btn btn-dark" style="float:left;" (click)="RBDAddBack()" pTooltip="Save data" tooltipPosition="top">Back</a>
+                <div class="rbd-action">
+                    <div *ngIf="SelectBoxEnabled == false">
+                        <a class="btn btn-back" style="float:left;" (click)="RBDAddBack()" pTooltip="Save data"
+                            tooltipPosition="top"><i class="pi pi-arrow-left"></i>&nbsp;&nbsp;Back</a>
+                    </div>
+                    <div *ngIf="SelectBoxEnabled == false" class="rbd-card">
+                        <a class="btn btn-primary" style="float:right;" (click)="RBDAddSave()" pTooltip="Save data"
+                            tooltipPosition="top"><i class="pi pi-check-circle"></i>&nbsp;&nbsp;Save</a>
+                    </div>
                 </div>
-                <div *ngIf="SelectBoxEnabled == false">
-                    <a class="btn btn-dark" style="float:right;" (click)="RBDAddSave()" pTooltip="Save data" tooltipPosition="top">save</a>
-                </div>
+                
                 <div *ngIf="SelectBoxEnabled == false">
                     <rbd-organizationChart [value]="MainTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
                 </div>
