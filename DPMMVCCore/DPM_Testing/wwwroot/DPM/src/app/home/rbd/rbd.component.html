@@ -77,7 +77,7 @@
                 </div>
                 
                 <div *ngIf="SelectBoxEnabled == false">
-                    <rbd-organizationChart [value]="MainTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
+                    <rbd-organizationChart [value]="MainTree" (deleteNode)="DeleteNode($event)" class="collapse-table"></rbd-organizationChart>
                 </div>
             </p-tabPanel>
             <p-tabPanel header="Update" leftIcon="pi pi-align-left">

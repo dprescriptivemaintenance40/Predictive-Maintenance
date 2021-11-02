@@ -1663,15 +1663,16 @@ table.p-organizationchart-table {
 }
 .rbd-action {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 5px 0;
   label {
   }
   a.btn {
     border-radius: 0px !important;
-    padding: 8px 20px !important;
+    padding: 5px 20px !important;
     position: relative;
     top: 0px;
+    height: 100%;
     i {
       font-size: 14px !important;
     }
@@ -1788,5 +1789,48 @@ table.p-organizationchart-table {
       background: transparent;
       border: none;
     }
+  }
+}
+.collapse-table {
+  .p-organizationchart {
+    border: none !important;
+    .p-organizationchart-table {
+      border-collapse: collapse !important;
+    }
+  }
+}
+.p-button {
+  color: #555;
+  background: #e8f0fe !important;
+  border: 1px solid #e8f0fe !important;
+  &:hover {
+    background: hsl(217, 19%, 81%) !important;
+    border: 1px solid hsl(217, 19%, 81%) !important;
+    color: #333 !important;
+  }
+}
+.rbd-chart {
+  .org-add {
+    padding: 1px 7px;
+    font-size: 13px;
+    margin: 13px 0;
+    display: inline-block;
+  }
+  .pi-times-circle {
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -18px;
+    left: 4px;
+  }
+}
+.bg-gate {
+  .pi-times-circle {
+    position: relative;
+    top: -11px;
+    right: 100%;
+    color: red;
   }
 }
