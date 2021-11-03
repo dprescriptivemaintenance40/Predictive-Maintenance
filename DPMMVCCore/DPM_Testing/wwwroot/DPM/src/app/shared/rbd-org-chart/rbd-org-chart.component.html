@@ -1,23 +1,33 @@
 <tbody *ngIf="node">
     <tr>
         <td [attr.colspan]="colspan">
-            <div [class]="node.styleClass" class="rbd-chart" [ngClass]="{'p-organizationchart-node-content': true, 'p-organizationchart-selectable-node': chart.selectionMode && node.selectable !== false,'p-highlight':isSelected()}" (click)="onNodeClick($event,node)">
+            <div [class]="node.styleClass"  class="rbd-chart" [ngClass]="{'p-organizationchart-node-content': true, 'p-organizationchart-selectable-node': chart.selectionMode && node.selectable !== false,'p-highlight':isSelected()}"
+                (click)="onNodeClick($event,node)">
                 <div *ngIf="!chart.getTemplateForNode(node)" style="padding: 0">
                     <span [hidden]="(node.intialNode)||(node.KNGate)" class="p-tree-toggler pi pi-fw pi-times-circle custom-delete-bttn" data-toggle="tooltip" data-placement="right" title="Delete Node" (click)="onDeleteNode(node)"></span>
                     <!-- {{node.label}} -->
                     <textarea *ngIf="node.gate== true" [(ngModel)]="node.label" placeholder="Type Something" class="form-control custom-textarea" name="{{node.label}}"></textarea>
-
+                    
                     <select class="form-control" *ngIf="node.gate== false" [(ngModel)]="node.label" style="height: 32px">
-                            <option [ngValue]="">Select Asset</option>
-                            <option *ngFor="let r of RBDAssetsList" [ngValue]="r.CAId">{{r.AssetDescription}}</option>
-                        </select>
-                    <div *ngIf="node.gate== false" class="d-flex justify-content-start align-items-start mt-1 mb-0 flex-column">
+                        <option [ngValue]="">Select Asset</option>
+                        <option *ngFor="let r of RBDAssetsList" [ngValue]="r.CAId">{{r.AssetDescription}}</option>
+                    </select>
+                    <div *ngIf="node.gate== false"  class="d-flex justify-content-start align-items-start mt-1 mb-0 flex-column">
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1">
-                            <small *ngIf="node.label.Location != undefined"></small>{{node.label.Location != undefined? 'Tag No. :':''}} &nbsp;
-                            <span class="badge badge-primary">{{node.label.Location}}</span>
+                            <small *ngIf="node.label != ''"></small>{{node.label != '' ? 'Tag No. :':''}}
+                            &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "Location") : ''}}</span>
                         </div>
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1 mt-2">
-                            <small *ngIf="node.label.OriginalCriticality != undefined"></small>{{node.label.OriginalCriticality != undefined? 'Criticality :':''}} &nbsp;<span class="badge badge-primary">{{node.label.OriginalCriticality}}</span>
+                            <small *ngIf="node.label != ''"></small>{{node.label !='' ? 'Criticality :':''}}
+                             &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "OriginalCriticality") : ''}}</span>
+                        </div>
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1">
+                            <small *ngIf="node.label != ''"></small>{{node.label != '' ? 'Asset Cost :':''}}
+                            &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "AssetCost") : ''}}</span>
+                        </div>
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1 mt-2">
+                            <small *ngIf="node.label != ''"></small>{{node.label !='' ? 'Repair Cost :':''}}
+                             &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "RepairCost") : ''}}</span>
                         </div>
                     </div>
                     <div *ngIf="node.gate" class="d-flex justify-content-around align-items-center flex-row mt-2 mb-2">
@@ -31,98 +41,109 @@
                     <div *ngIf="node.gate== true" class="card-span">
                         <div class="row flex-row align-items-end">
                             <div class="col-md-3">
-                                <label class="text-primary">L: <input type="text" [(ngModel)]="node.L" placeholder="{{node.L}}" disabled="node.gate"></label>
-
+                                    <label class="text-primary">L: <input type="text" [(ngModel)]="node.L" placeholder="{{node.L}}" disabled="node.gate"></label>
+                                
                             </div>
                             <div class="col-md-3 d-flex justify-content-end">
                                 <label class="text-primary">M: <input type="text" [(ngModel)]="node.M" placeholder="{{node.M}}" disabled="node.gate"></label>
-
-
+                                
+                           
                             </div>
                             <div class="col-md-3">
                                 <label class="text-primary">UnAvi: <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled></label>
-
+                            
                             </div>
                             <div class="col-md-3 d-flex justify-content-end">
                                 <label class="text-primary">System UnAvi:<input type="text" [(ngModel)]="node.gateUnAvailability" placeholder="{{node.gateUnAvailability}}" disabled
-                                       ></label>
-
+                                   ></label>                                    
+                            
                             </div>
                         </div>
-
-
-
-
+                        <div *ngIf="node.AssetCost !== undefined" class="row flex-row align-items-end">
+                            <div class="col-md-6">
+                                <label class="text-primary">Asset Cost: <input type="text" [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled></label>
+                            
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end">
+                                <label class="text-primary">Repair Cost:<input type="text" [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled></label>                                    
+                            
+                            </div>
+                        </div>
+                        
+                       
+                        
+                        
                     </div>
                     <div *ngIf="node.final== true" class="card-span">
                         <div class="row flex-row justify-content-between">
                             <div class="col-md-3">
                                 <label class="text-primary">Mtbf: <input type="text" placeholder="{{node.mtbf}}" disabled="node.gate"></label>
-
+                        
                             </div>
                             <div class="col-md-3">
-                                <label class="text-primary">Availability: <input type="text" placeholder="{{node.availability}}" disabled="node.gate"></label>
-
+                                <label class="text-primary">Availability: <input type="text" placeholder="{{node.availability}}"
+                                        disabled="node.gate"></label>
+                        
                             </div>
                         </div>
                     </div>
                     <div *ngIf="node.gate== false" class="card-span">
                         <div class="row flex-row justify-content-between">
                             <div class="col-md-4">
-                                <label class="text-primary">L:<input type="text" (change)="calculateAvailability(node)" (keypress)=AllowNumber($event) [(ngModel)]="node.L"
-                                    placeholder="{{node.L}}" class="w-100 form-control"></label>
-
-                            </div>
-                            <div class="col-md-4">
-                                <label class="text-primary">M:<input type="text" (change)="calculateAvailability(node)" (keypress)=AllowNumber($event) [(ngModel)]="node.M"
-                                    placeholder="{{node.M}}" class="w-100 form-control"></label>
-
-                            </div>
-                            <div class="col-md-4">
-                                <label class="text-primary">UnAvi: <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled class="w-100"></label>
-
-
-                            </div>
+                            <label class="text-primary">L:<input type="text" (change)="calculateAvailability(node)" (keypress)=AllowNumber($event) [(ngModel)]="node.L"
+                                placeholder="{{node.L}}" class="w-100 form-control"></label>
+                            
+                                </div>
+                        <div class="col-md-4">
+                            <label class="text-primary">M:<input type="text" (change)="calculateAvailability(node)" (keypress)=AllowNumber($event) [(ngModel)]="node.M"
+                                placeholder="{{node.M}}" class="w-100 form-control"></label>
+                            
                         </div>
+                        <div class="col-md-4">
+                            <label class="text-primary">UnAvi: <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled class="w-100"></label>
+                            
+                            
+                            </div>
+                            </div>
                     </div>
                     {{node.gateType === 'KN'? node.K+' '+'Out of '+node.N : ''}}
                     <div class="d-flex justify-content-center flex-row align-items-center">
-                        <a *ngIf="node.gate" (click)="AddTopBottom(node)" title="Add new node" class="org-add btn btn-sm"><i class="pi pi-plus"></i></a>
-                        <a *ngIf="node.children.length > 1" (click)="calculateLM(node)" title="calculate" class="org-add btn btn-sm btn-dark "><i class="pi pi-check-circle small"></i>&nbsp;&nbsp;&nbsp;Calculate</a>
+                     <a *ngIf="node.gate" (click)="AddTopBottom(node)" title="Add new node" class="org-add btn btn-sm"><i class="pi pi-plus"></i></a>
+                    <a *ngIf="node.children.length > 1" (click)="calculateLM(node)" title="calculate" class="org-add btn btn-sm btn-dark "><i class="pi pi-check-circle small"></i>&nbsp;&nbsp;&nbsp;Calculate</a>
                     </div>
-                    <div *ngIf="TopBottomEnable" class="gate-action mt-3">
-                        <div class="bg-white bg-gate">
-                            <div>
-                                <a (click)="CloseTopBottomNode(node)" class="btn-white btn-sm">
-                                    <i class="pi pi-times-circle"></i>
-                                </a>
-                            </div>
-                            <div class="d-flex flex-row">
-                                <a [hidden]="node.gateType === 'KN'" (click)="AddTopFinalNode(node)" class="btn btn-sm btn-primary mr-2">Top Final</a>
-                                <a [hidden]="node.gateType === 'KN'" (click)="AddTopNode(node)" class="btn btn-sm btn-primary mr-2">Top</a>
-                                <!-- <label [hidden]="node.gateType === 'KN'">Bottom</label> -->
-                                <ul *ngIf="node.gateType !== 'KN'" class="d-flex">
-                                    <li><a (click)="AddBottomNode(node, 'Yes')" class="btn btn-sm btn-primary mr-2">Bottom with Gate</a></li>
-                                    <li><a (click)="AddBottomNode(node, 'No')" class="btn btn-sm btn-primary mr-2">Bottom without Gate</a></li>
-                                </ul>
-                            </div>
-                            <ul *ngIf="node.gateType === 'KN'" class="d-flex mt-4">
-                                <li class="mr-2">
-                                    <label>K: <input type="text" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event) [(ngModel)]="node.K" placeholder="{{node.K}}" class="form-control"/></label>
-
-                                </li>
-                                <li class="mr-2">
-                                    <label>N: <input type="text" style="width: 8em; height: 32px" (keypress)=AllowNumber($event) [(ngModel)]="node.N" placeholder="{{node.N}}" class="form-control"/></label>
-
-                                </li>
-                                <li>
-                                    <button (click)="AddKNLogic(node)" class="btn btn-dark btn-sm mt-4" style="position: relative; top: -2px">Ok</button>
-                                </li>
-                            </ul>
-                            <div>
-                            </div>
-                        </div>
+                     <div *ngIf="TopBottomEnable" class="gate-action mt-3">
+                         <div class="bg-white bg-gate">
+                             <div>
+                        <a (click)="CloseTopBottomNode(node)" class="btn-white btn-sm">
+                        <i class="pi pi-times-circle"></i>
+                        </a>
                     </div>
+                    <div class="d-flex flex-row">
+                    <a [hidden]="node.gateType === 'KN'" (click)="AddTopFinalNode(node)" class="btn btn-sm btn-primary mr-2">Top Final</a>
+                    <a [hidden]="node.gateType === 'KN'"(click)="AddTopNode(node)" class="btn btn-sm btn-primary mr-2">Top</a>
+                    <!-- <label [hidden]="node.gateType === 'KN'">Bottom</label> -->
+                    <ul *ngIf="node.gateType !== 'KN'" class="d-flex">
+                        <li><a (click)="AddBottomNode(node, 'Yes')" class="btn btn-sm btn-primary mr-2">Bottom with Gate</a></li>
+                        <li><a (click)="AddBottomNode(node, 'No')" class="btn btn-sm btn-primary mr-2" >Bottom without Gate</a></li>
+                    </ul>
+                    </div>
+                    <ul *ngIf="node.gateType === 'KN'"  class="d-flex mt-4">
+                        <li class="mr-2">
+                            <label>K: <input type="text" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event) [(ngModel)]="node.K" placeholder="{{node.K}}" class="form-control"/></label>
+                            
+                        </li>
+                        <li class="mr-2">
+                            <label>N: <input type="text" style="width: 8em; height: 32px" (keypress)=AllowNumber($event) [(ngModel)]="node.N" placeholder="{{node.N}}" class="form-control"/></label>
+                           
+                        </li>
+                        <li>
+                            <button (click)="AddKNLogic(node)" class="btn btn-dark btn-sm mt-4" style="position: relative; top: -2px">Ok</button>
+                        </li>
+                    </ul>
+                    <div>
+                    </div>
+                     </div>
+                     </div>
                 </div>
                 <div *ngIf="chart.getTemplateForNode(node)">
                     <ng-container *ngTemplateOutlet="chart.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
