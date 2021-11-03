@@ -22,11 +22,11 @@
                              &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "OriginalCriticality") : ''}}</span>
                         </div>
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
-                            <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label != '' ? 'Asset Cost :':''}}</small>
+                            <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label != '' ? 'Asset Cost ($):':''}}</small>
                             &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "AssetCost") : ''}}</span>
                         </div>
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
-                            <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label !='' ? 'Repair Cost :':''}}</small>
+                            <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label !='' ? 'Repair Cost ($):':''}}</small>
                              &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "RepairCost") : ''}}</span>
                         </div>
                     </div>
@@ -61,11 +61,11 @@
                         </div>
                         <div *ngIf="node.AssetCost !== undefined" class="row flex-row align-items-end">
                             <div class="col-md-6">
-                                <label class="text-primary">Asset Cost: <input type="text"  [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled></label>
+                                <label class="text-primary">Asset Cost ($): <input type="text"  [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled></label>
                             
                             </div>
                             <div class="col-md-6 d-flex justify-content-end">
-                                <label class="text-primary">Repair Cost:<input type="text"  [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled></label>                                    
+                                <label class="text-primary">Repair Cost ($):<input type="text"  [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled></label>                                    
                             
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                     {{node.gateType === 'KN'? node.K+' '+'Out of '+node.N : ''}}
                     <div class="d-flex justify-content-center flex-row align-items-center">
                      <a *ngIf="node.gate" (click)="AddTopBottom(node)" title="Add new node" class="org-add btn btn-sm"><i class="pi pi-plus"></i></a>
-                    <a *ngIf="node.children.length > 1" (click)="calculateLM(node)" title="calculate" class="org-add btn btn-sm btn-dark "><i class="pi pi-check-circle small"></i>&nbsp;&nbsp;&nbsp;Calculate</a>
+                    <a *ngIf="node.children.length >= 1" (click)="calculateLM(node)" title="calculate" class="org-add btn btn-sm btn-dark "><i class="pi pi-check-circle small"></i>&nbsp;&nbsp;&nbsp;Calculate</a>
                     </div>
                      <div *ngIf="TopBottomEnable" class="gate-action mt-3">
                          <div class="bg-white bg-gate">

@@ -48,7 +48,7 @@
         </p-tabPanel>
         <p-tabPanel header="ADD" leftIcon="pi pi-align-left">
             <div class="card dpm-card div-in-middle w-100 p-0" *ngIf="SelectBoxEnabled">
-                <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Add Label and Tag Number to RBD</div>
+                <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Add Label and Tag Number to ABD</div>
                 <div class="row mt-3 for-rbd">
                     <div class="col-md-3">
                         <div class="flex-column">
@@ -107,7 +107,7 @@
         </p-tabPanel>
         <p-tabPanel header="Update" leftIcon="pi pi-align-left">
             <div class="card dpm-card div-in-middle w-100 p-0" *ngIf="SelectUpdateBoxEnabled">
-                <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Select Tag Number of RBD</div>
+                <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Select Tag Number of ABD</div>
                 <div class="row mt-3 for-rbd">
                     <div class="col-md-3">
                         <div class="d-flex flex-column">
@@ -143,7 +143,7 @@
     </p-tabView>
 </div>
 
-<p-dialog header="RBD" [(visible)]="viewRBD" [style]="{maxWidth: '1000px'}" class="rbd-modal">
+<p-dialog header="ABD" [(visible)]="viewRBD" [style]="{maxWidth: '1000px'}" class="rbd-modal">
     <div class="alert alert-warning mb-2" style="    width: 95.5%; margin: auto;"><i class="pi pi-info-circle mr-1"></i>Opps! Tree is too big, Please click Expand button below for better view and Scroll right to view parent node !</div>
     <div class="col-md-12 collapse-table" style="overflow: auto;" id="ViewRBD">
         <rbd-organizationChart [value]="ViewSavedTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>

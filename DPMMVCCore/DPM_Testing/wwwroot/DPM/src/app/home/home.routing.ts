@@ -53,7 +53,7 @@ import { RBDComponent } from "./rbd/rbd.component";
                 { path: 'FailureHistory', component: FailureHistoryComponent },  
                 { path: 'Constraint', component: ConstarintManagementComponent },                 
                 { path: 'Alert', component: AlertManagementComponent },  
-                { path: 'RBD', component: RBDComponent}
+                { path: 'ABD', component: RBDComponent}
             ]
         }
     ])],

@@ -207,12 +207,13 @@ public async calculateLM(node){
                 let unAvalibility = await this.calculateAvailability(node);
                 node.unAvailabilty = unAvalibility.toFixed(5);;
             }
-            if(parseFloat(this.node.mtbf) == 0){
+            if(parseFloat(this.node.mtbf) == 0 || parseFloat(this.node.availability) > 0 ){
                 this.node.mtbf = (1000000/8760/parseFloat(this.node.L)).toFixed(3);
-                this.node.availability = (parseFloat(this.node.mtbf)/(parseFloat(this.node.mtbf) + (parseFloat(this.node.M)/8760))).toFixed(3);
+               // this.node.availability = (parseFloat(this.node.mtbf)/(parseFloat(this.node.mtbf) + (parseFloat(this.node.M)/8760))).toFixed(3);
                 this.node.nonAvailability = (1-this.node.availability).toFixed(3);
                 this.node.mtbf = `${this.node.mtbf} Yrs`
                 this.node.M = `${this.node.M} H`
+                this.node.availability = 1 - parseFloat(this.node.unAvailabilty);
             }
         }
     }else{

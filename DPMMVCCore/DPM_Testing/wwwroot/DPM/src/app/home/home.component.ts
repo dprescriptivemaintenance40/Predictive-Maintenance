@@ -403,6 +403,11 @@ export class HomeComponent implements OnInit {
       ]
     },
     {
+      label: 'RAM Modeling',
+      icon: 'pi pi-sitemap',
+      url: '#/Home/ABD'
+    },
+    {
       label: 'Recycle Bin',
       icon: 'pi pi-trash',
       url: '#/Home/RecycleBin'
