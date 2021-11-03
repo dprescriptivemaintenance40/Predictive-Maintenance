@@ -53,8 +53,8 @@
                     <div class="col-md-3">
                         <div class="flex-column">
                             <label class="d-block">Tag Number</label>
-                            <p-autoComplete placeholder="Enter TagNumber" [(ngModel)]="TagNumber" [showEmptyMessage]="true" class="form-control" [suggestions]="filteredTagNumbers" (completeMethod)="filterTagNumbers($event)" field="name" [dropdown]="true" [minLength]="1"></p-autoComplete>
-                            <!-- <input type="text" [(ngModel)]="rbdModelObj.TagNumber" placeholder="Enter Tag Number" class="form-control"> -->
+                            <!-- <p-autoComplete placeholder="Enter TagNumber" [(ngModel)]="TagNumber" [showEmptyMessage]="true" class="form-control" [suggestions]="filteredTagNumbers" (completeMethod)="filterTagNumbers($event)" field="name" [dropdown]="true" [minLength]="1"></p-autoComplete> -->
+                            <input type="text" [(ngModel)]="rbdModelObj.TagNumber" placeholder="Enter Tag Number" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -78,6 +78,30 @@
             </div>
 
             <div *ngIf="SelectBoxEnabled == false">
+                <div class="row">
+                    <div class=" col-md-12">
+                        <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
+                            <p class="mb-0"><i class="pi pi-info-circle" class="mr-1"></i> To know GTL Block Flow Diagram</p>
+                            <div>
+                                <button *ngIf="enableImage == false" class="btn btn-primary btn-sm" (click)="GTLImage()">Click
+                                    Here</button>
+                                <button *ngIf="enableImage" class="btn btn-outline-danger btn-sm mr-1"
+                                    (click)="GTLImageCancel()">Cancel</button>
+                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="enableImage == true" class="row">
+                    <div class="col-md-12">
+                    <div class="card dpm-card mb-4">
+                        <div class="card-body">
+                            <span><img class="img-fluid px-3 px-sm-4 mt-3 mb-2"
+                                    src="/dist/DPM/assets/img/GTLBlockDiagram.PNG "alt=""></span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
                 <rbd-organizationChart [value]="MainTree" (addNode)="AddNode($event)" (deleteNode)="DeleteNode($event)" class="collapse-table"></rbd-organizationChart>
             </div>
         </p-tabPanel>
@@ -104,7 +128,7 @@
                 <a class="btn btn-dark" style="float:right;" pTooltip="Save data" (click)="UpdateRBD()" tooltipPosition="top">Update RBD</a>
             </div>
             <div *ngIf="SelectUpdateBoxEnabled == false">
-                <rbd-organizationChart [value]="MainTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
+                <rbd-organizationChart [value]="MainTree" (addNode)="AddNode($event)" (deleteNode)="DeleteNode($event)" class="collapse-table"></rbd-organizationChart>
             </div>
         </p-tabPanel>
     </p-tabView>

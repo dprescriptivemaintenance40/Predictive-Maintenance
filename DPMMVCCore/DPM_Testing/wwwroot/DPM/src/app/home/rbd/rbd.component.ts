@@ -23,13 +23,14 @@ export class RBDComponent implements OnInit {
    public TagNumber : any ;
    public SelectBoxEnabled : boolean = true;
    public SelectUpdateBoxEnabled : boolean = true;
-   public rbdModelObj : RBDModel = new RBDModel()
+   public rbdModelObj : RBDModel = new RBDModel();
    public TagNumberList : any = [
      {id:1, name:'T1'},{id:2, name:'T2'},{id:3, name:'T2'},{id:4, name:'T2'},{id:5, name:'T5'},{id:6, name:'T6'},{id:7, name:'T7'},{id:8, name:'T8'}
    ];
   public filteredTagNumbers: any[];
   public showFullScreen: boolean = false;
   public viewRBD : boolean = false;
+  public enableImage : boolean = false;
   constructor(private commonBLService : CommonBLService,
     private cd : ChangeDetectorRef,
     public httpobj:HttpClient,
@@ -101,7 +102,6 @@ export class RBDComponent implements OnInit {
   public RBDAddSave(){
         this.rbdModelObj.UserId = this.UserDetails.UserId ;
         this.rbdModelObj.Date = moment();
-        this.rbdModelObj.TagNumber = this.TagNumber.name;
         this.rbdModelObj.Tree = JSON.stringify(this.MainTree);
     this.commonBLService.postWithoutHeaders(this.rbdConstantApi.post,this.rbdModelObj).subscribe(
       res => {
@@ -163,8 +163,16 @@ export class RBDComponent implements OnInit {
     )
   }
 
+  public GTLImage(){
+     this.enableImage = true;
+  }
+
+  public GTLImageCancel(){
+    this.enableImage = false;
+  }
+
   public TagNumberSelect(){
-    if(this.TagNumber !== undefined){
+    if(this.rbdModelObj.TagNumber !== ''){
       this.SelectUpdateBoxEnabled = true;
       this.SelectBoxEnabled = false;
       this.MainTree = [];

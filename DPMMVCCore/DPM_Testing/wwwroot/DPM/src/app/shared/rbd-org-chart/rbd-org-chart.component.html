@@ -10,7 +10,7 @@
                     
                     <select class="form-control" *ngIf="node.gate== false" [(ngModel)]="node.label" style="height: 32px">
                         <option [ngValue]="">Select Asset</option>
-                        <option *ngFor="let r of RBDAssetsList" [ngValue]="r.CAId">{{r.AssetDescription}}</option>
+                        <option *ngFor="let r of chart.RBDAssetsList" [ngValue]="r.CAId">{{r.AssetDescription}}</option>
                     </select>
                     <div *ngIf="node.gate== false"  class="d-flex justify-content-start align-items-start mt-1 mb-0 flex-column">
                         <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1">
@@ -21,7 +21,7 @@
                             <small *ngIf="node.label != ''"></small>{{node.label !='' ? 'Criticality :':''}}
                              &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "OriginalCriticality") : ''}}</span>
                         </div>
-                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1">
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1 mt-2">
                             <small *ngIf="node.label != ''"></small>{{node.label != '' ? 'Asset Cost :':''}}
                             &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "AssetCost") : ''}}</span>
                         </div>
@@ -61,11 +61,11 @@
                         </div>
                         <div *ngIf="node.AssetCost !== undefined" class="row flex-row align-items-end">
                             <div class="col-md-6">
-                                <label class="text-primary">Asset Cost: <input type="text" [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled></label>
+                                <label class="text-primary">Asset Cost: <input type="text" style="width: 65px;" [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled></label>
                             
                             </div>
                             <div class="col-md-6 d-flex justify-content-end">
-                                <label class="text-primary">Repair Cost:<input type="text" [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled></label>                                    
+                                <label class="text-primary">Repair Cost:<input type="text" style="width: 65px;" [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled></label>                                    
                             
                             </div>
                         </div>

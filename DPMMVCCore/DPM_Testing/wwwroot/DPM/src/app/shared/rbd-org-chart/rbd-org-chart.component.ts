@@ -61,22 +61,14 @@ private messageService: MessageService,) {
     this.subscription = this.chart.selectionSource$.subscribe(() =>{
         this.cd.markForCheck();
     });
-    this.getAssetsListforRBD();
+    this.RBDAssetsList = this.chart.RBDAssetsList;
 }
 
 ngOnInit(){
 }
 
-public getAssetsListforRBD(){
-    this.RBDAssetsList = [];
-    this.commonBLService.getWithoutParameters('/CriticalityAssesmentAPI/GetAllCARecords')
-    .subscribe(
-        res=>{this.RBDAssetsList = res;}, err=>{console.log(err.error)}
-    )
-}
-
 public RBDAssetValueForHTML(id, type){
-    var Data =  this.RBDAssetsList.find(r=>r.CAId == parseFloat(id));
+    var Data =  this.chart.RBDAssetsList.find(r=>r.CAId == parseFloat(id));
     if(type == 'Location'){
         return Data.Location
     }
@@ -157,13 +149,13 @@ public async calculateLM(node){
                     let A : number=0;
                     let R : number=0;
                     if(element.gate == true){
-                        let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
+                        let Data=  this.chart.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
                         A = element.AssetCost;
                         AssetCost = AssetCost + A;
                         R = element.RepairCost;
                         RepairCost = RepairCost + R;
                     }else{
-                        let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
+                        let Data=  this.chart.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
                         A = Data.AssetCost;
                         AssetCost = AssetCost + A;
                         R = Data.RepairCost;
@@ -200,7 +192,7 @@ public async calculateLM(node){
                         R = element.RepairCost;
                         RepairCost1.push(R);
                     }else{
-                        let Data=  this.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
+                        let Data=  this.chart.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
                         A = Data.AssetCost;
                         AssetCost1.push(A);
                         R = Data.RepairCost;
@@ -237,10 +229,36 @@ public async calculateLM(node){
         this.node.M = (multiplyM/plusM).toFixed(3);
         this.node.L = ((multiplyL*plusM)/1000000).toFixed(3);
         if(node.children.length > 1){
-            let value : any = await this.KNEquations(node);
-            if(value != false){
-                node.unAvailabilty = value.toFixed(5);
-                node.gateUnAvailability = value.toFixed(5);
+            let Data : any = await this.KNEquations(node);
+            if(Data != false){
+                node.unAvailabilty = parseFloat(Data.value).toFixed(5);
+                node.gateUnAvailability = parseFloat(Data.value).toFixed(5);
+
+                if(Data.type == 1 || Data.type == 3 || Data.type == 6){
+                    let AssetCost1 : Array<number> =[], RepairCost1 : Array<number> =[];
+                    this.node.children.forEach(element => {
+                        let Data=  this.chart.RBDAssetsList.find(r=>r.CAId == parseFloat(element.label));
+                        let A : number=0, R: number=0;
+                        A = parseFloat(Data.AssetCost);
+                        AssetCost1.push(A);
+                        R =  parseFloat(Data.RepairCost);
+                        RepairCost1.push(R); 
+                    });
+                    this.node.AssetCost = Math.max(...AssetCost1);
+                    this.node.RepairCost = Math.max(...RepairCost1);
+                }else{
+                    let AssetCost : number =0, RepairCost: number=0;
+                    for (let index = 0; index < parseInt(this.node.K); index++) {
+                        let Data=  this.chart.RBDAssetsList.find(r=>r.CAId == parseFloat(this.node.children[index].label));
+                        let A : number=0, R: number=0;
+                        A = parseFloat(Data.AssetCost);
+                        AssetCost = AssetCost + A;
+                        R = parseFloat(Data.RepairCost);
+                        RepairCost = RepairCost + R;                        
+                    }
+                    this.node.AssetCost = AssetCost;
+                   this.node.RepairCost = RepairCost;
+                }
             }
         }
     }
@@ -313,23 +331,23 @@ private async KNEquations(node){
 
     switch (type) {
         case 1:
-            return await (1- ((1-a1)*(1-a2)));
+            return await { value : (1- ((1-a1)*(1-a2))) , type : type};
         case 2:
-            return await (a1*a2);
+            return await { value : (a1*a2) , type : type};
         case 3:
-            return await (1- ((1-a1)*(1-a2)*(1-a3)));
+            return await { value : (1- ((1-a1)*(1-a2)*(1-a3))), type : type};
         case 4:
-            return await ( (a1*a2*a3) + 3*(a1*a2)*(1-a1) );
+            return await { value : ( (a1*a2*a3) + 3*(a1*a2)*(1-a1) ) , type : type};
         case 5:
-            return await (a1*a2*a3);
+            return await { value : (a1*a2*a3), type : type};
         case 6:
-            return await (1- ( (1-a1)*(1-a2)*(1-a3)*(1-a4) ));
+            return await { value : (1- ( (1-a1)*(1-a2)*(1-a3)*(1-a4) )), type : type};
        case 7:
-             return ( (a1*a2*a3*a4) + (4*(a1*a2*a3)*(1-a1)) + (6*(a1*a2)*(1-a1)*(1-a2)) );
+             return await { value : ( (a1*a2*a3*a4) + (4*(a1*a2*a3)*(1-a1)) + (6*(a1*a2)*(1-a1)*(1-a2)) ), type : type};
        case 8:
-            return await ( (a1*a2*a3*a4) + (4*(a1*a2*a3)*(1-a1)) );
+            return await { value : ( (a1*a2*a3*a4) + (4*(a1*a2*a3)*(1-a1)) ), type : type};
         case 9:
-            return await (a1*a2*a3*a4);
+            return await { value : (a1*a2*a3*a4), type : type};
         default:
             return await false;
     }
@@ -418,6 +436,7 @@ set selection(val:any) {
 
 @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 
+public RBDAssetsList : any =[];
 public templateMap: any;
 
 private selectionSource = new Subject<any>();
@@ -428,7 +447,9 @@ initialized: boolean;
 
 selectionSource$ = this.selectionSource.asObservable();
 
-constructor(public el: ElementRef, public cd:ChangeDetectorRef) {}
+constructor(public el: ElementRef, public cd:ChangeDetectorRef, private commonBLServie : CommonBLService) {
+    this.getAssetsListforRBD();
+}
 
 get root(): TreeNode {
     return this.value && this.value.length ? this.value[0] : null;
@@ -451,6 +472,14 @@ getTemplateForNode(node: TreeNode): TemplateRef<any> {
         return node.type ? this.templateMap[node.type] : this.templateMap['default'];
     else
         return null;
+}
+
+public getAssetsListforRBD(){
+    this.RBDAssetsList = [];
+    this.commonBLServie.getWithoutParameters('/CriticalityAssesmentAPI/GetAllCARecords')
+    .subscribe(
+        res=>{this.RBDAssetsList = res;}, err=>{console.log(err.error)}
+    )
 }
 
 onNodeClick(event: Event, node: TreeNode) {
