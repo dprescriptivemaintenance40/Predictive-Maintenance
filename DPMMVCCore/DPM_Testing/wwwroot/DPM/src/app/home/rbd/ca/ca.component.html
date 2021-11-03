@@ -1,0 +1,107 @@
+ <div class="table-responsive dpm-card mb-3">
+        <div class="card-title d-flex justify-content-between align-items-center p-3 mb-0">
+            <h3>Criticality Assessment</h3>
+            <button class="btn btn-primary btm-sm" (click)="cAForm()">
+                <i class="fa fa-plus"></i> New Record
+            </button>
+        </div> 
+   <p-table [style]="{width:'100%'}" [value]="criticalityAssessmentObjlist"  [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+<!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"> [value]="FilteredPSRModel"(click)="skillLibraryForm()" -->
+    <ng-template pTemplate="colgroup">
+        <colgroup>
+            <col style="width:10em;">
+            <col style="width:10em;">
+            <col style="width:15em;">
+            <col style="width:15em;">
+            <col style="width:10em;">
+            <col style="width:10em;">
+            <col style="width:15em;">
+            <col style="width:15em;">
+            <col style="width:10em;">
+            <col style="width:10em;">
+            <col style="width:8em;">
+            <col style="width:15em;">
+            <col style="width:10em;">
+            <col style="width:10em;">
+            <col style="width:8em;">
+            <col style="width:15em;">
+            <col style="width:10em;">
+            <col style="width:10em;">
+            <col style="width:8em;">
+            <col style="width:15em;">
+            <col style="width:10em;">
+            <col style="width:10em;">
+            <col style="width:8em;">
+            <col style="width:50em;">
+       </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Asset </th>
+            <th>Location</th>
+            <th>AssetDescription</th>
+            <th>LocationDescription </th>
+            <th>FailureClass</th>
+            <th>LocationParent</th>
+            <th>CriticalityProjectStage</th>
+            <th>GeneralLedgerAccount</th>
+            <th>Area </th>
+           <th>Status</th>
+            <th>SE </th>
+            <th>PLE</th>
+            <th>EE</th>
+            <th>RE </th>
+            <th>RF </th>
+            <th>RFE</th>
+            <th>Criticality </th>
+            <th>RiskRanking </th>
+            <th>RiskRankingMatrix</th>
+            <th>HSECESAsset</th>
+            <th> OriginalCriticality</th>
+            <th>AssetCost </th>
+            <th>RepairCost </th>
+            <th>Action </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-p>
+        
+        <tr>
+            <td><input [(ngModel)]="p.Asset" type="text"  class="form-control" style="height: 35px;"></td>
+            <td><input  [(ngModel)]="p.Location" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input  [(ngModel)]="p.AssetDescription"  type="text" class="form-control" style="height: 35px;"></td>
+            <td><input  [(ngModel)]="p.LocationDescription" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.FailureClass" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.LocationParent" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.CriticalityProjectStage" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.GeneralLedgerAccount"  type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.Area" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.Status" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.SE" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.PLE" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.EE" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.RE" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.RF" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.RFE" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.Criticality" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.RiskRanking" type="number" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.RiskRankingMatrix" type="number" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.HSECESAsset" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.OriginalCriticality" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.AssetCost" type="number" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.RepairCost" type="number" class="form-control" style="height: 35px;"></td>
+            <td>
+                <button (click)="RecordSubmit(p)"  class="form-control">{{p.CAId ===0?'Save':'Update'}}</button>
+                <button class="form-control">Delete</button>
+            </td>
+
+           
+        </tr>
+ 
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="10">No records to show.</td>
+        </tr>
+    </ng-template>
+</p-table> 

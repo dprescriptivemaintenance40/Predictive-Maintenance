@@ -22,6 +22,7 @@ import { FailureHistoryComponent } from "./FailureHistory/failure-history.compon
 import { ConstarintManagementComponent } from "./CBA_Library/constarint-management/constarint-management.component";
 import { AlertManagementComponent } from "./CBA_Library/alert-management/alert-management.component";
 import { RBDComponent } from "./rbd/rbd.component";
+import {CAComponent} from "./rbd/ca/ca.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -53,7 +54,8 @@ import { RBDComponent } from "./rbd/rbd.component";
                 { path: 'FailureHistory', component: FailureHistoryComponent },  
                 { path: 'Constraint', component: ConstarintManagementComponent },                 
                 { path: 'Alert', component: AlertManagementComponent },  
-                { path: 'RBD', component: RBDComponent}
+                { path: 'RBD', component: RBDComponent},
+                {path:'ca',component:CAComponent}
             ]
         }
     ])],
