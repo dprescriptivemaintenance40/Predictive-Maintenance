@@ -108,7 +108,7 @@
         <p-tabPanel header="Update" leftIcon="pi pi-align-left">
             <div class="card dpm-card div-in-middle w-100 p-0" *ngIf="SelectUpdateBoxEnabled">
                 <div class="alert alert-info"><i class="pi pi-info-circle mr-1"></i>Select Tag Number of RBD</div>
-                <div class="row mt-3">
+                <div class="row mt-3 for-rbd">
                     <div class="col-md-3">
                         <div class="d-flex flex-column">
                             <label class="d-block">Tag Number</label>
@@ -121,12 +121,18 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="SelectUpdateBoxEnabled == false">
-                <a class="btn btn-dark" style="float:left;" (click)="RBDUpdateBack()" pTooltip="Save data" tooltipPosition="top">Back</a>
+            <div class="rbd-action">
+                <div *ngIf="SelectUpdateBoxEnabled == false">
+                    <a class="btn btn-back" style="float:left;" (click)="RBDUpdateBack()" pTooltip="Save data"
+                        tooltipPosition="top"><i class="pi pi-arrow-left"></i>&nbsp;&nbsp;Back</a>
+                </div>
+                <div *ngIf="SelectUpdateBoxEnabled == false" class="rbd-card">
+                    <a class="btn btn-primary" style="float:right;" pTooltip="Save data" (click)="UpdateRBD()"
+                        tooltipPosition="top"><i class="pi pi-check-circle"></i>&nbsp;&nbsp;Update RBD</a>
+                </div>
             </div>
-            <div *ngIf="SelectUpdateBoxEnabled == false">
-                <a class="btn btn-dark" style="float:right;" pTooltip="Save data" (click)="UpdateRBD()" tooltipPosition="top">Update RBD</a>
-            </div>
+
+           
             <div *ngIf="SelectUpdateBoxEnabled == false">
                 <rbd-organizationChart [value]="MainTree" (addNode)="AddNode($event)" (deleteNode)="DeleteNode($event)" class="collapse-table"></rbd-organizationChart>
             </div>
@@ -134,8 +140,9 @@
     </p-tabView>
 </div>
 
-<p-dialog header="RBD" [(visible)]="viewRBD" [style]="{width: '150em'}">
-    <div class="col-md-12" style="overflow: auto;" id="ViewRBD">
+<p-dialog header="RBD" [(visible)]="viewRBD" [style]="{maxWidth: '1000px'}" class="rbd-modal">
+    <div class="alert alert-warning mb-2" style="    width: 95.5%; margin: auto;"><i class="pi pi-info-circle mr-1"></i>Opps! Tree is to big, Please click Expand button below for better view and Scroll right to view parent node !</div>
+    <div class="col-md-12 collapse-table" style="overflow: auto;" id="ViewRBD">
         <rbd-organizationChart [value]="ViewSavedTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
         <button *ngIf="showFullScreen" pButton pRipple type="button" (click)="FullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn" aria-placeholder="Click to view tree"><i class="pi pi-window-maximize"></i></button>
         <button *ngIf="!showFullScreen" pButton pRipple type="button" (click)="ExitFullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn"><i class="pi pi-window-minimize"></i></button>

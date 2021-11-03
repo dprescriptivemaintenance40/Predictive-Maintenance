@@ -1087,24 +1087,24 @@ small .pi {
 }
 
 .fixed-max-btn {
-  background: #fff !important;
+  background: #333 !important;
   position: fixed;
   bottom: 30px;
   right: 20px;
-  border: 5px solid #2ba7b2 !important;
+  border: 5px solid #333 !important;
   box-shadow: 0px 0px 20px #1111112b;
   height: 60px !important;
   width: 60px !important;
   z-index: 99;
   &:hover {
-    border: 5px solid #666 !important;
+    border: 5px solid #000 !important;
     i {
-      color: #666;
+      color: #fff;
     }
   }
   i {
     font-weight: 500;
-    color: #09a1a6;
+    color: #fff;
     font-size: 20px;
   }
   .p-button-label {
@@ -1699,14 +1699,14 @@ table.p-organizationchart-table {
   width: 250px !important;
   input[disabled] {
     background-color: #e8f0fe !important;
-    width: 41px;
+    width: 100px;
     border-radius: 5px;
     border: 1px solid #e8f0fe;
     box-shadow: none;
     color: #333;
     margin-left: 0px;
     outline: none;
-    text-align: center;
+    text-align: left;
     font-weight: 700;
   }
 }
@@ -1776,6 +1776,10 @@ table.p-organizationchart-table {
     font-size: 13px;
   }
   p-autocomplete {
+    height: 35px;
+    background: #e8f0fe;
+    padding: 0px 8px;
+    padding-right: 0;
     span {
       width: 100%;
       height: 100%;
@@ -1800,13 +1804,13 @@ table.p-organizationchart-table {
   }
 }
 .p-button {
-  color: #555;
-  background: #e8f0fe !important;
-  border: 1px solid #e8f0fe !important;
+  color: #fff;
+  background: #333 !important;
+  border: 1px solid #fff !important;
   &:hover {
-    background: hsl(217, 19%, 81%) !important;
-    border: 1px solid hsl(217, 19%, 81%) !important;
-    color: #333 !important;
+    background: #111 !important;
+    border: 1px solid #111 !important;
+    color: #fff !important;
   }
 }
 .rbd-chart {
@@ -1832,5 +1836,10 @@ table.p-organizationchart-table {
     top: -11px;
     right: 100%;
     color: red;
+  }
+}
+.rbd-modal {
+  .p-dialog-content {
+    padding: 0;
   }
 }

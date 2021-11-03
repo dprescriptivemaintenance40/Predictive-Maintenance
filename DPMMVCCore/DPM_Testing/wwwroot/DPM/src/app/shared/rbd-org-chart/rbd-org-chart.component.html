@@ -13,20 +13,20 @@
                         <option *ngFor="let r of chart.RBDAssetsList" [ngValue]="r.CAId">{{r.AssetDescription}}</option>
                     </select>
                     <div *ngIf="node.gate== false"  class="d-flex justify-content-start align-items-start mt-1 mb-0 flex-column">
-                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1">
-                            <small *ngIf="node.label != ''"></small>{{node.label != '' ? 'Tag No. :':''}}
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1">
+                            <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label != '' ? 'Tag No. :':''}}</small>
                             &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "Location") : ''}}</span>
                         </div>
-                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1 mt-2">
-                            <small *ngIf="node.label != ''"></small>{{node.label !='' ? 'Criticality :':''}}
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
+                            <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label !='' ? 'Criticality :':''}}</small>
                              &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "OriginalCriticality") : ''}}</span>
                         </div>
-                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1 mt-2">
-                            <small *ngIf="node.label != ''"></small>{{node.label != '' ? 'Asset Cost :':''}}
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
+                            <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label != '' ? 'Asset Cost :':''}}</small>
                             &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "AssetCost") : ''}}</span>
                         </div>
-                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-start p-0 badge badge-sucess mr-1 mt-2">
-                            <small *ngIf="node.label != ''"></small>{{node.label !='' ? 'Repair Cost :':''}}
+                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
+                            <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label !='' ? 'Repair Cost :':''}}</small>
                              &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "RepairCost") : ''}}</span>
                         </div>
                     </div>
@@ -40,20 +40,20 @@
                     </div>
                     <div *ngIf="node.gate== true" class="card-span">
                         <div class="row flex-row align-items-end">
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                     <label class="text-primary">L: <input type="text" [(ngModel)]="node.L" placeholder="{{node.L}}" disabled="node.gate"></label>
                                 
                             </div>
-                            <div class="col-md-3 d-flex justify-content-end">
+                            <div class="col-md-6 d-flex justify-content-end">
                                 <label class="text-primary">M: <input type="text" [(ngModel)]="node.M" placeholder="{{node.M}}" disabled="node.gate"></label>
                                 
                            
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label class="text-primary">UnAvi: <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled></label>
                             
                             </div>
-                            <div class="col-md-3 d-flex justify-content-end">
+                            <div class="col-md-6 d-flex justify-content-end">
                                 <label class="text-primary">System UnAvi:<input type="text" [(ngModel)]="node.gateUnAvailability" placeholder="{{node.gateUnAvailability}}" disabled
                                    ></label>                                    
                             
@@ -61,11 +61,11 @@
                         </div>
                         <div *ngIf="node.AssetCost !== undefined" class="row flex-row align-items-end">
                             <div class="col-md-6">
-                                <label class="text-primary">Asset Cost: <input type="text" style="width: 65px;" [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled></label>
+                                <label class="text-primary">Asset Cost: <input type="text"  [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled></label>
                             
                             </div>
                             <div class="col-md-6 d-flex justify-content-end">
-                                <label class="text-primary">Repair Cost:<input type="text" style="width: 65px;" [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled></label>                                    
+                                <label class="text-primary">Repair Cost:<input type="text"  [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled></label>                                    
                             
                             </div>
                         </div>
@@ -76,11 +76,11 @@
                     </div>
                     <div *ngIf="node.final== true" class="card-span">
                         <div class="row flex-row justify-content-between">
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label class="text-primary">Mtbf: <input type="text" placeholder="{{node.mtbf}}" disabled="node.gate"></label>
                         
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label class="text-primary">Availability: <input type="text" placeholder="{{node.availability}}"
                                         disabled="node.gate"></label>
                         
@@ -89,17 +89,17 @@
                     </div>
                     <div *ngIf="node.gate== false" class="card-span">
                         <div class="row flex-row justify-content-between">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                             <label class="text-primary">L:<input type="text" (change)="calculateAvailability(node)" (keypress)=AllowNumber($event) [(ngModel)]="node.L"
                                 placeholder="{{node.L}}" class="w-100 form-control"></label>
                             
                                 </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="text-primary">M:<input type="text" (change)="calculateAvailability(node)" (keypress)=AllowNumber($event) [(ngModel)]="node.M"
                                 placeholder="{{node.M}}" class="w-100 form-control"></label>
                             
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="text-primary">UnAvi: <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled class="w-100"></label>
                             
                             
