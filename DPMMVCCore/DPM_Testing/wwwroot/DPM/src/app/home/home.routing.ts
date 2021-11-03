@@ -21,6 +21,7 @@ import { WeibullAnalysis } from "./WeibullAnalysis/weibull-analysis.component";
 import { FailureHistoryComponent } from "./FailureHistory/failure-history.component";
 import { ConstarintManagementComponent } from "./CBA_Library/constarint-management/constarint-management.component";
 import { AlertManagementComponent } from "./CBA_Library/alert-management/alert-management.component";
+import { RBDComponent } from "./RBD/rbd.component";
 @NgModule({
     imports: [RouterModule.forChild([
         {
@@ -51,7 +52,8 @@ import { AlertManagementComponent } from "./CBA_Library/alert-management/alert-m
                 { path: 'WeibullAnalysis', component: WeibullAnalysis },                 
                 { path: 'FailureHistory', component: FailureHistoryComponent },  
                 { path: 'Constraint', component: ConstarintManagementComponent },                 
-                { path: 'Alert', component: AlertManagementComponent },  
+                { path: 'Alert', component: AlertManagementComponent }, 
+                { path: 'RBD', component: RBDComponent },  
             ]
         }
     ])],

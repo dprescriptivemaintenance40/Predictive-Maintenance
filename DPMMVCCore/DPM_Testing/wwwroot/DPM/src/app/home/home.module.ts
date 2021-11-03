@@ -28,6 +28,7 @@ import { ConstarintManagementComponent } from './CBA_Library/constarint-manageme
 import { AlertManagementComponent } from './CBA_Library/alert-management/alert-management.component';
 import { DesignatonAccessComponent } from './Admin/designaton-access/designaton-access.component';
 import { StaffComponent } from './Admin/staff/staff.component';
+import { RBDComponent } from "./RBD/rbd.component";
 
 @NgModule({
     declarations: [
@@ -51,7 +52,8 @@ import { StaffComponent } from './Admin/staff/staff.component';
         ConstarintManagementComponent,
         AlertManagementComponent,
         DesignatonAccessComponent,
-        StaffComponent
+        StaffComponent,
+        RBDComponent
     ],
     imports: [        
         HomeRoutingModule,       
