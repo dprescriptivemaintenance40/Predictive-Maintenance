@@ -64,13 +64,13 @@
             <th>Action </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-p>
+    <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
         
         <tr>
             <td><input [(ngModel)]="p.Asset" type="text"  class="form-control" style="height: 35px;"></td>
-            <td><input  [(ngModel)]="p.Location" type="text" class="form-control" style="height: 35px;"></td>
-            <td><input  [(ngModel)]="p.AssetDescription"  type="text" class="form-control" style="height: 35px;"></td>
-            <td><input  [(ngModel)]="p.LocationDescription" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.Location" type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.AssetDescription"  type="text" class="form-control" style="height: 35px;"></td>
+            <td><input [(ngModel)]="p.LocationDescription" type="text" class="form-control" style="height: 35px;"></td>
             <td><input [(ngModel)]="p.FailureClass" type="text" class="form-control" style="height: 35px;"></td>
             <td><input [(ngModel)]="p.LocationParent" type="text" class="form-control" style="height: 35px;"></td>
             <td><input [(ngModel)]="p.CriticalityProjectStage" type="text" class="form-control" style="height: 35px;"></td>
@@ -91,8 +91,13 @@
             <td><input [(ngModel)]="p.AssetCost" type="number" class="form-control" style="height: 35px;"></td>
             <td><input [(ngModel)]="p.RepairCost" type="number" class="form-control" style="height: 35px;"></td>
             <td>
-                <button (click)="RecordSubmit(p)"  class="form-control">{{p.CAId ===0?'Save':'Update'}}</button>
-                <button class="form-control">Delete</button>
+                <button (click)="RecordSubmit(p)" class="btn btn-sm" [ngClass]="(p.CAId==0)?'btn btn-sm btn-dark':'btn-primary'"><i
+                                        class="far fa-save"></i>{{p.CAId ===0?'Save':'Update'}}
+                 </button>
+
+                <button (click)="onDelete(p.CAId,rowIndex)" class="btn btn-danger btn-sm ml-1"> <i class="far fa-trash-alt fa-sm text-white"></i>
+                </button>
+    
             </td>
 
            

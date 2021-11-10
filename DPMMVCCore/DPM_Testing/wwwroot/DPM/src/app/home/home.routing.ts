@@ -55,7 +55,7 @@ import {CAComponent} from "./rbd/ca/ca.component";
                 { path: 'Constraint', component: ConstarintManagementComponent },                 
                 { path: 'Alert', component: AlertManagementComponent },  
                 { path: 'RBD', component: RBDComponent},
-                {path:'ca',component:CAComponent}
+                {path:  'CriticalityAssesment',component:CAComponent}
             ]
         }
     ])],
