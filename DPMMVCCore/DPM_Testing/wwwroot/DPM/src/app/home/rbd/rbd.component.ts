@@ -139,14 +139,16 @@ export class RBDComponent implements OnInit {
     )
   }
 
-  DeleteRBDRecord(p){    
-    this.commonBLService.DeleteWithID("/api/RBDAPI",p.RBDId).subscribe(
-      (res: any) =>{
-         this.getRBDList();
-        },
-       err => {console.log(err.error)}
-  ); 
-}
+  DeleteRBDRecord(p){  
+    if (confirm('Are you sure to delete this ABD ?')){  
+        this.commonBLService.DeleteWithID("/RBDAPI",p.RBDId).subscribe(
+          (res: any) =>{
+            this.getRBDList();
+            },
+          err => {console.log(err.error)}
+        ); 
+    }
+  }
   public RBDUpdateBack(){
     this.SelectUpdateBoxEnabled = true;
     this.TagNumber = [];
@@ -184,6 +186,7 @@ export class RBDComponent implements OnInit {
         final:false,
         L:0.0,
         M:0.0,
+        distribution:'',
         gateType:'',
         unAvailabilty:0,
         gateUnAvailability:0,
@@ -226,6 +229,7 @@ export class RBDComponent implements OnInit {
                 M:0.0,
                 K:0,
                 N:0,
+                distribution:'',
                 unAvailabilty:0,
                 gateUnAvailability:0,
                 gateType:'',
@@ -251,6 +255,7 @@ export class RBDComponent implements OnInit {
                         M:0.0,
                         K:0,
                         N:0,
+                        distribution:'',
                         unAvailabilty:0,
                         gateUnAvailability:0,
                         gateType:'',
@@ -284,6 +289,7 @@ export class RBDComponent implements OnInit {
                 M:0.0,
                 K:0,
                 N:0,
+                distribution:'',
                 unAvailabilty:0,
                 gateUnAvailability:0,
                 KNGate: false,
@@ -307,6 +313,7 @@ export class RBDComponent implements OnInit {
             K:0,
             N:0,
             unAvailabilty:0,
+            distribution:'',
             gateUnAvailability:0,
             KNGate: false,
             gateType:'',
@@ -331,6 +338,7 @@ export class RBDComponent implements OnInit {
         M:0.0,
         K:0,
         N:0,
+        distribution:'',
         unAvailabilty:0,
         gateUnAvailability:0,
         KNGate: false,
@@ -356,6 +364,7 @@ private AddTopFinalNode(node){
       L:0.0,
       M:0.0,
       unAvailabilty:0,
+      distribution:'',
       gateUnAvailability:0,
       mtbf:0,
       availability:0,
@@ -386,6 +395,7 @@ private AddTopFinalNode(node){
       M:0.0,
       K:0,
       N:0,
+      distribution:'',
       unAvailabilty:0,
       gateUnAvailability:0,
       gateType:'',

@@ -29,6 +29,16 @@
                             <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label !='' ? 'Repair Cost ($):':''}}</small>
                              &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "RepairCost") : ''}}</span>
                         </div>
+                        <div *ngIf="(node.gate== false)&&(node.label != '')" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
+                            <small class="text-primary font-weight-bolder">Select Distribution</small>
+                            &nbsp;
+                            <span class="badge badge-primary">
+                                <select (change)="SelectDistribution(node)" class="form-control"  [(ngModel)]="node.distribution" style="height: 28px">
+                                    <option value="">Select Distribution</option>
+                                    <option *ngFor="let r of distributionList" [ngValue]="r.id">{{r.name}}</option>
+                                </select>
+                            </span>
+                        </div>
                     </div>
                     <div *ngIf="node.gate" class="d-flex justify-content-around align-items-center flex-row mt-2 mb-2">
                         <div class="d-flex align-items-center flex-row">
@@ -111,39 +121,54 @@
                      <a *ngIf="node.gate" (click)="AddTopBottom(node)" title="Add new node" class="org-add btn btn-sm"><i class="pi pi-plus"></i></a>
                     <a *ngIf="node.children.length >= 1" (click)="calculateLM(node)" title="calculate" class="org-add btn btn-sm btn-dark "><i class="pi pi-check-circle small"></i>&nbsp;&nbsp;&nbsp;Calculate</a>
                     </div>
-                     <div *ngIf="TopBottomEnable" class="gate-action mt-3">
-                         <div class="bg-white bg-gate">
-                             <div>
-                        <a (click)="CloseTopBottomNode(node)" class="btn-white btn-sm">
-                        <i class="pi pi-times-circle"></i>
-                        </a>
+                    <div *ngIf="DistribustionSelected" class="gate-action mt-3">
+                        <div class="bg-white bg-gate">
+                            <div>
+                                <a (click)="distributionPopupClose(node)" class="btn-white btn-sm">
+                                    <i class="pi pi-times-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                    <div *ngIf="TopBottomEnable" class="gate-action mt-3">
+                        <div class="bg-white bg-gate">
+                            <div>
+                                <a (click)="CloseTopBottomNode(node)" class="btn-white btn-sm">
+                                    <i class="pi pi-times-circle"></i>
+                                </a>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <a [hidden]="node.gateType === 'KN'" (click)="AddTopFinalNode(node)" class="btn btn-sm btn-primary mr-2">Top
+                                    Final</a>
+                                <a [hidden]="node.gateType === 'KN'" (click)="AddTopNode(node)" class="btn btn-sm btn-primary mr-2">Top</a>
+                                <!-- <label [hidden]="node.gateType === 'KN'">Bottom</label> -->
+                                <ul *ngIf="node.gateType !== 'KN'" class="d-flex">
+                                    <li><a (click)="AddBottomNode(node, 'Yes')" class="btn btn-sm btn-primary mr-2">Bottom with Gate</a>
+                                    </li>
+                                    <li><a (click)="AddBottomNode(node, 'No')" class="btn btn-sm btn-primary mr-2">Bottom without Gate</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <ul *ngIf="node.gateType === 'KN'" class="d-flex mt-4">
+                                <li class="mr-2">
+                                    <label>K: <input type="text" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event)
+                                            [(ngModel)]="node.K" placeholder="{{node.K}}" class="form-control" /></label>
+                    
+                                </li>
+                                <li class="mr-2">
+                                    <label>N: <input type="text" style="width: 8em; height: 32px" (keypress)=AllowNumber($event)
+                                            [(ngModel)]="node.N" placeholder="{{node.N}}" class="form-control" /></label>
+                    
+                                </li>
+                                <li>
+                                    <button (click)="AddKNLogic(node)" class="btn btn-dark btn-sm mt-4"
+                                        style="position: relative; top: -2px">Ok</button>
+                                </li>
+                            </ul>
+                            <div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="d-flex flex-row">
-                    <a [hidden]="node.gateType === 'KN'" (click)="AddTopFinalNode(node)" class="btn btn-sm btn-primary mr-2">Top Final</a>
-                    <a [hidden]="node.gateType === 'KN'"(click)="AddTopNode(node)" class="btn btn-sm btn-primary mr-2">Top</a>
-                    <!-- <label [hidden]="node.gateType === 'KN'">Bottom</label> -->
-                    <ul *ngIf="node.gateType !== 'KN'" class="d-flex">
-                        <li><a (click)="AddBottomNode(node, 'Yes')" class="btn btn-sm btn-primary mr-2">Bottom with Gate</a></li>
-                        <li><a (click)="AddBottomNode(node, 'No')" class="btn btn-sm btn-primary mr-2" >Bottom without Gate</a></li>
-                    </ul>
-                    </div>
-                    <ul *ngIf="node.gateType === 'KN'"  class="d-flex mt-4">
-                        <li class="mr-2">
-                            <label>K: <input type="text" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event) [(ngModel)]="node.K" placeholder="{{node.K}}" class="form-control"/></label>
-                            
-                        </li>
-                        <li class="mr-2">
-                            <label>N: <input type="text" style="width: 8em; height: 32px" (keypress)=AllowNumber($event) [(ngModel)]="node.N" placeholder="{{node.N}}" class="form-control"/></label>
-                           
-                        </li>
-                        <li>
-                            <button (click)="AddKNLogic(node)" class="btn btn-dark btn-sm mt-4" style="position: relative; top: -2px">Ok</button>
-                        </li>
-                    </ul>
-                    <div>
-                    </div>
-                     </div>
-                     </div>
                 </div>
                 <div *ngIf="chart.getTemplateForNode(node)">
                     <ng-container *ngTemplateOutlet="chart.getTemplateForNode(node); context: {$implicit: node}"></ng-container>
