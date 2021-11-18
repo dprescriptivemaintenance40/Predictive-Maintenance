@@ -21,23 +21,28 @@
                             <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label !='' ? 'Criticality :':''}}</small>
                              &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "OriginalCriticality") : ''}}</span>
                         </div>
-                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
+                        <div *ngIf="(node.gate== false)&&(node.treeType == 'ABD' || node.treeType == undefined)" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
                             <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label != '' ? 'Asset Cost ($):':''}}</small>
                             &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "AssetCost") : ''}}</span>
                         </div>
-                        <div *ngIf="node.gate== false" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
+                        <div *ngIf="(node.gate== false)&&(node.treeType == 'ABD' || node.treeType == undefined)" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
                             <small *ngIf="node.label != ''" class="text-primary font-weight-bolder">{{node.label !='' ? 'Repair Cost ($):':''}}</small>
                              &nbsp;<span class="badge badge-primary">{{node.label != '' ? RBDAssetValueForHTML(node.label, "RepairCost") : ''}}</span>
                         </div>
-                        <div *ngIf="(node.gate== false)&&(node.label != '')" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
+                        <div *ngIf="(node.gate== false)&&(node.reliability != 0)&& (node.treeType == 'RBD' || node.treeType == undefined)" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
+                            <small class="text-primary font-weight-bolder">Reliability : </small>
+                             &nbsp;<span class="badge badge-primary">{{node.reliability}}</span>
+                        </div>
+                        <div *ngIf="(node.gate== false)&&(node.label != '')&&(node.treeType == 'RBD' || node.treeType == undefined)" class="d-flex flex-row justify-content-between p-0 badge badge-sucess mr-1 mt-2">
                             <small class="text-primary font-weight-bolder">Select Distribution</small>
                             &nbsp;
                             <span class="badge badge-primary">
                                 <select (change)="SelectDistribution(node)" class="form-control"  [(ngModel)]="node.distribution" style="height: 28px">
-                                    <option value="">Select Distribution</option>
+                                    <option value=0>Select Distribution</option>
                                     <option *ngFor="let r of distributionList" [ngValue]="r.id">{{r.name}}</option>
                                 </select>
                             </span>
+                            <a *ngIf="node.distribution != 0" (click)="SelectDistribution(node)"><small class="text-primary font-weight-bolder"><i class="pi pi-check-circle small">Check</i></small></a>
                         </div>
                     </div>
                     <div *ngIf="node.gate" class="d-flex justify-content-around align-items-center flex-row mt-2 mb-2">
@@ -59,23 +64,30 @@
                                 
                            
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" *ngIf="(node.treeType == 'ABD')||(node.treeType == undefined)">
                                 <label class="text-primary">UnAvi: <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled></label>
                             
                             </div>
-                            <div class="col-md-6 d-flex justify-content-end">
+                            <div *ngIf="(node.treeType == 'ABD')||(node.treeType == undefined)" class="col-md-6 d-flex justify-content-end">
                                 <label class="text-primary">System UnAvi:<input type="text" [(ngModel)]="node.gateUnAvailability" placeholder="{{node.gateUnAvailability}}" disabled
                                    ></label>                                    
                             
                             </div>
                         </div>
-                        <div *ngIf="node.AssetCost !== undefined" class="row flex-row align-items-end">
+                        <div *ngIf="(node.AssetCost !== undefined)&&(node.treeType == 'ABD'||node.treeType == undefined)" class="row flex-row align-items-end">
                             <div class="col-md-6">
                                 <label class="text-primary">Asset Cost ($): <input type="text"  [(ngModel)]="node.AssetCost" placeholder="{{node.AssetCost}}" disabled></label>
                             
                             </div>
                             <div class="col-md-6 d-flex justify-content-end">
                                 <label class="text-primary">Repair Cost ($):<input type="text"  [(ngModel)]="node.RepairCost" placeholder="{{node.RepairCost}}" disabled></label>                                    
+                            
+                            </div>
+                        </div>
+
+                        <div *ngIf="(node.reliability != 0)&&(node.treeType == 'RBD' || node.treeType == undefined)" class="row flex-row align-items-end">
+                             <div class="col-md-6">
+                                <label class="text-primary">Reliability: <input type="text"  [(ngModel)]="node.reliability" placeholder="{{node.reliability}}" disabled></label>
                             
                             </div>
                         </div>
@@ -90,7 +102,7 @@
                                 <label class="text-primary">Mtbf: <input type="text" placeholder="{{node.mtbf}}" disabled="node.gate"></label>
                         
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" *ngIf="(node.treeType == 'ABD' || node.treeType == undefined)">
                                 <label class="text-primary">Availability: <input type="text" placeholder="{{node.availability}}"
                                         disabled="node.gate"></label>
                         
@@ -109,7 +121,7 @@
                                 placeholder="{{node.M}}" class="w-100 form-control"></label>
                             
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" *ngIf="(node.treeType == 'ABD' || node.treeType == undefined)">
                             <label class="text-primary">UnAvi: <input type="text" [(ngModel)]="node.unAvailabilty" placeholder="{{node.unAvailabilty}}" disabled class="w-100"></label>
                             
                             
@@ -119,7 +131,7 @@
                     {{node.gateType === 'KN'? node.K+' '+'Out of '+node.N : ''}}
                     <div class="d-flex justify-content-center flex-row align-items-center">
                      <a *ngIf="node.gate" (click)="AddTopBottom(node)" title="Add new node" class="org-add btn btn-sm"><i class="pi pi-plus"></i></a>
-                    <a *ngIf="node.children.length >= 1" (click)="calculateLM(node)" title="calculate" class="org-add btn btn-sm btn-dark "><i class="pi pi-check-circle small"></i>&nbsp;&nbsp;&nbsp;Calculate</a>
+                    <a *ngIf="node.children.length >= 1" (click)="calculateLM(node, true)" title="calculate" class="org-add btn btn-sm btn-dark "><i class="pi pi-check-circle small"></i>&nbsp;&nbsp;&nbsp;Calculate</a>
                     </div>
                     <div *ngIf="DistribustionSelected" class="gate-action mt-3">
                         <div class="bg-white bg-gate">
@@ -127,6 +139,53 @@
                                 <a (click)="distributionPopupClose(node)" class="btn-white btn-sm">
                                     <i class="pi pi-times-circle"></i>
                                 </a>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <ul class="d-flex">
+                                    <li *ngIf="(node.distribution == 2) || (node.distribution == 3)">
+                                        <label>Upload file if you dont have alpha and Beta values:
+                                            <input type="file" class="form-control-file btn btn-secondary" (change)="Webal($event, node)"
+                                            placeholder="Upload file"
+                                            accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                
+                                            </label>
+                                
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="d-flex flex-row">
+                                <ul class="d-flex mt-4">
+                                    <li class="mr-2" *ngIf="(node.distribution == 2) || (node.distribution == 3)">
+                                        <label>Alpha: <input type="text" (change)="calculateReliability(node)" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event)
+                                                [(ngModel)]="node.alpha" placeholder="{{node.alpha}}" class="form-control" /></label>
+                        
+                                    </li>
+                                    <li class="mr-2" *ngIf="(node.distribution == 2) || (node.distribution == 3)">
+                                        <label>Beta: <input type="text" (change)="calculateReliability(node)" style="width: 8em; height: 32px" (keypress)=AllowNumber($event)
+                                                [(ngModel)]="node.beta" placeholder="{{node.beta}}" class="form-control" /></label>
+                        
+                                    </li>
+                                    <li class="mr-2" *ngIf="node.distribution == 3">
+                                        <label>Etta: <input type="text" (change)="calculateReliability(node)" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event)
+                                                [(ngModel)]="node.etta" placeholder="{{node.etta}}" class="form-control" /></label>
+                        
+                                    </li>
+                                    <li class="mr-2" *ngIf="node.distribution == 3">
+                                        <label>gamma: <input type="text" (change)="calculateReliability(node)" style="width: 8em; height: 32px" (keypress)=AllowNumber($event)
+                                                [(ngModel)]="node.gamma" placeholder="{{node.gamma}}" class="form-control" /></label>
+                        
+                                    </li>
+                                    <li class="mr-2">
+                                        <label>Time (year): <input type="text" (change)="calculateReliability(node)" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event)
+                                                [(ngModel)]="node.t" placeholder="{{node.t}}" class="form-control" /></label>
+                        
+                                    </li>
+                                    <li class="mr-2" *ngIf="node.distribution == 1">
+                                        <label>Failure Rate(Lamda): <input type="text" (change)="calculateReliability(node)" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event)
+                                                [(ngModel)]="node.lamdaPerHour" placeholder="{{node.lamdaPerHour}}" class="form-control" /></label>
+                        
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>    
