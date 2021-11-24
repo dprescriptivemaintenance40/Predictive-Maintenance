@@ -30,8 +30,8 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpModel> CentrifugalPumpModelData { get; set; }
         public DbSet<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
         public DbSet<CentrifugalPumpMssModel> CentrifugalPumpMssModels { get; set; }
-        public DbSet<FMEAPrescriptiveModel> FMEAPrescriptiveModelData { get; set; }
-        public DbSet<FMEAPumpPrescriptiveFailureModes> FMEAPumpPrescriptiveFailureModes { get; set; }
+        public DbSet<XFMEAPrescriptiveModel> FMEAPrescriptiveModelData { get; set; }
+        public DbSet<XFMEAPrescriptiveFailureModes> XFMEAPrescriptiveFailureModes { get; set; }
         public DbSet<RecycleBinCentrifugalPumpPrescriptiveModel> recycleCentrifugalPumpModelData { get; set; }
         public DbSet<RestoreCentrifugalPumpPrescriptiveFailureMode> restoreCentrifugalPumpPrescriptiveFailureModes { get; set; }
         public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
@@ -77,11 +77,11 @@ namespace DPM_ServerSide.DAL
                         .WithMany(b => b.CentrifugalPumpMssModel)
                         .HasForeignKey(a => a.CPPFMId);
 
-            modelBuilder.Entity<FMEAPrescriptiveModel>().ToTable("fmeaprescriptive");
-            modelBuilder.Entity<FMEAPumpPrescriptiveFailureModes>().ToTable("fmeapumpfailuremodes");
-            modelBuilder.Entity<FMEAPumpPrescriptiveFailureModes>()
-                    .HasOne(p => p.FMEAPrescriptiveModel)
-                    .WithMany(b => b.FMEAPumpPrescriptiveFailureModes)
+            modelBuilder.Entity<XFMEAPrescriptiveModel>().ToTable("fmeaprescriptive");
+            modelBuilder.Entity<XFMEAPrescriptiveFailureModes>().ToTable("fmeapumpfailuremodes");
+            modelBuilder.Entity<XFMEAPrescriptiveFailureModes>()
+                    .HasOne(p => p.XFMEAPrescriptiveModel)
+                    .WithMany(b => b.FMEAPrescriptiveFailureModes)
                     .HasForeignKey(a => a.CFPPrescriptiveId);
 
 

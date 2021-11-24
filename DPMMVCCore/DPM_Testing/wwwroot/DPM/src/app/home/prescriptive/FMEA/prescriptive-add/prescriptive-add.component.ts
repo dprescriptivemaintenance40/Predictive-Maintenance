@@ -13,8 +13,6 @@ import { Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
 import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
-// import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
 
 @Component({
   selector: 'app-prescriptive-add',
@@ -710,11 +708,10 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
  async ADDFailuerEffect() {
- if (this.type == 'FMECA') {
-  if (this.failuerModeLocalEffects !== ''
-      && this.failuerModeSystemEffects !== '' && this.DownTimeFactor !== 0
-      && this.ScrapeFactor !== 0 && this.SafetyFactor !== 0
-      && this.ProtectionFactor !== 0 && this.FrequencyFactor !== 0) {
+  if (this.failuerModeLocalEffects !== '' && this.failuerModeSystemEffects !== '' &&
+   ( (this.DownTimeFactor !== 0  && this.ScrapeFactor !== 0 && this.SafetyFactor !== 0
+      && this.ProtectionFactor !== 0 && this.FrequencyFactor !== 0)  || 
+      ( this.SeverityFactor !== 0  && this.OccurrenceFactor !== 0 && this.DetectionFactor !== 0 )) ) {
       let LFNode = {
         label: "Local Effect",
         type: "person",
@@ -737,11 +734,17 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
       this.FMChild[this.FMCount].children[0].children.push(LFNode);
       this.FMChild[this.FMCount].children[0].children.push(SFNode);
       let obj = {}
+      if (this.type == 'FMECA') {
       obj['DownTimeFactor'] = this.DownTimeFactor;
       obj['ScrapeFactor'] = this.ScrapeFactor;
       obj['SafetyFactor'] = this.SafetyFactor;
       obj['ProtectionFactor'] = this.ProtectionFactor;
       obj['FrequencyFactor'] = this.FrequencyFactor;
+      }else if (this.type == 'FMEA'){
+        obj['SeverityFactor'] = this.SeverityFactor;
+        obj['OccurrenceFactor'] = this.OccurrenceFactor;
+        obj['DetectionFactor'] = this.DetectionFactor;
+      }
       obj['AttachmentDBPath'] = this.dbPath;
       obj['AttachmentFullPath'] = this.fullPath;
       obj['Remark'] = this.Remark;
@@ -766,6 +769,9 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
       this.SafetyFactor = 0
       this.ProtectionFactor = 0
       this.FrequencyFactor = 0
+      this.SeverityFactor = 0;
+      this.OccurrenceFactor = 0;
+      this.DetectionFactor = 0;
       this.FMCount += 1;
       if (this.FMCount <= this.FMChild.length - 1) {
         this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
@@ -775,90 +781,31 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
       this.Remark = "";
       this.fileUpload = "";
       this.FileId = "";
-    } else if(this.DownTimeFactor == 0  ) {
-      this.messageService.add({ severity: 'info', summary: 'info', detail: 'DownTime Factor is Missing' });
-    }else if(this.ScrapeFactor == 0  ){
-      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Scrape Factor is Missing' });
-    }else if(this.SafetyFactor == 0  ){
-      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Safety Factor is Missing' });
-    }else if(this.ProtectionFactor == 0  ){
-      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Protection Factor is Missing' });
-    }else if(this.FrequencyFactor == 0  ){
-      this.messageService.add({ severity: 'info', summary: 'info', detail: 'Frequency Factor is Missing' });
+    }else{
+      if (this.type == 'FMECA') { 
+        if(this.DownTimeFactor == 0  ) {
+          this.messageService.add({ severity: 'info', summary: 'info', detail: 'DownTime Factor is Missing' });
+        }else if(this.ScrapeFactor == 0  ){
+          this.messageService.add({ severity: 'info', summary: 'info', detail: 'Scrape Factor is Missing' });
+        }else if(this.SafetyFactor == 0  ){
+          this.messageService.add({ severity: 'info', summary: 'info', detail: 'Safety Factor is Missing' });
+        }else if(this.ProtectionFactor == 0  ){
+          this.messageService.add({ severity: 'info', summary: 'info', detail: 'Protection Factor is Missing' });
+        }else if(this.FrequencyFactor == 0  ){
+          this.messageService.add({ severity: 'info', summary: 'info', detail: 'Frequency Factor is Missing' });
+        }
+      }else if (this.type == 'FMEA'){
+         if(this.SeverityFactor == 0  ) {
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'Severity Factor is Missing' });
+          }else if(this.OccurrenceFactor == 0  ){
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'Occurrence Factor is Missing' });
+          }else if(this.DetectionFactor == 0  ){
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'Detection Factor is Missing' });
+          }
+      }
     }
-  
     const element = document.querySelector("#FactorstoLocal")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
- }else{
-  if (this.failuerModeLocalEffects !== ''
-  && this.failuerModeSystemEffects !== '' && this.SeverityFactor !== 0
-  && this.OccurrenceFactor !== 0 && this.DetectionFactor !== 0) {
-  let LFNode = {
-    label: "Local Effect",
-    type: "person",
-    styleClass: "p-person",
-    expanded: true,
-    data: {
-      name: this.failuerModeLocalEffects
-    }
-  }
-  let SFNode = {
-    label: "System Effect",
-    type: "person",
-    styleClass: "p-person",
-    expanded: true,
-    data: {
-      name: this.failuerModeSystemEffects
-    }
-  }
-  this.changeDetectorRef.detectChanges();
-  this.FMChild[this.FMCount].children[0].children.push(LFNode);
-  this.FMChild[this.FMCount].children[0].children.push(SFNode);
-  let obj = {}
-  obj['SeverityFactor'] = this.SeverityFactor;
-  obj['OccurrenceFactor'] = this.OccurrenceFactor;
-  obj['DetectionFactor'] = this.DetectionFactor;
-  obj['AttachmentDBPath'] = this.dbPath;
-  obj['AttachmentFullPath'] = this.fullPath;
-  obj['Remark'] = this.Remark;
-  obj['FileId'] = this.FileId;
-  obj['fileName'] = this.fileUpload;
-
-  this.FactoryToAddInFM.push(obj)
-  if (this.FMCount == this.FMChild.length - 1) {
-    this.ADDFailureLSEDiasble = false;
-    this.FMLSEffectModeName = ""
-    this.NextFailureLSEDiasble = true;
-    this.ADDFailureLSEDiasble = false;
-    this.prescriptiveEffect = false
-    this.prescriptiveEffects = false;
-    this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
-  }
-  this.onLSEffectAddedUpdateMessage(this.FMChild[this.FMCount], 'Added');
-  this.failuerModeLocalEffects = ""
-  this.failuerModeSystemEffects = ""
-  this.SeverityFactor = 0
-  this.OccurrenceFactor = 0
-  this.DetectionFactor = 0
-   this.FMCount += 1;
-  if (this.FMCount <= this.FMChild.length - 1) {
-    this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
-  }
-  this.dbPath = "";
-  this.fullPath = "";
-  this.Remark = "";
-  this.fileUpload = "";
-  this.FileId = "";
-} else if(this.SeverityFactor == 0  ) {
-  this.messageService.add({ severity: 'info', summary: 'info', detail: 'Severity Factor is Missing' });
-}else if(this.OccurrenceFactor == 0  ){
-  this.messageService.add({ severity: 'info', summary: 'info', detail: 'Occurrence Factor is Missing' });
-}else if(this.DetectionFactor == 0  ){
-  this.messageService.add({ severity: 'info', summary: 'info', detail: 'Detection Factor is Missing' });
-}
-const element = document.querySelector("#FactorstoLocal")
-if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
- }
   }
 
   UPDATEFailuerEffect() {
@@ -967,20 +914,19 @@ if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   treeSave() {
-    if (this.type == 'FMECA') {
     this.isNewEntity = false;
     this.prescriptiveTreeBackEnable = false
     this.centrifugalPumpPrescriptiveOBJ.MachineType = this.MachineType
     this.MachineType = "";
     this.isNewEntity = false;
-    this.centrifugalPumpPrescriptiveOBJ.EquipmentType = this.EquipmentType
-    this.centrifugalPumpPrescriptiveOBJ.TagNumber = this.TagNumber
-    this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FunctionFluidType
-    this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.FunctionRatedHead
-    this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType
-    this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.FunctionFailure
-    this.centrifugalPumpPrescriptiveOBJ.Type = this.Type
-    this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
+    this.centrifugalPumpPrescriptiveOBJ.EquipmentType = this.EquipmentType;
+    this.centrifugalPumpPrescriptiveOBJ.TagNumber = this.TagNumber;
+    this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FunctionFluidType;
+    this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.FunctionRatedHead;
+    this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType;
+    this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.FunctionFailure;
+    this.centrifugalPumpPrescriptiveOBJ.Type = this.Type;
+    this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1);
     for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};
       obj['CPPFMId'] = 0;
@@ -989,67 +935,35 @@ if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
       obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
       obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;
       obj['Consequence'] = "";
-      obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
-      obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
-      obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
-      obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
-      obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
-      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
-      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
-      obj['Remark'] = this.FactoryToAddInFM[index].Remark
+      if (this.type == 'FMECA') {
+      obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor;
+      obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor;
+      obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor;
+      obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor;
+      obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor;
+      }else if (this.type == 'FMEA'){
+        obj['SeverityFactor'] = this.FactoryToAddInFM[index].SeverityFactor;
+        obj['OccurrenceFactor'] = this.FactoryToAddInFM[index].OccurrenceFactor;
+        obj['DetectionFactor'] = this.FactoryToAddInFM[index].DetectionFactor;
+      }
+      obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath;
+      obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath;
+      obj['Remark'] = this.FactoryToAddInFM[index].Remark;
       obj['Type']=this.Type;
-      this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+      if (this.type == 'FMECA') {
+      this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj);
+      }else if (this.type == 'FMEA'){
+        this.centrifugalPumpPrescriptiveOBJ.FMEAPrescriptiveFailureModes.push(obj);
+      }
     }
 
-  var url :string =  this.prescriptiveContantAPI.FMEATreeSave
-  this.prescriptiveBLService.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
-    .subscribe(
-      res => {
-        console.log(res);
-        this.treeResponseData = res;
-        localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
-        this.prescriptiveTreeNextEnable = true
-        this.prescriptiveTreeUpdateEnable = false;
-        this.prescriptiveTreeSubmitEnable = false;
-        this.prescriptiveTreeBackEnable = false
-
-      },
-      err => { console.log(err.Message) }
-    )
-    }else{
-      this.isNewEntity = false;
-      this.prescriptiveTreeBackEnable = false
-      this.centrifugalPumpPrescriptiveOBJ.MachineType = this.MachineType
-      this.MachineType = "";
-      this.isNewEntity = false;
-      this.centrifugalPumpPrescriptiveOBJ.EquipmentType = this.EquipmentType
-      this.centrifugalPumpPrescriptiveOBJ.TagNumber = this.TagNumber
-      this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FunctionFluidType
-      this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.FunctionRatedHead
-      this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType
-      this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.FunctionFailure
-      this.centrifugalPumpPrescriptiveOBJ.Type = this.Type
-      this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
-      for (let index = 0; index < this.FMChild.length; index++) {
-        let obj = {};
-        obj['CPPFMId'] = 0;
-        obj['CFPPrescriptiveId'] = 0;
-        obj['FunctionMode'] = this.FMChild[index].data.name;
-        obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
-        obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;
-        obj['Consequence'] = "";
-        obj['SeverityFactor'] = this.FactoryToAddInFM[index].SeverityFactor
-        obj['OccurrenceFactor'] = this.FactoryToAddInFM[index].OccurrenceFactor
-        obj['DetectionFactor'] = this.FactoryToAddInFM[index].DetectionFactor
-        obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
-        obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
-        obj['Remark'] = this.FactoryToAddInFM[index].Remark
-        obj['Type']=this.Type;
-        this.centrifugalPumpPrescriptiveOBJ.FMEAPrescriptiveFailureModes.push(obj)
-      }
-  
-    // var url :string =  this.prescriptiveContantAPI.FMEATreeSave
-    this.prescriptiveBLService.postWithoutHeaders("/FMEAPrescriptiveAPI/FMEAPrescriptiveModelData",this.centrifugalPumpPrescriptiveOBJ)
+    var url :string ="";
+    if (this.type == 'FMECA') {
+      url = this.prescriptiveContantAPI.FMEATreeSave;
+    }else if (this.type == 'FMEA'){
+      url = this.prescriptiveContantAPI.XFMEA;
+    }
+    this.prescriptiveBLService.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
       .subscribe(
         res => {
           console.log(res);
@@ -1059,12 +973,10 @@ if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
           this.prescriptiveTreeUpdateEnable = false;
           this.prescriptiveTreeSubmitEnable = false;
           this.prescriptiveTreeBackEnable = false
-  
+
         },
         err => { console.log(err.Message) }
       )
-      
-    }
   }
 
   PushConcequences() {

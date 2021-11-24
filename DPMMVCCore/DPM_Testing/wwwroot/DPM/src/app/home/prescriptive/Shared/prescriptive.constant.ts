@@ -9,6 +9,7 @@ export class PrescriptiveContantAPI {
     public FMEATagCheck: string = '/PrescriptiveAPI';
     public FMEADropdownData: string = '/PrescriptiveLookupMasterAPI/GetRecords';
     public FMEATreeSave: string = '/PrescriptiveAPI/PostCentrifugalPumpPrescriptiveData';
+    public XFMEA : string = '/FMEAPrescriptiveAPI/FMEAPrescriptiveModelData';
     public FMEAFileUpload: string = '/PrescriptiveAPI/UploadFile';
     public FMEADeleteFileUpload: string = '/PrescriptiveAPI/UpdateFileUpload';
     public FMEASaveConsequence: string = '/PrescriptiveAPI/CFPrescriptiveAdd';

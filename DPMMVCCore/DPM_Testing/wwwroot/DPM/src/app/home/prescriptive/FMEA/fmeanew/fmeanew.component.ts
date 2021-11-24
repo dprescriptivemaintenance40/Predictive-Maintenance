@@ -1,5 +1,4 @@
 import { Component, OnInit,Input } from '@angular/core';
-import {FMEAPrescriptiveModel,CentrifugalPumpFailureMode} from './fmeanew.model';
 
 @Component({
   selector: 'app-fmeanew',
