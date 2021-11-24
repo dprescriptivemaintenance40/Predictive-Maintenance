@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { SafeUrl } from '@angular/platform-browser';
 import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
+// import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -61,6 +62,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public prescriptiveSteps: boolean = false;
   public prescriptiveTree: boolean = false;
   public prescriptiveEffect: boolean = false;
+  public prescriptiveEffects: boolean = false;
   public effectFooter: boolean = true;
   public EquipmentType: string = "";
   public EquipmentList: any = []
@@ -129,6 +131,11 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public SafetyFactor: number = 0;
   public ProtectionFactor: number = 0;
   public FrequencyFactor: number = 0;
+
+  public SeverityFactor: number = 0;
+  public OccurrenceFactor: number = 0;
+  public DetectionFactor: number = 0;
+
   private FactoryToAddInFM: any = []
   public fullPath: string = ""
   public fileUpload: string = "";
@@ -137,7 +144,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public FileId: string = "";
   public fileAttachmentEnable: boolean = false;
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
-  public selectedModeData: any;
+ public selectedModeData: any;
   public FCAdata1: TreeNode[];
   public FMPattern = ['Pattern 1', 'Pattern 2', 'Pattern 3', 'Pattern 4', 'Pattern 5', 'Pattern 6'];
   public Pattern: string = ""
@@ -238,6 +245,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
  public FunctionFailure : string = ""
  public Type : string = "";
 
+ @Input() public type:string="FMECA";
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -512,8 +520,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
  
     async GeneratePrescription() {
         if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
-
-              var url : string =  this.prescriptiveContantAPI.FMEATagCheck
+var url : string =  this.prescriptiveContantAPI.FMEATagCheck
           await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
                 (res: any) => {
                   var check = 0;
@@ -531,6 +538,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
                     this.prescriptiveFunctionFailure = false;
                     this.prescriptiveFailureMode = false;
                     this.prescriptiveEffect = false;
+                    this.prescriptiveEffects = false;
                     this.prescriptiveEffect1 = false
                     this.prescriptiveTree = false;
                     this.activeIndex = 0;
@@ -549,7 +557,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         } else if (this.TagNumber.length == 0) {
           this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'TagNumber is missing' });
         }
-      }
+     }
+
   FunctionBack() {
     this.prescriptiveSelect = true
     this.prescriptiveSteps= false
@@ -671,10 +680,16 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
           }
         )
       }
-
-      this.prescriptiveEffect = true
-      this.prescriptiveEffect1 = true
-      this.prescriptiveFailureMode = false;
+  if (this.type == 'FMECA') {
+    this.prescriptiveEffect1 = true;
+    this.prescriptiveEffect = true;
+    this.prescriptiveEffects = false;
+  }else{
+    this.prescriptiveEffect1 = true;
+    this.prescriptiveEffects = true
+    this.prescriptiveEffect = false;
+   }
+    this.prescriptiveFailureMode = false;
       this.activeIndex = 3
       this.FMCount = 0;
 
@@ -695,7 +710,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
  async ADDFailuerEffect() {
-    if (this.failuerModeLocalEffects !== ''
+ if (this.type == 'FMECA') {
+  if (this.failuerModeLocalEffects !== ''
       && this.failuerModeSystemEffects !== '' && this.DownTimeFactor !== 0
       && this.ScrapeFactor !== 0 && this.SafetyFactor !== 0
       && this.ProtectionFactor !== 0 && this.FrequencyFactor !== 0) {
@@ -739,6 +755,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.NextFailureLSEDiasble = true;
         this.ADDFailureLSEDiasble = false;
         this.prescriptiveEffect = false
+        this.prescriptiveEffects = false;
         this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
       }
       this.onLSEffectAddedUpdateMessage(this.FMChild[this.FMCount], 'Added');
@@ -769,8 +786,79 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }else if(this.FrequencyFactor == 0  ){
       this.messageService.add({ severity: 'info', summary: 'info', detail: 'Frequency Factor is Missing' });
     }
+  
     const element = document.querySelector("#FactorstoLocal")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ }else{
+  if (this.failuerModeLocalEffects !== ''
+  && this.failuerModeSystemEffects !== '' && this.SeverityFactor !== 0
+  && this.OccurrenceFactor !== 0 && this.DetectionFactor !== 0) {
+  let LFNode = {
+    label: "Local Effect",
+    type: "person",
+    styleClass: "p-person",
+    expanded: true,
+    data: {
+      name: this.failuerModeLocalEffects
+    }
+  }
+  let SFNode = {
+    label: "System Effect",
+    type: "person",
+    styleClass: "p-person",
+    expanded: true,
+    data: {
+      name: this.failuerModeSystemEffects
+    }
+  }
+  this.changeDetectorRef.detectChanges();
+  this.FMChild[this.FMCount].children[0].children.push(LFNode);
+  this.FMChild[this.FMCount].children[0].children.push(SFNode);
+  let obj = {}
+  obj['SeverityFactor'] = this.SeverityFactor;
+  obj['OccurrenceFactor'] = this.OccurrenceFactor;
+  obj['DetectionFactor'] = this.DetectionFactor;
+  obj['AttachmentDBPath'] = this.dbPath;
+  obj['AttachmentFullPath'] = this.fullPath;
+  obj['Remark'] = this.Remark;
+  obj['FileId'] = this.FileId;
+  obj['fileName'] = this.fileUpload;
+
+  this.FactoryToAddInFM.push(obj)
+  if (this.FMCount == this.FMChild.length - 1) {
+    this.ADDFailureLSEDiasble = false;
+    this.FMLSEffectModeName = ""
+    this.NextFailureLSEDiasble = true;
+    this.ADDFailureLSEDiasble = false;
+    this.prescriptiveEffect = false
+    this.prescriptiveEffects = false;
+    this.FMLSConsequenceName = this.FMChild[this.FMCount1].data.name
+  }
+  this.onLSEffectAddedUpdateMessage(this.FMChild[this.FMCount], 'Added');
+  this.failuerModeLocalEffects = ""
+  this.failuerModeSystemEffects = ""
+  this.SeverityFactor = 0
+  this.OccurrenceFactor = 0
+  this.DetectionFactor = 0
+   this.FMCount += 1;
+  if (this.FMCount <= this.FMChild.length - 1) {
+    this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
+  }
+  this.dbPath = "";
+  this.fullPath = "";
+  this.Remark = "";
+  this.fileUpload = "";
+  this.FileId = "";
+} else if(this.SeverityFactor == 0  ) {
+  this.messageService.add({ severity: 'info', summary: 'info', detail: 'Severity Factor is Missing' });
+}else if(this.OccurrenceFactor == 0  ){
+  this.messageService.add({ severity: 'info', summary: 'info', detail: 'Occurrence Factor is Missing' });
+}else if(this.DetectionFactor == 0  ){
+  this.messageService.add({ severity: 'info', summary: 'info', detail: 'Detection Factor is Missing' });
+}
+const element = document.querySelector("#FactorstoLocal")
+if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+ }
   }
 
   UPDATEFailuerEffect() {
@@ -819,6 +907,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     });
     if (isCheck) {
       this.prescriptiveEffect = false;
+      this.prescriptiveEffects = false;
     }
     this.dbPath = "";
     this.fullPath = "";
@@ -878,6 +967,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   }
 
   treeSave() {
+    if (this.type == 'FMECA') {
     this.isNewEntity = false;
     this.prescriptiveTreeBackEnable = false
     this.centrifugalPumpPrescriptiveOBJ.MachineType = this.MachineType
@@ -926,6 +1016,55 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       },
       err => { console.log(err.Message) }
     )
+    }else{
+      this.isNewEntity = false;
+      this.prescriptiveTreeBackEnable = false
+      this.centrifugalPumpPrescriptiveOBJ.MachineType = this.MachineType
+      this.MachineType = "";
+      this.isNewEntity = false;
+      this.centrifugalPumpPrescriptiveOBJ.EquipmentType = this.EquipmentType
+      this.centrifugalPumpPrescriptiveOBJ.TagNumber = this.TagNumber
+      this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FunctionFluidType
+      this.centrifugalPumpPrescriptiveOBJ.FunctionRatedHead = this.FunctionRatedHead
+      this.centrifugalPumpPrescriptiveOBJ.FunctionPeriodType = this.FunctionPeriodType
+      this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.FunctionFailure
+      this.centrifugalPumpPrescriptiveOBJ.Type = this.Type
+      this.centrifugalPumpPrescriptiveOBJ.FailureModeWithLSETree = JSON.stringify(this.data1)
+      for (let index = 0; index < this.FMChild.length; index++) {
+        let obj = {};
+        obj['CPPFMId'] = 0;
+        obj['CFPPrescriptiveId'] = 0;
+        obj['FunctionMode'] = this.FMChild[index].data.name;
+        obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
+        obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;
+        obj['Consequence'] = "";
+        obj['SeverityFactor'] = this.FactoryToAddInFM[index].SeverityFactor
+        obj['OccurrenceFactor'] = this.FactoryToAddInFM[index].OccurrenceFactor
+        obj['DetectionFactor'] = this.FactoryToAddInFM[index].DetectionFactor
+        obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
+        obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
+        obj['Remark'] = this.FactoryToAddInFM[index].Remark
+        obj['Type']=this.Type;
+        this.centrifugalPumpPrescriptiveOBJ.FMEAPrescriptiveFailureModes.push(obj)
+      }
+  
+    // var url :string =  this.prescriptiveContantAPI.FMEATreeSave
+    this.prescriptiveBLService.postWithoutHeaders("/FMEAPrescriptiveAPI/FMEAPrescriptiveModelData",this.centrifugalPumpPrescriptiveOBJ)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.treeResponseData = res;
+          localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
+          this.prescriptiveTreeNextEnable = true
+          this.prescriptiveTreeUpdateEnable = false;
+          this.prescriptiveTreeSubmitEnable = false;
+          this.prescriptiveTreeBackEnable = false
+  
+        },
+        err => { console.log(err.Message) }
+      )
+      
+    }
   }
 
   PushConcequences() {
@@ -990,6 +1129,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   FailureEffectNext() {
     this.prescriptiveFailureMode = false;
     this.prescriptiveEffect = false;
+    this.prescriptiveEffects = false;
     this.prescriptiveEffect1 = false
     this.prescriptiveTree = true;
     this.prescriptiveTreeBackEnable = true
@@ -1026,6 +1166,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       if (confirm("Are you sure want to go back? Yes then your recently added changes will get deleted.")) {
         this.prescriptiveEffect = false;
         this.prescriptiveEffect1 = false
+        this.prescriptiveEffects = false;
         this.prescriptiveFailureMode = true;
         this.activeIndex = 2;
         this.failuerModeLocalEffects = "";
@@ -1036,6 +1177,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
         this.ProtectionFactor = 0;
         this.FrequencyFactor = 0;
         this.prescriptiveEffect = false;
+        this.prescriptiveEffects = false;
         this.ADDFailureLSEDiasble = true;
         this.selectedModeData = "";
         this.fullPath = "";
@@ -1045,6 +1187,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       }
     } else {
       this.prescriptiveEffect = false;
+      this.prescriptiveEffects = false;
       this.prescriptiveEffect1 = false
       this.prescriptiveFailureMode = true;
       this.activeIndex = 2;
@@ -1053,8 +1196,8 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   treeBack() {
     this.prescriptiveEffect = true;
-    this.prescriptiveEffect1 = true
-    this.prescriptiveTree = false;
+    this.prescriptiveEffect1 = true;
+ this.prescriptiveTree = false;
   }
 
 
@@ -1472,6 +1615,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       this.FileId = this.FactoryToAddInFM[event.node.label - 1].FileId;
       this.FMLSEffectModeName = this.FMChild[event.node.label - 1].data.name
       this.prescriptiveEffect = true;
+    
       this.ADDFailureLSEDiasble = false;
       this.selectedModeData = event.node;
     } else {
@@ -1500,7 +1644,6 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
     }
 
   }
-
 
 
 }

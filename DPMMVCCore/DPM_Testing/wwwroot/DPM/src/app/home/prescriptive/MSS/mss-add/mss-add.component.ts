@@ -271,7 +271,7 @@ export class MSSAddComponent implements OnInit {
         this.StrategyTemp.push("C-OFM (On Failure Maintainenance)")
       }
       this.StrategyList.push(obj)
-    } else if (this.ConsequenceBasedMSS == "D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)") {
+    } else if (this.ConsequenceBasedMSS == "D") {
       this.StrategyTemp = []
       if (this.OCM == true) {
         obj['OCM'] = "D-OCM (On condition Maintainenance Task)"
@@ -295,7 +295,7 @@ export class MSSAddComponent implements OnInit {
       }
       this.StrategyList.push(obj)
     }
-    else if (this.ConsequenceBasedMSS == "E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)") {
+    else if (this.ConsequenceBasedMSS == "E") {
       this.StrategyTemp = []
       if (this.OCM == true) {
         obj['OCM'] = "E-OCM (On condition Maintainenance Task)"

@@ -234,7 +234,7 @@
                         <a (click)="panel.show($event)" class="factor-desc" title="Explaination of each factors." style="">
                             <i class="fas fa-info-circle fa-1px ml-2 text-primary"></i>
                         </a>
-                        <div class="badge badge-warning">
+                        <div  class="badge badge-warning">
                             <li><b>Down Time Factor</b> :is the no. awarded in accordance with the failure time associated to the equipment. More the down time more is the factor, less the down time less is the factor.
                             </li>
 
@@ -359,6 +359,139 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6">
+        <div *ngIf="prescriptiveEffects" class="stepsdemo-content dpm-card mt-2" id="FactorstoLocal">
+            <p-card>
+                <ng-template pTemplate="title" class="mb-0">
+                    Failure Mode Effects<strong><span class="text-primary ml-1">{{FMLSEffectModeName}}</span></strong>
+                </ng-template>
+
+                <ng-template pTemplate="content">
+                    <div class="p-fluid">
+                        <div>
+                            <label><b>Local Effect</b></label>
+                            <textarea class="form-control custom-textarea" [(ngModel)]="failuerModeLocalEffects" id="message" name="body" rows="4" placeholder="Type Local Effect"></textarea>
+                        </div><br>
+                        <div>
+                            <label><b>System Effect</b></label>
+                            <textarea class="form-control custom-textarea" [(ngModel)]="failuerModeSystemEffects" id="message" name="body" rows="4" placeholder="Type System Effect"></textarea>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="uploadAttachments" style="font-size: 13px;">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/x-png,image/jpeg,.pdf," (change)="uploadFile($event)" class="custom-file-input" id="uploadAttachments" aria-describedby="uploadAttachments">
+                                            <label class="custom-file-label" *ngIf="fileUpload == ''" for="inputGroupFile01">Attachment</label>
+                                            <label class="custom-file-label" *ngIf="fileUpload != ''" for="inputGroupFile01">{{fileUpload}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="input-group mt-3">
+                                        <textarea class="form-control custom-textarea" [(ngModel)]="Remark" id="message" name="body" rows="3" placeholder="Add Remark Here"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-card>
+        </div>
+    </div>
+<div class="col-md-6">
+    <div *ngIf="prescriptiveEffects" class="stepsdemo-content dpm-card mt-2" id="scrollToTop">
+        <p-card>
+            <ng-template  pTemplate="title" class="mb-0">
+                <h5 class="p-card-title" style="">Enter Factors for <span class="text-primary"><strong>{{FMLSEffectModeName}}</strong></span>
+                    <a (click)="panel.show($event)" class="factor-desc" title="Explaination of each factors." style="">
+                        <i class="fas fa-info-circle fa-1px ml-2 text-primary"></i>
+                    </a>
+                    <div  class="badge badge-warning">
+                        <li><b>Severity Factor</b> : which rates the severity of the potential effect of the failure.
+                        </li>
+
+                        <li><b>Occurrence Factor</b> : which rates the likelihood that the failure will occur.. </li>
+
+                        <li><b>Detection Factor</b> : which rates the likelihood that the problem will be detected before it reaches the end-user/customer.</li>
+                    </div>
+                </h5>
+            </ng-template>
+            <ng-template pTemplate="content">
+                <div  class="p-fluid">
+                    <div class="row d-flex justify-content-space-between align-items-center">
+                        <div class="col-md-5">
+                            <label> Severity Factor:</label>
+                        </div>
+                        <div style="" class="col-md-5">
+                            <div class="d-flex justify-content-between align-items-center range-from">
+                                <span class="d-block text-primary small font-weight-bold"> 1</span>
+                                <span class="d-block text-primary small font-weight-bold"> 10</span>
+                            </div>
+                            <p-slider class="pr-t5" [(ngModel)]="SeverityFactor" [min]="1" [max]="10"></p-slider>
+
+                        </div>
+                        <div class="col-md-1 text-left">
+                            <span class="badge badge-primary">{{SeverityFactor}}</span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row d-flex justify-content-space-between align-items-center">
+                        <div class="col-md-5">
+                            <label> Occurrence Factor:</label>
+                        </div>
+                        <div style="" class="col-md-5">
+                            <div class="d-flex justify-content-between align-items-center range-from">
+                                <span class="d-block text-primary small font-weight-bold"> 1</span>
+                                <span class="d-block text-primary small font-weight-bold"> 10</span>
+                            </div>
+                            <p-slider class="pr-t5" [(ngModel)]="OccurrenceFactor" [min]="1" [max]="5"></p-slider>
+
+                        </div>
+                        <div class="col-md-1 text-left">
+                            <span class="badge badge-primary">{{OccurrenceFactor}}</span>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row d-flex justify-content-space-between align-items-center">
+                        <div class="col-md-5">
+                            <label> Detection Factor:</label>
+                        </div>
+                        <div style="" class="col-md-5">
+                            <div class="d-flex justify-content-between align-items-center range-from">
+                                <span class="d-block text-primary small font-weight-bold"> 1</span>
+                                <span class="d-block text-primary small font-weight-bold"> 10</span>
+                            </div>
+                            <p-slider class="pr-t5" [(ngModel)]="DetectionFactor" [min]="1" [max]="20"></p-slider>
+
+                        </div>
+                        <div class="col-md-1 text-left">
+                            <span class="badge badge-primary">{{DetectionFactor}}</span>
+                        </div>
+                    </div> 
+                    <br>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-primary btn-sm" (click)="ADDFailuerEffect()" pTooltip=" Add  Failure Mode with Local & System Effect" tooltipPosition="top">
+                    <i class="fas fa-arrow-right"></i> &nbsp;&nbsp;Next
+                </a>
+                <a *ngIf="NextFailureLSEDiasble" class="btn btn-dark" style="float: right;" (click)="UPDATEFailuerEffect()" pTooltip="Update Failure Effects" tooltipPosition="top">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </ng-template>
+        </p-card>
+    </div>
+</div>
+
+
 <div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

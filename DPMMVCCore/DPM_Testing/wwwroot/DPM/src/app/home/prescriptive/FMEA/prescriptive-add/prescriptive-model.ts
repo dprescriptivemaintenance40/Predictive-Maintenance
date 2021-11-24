@@ -16,6 +16,7 @@ export class CentrifugalPumpPrescriptiveModel{
     public Type : string = "";
 
     public centrifugalPumpPrescriptiveFailureModes: any = []
+    public FMEAPrescriptiveFailureModes : any = []
 
 }
 
