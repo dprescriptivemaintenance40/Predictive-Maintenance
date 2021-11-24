@@ -170,11 +170,6 @@
                                                 [(ngModel)]="node.etta" placeholder="{{node.etta}}" class="form-control" /></label>
                         
                                     </li>
-                                    <li class="mr-2" *ngIf="node.distribution == 3">
-                                        <label>gamma: <input type="text" (change)="calculateReliability(node)" style="width: 8em; height: 32px" (keypress)=AllowNumber($event)
-                                                [(ngModel)]="node.gamma" placeholder="{{node.gamma}}" class="form-control" /></label>
-                        
-                                    </li>
                                     <li class="mr-2">
                                         <label>Time (year): <input type="text" (change)="calculateReliability(node)" style="width: 8em; height: 32px;" (keypress)=AllowNumber($event)
                                                 [(ngModel)]="node.t" placeholder="{{node.t}}" class="form-control" /></label>

@@ -154,6 +154,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class=" col-md-12">
+                        <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
+                            <p class="mb-0"><i class="pi pi-info-circle" class="mr-1"></i>Frequently asked question</p>
+                            <div>
+                                <button class="btn btn-primary btn-sm" (click)="PoissonDistributionPopupOpen()">Click
+                                    Here</button>
+                
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div *ngIf="enableImage == true" class="row">
                     <div class="col-md-12">
                     <div class="card dpm-card mb-4">
@@ -211,5 +223,23 @@
         <rbd-organizationChart [value]="ViewSavedTree" (deleteNode)="DeleteNode($event)"></rbd-organizationChart>
         <button *ngIf="showFullScreen" pButton pRipple type="button" (click)="FullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn" aria-placeholder="Click to view tree"><i class="pi pi-window-maximize"></i></button>
         <button *ngIf="!showFullScreen" pButton pRipple type="button" (click)="ExitFullScreen()" class="p-button-rounded p-button-secondary p-button-text fixed-max-btn"><i class="pi pi-window-minimize"></i></button>
+    </div>
+</p-dialog>
+
+<p-dialog header="FAQ" [(visible)]="poissonEnable" [style]="{maxWidth: '1000px'}" class="rbd-modal">
+    <p style="margin: 3em;font-size: 1.2em;">
+        In our model, there are  compressors. An average of λ failures per year is expected if each failure is instantly repaired or replaced. Find the probability that 1 failure will occur if the system is put in operation for 1 year and each failure is repaired as it occurs.
+    </p>
+    <div style="margin: 3em;">
+        λ : <input type="number" style="width: 10em;" [(ngModel)]="L" placeholder="10" class="form-control"/> <br/>
+        λ (Lamda failure rate) : <input type="number" [(ngModel)]="FailureRate" placeholder="1000000" style="width: 10em;" class="form-control"/> <br/>
+        Number of Compressor : <input type="number" [(ngModel)]="N" style="width: 10em;" placeholder="3" class="form-control" /> <br/>
+        Number of Year : <input type="number" [(ngModel)]="T" style="width: 10em;" placeholder="1" class="form-control" /> <br/>
+        <button style="width: 3em;" class="form-control">Done</button>
+    </div>
+    <div>
+        <p style="margin: 3em;font-size: 1.2em;">
+
+        </p>
     </div>
 </p-dialog>

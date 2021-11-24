@@ -33,6 +33,12 @@ export class RBDComponent implements OnInit {
   public showFullScreen: boolean = false;
   public viewRBD: boolean = false;
   public enableImage: boolean = false;
+  public poissonEnable = false;
+  public L : number= 10;
+  public N : number = 3;
+  public FailureRate : number = 1000000;
+  public T : number = 1;
+  
   constructor(private commonBLService: CommonBLService,
     private cd: ChangeDetectorRef,
     public httpobj: HttpClient,
@@ -576,6 +582,10 @@ export class RBDComponent implements OnInit {
       document.exitFullscreen();
       this.showFullScreen = true;
     }
+  }
+
+  public PoissonDistributionPopupOpen(){
+    this.poissonEnable = true;
   }
 
 }

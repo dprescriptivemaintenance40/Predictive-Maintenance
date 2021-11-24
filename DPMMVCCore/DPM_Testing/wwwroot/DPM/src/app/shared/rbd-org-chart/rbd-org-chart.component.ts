@@ -61,11 +61,7 @@ export class OrganizationChartNode implements OnDestroy {
     public distributionList: any = [
         { id: 1, name: 'Exponential' },
         { id: 2, name: 'Weibull - 2P' },
-        { id: 3, name: 'Weibull - 3P' },
-        { id: 4, name: 'Gamma' },
-        { id: 5, name: 'Normal' },
-        { id: 6, name: 'LogNormal' },
-        { id: 7, name: 'Poisson' },
+        { id: 3, name: 'Poisson' }
     ]
     constructor(@Inject(forwardRef(() => OrganizationChart)) chart,
         public cd: ChangeDetectorRef,
