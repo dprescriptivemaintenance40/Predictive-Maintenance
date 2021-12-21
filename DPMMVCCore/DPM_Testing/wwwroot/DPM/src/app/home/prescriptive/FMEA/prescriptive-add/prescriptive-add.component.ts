@@ -67,6 +67,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public TagNumber: string = "";
   public dropDownData: any = [];
   public treeResponseData: any = [];
+  public treeResponseDatas: any = [];
   public RadioValue : string = '';
 
   public FunctionFluidType: string = "";
@@ -133,6 +134,15 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public SeverityFactor: number = 0;
   public OccurrenceFactor: number = 0;
   public DetectionFactor: number = 0;
+  public RPNNumber: number = 0;
+
+  public RecommendedActions: string = "";
+  public TargetDate: string = "";
+  
+  public NewSeverityFactor: number = 0;
+  public NewOccurrenceFactor: number = 0;
+  public NewDetectionFactor: number = 0;
+  public NewRPNNumber: number = 0;
 
   private FactoryToAddInFM: any = []
   public fullPath: string = ""
@@ -142,7 +152,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
   public FileId: string = "";
   public fileAttachmentEnable: boolean = false;
   public centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
- public selectedModeData: any;
+  public selectedModeData: any;
   public FCAdata1: TreeNode[];
   public FMPattern = ['Pattern 1', 'Pattern 2', 'Pattern 3', 'Pattern 4', 'Pattern 5', 'Pattern 6'];
   public Pattern: string = ""
@@ -244,7 +254,7 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
  public Type : string = "";
 
  @Input() public type:string="FMECA";
-
+ minDateValue = new Date();
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
     public title: Title,
@@ -338,11 +348,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   }
 
-
-
   async ngOnDestroy() {
     await localStorage.removeItem('PrescriptiveObject');
-  }
+   }
 
   public uploadFile(event) {
     if (event.target.files.length > 0) {
@@ -518,7 +526,12 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
  
     async GeneratePrescription() {
         if (this.EquipmentType.length > 0 && this.TagNumber.length > 0) {
-var url : string =  this.prescriptiveContantAPI.FMEATagCheck
+          var url: string = "";
+          if (this.type == 'FMECA') {
+            var url : string =  this.prescriptiveContantAPI.FMEATagCheck
+          }else if (this.type == 'FMEA'){
+            var url : string =  this.prescriptiveContantAPI.XFMEATagCheck
+          }
           await this.prescriptiveBLService.getWithoutParameters(url).subscribe(
                 (res: any) => {
                   var check = 0;
@@ -646,7 +659,7 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
   }
 
   FailureModeNext() {
-    if (this.dropedMode.length > 0) {
+  if (this.dropedMode.length > 0) {
       this.FMChild = []
       this.FactoryToAddInFM = []
       this.NextFailureLSEDiasble = false
@@ -678,16 +691,17 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
           }
         )
       }
-  if (this.type == 'FMECA') {
-    this.prescriptiveEffect1 = true;
-    this.prescriptiveEffect = true;
-    this.prescriptiveEffects = false;
-  }else{
-    this.prescriptiveEffect1 = true;
-    this.prescriptiveEffects = true
-    this.prescriptiveEffect = false;
-   }
-    this.prescriptiveFailureMode = false;
+      if(this.type == 'FMECA'){
+        this.prescriptiveEffect = true
+        this.prescriptiveEffect1 = true
+        this.prescriptiveEffects=false;
+        this.prescriptiveFailureMode = false;
+      }else{
+        this.prescriptiveEffects = true
+        this.prescriptiveEffect1 = true
+        this.prescriptiveEffect=false;
+        this.prescriptiveFailureMode = false;
+      }  
       this.activeIndex = 3
       this.FMCount = 0;
 
@@ -707,11 +721,12 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
     const element = document.querySelector("#scolltoAddConsequence")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+ 
  async ADDFailuerEffect() {
   if (this.failuerModeLocalEffects !== '' && this.failuerModeSystemEffects !== '' &&
    ( (this.DownTimeFactor !== 0  && this.ScrapeFactor !== 0 && this.SafetyFactor !== 0
       && this.ProtectionFactor !== 0 && this.FrequencyFactor !== 0)  || 
-      ( this.SeverityFactor !== 0  && this.OccurrenceFactor !== 0 && this.DetectionFactor !== 0 )) ) {
+      ( this.SeverityFactor !== 0 && this.OccurrenceFactor !== 0 && this.DetectionFactor !== 0 && this.RecommendedActions !== '' && this.TargetDate !== '' && this.NewSeverityFactor !==0 && this.NewOccurrenceFactor !==0 && this.NewDetectionFactor !==0 )) ) {
       let LFNode = {
         label: "Local Effect",
         type: "person",
@@ -741,10 +756,17 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
       obj['ProtectionFactor'] = this.ProtectionFactor;
       obj['FrequencyFactor'] = this.FrequencyFactor;
       }else if (this.type == 'FMEA'){
-        obj['SeverityFactor'] = this.SeverityFactor;
-        obj['OccurrenceFactor'] = this.OccurrenceFactor;
-        obj['DetectionFactor'] = this.DetectionFactor;
-      }
+      obj['SeverityFactor'] = this.SeverityFactor;
+      obj['OccurrenceFactor'] = this.OccurrenceFactor;
+      obj['DetectionFactor'] = this.DetectionFactor;
+      obj['RPNNumber'] = this.SeverityFactor*this.OccurrenceFactor*this.DetectionFactor;
+      obj['RecommendedActions'] = this.RecommendedActions;
+      obj['TargetDate'] = this.TargetDate;
+      obj['NewSeverityFactor'] = this.NewSeverityFactor;
+      obj['NewOccurrenceFactor'] = this.NewOccurrenceFactor;
+      obj['NewDetectionFactor'] = this.NewDetectionFactor;
+      obj['NewRPNNumber'] = this.NewSeverityFactor*this.NewOccurrenceFactor*this.NewDetectionFactor;
+     }
       obj['AttachmentDBPath'] = this.dbPath;
       obj['AttachmentFullPath'] = this.fullPath;
       obj['Remark'] = this.Remark;
@@ -772,6 +794,11 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
       this.SeverityFactor = 0;
       this.OccurrenceFactor = 0;
       this.DetectionFactor = 0;
+      this.RPNNumber = 0;
+      this.NewSeverityFactor = 0;
+      this.NewOccurrenceFactor = 0;
+      this.NewDetectionFactor = 0;
+      this.NewRPNNumber = 0;
       this.FMCount += 1;
       if (this.FMCount <= this.FMChild.length - 1) {
         this.FMLSEffectModeName = this.FMChild[this.FMCount].data.name
@@ -781,6 +808,8 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
       this.Remark = "";
       this.fileUpload = "";
       this.FileId = "";
+      this.RecommendedActions = "";
+      this.TargetDate = "";
     }else{
       if (this.type == 'FMECA') { 
         if(this.DownTimeFactor == 0  ) {
@@ -801,6 +830,18 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
             this.messageService.add({ severity: 'info', summary: 'info', detail: 'Occurrence Factor is Missing' });
           }else if(this.DetectionFactor == 0  ){
             this.messageService.add({ severity: 'info', summary: 'info', detail: 'Detection Factor is Missing' });
+          }else if(this.RecommendedActions == ''){
+            this.messageService.add({ severity: 'info', summary: 'info',detail:
+          'RecommendedActions is Missing'});
+          }else if(this.TargetDate == ''){
+            this.messageService.add({ severity: 'info', summary: 'info',detail:
+          'TargetDate is Missing'});
+          }else if(this.NewSeverityFactor == 0  ) {
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'NewSeverity Factor is Missing' });
+          }else if(this.NewOccurrenceFactor == 0  ){
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'NewOccurrence Factor is Missing' });
+          }else if(this.NewDetectionFactor == 0  ){
+            this.messageService.add({ severity: 'info', summary: 'info', detail: 'NewDetection Factor is Missing' });
           }
       }
     }
@@ -870,36 +911,73 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
     this.data1[0].children[0].children.forEach((res: any) => {
       res.Consequence = temp2
     })
-    this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
-    this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
-    this.centrifugalPumpPrescriptiveOBJ.Type = this.treeResponseData.Type;
-    this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1);
-    localStorage.setItem('TestingOBj', JSON.stringify(this.data1))
-    for (let index = 0; index < this.FMChild.length; index++) {
+      // if (this.type == 'FMECA') {
+      this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes = []
+      this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData.CFPPrescriptiveId;
+      this.centrifugalPumpPrescriptiveOBJ.Type = this.treeResponseData.Type;
+      this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
+      localStorage.setItem('TestingOBj', JSON.stringify(this.data1));
+      // }
+      // else if (this.type == 'FMEA'){
+      // this.centrifugalPumpPrescriptiveOBJ.FMEAPrescriptiveFailureModes = []
+      // this.centrifugalPumpPrescriptiveOBJ.CFPPrescriptiveId = this.treeResponseData[0].CFPPrescriptiveId;
+      // this.centrifugalPumpPrescriptiveOBJ.Type = this.treeResponseData[0].Type;
+      // this.centrifugalPumpPrescriptiveOBJ.FMWithConsequenceTree = JSON.stringify(this.data1)
+      // localStorage.setItem('TestingOBj', JSON.stringify(this.data1));
+      // }
+     
+      for (let index = 0; index < this.FMChild.length; index++) {
       let obj = {};
+      // if (this.type == 'FMECA') {
       obj['CPPFMId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CPPFMId;
       obj['CFPPrescriptiveId'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CFPPrescriptiveId;
+      // }
+      // else if(this.type == 'FMEA'){
+      // obj['CPPFMId'] = this.treeResponseData[0].FMEAPrescriptiveFailureModes[index].CPPFMId;
+      // obj['CFPPrescriptiveId'] = this.treeResponseData[0].FMEAPrescriptiveFailureModes[index].CFPPrescriptiveId;
+      // }
       obj['FunctionMode'] = this.FMChild[index].data.name;
       obj['LocalEffect'] = this.FMChild[index].children[0].children[0].data.name;
       obj['SystemEffect'] = this.FMChild[index].children[0].children[1].data.name;;
       obj['Consequence'] = this.FMChild[index].children[0].children[2].data.name;
+      // if (this.type == "FMECA"){
       obj['DownTimeFactor'] = this.FactoryToAddInFM[index].DownTimeFactor
       obj['ScrapeFactor'] = this.FactoryToAddInFM[index].ScrapeFactor
       obj['SafetyFactor'] = this.FactoryToAddInFM[index].SafetyFactor
       obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor
       obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor
+      // }
+      // else if (this.type == 'FMEA'){
+      // obj['SeverityFactor'] = this.FactoryToAddInFM[index].SeverityFactor;
+      // obj['OccurrenceFactor'] = this.FactoryToAddInFM[index].OccurrenceFactor;
+      // obj['DetectionFactor'] = this.FactoryToAddInFM[index].DetectionFactor;
+      // }
+      // if (this.type == 'FMECA') {
       obj['CriticalityFactor'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].CriticalityFactor;
       obj['Rating'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].Rating;
       obj['MaintainenancePractice'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].MaintainenancePractice;
       obj['FrequencyMaintainenance'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].FrequencyMaintainenance;
       obj['ConditionMonitoring'] = this.treeResponseData.centrifugalPumpPrescriptiveFailureModes[index].ConditionMonitoring;
+      // }
       obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath
       obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath
       obj['Remark'] = this.FactoryToAddInFM[index].Remark
-      this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+      // if (this.type == 'FMECA'){
+        this.centrifugalPumpPrescriptiveOBJ.centrifugalPumpPrescriptiveFailureModes.push(obj)
+      // }
+      // else if (this.type == 'FMEA'){
+      //   this.centrifugalPumpPrescriptiveOBJ.FMEAPrescriptiveFailureModes.push(obj);
+      // }
     }
-  var url : string =  this.prescriptiveContantAPI.FMEASaveConsequence
-  this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
+
+    var url:string = "";
+    // if (this.type == 'FMECA') {
+      url =  this.prescriptiveContantAPI.FMEASaveConsequence
+    // }
+    // else if (this.type == 'FMEA'){
+    //   url = this.prescriptiveContantAPI.XFMEASaveConsequence
+    // }
+    this.prescriptiveBLService.PutData(url,this.centrifugalPumpPrescriptiveOBJ).subscribe(
      res => {
         console.log(res);
         this.messageService.add({ severity: 'success', summary: 'Sucess', detail: 'Successfully Done' });
@@ -942,9 +1020,16 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
       obj['ProtectionFactor'] = this.FactoryToAddInFM[index].ProtectionFactor;
       obj['FrequencyFactor'] = this.FactoryToAddInFM[index].FrequencyFactor;
       }else if (this.type == 'FMEA'){
-        obj['SeverityFactor'] = this.FactoryToAddInFM[index].SeverityFactor;
-        obj['OccurrenceFactor'] = this.FactoryToAddInFM[index].OccurrenceFactor;
-        obj['DetectionFactor'] = this.FactoryToAddInFM[index].DetectionFactor;
+      obj['SeverityFactor'] = this.FactoryToAddInFM[index].SeverityFactor;
+      obj['OccurrenceFactor'] = this.FactoryToAddInFM[index].OccurrenceFactor;
+      obj['DetectionFactor'] = this.FactoryToAddInFM[index].DetectionFactor;
+      obj['RPNNumber'] = this.FactoryToAddInFM[index].RPNNumber;
+      obj['RecommendedActions'] = this.FactoryToAddInFM[index].RecommendedActions;
+      obj['TargetDate'] = this.FactoryToAddInFM[index].TargetDate;
+      obj['NewSeverityFactor'] = this.FactoryToAddInFM[index].NewSeverityFactor;
+      obj['NewOccurrenceFactor'] = this.FactoryToAddInFM[index].NewOccurrenceFactor;
+      obj['NewDetectionFactor'] = this.FactoryToAddInFM[index].NewDetectionFactor;
+      obj['NewRPNNumber'] = this.FactoryToAddInFM[index].NewRPNNumber;
       }
       obj['AttachmentDBPath'] = this.FactoryToAddInFM[index].AttachmentDBPath;
       obj['AttachmentFullPath'] = this.FactoryToAddInFM[index].AttachmentFullPath;
@@ -964,19 +1049,27 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
       url = this.prescriptiveContantAPI.XFMEA;
     }
     this.prescriptiveBLService.postWithoutHeaders(url, this.centrifugalPumpPrescriptiveOBJ)
-      .subscribe(
+    .subscribe(
         res => {
           console.log(res);
+          if(this.type == 'FMECA'){
           this.treeResponseData = res;
           localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
           this.prescriptiveTreeNextEnable = true
           this.prescriptiveTreeUpdateEnable = false;
           this.prescriptiveTreeSubmitEnable = false;
           this.prescriptiveTreeBackEnable = false
-
-        },
-        err => { console.log(err.Message) }
-      )
+          }else if (this.type == 'FMEA'){
+          this.messageService.add({ severity: 'success', summary: 'Sucess',
+          detail: 'Successfully Done' });
+          this.router.navigateByUrl('/Home/Prescriptive/List');
+          this.prescriptiveTreeUpdateEnable = false;
+          this.prescriptiveTreeSubmitEnable = false;
+          this.prescriptiveTreeBackEnable = false
+          }
+          },
+          err => { console.log(err.Message) }
+       )
   }
 
   PushConcequences() {
@@ -1107,9 +1200,17 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
   }
 
   treeBack() {
-    this.prescriptiveEffect = true;
-    this.prescriptiveEffect1 = true;
- this.prescriptiveTree = false;
+    if (this.type == 'FMECA') {
+      this.prescriptiveEffect = true;
+      this.prescriptiveEffect1 = true;
+      this.prescriptiveTree = false;
+      this.prescriptiveEffects = false;
+    }else if(this.type == 'FMEA'){
+      this.prescriptiveEffects = true;
+      this.prescriptiveEffect1 = true;
+      this.prescriptiveTree = false;
+      this.prescriptiveEffect = false;
+    }
   }
 
 
@@ -1515,11 +1616,22 @@ var url : string =  this.prescriptiveContantAPI.FMEATagCheck
     if (event.node.children.length > 0) {
       this.failuerModeLocalEffects = event.node.children[0].data.name;
       this.failuerModeSystemEffects = event.node.children[1].data.name;
+      if (this.type == 'FMECA'){
       this.DownTimeFactor = this.FactoryToAddInFM[event.node.label - 1].DownTimeFactor;
       this.ScrapeFactor = this.FactoryToAddInFM[event.node.label - 1].ScrapeFactor;
       this.SafetyFactor = this.FactoryToAddInFM[event.node.label - 1].SafetyFactor;
       this.ProtectionFactor = this.FactoryToAddInFM[event.node.label - 1].ProtectionFactor;
       this.FrequencyFactor = this.FactoryToAddInFM[event.node.label - 1].FrequencyFactor;
+      }else if (this.type == 'FMEA'){
+      this.SeverityFactor = this.FactoryToAddInFM[event.node.label - 1].SeverityFactor;
+      this.OccurrenceFactor = this.FactoryToAddInFM[event.node.label - 1].OccurrenceFactor;
+      this.DetectionFactor = this.FactoryToAddInFM[event.node.label - 1].DetectionFactor;
+      this.RecommendedActions = this.FactoryToAddInFM[event.node.label - 1].RecommendedActions;
+      this.TargetDate = this.FactoryToAddInFM[event.node.label - 1].TargetDate; 
+      this.NewSeverityFactor = this.FactoryToAddInFM[event.node.label - 1].SeverityFactor;
+      this.NewOccurrenceFactor = this.FactoryToAddInFM[event.node.label - 1].OccurrenceFactor;
+      this.NewDetectionFactor = this.FactoryToAddInFM[event.node.label - 1].DetectionFactor;
+      }
       this.dbPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentDBPath;
       this.Remark = this.FactoryToAddInFM[event.node.label - 1].Remark;
       this.fullPath = this.FactoryToAddInFM[event.node.label - 1].AttachmentFullPath;

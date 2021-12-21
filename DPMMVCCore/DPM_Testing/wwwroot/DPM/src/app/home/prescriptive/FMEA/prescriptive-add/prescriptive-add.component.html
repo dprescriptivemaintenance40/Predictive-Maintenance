@@ -52,6 +52,31 @@
                 <button class="btn btn-primary" (click)="GeneratePrescription()">Done</button>
             </div>
         </div>
+        <div *ngIf = "type == 'FMEA'">
+            <a class="btn btn-outline-secondary btn-sm" style="float: right;" pTooltip="To add Function Failure  Click on Next" tooltipPosition="top" data-toggle="modal" data-target="#FMEAHelp">
+                &nbsp;&nbsp; Help &nbsp;&nbsp;
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="FMEAHelp" tabindex="-1" role="dialog" aria-labelledby="DeleteTreeTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Guidelines: </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+             1. FMEA is done basically on three types based on Assets Criticality i.e. Normal, Semi- Critical and Critical Assets.<br> 
+             2. During FMEA Study number of failure modes you select that much time you have to add the local effect, System effect and factors.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -450,7 +475,7 @@
                                 <span class="d-block text-primary small font-weight-bold"> 1</span>
                                 <span class="d-block text-primary small font-weight-bold"> 10</span>
                             </div>
-                            <p-slider class="pr-t5" [(ngModel)]="OccurrenceFactor" [min]="1" [max]="5"></p-slider>
+                            <p-slider class="pr-t5" [(ngModel)]="OccurrenceFactor" [min]="1" [max]="10"></p-slider>
 
                         </div>
                         <div class="col-md-1 text-left">
@@ -469,15 +494,104 @@
                                 <span class="d-block text-primary small font-weight-bold"> 1</span>
                                 <span class="d-block text-primary small font-weight-bold"> 10</span>
                             </div>
-                            <p-slider class="pr-t5" [(ngModel)]="DetectionFactor" [min]="1" [max]="20"></p-slider>
+                            <p-slider class="pr-t5" [(ngModel)]="DetectionFactor" [min]="1" [max]="10"></p-slider>
 
                         </div>
                         <div class="col-md-1 text-left">
                             <span class="badge badge-primary">{{DetectionFactor}}</span>
                         </div>
-                    </div> 
+                        <br>
+                     </div> 
+
                     <br>
+
+                    <div class="row d-flex justify-content-space-between  align-items-center">
+                        <div class="col-md-5">
+                            <label>RPN:</label>
+                        </div>
+                        <div style="" class="col-md-5">
+                            <div class="d-flex     justify-content-between-align-items-center">
+                                <input [(ngModel)]="RPNNumber" type="text" pInputText  value="{{SeverityFactor*OccurrenceFactor*DetectionFactor}}" />
+                            </div>
+                         </div>
+                    </div><br>
+                    <div>
+                        <label><b>Recommended Actions:</b></label>
+                        <textarea class="form-control custom-textarea" [(ngModel)]="RecommendedActions" id="message" name="body" rows="4" placeholder="Type Recommended Actions"></textarea>
+                    </div><br>
+                    <label for="icon">Responsibility & Target Completion Date: </label>
+                    <p-calendar [(ngModel)]="TargetDate" [showIcon]="true" inputId="icon" [minDate]="minDateValue" [readonlyInput]="true"></p-calendar>
+                </div><br>
+             
+                    <h5 class="p-card-title" style="">Enter Factors for <span class="text-primary"><strong>{{FMLSEffectModeName}}</strong></span> after Executing the Recommended Actions
+                    </h5><br>
+            
+                <div class="row d-flex justify-content-space-between align-items-center">
+                    <div class="col-md-5">
+                        <label>New Severity Factor:</label>
+                    </div>
+                    <div style="" class="col-md-5">
+                        <div class="d-flex justify-content-between align-items-center range-from">
+                            <span class="d-block text-primary small font-weight-bold"> 1</span>
+                            <span class="d-block text-primary small font-weight-bold"> 10</span>
+                        </div>
+                        <p-slider class="pr-t5" [(ngModel)]="NewSeverityFactor" [min]="1" [max]="10"></p-slider>
+
+                    </div>
+                    <div class="col-md-1 text-left">
+                        <span class="badge badge-primary">{{NewSeverityFactor}}</span>
+                    </div>
                 </div>
+                <br>
+                <div class="row d-flex justify-content-space-between align-items-center">
+                    <div class="col-md-5">
+                        <label>New Occurrence Factor:</label>
+                    </div>
+                    <div style="" class="col-md-5">
+                        <div class="d-flex justify-content-between align-items-center range-from">
+                            <span class="d-block text-primary small font-weight-bold"> 1</span>
+                            <span class="d-block text-primary small font-weight-bold"> 10</span>
+                        </div>
+                        <p-slider class="pr-t5" [(ngModel)]="NewOccurrenceFactor" [min]="1" [max]="10"></p-slider>
+
+                    </div>
+                    <div class="col-md-1 text-left">
+                        <span class="badge badge-primary">{{NewOccurrenceFactor}}</span>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row d-flex justify-content-space-between align-items-center">
+                    <div class="col-md-5">
+                        <label>New Detection Factor:</label>
+                    </div>
+                    <div style="" class="col-md-5">
+                        <div class="d-flex justify-content-between align-items-center range-from">
+                            <span class="d-block text-primary small font-weight-bold"> 1</span>
+                            <span class="d-block text-primary small font-weight-bold"> 10</span>
+                        </div>
+                        <p-slider class="pr-t5" [(ngModel)]="NewDetectionFactor" [min]="1" [max]="10"></p-slider>
+
+                    </div>
+                    <div class="col-md-1 text-left">
+                        <span class="badge badge-primary">{{NewDetectionFactor}}</span>
+                    </div>
+                    <br>
+                 </div> 
+
+                <br>
+
+                <div class="row d-flex justify-content-space-between  align-items-center">
+                    <div class="col-md-5">
+                        <label>New RPN:</label>
+                    </div>
+                    <div style="" class="col-md-5">
+                        <div class="d-flex     justify-content-between-align-items-center">
+                            <input [(ngModel)]="NewRPNNumber" type="text" pInputText  value="{{NewSeverityFactor*NewOccurrenceFactor*NewDetectionFactor}}" />
+                        </div>
+                     </div>
+                </div><br>
             </ng-template>
             <ng-template pTemplate="footer">
                 <a class="btn btn-primary btn-sm" (click)="ADDFailuerEffect()" pTooltip=" Add  Failure Mode with Local & System Effect" tooltipPosition="top">

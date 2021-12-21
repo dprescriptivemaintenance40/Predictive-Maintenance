@@ -14,14 +14,15 @@
                 <h5 class="card-title mb-0 mt-2"><i class="fa fa-tasks"></i>&nbsp;Prescriptive Recommendation</h5>
                 <div class="col" *ngIf="Table2 || Table3">
                     <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable1()">Back</button>
-
-                </div>
+                 </div>
                 <div class="col" *ngIf="Table4">
                     <button type="button" style="float: right" class="btn btn-secondary btn-sm" (click)="BackToTable3()">Back</button>
-
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card dpm-card p-3">
+                <p-tabView>
+                <p-tabPanel header="FMECA">  
+                <div class="card-body">
                 <p-table *ngIf="Table1" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="prescriptiveRecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
                     <!-- <ng-template pTemplate="colgroup">
@@ -252,9 +253,48 @@
                         </tr>
                     </ng-template>
                 </p-table>
-
-
-
+                </div>
+                </p-tabPanel>
+                <p-tabPanel header="FMEA">
+                <div class="card-body">
+                    <p-table *ngIf="Table1" id="exportexcel" [scrollable]="true"  [style]="{width:'100%'}" [value]="FMEAprescrptiverecords" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
+                    <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                    <div class="prescriptive-card p-3">
+                        <h1 (click)="XFMEAFailureModeTable(p)" class="font-weight-normal h6"><small>{{p.MachineType}}</small><span (click)="XFMEAFailureModeTable(p)" class="d-block font-weight-normal h5 mt-2">{{p.EquipmentType}}<span (click)="XFMEAFailureModeTable(p)" class="badge badge-info ml-2"><small><i
+                                    class="pi pi-tag mr-1"></i></small>Tag No: {{p.TagNumber}}</span>
+                            <span class="badge-danger badge ml-2 mr-2"><small><i class="pi pi-star-o small mr-1"></i></small> Type: {{p.Type}}</span></span>
+                        </h1>
+                            <span class="">
+                            <a style="color: red;" title="Delete FMEA Tree" (click)="DeleteXFMEAPrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteFMEA"><small><i class="pi pi-trash"></i></small></a>
+                            </span>
+                    </div>
+                    <div *ngIf="prescriptiveRecords.length == 0">
+                        <td style="text-align:center; margin-top: 20px;" colspan="10">No Records to show</td>
+                    </div>
+                    </ng-template>
+                    </p-table>
+                    <p-table *ngIf="Table2" id="exportexcel" [scrollable]="true" [style]="{width:'100%'}" [value]="XFMEAFailureModeDataTabe2" [paginator]="true" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [rowsPerPageOptions]="[10,25,50]" [loading]="loading">
+                    <ng-template pTemplate="body" let-p let-rowIndex="rowIndex">
+                        <div class="prescriptive-card mb-0 p-3">
+                            <h1 (click)="FailureModeTable(p)" class="font-weight-normal h6"><small>{{p.FunctionMode}}</small><span class="d-block font-weight-normal h5 mt-2">{{p.FunctionMode}}
+                                <span (click)="FailureModeTable(p)"
+                                        class="badge-danger badge ml-2 mr-1"><small><i class="pi pi-chart-line mr-1"></i></small>RPN Number : {{p.RPNNumber}}</span>
+                                <span (click)="FailureModeTable(p)" class="badge badge-info ml-2 mr-2"><small><i
+                                            class="pi pi-star-o small mr-1"></i></small> New RPN Number:
+                                    {{p.NewRPNNumber}}</span>
+                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>Local Effect:
+                                            {{p.LocalEffect}}</span>
+                                <span (click)="FailureModeTable(p)" class="badge badge-warning mr-2"><i class="pi pi-star-o small mr-1"></i>System Effect:
+                                                 {{p.SystemEffect}}</span></span>
+                            </h1>  
+                        </div>
+                    </ng-template>
+                    </p-table>
+                </div>
+                </p-tabPanel>
+                </p-tabView>
             </div>
         </div>
     </div>
@@ -278,7 +318,25 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="DeleteFMEA" tabindex="-1" role="dialog" aria-labelledby="DeleteTreeTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Warning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete FMEA : {{FMEATagNumber}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SoftDeleteXFMEAPrescriptiveRecords()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" aria-labelledby="AttachmentModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

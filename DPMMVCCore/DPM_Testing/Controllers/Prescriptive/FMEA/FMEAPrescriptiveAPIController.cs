@@ -27,11 +27,12 @@ namespace DPM.Controllers.Prescriptive.FMEA
         // GET: api/<FMEAPrescriptiveAPIController>
         [HttpGet]
         [Route("GetXFMEARecords")]
-        public async Task<ActionResult<IEnumerable<XFMEAPrescriptiveModel>>> GetFMEAPrescriptiveModel(string userId)
+        public async Task<ActionResult<IEnumerable<XFMEAPrescriptiveModel>>> GetFMEAPrescriptiveModel(string UserId)
         {
             try
             {
-                return await _context.FMEAPrescriptiveModelData.Where(a => a.UserId == userId)
+                var userid = UserId;
+                return await _context.FMEAPrescriptiveModelData.Where(a => a.UserId == userid)
                                                            .Include(a => a.FMEAPrescriptiveFailureModes)
                                                            .OrderByDescending(a => a.CFPPrescriptiveId)
                                                            .ToListAsync();
@@ -51,10 +52,11 @@ namespace DPM.Controllers.Prescriptive.FMEA
          public async Task<ActionResult<XFMEAPrescriptiveModel>> PostFMEAModel([FromBody] XFMEAPrescriptiveModel fMEAPrescriptiveModel)
          {
              try
-               
              {
+                 string userid = User.Claims.First(c => c.Type == "UserID").Value;
                  var failuremodes = fMEAPrescriptiveModel.FMEAPrescriptiveFailureModes;
                  fMEAPrescriptiveModel.FMEAPrescriptiveFailureModes = null;
+                 fMEAPrescriptiveModel.UserId = userid;
                  await _context.FMEAPrescriptiveModelData.AddAsync(fMEAPrescriptiveModel);
                  await _context.SaveChangesAsync();
          
@@ -64,8 +66,11 @@ namespace DPM.Controllers.Prescriptive.FMEA
                      await _context.XFMEAPrescriptiveFailureModes.AddAsync(failuremodes[i]);
                      await _context.SaveChangesAsync();
                  }
-                 
-                 return Ok();
+                 List<XFMEAPrescriptiveModel> XFMEAPrescriptiveModels = await _context.FMEAPrescriptiveModelData.Where(a => a.CFPPrescriptiveId == fMEAPrescriptiveModel.CFPPrescriptiveId)
+                                                                            .Include(a => a.FMEAPrescriptiveFailureModes)
+                                                                            .ToListAsync();
+                     
+                 return Ok(XFMEAPrescriptiveModels);
              }
          
              catch (System.Exception exe)
@@ -78,14 +83,27 @@ namespace DPM.Controllers.Prescriptive.FMEA
          
          // PUT api/<FMEAPrescriptiveAPIController>/5
          [HttpPut]
+         [Route("XFMEAPrescriptiveAdd")]
          public async Task<IActionResult> PutFMEAModel(XFMEAPrescriptiveModel fMEAPrescriptiveModel)
          {
              try
              {
-                 _context.Entry(fMEAPrescriptiveModel).State = EntityState.Modified;
+                var failuremodes = fMEAPrescriptiveModel.FMEAPrescriptiveFailureModes;
+                string userid = User.Claims.First(c => c.Type == "UserID").Value;
+                fMEAPrescriptiveModel.UserId = userid;
+                fMEAPrescriptiveModel.FMEAPrescriptiveFailureModes = null;
+                _context.Entry(fMEAPrescriptiveModel).State = EntityState.Modified;
                  await _context.SaveChangesAsync();
-         
-                 return Ok();
+
+                for (int i = 0; i < failuremodes.Count; i++)
+                {
+                    failuremodes[i].CFPPrescriptiveId = fMEAPrescriptiveModel.CFPPrescriptiveId;
+                    _context.Entry(failuremodes[i]).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                }
+
+                return Ok();
              }
              catch (Exception exe)
              {
@@ -97,18 +115,25 @@ namespace DPM.Controllers.Prescriptive.FMEA
          }
          
           // DELETE api/<FMEAPrescriptiveAPIController>/5
-          [HttpDelete("{id}")]
+          [HttpDelete]
+          [Route("DeleteXFMEAPrespectiveModel")]
           public async Task<IActionResult> DeleteFMEAModel(int id)
           {
-              var FMEAObj = await _context.FMEAPrescriptiveModelData.FindAsync(id);
-              if (FMEAObj == null)
-              {
-                return NotFound();
-              }
-              _context.FMEAPrescriptiveModelData.Remove(FMEAObj);
-              await _context.SaveChangesAsync();
-              return NoContent();
 
-          }
+            try
+            {
+                var FMEAObj = _context.FMEAPrescriptiveModelData.Where(a => a.CFPPrescriptiveId == id)
+                                                            .Include(a => a.FMEAPrescriptiveFailureModes)
+                                                            .First();
+                _context.FMEAPrescriptiveModelData.Remove(FMEAObj);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
     }
 }

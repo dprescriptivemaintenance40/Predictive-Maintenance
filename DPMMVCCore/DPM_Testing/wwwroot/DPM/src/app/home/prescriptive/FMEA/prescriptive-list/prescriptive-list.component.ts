@@ -16,7 +16,8 @@ import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 export class PrescriptiveListComponent implements OnInit {
 
   public CFPPrescriptiveId;
-  public DeleteTreeName: string = ""
+  public DeleteTreeName: string = "";
+  public FMEATagNumber: string = "";
   public fileAttachmentEnable: boolean = false
   public fileUpload: string = ""
   public UploadFileDataResponse: any = []
@@ -29,9 +30,13 @@ export class PrescriptiveListComponent implements OnInit {
   public CRemarks: string = "";
   public CAttachmentFile: any;
   public prescriptiveRecords: any = [];
+  public FMEAprescrptiverecords: any = [];
+  public FMEAFailureModes: any = [];
+  public userDetails: any = [];
   public Table1: boolean = true;
   public Table2: boolean = false;
   public FailureModeDataTabe2: any;
+  public XFMEAFailureModeDataTabe2: any;
   public Table3: boolean = false;
   public Table4: boolean = false;
   public FailureModeDataTabe3: any;
@@ -52,9 +57,10 @@ export class PrescriptiveListComponent implements OnInit {
 
   ngOnInit() {
     this.getPrescriptiveRecords();
+    this.getuserid();
+    this.getXFMEAPrescriptiveRecords();
+  
   }
-
-
 
   getPrescriptiveRecords() {
     var url: string = this.prescriptiveContantAPI.FMEATagCheck
@@ -66,6 +72,24 @@ export class PrescriptiveListComponent implements OnInit {
       }
       )
   }
+  
+  getXFMEAPrescriptiveRecords(){
+    var url : string = this.prescriptiveContantAPI.XFMEATagCheck
+    const params = new HttpParams()
+    .set('UserId', this.userDetails.UserId)
+    this.commonBLService.getWithParameters(url,params)
+    .subscribe(res => {
+      this.FMEAprescrptiverecords = res;
+    }, err => {
+      console.log(err.err);
+    }
+    )
+   }
+
+   getuserid(){
+    this.userDetails = JSON.parse(localStorage.getItem('userObject'));
+    console.log(this.userDetails);
+   }
 
   UpdatePrescriptiveRecords(p) {
     if (localStorage.getItem('PrescriptiveUpdateObject') != null) {
@@ -77,10 +101,26 @@ export class PrescriptiveListComponent implements OnInit {
     }
   }
 
-
   DeletePrescriptiveRecords(p) {
     this.CFPPrescriptiveId = p.CFPPrescriptiveId
     this.DeleteTreeName = p.TagNumber
+  }
+  DeleteXFMEAPrescriptiveRecords(p) {
+    this.CFPPrescriptiveId = p.CFPPrescriptiveId
+    this.FMEATagNumber = p.TagNumber
+  }
+  
+  SoftDeleteXFMEAPrescriptiveRecords(){
+    var url: string = this.prescriptiveContantAPI.XFMEAListSingleDelete
+    const params = new HttpParams()
+    .set('id',this.CFPPrescriptiveId)
+    this.commonBLService.DeleteWithParam(url, params)
+    .subscribe(res => {
+      this.getXFMEAPrescriptiveRecords();
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Deleted Successfully' });
+    },err => {
+      console.log(err)
+    });
   }
 
   SoftDeletePrescriptiveRecords() {
@@ -112,7 +152,13 @@ export class PrescriptiveListComponent implements OnInit {
     this.Table2 = true
     this.FailureModeDataTabe2 = p.centrifugalPumpPrescriptiveFailureModes
   }
+   
+  XFMEAFailureModeTable(p){
+    this.Table1 = false;
+    this.Table2 = true;
+    this.XFMEAFailureModeDataTabe2 = p.FMEAPrescriptiveFailureModes
 
+  }
   BackToTable1() {
     this.Table1 = true
     this.Table2 = false
@@ -127,7 +173,6 @@ export class PrescriptiveListComponent implements OnInit {
     this.Table3 = true
     this.Table4 = false
   }
-
 
   public uploadFile(event) {
     if (event.target.files.length > 0) {
@@ -165,10 +210,9 @@ export class PrescriptiveListComponent implements OnInit {
         this.fileUpload = "";
       }, err => { console.log(err.err) }
       )
-
   }
-  ViewAttachment(p) {
 
+  ViewAttachment(p) {
     this.FileSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(p.CAttachmentDBPath);
     this.FileUrl = p.CAttachmentDBPath;
     var extension = this.getFileExtension(p.CAttachmentDBPath);
@@ -180,8 +224,8 @@ export class PrescriptiveListComponent implements OnInit {
       this.ImageEnable = false;
       this.PdfEnable = true;
     }
-
   }
+
   getFileExtension(filename) {
     const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
     return extension;
@@ -221,6 +265,4 @@ export class PrescriptiveListComponent implements OnInit {
     this.Table2 = false
     this.Table1 = false
   }
-
-
 }

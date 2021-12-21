@@ -31,6 +31,16 @@ namespace DPM.Models.Prescriptive
         public string LocalEffect { get; set; }
         public string SystemEffect { get; set; }
         public string Consequence { get; set; }
+        public int SeverityFactor { get; set; }
+        public int OccurrenceFactor { get; set; }
+        public int DetectionFactor { get; set; }
+        public int RPNNumber { get; set; }
+        public int NewSeverityFactor { get; set; }
+        public int NewOccurrenceFactor { get; set; }
+        public int NewDetectionFactor { get; set; }
+        public int NewRPNNumber { get; set; }
+        public string RecommendedActions { get; set; }
+        public string TargetDate { get; set; }
         public string AttachmentDBPath { get; set; }
         public string AttachmentFullPath { get; set; }
         public string Remark { get; set; }

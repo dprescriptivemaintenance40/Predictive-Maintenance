@@ -7,12 +7,14 @@ export class PrescriptiveContantAPI {
     //#region  FMEA - Add, configuration, consequence, display, list,  FCA, MSS API's
 
     public FMEATagCheck: string = '/PrescriptiveAPI';
+    public XFMEATagCheck: string = '/FMEAPrescriptiveAPI/GetXFMEARecords';
     public FMEADropdownData: string = '/PrescriptiveLookupMasterAPI/GetRecords';
     public FMEATreeSave: string = '/PrescriptiveAPI/PostCentrifugalPumpPrescriptiveData';
     public XFMEA : string = '/FMEAPrescriptiveAPI/FMEAPrescriptiveModelData';
     public FMEAFileUpload: string = '/PrescriptiveAPI/UploadFile';
     public FMEADeleteFileUpload: string = '/PrescriptiveAPI/UpdateFileUpload';
     public FMEASaveConsequence: string = '/PrescriptiveAPI/CFPrescriptiveAdd';
+    public XFMEASaveConsequence: string = '/FMEAPrescriptiveAPI/XFMEAPrescriptiveAdd';
     public PrescriptiveRecordsForFCA: string = '/PrescriptiveAPI/GetPrescriptiveRecordsForFCA';
     public PrescriptiveRecordsForMSS: string = '/PrescriptiveAPI/GetPrescriptiveRecordsForMSS';
     public FCASave: string = '/PrescriptiveAPI/PrespectivePattern';
@@ -21,6 +23,7 @@ export class PrescriptiveContantAPI {
     public MSSSave: string = '/PrescriptiveAPI/UpdatePrespectiveMSS';
     public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
     public FMEAListSingleDelete: string = '/PrescriptiveAPI/DeletePrespectiveModel';
+    public XFMEAListSingleDelete: string = '/FMEAPrescriptiveAPI/DeleteXFMEAPrespectiveModel';
     public FMEAParentAttachments: string = '/PrescriptiveAPI/CompontentAttachment';
     //#endregion
 

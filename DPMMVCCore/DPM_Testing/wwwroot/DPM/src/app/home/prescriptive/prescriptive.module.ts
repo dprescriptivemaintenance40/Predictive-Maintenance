@@ -14,6 +14,7 @@ import { MSSAddComponent } from './MSS/mss-add/mss-add.component';
 import { RCAComponent } from "./RCA/rca.component";
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
+import {CalendarModule} from 'primeng/calendar';
 import { ClientContractorLibraryComponent } from './PSR/client-contractor-library/client-contractor-library.component';
 import { MssStrategyComponent } from './PSR/mss-strategy/mss-strategy.component';
 import { SkillLibraryComponent } from './PSR/skill-library/skill-library.component';
@@ -44,7 +45,7 @@ import { FMEANEWComponent } from "./FMEA/fmeanew/fmeanew.component";
   ],
     imports: [
         SharedModule,
-        PrescriptiveRoutingModule, CheckboxModule, DialogModule
+        PrescriptiveRoutingModule, CheckboxModule, DialogModule,CalendarModule
     ],
     providers: [],
     bootstrap: [PrescriptiveComponent]
