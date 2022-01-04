@@ -77,14 +77,14 @@ namespace DPM_Testing
                     });
 
 
-            //services.AddCors(options =>
-            //             options.AddPolicy("MyAllowSpecificOrigins",
-            //               builder =>
-            //               {
-            //                   builder.WithOrigins("http://localhost:4200")
-            //                        .AllowAnyMethod()
-            //                         .AllowAnyHeader();
-            //               }));
+            services.AddCors(options =>
+                         options.AddPolicy("MyAllowSpecificOrigins",
+                           builder =>
+                           {
+                               builder.WithOrigins("https://www.dpmaianalytics.com/")
+                                    .AllowAnyMethod()
+                                     .AllowAnyHeader();
+                           }));
 
             services.AddControllersWithViews();
 
@@ -144,11 +144,10 @@ namespace DPM_Testing
                 app.UseHsts();
             }
 
+            app.UseCors("MyAllowSpecificOrigins");
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthorization();
-
-            //app.UseCors("MyAllowSpecificOrigins");
             app.UseHttpsRedirection();
 
             app.UseEndpoints(endpoints =>

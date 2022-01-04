@@ -30,7 +30,7 @@ namespace DPM_Testing.Controllers
             {
                 contactUs.To = "info@dpmaianalytics.com";
                 var subject = contactUs.Subject;
-                var body = " From : " + contactUs.Email + "   " + " Message: " + contactUs.Comment;
+                var body = " From : " + contactUs.Email + ", " + "Message: " + contactUs.Comment;
                 var message = new Message(new string[] { contactUs.To }, subject, body, null);
                 await _emailSender.SendEmailAsync(message);
                 //_context.contactUs.Add(contactUs);
