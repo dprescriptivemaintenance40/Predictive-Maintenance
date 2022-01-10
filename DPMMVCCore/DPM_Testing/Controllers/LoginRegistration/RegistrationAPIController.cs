@@ -37,6 +37,7 @@ namespace DPM_Testing.Controllers
                 var user = await this.context.RegisterUsers.FirstOrDefaultAsync(a => a.UserName == model.UserName);
                 if (user == null)
                 {
+                    model.CreatedDate = DateTime.Now;
                     model.UserId = Guid.NewGuid().ToString();
                     model.UserType = 0;
                     model.Password = EncryptDecryptPassword.Encrypt(model.Password, model.UserId.ToString());

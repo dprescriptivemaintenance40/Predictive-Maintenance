@@ -21,7 +21,8 @@ export class UserService {
       Firstname: registerForm.value.Firstname,
       Lastname: registerForm.value.Lastname,
       Company: registerForm.value.Company,
-      Password: registerForm.value.Password
+      Password: registerForm.value.Password,
+      UserType:0
     };
     const url : string = this.LoginAPIName.RegisterAPI;
    
