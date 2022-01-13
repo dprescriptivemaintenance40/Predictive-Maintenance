@@ -125,13 +125,7 @@ namespace DPM_Testing
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(builder =>
-            {
-                builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-            });
+            app.UseCors();
             app.UseAuthentication();
             if (env.IsDevelopment())
             {
@@ -144,7 +138,6 @@ namespace DPM_Testing
                 app.UseHsts();
             }
 
-            app.UseCors("MyAllowSpecificOrigins");
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthorization();

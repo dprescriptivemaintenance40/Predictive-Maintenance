@@ -2,6 +2,7 @@
 using DPM_Testing.Models;
 using EmailService;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace DPM_Testing.Controllers
 {
+    [EnableCors("MyAllowSpecificOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class ContactUsAPIController : ControllerBase
