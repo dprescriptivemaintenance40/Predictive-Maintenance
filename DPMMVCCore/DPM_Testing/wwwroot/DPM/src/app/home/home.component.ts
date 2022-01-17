@@ -7,6 +7,7 @@ import { CommonLoadingDirective } from '../shared/Loading/common-loading.directi
 import { UserService } from './Services/user.services';
 import { EventEmitterService } from './Services/event-emitter.service';
 import { Title } from '@angular/platform-browser';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -339,21 +340,21 @@ export class HomeComponent implements OnInit {
         {
           label: 'APM (Assets Performance Management) Platform',
           items: [
-            {
+            this.user.UserType == 0 ?'': {
               label: 'Cost Benefit Analysis',
               items: [
                 {
                   label: 'CBA Report',
                   url: '#/Home/CostBenefitAnalysis'
                 },
-                {
-                  label: 'Constraint Management',
-                  url: '#/Home/Constraint'
-                },
-                {
-                  label: 'Alert Management',
-                  url: '#/Home/Alert'
-                },
+                // {
+                //   label: 'Constraint Management',
+                //   url: '#/Home/Constraint'
+                // },
+                // {
+                //   label: 'Alert Management',
+                //   url: '#/Home/Alert'
+                // },
               ]
 
             },
@@ -444,6 +445,17 @@ export class HomeComponent implements OnInit {
   UserData() {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
+      if(this.user.UserType === 0){
+        var todaysDate= moment();
+        var TrialEndDate = moment(this.user.CreatedDate).add(7,'days');
+        if(TrialEndDate >= todaysDate){
+
+        }else{
+          var a : any = [];
+          a= document.getElementById("HomeOverlay")
+          a.style.display = 'block'
+        }
+      }
     }
     if (this.user.UserType == 1) {
       this.screwCompressor = true;
