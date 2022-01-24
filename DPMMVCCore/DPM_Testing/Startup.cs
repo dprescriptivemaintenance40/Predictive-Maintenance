@@ -34,7 +34,15 @@ namespace DPM_Testing
 
             //    services.AddDefaultIdentity<RegisterUser>().AddEntityFrameworkStores<DPMDal>();
 
-            services.AddCors();
+
+            services.AddCors(options =>
+                         options.AddPolicy("MyAllowSpecificOrigins",
+                           builder =>
+                           {
+                               builder.WithOrigins("https://www.dpmaianalytics.com/")
+                                    .AllowAnyMethod()
+                                     .AllowAnyHeader();
+                           }));
 
             services.AddIdentity<RegisterUser, IdentityRole>(opt =>
             {
@@ -77,14 +85,6 @@ namespace DPM_Testing
                     });
 
 
-            services.AddCors(options =>
-                         options.AddPolicy("MyAllowSpecificOrigins",
-                           builder =>
-                           {
-                               builder.WithOrigins("https://www.dpmaianalytics.com/")
-                                    .AllowAnyMethod()
-                                     .AllowAnyHeader();
-                           }));
 
             services.AddControllersWithViews();
 
@@ -125,7 +125,7 @@ namespace DPM_Testing
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors();
+            app.UseCors("MyAllowSpecificOrigins");
             app.UseAuthentication();
             if (env.IsDevelopment())
             {
