@@ -7,6 +7,7 @@ import { CommonLoadingDirective } from '../shared/Loading/common-loading.directi
 import { UserService } from './Services/user.services';
 import { EventEmitterService } from './Services/event-emitter.service';
 import { Title } from '@angular/platform-browser';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home',
@@ -28,395 +29,7 @@ export class HomeComponent implements OnInit {
   public staticEquitment: boolean = false;
   public recycleBin: boolean = false;
   public prescriptiveConfiguration: boolean = false;
-  public MenuItems: any[] = [
-    {
-      label: 'Dashboard',
-      url: '#/Home/Dashboard',
-      icon: 'pi pi-home',
-    },
-    {
-      label: 'DPM-Education',
-      url: '#/Home/Education',
-      icon: 'pi pi-book',
-    },
-    {
-      label: 'Failure Mode Library',
-      icon: 'pi pi-bookmark',
-      items: [
-        // {
-        //   label: 'Asset’s list',
-        //   items: [
-        //     {
-        //       label: 'User',
-        //       url: '#/Home/FailureModesLibrary/User-Library'
-        //     },
-        //     {
-        //       label: 'Filter',
-        //       url: '#/Home/FailureModesLibrary/User-Library'
-        //     }
-        //   ]
-        // },
-        // {
-        //   label: 'Criticality Assessment',
-        //   url: '#/Home/FailureModesLibrary/CriticalityAssessment'
-        // },
-        // {
-        //   label: 'Maintenance History',
-        //   url: '#/Home/FailureModesLibrary/MaintenanceHistory'
-        // },
-        // {
-        //   label: 'Library Of Failure',
-        //   items: [
-        //     {
-        //       label: 'DPM Library',
-        //       url: '#/Home/FailureModesLibrary/DPMLibrary'
-        //     },
-        //     {
-        //       label: 'Customer Library',
-        //       url: '#/Home/FailureModesLibrary/CustomerLibrary'
-        //     }
-        //   ]
-        // },
-        {
-          label: 'RCA of critical failure',
-          url: '#/Home/Prescriptive/RCA'
-        },
-        // {
-        //   label: 'List credible failure modes',
-        //   url: '#/Home/FailureModesLibrary/ListCredibleFailureModes'
-        // },
-      ]
-    },
-    {
-      label: 'Customer database',
-      icon: 'pi pi-users',
-      items: [
-        {
-          label: 'Configuration',
-          url: '#/Home/Compressor/ScrewConfiguration'
-        },
-        {
-          label: 'Data collection',
-          items: [
-            // {
-            //   label: 'Big data',
-            //   items: [
-            //     {
-            //       label: 'Digital data',
-            //       items: [
-            //         {
-            //           label: 'Screw Compressor',
-            //           items: [
-            //             {
-            //               label: 'Train Data Upload',
-            //               url: '#/Home/CompTrainUploadData'
-            //             },
-            //             {
-            //               label: 'Prediction Data Upload',
-            //               url: '#/Home/CompPredictionUploadData'
-            //             }
-            //           ]
-            //         },
-            //         {
-            //           label: 'Centrifugal Pump',
-            //           items: [
-            //             {
-            //               label: 'Train Data Upload',
-            //               url: '#/Home/TrainUploadData'
-            //             },
-            //             {
-            //               label: 'Prediction Data Upload',
-            //               url: '#/Home/PredictionUploadData'
-            //             }
-            //           ]
-            //         }
-            //       ],
-            //       // items: [
-            //       //   {
-            //       //     label: 'Analog data',
-
-            //       //   }
-            //       // ]
-            //     }
-            //   ]
-            // },
-            {
-              label: 'Moderate data',
-              items: [
-                {
-                  label: 'Digital data',
-                  items: [
-                    {
-                      label: 'Sensor Data Upload',
-                      url: '#/Home/Compressor/SCModerateDataCollection'
-                    },
-                    {
-                      label: 'Field Data Upload',
-                      url: '#/Home/Compressor/SCModerateFieldDataCollection'
-                    },
-                    {
-                      label: 'Pump Data Upload',
-                      url: '#/Home/CentrifugalPump'
-                    }
-                  ]
-                  // items: [
-                  //   {
-                  //     label: 'Analog data',
-
-                  //   }
-                  // ]
-                }
-              ]
-            },
-            {
-              label: 'Failure History',
-              url: '#/Home/FailureHistory'
-            },
-          ]
-        },
-        {
-          label: 'Forecast',
-          items: [
-            {
-              label: 'Big data',
-              items: [
-                {
-                  label: 'Application / Machine Learning',
-                  items: [
-                    {
-                      label: 'Screw Compressor',
-                      items: [
-                        {
-                          label: 'Train',
-                          url: '#/Home/Compressor/ScrewTrain'
-                        },
-                        {
-                          label: 'Prediction',
-                          url: '#/Home/Compressor/ScrewPrediction'
-                        }
-                      ]
-                    },
-                    {
-                      label: 'Centrifugal Pump',
-                      items: [
-                        {
-                          label: 'Train',
-                          url: '#/Home/CentrifugalPumpTrain'
-                        },
-                        {
-                          label: 'Prediction',
-                          url: '#/Home/CentrifugalPumpPrediction'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            // {
-            //   label: 'Moderate data',
-            //   items: [
-            //     {
-            //       label: 'Statistical analysis'
-            //     }
-            //   ]
-            // }
-          ]
-        }
-      ]
-    },
-
-    {
-      label: 'Criticality Assesment',
-      icon: 'pi pi-book',
-      items: [
-        {
-          label: 'Critical Asset',
-          items: [
-            {
-              label: 'RCM',
-              url: '#/Home/Prescriptive/ADD/CA'
-            },
-            {
-              label: 'CBA',
-              url: '#/Home/CostBenefitAnalysis'
-            }
-          ]
-        },
-        {
-          label: 'Semi Critical Asset',
-          items: [
-            {
-              label: 'FMEA',
-              url: '#/Home/Prescriptive/ADD/SCA'
-            },
-            {
-              label: 'CBA',
-              url: '#/Home/CostBenefitAnalysis'
-            },
-          ]
-        },
-        {
-          label: 'Normal Criticality',
-          items: [
-            {
-              label: 'Weibull Analysis',
-              url: '#/Home/WeibullAnalysis'
-            },
-            {
-              label: 'CBA',
-              url: '#/Home/CostBenefitAnalysis'
-            },
-          ]
-        }
-      ]
-    },
-    {
-      label: 'Strategic Analysis',
-      icon: 'pi pi-chart-line',
-      items: [
-        {
-          label: 'Develop maintenance strategy',
-          items: [
-            {
-              label: 'RCM (Relaibility Centered Maintenance)',
-              items: [
-                {
-                  label: 'Configuration',
-                  url: '#/Home/Prescriptive/Configuration'
-                },
-                {
-                  label: 'FMEA Add',
-                  url: '#/Home/Prescriptive/ADD'
-                },
-                {
-                  label: 'FCA Add',
-                  url: '#/Home/Prescriptive/FCAAdd'
-                },
-                {
-                  label: 'MSS Add',
-                  url: '#/Home/Prescriptive/MSSAdd'
-                },
-                {
-                  label: 'CBA Add',
-                  url: '#/Home/Prescriptive/CBAAdd'
-                },
-                {
-                  label: "Add CRAFT's",
-                  url: '#/Home/Prescriptive/CCL'
-                },
-                {
-                  label: 'Skill Library',
-                  url: '#/Home/Prescriptive/SkillLibrary'
-                },
-                {
-                  label: 'User Production Details',
-                  url: '#/Home/Prescriptive/UPD'
-                },
-                {
-                  label: 'Input Data Management',
-                  url: '#/Home/Prescriptive/InputDataManagement'
-                },
-                {
-                  label: 'Display',
-                  url: '#/Home/Prescriptive/Display'
-                }
-              ]
-            },
-            // {
-            //   label: 'RBI (Risk Based Inspection)',
-            // },
-            // {
-            //   label: 'IPF (Intrumenated Protective Function)',
-            // },
-            // {
-            //   label: 'HAZOP (Hazard Operability Analysis)',
-            // }
-          ]
-        }
-      ]
-    },
-    {
-      label: 'Resource Optimization',
-      icon: 'pi pi-sitemap',
-      items: [
-        {
-          label: 'APM (Assets Performance Management) Platform',
-          items: [
-            {
-              label: 'Cost Benefit Analysis',
-              items: [
-                {
-                  label: 'CBA Report',
-                  url: '#/Home/CostBenefitAnalysis'
-                },
-                {
-                  label: 'Constraint Management',
-                  url: '#/Home/Constraint'
-                },
-                {
-                  label: 'Alert Management',
-                  url: '#/Home/Alert'
-                },
-              ]
-
-            },
-            {
-              label: 'Assesment Report',
-              url: '#/Home/Report'
-            },
-            // {
-            //   label: 'Optimum Spares Analysis'
-            // }
-          ]
-        },
-        // {
-        //   label: 'APM (Assets Performance Management) Library',
-        //   items: [
-        //     {
-        //       label: 'Repair Time'
-        //     },
-        //     {
-        //       label: 'Repair Cost'
-        //     },
-        //     {
-        //       label: 'Resource'
-        //     },
-        //     {
-        //       label: 'Special Tools'
-        //     },
-        //     {
-        //       label: 'Skill Pool'
-        //     }
-        //   ]
-        // }
-      ]
-    },
-    {
-      label: 'Prescriptive Maintenance',
-      icon: 'pi pi-sliders-v',
-      items: [
-        {
-          label: 'Prescriptive Recommendation',
-          url: '#/Home/Prescriptive/List'
-        },
-        {
-          label: 'Summary',
-          url: '#/Home/Prescription'
-        },
-      ]
-    },
-    {
-      label: 'RAM Modeling',
-      icon: 'pi pi-sitemap',
-      url: '#/Home/ABD'
-    },
-    {
-      label: 'Recycle Bin',
-      icon: 'pi pi-trash',
-      url: '#/Home/RecycleBin'
-    },
-  ];
+  public MenuItems: any[] = [];
   constructor(public builder: FormBuilder,
     public http: HttpClient,
     public router: Router,
@@ -448,8 +61,516 @@ export class HomeComponent implements OnInit {
   UserData() {
     if (localStorage.getItem('userObject') != null) {
       this.user = JSON.parse(localStorage.getItem('userObject'))
+      if (this.user.UserType === 0) {
+        var todaysDate = moment();
+        var TrialEndDate = moment(this.user.CreatedDate).add(7, 'days');
+        if (TrialEndDate >= todaysDate) {
+
+        } else {
+          var a: any = [];
+          a = document.getElementById("HomeOverlay")
+          a.style.display = 'block'
+        }
+      }
+
+      this.MenuItems = [
+
+        {
+          label: 'DPM-Education',
+          url: '#/Home/Education',
+          icon: 'pi pi-book',
+        },
+        {
+          label: 'Failure Mode Library',
+          icon: 'pi pi-bookmark',
+          items: [
+
+            {
+              label: 'RCA of critical failure',
+              url: '#/Home/Prescriptive/RCA'
+            }
+          ]
+        },
+        {
+          label: 'Customer database',
+          icon: 'pi pi-users',
+          items: [
+
+            {
+              label: 'Forecast',
+              items: [
+                {
+                  label: 'Big data',
+                  items: [
+                    {
+                      label: 'Application / Machine Learning',
+                      items: [
+                        {
+                          label: 'Screw Compressor',
+                          items: [
+                            {
+                              label: 'Train',
+                              url: '#/Home/Compressor/ScrewTrain'
+                            },
+                            {
+                              label: 'Prediction',
+                              url: '#/Home/Compressor/ScrewPrediction'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: 'Strategic Analysis',
+          icon: 'pi pi-chart-line',
+          items: [
+            {
+              label: 'Develop maintenance strategy',
+              items: [
+                {
+                  label: 'RCM (Relaibility Centered Maintenance)',
+                  items: [
+                    {
+                      label: 'FMEA Add',
+                      url: '#/Home/Prescriptive/ADD'
+                    },
+                    {
+                      label: 'FCA Add',
+                      url: '#/Home/Prescriptive/FCAAdd'
+                    },
+                    {
+                      label: 'MSS Add',
+                      url: '#/Home/Prescriptive/MSSAdd'
+                    },
+                    {
+                      label: 'Display',
+                      url: '#/Home/Prescriptive/Display'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: 'Resource Optimization',
+          icon: 'pi pi-sitemap',
+          items: [
+            {
+              label: 'APM (Assets Performance Management) Platform',
+              items: [
+                {
+                  label: 'Assesment Report',
+                  url: '#/Home/Report'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          label: 'Prescriptive Maintenance',
+          icon: 'pi pi-sliders-v',
+          items: [
+            {
+              label: 'Prescriptive Recommendation',
+              url: '#/Home/Prescriptive/List'
+            },
+          ]
+        }
+      ]
     }
     if (this.user.UserType == 1) {
+      this.MenuItems = [
+        {
+          label: 'Dashboard',
+          url: '#/Home/Dashboard',
+          icon: 'pi pi-home',
+        },
+        {
+          label: 'DPM-Education',
+          url: '#/Home/Education',
+          icon: 'pi pi-book',
+        },
+        {
+          label: 'Failure Mode Library',
+          icon: 'pi pi-bookmark',
+          items: [
+            // {
+            //   label: 'Asset’s list',
+            //   items: [
+            //     {
+            //       label: 'User',
+            //       url: '#/Home/FailureModesLibrary/User-Library'
+            //     },
+            //     {
+            //       label: 'Filter',
+            //       url: '#/Home/FailureModesLibrary/User-Library'
+            //     }
+            //   ]
+            // },
+            // {
+            //   label: 'Criticality Assessment',
+            //   url: '#/Home/FailureModesLibrary/CriticalityAssessment'
+            // },
+            // {
+            //   label: 'Maintenance History',
+            //   url: '#/Home/FailureModesLibrary/MaintenanceHistory'
+            // },
+            // {
+            //   label: 'Library Of Failure',
+            //   items: [
+            //     {
+            //       label: 'DPM Library',
+            //       url: '#/Home/FailureModesLibrary/DPMLibrary'
+            //     },
+            //     {
+            //       label: 'Customer Library',
+            //       url: '#/Home/FailureModesLibrary/CustomerLibrary'
+            //     }
+            //   ]
+            // },
+            {
+              label: 'RCA of critical failure',
+              url: '#/Home/Prescriptive/RCA'
+            },
+            // {
+            //   label: 'List credible failure modes',
+            //   url: '#/Home/FailureModesLibrary/ListCredibleFailureModes'
+            // },
+          ]
+        },
+        {
+          label: 'Customer database',
+          icon: 'pi pi-users',
+          items: [
+            {
+              label: 'Configuration',
+              url: '#/Home/Compressor/ScrewConfiguration'
+            },
+            {
+              label: 'Data collection',
+              items: [
+                // {
+                //   label: 'Big data',
+                //   items: [
+                //     {
+                //       label: 'Digital data',
+                //       items: [
+                //         {
+                //           label: 'Screw Compressor',
+                //           items: [
+                //             {
+                //               label: 'Train Data Upload',
+                //               url: '#/Home/CompTrainUploadData'
+                //             },
+                //             {
+                //               label: 'Prediction Data Upload',
+                //               url: '#/Home/CompPredictionUploadData'
+                //             }
+                //           ]
+                //         },
+                //         {
+                //           label: 'Centrifugal Pump',
+                //           items: [
+                //             {
+                //               label: 'Train Data Upload',
+                //               url: '#/Home/TrainUploadData'
+                //             },
+                //             {
+                //               label: 'Prediction Data Upload',
+                //               url: '#/Home/PredictionUploadData'
+                //             }
+                //           ]
+                //         }
+                //       ],
+                //       // items: [
+                //       //   {
+                //       //     label: 'Analog data',
+
+                //       //   }
+                //       // ]
+                //     }
+                //   ]
+                // },
+                {
+                  label: 'Moderate data',
+                  items: [
+                    {
+                      label: 'Digital data',
+                      items: [
+                        {
+                          label: 'Sensor Data Upload',
+                          url: '#/Home/Compressor/SCModerateDataCollection'
+                        },
+                        {
+                          label: 'Field Data Upload',
+                          url: '#/Home/Compressor/SCModerateFieldDataCollection'
+                        },
+                        {
+                          label: 'Pump Data Upload',
+                          url: '#/Home/CentrifugalPump'
+                        }
+                      ]
+                      // items: [
+                      //   {
+                      //     label: 'Analog data',
+
+                      //   }
+                      // ]
+                    }
+                  ]
+                },
+                {
+                  label: 'Failure History',
+                  url: '#/Home/FailureHistory'
+                },
+              ]
+            },
+            {
+              label: 'Forecast',
+              items: [
+                {
+                  label: 'Big data',
+                  items: [
+                    {
+                      label: 'Application / Machine Learning',
+                      items: [
+                        {
+                          label: 'Screw Compressor',
+                          items: [
+                            {
+                              label: 'Train',
+                              url: '#/Home/Compressor/ScrewTrain'
+                            },
+                            {
+                              label: 'Prediction',
+                              url: '#/Home/Compressor/ScrewPrediction'
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Centrifugal Pump',
+                          items: [
+                            {
+                              label: 'Train',
+                              url: '#/Home/CentrifugalPumpTrain'
+                            },
+                            {
+                              label: 'Prediction',
+                              url: '#/Home/CentrifugalPumpPrediction'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                // {
+                //   label: 'Moderate data',
+                //   items: [
+                //     {
+                //       label: 'Statistical analysis'
+                //     }
+                //   ]
+                // }
+              ]
+            }
+          ]
+        },
+
+        {
+          label: 'Criticality Assesment',
+          icon: 'pi pi-book',
+          items: [
+            {
+              label: 'Critical Asset',
+              items: [
+                {
+                  label: 'RCM',
+                  url: '#/Home/Prescriptive/ADD/CA'
+                },
+                {
+                  label: 'CBA',
+                  url: '#/Home/CostBenefitAnalysis'
+                }
+              ]
+            },
+            {
+              label: 'Semi Critical Asset',
+              items: [
+                {
+                  label: 'FMEA',
+                  url: '#/Home/Prescriptive/ADD/SCA'
+                },
+                {
+                  label: 'CBA',
+                  url: '#/Home/CostBenefitAnalysis'
+                },
+              ]
+            },
+            {
+              label: 'Normal Criticality',
+              items: [
+                {
+                  label: 'Weibull Analysis',
+                  url: '#/Home/WeibullAnalysis'
+                },
+                {
+                  label: 'CBA',
+                  url: '#/Home/CostBenefitAnalysis'
+                },
+              ]
+            }
+          ]
+        },
+        {
+          label: 'Strategic Analysis',
+          icon: 'pi pi-chart-line',
+          items: [
+            {
+              label: 'Develop maintenance strategy',
+              items: [
+                {
+                  label: 'RCM (Relaibility Centered Maintenance)',
+                  items: [
+                    {
+                      label: 'Configuration',
+                      url: '#/Home/Prescriptive/Configuration'
+                    },
+                    {
+                      label: 'FMEA Add',
+                      url: '#/Home/Prescriptive/ADD'
+                    },
+                    {
+                      label: 'FCA Add',
+                      url: '#/Home/Prescriptive/FCAAdd'
+                    },
+                    {
+                      label: 'MSS Add',
+                      url: '#/Home/Prescriptive/MSSAdd'
+                    },
+                    {
+                      label: "Add CRAFT's",
+                      url: '#/Home/Prescriptive/CCL'
+                    },
+                    {
+                      label: 'Skill Library',
+                      url: '#/Home/Prescriptive/SkillLibrary'
+                    },
+                    {
+                      label: 'User Production Details',
+                      url: '#/Home/Prescriptive/UPD'
+                    },
+                    {
+                      label: 'Input Data Management',
+                      url: '#/Home/Prescriptive/InputDataManagement'
+                    },
+                    {
+                      label: 'Display',
+                      url: '#/Home/Prescriptive/Display'
+                    }
+                  ]
+                },
+                // {
+                //   label: 'RBI (Risk Based Inspection)',
+                // },
+                // {
+                //   label: 'IPF (Intrumenated Protective Function)',
+                // },
+                // {
+                //   label: 'HAZOP (Hazard Operability Analysis)',
+                // }
+              ]
+            }
+          ]
+        },
+        {
+          label: 'Resource Optimization',
+          icon: 'pi pi-sitemap',
+          items: [
+            {
+              label: 'APM (Assets Performance Management) Platform',
+              items: [
+                {
+                  label: 'Cost Benefit Analysis',
+                  items: [
+                    {
+                      label: 'CBA Report',
+                      url: '#/Home/CostBenefitAnalysis'
+                    },
+                    // {
+                    //   label: 'Constraint Management',
+                    //   url: '#/Home/Constraint'
+                    // },
+                    // {
+                    //   label: 'Alert Management',
+                    //   url: '#/Home/Alert'
+                    // },
+                  ]
+
+                },
+                {
+                  label: 'Assesment Report',
+                  url: '#/Home/Report'
+                },
+                // {
+                //   label: 'Optimum Spares Analysis'
+                // }
+              ]
+            },
+            // {
+            //   label: 'APM (Assets Performance Management) Library',
+            //   items: [
+            //     {
+            //       label: 'Repair Time'
+            //     },
+            //     {
+            //       label: 'Repair Cost'
+            //     },
+            //     {
+            //       label: 'Resource'
+            //     },
+            //     {
+            //       label: 'Special Tools'
+            //     },
+            //     {
+            //       label: 'Skill Pool'
+            //     }
+            //   ]
+            // }
+          ]
+        },
+        {
+          label: 'Prescriptive Maintenance',
+          icon: 'pi pi-sliders-v',
+          items: [
+            {
+              label: 'Prescriptive Recommendation',
+              url: '#/Home/Prescriptive/List'
+            },
+            {
+              label: 'Summary',
+              url: '#/Home/Prescription'
+            },
+          ]
+        },
+        {
+          label: 'RAM Modeling',
+          icon: 'pi pi-sitemap',
+          url: '#/Home/ABD'
+        },
+        {
+          label: 'Recycle Bin',
+          icon: 'pi pi-trash',
+          url: '#/Home/RecycleBin'
+        },
+      ]
       this.screwCompressor = true;
       this.screwCompressorData = true;
       this.centrifugalPump = true;

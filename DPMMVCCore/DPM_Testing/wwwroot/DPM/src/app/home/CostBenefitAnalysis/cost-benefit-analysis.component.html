@@ -184,6 +184,14 @@
                                         <span><i class="pi pi-info-circle"></i>{{prescriptiveRecords.FunctionFailure}}</span>
                                     </div>
                                     <small> <button (click)="OpenMEI()" class="badge badge-primary"> Click here to calculate MEI</button></small>
+                                    <small *ngIf="AlreadySaved === 'Y'"><label>Do the task</label></small>
+                                    <small *ngIf="AlreadySaved === 'Y'">
+                                        <select class="form-control" [(ngModel)]="CBAOBJ.CarryoutTask" (change)="getCarryOutTaskValue(CBAOBJ.CarryoutTask)">
+                                            <option value=null>Choose</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </small>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -262,7 +270,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [(ngModel)]="mss.Checked"/>
+                                            <input type="checkbox" (click)="getUncheckedTask(mss , $event)" [checked]="getCheckResult(mss.Checked)"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -501,14 +509,14 @@
     <div class="row">
         <div class="col-md-12 pr-0 mb-4">
             <div class="d-flex flex-column">
-                <label >ETBC without DPM</label>
+                <label style="">ETBC without DPM</label>
                 <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="{{ VendorETBF === 0 ? 'Enter ETBF' : VendorETBF }}"  [(ngModel)]="VendorETBF" pTooltip="Enter ETBF in years" class="form-control">
 
             </div>
         </div>
         <div class="col-md-12 pr-0">
             <div class="d-flex flex-column">
-                <label>ETBC with DPM</label>
+                <label style="">ETBC with DPM</label>
                 <input type="text" (keypress)=onlyNumbers($event) (change)="getMEI()" placeholder="Enter ETBF"  [(ngModel)]="MSSETBF" pTooltip="Enter ETBF in years" class="form-control">
             </div>
         </div>

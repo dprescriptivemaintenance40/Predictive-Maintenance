@@ -86,7 +86,7 @@
 
 <div class="row">
     <div class=" col-md-12">
-        <div class="alert alert-danger d-flex justify-content-between align-items-center glowing" style="color: #fff;">
+        <div *ngIf="RecommendationAlertEnable" class="alert alert-danger d-flex justify-content-between align-items-center glowing" style="color: #fff;">
             <label class="mb-0"><i class="lnr lnr-warning  mr-2"></i>{{RecommendationAlertMessage}}</label><a *ngIf="RecommendationAlertEnable" class="btn btn-sm btn-danger" href="#/Home/Prescriptive/RCA" target="_blank">Click Here</a>
         </div>
         <div class="alert alert-primary d-flex w-100 justify-content-between align-items-center" role="alert">
