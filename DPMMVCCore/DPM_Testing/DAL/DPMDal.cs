@@ -81,14 +81,14 @@ namespace DPM_ServerSide.DAL
 
 
             modelBuilder.Entity<CentrifugalPumpCbaModel>().ToTable("prescriptivecbatable");
-            modelBuilder.Entity<CentrifugalPumpPrescriptiveCBAFailureMode>().ToTable("centrifugalpumpcbafailuremodes");
-            modelBuilder.Entity<CentrifugalPumpPrescriptiveCBAFailureMode>()
-                        .HasOne(p => p.centrifugalPumpCbaModel)
-                        .WithMany(b => b.centrifugalPumpPrescriptiveCBAFailureModes)
-                        .HasForeignKey(a => a.CPCMId);
-            modelBuilder.Entity<CBAFailureModeTask>().ToTable("centrifugalpumpcbatable");
+            //modelBuilder.Entity<CentrifugalPumpPrescriptiveCBAFailureMode>().ToTable("centrifugalpumpcbafailuremodes");
+            //modelBuilder.Entity<CentrifugalPumpPrescriptiveCBAFailureMode>()
+            //            .HasOne(p => p.centrifugalPumpCbaModel)
+            //            .WithMany(b => b.centrifugalPumpPrescriptiveCBAFailureModes)
+            //            .HasForeignKey(a => a.CPCMId);
+            modelBuilder.Entity<CBAFailureModeTask>().ToTable("centrifugalpumpcbafailuremodes");
             modelBuilder.Entity<CBAFailureModeTask>()
-                        .HasOne(p => p.centrifugalPumpPrescriptiveCBAFailureModes)
+                        .HasOne(p => p.centrifugalPumpCbaModel)
                         .WithMany(b => b.CBAFailureModeTasks)
                         .HasForeignKey(a => a.CPPCFMId);
 
