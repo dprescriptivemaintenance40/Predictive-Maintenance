@@ -1,0 +1,222 @@
+<div *ngIf="SelectBoxEnabled">
+    <h4 class="dpm-heading">Select Tag Number to add CBA</h4>
+    <div class="card dpm-card w-100 p-3">
+        <div class="row">
+            <div class="col-md-4">
+                <select class="form-select" [(ngModel)]="SelectedTagNumber" class="form-control">
+                    <option value="">Choose Tag Number</option>
+                    <option *ngFor="let EL of TagList" [ngValue]="EL">{{EL}}</option>
+                </select>
+            </div>
+            <div class="col-md-4 pl-0">
+                <button class="btn btn-primary" (click)="TagNumberSelect()">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="PrescriptiveCBA">
+    <div class="card dpm-card w-100 p-3">
+        <div class="row">
+            <div class="col-md-2 d-flex flex-column">
+                <label style=" margin-right: 12px;">Tag Number</label>
+                <input type="text" class="form-control" [ngModel]="SetTagNumber" [readonly]="true" pInputText />
+            </div>
+            <div class="col-md-2 d-flex flex-column">
+                <label style=" margin-right: 12px;">Failure Mode</label>
+                <input type="text" class="form-control" [ngModel]="SetFailureMode" [readonly]="true" pInputText />
+            </div>
+            <div class="col-md-2 d-flex flex-column">
+                <label style=" margin-right: 12px;">Is Age Related</label>
+                <input type="text" class="form-control" [ngModel]="SetAgeRelated" [readonly]="true" pInputText />
+            </div>
+            <div class="col-md-2" d-flex flex-column>
+                <label style=" margin-right: 6px;">Risk Matrix</label>
+                <select name="" id="" class="form-select" class="form-control">
+                    <option value="5*5 matrix">5*5 matrix</option>
+                    <option value="6*6 matrix">6*6 matrix</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex flex-column">
+                <label style=" margin-right: 12px;">Consequence</label>
+                <input type="text" class="form-control" [ngModel]="SetConsequence" pInputText />
+            </div><br>
+            <div class="col-md-2 d-flex flex-column">
+                <label style="margin-right: 12px;">Has Scenario</label>
+                <select name="" id="" class="form-select" [ngModel]="ScenarioYN" class="form-control">
+                    <option value="">Choose..</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+            <div class="col-md-3" d-flex flex-column>
+                <label style=" margin-right: 12px;">Describe Scenario</label>
+                <span class="p-float-label">
+                    <textarea inputId="textarea" style="height: 50px;" cols="40" class="form-control"
+                        pInputTextarea></textarea>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<!-- <button style="float: right;" label="Save" type="button" class="btn btn-dark" (click)="Save()" pTooltip="Save Values"
+    [disabled]="!silClassification.valid" tooltipPosition="top"><i class="pi pi-save"> Save</i></button> -->
+
+
+<div>
+    <div class="card dpm-card w-100 p-3">
+        <div>
+            <span #spreadsheet></span>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="Economics">
+    <div class="card dpm-card w-100 p-3">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="stepsdemo-content dpm-card mt-2">
+                    <p-card>
+                        <ng-template pTemplate="title" class="mb-0">
+                            Production Losses<strong><span class="text-primary ml-1"></span></strong>
+                        </ng-template>
+                        <ng-template pTemplate="content">
+                            <div class="p-fluid">
+                                <div>
+                                    <label style="margin-right:122px;"><b>PLE</b></label>
+                                    <input style="margin-right:72px;" type="text" id="ple" name="ple" maxlength="4" size="4">
+                                    <b>Note: PLE = Production Loss Equation</b>
+                                </div><br>
+                                <div >
+                                    <label style="margin-right:74px;"><b>Down Time </b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label ><b>Reduced Throughput</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;hr&nbsp;
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;=&nbsp;
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label  style="margin-right:269px;"><b>MISC </b></label>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label  style="margin-right:175px;"><b>Total prduction losses </b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                            </div>
+                        </ng-template>
+                    </p-card>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="stepsdemo-content dpm-card mt-2">
+                    <p-card>
+                        <ng-template pTemplate="title" class="mb-0">
+                          Repair costs<strong><span class="text-primary ml-1"></span></strong>
+                        </ng-template>
+                        <ng-template pTemplate="content">
+                            <div class="p-fluid">
+                                <div >
+                                    <label  style="margin-right:149px;"><b>Materials/Equipment </b></label>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label  style="margin-right:162px;"><b>Contract Payments</b></label>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label style="margin-right:90px;"><b>MISC</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label  style="margin-right:185px;"><b>Total repair costs</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                            </div>
+                        </ng-template>
+                    </p-card>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="stepsdemo-content dpm-card mt-2">
+                    <p-card>
+                        <ng-template pTemplate="title" class="mb-0">
+                            Labour<strong><span class="text-primary ml-1"></span></strong>
+                        </ng-template>
+                        <ng-template pTemplate="content">
+                            <div style="margin-right:133px;" class="p-fluid">
+                                <div >
+                                    <label style="margin-right:72px;"><b>MEC</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label style="margin-right:72px;"><b>OPS</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label style="margin-right:74px;"><b>RIG</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label style="margin-right:72px;"><b>HEL</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label  style="margin-right:185px;"><b>Total Labour</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                            </div>
+                        </ng-template>
+                    </p-card>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="stepsdemo-content dpm-card mt-2">
+                    <p-card>
+                        <!-- <ng-template pTemplate="title" class="mb-0">
+                          Repair costs<strong><span class="text-primary ml-1"></span></strong>
+                        </ng-template> -->
+                        <ng-template pTemplate="content">
+                            <div class="p-fluid">
+                                <div >
+                                    <label  style="margin-right:152px;"><b>Total Economic Consequences</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                                <div >
+                                    <label  style="margin-right:155px;"><b>Economic Consequence Costs</b></label>
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">
+                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                </div><br>
+                            </div>
+                        </ng-template>
+                    </p-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

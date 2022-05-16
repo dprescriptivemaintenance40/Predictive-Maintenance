@@ -298,6 +298,10 @@ export class HomeComponent implements OnInit {
                   url: '#/Home/Prescriptive/MSSAdd'
                 },
                 {
+                  label: 'CBA Add',
+                  url: '#/Home/Prescriptive/CBAAdd'
+                },
+                {
                   label: "Add CRAFT's",
                   url: '#/Home/Prescriptive/CCL'
                 },

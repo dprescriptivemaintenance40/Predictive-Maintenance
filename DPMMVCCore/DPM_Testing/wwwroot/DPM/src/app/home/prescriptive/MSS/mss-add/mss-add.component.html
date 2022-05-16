@@ -1,5 +1,4 @@
 <style>
-   
     .disableddiv {
         pointer-events: none;
         cursor: default;
@@ -28,9 +27,12 @@
 
 </div>
 <div *ngIf="PrescriptiveTree" class="col-md-12" id="GoToTheSaveMSS">
-    <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark" (click)="BaxkToAssetList()" pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
-    <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float: right;" (click)="ADDMSS()"> <i class="pi pi-plus"></i> MSS</button>
-    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float: right;" (click)="SaveMSS()" pTooltip="Save MSS" tooltipPosition="top"> <i class="fa fa-check"> Save</i></button>
+    <button *ngIf="FinalBack" label="Back" type="button" class="btn btn-dark" (click)="BaxkToAssetList()"
+        pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
+    <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float: right;" (click)="ADDMSS()"> <i
+            class="pi pi-plus"></i> MSS</button>
+    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float: right;" (click)="SaveMSS()" pTooltip="Save MSS"
+        tooltipPosition="top"> <i class="fa fa-check"> Save</i></button>
 </div>
 
 <div *ngIf="PrescriptiveTree" class="col-md-12" style="overflow:scroll;" id="GoToTheSaveMSS">
@@ -53,10 +55,12 @@
                 <div class="card shadow mb-4">
                     <div>
                         <a class="btn btn-white" style="border:none"> </a>
-                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="SelectMssStrategy()">Save MSS</button>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;"
+                            (click)="SelectMssStrategy()">Save MSS</button>
                     </div>
                     <div class="card-body">
-                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/A.JPG " alt="">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
+                            src="/dist/DPM/assets/MSS/A.JPG " alt="">
                     </div>
                 </div>
             </ng-template>
@@ -64,37 +68,43 @@
                 <div class="row">
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                            <input type="checkbox" [(ngModel)]="OCM" value="A-OCM (On Condition Maintainenance Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OCM" value="A-OCM (On Condition Maintainenance Task)"
+                                name="name1" />&nbsp;
                             <label> A-OCM</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SO" value="A-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SO" value="A-SO (Scheduled Overhaul Task)"
+                                name="name1" />&nbsp;
                             <label> A-SO</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SR" value="A-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SR" value="A-SR (Scheduled Replacement Task)"
+                                name="name1" />&nbsp;
                             <label> A-SR</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="FFT" value="A-FFT (Failure Finding Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="FFT" value="A-FFT (Failure Finding Task)"
+                                name="name1" />&nbsp;
                             <label> A-FFT</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="RED" value="A-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="RED" value="A-RED (Redsigned Mandatory)"
+                                name="name1" />&nbsp;
                             <label> A-RED</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="OFM" value="A-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OFM" value="A-OFM (On Failure Maintainenance)"
+                                name="name1" />&nbsp;
                             <label> A-OFM</label>
                         </div>
                     </div>
@@ -109,34 +119,40 @@
                 <div class="card shadow mb-4">
                     <div>
                         <a class="btn btn-white" style="border:none"> </a>
-                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="SelectMssStrategy()">Save MSS</button>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;"
+                            (click)="SelectMssStrategy()">Save MSS</button>
                     </div>
                     <div class="card-body">
-                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/B.JPG " alt="">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
+                            src="/dist/DPM/assets/MSS/B.JPG " alt="">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                            <input type="checkbox" [(ngModel)]="OCM" value="B-OCM (On Condition Maintainenance Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OCM" value="B-OCM (On Condition Maintainenance Task)"
+                                name="name1" />&nbsp;
                             <label> B-OCM</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SO" value="B-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SO" value="B-SO (Scheduled Overhaul Task)"
+                                name="name1" />&nbsp;
                             <label> B-SO</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SR" value="B-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SR" value="B-SR (Scheduled Replacement Task)"
+                                name="name1" />&nbsp;
                             <label> B-SR</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="RED" value="B-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="RED" value="B-RED (Redsigned Mandatory)"
+                                name="name1" />&nbsp;
                             <label> B-RED</label>
                         </div>
                     </div>
@@ -152,10 +168,12 @@
                 <div class="card shadow mb-4">
                     <div>
                         <a class="btn btn-white" style="border:none"> </a>
-                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="SelectMssStrategy()">Save MSS</button>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;"
+                            (click)="SelectMssStrategy()">Save MSS</button>
                     </div>
                     <div class="card-body">
-                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/C.JPG " alt="">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
+                            src="/dist/DPM/assets/MSS/C.JPG " alt="">
                     </div>
                 </div>
             </ng-template>
@@ -163,31 +181,36 @@
                 <div class="row">
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                            <input type="checkbox" [(ngModel)]="OCM" value="C-OCM (On Condition Maintainenance Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OCM" value="C-OCM (On Condition Maintainenance Task)"
+                                name="name1" />&nbsp;
                             <label> C-OCM</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SO" value="C-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SO" value="C-SO (Scheduled Overhaul Task)"
+                                name="name1" />&nbsp;
                             <label> C-SO</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SR" value="C-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SR" value="C-SR (Scheduled Replacement Task)"
+                                name="name1" />&nbsp;
                             <label> C-SR</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="OFM" value="C-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OFM" value="C-OFM (On Failure Maintainenance)"
+                                name="name1" />&nbsp;
                             <label> C-OFM</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="RED" value="C-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="RED" value="C-RED (Redsigned Mandatory)"
+                                name="name1" />&nbsp;
                             <label> C-RED</label>
                         </div>
                     </div>
@@ -202,10 +225,12 @@
                 <div class="card shadow mb-4">
                     <div>
                         <a class="btn btn-white" style="border:none"> </a>
-                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="SelectMssStrategy()">Save MSS</button>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;"
+                            (click)="SelectMssStrategy()">Save MSS</button>
                     </div>
                     <div class="card-body">
-                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/D.JPG " alt="">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
+                            src="/dist/DPM/assets/MSS/D.JPG " alt="">
                     </div>
                 </div>
             </ng-template>
@@ -213,31 +238,36 @@
                 <div class="row">
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                            <input type="checkbox" [(ngModel)]="OCM" value="D-OCM (On condition Maintainenance Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OCM" value="D-OCM (On condition Maintainenance Task)"
+                                name="name1" />&nbsp;
                             <label> D-OCM</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                            <input type="checkbox" [(ngModel)]="SO" value="D-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SO" value="D-SO (Scheduled Overhaul Task)"
+                                name="name1" />&nbsp;
                             <label> D-SO</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SR" value="D-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SR" value="D-SR (Scheduled Replacement Task)"
+                                name="name1" />&nbsp;
                             <label> D-SR</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="OFM" value="D-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OFM" value="D-OFM (On Failure Maintainenance)"
+                                name="name1" />&nbsp;
                             <label> D-OFM</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="RED" value="D-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="RED" value="D-RED (Redsigned Mandatory)"
+                                name="name1" />&nbsp;
                             <label> D-RED</label>
                         </div>
                     </div>
@@ -253,10 +283,12 @@
                 <div class="card shadow mb-4">
                     <div>
                         <a class="btn btn-white" style="border:none"> </a>
-                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;" (click)="SelectMssStrategy()">Save MSS</button>
+                        <button *ngIf="AddMSSSave" class="btn btn-dark" style="float:right;"
+                            (click)="SelectMssStrategy()">Save MSS</button>
                     </div>
                     <div class="card-body">
-                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4" src="/dist/DPM/assets/MSS/E.JPG " alt="">
+                        <img style="margin-left: 100px;" class="img-fluid px-3 px-sm-4"
+                            src="/dist/DPM/assets/MSS/E.JPG " alt="">
                     </div>
                 </div>
             </ng-template>
@@ -264,37 +296,43 @@
                 <div class="row">
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;margin-right: 10px;">
-                            <input type="checkbox" [(ngModel)]="OCM" value="E-OCM (On Condition Maintainenance Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OCM" value="E-OCM (On Condition Maintainenance Task)"
+                                name="name1" />&nbsp;
                             <label> E-OCM</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SO" value="E-SO (Scheduled Overhaul Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SO" value="E-SO (Scheduled Overhaul Task)"
+                                name="name1" />&nbsp;
                             <label> E-SO</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="SR" value="E-SR (Scheduled Replacement Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="SR" value="E-SR (Scheduled Replacement Task)"
+                                name="name1" />&nbsp;
                             <label> E-SR</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="FFT" value="E-FFT (Failure Findind Task)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="FFT" value="E-FFT (Failure Findind Task)"
+                                name="name1" />&nbsp;
                             <label> E-FFT</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="OFM" value="E-OFM (On Failure Maintainenance)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="OFM" value="E-OFM (On Failure Maintainenance)"
+                                name="name1" />&nbsp;
                             <label> E-OFM</label>
                         </div>
                     </div>
                     <div class="col"><br>
                         <div class="shadow p-3 mb-5 bg-white rounded" style="width: 10rem;">
-                            <input type="checkbox" [(ngModel)]="RED" value="E-RED (Redsigned Mandatory)" name="name1" />&nbsp;
+                            <input type="checkbox" [(ngModel)]="RED" value="E-RED (Redsigned Mandatory)"
+                                name="name1" />&nbsp;
                             <label> E-RED</label>
                         </div>
                     </div>
@@ -302,18 +340,96 @@
             </ng-template>
         </p-card>
     </div>
+
+    <div class="card" style="margin: 20px;" *ngIf="AddAnotherMSSTask">
+        <p-dialog header="Please Select Any one" [(visible)]="addTask">
+            <div class="row" style="padding: 15px;">
+                <label>Do you want to Add another MSSMaintenanceTask?</label>
+            </div>
+             <div class="row" style="padding: 15px;">
+                <div class="col-sm">
+                    Yes
+                    <td><input type="radio" (click)="AddAnotherTaskY()" [(ngModel)]="AnotherTaskAvailability"
+                            value="Yes"/>&nbsp;</td>
+                </div>
+                <div class="col-sm">
+                    No
+                    <td><input type="radio" (click)="AddAnotherTaskN()" [(ngModel)]="AnotherTaskAvailability" value="No"
+                            />&nbsp;</td>
+                </div>
+                <div class="col-sm"></div>
+            </div> 
+        </p-dialog>
+    </div>
+
+    <div class="card" style="margin: 20px;" *ngIf="MSSMaintenanceTask" id="MaintenanceTask">
+        <p-card>
+            <ng-template pTemplate="content">
+                <div class="row" style="padding: 15px;">
+                    <label>Do you want to Add MSSMaintenanceTask?</label>
+                </div>
+                <div class="row" style="padding: 15px;">
+                    <div class="col-sm">
+                        Yes
+                        <td><input type="radio" (change)="TaskAvailabilityY()" [(ngModel)]="TaskAvailability"
+                                value="Yes" name="TaskAvailabilityYCheck" />&nbsp;</td>
+                    </div>
+                    <div class="col-sm">
+                        No
+                        <td><input type="radio" (change)="TaskAvailabilityY()" [(ngModel)]="TaskAvailability" value="No"
+                                name="TaskAvailabilityYCheck" />&nbsp;</td>
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+                <!-- <div class="row" style="padding: 15px;">
+                    <textarea class="form-control custom-textarea" class="form-control" value="ash"></textarea>
+                </div> -->
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-white" style="border:none"> </a>
+                <!-- <button class="btn btn-dark" style="float:right;" (click)="Availability()"> <i class="fa fa-check" aria-hidden="true"></i></button> -->
+            </ng-template>
+        </p-card>
+    </div>
+    <div class="card" style="margin: 20px;" *ngIf="editMSSMaintenanceTask" id="editMaintenanceTask">
+        <p-card>
+            <ng-template pTemplate="subtitle">
+                <div class="row" style="padding: 15px;">
+                    <label>Please Add MSSMaintenanceTask</label>
+                </div>
+                <div class="row" style="padding: 15px;">
+                    <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="MSSeditTask"
+                        placeholder="Edit MSSMaintenanceTask" required></textarea>
+                    <!-- <input type="text" class="custom-form-control" [(ngModel)]="StrategyList"> -->
+                </div><br>
+                <div class="input-group mb-3">
+                    <label><b>Please add Frequency :  </b></label> &ensp;
+                    <input type="text" class="custom-form-control" [(ngModel)]="MSSTaskFrequency"
+                        placeholder="Frequency">
+                </div>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <a class="btn btn-white" style="border:none"> </a>
+                <button class="btn btn-dark" style="float:right;" (click)="addeditedMaintenanceTask()"> <i
+                        class="fa fa-check" aria-hidden="true"></i></button>
+                <!-- <button *ngIf="AvailabilityCheck !=0" class="btn btn-dark" style="float:right;" (click)="AvailabilityYes()"> <i class="fa fa-check" aria-hidden="true"></i></button> -->
+            </ng-template>
+        </p-card>
+    </div>
     <div class="card" style="margin: 20px;" *ngIf="AvailabilityYNCheck" id="Availability">
         <p-card>
             <ng-template pTemplate="subtitle">
                 <p><b>1. Fill the following data
-        </b></p>
+                    </b></p>
             </ng-template>
             <ng-template pTemplate="content">
                 <div class="row" style="padding: 15px;">
                     <label>Enter MSS Interval Selection Criteria</label>
                 </div>
                 <div class="row" style="padding: 15px;">
-                    <textarea class="form-control custom-textarea" class="form-control" [(ngModel)]="MSSIntervalSelectionCriteria" placeholder="Type MSS Interval Selection Criteria" required></textarea>
+                    <textarea class="form-control custom-textarea" class="form-control"
+                        [(ngModel)]="MSSIntervalSelectionCriteria" placeholder="Type MSS Interval Selection Criteria"
+                        required></textarea>
                 </div>
                 <div class="row" style="padding: 15px;">
                     <label>Do you have Availability percentage? </label>
@@ -321,11 +437,13 @@
                 <div class="row" style="padding: 15px;">
                     <div class="col-sm">
                         Yes
-                        <td><input type="radio" (change)="Availability()" [(ngModel)]="AvailabilityY" value="Yes" name="AvailabilityYNCheck" />&nbsp;</td>
+                        <td><input type="radio" (change)="Availability()" [(ngModel)]="AvailabilityY" value="Yes"
+                                name="AvailabilityYNCheck" />&nbsp;</td>
                     </div>
                     <div class="col-sm">
                         No
-                        <td><input type="radio" (change)="Availability()" [(ngModel)]="AvailabilityY" value="No" name="AvailabilityYNCheck" />&nbsp;</td>
+                        <td><input type="radio" (change)="Availability()" [(ngModel)]="AvailabilityY" value="No"
+                                name="AvailabilityYNCheck" />&nbsp;</td>
                     </div>
                     <div class="col-sm"></div>
                 </div>
@@ -341,13 +459,15 @@
         <p-card>
             <ng-template pTemplate="subtitle">
                 <div class="input-group mb-3">
-                    <label><b >1. What is your accepted Availability % : </b></label> &ensp;
-                    <input type="number" class="custom-form-control" [(ngModel)]="AvailabilityCheck" placeholder="Availability percentage">
+                    <label><b>1. What is your accepted Availability % : </b></label> &ensp;
+                    <input type="number" class="custom-form-control" [(ngModel)]="AvailabilityCheck"
+                        placeholder="Availability percentage">
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
                 <a class="btn btn-white" style="border:none"> </a>
-                <button *ngIf="AvailabilityCheck !=0" class="btn btn-dark" style="float:right;" (click)="AvailabilityYes()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+                <button *ngIf="AvailabilityCheck !=0" class="btn btn-dark" style="float:right;"
+                    (click)="AvailabilityYes()"> <i class="fa fa-check" aria-hidden="true"></i></button>
             </ng-template>
         </p-card>
     </div>
@@ -359,19 +479,22 @@
             </ng-template>
             <ng-template pTemplate="content">
                 <div class="input-group mb-3">
-                    <select [(ngModel)]="stoppageDays" class="form-select" class="form-control" placeholder="Plant Stoppage Days">
-                    <option value="">Choose</option>
+                    <select [(ngModel)]="stoppageDays" class="form-select" class="form-control"
+                        placeholder="Plant Stoppage Days">
+                        <option value="">Choose</option>
                         <option value="Days" selected> Days</option>
                         <option value="Week" selected> Week</option>
                         <option value="Month" selected>Month</option>
                         <option value="Year" selected>Year</option>
                     </select>
-                    <input type="number" [(ngModel)]="stoppageDaysValue" name="stoppage Days Value" class="form-control">
+                    <input type="number" [(ngModel)]="stoppageDaysValue" name="stoppage Days Value"
+                        class="form-control">
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
                 <a class="btn btn-white" style="border:none"> </a>
-                <button class="btn btn-dark" style="float:right;" (click)="StoppageDays()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+                <button class="btn btn-dark" style="float:right;" (click)="StoppageDays()"> <i class="fa fa-check"
+                        aria-hidden="true"></i></button>
             </ng-template>
         </p-card>
     </div>
@@ -383,20 +506,28 @@
             </ng-template>
             <ng-template pTemplate="content">
                 <div class="input-group mb-3">
-                    <select [(ngModel)]="stoppageDaysTime" class="form-select" class="form-control" placeholder="Plant Stoppage Days">
-                <option value="">Choose</option>
-                    <option value="Days" selected> Days</option>
-                    <option value="Week" selected> Week</option>
-                    <option value="Month" selected>Month</option>
-                    <option value="Year" selected>Year</option>
-                </select>
-                    <input type="number" [(ngModel)]="stoppageDaysTimeValue" name="stoppage Duration " class="form-control">
+                    <select [(ngModel)]="stoppageDaysTime" class="form-select" class="form-control"
+                        placeholder="Plant Stoppage Days">
+                        <option value="">Choose</option>
+                        <option value="Days" selected> Days</option>
+                        <option value="Week" selected> Week</option>
+                        <option value="Month" selected>Month</option>
+                        <option value="Year" selected>Year</option>
+                    </select>
+                    <input type="number" [(ngModel)]="stoppageDaysTimeValue" name="stoppage Duration "
+                        class="form-control">
                 </div>
             </ng-template>
             <ng-template pTemplate="footer">
                 <a class="btn btn-white" style="border:none"> </a>
-                <button class="btn btn-dark" style="float:right;" (click)="StoppageDuration()"> <i class="fa fa-check" aria-hidden="true"></i></button>
+                <button class="btn btn-dark" style="float:right;" (click)="StoppageDuration()"> <i class="fa fa-check"
+                        aria-hidden="true"></i></button>
             </ng-template>
         </p-card>
+    </div>
+    <div>
+        <a class="btn btn-white" style="border:none"> </a>
+        <button *ngIf="AddAnotherMSSSave" class="btn btn-dark" style="float:right;"
+            (click)="SelectMssStrategy()">Save MSS</button>
     </div>
 </div>

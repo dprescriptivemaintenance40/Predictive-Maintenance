@@ -39,12 +39,19 @@ export class MSSAddComponent implements OnInit {
   public MSSTaskObj: any = []
   public MSSTaskObjList: any = []
   public AvailabilityY: string = ""
+  public TaskAvailability: string = ""
+  public AnotherTaskAvailability: string = ""
   public AvailabilityYN: string = ""
+  public MSSTask: string = "";
+  public MSSTaskFrequency:string = "";
   public AvailabilityN: string = ""
+  public MSSeditTask: string = "";
   public AvailabilityCheck: number = 0;
   public AddMSSSave: boolean = false
   public AvailabilityCalculations: boolean = false
   public AvailabilityYNCheck: boolean = false
+  public MSSMaintenanceTask: boolean = false;
+  public editMSSMaintenanceTask: boolean = false;
   public AvailabilityTaskObj: any = []
 
   public expectedAvailability: boolean = false
@@ -60,6 +67,9 @@ export class MSSAddComponent implements OnInit {
   public stoppageValue: number
   public stoppageDuration: number
   public MSSIntervalSelectionCriteria: string = ""
+  public AddAnotherMSSTask:boolean = false;
+  public addTask:boolean = false;
+  public AddAnotherMSSSave :boolean = false;
   public PlantStoppage: boolean = true
   public PlantStoppageTime: boolean = true
   public MSSLibraryData: any = []
@@ -177,16 +187,40 @@ export class MSSAddComponent implements OnInit {
   }
 
   async ADDMSS() {
+    // var temp: string = JSON.stringify(this.data1Clone)
+    // var temp2 = JSON.parse(temp)
+    // this.TreeUptoFCA[0].children[0].children.forEach((res: any) => {
+    //   res.MSS = temp2
+    // })
+    // this.CentrifugalPumpPrescriptiveModels.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId
+    // this.CentrifugalPumpPrescriptiveModels.FMWithConsequenceTree = JSON.stringify(this.TreeUptoFCA)
+    // var url: string = this.prescriptiveContantAPI.MSSSave
+    // this.prescriptiveBLService.PutData(url, this.CentrifugalPumpPrescriptiveModels).subscribe(
+    //   res => {
+    //     this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated MSS' });
+    //     // this.router.navigateByUrl('/Home/Prescriptive/List')
+    //     // this.CentrifugalPumpPrescriptiveModels = new CentrifugalPumpPrescriptiveModels();
+    //   }, err => {
+    //     console.log(err.error)
+    //     this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
+    //   }
+    // )
+
     this.OCM = false;
     this.SO = false;
     this.SR = false;
     this.FFT = false;
     this.RED = false;
     this.OFM = false;
+    this.AnotherTaskAvailability = "";
+    this.TaskAvailability = "";
+    this.MSSeditTask = "";
+    this.MSSTaskFrequency = "";
     this.FailureModeName = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].FunctionMode
     this.ConsequenceBasedMSS = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter].Consequence.split(' ')[0];
     this.PrescriptiveTree = false
-    this.AvailabilityYNCheck = true
+    this.MSSMaintenanceTask = true;
+    this.AvailabilityYNCheck = false;
     this.AvailabilityCalculations = false
     this.MSSADDCounter = this.MSSADDCounter + 1
     if (this.MSSADDCounter == this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes.length) {
@@ -200,7 +234,7 @@ export class MSSAddComponent implements OnInit {
 
   SelectMssStrategy() {
     let obj = {}
-    this.StrategyList =[]
+    this.StrategyList = []
     if (this.ConsequenceBasedMSS == 'A') {
       this.StrategyTemp = []
       if (this.OCM == true) {
@@ -246,7 +280,7 @@ export class MSSAddComponent implements OnInit {
         obj['RED'] = "B-RED (Redsigned Mandatory)"
         this.StrategyTemp.push("B-RED (Redsigned Mandatory)")
       }
-      this.StrategyList.push(obj)
+      this.StrategyList.push(obj);
     }
     else if (this.ConsequenceBasedMSS == "C") {
       this.StrategyTemp = []
@@ -271,7 +305,7 @@ export class MSSAddComponent implements OnInit {
         this.StrategyTemp.push("C-OFM (On Failure Maintainenance)")
       }
       this.StrategyList.push(obj)
-    } else if (this.ConsequenceBasedMSS == "D (Failure Mode:Evident, Failure Mode with Condition : Direct only, Failure Mode Consequences : No effect on safety or environment operation)") {
+    } else if (this.ConsequenceBasedMSS == "D") {
       this.StrategyTemp = []
       if (this.OCM == true) {
         obj['OCM'] = "D-OCM (On condition Maintainenance Task)"
@@ -293,7 +327,7 @@ export class MSSAddComponent implements OnInit {
         obj['OFM'] = "D-OFM (On Failure Maintainenance)"
         this.StrategyTemp.push("D-OFM (On Failure Maintainenance)")
       }
-      this.StrategyList.push(obj)
+      this.StrategyList.push(obj);
     }
     else if (this.ConsequenceBasedMSS == "E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)") {
       this.StrategyTemp = []
@@ -322,6 +356,7 @@ export class MSSAddComponent implements OnInit {
         this.StrategyTemp.push("E-OFM (On Failure Maintainenance)")
       }
       this.StrategyList.push(obj)
+
     }
 
     this.ADDMSSToTree();
@@ -384,10 +419,13 @@ export class MSSAddComponent implements OnInit {
 
       // Logic for Maintenance Tasks and Interval
       // first IF condition for Consequence A and B
-      this.FMObj = new CentrifugalPumpPrescriptiveFailureMode();
+      if(this.AnotherTaskAvailability == "No" ){
+        this.FMObj = new CentrifugalPumpPrescriptiveFailureMode();
+      }
+    this.AnotherTaskAvailability = "";
       this.StrategyTemp.forEach(element => {
         this.MSSStratergy = element;
-        
+
         if (this.MSSStratergy == 'A-FFT (Failure Finding Task)' || this.MSSStratergy == 'A-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'A-SO (Scheduled Overhaul Task)'
           || this.MSSStratergy == 'A-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'A-RED (Redsigned Mandatory)' || this.MSSStratergy == 'A-OFM (On Failure Maintainenance)'
           || this.MSSStratergy == 'B-FFT (Failure Finding Task)' || this.MSSStratergy == 'B-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'B-SO (Scheduled Overhaul Task)'
@@ -399,7 +437,8 @@ export class MSSAddComponent implements OnInit {
             obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
             obj['CPPFMId'] = 0;
             obj['MSSMaintenanceInterval'] = 'Not Applicable';
-            obj['MSSMaintenanceTask'] = 'Not Applicable';
+            obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+            obj['MSSFrequency'] = this.MSSTaskFrequency;
             obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
             obj['MSSStartergy'] = this.MSSStratergy;
             obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -417,7 +456,8 @@ export class MSSAddComponent implements OnInit {
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
               obj['CPPFMId'] = 0;
               obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
-              obj['MSSMaintenanceTask'] = 'Function Check';
+              obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+              obj['MSSFrequency'] = this.MSSTaskFrequency;
               obj['MSSStartergy'] = this.MSSStratergy;
               obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -429,7 +469,8 @@ export class MSSAddComponent implements OnInit {
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
                 obj['CPPFMId'] = 0;
                 obj['MSSMaintenanceInterval'] = 'Not Applicable';
-                obj['MSSMaintenanceTask'] = 'Not Applicable';
+                obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+                obj['MSSFrequency'] = this.MSSTaskFrequency;
                 obj['MSSStartergy'] = this.MSSStratergy;
                 obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -441,13 +482,14 @@ export class MSSAddComponent implements OnInit {
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
                 obj['CPPFMId'] = 0;
                 obj['MSSMaintenanceInterval'] = `${ocmWeek.toFixed(2)}${" "}${"Week"}`;
-                obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation';
+                // obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation';
+                obj['MSSMaintenanceTask'] = this.MSSeditTask;
+                obj['MSSFrequency'] = this.MSSTaskFrequency;
                 obj['MSSStartergy'] = this.MSSStratergy;
                 obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
                 obj['MSSFinalAvaliability'] = availablility;
                 this.FMObj.CentrifugalPumpMssModel.push(obj);
-
               } else if (strategy == 'SO (Scheduled Overhaul Task)') {
                 var safeL: number = 0;
                 safeL = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCASafeLife;
@@ -456,7 +498,8 @@ export class MSSAddComponent implements OnInit {
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
                 obj['CPPFMId'] = 0;
                 obj['MSSMaintenanceInterval'] = `${safeL.toFixed(2)}${" "}${"Week"}`;
-                obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify';
+                obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+                obj['MSSFrequency'] = this.MSSTaskFrequency;
                 obj['MSSStartergy'] = this.MSSStratergy;
                 obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -471,7 +514,8 @@ export class MSSAddComponent implements OnInit {
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
                 obj['CPPFMId'] = 0;
                 obj['MSSMaintenanceInterval'] = `${safeL1.toFixed(2)}${" "}${"Week"}`;
-                obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission';
+                obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+                obj['MSSFrequency'] = this.MSSTaskFrequency;
                 obj['MSSStartergy'] = this.MSSStratergy;
                 obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -483,7 +527,8 @@ export class MSSAddComponent implements OnInit {
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
                 obj['CPPFMId'] = 0;
                 obj['MSSMaintenanceInterval'] = 'NA';
-                obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective';
+                obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+                obj['MSSFrequency'] = this.MSSTaskFrequency;
                 obj['MSSStartergy'] = this.MSSStratergy;
                 obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
                 obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -506,7 +551,8 @@ export class MSSAddComponent implements OnInit {
             obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
             obj['CPPFMId'] = 0;
             obj['MSSMaintenanceInterval'] = 'Not Applicable';
-            obj['MSSMaintenanceTask'] = 'Not Applicable';
+            obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+            obj['MSSFrequency'] = this.MSSTaskFrequency;
             obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
             obj['MSSStartergy'] = this.MSSStratergy;
             obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -525,7 +571,8 @@ export class MSSAddComponent implements OnInit {
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
               obj['CPPFMId'] = 0;
               obj['MSSMaintenanceInterval'] = 'NA';
-              obj['MSSMaintenanceTask'] = 'Function check';
+              obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+              obj['MSSFrequency'] = this.MSSTaskFrequency;
               obj['MSSStartergy'] = this.MSSStratergy;
               obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -536,7 +583,8 @@ export class MSSAddComponent implements OnInit {
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
               obj['CPPFMId'] = 0;
               obj['MSSMaintenanceInterval'] = `${ocmWeek.toFixed(2)}${" "}${"Week"}`;
-              obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation';
+              obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+              obj['MSSFrequency'] = this.MSSTaskFrequency;
               obj['MSSStartergy'] = this.MSSStratergy;
               obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -548,7 +596,8 @@ export class MSSAddComponent implements OnInit {
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
               obj['CPPFMId'] = 0;
               obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`;
-              obj['MSSMaintenanceTask'] = 'Remove, overhaul, and rectify';
+              obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+              obj['MSSFrequency'] = this.MSSTaskFrequency;
               obj['MSSStartergy'] = this.MSSStratergy;
               obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -560,7 +609,8 @@ export class MSSAddComponent implements OnInit {
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
               obj['CPPFMId'] = 0;
               obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife.toFixed(2)}${" "}${"Week"}`;
-              obj['MSSMaintenanceTask'] = 'Remove, replace, and recommission';
+              obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+              obj['MSSFrequency'] = this.MSSTaskFrequency;
               obj['MSSStartergy'] = this.MSSStratergy;
               obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -572,7 +622,8 @@ export class MSSAddComponent implements OnInit {
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
               obj['CPPFMId'] = 0;
               obj['MSSMaintenanceInterval'] = 'NA';
-              obj['MSSMaintenanceTask'] = 'Modification, or redesign required since no task is effective';
+              obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+              obj['MSSFrequency'] = this.MSSTaskFrequency;
               obj['MSSStartergy'] = this.MSSStratergy;
               obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -585,7 +636,8 @@ export class MSSAddComponent implements OnInit {
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
               obj['CPPFMId'] = 0;
               obj['MSSMaintenanceInterval'] = 'NA'
-              obj['MSSMaintenanceTask'] = 'No Task';
+              obj['MSSMaintenanceTask'] =  this.MSSeditTask;
+              obj['MSSFrequency'] = this.MSSTaskFrequency;
               obj['MSSStartergy'] = this.MSSStratergy;
               obj['MSSAvailability'] = JSON.stringify(this.FinalAvailability);
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
@@ -605,25 +657,70 @@ export class MSSAddComponent implements OnInit {
 
       const element = document.querySelector("#Availability")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      this.AvailabilityYNCheck = false;
-      this.expectedAvailability = false;
-      this.AvailabilityPlantStoppage = false;
-      this.AvailabilityPlantStoppageTime = false;
-      this.AvailabilityY = ""
-      this.AvailabilityCheck = 0
-      this.AvailabilityResult = 0
-      this.stoppageDays = ""
-      this.MSSStratergy = ""
-      this.stoppageDaysValue = 0
-      this.stoppageDaysTime = ""
-      this.stoppageDaysTimeValue = 0
-      this.PlantStoppage = true
-      this.PlantStoppageTime = true
-      this.AddMSSSave = false
+      this.AddAnotherMSSTask = true;
+      this.addTask = true;
+      this.PrescriptiveTree = false
+      // this.MSSMaintenanceTask = false;
+      // this.editMSSMaintenanceTask = false;
+      // this.AvailabilityYNCheck = false;
+      // this.expectedAvailability = false;
+      // this.AvailabilityPlantStoppage = false;
+      // this.AvailabilityPlantStoppageTime = false;
+      // this.AvailabilityY = ""
+      // this.AvailabilityCheck = 0
+      // this.AvailabilityResult = 0
+      // this.stoppageDays = ""
+      // this.MSSStratergy = ""
+      // this.stoppageDaysValue = 0
+      // this.stoppageDaysTime = ""
+      // this.stoppageDaysTimeValue = 0
+      // this.PlantStoppage = true
+      // this.PlantStoppageTime = true
+      // this.AddMSSSave = false
       this.MSSIntervalSelectionCriteria = ""
     } else if (this.MSSStratergy.length == 0) {
       this.messageService.add({ severity: 'warn', summary: 'warn', detail: "Stratergy is Missing" })
     }
+  }
+
+  AddAnotherTaskY(){
+    // this.MSSStratergy = ""
+    this.addTask = false;
+    this.MSSMaintenanceTask = false;
+  this.AddAnotherMSSSave = true;
+    this.editMSSMaintenanceTask = true;
+    this.AvailabilityYNCheck = false;
+    this.expectedAvailability = false;
+    this.MSSeditTask = ""
+    this.MSSIntervalSelectionCriteria = "";
+    this.AvailabilityY = "";
+    this.MSSTaskFrequency = "";
+    this.AvailabilityCheck = 0;
+  }
+
+  AddAnotherTaskN(){
+    this.AddAnotherMSSSave = false;
+    this.AddAnotherMSSTask = false;
+    this.addTask = false;
+    this.PrescriptiveTree = true
+    this.MSSMaintenanceTask = false;
+    this.editMSSMaintenanceTask = false;
+    this.AvailabilityYNCheck = false;
+    this.expectedAvailability = false;
+    this.AvailabilityPlantStoppage = false;
+    this.AvailabilityPlantStoppageTime = false;
+    this.AvailabilityY = ""
+    this.AvailabilityCheck = 0
+    this.AvailabilityResult = 0
+    this.stoppageDays = ""
+    this.MSSStratergy = ""
+    this.stoppageDaysValue = 0
+    this.stoppageDaysTime = ""
+    this.stoppageDaysTimeValue = 0
+    this.PlantStoppage = true
+    this.PlantStoppageTime = true
+    this.AddMSSSave = false
+    this.MSSIntervalSelectionCriteria = ""
   }
 
   async SaveMSS() {
@@ -662,6 +759,21 @@ export class MSSAddComponent implements OnInit {
     const element = document.querySelector("#GoToTheSaveMSS1")
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+
+  TaskAvailabilityY() {
+    if (this.TaskAvailability == 'Yes') {
+      this.editMSSMaintenanceTask = true;
+      this.AvailabilityYNCheck = false;
+    }
+    else if (this.TaskAvailability == 'No') {
+      this.AvailabilityYNCheck = true;
+      this.editMSSMaintenanceTask = false;
+    }
+  }
+  addeditedMaintenanceTask() {
+    this.AvailabilityYNCheck = true;
+  }
+
 
   async Availability() {
     if (this.MSSIntervalSelectionCriteria != "" && (this.AvailabilityY == 'Yes' || this.AvailabilityY == 'No')) {

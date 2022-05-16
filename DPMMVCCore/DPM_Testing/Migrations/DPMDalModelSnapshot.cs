@@ -19,6 +19,1399 @@ namespace DPM.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("DPM.Models.CompressorModel.ScrewCompressorModel.ScrewCompressorFuturePredictionModel", b =>
+                {
+                    b.Property<int>("SCFPId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CF")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("PD1")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("PD2")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("PS1")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("PS2")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("PredictedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Prediction")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RD")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SSRB")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TD1")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TD2")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TS1")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TS2")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("SCFPId");
+
+                    b.ToTable("screwcompressorfutureprediction");
+                });
+
+            modelBuilder.Entity("DPM.Models.CriticalityAssesmentModel", b =>
+                {
+                    b.Property<int>("CAId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("Area")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Asset")
+                        .HasColumnType("text");
+
+                    b.Property<double>("AssetCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("AssetDescription")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Criticality")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("CriticalityProjectStage")
+                        .HasColumnType("text");
+
+                    b.Property<double>("EE")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("FRE")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("FailureClass")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GeneralLedgerAccount")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HSECESAsset")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LocationDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LocationParent")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OriginalCriticality")
+                        .HasColumnType("text");
+
+                    b.Property<double>("PLE")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("RE")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("RF")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("RepairCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("RiskRanking")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RiskRankingMatrix")
+                        .HasColumnType("text");
+
+                    b.Property<double>("SE")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.HasKey("CAId");
+
+                    b.ToTable("CriticalityAssesmentModelTable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpModel.CBAFailureModeTask", b =>
+                {
+                    b.Property<int>("CFMId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("CPPCFMId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Consequence")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DescribeScenario")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HasScenario")
+                        .HasColumnType("text");
+
+                    b.Property<string>("IsAgeRelated")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSMAintenanceInterval")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSMaintenanceTask")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSStartergy")
+                        .HasColumnType("text");
+
+                    b.Property<int>("MaterialCost")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("OnStream")
+                        .HasColumnType("text");
+
+                    b.Property<int>("POC")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RWC")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ResourceCost")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RiskMatrix")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TaskDuration")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("WorkCenter")
+                        .HasColumnType("text");
+
+                    b.HasKey("CFMId");
+
+                    b.HasIndex("CPPCFMId");
+
+                    b.ToTable("centrifugalpumpcbatable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpModel.CentrifugalPumpCbaModel", b =>
+                {
+                    b.Property<int>("CPCMId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("CFPPrescriptiveId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CPPFMId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CentrifugalPumpMssId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TagNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CPCMId");
+
+                    b.ToTable("prescriptivecbatable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpModel.CentrifugalPumpPrescriptiveCBAFailureMode", b =>
+                {
+                    b.Property<int>("CPPCFMId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("CPCMId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FailureMode")
+                        .HasColumnType("text");
+
+                    b.HasKey("CPPCFMId");
+
+                    b.HasIndex("CPCMId");
+
+                    b.ToTable("centrifugalpumpcbafailuremodes");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpMssModel", b =>
+                {
+                    b.Property<int>("CentrifugalPumpMssId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("CFPPrescriptiveId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CPPFMId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MSSAvailability")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("MSSFinalAvaliability")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("MSSFrequency")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSIntervalSelectionCriteria")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSMaintenanceInterval")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSMaintenanceTask")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSStartergy")
+                        .HasColumnType("text");
+
+                    b.HasKey("CentrifugalPumpMssId");
+
+                    b.HasIndex("CPPFMId");
+
+                    b.ToTable("centrifugalpumpmsstable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpPrescriptiveFailureMode", b =>
+                {
+                    b.Property<int>("CPPFMId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("AttachmentDBPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AttachmentFullPath")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CFPPrescriptiveId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConditionMonitoring")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Consequence")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CriticalityFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DownTimeFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("FCAAlpha")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("FCABeta")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("FCAComment")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FCACondition")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FCAFFI")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FCAInterval")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("FCASafeLife")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("FCAUpdateConditions")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FCAUpdateIntervals")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("FCAUsefulLife")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("FrequencyFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FrequencyMaintainenance")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FunctionMode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LocalEffect")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSStartergyList")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MaintainenancePractice")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Pattern")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProtectionFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Rating")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SafetyFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScrapeFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SystemEffect")
+                        .HasColumnType("text");
+
+                    b.HasKey("CPPFMId");
+
+                    b.HasIndex("CFPPrescriptiveId");
+
+                    b.ToTable("centrifugalpumpfailuremodes");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpPrescriptiveModel", b =>
+                {
+                    b.Property<int>("CFPPrescriptiveId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("CAttachmentDBPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CAttachmentFullPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CConditionMonitoring")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CFrequencyMaintainenance")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CMaintainenancePractice")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CRemarks")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ComponentCriticalityFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ComponentRating")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CriticalityAssesmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("EquipmentType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FCAAdded")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FMWithConsequenceTree")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FailureModeWithLSETree")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FunctionFailure")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FunctionFluidType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSAdded")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MachineType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("CFPPrescriptiveId");
+
+                    b.ToTable("dpmprescriptive");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.MapStrategySkillModel", b =>
+                {
+                    b.Property<int>("MapId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("Craft")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeCode")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SkillPercent")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Strategy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("MapId");
+
+                    b.ToTable("MapStrategySkillModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.CBAModel", b =>
+                {
+                    b.Property<int>("CBAId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<DateTime>("CommisionDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ETBF")
+                        .HasColumnType("text");
+
+                    b.Property<double>("EconomicRiskWithDPM")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("EconomicRiskWithDPMCR")
+                        .HasColumnType("text");
+
+                    b.Property<double>("EconomicRiskWithDPMConstraint")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("EconomicRiskWithDPMConstraintCR")
+                        .HasColumnType("text");
+
+                    b.Property<double>("EconomicRiskWithOutDPM")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("EconomicRiskWithOutDPMCR")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EquipmentType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FailureMode")
+                        .HasColumnType("text");
+
+                    b.Property<double>("LevelCount")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("MEIWithDPM")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("MEIWithDPMConstraint")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("MEIWithoutDPM")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("MachineType")
+                        .HasColumnType("text");
+
+                    b.Property<double>("OverallETBC")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("RCMTreeId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("ResidualRiskWithMaintenance")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<double>("TotalAnnualPOC")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TotalPONC")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<double>("VendorETBC")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("VendorPOC")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("CBAId");
+
+                    b.ToTable("CBAModelTable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.CBATaskModel", b =>
+                {
+                    b.Property<int>("CBATaskId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<double>("AnnualPOC")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("CBAId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CentrifugalPumpMssId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Checked")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Craft")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Hours")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Level")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("MSSIntervalSelectionCriteria")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSMaintenanceInterval")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSMaintenanceTask")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.HasKey("CBATaskId");
+
+                    b.HasIndex("CBAId");
+
+                    b.ToTable("CBATaskModelTable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.MSSStrategyModel", b =>
+                {
+                    b.Property<int>("MSSStrategyModelId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("MaintenanceTask")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Strategy")
+                        .HasColumnType("text");
+
+                    b.HasKey("MSSStrategyModelId");
+
+                    b.ToTable("MSSStrategyMaintenanceTask");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.PSRClientContractorModel", b =>
+                {
+                    b.Property<int>("PSRClientContractorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<double>("ClientHourlyRate")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("ContractorHourlyRate")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("CraftLF")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CraftSF")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("PSRClientContractorId");
+
+                    b.ToTable("PSRClientContractor");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.SkillPSRMappingMSS", b =>
+                {
+                    b.Property<int>("SkillPSRMappingMSSId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("Craft")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CraftOriginalId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("text");
+
+                    b.Property<double>("HourlyRate")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("MaintenanceTaskId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("MaterialCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("POC")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("PSRId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("TaskDuration")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("SkillPSRMappingMSSId");
+
+                    b.HasIndex("PSRId");
+
+                    b.ToTable("SkillPSRMappingMSSModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.SkillPSRMappingModel", b =>
+                {
+                    b.Property<int>("PSRId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("Craft")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("text");
+
+                    b.Property<double>("HourlyRate")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("MaintenanceTask")
+                        .HasColumnType("text");
+
+                    b.Property<int>("MaintenanceTaskId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("MaterialCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("POC")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Strategy")
+                        .HasColumnType("text");
+
+                    b.Property<double>("TaskDuration")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("PSRId");
+
+                    b.ToTable("SkillPSRMappingtable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PrescriptiveLookupMasterModel", b =>
+                {
+                    b.Property<int>("PrescriptiveLookupMasterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EquipmentType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Function")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MachineType")
+                        .HasColumnType("text");
+
+                    b.HasKey("PrescriptiveLookupMasterId");
+
+                    b.ToTable("prescriptive_lookupmaster");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.RCA.RCAModel", b =>
+                {
+                    b.Property<int>("RCAID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("RCACode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RCALabel")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RCAQualitativeEquipment")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RCAQualitativeFailureMode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RCAQualitativeTree")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RCAQuantitiveEquipment")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RCAQuantitiveFailureMode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RCAQuantitiveTree")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("RCAID");
+
+                    b.ToTable("rcatable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.UserProductionModel", b =>
+                {
+                    b.Property<int>("UserProductionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("Item")
+                        .HasColumnType("text");
+
+                    b.Property<double>("ProductionLossPercentage")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TotalCost")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("TotalHours")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserProductionId");
+
+                    b.ToTable("UserProductionModelTable");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.UserSkillLibraryModel", b =>
+                {
+                    b.Property<int>("SKillLibraryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("Craft")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EmpId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("HourlyRate")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Task")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("SKillLibraryId");
+
+                    b.ToTable("UserSkillLibraryModelTable");
+                });
+
+            modelBuilder.Entity("DPM.Models.PumpModel.CentrifugalPumpFuturePredictionModel", b =>
+                {
+                    b.Property<int>("CentifugalPumpFID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("BatchId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("FPDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("FuturePrediction")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("I")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("P1")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("P2")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Q")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("CentifugalPumpFID");
+
+                    b.ToTable("centrifugalpumpfuturepredictiontable");
+                });
+
+            modelBuilder.Entity("DPM.Models.PumpModel.CentrifugalPumpHQLibraryModel", b =>
+                {
+                    b.Property<int>("CentrifugalPumpHQLibraryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<double>("CalculatedEff")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("GraphEff")
+                        .HasColumnType("double precision");
+
+                    b.Property<decimal>("H")
+                        .HasColumnType("numeric");
+
+                    b.Property<double>("KW")
+                        .HasColumnType("double precision");
+
+                    b.Property<decimal>("Q")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("CentrifugalPumpHQLibraryID");
+
+                    b.ToTable("centrifugalpumpHQtable");
+                });
+
+            modelBuilder.Entity("DPM.Models.PumpModel.CentrifugalPumpModel", b =>
+                {
+                    b.Property<int>("CentrifugalPumpId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("InsertedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("PE203")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("PI022")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("PI023")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("PI025")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("PI027")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TI061")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TI062")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TI263")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("CentrifugalPumpId");
+
+                    b.ToTable("centrifugalpump");
+                });
+
+            modelBuilder.Entity("DPM.Models.PumpModel.CentrifugalPumpPredictionModel", b =>
+                {
+                    b.Property<int>("CentifugalPumpPID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("BatchId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FuturePrediction")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("I")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("InsertedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("P1")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("P2")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Prediction")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Q")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("CentifugalPumpPID");
+
+                    b.ToTable("centrifugalpumppredictiontable");
+                });
+
+            modelBuilder.Entity("DPM.Models.PumpModel.CentrifugalPumpTrainModel", b =>
+                {
+                    b.Property<int>("CentrifugalTrainID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("Classification")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("I")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("InsertedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("P1")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("P2")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Q")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("CentrifugalTrainID");
+
+                    b.ToTable("centrifugalpumpTraindetails");
+                });
+
+            modelBuilder.Entity("DPM.Models.PumpModel.CentrifugalPumpWeekDataModel", b =>
+                {
+                    b.Property<int>("CPWId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<decimal>("AMP")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("FourH")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("FourT")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("FourV")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("InsertedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("OneH")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("OneT")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("OneV")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("ThreeA")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("ThreeH")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("ThreeT")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("ThreeV")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TwoA")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TwoH")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TwoT")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TwoV")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("CPWId");
+
+                    b.ToTable("centrifugalpumpweekdata");
+                });
+
+            modelBuilder.Entity("DPM.Models.PumpModel.ScrewCompressorForecastModel", b =>
+                {
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal>("TD1")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.ToTable("forecast");
+                });
+
+            modelBuilder.Entity("DPM.Models.RBDModel", b =>
+                {
+                    b.Property<int>("RBDId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Label")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Tree")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("RBDId");
+
+                    b.ToTable("RBDTable");
+                });
+
+            modelBuilder.Entity("DPM.Models.RecycleBinModel.RecycleBinCentrifugalPumpPrescriptiveModel", b =>
+                {
+                    b.Property<int>("RCPPMId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("CAttachmentDBPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CAttachmentFullPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CConditionMonitoring")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CFPPrescriptiveId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CFrequencyMaintainenance")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CMaintainenancePractice")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CRemarks")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ComponentCriticalityFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ComponentRating")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("EquipmentType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FCAAdded")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FMWithConsequenceTree")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FailureModeWithLSETree")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FunctionFailure")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FunctionFluidType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FunctionPeriodType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FunctionRatedHead")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSAdded")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MachineType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("RCPPMId");
+
+                    b.ToTable("recycledpmprescriptive");
+                });
+
+            modelBuilder.Entity("DPM.Models.RecycleBinModel.RestoreCentrifugalPumpPrescriptiveFailureMode", b =>
+                {
+                    b.Property<int>("RCPFMId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("AttachmentDBPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AttachmentFullPath")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CFPPrescriptiveId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CPPFMId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConditionMonitoring")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Consequence")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CriticalityFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DeletedFMTree")
+                        .HasColumnType("text");
+
+                    b.Property<int>("DownTimeFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("FCAAlpha")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("FCABeta")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("FCAComment")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FCACondition")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FCAFFI")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FCAInterval")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("FCASafeLife")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("FCAUpdateConditions")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FCAUpdateIntervals")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("FCAUsefulLife")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("FrequencyFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FrequencyMaintainenance")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FunctionMode")
+                        .HasColumnType("text");
+
+                    b.Property<int>("IsDeleted")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LocalEffect")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("MSSAvailability")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("MSSIntervalSelectionCriteria")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSMaintenanceInterval")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSMaintenanceTask")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MSSStartergy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MaintainenancePractice")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Pattern")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProtectionFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RCPPMId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Rating")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SafetyFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScrapeFactor")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SystemEffect")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("RCPFMId");
+
+                    b.HasIndex("RCPPMId");
+
+                    b.ToTable("recyclecentrifugalpumpfailuremodes");
+                });
+
             modelBuilder.Entity("DPM_ServerSide.Models.CompressorModel.ScrewCompressorModel.ScrewCompressorPredictionModel", b =>
                 {
                     b.Property<int>("PredictionId")
@@ -29,7 +1422,13 @@ namespace DPM.Migrations
                     b.Property<int>("BatchId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("InsertedDate")
+                    b.Property<string>("CF")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FuturePrediction")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("InsertedDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<decimal>("PD1")
@@ -47,6 +1446,12 @@ namespace DPM.Migrations
                     b.Property<string>("Prediction")
                         .HasColumnType("text");
 
+                    b.Property<string>("RD")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SSRB")
+                        .HasColumnType("text");
+
                     b.Property<decimal>("TD1")
                         .HasColumnType("numeric");
 
@@ -58,6 +1463,9 @@ namespace DPM.Migrations
 
                     b.Property<decimal>("TS2")
                         .HasColumnType("numeric");
+
+                    b.Property<string>("TagNumber")
+                        .HasColumnType("text");
 
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
@@ -94,84 +1502,93 @@ namespace DPM.Migrations
                     b.ToTable("contactus");
                 });
 
-            modelBuilder.Entity("DPM_Testing.Models.RegisterUser", b =>
+            modelBuilder.Entity("DPM_Testing.Models.DesignationAccessModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Company")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Firstname")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Lastname")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RegisterUsers");
-                });
-
-            modelBuilder.Entity("DPM_Testing.Models.RegistrationModel", b =>
-                {
-                    b.Property<int>("Id")
+                    b.Property<int>("DAId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
+                    b.Property<int>("AssesmentReport")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CBA")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CCL")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CompanyUserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Dashborad")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DesignationName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FMEA")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RCA")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RCM")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RCMConfiguration")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RecycleBin")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScrewPrediction")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScrewTrain")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SkillLibrary")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TrainConfiguration")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UPD")
+                        .HasColumnType("integer");
+
+                    b.HasKey("DAId");
+
+                    b.ToTable("DesignationAccessModelTable");
+                });
+
+            modelBuilder.Entity("DPM_Testing.Models.RegistrationModel", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
                     b.Property<string>("Company")
                         .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("Firstname")
+                    b.Property<string>("FirstName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Lastname")
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ModifiedBy")
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
@@ -183,9 +1600,12 @@ namespace DPM.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UserType")
+                        .HasColumnType("integer");
 
-                    b.ToTable("registeruser");
+                    b.HasKey("UserId");
+
+                    b.ToTable("RegisterUser");
                 });
 
             modelBuilder.Entity("DPM_Testing.Models.ScrewCompressorConfigurationModel", b =>
@@ -202,6 +1622,15 @@ namespace DPM.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Condition")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EquipmentType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FailureModeType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MachineType")
                         .HasColumnType("text");
 
                     b.Property<float>("Trigger")
@@ -227,6 +1656,9 @@ namespace DPM.Migrations
 
                     b.Property<int>("ClassificationId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("FailureModeType")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("InsertedDate")
                         .HasColumnType("timestamp without time zone");
@@ -273,6 +1705,9 @@ namespace DPM.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
+                    b.Property<string>("FailureModeType")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("InsertedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -312,6 +1747,118 @@ namespace DPM.Migrations
                     b.HasKey("BatchId");
 
                     b.ToTable("compressuredetails");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpModel.CBAFailureModeTask", b =>
+                {
+                    b.HasOne("DPM.Models.Prescriptive.CentrifugalPumpModel.CentrifugalPumpPrescriptiveCBAFailureMode", "centrifugalPumpPrescriptiveCBAFailureModes")
+                        .WithMany("CBAFailureModeTasks")
+                        .HasForeignKey("CPPCFMId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("centrifugalPumpPrescriptiveCBAFailureModes");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpModel.CentrifugalPumpPrescriptiveCBAFailureMode", b =>
+                {
+                    b.HasOne("DPM.Models.Prescriptive.CentrifugalPumpModel.CentrifugalPumpCbaModel", "centrifugalPumpCbaModel")
+                        .WithMany("centrifugalPumpPrescriptiveCBAFailureModes")
+                        .HasForeignKey("CPCMId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("centrifugalPumpCbaModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpMssModel", b =>
+                {
+                    b.HasOne("DPM.Models.Prescriptive.CentrifugalPumpPrescriptiveFailureMode", "CentrifugalPumpPrescriptiveFailureMode")
+                        .WithMany("CentrifugalPumpMssModel")
+                        .HasForeignKey("CPPFMId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CentrifugalPumpPrescriptiveFailureMode");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpPrescriptiveFailureMode", b =>
+                {
+                    b.HasOne("DPM.Models.Prescriptive.CentrifugalPumpPrescriptiveModel", "CentrifugalPumpPrescriptiveModel")
+                        .WithMany("centrifugalPumpPrescriptiveFailureModes")
+                        .HasForeignKey("CFPPrescriptiveId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CentrifugalPumpPrescriptiveModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.CBATaskModel", b =>
+                {
+                    b.HasOne("DPM.Models.Prescriptive.PSR.CBAModel", "CBAModel")
+                        .WithMany("CBATaskModel")
+                        .HasForeignKey("CBAId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CBAModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.SkillPSRMappingMSS", b =>
+                {
+                    b.HasOne("DPM.Models.Prescriptive.PSR.SkillPSRMappingModel", "SkillPSRMappingModel")
+                        .WithMany("SkillPSRMappingMSS")
+                        .HasForeignKey("PSRId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SkillPSRMappingModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.RecycleBinModel.RestoreCentrifugalPumpPrescriptiveFailureMode", b =>
+                {
+                    b.HasOne("DPM.Models.RecycleBinModel.RecycleBinCentrifugalPumpPrescriptiveModel", "RecycleBinCentrifugalPumpPrescriptiveModel")
+                        .WithMany("restoreCentrifugalPumpPrescriptiveFailureModes")
+                        .HasForeignKey("RCPPMId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecycleBinCentrifugalPumpPrescriptiveModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpModel.CentrifugalPumpCbaModel", b =>
+                {
+                    b.Navigation("centrifugalPumpPrescriptiveCBAFailureModes");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpModel.CentrifugalPumpPrescriptiveCBAFailureMode", b =>
+                {
+                    b.Navigation("CBAFailureModeTasks");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpPrescriptiveFailureMode", b =>
+                {
+                    b.Navigation("CentrifugalPumpMssModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.CentrifugalPumpPrescriptiveModel", b =>
+                {
+                    b.Navigation("centrifugalPumpPrescriptiveFailureModes");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.CBAModel", b =>
+                {
+                    b.Navigation("CBATaskModel");
+                });
+
+            modelBuilder.Entity("DPM.Models.Prescriptive.PSR.SkillPSRMappingModel", b =>
+                {
+                    b.Navigation("SkillPSRMappingMSS");
+                });
+
+            modelBuilder.Entity("DPM.Models.RecycleBinModel.RecycleBinCentrifugalPumpPrescriptiveModel", b =>
+                {
+                    b.Navigation("restoreCentrifugalPumpPrescriptiveFailureModes");
                 });
 #pragma warning restore 612, 618
         }

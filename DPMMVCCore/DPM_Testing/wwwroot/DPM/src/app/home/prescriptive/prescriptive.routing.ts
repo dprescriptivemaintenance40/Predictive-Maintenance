@@ -18,6 +18,7 @@ import { MssStrategyComponent } from "./PSR/mss-strategy/mss-strategy.component"
 import { SkillLibraryComponent } from "./PSR/skill-library/skill-library.component";
 import { UserProductionDetailsComponent } from "./PSR/user-production-details/user-production-details.component";
 import { RCAComponent } from "./RCA/rca.component";
+import { CBAComponent } from "./CBA/cba-add/cba-add.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -41,7 +42,8 @@ import { RCAComponent } from "./RCA/rca.component";
                 { path: 'SkillLibrary', component: SkillLibraryComponent},
                 { path: 'PSR', component: MSRComponent},
                 { path: 'UPD', component: UserProductionDetailsComponent},
-                { path: 'InputDataManagement', component: InputDataManagementComponent}
+                { path: 'InputDataManagement', component: InputDataManagementComponent},
+                { path: 'CBAAdd',component: CBAComponent}
             ]
         }
     ])],

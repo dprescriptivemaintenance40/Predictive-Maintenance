@@ -139,7 +139,7 @@
                                 <!-- (click)="FailureModeSelected(func, $event)" -->
                                 <label> <input type="checkbox"
                                                name = "{{i}}"
-                                               (change)="FailureModeSelected(func, $event)"
+                                               (click)="FailureModeSelected(func, $event)"
                                                 [checked]="func.values"
                                                 [(ngModel)]="func.checked"
                                                 /> 

@@ -14,6 +14,7 @@ export class PrescriptiveContantAPI {
     public FMEASaveConsequence: string = '/PrescriptiveAPI/CFPrescriptiveAdd';
     public PrescriptiveRecordsForFCA: string = '/PrescriptiveAPI/GetPrescriptiveRecordsForFCA';
     public PrescriptiveRecordsForMSS: string = '/PrescriptiveAPI/GetPrescriptiveRecordsForMSS';
+    public PrescriptiveRecordsForCBA: string = '/PrescriptiveAPI/GetPrescriptiveRecordsForCBA'
     public FCASave: string = '/PrescriptiveAPI/PrespectivePattern';
     public FCAWebal: string = '/PrescriptiveAPI/WebalAlgo';
     public FCAWebalWithDetails: string = '/PrescriptiveAPI/WebalAlgoritmWithDetails';

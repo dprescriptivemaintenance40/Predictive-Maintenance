@@ -20,6 +20,7 @@ import { SkillLibraryComponent } from './PSR/skill-library/skill-library.compone
 import { MSRComponent } from './PSR/msr/msr.component';
 import { UserProductionDetailsComponent } from './PSR/user-production-details/user-production-details.component';
 import { InputDataManagementComponent } from './PSR/input-data-management/input-data-management.component';
+import { CBAComponent } from "./CBA/cba-add/cba-add.component";
 
 @NgModule({
     declarations: [PrescriptiveComponent,
@@ -38,7 +39,8 @@ import { InputDataManagementComponent } from './PSR/input-data-management/input-
         SkillLibraryComponent,
         MSRComponent,
         UserProductionDetailsComponent,
-        InputDataManagementComponent
+        InputDataManagementComponent,
+        CBAComponent
     ],
     imports: [
         SharedModule,

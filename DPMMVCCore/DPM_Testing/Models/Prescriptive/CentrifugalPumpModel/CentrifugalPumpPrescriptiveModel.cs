@@ -88,6 +88,7 @@ namespace DPM.Models.Prescriptive
         public string MSSMaintenanceInterval { get; set; }
         public string MSSAvailability { get; set; }
         public string MSSMaintenanceTask { get; set; }
+        public string MSSFrequency { get; set; }
         public string MSSIntervalSelectionCriteria { get; set; }
         public decimal MSSFinalAvaliability { get; set; }
         public CentrifugalPumpPrescriptiveFailureMode CentrifugalPumpPrescriptiveFailureMode { get; set; }

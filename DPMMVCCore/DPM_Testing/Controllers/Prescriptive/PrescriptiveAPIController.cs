@@ -140,6 +140,26 @@ namespace DPM.Controllers.Prescriptive
         }
 
         [HttpGet]
+        [Route("GetPrescriptiveRecordsForCBA")]
+        public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetPrescriptiveRecordsForCBA()
+        {
+            try
+            {
+                string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                return await _context.PrescriptiveModelData.Where(a => a.UserId == userId && a.FCAAdded == "1" && a.MSSAdded == "1")
+                                                           .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                           .ThenInclude(a => a.CentrifugalPumpMssModel)
+                                                           .OrderBy(a => a.CFPPrescriptiveId)
+                                                           .ToListAsync();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("GetTagNumber")]
         public async Task<ActionResult<IEnumerable<CentrifugalPumpPrescriptiveModel>>> GetTagNumber()
         {

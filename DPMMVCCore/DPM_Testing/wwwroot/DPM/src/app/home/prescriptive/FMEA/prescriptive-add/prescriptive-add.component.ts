@@ -448,16 +448,22 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
 
   FailureModeSelected(value, event){
     if(event.target.checked === false){
-      var findIndexOF = value.PrescriptiveLookupMasterId
-      var index = -1;
-      var filteredObj = this.dropedMode.find((item, i) => {
+      let findIndexOF = value.PrescriptiveLookupMasterId
+      let index = -1,index2 = -1;
+      let filteredObj = this.failuerMode.find((item, i) => {
         if (item.PrescriptiveLookupMasterId === findIndexOF) {
           index = i;
           return i;
         }
       });
+      this.dropedMode.find((item, i) => {
+        if (item.PrescriptiveLookupMasterId === findIndexOF) {
+          index2 = i;
+          return i;
+        }
+      });
       this.failuerMode[index].checked = false;
-      this.dropedMode.splice(index, 1)
+      this.dropedMode.splice(index2, 1)
     }
     
     if(event.target.checked === true){
@@ -470,9 +476,9 @@ export class PrescriptiveAddComponent implements OnInit, CanComponentDeactivate 
       obj['PrescriptiveLookupMasterId']= value.PrescriptiveLookupMasterId;
       this.dropedMode.push(obj);
 
-      var fIO = value.PrescriptiveLookupMasterId
-      var index1 = -1;
-      var filtObj = this.failuerMode.find((item, i) => {
+      let fIO = value.PrescriptiveLookupMasterId
+      let index1 = -1;
+      let filtObj = this.failuerMode.find((item, i) => {
         if (item.PrescriptiveLookupMasterId === fIO) {
           index1 = i;
           return i;
