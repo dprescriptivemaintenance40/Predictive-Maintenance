@@ -32,7 +32,8 @@
             </div>
             <div class="col-md-2" d-flex flex-column>
                 <label style=" margin-right: 6px;">Risk Matrix</label>
-                <select name="" id="" class="form-select" class="form-control">
+                <select class="form-select" [(ngModel)]="SelectedTagNumber" 
+                 class="form-select" class="form-control">
                     <option value="5*5 matrix">5*5 matrix</option>
                     <option value="6*6 matrix">6*6 matrix</option>
                 </select>
@@ -52,12 +53,15 @@
             <div class="col-md-3" d-flex flex-column>
                 <label style=" margin-right: 12px;">Describe Scenario</label>
                 <span class="p-float-label">
-                    <textarea inputId="textarea" style="height: 50px;" cols="40" class="form-control"
+                    <textarea inputId="textarea" [ngModel]="DescribeScenario" style="height: 50px;" cols="40" class="form-control"
                         pInputTextarea></textarea>
                 </span>
             </div>
         </div>
-    </div>
+       
+    </div><br>
+    <button style="float: right;" label="Save" type="button" class="btn btn-dark" [disabled] = "!Prescriptivecba.valid"
+    (click)="Save()" pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save"> Save</i></button>
 </div>
 <br>
 <!-- <button style="float: right;" label="Save" type="button" class="btn btn-dark" (click)="Save()" pTooltip="Save Values"
@@ -66,6 +70,7 @@
 
 <div>
     <div class="card dpm-card w-100 p-3">
+       
         <div>
             <span #spreadsheet></span>
         </div>

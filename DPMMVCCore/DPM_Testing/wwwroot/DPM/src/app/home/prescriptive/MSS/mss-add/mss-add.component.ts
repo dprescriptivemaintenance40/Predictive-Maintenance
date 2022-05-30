@@ -691,11 +691,19 @@ export class MSSAddComponent implements OnInit {
     this.editMSSMaintenanceTask = true;
     this.AvailabilityYNCheck = false;
     this.expectedAvailability = false;
+    this.AvailabilityPlantStoppage = false;
+    this.AvailabilityPlantStoppageTime = false;
+    this.stoppageDaysValue = 0
+    this.stoppageDays = ""
+    this.stoppageDaysTimeValue = 0
     this.MSSeditTask = ""
     this.MSSIntervalSelectionCriteria = "";
     this.AvailabilityY = "";
     this.MSSTaskFrequency = "";
     this.AvailabilityCheck = 0;
+    this.stoppageDaysValue = 0
+    this.stoppageDaysTime = ""
+  
   }
 
   AddAnotherTaskN(){

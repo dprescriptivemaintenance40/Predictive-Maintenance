@@ -10,10 +10,9 @@ namespace DPM.Models.Prescriptive.CentrifugalPumpModel
     {
         [Key]
         public int CPCMId { get; set; }
-        public int CentrifugalPumpMssId { get; set; }
         public int CFPPrescriptiveId { get; set; }
         public int CPPFMId { get; set; }
-        public int TagNumber { get; set; }
+        public string TagNumber { get; set; }
         public string FailureMode { get; set; }
         public string IsAgeRelated { get; set; }
         public string RiskMatrix { get; set; }

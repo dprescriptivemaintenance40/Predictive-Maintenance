@@ -31,7 +31,6 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
         public DbSet<CentrifugalPumpMssModel> CentrifugalPumpMssModels { get; set; }
         public DbSet<CentrifugalPumpCbaModel> centrifugalPumpCbaModel { get; set; }
-        public DbSet<CentrifugalPumpPrescriptiveCBAFailureMode> centrifugalPumpPrescriptiveCBAFailureModes { get; set; }
         public DbSet<CBAFailureModeTask> CBAFailureModeTasks { get; set; }
 
         public DbSet<RecycleBinCentrifugalPumpPrescriptiveModel> recycleCentrifugalPumpModelData { get; set; }

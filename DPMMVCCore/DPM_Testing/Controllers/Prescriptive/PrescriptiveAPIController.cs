@@ -1,4 +1,5 @@
 ﻿using DPM.Models.Prescriptive;
+using DPM.Models.Prescriptive.CentrifugalPumpModel;
 using DPM.Models.RecycleBinModel;
 using DPM_ServerSide.DAL;
 using Microsoft.AspNetCore.Hosting;
@@ -592,6 +593,54 @@ namespace DPM.Controllers.Prescriptive
             }
         }
 
+        [HttpPost]
+        [Route("SaveCBASheetData")]
+        public async Task<ActionResult<CentrifugalPumpCbaModel>> SaveCBASheetData([FromBody] CentrifugalPumpCbaModel prescriptiveCbaModel)
+        {
+            try
+            {
+                CentrifugalPumpCbaModel cbaObj = new CentrifugalPumpCbaModel();
+                cbaObj.CPCMId = 4;
+                cbaObj.CFPPrescriptiveId = prescriptiveCbaModel.CFPPrescriptiveId;
+                cbaObj.CPPFMId = prescriptiveCbaModel.CPPFMId;
+                cbaObj.TagNumber = prescriptiveCbaModel.TagNumber;
+                cbaObj.FailureMode = prescriptiveCbaModel.FailureMode;
+                cbaObj.IsAgeRelated = prescriptiveCbaModel.IsAgeRelated;
+                cbaObj.RiskMatrix = prescriptiveCbaModel.RiskMatrix;
+                cbaObj.Consequence = prescriptiveCbaModel.Consequence;
+                cbaObj.HasScenario = prescriptiveCbaModel.HasScenario;
+                cbaObj.DescribeScenario = prescriptiveCbaModel.DescribeScenario;
+                _context.centrifugalPumpCbaModel.Add(cbaObj);
+                await _context.SaveChangesAsync();
+                var cbaDatas = prescriptiveCbaModel.CBAFailureModeTasks;
+                foreach (var cbaData in cbaDatas)
+                {
+                    CBAFailureModeTask CBATaskObj = new CBAFailureModeTask();
+                    CBATaskObj.CFMId = 1;
+                    CBATaskObj.CPPCFMId = cbaObj.CPCMId;
+                    CBATaskObj.CPMId = cbaData.CPMId;
+                    CBATaskObj.MSSMaintenanceTask = cbaData.MSSMaintenanceTask;
+                    CBATaskObj.MSSStartergy = cbaData.MSSStartergy;
+                    CBATaskObj.MSSMAintenanceInterval = cbaData.MSSMAintenanceInterval;
+                    CBATaskObj.RWC = cbaData.RWC;
+                    CBATaskObj.TaskDuration = cbaData.TaskDuration;
+                    CBATaskObj.ResourceCost = cbaData.ResourceCost;
+                    CBATaskObj.MaterialCost = cbaData.MaterialCost;
+                    CBATaskObj.POC = cbaData.POC;
+                    CBATaskObj.WorkCenter = cbaData.WorkCenter;
+                    CBATaskObj.OnStream = cbaData.OnStream;
+                    CBATaskObj.Status = cbaData.Status;
+                    _context.CBAFailureModeTasks.Add(CBATaskObj);
+                    await _context.SaveChangesAsync();
+                }
+                return Ok();
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
+        }
 
         [HttpPut]
         [Route("UpdatePrespectivePattern")]

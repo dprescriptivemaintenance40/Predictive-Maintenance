@@ -1,8 +1,8 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
+import { CBAFailureModeTask, CentrifugalPumpCbaModel } from '../../Shared/cba-model';
 import * as jspreadsheet from "jspreadsheet-ce";
-import { TreeTableModule } from 'primeng/treetable';
 declare var vis: any;
 
 @Component({
@@ -29,12 +29,15 @@ export class CBAComponent implements OnInit {
   public SetAgeRelated: string = "";
   public FCAConsequence: string = "";
   public SetConsequence: string = "";
+  public DescribeScenario: string = "";
+  public RiskMatrix: string = "";
   public SetMSSStratergy: string = "";
   public ScenarioYN: string = "";
   public Economics: boolean = false;
   public setData: any = [];
   public MSSIndex: number = 0;
   public FCAPattern: string = "";
+  public SheetValue: Array<any> = [];
 
   ngOnInit() {
     this.getPrescriptiveRecords();
@@ -42,9 +45,9 @@ export class CBAComponent implements OnInit {
   }
 
   constructor(private prescriptiveContantAPI: PrescriptiveContantAPI,
-    private prescriptiveBLService: CommonBLService) {
-
+    private prescriptiveBLService: CommonBLService,) {
   }
+
   async getPrescriptiveRecords() {
     this.SelectBoxEnabled = true;
     this.PrescriptiveCBA = false;
@@ -59,6 +62,7 @@ export class CBAComponent implements OnInit {
         }
       })
   }
+
 
   TagNumberSelect() {
     if (this.SelectedTagNumber != "") {
@@ -93,8 +97,8 @@ export class CBAComponent implements OnInit {
     // this.columns.push({ type: 'text', title: 'Criticality Assessment', width: "100" }),
     // this.columns.push({ type: 'text', title: 'PONC', width: "40" }),
     // this.columns.push({ type: 'text', title: 'Equipment Type', width: "100" })
-    this.columns.push({ type: 'text', title: 'MSSMaintenanceTask', width: "140" }),
-      this.columns.push({ type: 'text', title: 'MSSStartergy', width: "100" }),
+    this.columns.push({ type: 'text', title: 'MSSMaintenanceTask', wordWrap: true, width: "140" }),
+      this.columns.push({ type: 'text', title: 'MSSStartergy', width: "160", wordWrap: true }),
       this.columns.push({ type: 'text', title: 'MSSMAintenanceInterval', width: "150" }),
       this.columns.push({ type: 'text', title: 'RWC', width: "40" }),
       this.columns.push({ type: 'text', title: 'Task duration, h', width: "80" }),
@@ -102,8 +106,8 @@ export class CBAComponent implements OnInit {
       this.columns.push({ type: 'text', title: 'Material cost Annual Total, k$', width: "160" }),
       this.columns.push({ type: 'text', title: 'POC,K', width: "70" }),
       this.columns.push({ type: 'text', title: 'Workcenter', width: "80" }),
-      this.columns.push({ type: 'text', title: 'On stream', width: "80" }),
-      this.columns.push({ type: 'text', title: 'Status', width: "60" })
+      this.columns.push({ type: 'dropdown', title: 'On stream', width: "80", source: ['Yes', 'No'] }),
+      this.columns.push({ type: 'dropdown', title: 'Status', width: "60", source: ['New', 'Existing'] })
   }
 
   cbasheet() {
@@ -112,7 +116,7 @@ export class CBAComponent implements OnInit {
       data: [[]],
       columns: this.columns,
       tableOverflow: true,
-      tableWidth: "1350px",
+      tableWidth: "1200px",
       tableHeight: "600px",
       minDimensions: [, 3]
     });
@@ -146,5 +150,54 @@ export class CBAComponent implements OnInit {
       this.jspreadsheet.setValueFromCoords(2, this.MSSIndex, MSSData.MSSMaintenanceInterval, true);
       this.MSSIndex++;
     });
+  }
+
+  Save() {
+    let CbaModelObj = new CentrifugalPumpCbaModel();
+    CbaModelObj.CPCMId = 0;
+    CbaModelObj.CFPPrescriptiveId = this.PrescriptiveTreeList[0].CFPPrescriptiveId;
+    CbaModelObj.CPPFMId = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[0].CPPFMId;
+    CbaModelObj.TagNumber = this.SetTagNumber;
+    CbaModelObj.FailureMode = this.SetFailureMode;
+    CbaModelObj.IsAgeRelated = this.SetAgeRelated;
+    CbaModelObj.Consequence = this.SetConsequence;
+    CbaModelObj.DescribeScenario = this.DescribeScenario;
+    CbaModelObj.RiskMatrix = this.RiskMatrix;
+    CbaModelObj.HasScenario = this.ScenarioYN;
+    this.SheetValue = this.jspreadsheet.getData();
+    for (let cbasheet = 0; cbasheet < this.SheetValue.length; cbasheet++) {
+      if (this.SheetValue[cbasheet][0] != "") {
+        let CBATask = new CBAFailureModeTask();
+        CBATask.CPCMId = CbaModelObj.CPCMId;
+        CBATask.CPMId = 1;
+        CBATask.MSSMaintenanceTask = this.SheetValue[cbasheet][0];
+        CBATask.MSSStartergy = this.SheetValue[cbasheet][1]
+        CBATask.MSSMAintenanceInterval = this.SheetValue[cbasheet][2]
+        CBATask.RWC = this.SheetValue[cbasheet][3]
+        CBATask.TaskDuration = this.SheetValue[cbasheet][4]
+        CBATask.ResourceCost = this.SheetValue[cbasheet][5]
+        CBATask.MaterialCost = this.SheetValue[cbasheet][6]
+        CBATask.POC = this.SheetValue[cbasheet][7]
+        CBATask.WorkCenter = this.SheetValue[cbasheet][8]
+        CBATask.OnStream = this.SheetValue[cbasheet][9]
+        CBATask.Status = this.SheetValue[cbasheet][10];
+        CbaModelObj.CBAFailureModeTasks.push(CBATask);
+      }
+    }
+
+    var url: string = this.prescriptiveContantAPI.CBASheet
+    this.prescriptiveBLService.postWithoutHeaders(url, CbaModelObj)
+      .subscribe(
+        res => {
+          console.log(res);
+          // this.treeResponseData = res;
+          // localStorage.setItem('PrescriptiveObject', JSON.stringify(this.treeResponseData))
+          // this.prescriptiveTreeNextEnable = true
+          // this.prescriptiveTreeUpdateEnable = false;
+          // this.prescriptiveTreeSubmitEnable = false;
+          // this.prescriptiveTreeBackEnable = false
+        },
+        err => { console.log(err.Message) }
+      )
   }
 }

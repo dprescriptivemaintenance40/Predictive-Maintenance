@@ -22,6 +22,8 @@ export class PrescriptiveContantAPI {
     public FMEAConfiguration: string = '/PrescriptiveLookupMasterAPI';
     public FMEAListSingleDelete: string = '/PrescriptiveAPI/DeletePrespectiveModel';
     public FMEAParentAttachments: string = '/PrescriptiveAPI/CompontentAttachment';
+
+    public CBASheet:string = '/PrescriptiveAPI/SaveCBASheetData'
     //#endregion
 
 

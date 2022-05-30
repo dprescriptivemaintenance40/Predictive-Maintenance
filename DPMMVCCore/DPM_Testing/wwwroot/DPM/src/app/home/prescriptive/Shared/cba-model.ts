@@ -1,25 +1,20 @@
 export class CentrifugalPumpCbaModel {
-    public CPCMId: string = ""
-    public CentrifugalPumpMssId: string = ""
-    public CFPPrescriptiveId: string = ""
-    public CPPFMId: string = ""
-    public TagNumber: string = ""
-    public centrifugalPumpPrescriptiveCBAFailureModes: any = []
-}
-export class CentrifugalPumpPrescriptiveCBAFailureMode {
-    public CPPCFMId: number;
     public CPCMId: number;
+    public CFPPrescriptiveId: number;
+    public CPPFMId: number;
+    public TagNumber: string = "";
     public FailureMode: string = ""
-    public CBAFailureModeTasks: any = []
-}
-export class CBAFailureModeTask {
-    public CFMId: number;
-    public CPPCFMId: number;
     public IsAgeRelated: string = ""
     public RiskMatrix: string = ""
     public Consequence: string = ""
     public HasScenario: string = ""
     public DescribeScenario: string = ""
+    public CBAFailureModeTasks: any = []
+}
+export class CBAFailureModeTask {
+    public CFMId: number;
+    public CPCMId: number;
+    public CPMId:number;
     public MSSMaintenanceTask: string = ""
     public MSSStartergy: string = ""
     public MSSMAintenanceInterval: string = ""
