@@ -13,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ConfigModule } from './shared/config.service';
+import { RCMFunctionalAnalysis } from './home/prescriptive/CBA/RCMFunctionalAnalysis/rcmreport.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ConfigModule } from './shared/config.service';
     LoginRegistrationComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    RCMFunctionalAnalysis
   ],
   imports: [
     BrowserModule,

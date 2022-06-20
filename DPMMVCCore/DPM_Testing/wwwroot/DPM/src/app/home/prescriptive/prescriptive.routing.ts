@@ -33,6 +33,7 @@ import { CBAComponent } from "./CBA/cba-add/cba-add.component";
                 { path: 'Display', component: PrescriptiveDisplayComponent},
                 { path: 'Consequences', component: PrescriptiveConsequencesComponent,  canDeactivate: [AuthGuard]  },
                 { path: 'Report', component: PrescriptiveReportComponent},
+               
                 { path: 'List', component: PrescriptiveListComponent},
                 { path: 'FCAAdd', component: FCAADDComponent},
                 { path: 'MSSAdd', component: MSSAddComponent},

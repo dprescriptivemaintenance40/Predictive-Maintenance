@@ -1338,7 +1338,7 @@ export class FCAADDComponent implements OnInit {
     var url: string = this.prescriptiveContantAPI.FCASave
     this.prescriptiveBLService.PutData(url, centrifugalPumpOBJ).subscribe(
       res => {
-        this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Succssfully FCA Added" })
+        this.messageService.add({ severity: 'Success', summary: 'Success', detail: "Successfully FCA Added" })
         this.SaveFCAEnable = false
         this.router.navigateByUrl('/Home/Prescriptive/List');
       }, err => console.log(err.error)

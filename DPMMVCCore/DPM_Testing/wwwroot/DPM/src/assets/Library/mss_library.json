@@ -127,6 +127,35 @@
     "id": 24,
     "name": "Relief valve failed to close",
     "mtbf" : 3 
-  }
-
+  },
+  { 
+    "id": 25,
+    "name": "Main oil pump worn",
+    "mtbf" : 5  
+  },
+  { 
+    "id": 26,
+    "name": "Joint fails in pipe work",
+    "mtbf" : 4
+  },
+  { 
+    "id": 27,
+    "name": "Main system PSV fails in open position",
+    "mtbf" : 3 
+  },
+  { 
+   "id": 28,
+   "name": "Pipe / Orifice blocked after PS1",
+   "mtbf" : 5 
+ },
+ { 
+   "id": 29,
+   "name": "Pipe blocked before pressure tapping",
+   "mtbf" : 3 
+ },
+ { 
+  "id": 30,
+  "name": "Pump/ Motor coupling pins loosen and shear",
+  "mtbf" : 3 
+}
 ]

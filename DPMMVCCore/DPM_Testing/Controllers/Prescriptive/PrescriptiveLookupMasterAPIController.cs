@@ -66,11 +66,26 @@ namespace DPM.Controllers.Prescriptive
         [HttpPost]
         public async Task<ActionResult<PrescriptiveLookupMasterModel>> PostLookupMassterModel(PrescriptiveLookupMasterModel lookupMasterModel)
         {
-            DateTime dt = DateTime.Now;
-            lookupMasterModel.Date = dt.Date;
-            _context.PrescriptiveLookupMassterModelData.Add(lookupMasterModel);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetLookupMassterModel", new { id = lookupMasterModel.PrescriptiveLookupMasterId }, lookupMasterModel);
+            try
+            {
+                DateTime dt = DateTime.Now;
+                lookupMasterModel.Date = dt.Date;
+                PrescriptiveLookupMasterModel lookupModel = new PrescriptiveLookupMasterModel();
+                lookupModel.PrescriptiveLookupMasterId = 46;
+                lookupModel.MachineType = lookupMasterModel.MachineType;
+                lookupModel.EquipmentType = lookupMasterModel.EquipmentType;
+                lookupModel.Function = lookupMasterModel.Function;
+                lookupModel.Description = lookupMasterModel.Description;
+                lookupModel.Date = lookupMasterModel.Date;
+                _context.PrescriptiveLookupMassterModelData.Add(lookupModel);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetLookupMassterModel", new { id = lookupMasterModel.PrescriptiveLookupMasterId }, lookupMasterModel);
+            }
+            catch (Exception exe)
+            {
+
+                return BadRequest(exe.Message);
+            }
         }
         
         [HttpPut]

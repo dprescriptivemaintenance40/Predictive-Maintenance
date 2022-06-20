@@ -1,0 +1,53 @@
+[
+    {
+        "id":0,
+        "frequency":"D3",
+        "frequencyvalue":121.66
+    },
+    {
+        "id":1,
+        "frequency":"D1",
+        "frequencyvalue":365
+    },
+    {
+        "id":2,
+        "frequency":"W1",
+        "frequencyvalue":52
+    },
+    {
+        "id":3,
+        "frequency":"M1",
+        "frequencyvalue":12
+    },
+    {
+        "id":3,
+        "frequency":"M3",
+        "frequencyvalue":4
+    },
+    {
+        "id":3,
+        "frequency":"M6",
+        "frequencyvalue":2
+    },
+{
+    "id":3,
+    "frequency":"Y1",
+    "frequencyvalue":1
+},
+{
+    "id":3,
+    "frequency":"Y2",
+    "frequencyvalue":0.5
+},
+{
+    "id":3,
+    "frequency":"Y3",
+    "frequencyvalue":0.33
+},
+{
+    "id":3,
+    "frequency":"Y4",
+    "frequencyvalue":0.25
+}
+    
+]

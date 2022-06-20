@@ -32,8 +32,7 @@
             </div>
             <div class="col-md-2" d-flex flex-column>
                 <label style=" margin-right: 6px;">Risk Matrix</label>
-                <select class="form-select" [(ngModel)]="SelectedTagNumber" 
-                 class="form-select" class="form-control">
+                <select class="form-select" [(ngModel)]="RiskMatrix" class="form-select" class="form-control">
                     <option value="5*5 matrix">5*5 matrix</option>
                     <option value="6*6 matrix">6*6 matrix</option>
                 </select>
@@ -53,31 +52,207 @@
             <div class="col-md-3" d-flex flex-column>
                 <label style=" margin-right: 12px;">Describe Scenario</label>
                 <span class="p-float-label">
-                    <textarea inputId="textarea" [ngModel]="DescribeScenario" style="height: 50px;" cols="40" class="form-control"
-                        pInputTextarea></textarea>
+                    <textarea inputId="textarea" [ngModel]="DescribeScenario" style="height: 50px;" cols="40"
+                        class="form-control" pInputTextarea></textarea>
                 </span>
             </div>
         </div>
-       
+
     </div><br>
-    <button style="float: right;" label="Save" type="button" class="btn btn-dark" [disabled] = "!Prescriptivecba.valid"
-    (click)="Save()" pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save"> Save</i></button>
+    <!-- <button style="float: right;" label="Save" type="button" class="btn btn-dark" (click)="ViewMatrix()" -->
+        <!-- pTooltip="View RiskMatrix" tooltipPosition="top"><i class="pi pi-eye"> RiskMatrix</i></button> -->
+    <button style="float: right;" label="Save" type="button" class="btn btn-dark" (click)="SaveCBA()"
+        pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save"> Save</i></button>
 </div>
 <br>
-<!-- <button style="float: right;" label="Save" type="button" class="btn btn-dark" (click)="Save()" pTooltip="Save Values"
-    [disabled]="!silClassification.valid" tooltipPosition="top"><i class="pi pi-save"> Save</i></button> -->
-
 
 <div>
     <div class="card dpm-card w-100 p-3">
-       
         <div>
             <span #spreadsheet></span>
         </div>
     </div>
 </div>
 
-<div *ngIf="Economics">
+<!-- <p-dialog header="RiskMatrix" [(visible)]="RiskMatrix5" [style]="{width:'70vw'}">
+    <img style="margin-left: 80px;" class="img-fluid px-3 px-sm-4"
+    src="/dist/DPM/assets/CBA/RiskMatrix5.PNG" alt="">
+</p-dialog> -->
+
+<p-dialog header="5 * 5 RiskMatrix" [(visible)]="RiskMatrix5" [style]="{width: '100vw'}">
+
+    <div>
+        <app-Matrix5Component (updatecriticalityClass)="riskMatrix($event)"></app-Matrix5Component>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="6 * 6 RiskMatrix" [(visible)]="RiskMatrix6" [style]="{width: '100vw'}">
+
+    <div>
+        <app-Matrix6Component (updatecriticalityClass)="riskMatrix($event)"></app-Matrix6Component>
+    </div>
+
+</p-dialog>
+
+
+<p-dialog header="Economics" [(visible)]="DisplayEconomics" [style]="{width: '100vw'}">
+
+    <div>
+        <div class="card dpm-card w-100 p-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="stepsdemo-content dpm-card mt-2">
+                        <p-card>
+                            <ng-template pTemplate="title" class="mb-0">
+                                Production Losses<strong><span class="text-primary ml-1"></span></strong>
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                <div class="p-fluid">
+                                    <div>
+                                        <label style="margin-right:122px;"><b>PLE</b></label>
+                                        <input style="margin-right:72px;" [(ngModel)]="PLE" type="text" id="ple" name="ple" maxlength="4"
+                                            size="4">
+                                        <b>Note: PLE = Production Loss Equation</b>
+                                    </div><br>
+                                    <div>
+                                        <label style="margin-right:74px;"><b>Down Time </b></label>
+                                        <input type="text" [(ngModel)]="DownTimeHr" maxlength="4" size="4">&nbsp;<span
+                                            style="margin-right:77px;">hr</span>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="DownTime" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                    <div>
+                                        <label><b>Reduced Throughput</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="text" [(ngModel)]="ReducedThroughPutHr" maxlength="4" size="4">&nbsp;hr&nbsp;
+                                        <input type="text" [(ngModel)]="ReducedThroughPutHr1"  name="pin" maxlength="4" size="4">&nbsp;=&nbsp;
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="ReducedThroughput" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                    <div>
+                                        <label style="margin-right:269px;"><b>MISC </b></label>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="MISC" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                    <div>
+                                        <label style="margin-right:175px;"><b>Total Production Losses </b></label>
+                                        <input type="text" [readonly]="true" (change)="SetEconomics()" [(ngModel)]="TotalProductionLoss" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                </div>
+                            </ng-template>
+                        </p-card>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stepsdemo-content dpm-card mt-2">
+                        <p-card>
+                            <ng-template pTemplate="title" class="mb-0">
+                                Repair costs<strong><span class="text-primary ml-1"></span></strong>
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                <div class="p-fluid">
+                                    <div>
+                                        <label style="margin-right:149px;"><b>Materials/Equipment </b></label>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="MaterialsEquipment" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                    <div>
+                                        <label style="margin-right:162px;"><b>Contract Payments</b></label>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="ContractPayments" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                    <div>
+                                        <label style="margin-right:90px;"><b>MISC</b></label>
+                                        <input type="text" [(ngModel)]="MiscHr" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                            style="margin-right:77px;">hr</span>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="Misc" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                    <div>
+                                        <label style="margin-right:185px;"><b>Total repair costs</b></label>
+                                        <input type="text" [readonly]="true" (change)="SetEconomics()" [(ngModel)]="TotalRepairCosts" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                </div>
+                            </ng-template>
+                        </p-card>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="stepsdemo-content dpm-card mt-2">
+                        <p-card>
+                            <ng-template pTemplate="title" class="mb-0">
+                                Labour<strong><span class="text-primary ml-1"></span></strong>
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                <div style="margin-right:133px;" class="p-fluid">
+                                    <!-- <div>
+                                        <label style="margin-right:72px;"><b>MEC</b></label>
+                                        <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                            style="margin-right:77px;">hr</span>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="MEC" maxlength="4" size="4">&nbsp;k
+                                    </div><br> -->
+                                    <!-- <div>
+                                        <label style="margin-right:72px;"><b>OPS</b></label>
+                                        <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                            style="margin-right:77px;">hr</span>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="OPS" maxlength="4" size="4">&nbsp;k
+                                    </div><br> -->
+                                    <!-- <div>
+                                        <label style="margin-right:74px;"><b>RIG</b></label>
+                                        <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                            style="margin-right:77px;">hr</span>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="RIG" maxlength="4" size="4">&nbsp;k
+                                    </div><br> -->
+                                    <!-- <div>
+                                        <label style="margin-right:72px;"><b>HEL</b></label>
+                                        <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                            style="margin-right:77px;">hr</span>=
+                                        <input type="text" (change)="SetEconomics()" [(ngModel)]="HEL" maxlength="4" size="4">&nbsp;k
+                                    </div><br> -->
+                                    <div>
+                                        <label style="margin-right:185px;"><b>Total Labour</b></label>
+                                        <input type="text" [readonly]="true" (change)="SetEconomics()" [(ngModel)]="TotalLabour" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                </div>
+                            </ng-template>
+                        </p-card>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stepsdemo-content dpm-card mt-2">
+                        <p-card>
+                            <ng-template pTemplate="content">
+                                <div class="p-fluid">
+                                    <div>
+                                        <label style="margin-right:152px;"><b>Total Economic Consequences</b></label>
+                                        <input type="text" [readonly]="true" [(ngModel)]="TotalEconomicConsequences" maxlength="4" size="4">&nbsp;k
+                                        <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    </div><br>
+                                    <button style="float: right;" [disabled]="DisplaySave" label="Save" type="button" class="btn btn-dark" (click)="SavePLE()"
+                                    pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save"> Save</i></button>
+                                    <button style="float: right;" [disabled]="DisplayUpdate" label="Save" type="button" class="btn btn-dark" (click)="UpdatePLE()"
+                                    pTooltip="Edit Values" tooltipPosition="top"><i class="pi pi-pencil"> Update</i></button>
+                                    <!-- <div>
+                                        <label style="margin-right:155px;"><b>Economic Consequence Costs</b></label>
+                                        <input type="text" id="pin" name="pin" maxlength="4" size="4">
+                                    </div><br> -->
+                                </div>
+                            </ng-template>
+                        </p-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</p-dialog>
+
+<!-- <div *ngIf="Economics">
     <div class="card dpm-card w-100 p-3">
         <div class="row">
             <div class="col-md-6">
@@ -90,31 +265,32 @@
                             <div class="p-fluid">
                                 <div>
                                     <label style="margin-right:122px;"><b>PLE</b></label>
-                                    <input style="margin-right:72px;" type="text" id="ple" name="ple" maxlength="4" size="4">
+                                    <input style="margin-right:72px;" type="text" id="ple" name="ple" maxlength="4"
+                                        size="4">
                                     <b>Note: PLE = Production Loss Equation</b>
                                 </div><br>
-                                <div >
+                                <div>
                                     <label style="margin-right:74px;"><b>Down Time </b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    <input type="text" maxlength="4" size="4">&nbsp;<span
+                                        style="margin-right:77px;">hr</span>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="DownTime" maxlength="4" size="4">&nbsp;k
+                                <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                <!-- </div><br>
+                                <div>
+                                    <label><b>Reduced Throughput</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="text" maxlength="4" size="4">&nbsp;hr&nbsp;
+                                    <input type="text"  name="pin" maxlength="4" size="4">&nbsp;=&nbsp;
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="ReducedThroughput" maxlength="4" size="4">&nbsp;k
+
                                 </div><br>
-                                <div >
-                                    <label ><b>Reduced Throughput</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;hr&nbsp;
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;=&nbsp;
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                <div>
+                                    <label style="margin-right:269px;"><b>MISC </b></label>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="MISC" maxlength="4" size="4">&nbsp;k
+                                    
                                 </div><br>
-                                <div >
-                                    <label  style="margin-right:269px;"><b>MISC </b></label>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
-                                </div><br>
-                                <div >
-                                    <label  style="margin-right:175px;"><b>Total prduction losses </b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                <div>
+                                    <label style="margin-right:175px;"><b>Total Production Losses </b></label>
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="TotalProductionLoss" maxlength="4" size="4">&nbsp;k
                                 </div><br>
                             </div>
                         </ng-template>
@@ -125,38 +301,38 @@
                 <div class="stepsdemo-content dpm-card mt-2">
                     <p-card>
                         <ng-template pTemplate="title" class="mb-0">
-                          Repair costs<strong><span class="text-primary ml-1"></span></strong>
+                            Repair costs<strong><span class="text-primary ml-1"></span></strong>
                         </ng-template>
                         <ng-template pTemplate="content">
                             <div class="p-fluid">
-                                <div >
-                                    <label  style="margin-right:149px;"><b>Materials/Equipment </b></label>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                <div>
+                                    <label style="margin-right:149px;"><b>Materials/Equipment </b></label>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="MaterialsEquipment" maxlength="4" size="4">&nbsp;k
+                                  
                                 </div><br>
-                                <div >
-                                    <label  style="margin-right:162px;"><b>Contract Payments</b></label>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                <div>
+                                    <label style="margin-right:162px;"><b>Contract Payments</b></label>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="ContractPayments" maxlength="4" size="4">&nbsp;k
+        
                                 </div><br>
-                                <div >
+                                <div>
                                     <label style="margin-right:90px;"><b>MISC</b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                        style="margin-right:77px;">hr</span>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="Misc" maxlength="4" size="4">&nbsp;k
+                                   
                                 </div><br>
-                                <div >
-                                    <label  style="margin-right:185px;"><b>Total repair costs</b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                <div>
+                                    <label style="margin-right:185px;"><b>Total repair costs</b></label>
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="TotalRepairCosts" maxlength="4" size="4">&nbsp;k
                                 </div><br>
                             </div>
                         </ng-template>
                     </p-card>
                 </div>
             </div>
-        </div>
-        <div class="row">
+        </div> -->
+        <!-- <div class="row">
             <div class="col-md-6">
                 <div class="stepsdemo-content dpm-card mt-2">
                     <p-card>
@@ -165,34 +341,34 @@
                         </ng-template>
                         <ng-template pTemplate="content">
                             <div style="margin-right:133px;" class="p-fluid">
-                                <div >
+                                <div>
                                     <label style="margin-right:72px;"><b>MEC</b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                        style="margin-right:77px;">hr</span>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="MEC" maxlength="4" size="4">&nbsp;k
                                 </div><br>
-                                <div >
+                                <div>
                                     <label style="margin-right:72px;"><b>OPS</b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                        style="margin-right:77px;">hr</span>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="OPS" maxlength="4" size="4">&nbsp;k
                                 </div><br>
-                                <div >
+                                <div>
                                     <label style="margin-right:74px;"><b>RIG</b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                        style="margin-right:77px;">hr</span>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="RIG" maxlength="4" size="4">&nbsp;k
                                 </div><br>
-                                <div >
+                                <div>
                                     <label style="margin-right:72px;"><b>HEL</b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span style="margin-right:77px;">hr</span>=
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;<span
+                                        style="margin-right:77px;">hr</span>=
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="HEL" maxlength="4" size="4">&nbsp;k
                                 </div><br>
-                                <div >
-                                    <label  style="margin-right:185px;"><b>Total Labour</b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                <div>
+                                    <label style="margin-right:185px;"><b>Total Labour</b></label>
+                                    <input type="text" (change)="SetEconomics()" [(ngModel)]="TotalLabour" maxlength="4" size="4">&nbsp;k
+
                                 </div><br>
                             </div>
                         </ng-template>
@@ -200,22 +376,17 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="stepsdemo-content dpm-card mt-2">
+                <div class="stepsdemo-content dpm-card mt-2
                     <p-card>
-                        <!-- <ng-template pTemplate="title" class="mb-0">
-                          Repair costs<strong><span class="text-primary ml-1"></span></strong>
-                        </ng-template> -->
                         <ng-template pTemplate="content">
                             <div class="p-fluid">
-                                <div >
-                                    <label  style="margin-right:152px;"><b>Total Economic Consequences</b></label>
-                                    <input type="text" id="pin" name="pin" maxlength="4" size="4">&nbsp;k
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
+                                <div>
+                                    <label style="margin-right:152px;"><b>Total Economic Consequences</b></label>
+                                    <input type="text" [(ngModel)]="TotalEconomicConsequences" maxlength="4" size="4">&nbsp;k
                                 </div><br>
-                                <div >
-                                    <label  style="margin-right:155px;"><b>Economic Consequence Costs</b></label>
+                                <div>
+                                    <label style="margin-right:155px;"><b>Economic Consequence Costs</b></label>
                                     <input type="text" id="pin" name="pin" maxlength="4" size="4">
-                                    <!-- <textarea class="form-control custom-textarea" id="message" name="body" rows="2" ></textarea> -->
                                 </div><br>
                             </div>
                         </ng-template>
@@ -224,4 +395,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>  -->

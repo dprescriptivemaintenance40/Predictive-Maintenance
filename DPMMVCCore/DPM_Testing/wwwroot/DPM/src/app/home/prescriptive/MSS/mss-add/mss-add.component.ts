@@ -77,6 +77,7 @@ export class MSSAddComponent implements OnInit {
   public FinalAvailability: any = []
   public FinalBack: boolean = false;
 
+  public MSSTaskIndex = 0;
   public OCM: boolean = false;
   public SO: boolean = false;
   public SR: boolean = false;
@@ -224,6 +225,7 @@ export class MSSAddComponent implements OnInit {
     this.AvailabilityCalculations = false
     this.MSSADDCounter = this.MSSADDCounter + 1
     if (this.MSSADDCounter == this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes.length) {
+      this.FMObj = new CentrifugalPumpPrescriptiveFailureMode();
       this.SaveBtnEnable = true;
       this.AddBtnEnable = false;
     }
@@ -238,8 +240,8 @@ export class MSSAddComponent implements OnInit {
     if (this.ConsequenceBasedMSS == 'A') {
       this.StrategyTemp = []
       if (this.OCM == true) {
-        obj['OCM'] = "A-OCM (On Condition Maintainenance Task)"
-        this.StrategyTemp.push("A-OCM (On Condition Maintainenance Task)")
+        obj['OCM'] = "A-OCM (On Condition Maintenance Task)"
+        this.StrategyTemp.push("A-OCM (On Condition Maintenance Task)")
       }
       if (this.SO == true) {
         obj['SO'] = "A-SO (Scheduled Overhaul Task)"
@@ -258,15 +260,15 @@ export class MSSAddComponent implements OnInit {
         this.StrategyTemp.push("A-RED (Redsigned Mandatory)")
       }
       if (this.OFM == true) {
-        obj['OFM'] = "A-OFM (On Failure Maintainenance)"
-        this.StrategyTemp.push("A-OFM (On Failure Maintainenance)")
+        obj['OFM'] = "A-OFM (On Failure Maintenance)"
+        this.StrategyTemp.push("A-OFM (On Failure Maintenance)")
       }
       this.StrategyList.push(obj)
     } else if (this.ConsequenceBasedMSS == "B") {
       this.StrategyTemp = []
       if (this.OCM == true) {
-        obj['OCM'] = "B-OCM (On condition Maintainenance Task)"
-        this.StrategyTemp.push("B-OCM (On Condition Maintainenance Task)")
+        obj['OCM'] = "B-OCM (On condition Maintenance Task)"
+        this.StrategyTemp.push("B-OCM (On Condition Maintenance Task)")
       }
       if (this.SO == true) {
         obj['SO'] = "B-SO (Scheduled Overhaul Task)"
@@ -285,8 +287,8 @@ export class MSSAddComponent implements OnInit {
     else if (this.ConsequenceBasedMSS == "C") {
       this.StrategyTemp = []
       if (this.OCM == true) {
-        obj['OCM'] = "C-OCM (On condition Maintainenance Task)"
-        this.StrategyTemp.push("C-OCM (On Condition Maintainenance Task)")
+        obj['OCM'] = "C-OCM (On condition Maintenance Task)"
+        this.StrategyTemp.push("C-OCM (On Condition Maintenance Task)")
       }
       if (this.SO == true) {
         obj['SO'] = "C-SO (Scheduled Overhaul Task)"
@@ -301,15 +303,15 @@ export class MSSAddComponent implements OnInit {
         this.StrategyTemp.push("C-RED (Redsigned Mandatory)")
       }
       if (this.OFM == true) {
-        obj['OFM'] = "C-OFM (On Failure Maintainenance)"
-        this.StrategyTemp.push("C-OFM (On Failure Maintainenance)")
+        obj['OFM'] = "C-OFM (On Failure Maintenance)"
+        this.StrategyTemp.push("C-OFM (On Failure Maintenance)")
       }
       this.StrategyList.push(obj)
     } else if (this.ConsequenceBasedMSS == "D") {
       this.StrategyTemp = []
       if (this.OCM == true) {
-        obj['OCM'] = "D-OCM (On condition Maintainenance Task)"
-        this.StrategyTemp.push("D-OCM (On Condition Maintainenance Task)")
+        obj['OCM'] = "D-OCM (On condition Maintenance Task)"
+        this.StrategyTemp.push("D-OCM (On Condition Maintenance Task)")
       }
       if (this.SO == true) {
         obj['SO'] = "D-SO (Scheduled Overhaul Task)"
@@ -324,16 +326,16 @@ export class MSSAddComponent implements OnInit {
         this.StrategyTemp.push("D-RED (Redsigned Mandatory)")
       }
       if (this.OFM == true) {
-        obj['OFM'] = "D-OFM (On Failure Maintainenance)"
-        this.StrategyTemp.push("D-OFM (On Failure Maintainenance)")
+        obj['OFM'] = "D-OFM (On Failure Maintenance)"
+        this.StrategyTemp.push("D-OFM (On Failure Maintenance)")
       }
       this.StrategyList.push(obj);
     }
     else if (this.ConsequenceBasedMSS == "E (Failure Mode:Hidden, Failure Mode with Condition : Combined with one or other failure mode events, Failure Mode Consequences : No effect on safety or environment)") {
       this.StrategyTemp = []
       if (this.OCM == true) {
-        obj['OCM'] = "E-OCM (On condition Maintainenance Task)"
-        this.StrategyTemp.push("E-OCM (On Condition Maintainenance Task)")
+        obj['OCM'] = "E-OCM (On condition Maintenance Task)"
+        this.StrategyTemp.push("E-OCM (On Condition Maintenance Task)")
       }
       if (this.SO == true) {
         obj['SO'] = "E-SO (Scheduled Overhaul Task)"
@@ -352,8 +354,8 @@ export class MSSAddComponent implements OnInit {
         this.StrategyTemp.push("E-RED (Redsigned Mandatory)")
       }
       if (this.OFM == true) {
-        obj['OFM'] = "E-OFM (On Failure Maintainenance)"
-        this.StrategyTemp.push("E-OFM (On Failure Maintainenance)")
+        obj['OFM'] = "E-OFM (On Failure Maintenance)"
+        this.StrategyTemp.push("E-OFM (On Failure Maintenance)")
       }
       this.StrategyList.push(obj)
 
@@ -426,16 +428,16 @@ export class MSSAddComponent implements OnInit {
       this.StrategyTemp.forEach(element => {
         this.MSSStratergy = element;
 
-        if (this.MSSStratergy == 'A-FFT (Failure Finding Task)' || this.MSSStratergy == 'A-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'A-SO (Scheduled Overhaul Task)'
-          || this.MSSStratergy == 'A-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'A-RED (Redsigned Mandatory)' || this.MSSStratergy == 'A-OFM (On Failure Maintainenance)'
-          || this.MSSStratergy == 'B-FFT (Failure Finding Task)' || this.MSSStratergy == 'B-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'B-SO (Scheduled Overhaul Task)'
-          || this.MSSStratergy == 'B-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'B-RED (Redsigned Mandatory)' || this.MSSStratergy == 'B-OFM (On Failure Maintainenance)') {
+        if (this.MSSStratergy == 'A-FFT (Failure Finding Task)' || this.MSSStratergy == 'A-OCM (On Condition Maintenance Task)' || this.MSSStratergy == 'A-SO (Scheduled Overhaul Task)'
+          || this.MSSStratergy == 'A-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'A-RED (Redsigned Mandatory)' || this.MSSStratergy == 'A-OFM (On Failure Maintenance)'
+          || this.MSSStratergy == 'B-FFT (Failure Finding Task)' || this.MSSStratergy == 'B-OCM (On Condition Maintenance Task)' || this.MSSStratergy == 'B-SO (Scheduled Overhaul Task)'
+          || this.MSSStratergy == 'B-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'B-RED (Redsigned Mandatory)' || this.MSSStratergy == 'B-OFM (On Failure Maintenance)') {
 
-          if (this.MSSStratergy == 'A-OFM (On Failure Maintainenance)' || this.MSSStratergy == 'B-FFT (Failure Finding Task)') {
+          if (this.MSSStratergy == 'A-OFM (On Failure Maintenance)' || this.MSSStratergy == 'B-FFT (Failure Finding Task)') {
             let obj = {}
             obj['CentrifugalPumpMssId'] = 0;
             obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-            obj['CPPFMId'] = 0;
+            obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
             obj['MSSMaintenanceInterval'] = 'Not Applicable';
             obj['MSSMaintenanceTask'] =  this.MSSeditTask;
             obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -449,12 +451,12 @@ export class MSSAddComponent implements OnInit {
             var ocmHours = this.TreeUptoFCA[0].children[0].children[0].children[this.MSSADDCounter - 1].children[1].FCAData.children[2].data.name
             var ocmWeek: number = ocmHours.split(" ")[0]
             ocmWeek = Math.round((ocmWeek / 24) / 7)
-            var strategy = this.MSSStratergy.split('-')[1];
+            var strategy = this.MSSStratergy.split("-")[1];
             let obj = {}
             if (this.MSSStratergy == 'A-FFT (Failure Finding Task)') {
               obj['CentrifugalPumpMssId'] = 0;
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['CPPFMId'] = 0;
+              obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
               obj['MSSMaintenanceInterval'] = `${intervalWeek.toFixed(2)} weeks`;
               obj['MSSMaintenanceTask'] =  this.MSSeditTask;
               obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -467,7 +469,7 @@ export class MSSAddComponent implements OnInit {
               if (strategy == 'FFT (Failure Finding Task)') {
                 obj['CentrifugalPumpMssId'] = 0;
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['CPPFMId'] = 0;
+                obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
                 obj['MSSMaintenanceInterval'] = 'Not Applicable';
                 obj['MSSMaintenanceTask'] =  this.MSSeditTask;
                 obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -477,10 +479,10 @@ export class MSSAddComponent implements OnInit {
                 obj['MSSFinalAvaliability'] = availablility;
                 this.FMObj.CentrifugalPumpMssModel.push(obj);
 
-              } else if (strategy == 'OCM (On Condition Maintainenance Task)') {
+              } else if (strategy == 'OCM (On Condition Maintenance Task)') {
                 obj['CentrifugalPumpMssId'] = 0;
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['CPPFMId'] = 0;
+                obj['CPPFMId'] = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;
                 obj['MSSMaintenanceInterval'] = `${ocmWeek.toFixed(2)}${" "}${"Week"}`;
                 // obj['MSSMaintenanceTask'] = 'Carry out talks based on on-condition maintenance recommendation';
                 obj['MSSMaintenanceTask'] = this.MSSeditTask;
@@ -496,7 +498,7 @@ export class MSSAddComponent implements OnInit {
                 safeL = ((safeL * 365) / 7)
                 obj['CentrifugalPumpMssId'] = 0;
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['CPPFMId'] = 0;
+                obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
                 obj['MSSMaintenanceInterval'] = `${safeL.toFixed(2)}${" "}${"Week"}`;
                 obj['MSSMaintenanceTask'] =  this.MSSeditTask;
                 obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -512,7 +514,7 @@ export class MSSAddComponent implements OnInit {
                 safeL1 = ((safeL1 * 365) / 7)
                 obj['CentrifugalPumpMssId'] = 0;
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['CPPFMId'] = 0;
+                obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
                 obj['MSSMaintenanceInterval'] = `${safeL1.toFixed(2)}${" "}${"Week"}`;
                 obj['MSSMaintenanceTask'] =  this.MSSeditTask;
                 obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -525,7 +527,7 @@ export class MSSAddComponent implements OnInit {
               } else if (strategy == 'RED (Redsigned Mandatory)') {
                 obj['CentrifugalPumpMssId'] = 0;
                 obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-                obj['CPPFMId'] = 0;
+                obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
                 obj['MSSMaintenanceInterval'] = 'NA';
                 obj['MSSMaintenanceTask'] =  this.MSSeditTask;
                 obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -538,18 +540,18 @@ export class MSSAddComponent implements OnInit {
               }
             }
           }
-        } else if (this.MSSStratergy == 'C-FFT (Failure Finding Task)' || this.MSSStratergy == 'C-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'C-SO (Scheduled Overhaul Task)'
-          || this.MSSStratergy == 'C-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'C-RED (Redsigned Mandatory)' || this.MSSStratergy == 'C-OFM (On Failure Maintainenance)'
-          || this.MSSStratergy == 'D-FFT (Failure Finding Task)' || this.MSSStratergy == 'D-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'D-SO (Scheduled Overhaul Task)'
-          || this.MSSStratergy == 'D-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'D-RED (Redsigned Mandatory)' || this.MSSStratergy == 'D-OFM (On Failure Maintainenance)'
-          || this.MSSStratergy == 'E-FFT (Failure Finding Task)' || this.MSSStratergy == 'E-OCM (On Condition Maintainenance Task)' || this.MSSStratergy == 'E-SO (Scheduled Overhaul Task)'
-          || this.MSSStratergy == 'E-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'E-RED (Redsigned Mandatory)' || this.MSSStratergy == 'E-OFM (On Failure Maintainenance)') {
+        } else if (this.MSSStratergy == 'C-FFT (Failure Finding Task)' || this.MSSStratergy == 'C-OCM (On Condition Maintenance Task)' || this.MSSStratergy == 'C-SO (Scheduled Overhaul Task)'
+          || this.MSSStratergy == 'C-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'C-RED (Redsigned Mandatory)' || this.MSSStratergy == 'C-OFM (On Failure Maintenance)'
+          || this.MSSStratergy == 'D-FFT (Failure Finding Task)' || this.MSSStratergy == 'D-OCM (On Condition Maintenance Task)' || this.MSSStratergy == 'D-SO (Scheduled Overhaul Task)'
+          || this.MSSStratergy == 'D-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'D-RED (Redsigned Mandatory)' || this.MSSStratergy == 'D-OFM (On Failure Maintenance)'
+          || this.MSSStratergy == 'E-FFT (Failure Finding Task)' || this.MSSStratergy == 'E-OCM (On Condition Maintenance Task)' || this.MSSStratergy == 'E-SO (Scheduled Overhaul Task)'
+          || this.MSSStratergy == 'E-SR (Scheduled Replacement Task)' || this.MSSStratergy == 'E-RED (Redsigned Mandatory)' || this.MSSStratergy == 'E-OFM (On Failure Maintenance)') {
 
           if (this.MSSStratergy == 'C-FFT (Failure Finding Task)' || this.MSSStratergy == 'D-FFT (Failure Finding Task)') {
             let obj = {}
             obj['CentrifugalPumpMssId'] = 0;
             obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-            obj['CPPFMId'] = 0;
+            obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
             obj['MSSMaintenanceInterval'] = 'Not Applicable';
             obj['MSSMaintenanceTask'] =  this.MSSeditTask;
             obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -564,12 +566,12 @@ export class MSSAddComponent implements OnInit {
             var ocmWeek: number = ocmHours.split(" ")[0]
             ocmWeek = Math.round((ocmWeek / 24) / 7)
 
-            var strategy = this.MSSStratergy.split('-')[1];
+            var strategy = this.MSSStratergy.split("-")[1];
             let obj = {}
             if (strategy == 'FFT (Failure Finding Task)') {
               obj['CentrifugalPumpMssId'] = 0;
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['CPPFMId'] = 0;
+              obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
               obj['MSSMaintenanceInterval'] = 'NA';
               obj['MSSMaintenanceTask'] =  this.MSSeditTask;
               obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -578,10 +580,10 @@ export class MSSAddComponent implements OnInit {
               obj['MSSIntervalSelectionCriteria'] = this.MSSIntervalSelectionCriteria;
               obj['MSSFinalAvaliability'] = availablility;
               this.FMObj.CentrifugalPumpMssModel.push(obj);
-            } else if (strategy == 'OCM (On Condition Maintainenance Task)') {
+            } else if (strategy == 'OCM (On Condition Maintenance Task)') {
               obj['CentrifugalPumpMssId'] = 0;
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['CPPFMId'] = 0;
+              obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
               obj['MSSMaintenanceInterval'] = `${ocmWeek.toFixed(2)}${" "}${"Week"}`;
               obj['MSSMaintenanceTask'] =  this.MSSeditTask;
               obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -594,7 +596,7 @@ export class MSSAddComponent implements OnInit {
             } else if (strategy == 'SO (Scheduled Overhaul Task)') {
               obj['CentrifugalPumpMssId'] = 0;
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['CPPFMId'] = 0;
+              obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
               obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife}${" "}${"Week"}`;
               obj['MSSMaintenanceTask'] =  this.MSSeditTask;
               obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -607,7 +609,7 @@ export class MSSAddComponent implements OnInit {
             } else if (strategy == 'SR (Scheduled Replacement Task)') {
               obj['CentrifugalPumpMssId'] = 0;
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['CPPFMId'] = 0;
+              obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
               obj['MSSMaintenanceInterval'] = `${this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSADDCounter - 1].FCAUsefulLife.toFixed(2)}${" "}${"Week"}`;
               obj['MSSMaintenanceTask'] =  this.MSSeditTask;
               obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -620,7 +622,7 @@ export class MSSAddComponent implements OnInit {
             } else if (strategy == 'RED (Redsigned Mandatory)') {
               obj['CentrifugalPumpMssId'] = 0;
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['CPPFMId'] = 0;
+              obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
               obj['MSSMaintenanceInterval'] = 'NA';
               obj['MSSMaintenanceTask'] =  this.MSSeditTask;
               obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -631,10 +633,10 @@ export class MSSAddComponent implements OnInit {
               this.FMObj.CentrifugalPumpMssModel.push(obj);
 
             }
-            else if (strategy == 'OFM (On Failure Maintainenance)') {
+            else if (strategy == 'OFM (On Failure Maintenance)') {
               obj['CentrifugalPumpMssId'] = 0;
               obj['CFPPrescriptiveId'] = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-              obj['CPPFMId'] = 0;
+              obj['CPPFMId'] =  this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[this.MSSTaskIndex].CPPFMId;;
               obj['MSSMaintenanceInterval'] = 'NA'
               obj['MSSMaintenanceTask'] =  this.MSSeditTask;
               obj['MSSFrequency'] = this.MSSTaskFrequency;
@@ -650,8 +652,8 @@ export class MSSAddComponent implements OnInit {
 
       });
 
-      this.FMObj.MSSStartergyList = JSON.stringify(this.StrategyList)
-      this.CentrifugalPumpPrescriptiveModels.centrifugalPumpPrescriptiveFailureModes.push(this.FMObj);
+      this.FMObj.MSSStartergyList = JSON.stringify(this.StrategyList);
+      // this.CentrifugalPumpPrescriptiveModels.centrifugalPumpPrescriptiveFailureModes.push(this.FMObj);
 
       //  this.MSSTaskObjList.push(MSSTaskObj)
 
@@ -707,6 +709,8 @@ export class MSSAddComponent implements OnInit {
   }
 
   AddAnotherTaskN(){
+    this.CentrifugalPumpPrescriptiveModels.centrifugalPumpPrescriptiveFailureModes.push(this.FMObj);
+    this.FMObj = new CentrifugalPumpPrescriptiveFailureMode();
     this.AddAnotherMSSSave = false;
     this.AddAnotherMSSTask = false;
     this.addTask = false;
@@ -728,7 +732,8 @@ export class MSSAddComponent implements OnInit {
     this.PlantStoppage = true
     this.PlantStoppageTime = true
     this.AddMSSSave = false
-    this.MSSIntervalSelectionCriteria = ""
+    this.MSSIntervalSelectionCriteria = "";
+    this.MSSTaskIndex++;
   }
 
   async SaveMSS() {

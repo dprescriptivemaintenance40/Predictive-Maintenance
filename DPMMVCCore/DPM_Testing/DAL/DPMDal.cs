@@ -8,7 +8,6 @@ using DPM.Models.RecycleBinModel;
 using DPM.Models.Prescriptive.RCA;
 using DPM.Models.Prescriptive.PSR;
 using DPM.Models;
-using DPM.Models.Prescriptive.CentrifugalPumpModel;
 
 namespace DPM_ServerSide.DAL
 {
@@ -30,9 +29,10 @@ namespace DPM_ServerSide.DAL
         public DbSet<CentrifugalPumpModel> CentrifugalPumpModelData { get; set; }
         public DbSet<CentrifugalPumpPrescriptiveFailureMode> centrifugalPumpPrescriptiveFailureModes { get; set; }
         public DbSet<CentrifugalPumpMssModel> CentrifugalPumpMssModels { get; set; }
-        public DbSet<CentrifugalPumpCbaModel> centrifugalPumpCbaModel { get; set; }
-        public DbSet<CBAFailureModeTask> CBAFailureModeTasks { get; set; }
-
+        public DbSet<PrescriptiveCbaModel> PrescriptiveCbaModels { get; set; }
+        public DbSet<CBAFailureMode> CBAFailureModes { get; set; }
+        public DbSet<CBAMaintenanceTask> CBAMaintenanceTasks { get; set; }
+        public DbSet<CBAMainenanceInterval> CBAMainenanceIntervals { get; set; }
         public DbSet<RecycleBinCentrifugalPumpPrescriptiveModel> recycleCentrifugalPumpModelData { get; set; }
         public DbSet<RestoreCentrifugalPumpPrescriptiveFailureMode> restoreCentrifugalPumpPrescriptiveFailureModes { get; set; }
         public DbSet<CentrifugalPumpWeekDataModel> CentrifugalPumpWeekDataModel { get; set; }
@@ -79,17 +79,22 @@ namespace DPM_ServerSide.DAL
                         .HasForeignKey(a => a.CPPFMId);
 
 
-            modelBuilder.Entity<CentrifugalPumpCbaModel>().ToTable("prescriptivecbatable");
-            //modelBuilder.Entity<CentrifugalPumpPrescriptiveCBAFailureMode>().ToTable("centrifugalpumpcbafailuremodes");
-            //modelBuilder.Entity<CentrifugalPumpPrescriptiveCBAFailureMode>()
-            //            .HasOne(p => p.centrifugalPumpCbaModel)
-            //            .WithMany(b => b.centrifugalPumpPrescriptiveCBAFailureModes)
-            //            .HasForeignKey(a => a.CPCMId);
-            modelBuilder.Entity<CBAFailureModeTask>().ToTable("centrifugalpumpcbafailuremodes");
-            modelBuilder.Entity<CBAFailureModeTask>()
-                        .HasOne(p => p.centrifugalPumpCbaModel)
-                        .WithMany(b => b.CBAFailureModeTasks)
-                        .HasForeignKey(a => a.CPPCFMId);
+            modelBuilder.Entity<PrescriptiveCbaModel>().ToTable("prescriptivecbatable");
+            modelBuilder.Entity<CBAFailureMode>().ToTable("cbafailuremodes");
+            modelBuilder.Entity<CBAFailureMode>()
+                        .HasOne(p => p.PrescriptiveCbaModels)
+                        .WithMany(b => b.CBAFailureModes)
+                        .HasForeignKey(a => a.PCMId);
+            modelBuilder.Entity<CBAMaintenanceTask>().ToTable("cbamaintenancetask");
+            modelBuilder.Entity<CBAMaintenanceTask>()
+                        .HasOne(p => p.CBAFailureMode)
+                        .WithMany(b => b.CBAMaintenanceTasks)
+                        .HasForeignKey(a => a.CFMId);
+            modelBuilder.Entity<CBAMainenanceInterval>().ToTable("cbamainenanceinterval");
+            modelBuilder.Entity<CBAMainenanceInterval>()
+                        .HasOne(p => p.CBAMaintenanceTasks)
+                        .WithMany(b => b.CBAMainenanceIntervals)
+                        .HasForeignKey(a => a.CMTId);
 
 
             modelBuilder.Entity<RecycleBinCentrifugalPumpPrescriptiveModel>().ToTable("recycledpmprescriptive");

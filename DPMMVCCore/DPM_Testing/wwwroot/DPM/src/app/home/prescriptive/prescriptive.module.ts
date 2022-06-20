@@ -21,6 +21,8 @@ import { MSRComponent } from './PSR/msr/msr.component';
 import { UserProductionDetailsComponent } from './PSR/user-production-details/user-production-details.component';
 import { InputDataManagementComponent } from './PSR/input-data-management/input-data-management.component';
 import { CBAComponent } from "./CBA/cba-add/cba-add.component";
+import { RiskMatrix5Component } from "./Shared/CBA/RiskMatrix5/riskmatrix5.component";
+import { RiskMatrix6Component } from "./Shared/CBA/RiskMatrix6/riskmatrix6.component";
 
 @NgModule({
     declarations: [PrescriptiveComponent,
@@ -40,7 +42,9 @@ import { CBAComponent } from "./CBA/cba-add/cba-add.component";
         MSRComponent,
         UserProductionDetailsComponent,
         InputDataManagementComponent,
-        CBAComponent
+        CBAComponent,
+        RiskMatrix5Component,
+        RiskMatrix6Component,
     ],
     imports: [
         SharedModule,

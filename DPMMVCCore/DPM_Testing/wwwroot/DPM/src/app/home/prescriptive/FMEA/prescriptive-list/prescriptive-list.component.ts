@@ -46,9 +46,9 @@ export class PrescriptiveListComponent implements OnInit {
     public changeDetectorRef: ChangeDetectorRef,
     public sanitizer: DomSanitizer,
     private commonBLService: CommonBLService,
-    private prescriptiveContantAPI: PrescriptiveContantAPI) { 
-      this.title.setTitle('Prescriptive List | Dynamic Prescriptive Maintenence')
-    }
+    private prescriptiveContantAPI: PrescriptiveContantAPI) {
+    this.title.setTitle('Prescriptive List | Dynamic Prescriptive Maintenence')
+  }
 
   ngOnInit() {
     this.getPrescriptiveRecords();
@@ -215,12 +215,14 @@ export class PrescriptiveListComponent implements OnInit {
   }
 
   getMSSStrategyTable(p) {
-    this.FailureModeDataTabe4 =  p.CentrifugalPumpMssModel
+    this.FailureModeDataTabe4 = p.CentrifugalPumpMssModel
     this.Table4 = true
     this.Table3 = false
     this.Table2 = false
     this.Table1 = false
   }
 
-
+  public DownloadPDF(url: string) {
+    window.open(url, "_blank");
+  }
 }

@@ -1,5 +1,4 @@
 ﻿using DPM.Models.Prescriptive;
-using DPM.Models.Prescriptive.CentrifugalPumpModel;
 using DPM.Models.RecycleBinModel;
 using DPM_ServerSide.DAL;
 using Microsoft.AspNetCore.Hosting;
@@ -595,43 +594,72 @@ namespace DPM.Controllers.Prescriptive
 
         [HttpPost]
         [Route("SaveCBASheetData")]
-        public async Task<ActionResult<CentrifugalPumpCbaModel>> SaveCBASheetData([FromBody] CentrifugalPumpCbaModel prescriptiveCbaModel)
+        public async Task<ActionResult<PrescriptiveCbaModel>> SaveCBASheetData([FromBody] PrescriptiveCbaModel prescriptiveCbaModel)
         {
             try
             {
-                CentrifugalPumpCbaModel cbaObj = new CentrifugalPumpCbaModel();
-                cbaObj.CPCMId = 4;
+                PrescriptiveCbaModel cbaObj = new PrescriptiveCbaModel();
+                //cbaObj.PCMId = 1;
                 cbaObj.CFPPrescriptiveId = prescriptiveCbaModel.CFPPrescriptiveId;
                 cbaObj.CPPFMId = prescriptiveCbaModel.CPPFMId;
                 cbaObj.TagNumber = prescriptiveCbaModel.TagNumber;
-                cbaObj.FailureMode = prescriptiveCbaModel.FailureMode;
                 cbaObj.IsAgeRelated = prescriptiveCbaModel.IsAgeRelated;
                 cbaObj.RiskMatrix = prescriptiveCbaModel.RiskMatrix;
                 cbaObj.Consequence = prescriptiveCbaModel.Consequence;
                 cbaObj.HasScenario = prescriptiveCbaModel.HasScenario;
                 cbaObj.DescribeScenario = prescriptiveCbaModel.DescribeScenario;
-                _context.centrifugalPumpCbaModel.Add(cbaObj);
+                _context.PrescriptiveCbaModels.Add(cbaObj);
                 await _context.SaveChangesAsync();
-                var cbaDatas = prescriptiveCbaModel.CBAFailureModeTasks;
-                foreach (var cbaData in cbaDatas)
+                var cbafailuremode = prescriptiveCbaModel.CBAFailureModes;
+                foreach (var failuremode in cbafailuremode)
                 {
-                    CBAFailureModeTask CBATaskObj = new CBAFailureModeTask();
-                    CBATaskObj.CFMId = 1;
-                    CBATaskObj.CPPCFMId = cbaObj.CPCMId;
-                    CBATaskObj.CPMId = cbaData.CPMId;
-                    CBATaskObj.MSSMaintenanceTask = cbaData.MSSMaintenanceTask;
-                    CBATaskObj.MSSStartergy = cbaData.MSSStartergy;
-                    CBATaskObj.MSSMAintenanceInterval = cbaData.MSSMAintenanceInterval;
-                    CBATaskObj.RWC = cbaData.RWC;
-                    CBATaskObj.TaskDuration = cbaData.TaskDuration;
-                    CBATaskObj.ResourceCost = cbaData.ResourceCost;
-                    CBATaskObj.MaterialCost = cbaData.MaterialCost;
-                    CBATaskObj.POC = cbaData.POC;
-                    CBATaskObj.WorkCenter = cbaData.WorkCenter;
-                    CBATaskObj.OnStream = cbaData.OnStream;
-                    CBATaskObj.Status = cbaData.Status;
-                    _context.CBAFailureModeTasks.Add(CBATaskObj);
+                    CBAFailureMode FailureMode = new CBAFailureMode();
+                    //FailureMode.CFMId = failuremode.CFMId;
+                    FailureMode.PCMId = cbaObj.PCMId;
+                    FailureMode.FailureMode = failuremode.FailureMode;
+                    FailureMode.ETBF = failuremode.ETBF;
+                    FailureMode.PONC = failuremode.PONC;
+                    FailureMode.HS = failuremode.HS;
+                    FailureMode.EV = failuremode.EV;
+                    FailureMode.CA = failuremode.CA;
+                    FailureMode.ETBC = failuremode.ETBC;
+                    FailureMode.TotalAnnualPOC = failuremode.TotalAnnualPOC;
+                    FailureMode.MEI = failuremode.MEI;
+                    _context.CBAFailureModes.Add(FailureMode);
                     await _context.SaveChangesAsync();
+                    var Tasks = failuremode.CBAMaintenanceTasks;
+                    foreach (var task in Tasks)
+                    {
+                        CBAMaintenanceTask cbatask = new CBAMaintenanceTask();
+                        cbatask.CFMId = FailureMode.CFMId;
+                        cbatask.CentrifugalPumpMssId = task.CentrifugalPumpMssId;
+                        cbatask.MSSMaintenanceTask = task.MSSMaintenanceTask;
+                        cbatask.MSSStartergy = task.MSSStartergy;
+                        cbatask.MaterialCost = task.MaterialCost;
+                        cbatask.Status = task.Status;
+                        _context.CBAMaintenanceTasks.Add(cbatask);
+                        await _context.SaveChangesAsync();
+                        var intervals = task.CBAMainenanceIntervals;
+                        foreach (var interval in intervals)
+                        {
+                            CBAMainenanceInterval cbainterval = new CBAMainenanceInterval();
+                            //CBATaskObj.CPPCFMId = cbaObj.CPCMId;
+                            cbainterval.CMTId = cbatask.CMTId;
+                            //CBATaskObj.MSSMaintenanceTask = cbaData.MSSMaintenanceTask;
+                            cbainterval.MaintenanceInterval = interval.MaintenanceInterval;
+                            cbainterval.Maintenancelibrary = interval.Maintenancelibrary;
+                            cbainterval.RWC = interval.RWC;
+                            cbainterval.TaskDuration = interval.TaskDuration;
+                            cbainterval.ResourceCost = interval.ResourceCost;
+                            cbainterval.POC = interval.POC;
+                            cbainterval.AnnualPOC = interval.AnnualPOC;
+                            cbainterval.WorkCenter = interval.WorkCenter;
+                            cbainterval.OnStream = interval.OnStream;
+                            _context.CBAMainenanceIntervals.Add(cbainterval);
+                            await _context.SaveChangesAsync();
+                        }
+
+                    }
                 }
                 return Ok();
             }
@@ -699,8 +727,8 @@ namespace DPM.Controllers.Prescriptive
 
             try
             {
-                string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                List<CentrifugalPumpPrescriptiveModel> centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId && a.UserId == userId)
+                //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                List<CentrifugalPumpPrescriptiveModel> centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == prescriptiveModel.CFPPrescriptiveId)
                                                                                                                   .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                                                                                   .ToListAsync();
                 centrifugalPumpPrescriptiveModel[0].FMWithConsequenceTree = prescriptiveModel.FMWithConsequenceTree;

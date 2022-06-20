@@ -325,36 +325,36 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
 
   centrifugalPumpPrescriptiveOBJ: CentrifugalPumpPrescriptiveModel = new CentrifugalPumpPrescriptiveModel();
 
-  public UpdateFinalFCACondition : any = [] 
-  public UpdateFinalFCAInterval : number = 0; 
-  public UpdateFinalFCAFFIInterval : number = 0;
-  public UpdateFinalSafeUsefulLife : number = 0; 
-  public UpdateSafeLife : number = 0; 
-  public UpdateUsefulLife : number = 0; 
-  public UpdateFCAConditionsFINAL : any = []
-  public UpdateFCAIntervalsFINAL : any = []
-  public UpdateFCACommentFINAL : any = []
-  public UpdateWebalYN : string =""
-  public UpdateMSSConsequence : string =""
-  public UpdateMSSImagePath : string = ""
-  public UpdateMSSImageFlag : boolean = false
-  public UpdateMSSImageValues : any = []
-  public UpdateMSSTaskObj : any = []
-  public UpdatedMSSStartegy : string = ""
-  private UpdateMSSTreeLabel : number = 0
-  private UpdateMSSAvailability : number = 0
-  public UpdateMSSAvailabilityY : string = ""
-  public UpdateMSSstoppageDaysValue : number = 0
-  public UpdateMSSstoppageDays : string = ""
-  public UpdateMSSstoppageDaysTimeValue : number = 0
-  public UpdateMSSstoppageDaysTime : string = ""
-  public UpdateMSSAvailabilityCheck : number = 0
-  public UpdateMSSDirectAvailability : boolean = false
-  public UpdateMSSIndirectAvailability : boolean = false
-  public ADDMSSFinalAvailability : any = [];
-  public UpdateFunAndFunFailureName : string = "";
-  public UpdateFunFailure : string = "";
-  public presObj : CentrifugalPumpPrescriptiveModels = new CentrifugalPumpPrescriptiveModels();
+  public UpdateFinalFCACondition: any = []
+  public UpdateFinalFCAInterval: number = 0;
+  public UpdateFinalFCAFFIInterval: number = 0;
+  public UpdateFinalSafeUsefulLife: number = 0;
+  public UpdateSafeLife: number = 0;
+  public UpdateUsefulLife: number = 0;
+  public UpdateFCAConditionsFINAL: any = []
+  public UpdateFCAIntervalsFINAL: any = []
+  public UpdateFCACommentFINAL: any = []
+  public UpdateWebalYN: string = ""
+  public UpdateMSSConsequence: string = ""
+  public UpdateMSSImagePath: string = ""
+  public UpdateMSSImageFlag: boolean = false
+  public UpdateMSSImageValues: any = []
+  public UpdateMSSTaskObj: any = []
+  public UpdatedMSSStartegy: string = ""
+  private UpdateMSSTreeLabel: number = 0
+  private UpdateMSSAvailability: number = 0
+  public UpdateMSSAvailabilityY: string = ""
+  public UpdateMSSstoppageDaysValue: number = 0
+  public UpdateMSSstoppageDays: string = ""
+  public UpdateMSSstoppageDaysTimeValue: number = 0
+  public UpdateMSSstoppageDaysTime: string = ""
+  public UpdateMSSAvailabilityCheck: number = 0
+  public UpdateMSSDirectAvailability: boolean = false
+  public UpdateMSSIndirectAvailability: boolean = false
+  public ADDMSSFinalAvailability: any = [];
+  public UpdateFunAndFunFailureName: string = "";
+  public UpdateFunFailure: string = "";
+  public presObj: CentrifugalPumpPrescriptiveModels = new CentrifugalPumpPrescriptiveModels();
 
   constructor(private messageService: MessageService,
     public formBuilder: FormBuilder,
@@ -423,7 +423,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
     console.log(p.label)
     this.UpdateModal = true;
     if (p.label == 'Function') {
-      this.UpdateFunAndFunFailureName="Function";
+      this.UpdateFunAndFunFailureName = "Function";
       this.FluidType = this.CPPrescriptiveUpdateData.FunctionFluidType;
       this.UpdateFunFailure = this.CPPrescriptiveUpdateData.FunctionFailure;
       this.RatedHead = this.CPPrescriptiveUpdateData.FunctionRatedHead
@@ -791,7 +791,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
   SaveFunction() {
     this.centrifugalPumpPrescriptiveOBJ.FunctionFluidType = this.FluidType
     this.centrifugalPumpPrescriptiveOBJ.FunctionFailure = this.UpdateFunFailure;
-    let FunctionTree: string = this.FluidType ;
+    let FunctionTree: string = this.FluidType;
     this.data1[0].data.name = FunctionTree
     this.data2[0].data.name = FunctionTree
     this.data1[0].children[0].data.name = this.UpdateFunFailure
@@ -3243,7 +3243,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         SystemEffect = element.children[0].children[1].data.name
         Consequence = element.children[0].children[2].data.name
 
-        var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence)
+        var UpdateData = this.CPPrescriptiveUpdateData.centrifugalPumpPrescriptiveFailureModes.find(a => a['FunctionMode'] == FMName && a['LocalEffect'] == LocalEffect && a['SystemEffect'] == SystemEffect && a['Consequence'] == Consequence);
         this.UserMSSDataToBeModified = UpdateData;
         var oldSelection: any = JSON.parse(UpdateData.MSSStartergyList);
         var d1 = oldSelection[0]
@@ -4618,7 +4618,7 @@ export class PrescriptiveUpdateComponent implements OnInit, CanComponentDeactiva
         }
       });
       for (let i = 0; i < this.failuerMode.length; i++) {
-      this.failuerMode[i].checked = false;
+        this.failuerMode[i].checked = false;
       }
       this.failuerMode[index1].checked = true;
     }

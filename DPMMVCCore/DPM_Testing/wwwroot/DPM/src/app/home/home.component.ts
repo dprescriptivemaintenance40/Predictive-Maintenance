@@ -617,7 +617,10 @@ export class HomeComponent implements OnInit {
       this.staticEquitment = false;
     }
   }
-
+ 
+  MenuClosed(){
+    this.menuOpened = false;
+  }
 
   logout() {
     localStorage.clear();

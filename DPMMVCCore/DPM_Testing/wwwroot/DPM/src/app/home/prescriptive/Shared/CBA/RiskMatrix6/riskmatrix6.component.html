@@ -1,0 +1,186 @@
+<table>
+    <thead>
+        <tr>
+            <th rowspan="2" class="xl161" width="143" style="width:107pt">#</th>
+            <th rowspan="2" class="xl161" width="143" style="width:107pt">A</th>
+            <th rowspan="2" class="xl161" width="143" style="width:107pt">B</th>
+            <th rowspan="2" class="xl161" width="143" style="width:107pt">C</th>
+            <th rowspan="2" class="xl161" width="143" style="width:107pt">D</th>
+            <th rowspan="2" class="xl161" width="143" style="width:107pt">E</th>
+            <th rowspan="2" class="xl161" width="143" style="width:107pt">F</th>
+            <p-button  [style]="{'width':'100px'}" icon="pi pi-eye" (click)="imageSource()">See Matrix</p-button>
+                <p-dialog [(visible)]="hidden" [modal]="true"
+                    [style]="{'max-height':'800px','width':'1400px','overflow':'auto'}">
+                    <img [src]="url" *ngIf="hidden" />
+                    <ng-template pTemplate="footer">
+                        <p-button icon="pi pi-close" (click)="hidden=false" label="Close" styleClass="p-button-text">
+                        </p-button>
+                    </ng-template>
+                </p-dialog>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="xl88" style="border-top:none">6</td>
+            <td class="xl89" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl89" style="border: none; width: 139px; height: 65px;" #sixA
+                    (click)="updatecriticalityClass.emit(sixA)" value="6A">6A</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl90" style="border: none; width: 139px; height: 65px;" #sixB
+                    (click)="updatecriticalityClass.emit(sixB)" value="6B">6B</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl90" style="border: none; width: 139px; height: 65px;" #sixC
+                    (click)="updatecriticalityClass.emit(sixC)" value="6C">6C</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl90" style="border: none; width: 139px; height: 65px;" #sixD
+                    (click)="updatecriticalityClass.emit(sixD)" value="6D">6D</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl90" style="border: none; width: 139px; height: 65px;" #sixE
+                    (click)="updatecriticalityClass.emit(sixE)" value="6E">6E</button>
+            </td>
+            <td class="xl91" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl91" style="border: none; width: 139px; height: 65px;" #sixF
+                    (click)="updatecriticalityClass.emit(sixF)" value="6F">6F</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="xl88" style="border-top:none">5</td>
+            <td class="xl94" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl94" style="border: none; width: 139px; height: 65px;" #fiveA
+                    (click)="updatecriticalityClass.emit(fiveA)" value="5A">5A</button>
+            </td>
+            <td class="xl89" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl89" style="border: none; width: 139px; height: 65px;" #fiveB
+                    (click)="updatecriticalityClass.emit(fiveB)" value="5B">5B</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl90" style="border: none; width: 139px; height: 65px;" #fiveC
+                    (click)="updatecriticalityClass.emit(fiveC)" value="5c">5C</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl90" style="border: none; width: 139px; height: 65px;" #fiveD
+                    (click)="updatecriticalityClass.emit(fiveD)" value="5D">5D</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <Button class="xl90" style="border: none; width: 139px; height: 65px;" #fiveE
+                    (click)="updatecriticalityClass.emit(fiveE)" value="5E">5E</Button>
+            </td>
+            <td class="xl91" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl91" style="border: none; width: 139px; height: 65px;" #fiveF
+                    (click)="updatecriticalityClass.emit(fiveF)" value="5F">5F</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="xl88" style="border-top:none">4</td>
+            <td class="xl94" width="143" style="border-top:none;border-left:none;width:107pt">
+                <Button class="xl94" style="border: none; width: 139px; height: 65px;" #fourA
+                    (click)="updatecriticalityClass.emit(fourA)" value="4A">4A</Button>
+            </td>
+            <td class="xl94" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl94" style="border: none; width: 139px; height: 65px;" #fourB
+                    (click)="updatecriticalityClass.emit(fourB)" value="4B">4B</button>
+            </td>
+            <td class="xl89" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl89" style="border: none; width: 139px; height: 65px;" #fourC
+                    (click)="updatecriticalityClass.emit(fourC)" value="4C">4C</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl90" style="border: none; width: 139px; height: 65px;" #fourD
+                    (click)="updatecriticalityClass.emit(fourD)" value="4D">4D</button>
+            </td>
+            <td class="xl90" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl90" style="border: none; width: 139px; height: 65px;" #fourE
+                    (click)="updatecriticalityClass.emit(fourE)" value="4E">4E</button>
+            </td>
+            <td class="xl91" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl91" style="border: none; width: 139px; height: 65px;" #fourF
+                    (click)="updatecriticalityClass.emit(fourF)" value="4F">4F</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="xl88" style="border-top:none">3</td>
+            <td class="xl95" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl95" style="border: none; width: 139px; height: 65px;" #threeA
+                    (click)="updatecriticalityClass.emit(threeA)" value="3A">3A</button>
+            </td>
+            <td class="xl94" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl94" style="border: none; width: 139px; height: 65px;" #threeB
+                    (click)="updatecriticalityClass.emit(threeB)" value="3B">3B</button>
+            </td>
+            <td class="xl94" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl94" style="border: none; width: 139px; height: 65px;" #threeC
+                    (click)="updatecriticalityClass.emit(threeC)" value="3C">3C</button>
+            </td>
+            <td class="xl89" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl89" style="border: none; width: 139px; height: 65px;" #threeD
+                    (click)="updatecriticalityClass.emit(threeD)" value="3D">3D</button>
+            </td>
+            <td class="xl89" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl89" style="border: none; width: 139px; height: 65px;" #threeE
+                    (click)="updatecriticalityClass.emit(threeE)" value="3E">3E</button>
+            </td>
+            <td class="xl91" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl91" style="border: none; width: 139px; height: 65px;" #threeF
+                    (click)="updatecriticalityClass.emit(threeF)" value="3F">3F</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="xl88" style="border-top:none">2</td>
+            <td class="xl95" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl95" style="border: none; width: 139px; height: 65px;" #twoA
+                    (click)="updatecriticalityClass.emit(twoA)" value="2A">2A</button>
+            </td>
+            <td class="xl95" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl95" style="border: none; width: 139px; height: 65px;" #twoB
+                    (click)="updatecriticalityClass.emit(twoB)" value="2B">2B</button>
+            </td>
+            <td class="xl94" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl94" style="border: none; width: 139px; height: 65px;" #twoC
+                    (click)="updatecriticalityClass.emit(twoC)" value="2C">2C</button>
+            </td>
+            <td class="xl94" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl94" style="border: none; width: 139px; height: 65px;" #twoD
+                    (click)="updatecriticalityClass.emit(twoD)" value="2D">2D</button>
+            </td>
+            <td class="xl94" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl94" style="border: none; width: 139px; height: 65px;" #twoE
+                    (click)="updatecriticalityClass.emit(twoE)" value="2E">2E</button>
+            </td>
+            <td class="xl96" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl96" style="border: none; width: 139px; height: 65px;" #twoF
+                    (click)="updatecriticalityClass.emit(twoF)" value="2F">2F</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="xl88" style="border-top:none">1</td>
+            <td class="xl103" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl103" style="border: none; width: 139px; height: 65px;" #oneA
+                    (click)="updatecriticalityClass.emit(oneA)" value="1A">1A</button>
+            </td>
+            <td class="xl103" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl103" style="border: none; width: 139px; height: 65px;" #oneB
+                    (click)="updatecriticalityClass.emit(oneB)" value="1B">1B</button>
+            </td>
+            <td class="xl103" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl103" style="border: none; width: 139px; height: 65px;" #oneC
+                    (click)="updatecriticalityClass.emit(oneC)" value="1C">1C</button>
+            </td>
+            <td class="xl103" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl103" style="border: none; width: 139px; height: 65px;" #oneD
+                    (click)="updatecriticalityClass.emit(oneD)" value="1D">1D</button>
+            </td>
+            <td class="xl104" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl104" style="border: none; width: 139px; height: 65px;" #oneE
+                    (click)="updatecriticalityClass.emit(oneE)" value="1E">1E</button>
+            </td>
+            <td class="xl105" width="143" style="border-top:none;border-left:none;width:107pt">
+                <button class="xl105" style="border: none; width: 140px; height: 65px;" #oneF
+                    (click)="updatecriticalityClass.emit(oneF)" value="1F">1F</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

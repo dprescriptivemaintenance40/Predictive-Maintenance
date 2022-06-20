@@ -1,0 +1,47 @@
+[
+    {
+        "id": 0,
+        "craft": "OPS",
+        "hourlyrate": 11.35
+    },
+    {
+        "id": 1,
+        "craft": "REL",
+        "hourlyrate": 11.35
+    },
+    {
+        "id": 2,
+        "craft": "MEC",
+        "hourlyrate": 11.35
+    },
+    {
+        "id": 3,
+        "craft": "ELE",
+        "hourlyrate": 11.35
+    },
+    {
+        "id": 4,
+        "craft": "CTL",
+        "hourlyrate": 11.35
+    },
+    {
+        "id": 5,
+        "craft": "AUT",
+        "hourlyrate": 11.35
+    },
+    {
+        "id": 6,
+        "craft": "HEL",
+        "hourlyrate": 5.68
+    },
+    {
+        "id": 7,
+        "craft": "RIG",
+        "hourlyrate": 7.49
+    },
+    {
+        "id": 8,
+        "craft": "DRV",
+        "hourlyrate": 7.49
+    }
+]
