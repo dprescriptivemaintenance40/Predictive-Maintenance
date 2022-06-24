@@ -3,6 +3,8 @@ export class PrescriptiveCbaModel {
     public CFPPrescriptiveId: number;
     public CPPFMId: number;
     public TagNumber: string = "";
+    public EquipmentType :string = "";
+    public FunctionFailure :string = "";
     public IsAgeRelated: string = ""
     public RiskMatrix: string = ""
     public Consequence: string = ""
@@ -22,6 +24,8 @@ export class CBAFailureMode {
     public CA: string;
     public ETBC: number;
     public TotalAnnualPOC: number;
+    public TotalAnnualCostWithMaintenance: number;
+    public ResidualRiskWithMaintenance: number;
     public MEI: number;
     public CBAMaintenanceTasks:any = [];
 }
@@ -39,7 +43,7 @@ export class CBAMaintenanceInterval {
     public CMIId: number;
     public CMTId: number;
     public Maintenancelibrary: string;
-    public MSSMAintenanceInterval: string = ""
+    public MSSFrequency: string = ""
     public RWC: string;
     public TaskDuration: number;
     public ResourceCost: number;

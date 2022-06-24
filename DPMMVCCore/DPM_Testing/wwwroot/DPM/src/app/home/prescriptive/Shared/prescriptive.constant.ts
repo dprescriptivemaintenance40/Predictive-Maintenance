@@ -24,6 +24,7 @@ export class PrescriptiveContantAPI {
     public FMEAParentAttachments: string = '/PrescriptiveAPI/CompontentAttachment';
 
     public CBASheet:string = '/PrescriptiveAPI/SaveCBASheetData'
+    public CBARecordsForReport = '/PrescriptiveAPI/GetCBARecordsForReportById';
     //#endregion
 
 

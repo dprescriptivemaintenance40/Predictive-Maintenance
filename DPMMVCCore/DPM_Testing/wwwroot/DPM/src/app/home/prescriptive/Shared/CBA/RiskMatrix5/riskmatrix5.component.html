@@ -8,7 +8,7 @@
           <th rowspan="2" class="xl161" width="143" style="width:107pt">C</th>
           <th rowspan="2" class="xl161" width="143" style="width:107pt">D</th>
           <th rowspan="2" class="xl161" width="143" style="width:107pt">E</th>
-          <p-button  [style]="{'width':'100px'}" icon="pi pi-eye" (click)="imageSource()">See Matrix</p-button>
+          <p-button [style]="{'width':'100px'}" icon="pi pi-eye" (click)="imageSource()">See Matrix</p-button>
                 <p-dialog [(visible)]="hidden" [modal]="true"
                     [style]="{'max-height':'800px','width':'1400px','overflow':'auto'}">
                     <img [src]="url" *ngIf="hidden" />

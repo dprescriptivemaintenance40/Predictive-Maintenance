@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonBLService } from 'src/app/shared/BLDL/common.bl.service';
 import { PrescriptiveContantAPI } from '../../Shared/prescriptive.constant';
 import { CBAFailureMode, PrescriptiveCbaModel, CBAMaintenanceTask, CBAMaintenanceInterval } from '../../Shared/CBA/cba-model';
@@ -8,8 +8,6 @@ import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 
-// declare var vis: any;
-
 @Component({
   selector: 'app-cba',
   templateUrl: './cba-add.component.html',
@@ -17,9 +15,11 @@ import { Router } from '@angular/router';
 })
 
 export class CBAComponent implements OnInit {
+  public cbaSheet: boolean = true;
   @ViewChild("spreadsheet", { static: true }) spreadsheet: ElementRef;
   public SelectBoxEnabled: boolean = false;
-  public cbaSheet: boolean = false;
+  public SheetData: any = [];
+  public MSSIndexId: number;
   public SelectedTagNumber: string = "";
   public TagList: any = [];
   public PrescriptiveTreeList: any = [];
@@ -30,10 +30,12 @@ export class CBAComponent implements OnInit {
   public SetTagNumber: string = "";
   public SetFailureMode: string = "";
   public SetEquipmentType: string = "";
+  public SetFunctionFailure: string = "";
   public SetAgeRelated: string = "";
   public FCAConsequence: string = "";
   public SetConsequence: string = "";
   public DescribeScenario: string = "";
+  public DisableScenario: boolean = true;
   public RiskMatrix: string = "";
   public SetMSSStratergy: string = "";
   public ScenarioYN: string = "";
@@ -44,6 +46,7 @@ export class CBAComponent implements OnInit {
   public SheetValue: Array<any> = [];
   public RiskMatrix5: boolean = false;
   public RiskMatrix6: boolean = false;
+  public AnnualCostIndex:number = 0;
 
   public CBAClientJSONData: any = [];
   public CBAContractorJSONData: any = [];
@@ -60,7 +63,7 @@ export class CBAComponent implements OnInit {
   public TotalDeleted: number = 0;
   public DeletedTaskDuration: number = 0;
   public annualcostwithmaintenance: number = 0;
-  public ResidualRisk:number = 0;
+  public ResidualRisk: number = 0;
 
   public x: string = "";
   public y: string = "";
@@ -81,11 +84,8 @@ export class CBAComponent implements OnInit {
   public TotalRepairCosts: number = 0;
 
   public PONCList: any = [];
-  public MEC: number = 0;
-  public OPS: number = 0;
-  public RIG: number = 0;
-  public HEL: number = 0;
   public TotalLabour: number = 0;
+  public TotalRepairCostsList: any = [];
 
   public TotalResourceCost: number = 0;
   public TotalEconomicConsequences: number = 0;
@@ -112,8 +112,8 @@ export class CBAComponent implements OnInit {
   public FailureModeId: number = 0;
 
   ngOnInit() {
-    this.getPrescriptiveRecords();
     this.cbaSheet = false;
+    this.getPrescriptiveRecords();
     this.homeComponent.MenuClosed();
     this.getCBAClientCraftInJSon();
     this.getCBAContractorCraftInJSon();
@@ -125,7 +125,8 @@ export class CBAComponent implements OnInit {
     private homeComponent: HomeComponent,
     private http: HttpClient,
     private messageService: MessageService,
-    public router: Router,) {
+    public router: Router,
+    private cdr:ChangeDetectorRef) {
   }
 
   async getPrescriptiveRecords() {
@@ -172,24 +173,31 @@ export class CBAComponent implements OnInit {
       this.PrescriptiveTreeList.forEach((res: any) => {
         if (res.TagNumber === this.SelectedTagNumber) {
           this.SelectedPrescriptiveTree.push(res);
-          // let obj = {};
-          // obj['0'] = this.SelectedPrescriptiveTree[0].TagNumber;
-          // obj['11'] = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[0].FunctionMode;
-          // obj['12'] = this.SelectedPrescriptiveTree[0].EquipmentType;
-          // this.setData.push(obj);
-          // this.SetTagNumber = this.SelectedPrescriptiveTree[0].TagNumber;
-          // this.SetFailureMode = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[0].FunctionMode;
-          // this.SetEquipmentType = this.SelectedPrescriptiveTree[0].EquipmentType;
           console.log(this.SelectedPrescriptiveTree)
-          // this.CFPPrescriptiveId = res.CFPPrescriptiveId;
-          // this.data1 = JSON.parse(res.FMWithConsequenceTree)
-          // this.data1Clone = this.data1[0].children[0].children[0].Consequence;
-          // this.cbaSheet = true;
           this.cbasheet();
-          // this.SelectBoxEnabled = false
         }
       });
     }
+  }
+
+  public cbasheet() {
+    this.cdr.detectChanges()
+    this.SelectBoxEnabled = false;
+    this.PrescriptiveCBA = true;
+    this.cbaSheet = true;
+    this.Economics = true;
+    this.createColumns();
+    this.jspreadsheet = jspreadsheet(this.spreadsheet.nativeElement, {
+      data: [[]],
+      columns: this.columns,
+      tableOverflow: true,
+      tableWidth: "1350px",
+      tableHeight: "600px",
+      onchange: this.changed,
+      onselection: this.selectionActive,
+      minDimensions: [, 100]
+    });
+    this.SetCBAData();
   }
 
   createColumns() {
@@ -220,46 +228,22 @@ export class CBAComponent implements OnInit {
     this.columns.push({ type: 'numeric', title: 'Mei', width: "80" })
   }
 
-  cbasheet() {
-    this.createColumns();
-    this.jspreadsheet = jspreadsheet(this.spreadsheet.nativeElement, {
-      data: [[]],
-      columns: this.columns,
-      tableOverflow: true,
-      tableWidth: "1200px",
-      tableHeight: "600px",
-      onchange: this.changed,
-      onselection: this.selectionActive,
-      minDimensions: [, 4]
-    });
-    this.SetCBAData();
-    this.PrescriptiveCBA = true;
-    this.cbaSheet = true;
-    this.Economics = true;
-    this.SelectBoxEnabled = false;
-  }
-
   changed = async (instance, cell, x, y, value) => {
     this.SheetValue = this.jspreadsheet.getData();
-    if (x == 5) {
-      if (this.SheetValue[y][4] != "") {
-        this.RWC = this.SheetValue[y][5];
-        if (this.SheetValue[y][4] == 'Client') {
-          var dataFromLibrary = this.CBAClientJSONData.find(a => a['craft'] === this.RWC);
-          var hourlyRate = dataFromLibrary.hourlyrate;
-        }
-        else if (this.SheetValue[y][4] == 'Contractor') {
-          var dataFromLibrary = this.CBAContractorJSONData.find(a => a['craft'] === this.RWC);
-          var hourlyRate = dataFromLibrary.hourlyrate;
-        }
-        var MSSFrequency = this.SheetValue[y][3];
-        var datafromFrequency = this.CBAFrequencyJSONData.find(a => a['frequency'] === MSSFrequency);
-        var frequencyValue = datafromFrequency.frequencyvalue;
-        this.ResourceCost = hourlyRate * frequencyValue;
-        this.jspreadsheet.setValueFromCoords(7, y, this.ResourceCost.toFixed(3), true);
+    if (x == 3 || x == 4 || x == 5) {
+      if (this.SheetValue[y][3] != "" && this.SheetValue[y][4] != "" && this.SheetValue[y][5] != "") {
+        this.SetResourceCost(x, y);
       }
-      else if (this.SheetValue[y][4] == "") {
+      else if (this.SheetValue[y][4] != "" && this.SheetValue[y][3] == "") {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Enter Frequency' });
       }
+      else if (this.SheetValue[y][5] != "" && this.SheetValue[y][3] == "") {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Enter Frequency' });
+      }
+      else if (this.SheetValue[y][5] != "" && this.SheetValue[y][4] == "") {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Enter Library' });
+      }
+
     }
 
     if (x == 6) {
@@ -268,6 +252,7 @@ export class CBAComponent implements OnInit {
         this.jspreadsheet.setValueFromCoords(7, y, TaskDuration, true);
       }
       else if (this.SheetValue[y][5] != "") {
+        this.SetResourceCost(x, y);
         var TaskDuration = value;
         this.ResourceCost = this.SheetValue[y][7] * TaskDuration;
         this.jspreadsheet.setValueFromCoords(7, y, this.ResourceCost.toFixed(3), true);
@@ -279,6 +264,7 @@ export class CBAComponent implements OnInit {
         var ResourceCost = this.SheetValue[y][7];
         this.TotalResourceCost += Number(ResourceCost);
       }
+      this.TotalRepairCost();
     }
     if (this.SheetValue[y][5] != "" && this.SheetValue[y][6] != "") {
       if (x == "5" || x == "6") {
@@ -301,6 +287,7 @@ export class CBAComponent implements OnInit {
     }
     if (x == 13) {
       this.TotalAnnualPOC(x, y);
+      this.TotalAnnualCostWithMaintenance(x, y);
     }
     if (x == 14 || x == 15 || x == 20 || x == 21) {
       if (this.SheetValue[y][0] != "") {
@@ -311,9 +298,7 @@ export class CBAComponent implements OnInit {
         this.jspreadsheet.setValueFromCoords(24, y, MEI.toFixed(3), true);
       }
     }
-    // if (x == 15) {
-    //   this.SetPONC(x, y)
-    // }
+
     if (x == 16 || x == 17 || x == 18) {
       if (this.SheetValue[y][16] != "" && this.SheetValue[y][17] != "" && this.SheetValue[y][18] != "") {
         var EC = this.SheetValue[y][16][0];
@@ -383,16 +368,10 @@ export class CBAComponent implements OnInit {
       }
     }
     if (x == 21 || x == 22) {
-      if(x == 21 && this.SheetValue[y][22] == ""){
-        this.ResidualRisk = this.totalAnnualPOC;
+      if (this.SheetValue[y][21] != "" && this.SheetValue[y][22] != "") {
+        this.ResidualRisk = this.SheetValue[y][22] - this.SheetValue[y][21];
+        this.jspreadsheet.setValueFromCoords(23, this.TotalAnnualPocIndex, this.ResidualRisk.toFixed(3), true)
       }
-      else if( x == 22 && this.SheetValue[y][21] == ""){
-        this.ResidualRisk = this.annualcostwithmaintenance;
-      }
-      else{
-        this.ResidualRisk = this.totalAnnualPOC - this.annualcostwithmaintenance 
-      }
-      this.jspreadsheet.setValueFromCoords(23,this.TotalAnnualPocIndex,this.ResidualRisk.toFixed(3),true)
     }
   }
 
@@ -416,6 +395,11 @@ export class CBAComponent implements OnInit {
       this.MISCHr = 0;
       this.TotalRepairCosts = 0;
       this.TotalEconomicConsequences = 0;
+      this.TotalRepairCostsList.forEach(resourcecosts => {
+        if (resourcecosts.RepairCostIndex == y1 && this.SheetValue[y1][0] == resourcecosts.FailureMode) {
+          this.TotalLabour = resourcecosts.TotalRepairCosts;
+        }
+      })
     }
     else if (x1 == 15 && this.SheetValue[y1][0] != "" && this.SheetValue[y1][15] != "") {
       this.Economicsy = y1;
@@ -451,44 +435,119 @@ export class CBAComponent implements OnInit {
     }
   }
 
-  public TotalAnnualPOC(x, y) {
-    // var AnnualPOcIndex = 0;
-    if (this.SheetValue[y][0] != "") {
-      this.totalAnnualPOC = 0;
-      this.TotalRetained = 0;
-      this.TotalDeleted = 0;
-      this.DeletedTaskDuration = 0;
-      this.TotalAnnualPocIndex = y;
+  public SetResourceCost(x, y) {
+    if (this.SheetValue[y][4] != "") {
+      this.RWC = this.SheetValue[y][5];
+      if (this.SheetValue[y][4] == 'Client') {
+        var dataFromLibrary = this.CBAClientJSONData.find(a => a['craft'] === this.RWC);
+        var hourlyRate = dataFromLibrary.hourlyrate;
+      }
+      else if (this.SheetValue[y][4] == 'Contractor') {
+        var dataFromLibrary = this.CBAContractorJSONData.find(a => a['craft'] === this.RWC);
+        var hourlyRate = dataFromLibrary.hourlyrate;
+      }
+      var MSSFrequency = this.SheetValue[y][3];
+      var datafromFrequency = this.CBAFrequencyJSONData.find(a => a['frequency'] === MSSFrequency);
+      var frequencyValue = datafromFrequency.frequencyvalue;
+      this.ResourceCost = hourlyRate * frequencyValue;
+      this.jspreadsheet.setValueFromCoords(7, y, this.ResourceCost.toFixed(3), true);
     }
-    if (this.SheetValue[y][10] != "" && this.SheetValue[y][13] != 'Deleted') {
-      var annualPOC = this.SheetValue[y][10];
-      this.totalAnnualPOC += Number(annualPOC);
-      this.jspreadsheet.setValueFromCoords(21, this.TotalAnnualPocIndex, this.totalAnnualPOC.toFixed(3), true);
-      this.AnnualPOcIndex++;
+    else if (this.SheetValue[y][4] == "") {
     }
-    if (this.SheetValue[y][13] == 'Retained') {
-      var Retained = this.SheetValue[y][10];
-      this.TotalRetained += Number(Retained);
-    }
-    if (this.SheetValue[y][13] == 'Deleted') {
-      var Deleted = this.SheetValue[y][9];
-      this.TotalDeleted += Number(Deleted);
-      var DeletedDuration = this.SheetValue[y][6];
-      this.DeletedTaskDuration += Number(DeletedDuration)
-    }
-    if (this.TotalRetained != undefined && this.TotalDeleted != undefined && this.DeletedTaskDuration != undefined) {
-      this.annualcostwithmaintenance = this.TotalRetained + (this.TotalDeleted / this.DeletedTaskDuration);
-      this.jspreadsheet.setValueFromCoords(22, this.TotalAnnualPocIndex, this.annualcostwithmaintenance.toFixed(3), true)
-    }
+  }
 
-    // for (let AnnualPoc = this.AnnualPOcIndex; AnnualPoc < this.SheetValue.length; AnnualPoc++) {
-    //   if (this.SheetValue[AnnualPoc][10] != "" && this.SheetValue[AnnualPoc][13] != 'Deleted') {
-    //     var annualPOC = this.SheetValue[AnnualPoc][10];
-    //     this.totalAnnualPOC += Number(annualPOC);
-    //     this.jspreadsheet.setValueFromCoords(21, this.TotalAnnualPocIndex, this.totalAnnualPOC.toFixed(3), true);
-    //     this.AnnualPOcIndex++;
-    //   }
-    // }
+  public TotalAnnualPOC(x, y) {
+    for (let sheet = 0; sheet < this.SheetValue.length; sheet++) {
+      if (this.SheetValue[sheet][0] != "") {
+        this.TotalAnnualPocIndex = sheet;
+        this.totalAnnualPOC = 0;
+        if (this.SheetValue[sheet][13] != 'Deleted' && this.SheetValue[sheet][13] != "") {
+          var annualPOC = (this.SheetValue[sheet][10]);
+          this.totalAnnualPOC = Number(annualPOC);
+        }
+      }
+      else if (this.SheetValue[sheet][0] == "") {
+        if (this.SheetValue[sheet][13] != 'Deleted' && this.SheetValue[sheet][13] != "") {
+          var annualPOC = this.SheetValue[sheet][10];
+          this.totalAnnualPOC += Number(annualPOC);
+        }
+      }
+
+      this.jspreadsheet.setValueFromCoords(21, this.TotalAnnualPocIndex, this.totalAnnualPOC.toFixed(3), true);
+    }
+  }
+
+  public TotalAnnualCostWithMaintenance(x, y) {
+    for (let sheet = 0; sheet < this.SheetValue.length; sheet++) {
+      if (this.SheetValue[sheet][0] != "") {
+        this.TotalDeleted = 0;
+        this.DeletedTaskDuration = 0;
+        this.TotalRetained = 0;
+        this.annualcostwithmaintenance = 0;
+        this.AnnualCostIndex = sheet;
+        if (this.SheetValue[sheet][13] == 'Retained' && this.SheetValue[sheet][13] != 'New' && this.SheetValue[sheet][13] != "") {
+          var Retained = this.SheetValue[sheet][10];
+          this.TotalRetained = Number(Retained);
+        }
+        if (this.SheetValue[sheet][13] == 'Deleted') {
+          var Deleted = this.SheetValue[sheet][9];
+          this.TotalDeleted = Number(Deleted);
+          this.DeletedTaskDuration = 0;
+          var DeletedDuration = this.SheetValue[sheet][6];
+          this.DeletedTaskDuration = Number(DeletedDuration)
+        }
+      }
+      else if (this.SheetValue[sheet][0] == "" && this.SheetValue[sheet][13] != 'New' && this.SheetValue[sheet][13] != "") {
+        if (this.SheetValue[sheet][13] == 'Retained') {
+          var Retained = this.SheetValue[sheet][10];
+          this.TotalRetained += Number(Retained);
+        }
+        if (this.SheetValue[sheet][13] == 'Deleted') {
+          var Deleted = this.SheetValue[sheet][9];
+          this.TotalDeleted += Number(Deleted);
+          var DeletedDuration = this.SheetValue[sheet][6];
+          this.DeletedTaskDuration += Number(DeletedDuration)
+        }
+      }
+      if (this.TotalRetained != undefined && this.TotalRetained != 0 && this.TotalDeleted != undefined && this.TotalDeleted != 0 && this.DeletedTaskDuration != undefined && this.DeletedTaskDuration != 0) {
+        this.annualcostwithmaintenance = this.TotalRetained + (this.TotalDeleted / this.DeletedTaskDuration);
+        this.jspreadsheet.setValueFromCoords(22, this.AnnualCostIndex, this.annualcostwithmaintenance.toFixed(3), true)
+      }
+      else{
+        this.jspreadsheet.setValueFromCoords(22, this.AnnualCostIndex, this.annualcostwithmaintenance.toFixed(3), true)
+      }
+    }
+  }
+
+  public TotalRepairCost() {
+    this.TotalRepairCostsList = [];
+    for (let sheet = 0; sheet < this.SheetValue.length; sheet++) {
+      if (this.SheetValue[sheet][0] != "" && this.SheetValue[sheet][7] != "") {
+        this.TotalRepairCosts = 0;
+        var RepairCost = this.SheetValue[sheet][7];
+        this.TotalRepairCosts = Number(RepairCost);
+        var RepairCostFM = this.SheetValue[sheet][0];
+        var RepairCostIndex = sheet;
+      }
+      else if (this.SheetValue[sheet][0] == "" && this.SheetValue[sheet][7] != "") {
+        var RepairCost = this.SheetValue[sheet][7];
+        this.TotalRepairCosts += Number(RepairCost);
+        var index = sheet + 1;
+        if ((this.SheetValue[index][0] != '' && this.SheetValue[index][1] != '') ||
+          (this.SheetValue[index][0] == '' && this.SheetValue[index][1] == '')) {
+          let obj = {}
+          obj['FailureMode'] = RepairCostFM;
+          obj['RepairCostIndex'] = RepairCostIndex;
+          obj['TotalRepairCosts'] = this.TotalRepairCosts;
+          this.TotalRepairCostsList.push(obj);
+        }
+      }
+      else if (this.SheetValue[sheet][0] == "" && this.SheetValue[sheet][1] == "" &&
+        this.SheetValue[sheet][2] == "" && this.SheetValue[sheet][3] == "") {
+        break;
+      }
+
+    }
   }
 
   public riskMatrix(Matrix: any) {
@@ -501,13 +560,15 @@ export class CBAComponent implements OnInit {
   public SetCBAData() {
     this.MSSIndex = 0;
     this.SetTagNumber = this.SelectedPrescriptiveTree[0].TagNumber;
-    this.FCAPattern = this.PrescriptiveTreeList[0].centrifugalPumpPrescriptiveFailureModes[0].Pattern;
+    this.FCAPattern = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[0].Pattern;
+    this.SetEquipmentType = this.SelectedPrescriptiveTree[0].EquipmentType;
+    this.SetFunctionFailure = this.SelectedPrescriptiveTree[0].FunctionFailure
     if (this.FCAPattern == "Pattern 2" || this.FCAPattern == "Pattern 3") {
       this.SetAgeRelated = "Yes";
     } else if (this.FCAPattern == "Pattern 5" || this.FCAPattern == "Pattern 6") {
       this.SetAgeRelated = "No";
     }
-    this.FCAConsequence = this.PrescriptiveTreeList[0].centrifugalPumpPrescriptiveFailureModes[0].Consequence.split(" ", 1);
+    this.FCAConsequence = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[0].Consequence.split(" ", 1);
     if (this.FCAConsequence == 'B' || this.FCAConsequence == 'C' || this.FCAConsequence == 'D') {
       this.SetConsequence = 'Revealed';
     } else if (this.FCAConsequence == 'A' || this.FCAConsequence == 'E') {
@@ -521,6 +582,7 @@ export class CBAComponent implements OnInit {
         this.jspreadsheet.setValueFromCoords(2, this.MSSIndex, MSSData.MSSStartergy, true);
         this.jspreadsheet.setValueFromCoords(3, this.MSSIndex, MSSData.MSSFrequency, true);
         this.MSSIndex++;
+        this.MSSIndexId = this.MSSIndex;
       });
     });
   }
@@ -534,13 +596,25 @@ export class CBAComponent implements OnInit {
       this.TotalRepairCosts = 0;
       this.TotalRepairCosts = Number(this.MaterialsEquipment) + Number(this.ContractPayments) + Number(this.Misc);
     }
-    if (this.MEC != 0 || this.OPS != 0 || this.RIG != 0 || this.HEL != 0) {
-      this.TotalLabour = 0;
-      this.TotalLabour = Number(this.MEC) + Number(this.OPS) + Number(this.RIG) + Number(this.HEL);
-    }
     if (this.TotalProductionLoss != 0 || this.TotalRepairCosts != 0 || this.TotalLabour != 0) {
       this.TotalEconomicConsequences = this.TotalProductionLoss + this.TotalRepairCosts + this.TotalLabour;
       this.jspreadsheet.setValueFromCoords(15, this.Economicsy, this.TotalEconomicConsequences.toFixed(3), true);
+    }
+  }
+
+  public BacktoSelectCBATag() {
+    this.PrescriptiveCBA = false;
+    this.cbaSheet = false;
+    this.Economics = false;
+    this.SelectBoxEnabled = true;
+  }
+
+  public ScenarioValue() {
+    if (this.ScenarioYN == 'Yes') {
+      this.DisableScenario = false;
+    }
+    else if (this.ScenarioYN == 'No') {
+      this.DisableScenario = true;
     }
   }
 
@@ -573,7 +647,6 @@ export class CBAComponent implements OnInit {
         this.PONCList.splice(index, 1)
       }
     });
-
     this.SavePLE();
     this.DisplayEconomics = false;
   }
@@ -581,8 +654,10 @@ export class CBAComponent implements OnInit {
   public SaveCBA() {
     let CbaModelObj = new PrescriptiveCbaModel();
     CbaModelObj.PCMId = 0;
-    CbaModelObj.CFPPrescriptiveId = this.PrescriptiveTreeList[0].CFPPrescriptiveId;
+    CbaModelObj.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
     CbaModelObj.CPPFMId = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[0].CPPFMId;
+    CbaModelObj.EquipmentType = this.SelectedPrescriptiveTree[0].EquipmentType;
+    CbaModelObj.FunctionFailure = this.SelectedPrescriptiveTree[0].FunctionFailure
     CbaModelObj.TagNumber = this.SetTagNumber;
     CbaModelObj.IsAgeRelated = this.SetAgeRelated;
     CbaModelObj.RiskMatrix = this.RiskMatrix;
@@ -604,6 +679,8 @@ export class CBAComponent implements OnInit {
         CBAFailure.CA = this.SheetValue[cbafailuremode][19];
         CBAFailure.ETBC = this.SheetValue[cbafailuremode][20];
         CBAFailure.TotalAnnualPOC = this.SheetValue[cbafailuremode][21];
+        CBAFailure.TotalAnnualCostWithMaintenance = this.SheetValue[cbafailuremode][22];
+        CBAFailure.ResidualRiskWithMaintenance = this.SheetValue[cbafailuremode][23];
         CBAFailure.MEI = this.SheetValue[cbafailuremode][24];
         CbaModelObj.CBAFailureModes.push(CBAFailure);
         for (let cbamaintenancetask = cbafailuremode; cbamaintenancetask < this.SheetValue.length; cbamaintenancetask++) {
@@ -625,7 +702,7 @@ export class CBAComponent implements OnInit {
                 // CBAInterval.CMIId = 1;
                 CBAInterval.CMTId = CBATask.CMTId;
                 CBAInterval.Maintenancelibrary = this.SheetValue[cbainterval][4];
-                CBAInterval.MSSMAintenanceInterval = this.SheetValue[cbainterval][3];
+                CBAInterval.MSSFrequency = this.SheetValue[cbainterval][3];
                 CBAInterval.RWC = this.SheetValue[cbainterval][5];
                 CBAInterval.TaskDuration = this.SheetValue[cbainterval][6];
                 CBAInterval.ResourceCost = this.SheetValue[cbainterval][7];
@@ -661,14 +738,12 @@ export class CBAComponent implements OnInit {
         res => {
           console.log(res);
           this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated MSS' });
-          this.router.navigateByUrl('/Home/Prescriptive/List')
+          this.router.navigateByUrl('/Home/Prescriptive/List');
         },
         err => {
-          this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated MSS' });
-          this.router.navigateByUrl('/Home/Prescriptive/List');
-          // console.log(err.Message);
-          // console.log(err.error)
-          // this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
+          console.log(err.Message);
+          console.log(err.error)
+          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
         }
       )
   }

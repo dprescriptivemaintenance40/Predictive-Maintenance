@@ -9,6 +9,8 @@ public class PrescriptiveCbaModel
     public int CFPPrescriptiveId { get; set; }
     public int CPPFMId { get; set; }
     public string TagNumber { get; set; }
+    public string EquipmentType { get; set; }
+    public string FunctionFailure { get; set; }
     public string IsAgeRelated { get; set; }
     public string RiskMatrix { get; set; }
     public string Consequence { get; set; }
@@ -30,6 +32,8 @@ public class CBAFailureMode
     public string CA { get; set; }
     public int ETBC { get; set; }
     public float TotalAnnualPOC { get; set; }
+    public float TotalAnnualCostWithMaintenance { get; set; }
+    public float ResidualRiskWithMaintenance { get; set; }
     public float MEI { get; set; }
     public List<CBAMaintenanceTask> CBAMaintenanceTasks { get; set; }
     public PrescriptiveCbaModel PrescriptiveCbaModels { get; set; }
@@ -52,7 +56,7 @@ public class CBAMainenanceInterval
     [Key]
     public int CMIId { get; set; }
     public int CMTId { get; set; }
-    public string MaintenanceInterval { get; set; }
+    public string MSSFrequency { get; set; }
     public string Maintenancelibrary { get; set; }
     public string RWC { get; set; }
     public float TaskDuration { get; set; }

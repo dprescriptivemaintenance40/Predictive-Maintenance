@@ -117,6 +117,24 @@ namespace DPM.Controllers.Prescriptive
             }
         }
 
+        [HttpGet]
+        [Route("GetCBARecordsForReportById")]
+        public async Task<ActionResult<PrescriptiveCbaModel>> GetCBARecordsForReportById(int id)
+        {
+            try
+            {
+                var cbamodel = await _context.PrescriptiveCbaModels.Where(a => a.CFPPrescriptiveId == id)
+                                                             .Include(a => a.CBAFailureModes)
+                                                             .ThenInclude(a => a.CBAMaintenanceTasks)
+                                                             .ThenInclude(a => a.CBAMainenanceIntervals)
+                                                             .FirstOrDefaultAsync();
+                return cbamodel;
+            }
+            catch (Exception exe)
+            {
+                return BadRequest(exe.Message);
+            }
+        }
 
 
         [HttpGet]
@@ -146,10 +164,10 @@ namespace DPM.Controllers.Prescriptive
             try
             {
                 string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                return await _context.PrescriptiveModelData.Where(a => a.UserId == userId && a.FCAAdded == "1" && a.MSSAdded == "1")
+                return await _context.PrescriptiveModelData.Where(a => a.UserId == userId && a.CBAAdded == null || a.CBAAdded == "")
                                                            .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                            .ThenInclude(a => a.CentrifugalPumpMssModel)
-                                                           .OrderBy(a => a.CFPPrescriptiveId)
+                                                           .OrderBy(a => a.CFPPrescriptiveId)   
                                                            .ToListAsync();
             }
             catch (Exception exe)
@@ -619,11 +637,14 @@ namespace DPM.Controllers.Prescriptive
                     FailureMode.FailureMode = failuremode.FailureMode;
                     FailureMode.ETBF = failuremode.ETBF;
                     FailureMode.PONC = failuremode.PONC;
+                    FailureMode.EC = failuremode.EC;
                     FailureMode.HS = failuremode.HS;
                     FailureMode.EV = failuremode.EV;
                     FailureMode.CA = failuremode.CA;
                     FailureMode.ETBC = failuremode.ETBC;
                     FailureMode.TotalAnnualPOC = failuremode.TotalAnnualPOC;
+                    FailureMode.TotalAnnualCostWithMaintenance = failuremode.TotalAnnualCostWithMaintenance;
+                    FailureMode.ResidualRiskWithMaintenance = failuremode.ResidualRiskWithMaintenance;
                     FailureMode.MEI = failuremode.MEI;
                     _context.CBAFailureModes.Add(FailureMode);
                     await _context.SaveChangesAsync();
@@ -646,7 +667,7 @@ namespace DPM.Controllers.Prescriptive
                             //CBATaskObj.CPPCFMId = cbaObj.CPCMId;
                             cbainterval.CMTId = cbatask.CMTId;
                             //CBATaskObj.MSSMaintenanceTask = cbaData.MSSMaintenanceTask;
-                            cbainterval.MaintenanceInterval = interval.MaintenanceInterval;
+                            cbainterval.MSSFrequency = interval.MSSFrequency;
                             cbainterval.Maintenancelibrary = interval.Maintenancelibrary;
                             cbainterval.RWC = interval.RWC;
                             cbainterval.TaskDuration = interval.TaskDuration;
@@ -661,6 +682,12 @@ namespace DPM.Controllers.Prescriptive
 
                     }
                 }
+                List<CentrifugalPumpPrescriptiveModel> centrifugalPumpPrescriptiveModel = await _context.PrescriptiveModelData.Where(a => a.CFPPrescriptiveId == cbaObj.CFPPrescriptiveId)
+                                                                                                                 .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
+                                                                                                                 .ToListAsync();
+                centrifugalPumpPrescriptiveModel[0].CBAAdded = "1";
+                _context.Entry(centrifugalPumpPrescriptiveModel[0]).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception exe)

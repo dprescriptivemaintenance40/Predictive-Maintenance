@@ -100,7 +100,7 @@
                                 <a title="Report" [routerLink]="['/Home/Prescriptive/Report']" (click)="FMEAReports(p)" [ngClass]="{disabled:p.FMWithConsequenceTree ==''}" class="link-primary mr-1"><small><i class="pi-book pi mr-2" aria-hidden="true"></i></small>Report</a>
                             </span>
                             <span class="">
-                                <a title="Report" (click)="DownloadPDF('https://localhost:5001/#/RCMFunctionalAnalysis')" routerLink="/RCMFunctionalAnalysis" class="link-primary mr-1"><small><i class="fa fa-eye mr-2" aria-hidden="true"></i></small>RCM Functional Analysis</a>
+                                <a title="RCMReport" [ngClass]="{disabled:(p.CBAAdded != 1 || p.CBAAdded == null )}" (click)="RCMReports(p)" [routerLink]="['/RCMFunctionalAnalysis']" class="link-primary mr-1"><small><i class="fa fa-eye mr-2" aria-hidden="true"></i></small>RCM Functional Analysis</a>
                             </span>
                             <span class="">
                                 <a style="color: red;" title="Delete FMECA Tree" (click)="DeletePrescriptiveRecords(p)" data-toggle="modal" data-target="#DeleteTree"><small><i class="pi pi-trash"></i></small></a>
@@ -244,7 +244,7 @@
                             <th> MSSMaintenance Interval </th>
                             <th> MSSAvailability </th>
                             <th> MSSMaintenance Task </th>
-                            <th > MSS Frequency</th>
+                            <th> MSS Frequency </th>
                             <th> MSSInterval Selection Criteria </th>
                         </tr>
                     </ng-template>

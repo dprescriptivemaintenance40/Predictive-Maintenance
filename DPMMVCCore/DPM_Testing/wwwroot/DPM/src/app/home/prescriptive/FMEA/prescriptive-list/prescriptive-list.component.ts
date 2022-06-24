@@ -61,6 +61,7 @@ export class PrescriptiveListComponent implements OnInit {
     this.commonBLService.getWithoutParameters(url)
       .subscribe(res => {
         this.prescriptiveRecords = res
+        console.log(this.prescriptiveRecords)
       }, err => {
         console.log(err.err);
       }
@@ -194,6 +195,10 @@ export class PrescriptiveListComponent implements OnInit {
     localStorage.setItem('ReportObj', JSON.stringify(p))
   }
 
+  RCMReports(p){
+    let RCMId = p.CFPPrescriptiveId;
+    localStorage.setItem('RCMReportObjId', RCMId)
+  }
 
   getFCAData(p) {
     localStorage.setItem('FCAObject', JSON.stringify(p))

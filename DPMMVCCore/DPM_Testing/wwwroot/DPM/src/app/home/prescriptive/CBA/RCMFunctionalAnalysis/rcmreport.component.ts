@@ -1,65 +1,120 @@
-import { Component } from "@angular/core";
-import { PDFDocument } from 'pdf-lib';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-
-
+import { HttpParams } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { timeStamp } from "console";
+import { CommonBLService } from "src/app/shared/BLDL/common.bl.service";
+import { PrescriptiveContantAPI } from "../../Shared/prescriptive.constant";
 
 @Component({
     selector: 'app-rcmreport',
     templateUrl: './rcmreport.component.html',
     styleUrls: ['./rcmreport.component.css'],
 })
-export class RCMFunctionalAnalysis {
+
+export class RCMFunctionalAnalysis implements OnInit {
+
+    public RCMDataId: any = [];
+    public CBARecords: any = [];
+    public TagNumber: string = "";
+    public taskList: any = [];
+    public Consequence: string = "";
+    public FailureModeList: any = [];
+    public CBAFailureMode: any = [];
+
+    constructor(public route: ActivatedRoute,
+        private RCMReportBLService: CommonBLService,
+        private RCMReportContantAPI: PrescriptiveContantAPI,) {
+
+    }
+
+    ngOnInit() {
+        this.GetRCMData();
+    }
+
     public cols = [{
-        task:'Replace oil pump',
-        freq:'Y4',
-        rwc:'MEC',
-        poc:'0.273',	
-        annpoc:'0.068',
-        status:'New'
+        task: 'Replace oil pump',
+        freq: 'Y4',
+        rwc: 'MEC',
+        poc: '0.273',
+        annpoc: '0.068',
+        status: 'New'
     },
     {
-        task:'Vibration Monitoring',
-        freq:'W1',
-        rwc:'REL',
-        poc:'0.091',	
-        annpoc:'4.732',
-        status:'Retained'
+        task: 'Vibration Monitoring',
+        freq: 'W1',
+        rwc: 'REL',
+        poc: '0.091',
+        annpoc: '4.732',
+        status: 'Retained'
     },
     {
-        task:'Overhauling oil pump',
-        freq:'Y1',
-        rwc:'MEC',
-        poc:'0.182',	
-        annpoc:'0.182',
-        status:'Retained'
+        task: 'Overhauling oil pump',
+        freq: 'Y1',
+        rwc: 'MEC',
+        poc: '0.182',
+        annpoc: '0.182',
+        status: 'Retained'
     },
     {
-        task:'Lube Oil Condition Monitoring',
-        freq:'W1',
-        rwc:'REL',
-        poc:'0.011',	
-        annpoc:'0.572',
-        status:'Deleted'
+        task: 'Lube Oil Condition Monitoring',
+        freq: 'W1',
+        rwc: 'REL',
+        poc: '0.011',
+        annpoc: '0.572',
+        status: 'Deleted'
     }
-];
-    constructor() {
+    ];
 
+    async ngOnDestroy() {
+        await localStorage.removeItem('RCMReportObj')
     }
-    DownloadPDF() {
-        
-            
-            
-        // html2canvas(document.getElementById("pdfTable1")!).then(canvas => {
-        //     // Few necessary setting options
 
-        //     const contentDataURL = canvas.toDataURL('image/png')
-        //     let pdf = new jsPDF('p', 'mm', 'a6'); // A4 size page of PDF
-        //     var width = pdf.internal.pageSize.getWidth();
-        //     var height = canvas.height * width / canvas.width;
-        //     pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height)
-        //     pdf.save('output.pdf'); // Generated PDF
-        // });
+    public GetRCMData() {
+        this.RCMDataId = localStorage.getItem('RCMReportObjId');
+        var url: string = this.RCMReportContantAPI.CBARecordsForReport;
+        const params = new HttpParams()
+            .set('id', this.RCMDataId)
+        this.RCMReportBLService.getWithParameters(url, params).subscribe
+            ((res: any) => {
+                this.CBARecords = res;
+                this.SetRCMDataReport();
+                console.log(this.CBARecords);
+            });
+    }
+
+    public SetRCMDataReport() {
+        this.TagNumber = this.CBARecords.TagNumber;
+        this.Consequence = this.CBARecords.Consequence;
+        this.CBAFailureMode = this.CBARecords.CBAFailureModes;
+        for (let CBAId = 0; CBAId < this.CBAFailureMode.length; CBAId++) {
+            let failuremodeobj = {};
+            failuremodeobj['FailureMode'] = this.CBAFailureMode[CBAId].FailureMode;
+            failuremodeobj['EC'] = this.CBAFailureMode[CBAId].EC;
+            failuremodeobj['HS'] = this.CBAFailureMode[CBAId].HS;
+            failuremodeobj['EV'] = this.CBAFailureMode[CBAId].EV;
+            failuremodeobj['CA'] = this.CBAFailureMode[CBAId].CA;
+            failuremodeobj['ETBC'] = this.CBAFailureMode[CBAId].ETBC;
+            failuremodeobj['ETBF'] = this.CBAFailureMode[CBAId].ETBF;
+            failuremodeobj['PONC'] = this.CBAFailureMode[CBAId].PONC;
+            failuremodeobj['EC'] = this.CBAFailureMode[CBAId].EC;
+            failuremodeobj['TotalAnnualCostWithMaintenance'] = this.CBAFailureMode[CBAId].TotalAnnualCostWithMaintenance;
+            failuremodeobj['ResidualRiskWithMaintenance'] = this.CBAFailureMode[CBAId].ResidualRiskWithMaintenance;
+            failuremodeobj['TotalAnnualPOC'] = this.CBAFailureMode[CBAId].TotalAnnualPOC;
+            failuremodeobj['MEI'] = this.CBAFailureMode[CBAId].MEI;
+            failuremodeobj['Tasks'] = [];
+            this.FailureModeList.push(failuremodeobj);
+            this.CBAFailureMode[CBAId].CBAMaintenanceTasks.forEach(tasks => {
+                let obj = {};
+                obj['Task'] = tasks.MSSMaintenanceTask;
+                obj['Status'] = tasks.Status;
+                tasks.CBAMainenanceIntervals.forEach(intervals => {
+                    obj['Frequency'] = intervals.MSSFrequency;
+                    obj['RWC'] = intervals.RWC;
+                    obj['POC'] = intervals.POC;
+                    obj['AnnualPOC'] = intervals.AnnualPOC;
+                    this.FailureModeList[CBAId].Tasks.push(obj);
+                });
+            });
+        }
     }
 }

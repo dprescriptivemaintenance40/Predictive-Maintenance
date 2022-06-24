@@ -20,7 +20,7 @@ export class RiskMatrix6Component implements OnInit {
     }
     public hidden = false;
     public url = "dist/DPM/assets/CBA/RiskMatrix6.png";
-
+    
     imageSource() {
         this.hidden = !this.hidden;
     }
