@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 
 export class CBAComponent implements OnInit {
   public cbaSheet: boolean = true;
-  @ViewChild("spreadsheet", { static: true }) spreadsheet: ElementRef;
+  @ViewChild("spreadsheet", { static: false }) spreadsheet: ElementRef;
   public SelectBoxEnabled: boolean = false;
   public SheetData: any = [];
   public MSSIndexId: number;
@@ -46,7 +46,7 @@ export class CBAComponent implements OnInit {
   public SheetValue: Array<any> = [];
   public RiskMatrix5: boolean = false;
   public RiskMatrix6: boolean = false;
-  public AnnualCostIndex:number = 0;
+  public AnnualCostIndex: number = 0;
 
   public CBAClientJSONData: any = [];
   public CBAContractorJSONData: any = [];
@@ -93,7 +93,7 @@ export class CBAComponent implements OnInit {
   public DisplaySave: boolean = false;
   public DisplayUpdate: boolean = false;
   public Economicsy: number = 0;
-
+  public noofrows: number;
   public RedMatrix5: any = ['5C', '5D', '5E', '4D', '4E', '3E'];
   public DarkyellowMatrix5: any = ['5B', '4C', '3D', '2E'];
   public YellowMatrix5: any = ['5A', '4A', '4B', '3B', '3C', '2C', '2D', '1D', '1E'];
@@ -126,7 +126,7 @@ export class CBAComponent implements OnInit {
     private http: HttpClient,
     private messageService: MessageService,
     public router: Router,
-    private cdr:ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef) {
   }
 
   async getPrescriptiveRecords() {
@@ -181,12 +181,20 @@ export class CBAComponent implements OnInit {
   }
 
   public cbasheet() {
-    this.cdr.detectChanges()
+    this.MSSIndex = 0;
     this.SelectBoxEnabled = false;
     this.PrescriptiveCBA = true;
     this.cbaSheet = true;
+    this.cdr.detectChanges()
     this.Economics = true;
     this.createColumns();
+    this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes.forEach(failuremodes => {
+      failuremodes.CentrifugalPumpMssModel.forEach(MSSData => {
+        this.MSSIndex++;
+      });
+      this.MSSIndexId = this.MSSIndex;
+    });
+    this.noofrows = 5;
     this.jspreadsheet = jspreadsheet(this.spreadsheet.nativeElement, {
       data: [[]],
       columns: this.columns,
@@ -195,7 +203,7 @@ export class CBAComponent implements OnInit {
       tableHeight: "600px",
       onchange: this.changed,
       onselection: this.selectionActive,
-      minDimensions: [, 100]
+      minDimensions: [, this.MSSIndexId]
     });
     this.SetCBAData();
   }
@@ -289,13 +297,19 @@ export class CBAComponent implements OnInit {
       this.TotalAnnualPOC(x, y);
       this.TotalAnnualCostWithMaintenance(x, y);
     }
-    if (x == 14 || x == 15 || x == 20 || x == 21) {
-      if (this.SheetValue[y][0] != "") {
-
-      }
+    if (x == 14 || x == 15 || x == 20) {
       if (this.SheetValue[y][14] != "" && this.SheetValue[y][15] != "" && this.SheetValue[y][20] != "" && this.SheetValue[y][21] != "") {
         var MEI = ((this.SheetValue[y][15] / this.SheetValue[y][14]) - (this.SheetValue[y][15] / this.SheetValue[y][20])) / this.SheetValue[y][21];
         this.jspreadsheet.setValueFromCoords(24, y, MEI.toFixed(3), true);
+      }
+      else if (this.SheetValue[y][20] != "" && this.SheetValue[y][15] == "") {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Enter PONC' });
+      }
+      else if (this.SheetValue[y][20] != "" && this.SheetValue[y][14] == "") {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Enter ETBF' });
+      }
+      else if (this.SheetValue[y][15] != "" && this.SheetValue[y][14] == "") {
+        this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Enter ETBF' });
       }
     }
 
@@ -513,7 +527,7 @@ export class CBAComponent implements OnInit {
         this.annualcostwithmaintenance = this.TotalRetained + (this.TotalDeleted / this.DeletedTaskDuration);
         this.jspreadsheet.setValueFromCoords(22, this.AnnualCostIndex, this.annualcostwithmaintenance.toFixed(3), true)
       }
-      else{
+      else {
         this.jspreadsheet.setValueFromCoords(22, this.AnnualCostIndex, this.annualcostwithmaintenance.toFixed(3), true)
       }
     }
@@ -528,6 +542,15 @@ export class CBAComponent implements OnInit {
         this.TotalRepairCosts = Number(RepairCost);
         var RepairCostFM = this.SheetValue[sheet][0];
         var RepairCostIndex = sheet;
+        var sheetid = sheet + 1;
+        if ((this.SheetValue[sheetid][0] != RepairCostFM && this.SheetValue[sheetid][1] != '') ||
+          (this.SheetValue[sheetid][0] == '' && this.SheetValue[sheetid][1] == '')) {
+          let obj = {}
+          obj['FailureMode'] = RepairCostFM;
+          obj['RepairCostIndex'] = RepairCostIndex;
+          obj['TotalRepairCosts'] = this.TotalRepairCosts;
+          this.TotalRepairCostsList.push(obj);
+        }
       }
       else if (this.SheetValue[sheet][0] == "" && this.SheetValue[sheet][7] != "") {
         var RepairCost = this.SheetValue[sheet][7];
@@ -602,12 +625,14 @@ export class CBAComponent implements OnInit {
     }
   }
 
-  public BacktoSelectCBATag() {
-    this.PrescriptiveCBA = false;
-    this.cbaSheet = false;
-    this.Economics = false;
-    this.SelectBoxEnabled = true;
-  }
+  // public BacktoSelectCBATag() {
+  //   this.jspreadsheet.destroy();
+  //   this.MSSIndex = 0;
+  //   this.PrescriptiveCBA = false;
+  //   this.cbaSheet = false;
+  //   this.Economics = false;
+  //   this.SelectBoxEnabled = true;
+  // }
 
   public ScenarioValue() {
     if (this.ScenarioYN == 'Yes') {
@@ -652,100 +677,112 @@ export class CBAComponent implements OnInit {
   }
 
   public SaveCBA() {
-    let CbaModelObj = new PrescriptiveCbaModel();
-    CbaModelObj.PCMId = 0;
-    CbaModelObj.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
-    CbaModelObj.CPPFMId = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[0].CPPFMId;
-    CbaModelObj.EquipmentType = this.SelectedPrescriptiveTree[0].EquipmentType;
-    CbaModelObj.FunctionFailure = this.SelectedPrescriptiveTree[0].FunctionFailure
-    CbaModelObj.TagNumber = this.SetTagNumber;
-    CbaModelObj.IsAgeRelated = this.SetAgeRelated;
-    CbaModelObj.RiskMatrix = this.RiskMatrix;
-    CbaModelObj.Consequence = this.SetConsequence;
-    CbaModelObj.HasScenario = this.ScenarioYN;
-    CbaModelObj.DescribeScenario = this.DescribeScenario;
-    this.FailureModeId = 0;
-    this.SheetValue = this.jspreadsheet.getData();
-    for (let cbafailuremode = 0; cbafailuremode < this.SheetValue.length; cbafailuremode++) {
-      if (this.SheetValue[cbafailuremode][0] != "") {
-        let CBAFailure = new CBAFailureMode();
-        CBAFailure.PCMId = CbaModelObj.PCMId;
-        CBAFailure.FailureMode = this.SheetValue[cbafailuremode][0];
-        CBAFailure.ETBF = this.SheetValue[cbafailuremode][14];
-        CBAFailure.PONC = this.SheetValue[cbafailuremode][15];
-        CBAFailure.EC = this.SheetValue[cbafailuremode][16][0];
-        CBAFailure.HS = this.SheetValue[cbafailuremode][17][0];
-        CBAFailure.EV = this.SheetValue[cbafailuremode][18][0];
-        CBAFailure.CA = this.SheetValue[cbafailuremode][19];
-        CBAFailure.ETBC = this.SheetValue[cbafailuremode][20];
-        CBAFailure.TotalAnnualPOC = this.SheetValue[cbafailuremode][21];
-        CBAFailure.TotalAnnualCostWithMaintenance = this.SheetValue[cbafailuremode][22];
-        CBAFailure.ResidualRiskWithMaintenance = this.SheetValue[cbafailuremode][23];
-        CBAFailure.MEI = this.SheetValue[cbafailuremode][24];
-        CbaModelObj.CBAFailureModes.push(CBAFailure);
-        for (let cbamaintenancetask = cbafailuremode; cbamaintenancetask < this.SheetValue.length; cbamaintenancetask++) {
-          if ((this.SheetValue[cbamaintenancetask][1] != "" && CBAFailure.FailureMode == this.SheetValue[cbamaintenancetask][0]) ||
-            this.SheetValue[cbamaintenancetask][0] == "" && this.SheetValue[cbamaintenancetask][1] != "") {
-            let CBATask = new CBAMaintenanceTask();
-            // CBATask.CMTId = 1;
-            CBATask.CFMId = CBAFailure.CFMId;
-            CBATask.CentrifugalPumpMssId = 1;
-            CBATask.MSSMaintenanceTask = this.SheetValue[cbamaintenancetask][1];
-            CBATask.MSSStartergy = this.SheetValue[cbamaintenancetask][2];
-            CBATask.MaterialCost = this.SheetValue[cbamaintenancetask][8];
-            CBATask.Status = this.SheetValue[cbamaintenancetask][13];
-            CBAFailure.CBAMaintenanceTasks.push(CBATask);
-            for (let cbainterval = cbamaintenancetask; cbainterval < this.SheetValue.length; cbainterval++) {
-              if ((CBATask.MSSMaintenanceTask == this.SheetValue[cbainterval][1] || this.SheetValue[cbainterval][0] == CBAFailure.FailureMode) ||
-                (this.SheetValue[cbainterval][0] == "" && this.SheetValue[cbainterval][1] == "" && this.SheetValue[cbainterval][3] != "")) {
-                let CBAInterval = new CBAMaintenanceInterval();
-                // CBAInterval.CMIId = 1;
-                CBAInterval.CMTId = CBATask.CMTId;
-                CBAInterval.Maintenancelibrary = this.SheetValue[cbainterval][4];
-                CBAInterval.MSSFrequency = this.SheetValue[cbainterval][3];
-                CBAInterval.RWC = this.SheetValue[cbainterval][5];
-                CBAInterval.TaskDuration = this.SheetValue[cbainterval][6];
-                CBAInterval.ResourceCost = this.SheetValue[cbainterval][7];
-                CBAInterval.POC = this.SheetValue[cbainterval][9];
-                CBAInterval.AnnualPOC = this.SheetValue[cbainterval][10];
-                CBAInterval.WorkCenter = this.SheetValue[cbainterval][11];
-                CBAInterval.OnStream = this.SheetValue[cbainterval][12];
-                CBATask.CBAMainenanceIntervals.push(CBAInterval);
-                // cbamaintenancetask++
-                // cbafailuremode++;
-                // this.FailureModeId = cbafailuremode;
-              }
-              else if (CBATask.MSSMaintenanceTask != this.SheetValue[cbainterval][1] || (this.SheetValue[cbainterval][3] == "" &&
-                this.SheetValue[cbainterval][0] == "") && this.SheetValue[cbainterval][1] == "") {
-                break;
+    if (this.RiskMatrix != '' && this.ScenarioYN != '') {
+      let CbaModelObj = new PrescriptiveCbaModel();
+      CbaModelObj.PCMId = 0;
+      CbaModelObj.CFPPrescriptiveId = this.SelectedPrescriptiveTree[0].CFPPrescriptiveId;
+      CbaModelObj.CPPFMId = this.SelectedPrescriptiveTree[0].centrifugalPumpPrescriptiveFailureModes[0].CPPFMId;
+      CbaModelObj.EquipmentType = this.SelectedPrescriptiveTree[0].EquipmentType;
+      CbaModelObj.FunctionFailure = this.SelectedPrescriptiveTree[0].FunctionFailure
+      CbaModelObj.TagNumber = this.SetTagNumber;
+      CbaModelObj.IsAgeRelated = this.SetAgeRelated;
+      CbaModelObj.RiskMatrix = this.RiskMatrix;
+      CbaModelObj.Consequence = this.SetConsequence;
+      CbaModelObj.HasScenario = this.ScenarioYN;
+      CbaModelObj.DescribeScenario = this.DescribeScenario;
+      this.FailureModeId = 0;
+      this.SheetValue = this.jspreadsheet.getData();
+      for (let cbafailuremode = 0; cbafailuremode < this.SheetValue.length; cbafailuremode++) {
+        if (this.SheetValue[cbafailuremode][0] != "") {
+          let CBAFailure = new CBAFailureMode();
+          CBAFailure.PCMId = CbaModelObj.PCMId;
+          CBAFailure.FailureMode = this.SheetValue[cbafailuremode][0];
+          CBAFailure.ETBF = this.SheetValue[cbafailuremode][14];
+          CBAFailure.PONC = this.SheetValue[cbafailuremode][15];
+          CBAFailure.EC = this.SheetValue[cbafailuremode][16][0];
+          CBAFailure.HS = this.SheetValue[cbafailuremode][17][0];
+          CBAFailure.EV = this.SheetValue[cbafailuremode][18][0];
+          CBAFailure.CA = this.SheetValue[cbafailuremode][19];
+          CBAFailure.ETBC = this.SheetValue[cbafailuremode][20];
+          CBAFailure.TotalAnnualPOC = this.SheetValue[cbafailuremode][21];
+          CBAFailure.TotalAnnualCostWithMaintenance = this.SheetValue[cbafailuremode][22];
+          CBAFailure.ResidualRiskWithMaintenance = this.SheetValue[cbafailuremode][23];
+          CBAFailure.MEI = this.SheetValue[cbafailuremode][24];
+          CbaModelObj.CBAFailureModes.push(CBAFailure);
+          for (let cbamaintenancetask = cbafailuremode; cbamaintenancetask < this.SheetValue.length; cbamaintenancetask++) {
+            if ((this.SheetValue[cbamaintenancetask][1] != "" && CBAFailure.FailureMode == this.SheetValue[cbamaintenancetask][0]) ||
+              this.SheetValue[cbamaintenancetask][0] == "" && this.SheetValue[cbamaintenancetask][1] != "") {
+              let CBATask = new CBAMaintenanceTask();
+              // CBATask.CMTId = 1;
+              CBATask.CFMId = CBAFailure.CFMId;
+              CBATask.CentrifugalPumpMssId = 1;
+              CBATask.MSSMaintenanceTask = this.SheetValue[cbamaintenancetask][1];
+              CBATask.MSSStartergy = this.SheetValue[cbamaintenancetask][2];
+              CBATask.MaterialCost = this.SheetValue[cbamaintenancetask][8];
+              CBATask.Status = this.SheetValue[cbamaintenancetask][13];
+              CBAFailure.CBAMaintenanceTasks.push(CBATask);
+              for (let cbainterval = cbamaintenancetask; cbainterval < this.SheetValue.length; cbainterval++) {
+                if ((CBATask.MSSMaintenanceTask == this.SheetValue[cbainterval][1] && this.SheetValue[cbainterval][0] == CBAFailure.FailureMode) ||
+                  (this.SheetValue[cbainterval][0] == "" && this.SheetValue[cbainterval][1] == "" && this.SheetValue[cbainterval][3] != "") ||
+                  (CBATask.MSSMaintenanceTask == this.SheetValue[cbainterval][1] && this.SheetValue[cbainterval][0] == '')) {
+                  let CBAInterval = new CBAMaintenanceInterval();
+                  // CBAInterval.CMIId = 1;
+                  CBAInterval.CMTId = CBATask.CMTId;
+                  CBAInterval.Maintenancelibrary = this.SheetValue[cbainterval][4];
+                  CBAInterval.MSSFrequency = this.SheetValue[cbainterval][3];
+                  CBAInterval.RWC = this.SheetValue[cbainterval][5];
+                  CBAInterval.TaskDuration = this.SheetValue[cbainterval][6];
+                  CBAInterval.ResourceCost = this.SheetValue[cbainterval][7];
+                  CBAInterval.POC = this.SheetValue[cbainterval][9];
+                  CBAInterval.AnnualPOC = this.SheetValue[cbainterval][10];
+                  CBAInterval.WorkCenter = this.SheetValue[cbainterval][11];
+                  CBAInterval.OnStream = this.SheetValue[cbainterval][12];
+                  CBATask.CBAMainenanceIntervals.push(CBAInterval);
+                  // cbamaintenancetask++
+                  // cbafailuremode++;
+                  // this.FailureModeId = cbafailuremode;
+                }
+                else if (CBATask.MSSMaintenanceTask != this.SheetValue[cbainterval][1] || (this.SheetValue[cbainterval][3] == "" &&
+                  this.SheetValue[cbainterval][0] == "") && this.SheetValue[cbainterval][1] == ""
+                  || (this.SheetValue[cbainterval][0] == "" && this.SheetValue[cbainterval][1] != this.SheetValue[cbainterval][1] && this.SheetValue[cbainterval][3] != "")) {
+                  break;
+                }
               }
             }
-          }
-          else if (CBAFailure.FailureMode != this.SheetValue[cbamaintenancetask][0] && this.SheetValue[cbamaintenancetask][1] == "" &&
-            this.SheetValue[cbamaintenancetask][3] == "") {
-            break;
-          }
+            else if (CBAFailure.FailureMode != this.SheetValue[cbamaintenancetask][0] && this.SheetValue[cbamaintenancetask][1] == "" &&
+              this.SheetValue[cbamaintenancetask][3] == "" ||
+              CBAFailure.FailureMode != '' && this.SheetValue[cbamaintenancetask][1] != "") {
+              break;
+            }
 
+          }
+        }
+        else if (this.SheetValue[cbafailuremode][0] == "" && this.SheetValue[cbafailuremode][3] == "") {
+          break;
         }
       }
-      else if (this.SheetValue[cbafailuremode][0] == "" && this.SheetValue[cbafailuremode][3] == "") {
-        break;
-      }
+      var url: string = this.prescriptiveContantAPI.CBASheet
+      this.prescriptiveBLService.postWithoutHeaders(url, CbaModelObj)
+        .subscribe(
+          res => {
+            console.log(res);
+            this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated MSS' });
+            this.router.navigateByUrl('/Home/Prescriptive/List');
+          },
+          err => {
+            console.log(err.Message);
+            console.log(err.error)
+            this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
+          }
+        )
     }
-    var url: string = this.prescriptiveContantAPI.CBASheet
-    this.prescriptiveBLService.postWithoutHeaders(url, CbaModelObj)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.messageService.add({ severity: 'success', summary: 'success', detail: 'Successfully Updated MSS' });
-          this.router.navigateByUrl('/Home/Prescriptive/List');
-        },
-        err => {
-          console.log(err.Message);
-          console.log(err.error)
-          this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Something went wrong while updating, please try again later' });
-        }
-      )
+    else if (this.RiskMatrix == '') {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Select Riskmatrix' });
+    }
+    else if (this.ScenarioYN == '') {
+      this.messageService.add({ severity: 'warn', summary: 'warn', detail: 'Please Select Scenario' });
+    }
   }
+
 }
 

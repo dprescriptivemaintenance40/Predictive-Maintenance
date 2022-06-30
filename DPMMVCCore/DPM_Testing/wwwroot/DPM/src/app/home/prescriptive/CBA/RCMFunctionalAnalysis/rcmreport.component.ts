@@ -31,40 +31,6 @@ export class RCMFunctionalAnalysis implements OnInit {
         this.GetRCMData();
     }
 
-    public cols = [{
-        task: 'Replace oil pump',
-        freq: 'Y4',
-        rwc: 'MEC',
-        poc: '0.273',
-        annpoc: '0.068',
-        status: 'New'
-    },
-    {
-        task: 'Vibration Monitoring',
-        freq: 'W1',
-        rwc: 'REL',
-        poc: '0.091',
-        annpoc: '4.732',
-        status: 'Retained'
-    },
-    {
-        task: 'Overhauling oil pump',
-        freq: 'Y1',
-        rwc: 'MEC',
-        poc: '0.182',
-        annpoc: '0.182',
-        status: 'Retained'
-    },
-    {
-        task: 'Lube Oil Condition Monitoring',
-        freq: 'W1',
-        rwc: 'REL',
-        poc: '0.011',
-        annpoc: '0.572',
-        status: 'Deleted'
-    }
-    ];
-
     async ngOnDestroy() {
         await localStorage.removeItem('RCMReportObj')
     }
@@ -82,6 +48,9 @@ export class RCMFunctionalAnalysis implements OnInit {
             });
     }
 
+    public DownloadRCMReport(){
+        window.print();
+    }
     public SetRCMDataReport() {
         this.TagNumber = this.CBARecords.TagNumber;
         this.Consequence = this.CBARecords.Consequence;
@@ -101,6 +70,12 @@ export class RCMFunctionalAnalysis implements OnInit {
             failuremodeobj['ResidualRiskWithMaintenance'] = this.CBAFailureMode[CBAId].ResidualRiskWithMaintenance;
             failuremodeobj['TotalAnnualPOC'] = this.CBAFailureMode[CBAId].TotalAnnualPOC;
             failuremodeobj['MEI'] = this.CBAFailureMode[CBAId].MEI;
+            if (failuremodeobj['MEI'] > 1){
+                failuremodeobj['TaskApproved'] = 'Yes';
+            }
+            else if(failuremodeobj['MEI'] < 1){
+                failuremodeobj['TaskApproved'] = 'No';
+            }
             failuremodeobj['Tasks'] = [];
             this.FailureModeList.push(failuremodeobj);
             this.CBAFailureMode[CBAId].CBAMaintenanceTasks.forEach(tasks => {

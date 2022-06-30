@@ -785,6 +785,7 @@ export class MSSAddComponent implements OnInit {
   }
   addeditedMaintenanceTask() {
     this.AvailabilityYNCheck = true;
+    this.SaveBtnEnable = false;
   }
 
 
@@ -799,9 +800,9 @@ export class MSSAddComponent implements OnInit {
         this.stoppageDaysTime = ""
         this.stoppageDaysTimeValue = 0
         this.FinalAvailability.push('Yes')
-        this.expectedAvailability = true
-        this.AvailabilityPlantStoppage = false
-        this.AvailabilityPlantStoppageTime = false
+        this.expectedAvailability = true;
+        this.SaveBtnEnable = false;
+        this.AvailabilityPlantStoppage = false;
       } else if (this.AvailabilityY == 'No') {
         this.FinalAvailability = []
         this.stoppageDays = ""
@@ -811,7 +812,8 @@ export class MSSAddComponent implements OnInit {
         this.FinalAvailability.push('No')
         this.expectedAvailability = false
         this.AvailabilityPlantStoppage = true
-        this.AvailabilityPlantStoppageTime = true
+        this.AvailabilityPlantStoppageTime = true;
+        this.SaveBtnEnable = false;
       }
       this.changeDetectorRef.detectChanges()
       const element = document.querySelector("#PlantStoppage")
@@ -851,6 +853,8 @@ export class MSSAddComponent implements OnInit {
       }
       this.FinalAvailability.push(this.stoppageDaysValue)
       this.PlantStoppageTime = !this.PlantStoppageTime;
+      this.SaveBtnEnable = false;
+      this.AvailabilityPlantStoppageTime = true;
       const element = document.querySelector("#PlantStoppagetime")
       if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
     } else {
@@ -873,7 +877,8 @@ export class MSSAddComponent implements OnInit {
         this.stoppageDuration = this.stoppageDaysTimeValue * 365
         this.FinalAvailability.push('Year')
       }
-      this.FinalAvailability.push(this.stoppageDaysTimeValue)
+      this.FinalAvailability.push(this.stoppageDaysTimeValue);
+      this.SaveBtnEnable = true;
       this.AddMSSSave = true
       this.AvailabilityResult = (1 - (this.stoppageDuration / this.stoppageValue)) * 100
       const element = document.querySelector("#Consequence")

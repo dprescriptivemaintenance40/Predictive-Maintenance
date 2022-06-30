@@ -209,7 +209,9 @@ export class PrescriptiveListComponent implements OnInit {
     localStorage.setItem('MSSObject', JSON.stringify(p))
     this.router.navigateByUrl('/Home/Prescriptive/MSSAdd');
   }
-
+  RoutetoCBA(){
+    this.router.navigateByUrl('/Home/Prescriptive/CBAAdd');
+  }
 
   getMSSTable(p) {
     this.FailureModeDataTabe3 = p.centrifugalPumpPrescriptiveFailureModes

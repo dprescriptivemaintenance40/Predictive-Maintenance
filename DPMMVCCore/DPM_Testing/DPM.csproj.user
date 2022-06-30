@@ -11,7 +11,7 @@
     <WebStackScaffolding_DbContextTypeFullName>DPM_Testing.DAL.DPMDal</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <ActiveDebugProfile>DPM_Testing</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>E:\DPM\DPMMVCCore\DPM_Testing\Properties\PublishProfiles\FolderProfile3.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>E:\DPM\DPMMVCCore\DPM_Testing\Properties\PublishProfiles\FolderProfile4.pubxml</NameOfLastUsedPublishProfile>
     <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

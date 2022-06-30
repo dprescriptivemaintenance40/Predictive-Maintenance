@@ -1,86 +1,169 @@
-<div class="card" style="margin: 20px;">
-    <a title="Download RCM Functional Analysis"><i style="float: right;margin: 10px;font-size: 2.5em; color: red;"
-            class="pi pi-file-pdf"></i></a>
-    <div style="margin-left: 10px;" id="pdfTable1">
-        <div style="margin-left: 30px;margin-right: 30px;">
-            <div>
-                <h4 style="text-align:left;font-family: serif;"><b>RCM Functional Analysis</b></h4>
-                <hr style="background: black">
-                <p style="font-family: serif;font-size: 1.5em">Currency: $</p>
-                <hr style="background: black">
-                <div> </div>
-                <hr style="background: black">
-                <div class="row">
-                    <h5 style="margin-left: 10px;">Tag Number: <input [(ngModel)]="TagNumber" type="text"> </h5>
-                </div>
-                <hr style="background: black">
-                <div class="row" style="margin-left: 10px;margin-right: 10px;">
-                    <h5>Functional Failure: <input style="width:350px"
-                            value="Does not supply lube oil at 3.4 bar or above 3 bar to machine" type="text"></h5>
-                    <h5 style="text-indent: 4em;">Equipment Type:<input value="Centrifugal Compressor" type="text"></h5>
-                    <h5 style="text-indent: 4em;">Consequence:<input [(ngModel)]="Consequence" type="text"></h5>
-                </div><br>
-                <div *ngFor = "let CBAData of FailureModeList">
-                    <h4>1.Failure Mode:{{CBAData.FailureMode}} </h4><br>
-
-                    <h4 style="margin-left: 10px;">Tasks</h4>
-
-
-                    <p-table [value]="CBAData.Tasks" responsiveLayout="scroll">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th style="font-family: serif;font-size: 1.5em">Work Instruction</th>
-                                <th style="font-family: serif;font-size: 1.5em">Freq.</th>
-                                <th style="font-family: serif;font-size: 1.5em">RWC</th>
-                                <th style="font-family: serif;font-size: 1.5em">POC</th>
-                                <th style="font-family: serif;font-size: 1.5em">Ann POC</th>
-                                <th style="font-family: serif;font-size: 1.5em">Status</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-task>
-                            <tr>
-                                <td style="font-family: serif;font-size: 1.5em">{{task.Task}}</td>
-                             <td style="font-family: serif;font-size: 1.5em">{{task.Frequency}}</td>
-                                <td style="font-family: serif;font-size: 1.5em">{{task.RWC}}</td>
-                                <td style="font-family: serif;font-size: 1.5em">{{task.POC}}</td>
-                                <td style="font-family: serif;font-size: 1.5em">{{task.AnnualPOC}}</td>
-                                <td style="font-family: serif;font-size: 1.5em">{{task.Status}}</td>
-                            </tr>
-                        </ng-template>
-                    </p-table><br> 
-
-                    <h4>Consequence Class</h4>
-                    <div class="row" style="margin-left: 10px;margin-right: 10px;">
-                        <!-- <h5 style="float: right;margin:10px">Consequence Class</h5> -->
-                        <h5 style="text-indent: 1em;">ECO:<input style="width: 50px;" value="{{CBAData.EC}}"  type="text"></h5>
-                        <h5 style="text-indent: 1em;">HS:<input style="width: 50px;" value="{{CBAData.HS}}"  type="text"></h5>
-                        <h5 style="text-indent: 1em;">ENV:<input style="width: 50px;" value="{{CBAData.EV}}" type="text"></h5>
-                        <h5 style="text-indent: 1em;">Criticality Rating:<input style="width: 100px;" value="{{CBAData.CA}}" 
-                                type="text"></h5>
-                    </div><br>
-                    <div class="row" style="margin-left: 10px;margin-right: 10px;">
-                        <h5>Consequence Category:<input style="width: 100px;" value="{{Consequence}}" type="text"></h5>
-                        <h5 style="text-indent: 6em;">ETBC(y):<input style="width: 100px;"  value="{{CBAData.ETBC}}" type="text"></h5>
-                        <h5 style="text-indent: 3em;">Total AnnPOC:<input style="width: 100px;"  value="{{CBAData.TotalAnnualPOC}}"
-                                type="text"></h5>
-                        <h5 style="text-indent: 5.5em;">Total PONC:<input style="width: 140px;"  value="{{CBAData.PONC}}"
-                                type="text"></h5>
-                        <h5>Residual Risk with Maintenance:<input style="width: 100px;"  value="{{CBAData.ResidualRiskWithMaintenance}}" type="text"></h5>
-                        <h5 style="text-indent: 2.5em;">MEI:<input style="width: 100px;"  value="{{CBAData.MEI}}" type="text">
-                        </h5>
-                        <h5 style="text-indent: 4.5em;">Tasks Manual Approved:<input style="width: 80px;" value="Yes"
-                                type="text"></h5>
-                        <h5 style="text-indent: 2.5em;">Residual Criticality:<input style="width: 50px;" value="N"
-                                type="text"></h5>
-                        <h5>Total Annual cost with Maintenance:<input style="width: 100px;"  value="{{CBAData.TotalAnnualCostWithMaintenance}}" type="text">
-                        </h5>
-                        <h5 style="text-indent: 1em;">Economic Risk without Maintenance:<input style="width: 100px;"
-                                value="10.399" type="text"></h5>
-                        <h5 style="text-indent: 4.5em;">Tasks Approved:<input style="width: 80px;" value="Yes"
-                                type="text"></h5>
-                        <h5 style="text-indent: 2em;">ETBF:<input style="width:80px"  value="{{CBAData.ETBF}}" type="number"></h5>
-                    </div>
-                </div>
+<div class="card dpm-card" style="margin: 20px">
+    <a title="Download RCM Functional Analysis"
+      ><i
+        style="float: right; margin: 10px; font-size: 2.5em; color: red"
+        (click)="DownloadRCMReport()" class="pi pi-file-pdf"
+      ></i
+    ></a>
+    <div style="margin-left: 10px" id="pdfTable1">
+      <div style="margin-left: 30px; margin-right: 30px">
+        <div class="card-header">
+          <h4
+            class="card-title"
+            style="
+              border-bottom: 1px solid #ccc;
+              padding-bottom: 15px;
+              margin-bottom: 25px;
+            "
+          >
+            <b><i class="fa fa-list h5 mr-2"></i>RCM Functional Analysis</b
+            ><span class="badge badge-info badge-xl ml-2">Currency: $</span>
+          </h4>
+  
+          <div class="row mb-4">
+            <div class="col-md-3 pl-0">
+              <label style="margin-left: 10px" class="d-block">
+                Tag Number:
+                <input [(ngModel)]="TagNumber" type="text" class="form-control" />
+              </label>
             </div>
+            <div class="col-md-3">
+              <label style="margin-left: 10px" class="d-block">
+                Functional Failure:
+                <input
+                  value="Does not supply lube oil at 3.4 bar or above 3 bar to machine"
+                  type="text"
+                  class="form-control"
+                />
+              </label>
+            </div>
+            <div class="col-md-3">
+              <label style="margin-left: 10px" class="d-block">
+                Equipment Type:
+                <input
+                  value="Centrifugal Compressor"
+                  type="text"
+                  class="form-control"
+                />
+              </label>
+            </div>
+            <div class="col-md-3">
+              <label style="margin-left: 10px" class="d-block">
+                Consequence:
+                <input
+                  [(ngModel)]="Consequence"
+                  type="text"
+                  class="form-control"
+                />
+              </label>
+            </div>
+          </div>
+  
+          <div *ngFor="let CBAData of FailureModeList">
+            <h4 class="badge badge-info btn-small p-2" style="font-size: 15px">
+              <span class="badge badge-light"></span>&nbsp;&nbsp;Failure Mode:{{
+                CBAData.FailureMode
+              }}
+            </h4>
+            <br />
+  
+            <h4 class="card-header pl-0">Tasks</h4>
+  
+            <p-table [value]="CBAData.Tasks" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Work Instruction</th>
+                  <th>Freq.</th>
+                  <th>RWC</th>
+                  <th>POC</th>
+                  <th>Ann POC</th>
+                  <th>Status</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-task>
+                <tr>
+                  <td>
+                    {{ task.Task }}
+                  </td>
+                  <td>
+                    {{ task.Frequency }}
+                  </td>
+                  <td>
+                    {{ task.RWC }}
+                  </td>
+                  <td>
+                    {{ task.POC }}
+                  </td>
+                  <td>
+                    {{ task.AnnualPOC }}
+                  </td>
+                  <td>
+                    {{ task.Status }}
+                  </td>
+                </tr>
+              </ng-template> </p-table
+            ><br />
+            <div class="p-4 mb-4 border-1 ar-top">
+              <h5 class="mb-4">Consequence Class</h5>
+              <div class="row mb-1">
+                <div class="col-md-12">
+                  <!-- <h5 style="float: right;margin:10px">Consequence Class</h5> -->
+                  <h5 class="badge badge-info mb-0" style="font-size: 13px">
+                    ECO:{{ CBAData.EC }}
+                  </h5>
+                  <h5
+                    class="badge badge-secondary ml-2 mb-0"
+                    style="font-size: 13px"
+                  >
+                    HS:{{ CBAData.HS }}
+                  </h5>
+                  <h5
+                    class="badge badge-primary ml-2 mb-0"
+                    style="font-size: 13px"
+                  >
+                    ENV:{{ CBAData.EV }}
+                  </h5>
+                  <h5
+                    class="badge badge-danger ml-2 mb-0"
+                    style="font-size: 13px"
+                  >
+                    Criticality Rating:{{ CBAData.CA }}
+                  </h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h5 class="link-primary ml-1">
+                    Consequence Category:{{ Consequence }}
+                  </h5>
+                  <h5 class="link-primary ml-1">ETBC(y):{{ CBAData.ETBC }}</h5>
+                  <h5 class="link-primary ml-1">
+                    Total AnnPOC: {{ CBAData.TotalAnnualPOC }}
+                  </h5>
+                  <h5 class="link-primary ml-1">Total PONC:{{ CBAData.PONC }}</h5>
+                  <h5 class="link-primary ml-1">
+                    Residual Risk with Maintenance:
+                    {{ CBAData.ResidualRiskWithMaintenance }}
+                  </h5>
+                  <h5 class="link-primary ml-1">MEI: {{ CBAData.MEI }}</h5>
+                  <h5 class="link-primary ml-1">Tasks Manual Approved:Yes</h5>
+                  <h5 class="link-primary ml-1">Residual Criticality: N</h5>
+                  <h5 class="link-primary ml-1">
+                    Total Annual cost with Maintenance:{{
+                      CBAData.TotalAnnualCostWithMaintenance
+                    }}
+                  </h5>
+                  <h5 class="link-primary ml-1">
+                    Economic Risk without Maintenance: 10.399
+                  </h5>
+                  <h5 class="link-primary ml-1">Tasks Approved: Yes</h5>
+                  <h5 class="link-primary ml-1">ETBF:{{ CBAData.ETBF }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  

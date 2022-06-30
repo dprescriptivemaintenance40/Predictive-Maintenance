@@ -87,7 +87,9 @@
                             <span class="">
                                 <a *ngIf="p.FCAAdded == 1" [ngClass]="{disabled:(p.MSSAdded == 1 || p.FCAAdded != 1 )}" title="Add MSS to tree" (click)="getMSSData(p)" class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Add MSS</a>
                             </span>
-
+                            <span class="">
+                                <a *ngIf="p.MSSAdded == 1" [ngClass]="{disabled:(p.CBAAdded == 1 || p.MSSAdded != 1 ||  p.FCAAdded != 1)}" title="Add CBA" (click)="RoutetoCBA(p)" class="link-primary mr-1 btn-sm"><small><i class="pi pi-plus mr-2"></i></small>Add CBA</a>
+                            </span>
                             <span class="">
                                 <a title="Add Attachment" *ngIf="(p.CAttachmentDBPath == null)" (click)="getAttachmentID(p)" data-toggle="modal" data-target="#AttachmentModal" class="link-primary mr-1"> <i class="fa fa-paperclip mr-2" aria-hidden="true"></i>Upload</a>
                                 <a title="View Attachment" *ngIf="(p.CAttachmentDBPath != null)" (click)="ViewAttachment(p)" data-toggle="modal" data-target="#CommentModal" class="link-primary mr-1"><i class="fa fa-eye mr-2" aria-hidden="true"></i>View Attachment</a>

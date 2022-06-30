@@ -1,3 +1,20 @@
 title{
     display: inline-block;
 }
+table tr th, table tr td{
+    font-family: 'Mukta';
+    font-size: 14px;
+}
+.link-primary{
+    background: #fff;
+    padding: 3px 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    display: inline-block;
+    border: 1px solid #bbb;
+    font-weight: 500;
+    font-size: 13px;
+}
+.ar-top{
+    background-color: #e4ebfd;
+}

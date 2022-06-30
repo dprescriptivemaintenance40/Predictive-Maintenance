@@ -31,7 +31,7 @@
         pTooltip="Back to Asset List" tooltipPosition="top"> <i class="fas fa-arrow-left"></i> Back</button>
     <button *ngIf="AddBtnEnable" class="btn btn-dark" style="float: right;" (click)="ADDMSS()"> <i
             class="pi pi-plus"></i> MSS</button>
-    <button *ngIf="SaveBtnEnable" class="btn btn-dark" style="float: right;" (click)="SaveMSS()" pTooltip="Save MSS"
+    <button *ngIf="SaveBtnEnable" [disable]="" class="btn btn-dark" style="float: right;" (click)="SaveMSS()" pTooltip="Save MSS"
         tooltipPosition="top"> <i class="fa fa-check"> Save</i></button>
 </div>
 

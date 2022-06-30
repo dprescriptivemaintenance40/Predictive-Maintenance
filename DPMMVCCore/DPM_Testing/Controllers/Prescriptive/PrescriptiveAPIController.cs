@@ -167,7 +167,7 @@ namespace DPM.Controllers.Prescriptive
                 return await _context.PrescriptiveModelData.Where(a => a.UserId == userId && a.CBAAdded == null || a.CBAAdded == "")
                                                            .Include(a => a.centrifugalPumpPrescriptiveFailureModes)
                                                            .ThenInclude(a => a.CentrifugalPumpMssModel)
-                                                           .OrderBy(a => a.CFPPrescriptiveId)   
+                                                           .OrderBy(a => a.CFPPrescriptiveId)
                                                            .ToListAsync();
             }
             catch (Exception exe)
@@ -362,7 +362,7 @@ namespace DPM.Controllers.Prescriptive
                 for (int i = 0; i < WebalDays.Count(); i++)
                 {
                     WeibullMTBFModel weibullMTBFModel = new WeibullMTBFModel();
-                    weibullMTBFModel.Rank = i+1;
+                    weibullMTBFModel.Rank = i + 1;
                     double median = (weibullMTBFModel.Rank - 0.3) / (WebalDays.Count() + 0.4);
                     double medianDays = Math.Log(WebalDays[i]);
                     double medianInverse = 1 / (1 - median);
@@ -381,7 +381,7 @@ namespace DPM.Controllers.Prescriptive
                 CyclesDays.Add(1);
                 CyclesDays.Add(5);
                 CyclesDays.Add(10);
-                CyclesDays.Add(15); 
+                CyclesDays.Add(15);
                 CyclesDays.Add(25);
                 CyclesDays.Add(50);
                 CyclesDays.Add(75);
@@ -401,7 +401,7 @@ namespace DPM.Controllers.Prescriptive
                 CyclesDays.Add(425);
                 CyclesDays.Add(450);
                 CyclesDays.Add(475);
-                CyclesDays.Add(500); 
+                CyclesDays.Add(500);
                 CyclesDays.Add(525);
                 CyclesDays.Add(550);
                 CyclesDays.Add(575);
@@ -410,7 +410,7 @@ namespace DPM.Controllers.Prescriptive
                 CyclesDays.Add(650);
                 CyclesDays.Add(675);
                 CyclesDays.Add(700);
-                CyclesDays.Add(725); 
+                CyclesDays.Add(725);
                 CyclesDays.Add(750);
                 CyclesDays.Add(775);
                 CyclesDays.Add(800);
@@ -437,14 +437,14 @@ namespace DPM.Controllers.Prescriptive
                     weibullHazardRateModels.Add(weibullHazardRateModel);
                 }
 
-                weibullModel.weibullHazardRateModels = weibullHazardRateModels;                    
+                weibullModel.weibullHazardRateModels = weibullHazardRateModels;
                 return Ok(weibullModel);
             }
             catch (Exception ex)
             {
                 return BadRequest();
             }
-        } 
+        }
 
         private WeibullModel GetAlphaBetaValue(List<WeibullMTBFModel> weibullMTBFModels)
         {
@@ -1452,8 +1452,6 @@ namespace DPM.Controllers.Prescriptive
                 recyclePM.EquipmentType = prescriptiveModel.EquipmentType;
                 recyclePM.TagNumber = prescriptiveModel.TagNumber;
                 recyclePM.FunctionFluidType = prescriptiveModel.FunctionFluidType;
-                //recyclePM.FunctionRatedHead = prescriptiveModel.FunctionRatedHead;
-                //recyclePM.FunctionPeriodType = prescriptiveModel.FunctionPeriodType;
                 recyclePM.FunctionFailure = prescriptiveModel.FunctionFailure;
                 recyclePM.Date = prescriptiveModel.Date;
                 recyclePM.FailureModeWithLSETree = prescriptiveModel.FailureModeWithLSETree;
@@ -1505,14 +1503,23 @@ namespace DPM.Controllers.Prescriptive
                     recycleChild.FCAFFI = item.FCAFFI;
                     recycleChild.FCAComment = item.FCAComment;
                     recycleChild.IsDeleted = 0;
-                    //recyclePM.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
                     _context.restoreCentrifugalPumpPrescriptiveFailureModes.Add(recycleChild);
                     await _context.SaveChangesAsync();
 
                 }
-
-
                 _context.PrescriptiveModelData.Remove(prescriptiveModel);
+                await _context.SaveChangesAsync();
+
+                var cbamodel = _context.PrescriptiveCbaModels.Where(a => a.CFPPrescriptiveId == id)
+                                                         .Include(a => a.CBAFailureModes)
+                                                         .ThenInclude(a => a.CBAMaintenanceTasks)
+                                                         .ThenInclude(a => a.CBAMainenanceIntervals)
+                                                         .First();
+                if( cbamodel == null)
+                {
+                    return NotFound();
+                }
+                _context.PrescriptiveCbaModels.Remove(cbamodel);
                 await _context.SaveChangesAsync();
 
                 return NoContent();
@@ -1523,13 +1530,7 @@ namespace DPM.Controllers.Prescriptive
 
                 return BadRequest(exe.Message);
             }
-
-
-
-
         }
-
-
 
         [HttpDelete("{id}")]
         [Route("DeleteRecycleWholeData")]

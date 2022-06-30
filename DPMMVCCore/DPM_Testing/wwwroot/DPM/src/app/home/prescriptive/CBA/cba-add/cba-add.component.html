@@ -59,14 +59,14 @@
         </div>
 
     </div><br>
-    <button style="float: left;" label="back" type="button" class="btn btn-primary" (click)="BacktoSelectCBATag()"
-        pTooltip="Back to Select Tag" tooltipPosition="top"><i>Back</i></button>
+    <!-- <button style="float: left;" label="back" type="button" class="btn btn-primary" (click)="BacktoSelectCBATag()"
+        pTooltip="Back to Select Tag" tooltipPosition="top"><i>Back</i></button> -->
     <button style="float: right;" label="Save" type="button" class="btn btn-primary" (click)="SaveCBA()"
         pTooltip="Save Values" tooltipPosition="top"><i class="pi pi-save"> Save</i></button>
 </div>
 <br>
 
-<div class="card dpm-card w-100 p-3">
+<div *ngIf = "cbaSheet" class="card dpm-card w-100 p-3">
     <div class="col-lg-8 col-xs-12 col-centered" #spreadsheet ></div>
 </div>
 
